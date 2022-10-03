@@ -16,6 +16,7 @@ module.exports = {
     parser: "@typescript-eslint/parser",
   },
   plugins: ["vue", "@typescript-eslint", "prettier"],
+  ignorePatterns: ["components.d.ts"],
   rules: {
     indent: ["error", "tab"],
     "linebreak-style": ["error", "unix"],
