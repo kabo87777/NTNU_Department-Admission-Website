@@ -22,5 +22,5 @@ $ pnpm lint
 代表被 permission denied 的檔案或目錄是 root 權限，因此先
 (如果我的 user name 叫做 subarya)
 ```
-$ sudo chown -r subarya:subarya 該資料夾或檔案
+$ sudo chown -R subarya:subarya 該資料夾或檔案
 ```
