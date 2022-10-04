@@ -1,5 +1,6 @@
 stages:
   - test
+  - deploy
 
 test:
   stage: test
@@ -16,3 +17,14 @@ test:
         - pnpm-lock.yaml
     paths:
       - .pnpm-store
+
+deploy:staging:
+  stage: deploy
+  script:
+    - echo "Deploying staging"
+    - curl -s "https://api.render.com/deploy/srv-${RENDER_SRV_ID}?key=${RENDER_DEPLOY_KEY}" -o file.txt >/dev/null 2>&1
+  environment:
+    name: Staging
+    url: https://admissions-frontend-staging.onrender.com
+  rules:
+    - if: $CI_COMMIT_BRANCH == "develop"
