@@ -18,6 +18,18 @@ test:
     paths:
       - .pnpm-store
 
+deploy:prd:
+  stage: deploy
+  image: curlimages/curl:latest
+  script:
+    - echo "Deploying staging"
+    - curl --fail-with-body -s "https://api.render.com/deploy/srv-${RENDER_SRV_ID}?key=${RENDER_DEPLOY_KEY}" -o file.txt >/dev/null 2>&1
+  environment:
+    name: Production
+    url: https://admissions-frontend-prd.onrender.com
+  rules:
+    - if: $CI_COMMIT_BRANCH == "develop"
+
 deploy:staging:
   stage: deploy
   image: curlimages/curl:latest
