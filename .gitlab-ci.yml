@@ -6,6 +6,7 @@ test:
   stage: test
   image: node:16.17.1-alpine3.15
   before_script:
+    - apk --no-cache add curl
     - curl -f https://get.pnpm.io/v6.16.js | node - add --global pnpm@7
     - pnpm config set store-dir .pnpm-store
   script:
