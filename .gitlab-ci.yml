@@ -22,7 +22,7 @@ deploy:prd:
   stage: deploy
   image: curlimages/curl:latest
   script:
-    - echo "Deploying staging"
+    - echo "Deploying production"
     - curl --fail-with-body -s "https://api.render.com/deploy/srv-${RENDER_SRV_ID}?key=${RENDER_DEPLOY_KEY}" -o file.txt >/dev/null 2>&1
   environment:
     name: Production
