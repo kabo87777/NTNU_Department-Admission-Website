@@ -23,6 +23,7 @@
     "vite-plugin-windicss": "^1.8.8",
     "vue": "^3.2.37",
     "vue-eslint-parser": "^9.1.0",
+    "vue-i18n": "^9.2.2",
     "vue-router": "4",
     "windicss": "^3.5.6"
   },
