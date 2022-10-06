@@ -20,7 +20,8 @@
 						資訊工程學系
 					</div>
 					<div class="text-xs text-gray-400">
-						Department of Computer Science and Information Enginering
+						Department of Computer Science and Information
+						Enginering
 					</div>
 				</div>
 			</div>

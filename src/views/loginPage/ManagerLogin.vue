@@ -20,7 +20,8 @@
 						資訊工程學系
 					</div>
 					<div class="text-xs text-gray-400">
-						Department of Computer Science and Information Enginering
+						Department of Computer Science and Information
+						Enginering
 					</div>
 				</div>
 			</div>
@@ -29,7 +30,8 @@
 					審查委員及行政人員管理系統
 				</div>
 				<div class="ml-164px text-xs text-gray-500">
-					Review Commitee and Administrative Personal Management System
+					Review Commitee and Administrative Personal Management
+					System
 				</div>
 			</div>
 			<div class="block mt-50px ml-168px">
