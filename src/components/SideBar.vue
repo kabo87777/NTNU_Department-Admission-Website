@@ -17,7 +17,7 @@
 
 			<router-link to="/projectSetting" custom v-slot="{ navigate }">
 				<Button
-					class="p-button-secondary p-button-text mt-5 mb-2 h-10 w-full"
+					class="p-button-secondary p-button-text mt-5 h-10 w-full"
 					@click="navigate"
 					role="link"
 				>
@@ -127,7 +127,10 @@ import Divider from "primevue/divider";
 
 const visibleLeft = ref(true);
 const selectedProgram = ref({ program_name: "111年研究生審查" });
-const programs = ref([{ program_name: "111年研究生審查" }]);
+const programs = ref([
+	{ program_name: "111年研究生審查" },
+	{ program_name: "111年博士生審查" },
+]);
 </script>
 
 <style></style>
