@@ -29,6 +29,11 @@ export default function createRouterInstance(options: RouterInstanceOptions) {
 			name: "managerlogin",
 			component: () => import("../views/loginPage/ManagerLogin.vue"),
 		},
+		{
+			path: "/login",
+			name: "login",
+			component: () => import("../views/loginPage/ApplicantLogin.vue"),
+		},
 	];
 
 	const router: Router = createRouter({
