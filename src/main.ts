@@ -21,6 +21,8 @@ import createRouterInstance from "./router/index";
 
 import { i18n, computePageTitle } from "./i18n";
 
+// console.log(import.meta.env.VITE_ADMISSIONS_API_ENDPOINT);
+
 // app component
 const app = createApp(App);
 app.component("Menubar", Menubar);
