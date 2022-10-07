@@ -27,16 +27,12 @@
 			</div>
 			<div>
 				<div class="mt-100px ml-164px text-4xl font-bold text-gray-500">
-					審查委員及行政人員管理系統
-				</div>
-				<div class="ml-164px text-xs text-gray-500">
-					Review Commitee and Administrative Personal Management
-					System
+					{{ $t("審查委員及行政人員管理系統") }}
 				</div>
 			</div>
 			<div class="block mt-50px ml-168px">
 				<div class="text-base text-gray-600">
-					<label for="email">電郵 Email</label>
+					<label for="email">{{ $t("電郵") }}</label>
 				</div>
 				<div class="mt-4px">
 					<InputText id="email" type="email" class="input" />
@@ -44,7 +40,7 @@
 			</div>
 			<div class="block mt-24px ml-168px">
 				<div class="text-base text-gray-600">
-					<label for="password">密碼 Password</label>
+					<label for="password">{{ $t("密碼") }}</label>
 				</div>
 				<div class="mt-4px">
 					<InputText id="password" type="password" class="input" />
@@ -60,23 +56,21 @@
 						/>
 					</div>
 					<label class="text-xs text-gray-500 ml-4px">
-						<div>下次登入記住帳號</div>
-						<div>Remember account for next login</div>
+						<div>{{ $t("下次登入記住帳號") }}</div>
 					</label>
 				</div>
 				<div class="absolute ml-320px text-xs">
 					<a href="/login">
 						<div class="text-right font-bold goldText">
-							忘記密碼
+							{{ $t("忘記密碼") }}
 						</div>
-						<div class="goldText">Forgot Password</div>
 					</a>
 				</div>
 			</div>
 			<div class="mt-50px ml-168px">
 				<Button class="bg-darkBlue h-60px w-420px" @click="handleLogin">
 					<div class="m-auto text-2xl">
-						<div>登入 Login</div>
+						<div>{{ $t("登入") }}</div>
 					</div>
 				</Button>
 			</div>

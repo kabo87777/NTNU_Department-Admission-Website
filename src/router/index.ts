@@ -22,7 +22,7 @@ export default function createRouterInstance(options: RouterInstanceOptions) {
 			meta: {
 				titleKey: "登入頁面",
 			},
-			component: () => import("../views/login-page/main-login.vue"),
+			component: () => import("../views/loginPage/main-login.vue"),
 		},
 		{
 			path: "/managerlogin",
