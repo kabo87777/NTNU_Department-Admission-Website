@@ -26,7 +26,7 @@
 		2022/09/15 · 新增到專案
 	</h3>
 	<h5 class="text-base tracking-widest mt-30px">專案名稱 (修改) :</h5>
-	<InputText type="text" v-model="profect_name" class="w-800px mt-10px" />
+	<InputText type="text" v-model="profect_name" class="w-960px h-44px mt-10px" />
 	<div>
 		<h5 class="text-base tracking-widest mt-30px">屬性 :</h5>
 		<Dropdown
@@ -34,7 +34,7 @@
 			:options="types"
 			optionLabel="type_name"
 			optionValue="type_name"
-			class="w-300px mt-10px"
+			class="w-320px h-44px mt-10px"
 		/>
 	</div>
 	<div class="inline-block">
@@ -44,7 +44,7 @@
 			v-model="application_start_time"
 			:showIcon="true"
 			:showTime="true"
-			class="w-300px mt-10px"
+			class="w-320px h-44px mt-10px"
 		/>
 	</div>
 	<div class="inline-block ml-100px">
@@ -54,7 +54,7 @@
 			v-model="application_end_time"
 			:showIcon="true"
 			:showTime="true"
-			class="w-300px mt-10px"
+			class="w-320px h-44px mt-10px"
 		/>
 	</div>
 	<br />
@@ -67,7 +67,7 @@
 			v-model="review_stage1_start_time"
 			:showIcon="true"
 			:showTime="true"
-			class="w-300px mt-10px"
+			class="w-320px h-44px mt-10px"
 		/>
 	</div>
 	<div class="inline-block ml-100px">
@@ -79,7 +79,7 @@
 			v-model="review_stage1_end_time"
 			:showIcon="true"
 			:showTime="true"
-			class="w-300px mt-10px"
+			class="w-320px h-44px mt-10px"
 		/>
 	</div>
 	<br />
@@ -92,7 +92,7 @@
 			v-model="review_stage2_start_time"
 			:showIcon="true"
 			:showTime="true"
-			class="w-300px mt-10px"
+			class="w-320px h-44px mt-10px"
 		/>
 	</div>
 	<div class="inline-block ml-100px">
@@ -104,7 +104,7 @@
 			v-model="review_stage2_end_time"
 			:showIcon="true"
 			:showTime="true"
-			class="w-300px mt-10px"
+			class="w-320px h-44px mt-10px"
 		/>
 	</div>
 	<br />
