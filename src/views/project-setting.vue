@@ -4,7 +4,7 @@
 	<h2 class="text-2xl text-bold tracking-widest inline-block">
 		111年研究生審查
 	</h2>
-	<Button class="w-100px h-40px ml-20px p-button-outlined p-button-success">
+	<Button class="w-100px h-40px !ml-20px p-button-outlined p-button-success">
 		<img
 			alt="logo"
 			src="../../src/assets/project-setting/Check_fill.png"
@@ -13,7 +13,7 @@
 		/>
 		<span class="tracking-1px"> 保存 </span>
 	</Button>
-	<Button class="w-100px h-40px ml-20px p-button-outlined p-button-danger">
+	<Button class="w-100px h-40px !ml-20px p-button-outlined p-button-danger">
 		<img
 			alt="logo"
 			src="../../src/assets/project-setting/Close_round.png"
@@ -117,7 +117,7 @@
 			inputId="binary"
 			v-model="checked"
 			:binary="true"
-			class="align-top mt-30px"
+			class="!align-top mt-30px"
 		/>
 		<h5
 			class="text-base tracking-widest mt-30px ml-10px align-top inline-block"
@@ -128,7 +128,7 @@
 			v-model="project_details"
 			rows="5"
 			cols="30"
-			class="w-800px h-300px mt-30px ml-10px"
+			class="w-800px h-300px !mt-30px !ml-10px"
 		/>
 	</div>
 </template>
