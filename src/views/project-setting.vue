@@ -26,7 +26,11 @@
 		2022/09/15 · 新增到專案
 	</h3>
 	<h5 class="text-base tracking-widest mt-30px">專案名稱 (修改) :</h5>
-	<InputText type="text" v-model="profect_name" class="w-960px h-44px mt-10px" />
+	<InputText
+		type="text"
+		v-model="profect_name"
+		class="w-960px h-44px mt-10px"
+	/>
 	<div>
 		<h5 class="text-base tracking-widest mt-30px">屬性 :</h5>
 		<Dropdown
