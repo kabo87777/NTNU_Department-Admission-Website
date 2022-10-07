@@ -24,7 +24,7 @@
 		<div class="w-full block">
 			<Button
 				class="border-white text-white p-button-sm p-button-outlined float-right mx-5"
-				label="i18n"
+				:label="$t('語言')"
 				icon="pi pi-angle-down"
 				iconPos="right"
 				@click="toggle"
@@ -40,44 +40,52 @@
 import Menu from "primevue/menu";
 import Button from "primevue/button";
 
-import { ref } from "vue";
-import { useToast } from "primevue/usetoast";
-const toast = useToast();
+import { ref, onMounted } from "vue";
+// import { useToast } from "primevue/usetoast";
+
+import { useI18n } from "vue-i18n";
+const { t, locale, availableLocales } = useI18n();
+
+// const toast = useToast();
 const menu = ref();
-const items = ref([
-	{
-		label: "語言",
-		items: [
-			{
-				label: "中文",
-				icon: "",
-				command: () => {
-					toast.add({
-						severity: "success",
-						summary: "更新成功",
-						detail: "轉換成中文",
-						life: 3000,
-					});
-				},
+
+// The initial locale is set to navigator.language in ../i18n.ts.
+// If navigator.language was null, vue-i18n falls back to "zh".
+//
+// This is the only component where we switch locales, so here I
+// wrote a helper function to remember user's locale selection.
+const switchLocale = (loc: string) => {
+	locale.value = loc;
+	window.localStorage.setItem("lastLocale", locale.value.toString());
+};
+
+let items = ref(
+	(availableLocales as string[]).map((loc: string) => {
+		return {
+			label: t("語言名稱", "", { locale: loc }),
+			icon: "",
+			command: () => {
+				switchLocale(loc);
+				// toast.add({
+				//   severity: "success",
+				//   summary: "更新成功",
+				//   detail: "轉換成中文",
+				//   life: 3000,
+				// });
 			},
-			{
-				label: "English",
-				icon: "",
-				command: () => {
-					toast.add({
-						severity: "success",
-						summary: "Updated Successfully",
-						detail: "Change to English",
-						life: 3000,
-					});
-				},
-			},
-		],
-	},
-]);
+		};
+	})
+);
+
 const toggle = (event: MouseEvent) => {
 	menu.value.toggle(event);
 };
+
+onMounted(() => {
+	switchLocale(
+		window.localStorage.getItem("lastLocale") || locale.value.toString()
+	);
+});
 </script>
 
 <style scoped></style>

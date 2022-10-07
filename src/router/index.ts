@@ -5,22 +5,42 @@ import {
 	createWebHistory,
 } from "vue-router";
 
-const routes: Array<RouteRecordRaw> = [
-	{
-		path: "/",
-		name: "home",
-		component: () => import("../views/home/HomeView.vue"),
-	},
-	{
-		path: "/login",
-		name: "login",
-		component: () => import("../views/login-page/main-login.vue"),
-	},
-];
+import { RouterInstanceOptions } from "../interfaces/RouterInstanceOptions";
 
-const router: Router = createRouter({
-	history: createWebHistory(),
-	routes,
-});
+export default function createRouterInstance(options: RouterInstanceOptions) {
+	const { computePageTitle } = options;
 
-export default router;
+	const routes: Array<RouteRecordRaw> = [
+		{
+			path: "/",
+			name: "home",
+			component: () => import("../views/home/HomeView.vue"),
+		},
+		{
+			path: "/login",
+			name: "login",
+			meta: {
+				titleKey: "登入頁面",
+			},
+			component: () => import("../views/loginPage/main-login.vue"),
+		},
+		{
+			path: "/managerlogin",
+			name: "managerlogin",
+			component: () => import("../views/loginPage/ManagerLogin.vue"),
+		},
+	];
+
+	const router: Router = createRouter({
+		history: createWebHistory(),
+		routes,
+	});
+
+	router.beforeEach((to) => {
+		if (typeof to.meta.titleKey === "string") {
+			document.title = computePageTitle(to.meta.titleKey);
+		}
+	});
+
+	return router;
+}
