@@ -15,7 +15,6 @@
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
     "prettier": "^2.7.1",
-    "primeflex": "^3.2.1",
     "primeicons": "^5.0.0",
     "primevue": "^3.17.0",
     "unplugin-icons": "^0.14.11",
