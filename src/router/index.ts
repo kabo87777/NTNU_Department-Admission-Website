@@ -29,6 +29,12 @@ export default function createRouterInstance(options: RouterInstanceOptions) {
 			name: "managerlogin",
 			component: () => import("../views/loginPage/ManagerLogin.vue"),
 		},
+		{
+			path: "/firstloginchangepassword",
+			name: "firstloginchangepassword",
+			component: () =>
+				import("../views/loginPage/firstLoginChangePass.vue"),
+		},
 	];
 
 	const router: Router = createRouter({
