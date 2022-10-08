@@ -38,7 +38,7 @@
 			:options="types"
 			optionLabel="type_name"
 			optionValue="type_name"
-			class="w-320px h-44px mt-10px"
+			class="!w-320px !h-44px mt-10px"
 		/>
 	</div>
 	<div class="inline-block">
