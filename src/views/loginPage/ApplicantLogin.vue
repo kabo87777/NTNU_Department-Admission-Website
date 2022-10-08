@@ -31,7 +31,7 @@
           
           <div class="items-center mt-3">
             <span class="inline-block">
-              <Checkbox />
+              <Checkbox v-model="rememberMe" :binary="true"/>
               <label class="text-base text-gray-600 ml-1">{{ $t("記住我") }}</label>
             </span>
             <div class="float-right">
@@ -41,6 +41,7 @@
           </div>
 
           <div class="mt-10">
+            <div class="cf-turnstile" data-sitekey="0x4AAAAAAAAwuJcK_C3iXAFh"></div>
             <Button label="登入" class="w-full"/>
           </div>
         </div>
@@ -56,6 +57,16 @@ import InputText from "primevue/inputtext";
 import Checkbox from "primevue/checkbox";
 import Button from "primevue/button";
 import { ref } from "vue";
+
+// Cloudflare Turnstile challenge
+// What these lines do is appending a <script src> tag on the rendered HTML
+const cfTurnstile = document.createElement("script")
+cfTurnstile.setAttribute("src", "https://challenges.cloudflare.com/turnstile/v0/api.js")
+document.head.appendChild(cfTurnstile)
+
+
+
+const rememberMe = ref(false)
 
 </script>
 
