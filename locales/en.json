@@ -26,5 +26,6 @@
   "登入":"Login",
   "歡迎":"Welcome",
   "第一次登入更密碼説明":"After first succecful login, you need to set a new password",
+  "驗證電郵":"Verify email",
   "提交":"Submit"
 }
