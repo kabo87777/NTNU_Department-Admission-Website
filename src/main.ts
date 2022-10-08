@@ -16,25 +16,19 @@ import Toast from "primevue/toast";
 import ToastService from "primevue/toastservice";
 
 import App from "./App.vue";
-import createRouterInstance from "./router/index";
+import { router } from "./router/index";
 
-import { i18n, computePageTitle } from "./i18n";
+import { i18n } from "./i18n";
 
-// app component
 const app = createApp(App);
+
 app.component("Menubar", Menubar);
 app.component("Divider", Divider);
 app.component("ToastService", ToastService);
 app.component("Toast", Toast);
 
-// API
 app.use(i18n);
-
-app.use(
-	createRouterInstance({
-		computePageTitle,
-	})
-);
+app.use(router);
 app.use(PrimeVue);
 app.use(ToastService);
 
