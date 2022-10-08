@@ -35,6 +35,11 @@ export default function createRouterInstance(options: RouterInstanceOptions) {
 			component: () =>
 				import("../views/loginPage/firstLoginChangePass.vue"),
 		},
+		{
+			path: "/resetpassword",
+			name: "resetpassword",
+			component: () => import("../views/loginPage/resetPass.vue"),
+		},
 	];
 
 	const router: Router = createRouter({

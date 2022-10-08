@@ -20,9 +20,11 @@
   "請輸入密碼":"Please enter your password",
   "請再次輸入密碼":"Please enter password again",
   "密碼不符":"Password does not match",
+  "重設密碼":"Reset Password",
   "下次登入記住帳號":"Remember account for next login",
   "忘記密碼":"Forget Password",
   "登入":"Login",
   "歡迎":"Welcome",
-  "第一次登入更密碼説明":"After first succecful login, you need to set a new password"
+  "第一次登入更密碼説明":"After first succecful login, you need to set a new password",
+  "提交":"Submit"
 }
