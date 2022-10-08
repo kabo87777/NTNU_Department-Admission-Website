@@ -16,7 +16,8 @@ const routes: Array<RouteRecordRaw> = [
 		name: "login",
 		meta: {
 			titleKey: "登入頁面",
-		},component: () => import("../views/loginPage/main-login.vue"),
+		},
+		component: () => import("../views/loginPage/main-login.vue"),
 	},
 	{
 		path: "/managerlogin",
