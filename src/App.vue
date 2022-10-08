@@ -16,7 +16,7 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 const router = useRouter();
 
-const loggedin = ref(false);
+const loggedin = ref(true);
 
 if (!loggedin.value) {
 	router.push("/login");
