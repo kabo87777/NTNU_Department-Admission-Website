@@ -1,81 +1,54 @@
 <template>
-	<div class="grid grid-cols-2 gap-15px">
-		<div>
-			<img
-				src="./../../assets/login-page/Login-img.png"
-				class="h-screen"
-			/>
-		</div>
-		<div class="m-auto">
-			<div class="flex m-auto h-15">
-				<div>
-					<img
-						src="./../../assets/login-page/NTNU-logo-B1.png"
-						class="h-15"
-					/>
-				</div>
-				<Divider layout="vertical" />
-				<div class="mt-1.5">
-					<div class="text-4xl font-bold text-gray-500">
-						資訊工程學系
-					</div>
-					<div class="text-xs text-gray-400">
-						Department of Computer Science and Information
-						Enginering
-					</div>
-				</div>
-			</div>
-			<div>
-				<div class="mt-100px ml-164px text-4xl font-bold text-gray-500">
-					{{ $t("申請者登入") }}
-				</div>
-			</div>
-			<div class="block mt-50px ml-168px">
-				<div class="text-base text-gray-600">
-					<label for="email">{{ $t("准考證號碼") }}</label>
-				</div>
-				<div class="mt-4px">
-					<InputText id="email" type="email" class="input" />
-				</div>
-			</div>
-			<div class="block mt-24px ml-168px">
-				<div class="text-base text-gray-600">
-					<label for="password">{{ $t("密碼") }}</label>
-				</div>
-				<div class="mt-4px">
-					<InputText id="password" type="password" class="input" />
-				</div>
-			</div>
-			<div class="flex relative ml-168px mt-8px">
-				<div class="flex">
-					<div class="pt-3px">
-						<Checkbox
-							v-model="rmbAccCheck"
-							:binary="true"
-							@click="handleCheck()"
-						/>
-					</div>
-					<label class="text-xs text-gray-500 ml-4px">
-						<div>{{ $t("記住帳號") }}</div>
-					</label>
-				</div>
-				<div class="absolute ml-320px text-xs">
-					<a href="/login">
-						<div class="text-right font-bold goldText">
-							{{ $t("忘記密碼") }}
-						</div>
-					</a>
-				</div>
-			</div>
-			<div class="mt-50px ml-168px">
-				<Button class="bg-darkBlue h-60px w-420px" @click="handleLogin">
-					<div class="m-auto text-2xl">
-						<div>{{ $t("登入") }}</div>
-					</div>
-				</Button>
-			</div>
-		</div>
-	</div>
+  <div class="grid grid-cols-9 gap-x-4">
+    <div class="col-span-5 h-full" >
+      <img src="../../assets/login-page/Login-img.png" alt="" class="overflow-auto">
+    </div>
+
+    <div class="col-span-4 mt-20">
+      
+      <!-- Logo -->
+      <div class="flex mt-2 justify-center items-center">
+        <img src="../../assets/login-page/NTNU-logo-B1.png" alt="" class="h-12">
+        <Divider layout="vertical" />
+        <div>
+          <h1 class="text-3xl font-bold text-gray-500">資訊工程學系</h1>
+          <h3 class="text-xs text-gray-400">
+            Department of Computer Science and Information Enginering
+          </h3>
+        </div>
+      </div>
+
+      <!-- Form -->
+      <div class="mt-10 justify-center mx-30">
+        <h2 class="pt-6 text-3xl font-bold text-gray-500 inline-block">{{ $t("資訊工程學系報名系統") }}</h2>
+
+        <div class="pt-6">
+          <label for="ID" class="block text-base text-gray-600">{{ $t("准考證號碼") }}</label>
+          <InputText id="ID" type="text" class="w-full"/>
+
+          <label for="ID" class="block text-base text-gray-600 mt-3">{{ $t("密碼") }}</label>
+          <InputText id="password" type="password" class="w-full"/>
+          
+          <div class="items-center mt-3">
+            <span class="inline-block">
+              <Checkbox />
+              <label class="text-base text-gray-600 ml-1">{{ $t("記住我") }}</label>
+            </span>
+            <div class="float-right">
+
+              <a href="" class="text-base text-blue-300">{{ $t("忘記密碼") }}</a>
+            </div>
+          </div>
+
+          <div class="mt-10">
+            <Button label="登入" class="w-full"/>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
 </template>
 
 <script setup lang="ts">
@@ -84,26 +57,5 @@ import Checkbox from "primevue/checkbox";
 import Button from "primevue/button";
 import { ref } from "vue";
 
-const rmbAccCheck = ref(false);
-
-const handleCheck = () => {
-	rmbAccCheck.value = !rmbAccCheck.value;
-	console.log(rmbAccCheck.value);
-};
-
-const handleLogin = () => {
-	console.log("login button clicked");
-};
 </script>
 
-<style setup lang="css">
-.input {
-	width: 420px;
-}
-.goldText {
-	color: #897a27;
-}
-.bg-darkBlue {
-	background-color: #07385a;
-}
-</style>
