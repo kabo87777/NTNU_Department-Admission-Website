@@ -32,7 +32,9 @@
 				</Button>
 			</router-link>
 
-			<Button class="p-button-secondary p-button-text !mt-24px   !w-336px !h-48px">
+			<Button
+				class="p-button-secondary p-button-text !mt-24px !w-336px !h-48px"
+			>
 				<img
 					alt="logo"
 					src="../../src/assets/sidebar/Chart_light.png"
@@ -43,7 +45,10 @@
 				</span>
 			</Button>
 
-			<Divider align="left" class="text-xs text-ntnuRed !mt-24px text-base">
+			<Divider
+				align="left"
+				class="text-xs text-ntnuRed !mt-24px text-base"
+			>
 				<b>申請端設定</b>
 			</Divider>
 
@@ -57,7 +62,9 @@
 					資訊公告
 				</span>
 			</Button>
-			<Button class="p-button-secondary p-button-text !mt-24px   !w-336px !h-48px">
+			<Button
+				class="p-button-secondary p-button-text !mt-24px !w-336px !h-48px"
+			>
 				<img
 					alt="logo"
 					src="../../src/assets/sidebar/User_add_alt.png"
@@ -67,7 +74,9 @@
 					申請帳號設置
 				</span>
 			</Button>
-			<Button class="p-button-secondary p-button-text !mt-24px   !w-336px !h-48px">
+			<Button
+				class="p-button-secondary p-button-text !mt-24px !w-336px !h-48px"
+			>
 				<img
 					alt="logo"
 					src="../../src/assets/sidebar/Sort_alfa.png"
@@ -77,7 +86,9 @@
 					上傳欄位設置
 				</span>
 			</Button>
-			<Button class="p-button-secondary p-button-text !mt-24px   !w-336px !h-48px">
+			<Button
+				class="p-button-secondary p-button-text !mt-24px !w-336px !h-48px"
+			>
 				<img
 					alt="logo"
 					src="../../src/assets/sidebar/File_dock_search.png"
@@ -102,7 +113,9 @@
 					審查評分設置
 				</span>
 			</Button>
-			<Button class="p-button-secondary p-button-text !mt-24px   !w-336px !h-48px">
+			<Button
+				class="p-button-secondary p-button-text !mt-24px !w-336px !h-48px"
+			>
 				<img
 					alt="logo"
 					src="../../src/assets/sidebar/Flag_finish.png"
@@ -113,15 +126,21 @@
 				</span>
 			</Button>
 			<div class="bg-gray-200 bg-opacity-50 !w-400 h-203px !mt-22px">
-				<Button class="w-168px h-44px p-button-outlined !mt-24px !ml-10px">
+				<Button
+					class="w-168px h-44px p-button-outlined !mt-24px !ml-10px"
+				>
 					<img
 						alt="logo"
 						src="../../src/assets/sidebar/User_box.png"
 						style="width: 1.25rem"
 					/>
-					<h1 class="tracking-1px text-xl text-gray-900">管理審查者</h1>
+					<h1 class="tracking-1px text-xl text-gray-900">
+						管理審查者
+					</h1>
 				</Button>
-				<Button class="w-146px h-44px p-button-outlined p-button-success !mt-24px !ml-24px">
+				<Button
+					class="w-146px h-44px p-button-outlined p-button-success !mt-24px !ml-24px"
+				>
 					<img
 						alt="logo"
 						src="../../src/assets/sidebar/Add_round.png"
@@ -131,15 +150,13 @@
 					<h1 class="tracking-1px text-xl text-gray-900">新增專案</h1>
 				</Button>
 				<div class="flex">
-						<img
+					<img
 						alt="logo"
 						src="../../src/assets/sidebar/User_circle.png"
 						class="h-40px w-40px ml-24px mt-56px"
 					/>
 					<div>
-						<div class="text-xs ml-16px mt-56px">
-							管理端帳戶
-						</div>
+						<div class="text-xs ml-16px mt-56px">管理端帳戶</div>
 						<div class="text-xl ml-16px tracking-wider">
 							系辦主管
 						</div>
