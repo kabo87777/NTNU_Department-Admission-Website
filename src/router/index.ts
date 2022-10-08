@@ -24,6 +24,11 @@ const routes: Array<RouteRecordRaw> = [
 		name: "managerlogin",
 		component: () => import("../views/loginPage/ManagerLogin.vue"),
 	},
+	{
+		path: "/forgetpassword",
+		name: "forgetpassword",
+		component: () => import("../views/loginPage/forgetPass.vue"),
+	},
 ];
 
 export const router: Router = createRouter({
