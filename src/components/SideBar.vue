@@ -139,6 +139,7 @@
 					</h1>
 				</Button>
 				<Button
+					@click="newProject"
 					class="w-146px h-44px p-button-outlined p-button-success !mt-24px !ml-24px"
 				>
 					<img
@@ -149,6 +150,45 @@
 					/>
 					<h1 class="tracking-1px text-xl text-gray-900">新增專案</h1>
 				</Button>
+				<Dialog
+					header="新增專案"
+					v-model:visible="displayNewProject"
+					class="w-484px h-282px"
+				>
+					<divider class="!mt-0px" />
+					<p class="mt-24px text-base tracking-2px">專案名稱</p>
+					<InputText
+						type="text"
+						v-model="newProjectName"
+						class="!w-428px !h-44px !mt-5px"
+					/>
+					<div class="flex">
+						<Button
+							@click="closeDisplayNewProject"
+							class="p-button-outlined p-button-success !ml-70px !mt-26px !w-142px !h-44px"
+						>
+							<img
+								alt="logo"
+								src="../../src/assets/sidebar/Done_round.png"
+								style="width: 1.25rem"
+								class="!ml-0px"
+							/>
+							<span class="text-left text-xl"> 建立專案 </span>
+						</Button>
+						<Button
+							@click="closeDisplayNewProject"
+							class="p-button-outlined p-button-danger !ml-32px !mt-26px !w-105px !h-44px"
+						>
+							<img
+								alt="logo"
+								src="../../src/assets/sidebar/Close_round.png"
+								style="width: 1.25rem"
+								class="!ml-0px"
+							/>
+							<span class="text-left text-xl"> 取消 </span>
+						</Button>
+					</div>
+				</Dialog>
 				<div class="flex">
 					<img
 						alt="logo"
@@ -188,6 +228,8 @@ import { ref } from "vue";
 import Dropdown from "primevue/dropdown";
 import Button from "primevue/button";
 import Divider from "primevue/divider";
+import Dialog from "primevue/dialog";
+import InputText from "primevue/inputtext";
 
 const visibleLeft = ref(true);
 const selectedProgram = ref({ program_name: "111年研究生審查" });
@@ -195,6 +237,16 @@ const programs = ref([
 	{ program_name: "111年研究生審查" },
 	{ program_name: "111年博士生審查" },
 ]);
+const displayNewProject = ref(false);
+const newProjectName = ref("");
+
+function newProject() {
+	displayNewProject.value = true;
+}
+
+function closeDisplayNewProject() {
+	displayNewProject.value = false;
+}
 </script>
 
 <style></style>
