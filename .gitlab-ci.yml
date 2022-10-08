@@ -12,6 +12,7 @@ test:
   script:
     - pnpm install
     - pnpm lint
+    - pnpm test
   cache:
     key:
       files:
