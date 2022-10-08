@@ -17,5 +17,7 @@
   "密碼":"Password",
   "下次登入記住帳號":"Remember account for next login",
   "忘記密碼":"Forget Password",
-  "登入":"Login"
+  "登入":"Login",
+  "驗證電郵":"Verify email",
+  "提交":"Submit"
 }
