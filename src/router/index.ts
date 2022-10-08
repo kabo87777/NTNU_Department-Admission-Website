@@ -29,6 +29,11 @@ export default function createRouterInstance(options: RouterInstanceOptions) {
 			name: "managerlogin",
 			component: () => import("../views/loginPage/ManagerLogin.vue"),
 		},
+		{
+			path: "/forgetpassword",
+			name: "forgetpassword",
+			component: () => import("../views/loginPage/forgetPass.vue"),
+		},
 	];
 
 	const router: Router = createRouter({
