@@ -1,5 +1,6 @@
 <template>
-	<h1 class="text-4xl text-bold tracking-widest">專案設定</h1>
+	<div class="ml-128px">
+		<h1 class="text-4xl text-bold tracking-widest">專案設定</h1>
 	<Divider class="bg-ntnuRed" />
 	<h2 class="text-2xl text-bold tracking-widest inline-block">
 		111年研究生審查
@@ -128,9 +129,11 @@
 			v-model="project_details"
 			rows="5"
 			cols="30"
-			class="w-800px h-300px !mt-30px !ml-10px"
+			class="w-950px h-320px !mt-30px !ml-10px"
 		/>
 	</div>
+	</div>
+	
 </template>
 
 <script setup lang="ts">
