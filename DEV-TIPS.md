@@ -7,6 +7,7 @@
 
 **切換/建立分支**  
 分支命名範例：
+
 ```
 feat/navbar
 docs/README
@@ -14,7 +15,7 @@ docs/README
 
 ## 提交前
 
-1. 執行 `pnpm lint` 
+1. 執行 `pnpm lint`
 2. 上一步有出現紅字的話可以透過 `pnpm lint --fix` 修復，修復後再執行一次 `pnpm lint`
 3. `pnpm lint` 沒問題就可以著手進行提交
 
@@ -23,6 +24,7 @@ docs/README
 撰寫 commit message 時須遵守 [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)
 
 範例：
+
 ```text
 docs(README): fix chown argument
 feat(navbar): Add i18n language switch
@@ -39,6 +41,7 @@ feat(navbar): Add i18n language switch
 ```
 
 常見類別：
+
 - fix
 - feat
 - BREAKING CHANGE
