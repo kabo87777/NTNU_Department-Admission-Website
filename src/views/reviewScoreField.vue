@@ -98,9 +98,9 @@ import InputText from "primevue/inputtext";
 import Button from "primevue/button";
 import SelectButton from "primevue/selectbutton";
 
+const selectStage = ref(true);
 const stage = reactive([
 	{ name: "第一階段（書面審查）" },
 	{ name: "第二階段（口試審查）" },
 ]);
-const enrollProver = ref();
 </script>
