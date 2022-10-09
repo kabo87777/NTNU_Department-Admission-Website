@@ -37,7 +37,6 @@
 			<InputText />
 		</div>
 	</div>
-	<Divider />
 	<div>
 		{{ $t("顯示欄位：基本資料") }}
 		<div>
@@ -70,7 +69,6 @@
 			{{ $t("街道地址") }}
 		</div>
 	</div>
-	<Divider />
 	<div>
 		{{ $t("顯示欄位：檢附資料") }}
 	</div>
@@ -93,22 +91,17 @@
 	</div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { reactive, ref } from "vue";
+import Checkbox from "primevue/checkbox";
+import InputText from "primevue/inputtext";
+import Button from "primevue/button";
+import SelectButton from "primevue/selectbutton";
 
-export default {
-	setup() {
-		const selectStage = ref(true);
-		const stage = reactive([
-			{ name: "第一階段（書面審查）" },
-			{ name: "第二階段（口試審查）" },
-		]);
-		const enrollProver = ref();
-		return {
-			selectStage,
-			stage,
-			enrollProver,
-		};
-	},
-};
+const selectStage = ref(true);
+const stage = reactive([
+	{ name: "第一階段（書面審查）" },
+	{ name: "第二階段（口試審查）" },
+]);
+const enrollProver = ref();
 </script>
