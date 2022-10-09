@@ -39,6 +39,5 @@ app.component("ToastService", ToastService);
 app.component("Toast", Toast);
 
 const auth = useAuthStore();
-auth.isLoggedIn = false;
 
 app.mount("#app");
