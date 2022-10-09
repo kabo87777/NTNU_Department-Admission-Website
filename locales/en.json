@@ -17,5 +17,22 @@
   "密碼": "Password",
   "下次登入記住帳號": "Remember account for next login",
   "忘記密碼": "Forget Password",
-  "登入": "Login"
+  "登入": "Login",
+  "專案設定": "Project Setting",
+  "專案狀態": "Project Status",
+  "申請端設定": "Application Setting",
+  "資訊公告": "Information Announcement",
+  "申請帳號設置": "Application Account Setting",
+  "上傳欄位設置": "Upload Fields Setting",
+  "上傳資料列表": "Upload Data List",
+  "審查端設定": "Reviewer Setting",
+  "審查評分設置": "Reviewer Grade Setting",
+  "評分資料列表": "Grade Data List",
+  "管理審查者": "Manage Reviewer",
+  "新增專案": "New Project",
+  "專案名稱": "Project Name",
+  "建立專案": "Create",
+  "取消": "Cancel",
+  "管理端帳戶": "Maneger Account",
+  "系辦主管": "Department Maneger"
 }
