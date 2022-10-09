@@ -57,8 +57,8 @@ const routes: Array<RouteRecordRaw> = [
 	},
 	{
 		path: "/reviewScoreField",
-		component: () => import("../views/reviewScoreField.vue"),
 		name: "reviewScoreField",
+		component: () => import("../views/reviewScoreField.vue"),
 	},
 ];
 
