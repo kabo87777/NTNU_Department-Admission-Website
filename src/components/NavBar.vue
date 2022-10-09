@@ -24,7 +24,7 @@
 		<div class="w-full block">
 			<Button
 				class="border-white text-white p-button-sm p-button-outlined float-right mx-5"
-				:label="$t('語言')"
+				label="i18n"
 				icon="pi pi-angle-down"
 				iconPos="right"
 				@click="toggle"
@@ -41,25 +41,40 @@ import Menu from "primevue/menu";
 import Button from "primevue/button";
 
 import { ref } from "vue";
-
-import { useI18n } from "vue-i18n";
-const { t, locale, availableLocales } = useI18n();
-
+import { useToast } from "primevue/usetoast";
+const toast = useToast();
 const menu = ref();
-
-let items = ref(
-	(availableLocales as string[]).map((loc: string) => {
-		return {
-			label: t("語言名稱", "", { locale: loc }),
-			icon: "",
-			command: () => {
-				locale.value = loc;
-				window.localStorage.setItem("lastLocale", loc);
+const items = ref([
+	{
+		label: "語言",
+		items: [
+			{
+				label: "中文",
+				icon: "",
+				command: () => {
+					toast.add({
+						severity: "success",
+						summary: "更新成功",
+						detail: "轉換成中文",
+						life: 3000,
+					});
+				},
 			},
-		};
-	})
-);
-
+			{
+				label: "English",
+				icon: "",
+				command: () => {
+					toast.add({
+						severity: "success",
+						summary: "Updated Successfully",
+						detail: "Change to English",
+						life: 3000,
+					});
+				},
+			},
+		],
+	},
+]);
 const toggle = (event: MouseEvent) => {
 	menu.value.toggle(event);
 };

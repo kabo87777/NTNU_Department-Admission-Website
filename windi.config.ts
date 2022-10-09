@@ -10,10 +10,8 @@ export default defineConfig({
 	attributify: true,
 	plugins: [AspectRatio, Filters, Forms, LineClamp, SrollSnap],
 	theme: {
-		extend: {
-			colors: {
-				ntnuRed: "#d22730",
-			},
+		colors: {
+			ntnuRed: "#d22730",
 		},
 	},
 });
