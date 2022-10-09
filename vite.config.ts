@@ -1,3 +1,5 @@
+/// <reference types="vitest" />
+
 import { defineConfig } from "vite";
 import { resolve } from "node:path";
 import WindiCSS from "vite-plugin-windicss";
@@ -26,4 +28,5 @@ export default defineConfig({
 		}),
 		Icons({ autoInstall: true }),
 	],
+	test: {},
 });

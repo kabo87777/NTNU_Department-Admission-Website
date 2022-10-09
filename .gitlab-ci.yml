@@ -12,6 +12,7 @@ test:
   script:
     - pnpm install
     - pnpm lint
+    - pnpm test
   cache:
     key:
       files:
@@ -29,7 +30,7 @@ deploy:prd:
     name: Production
     url: https://admissions-frontend-prd.onrender.com
   rules:
-    - if: $CI_COMMIT_BRANCH == "develop"
+    - if: $CI_COMMIT_BRANCH == "main"
 
 deploy:staging:
   stage: deploy
