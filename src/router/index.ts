@@ -45,6 +45,14 @@ const routes: Array<RouteRecordRaw> = [
 		component: () => import("../views/loginPage/forgetPass.vue"),
 	},
 	{
+		path: "/projectapplicationsetting",
+		name: "projectapplicationsetting",
+		component: () =>
+			import(
+				"../views/currentDunnoWhereToPlace/projectApplicationSetting.vue"
+			),
+	},
+	{
 		path: "/projectSetting",
 		name: "projectSetting",
 		component: () => import("../views/project-setting.vue"),

@@ -60,12 +60,18 @@
 					</label>
 				</div>
 				<div class="absolute ml-320px text-xs">
-					<a href="/login">
+					<router-link to="/forgetpassword">
 						<div class="text-right font-bold goldText">
 							{{ $t("忘記密碼") }}
 						</div>
-					</a>
+					</router-link>
 				</div>
+			</div>
+			<div class="ml-168px mt-40px">
+				<div
+					class="cf-turnstile"
+					data-sitekey="0x4AAAAAAAAwuJcK_C3iXAFh"
+				></div>
 			</div>
 			<div class="mt-50px ml-168px">
 				<Button class="bg-darkBlue h-60px w-420px" @click="handleLogin">
@@ -90,6 +96,15 @@ const handleCheck = () => {
 	rmbAccCheck.value = !rmbAccCheck.value;
 	console.log(rmbAccCheck.value);
 };
+
+// Cloudflare Turnstile challenge
+// What these lines do is appending a <script src> tag on the rendered HTML
+const cfTurnstile = document.createElement("script");
+cfTurnstile.setAttribute(
+	"src",
+	"https://challenges.cloudflare.com/turnstile/v0/api.js"
+);
+document.head.appendChild(cfTurnstile);
 
 const handleLogin = () => {
 	console.log("login button clicked");
