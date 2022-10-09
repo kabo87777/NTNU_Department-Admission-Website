@@ -24,7 +24,7 @@ const router = useRouter();
 const loggedin = ref(false);
 
 if (!loggedin.value) {
-	router.push("/login");
+	//router.push("/login");
 }
 
 const computeRouteTitle = (route: Ref<RouteLocationNormalized>) => {
