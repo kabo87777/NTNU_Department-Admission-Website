@@ -34,7 +34,7 @@
 				</div>
 			</div>
 			<div class="mt-50px ml-184px userLogin">
-				<router-link to="/login">
+				<router-link to="/applicantLogin">
 					<Button class="bg-darkGreen h-95px w-360px">
 						<div class="m-auto text-2xl">
 							<div>{{ $t("申請者登入") }}</div>

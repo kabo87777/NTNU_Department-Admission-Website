@@ -40,24 +40,12 @@
 import Menu from "primevue/menu";
 import Button from "primevue/button";
 
-import { ref, onMounted } from "vue";
-// import { useToast } from "primevue/usetoast";
+import { ref } from "vue";
 
 import { useI18n } from "vue-i18n";
 const { t, locale, availableLocales } = useI18n();
 
-// const toast = useToast();
 const menu = ref();
-
-// The initial locale is set to navigator.language in ../i18n.ts.
-// If navigator.language was null, vue-i18n falls back to "zh".
-//
-// This is the only component where we switch locales, so here I
-// wrote a helper function to remember user's locale selection.
-const switchLocale = (loc: string) => {
-	locale.value = loc;
-	window.localStorage.setItem("lastLocale", locale.value.toString());
-};
 
 let items = ref(
 	(availableLocales as string[]).map((loc: string) => {
@@ -65,13 +53,8 @@ let items = ref(
 			label: t("語言名稱", "", { locale: loc }),
 			icon: "",
 			command: () => {
-				switchLocale(loc);
-				// toast.add({
-				//   severity: "success",
-				//   summary: "更新成功",
-				//   detail: "轉換成中文",
-				//   life: 3000,
-				// });
+				locale.value = loc;
+				window.localStorage.setItem("lastLocale", loc);
 			},
 		};
 	})
@@ -80,12 +63,6 @@ let items = ref(
 const toggle = (event: MouseEvent) => {
 	menu.value.toggle(event);
 };
-
-onMounted(() => {
-	switchLocale(
-		window.localStorage.getItem("lastLocale") || locale.value.toString()
-	);
-});
 </script>
 
 <style scoped></style>
