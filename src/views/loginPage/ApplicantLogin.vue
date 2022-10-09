@@ -55,9 +55,11 @@
 							}}</label>
 						</span>
 						<div class="float-right">
-							<a href="" class="text-base text-blue-300">{{
-								$t("忘記密碼")
-							}}</a>
+							<router-link to="/forgetpassword">
+								<div class="text-right font-bold goldText">
+									{{ $t("忘記密碼") }}
+								</div>
+							</router-link>
 						</div>
 					</div>
 
