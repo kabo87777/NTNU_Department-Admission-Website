@@ -27,7 +27,7 @@
 						style="width: 1.5rem"
 					/>
 					<span class="text-left tracking-3px ml-3 font-bold text-xl">
-						專案設定
+						{{ $t("專案設定") }}
 					</span>
 				</Button>
 			</router-link>
@@ -41,7 +41,7 @@
 					style="width: 1.5rem"
 				/>
 				<span class="text-left tracking-3px ml-3 font-bold text-xl">
-					專案狀態
+					{{ $t("專案狀態") }}
 				</span>
 			</Button>
 
@@ -49,7 +49,7 @@
 				align="left"
 				class="text-xs text-ntnuRed !mt-24px text-base"
 			>
-				<b>申請端設定</b>
+				<b>{{ $t("申請端設定") }}</b>
 			</Divider>
 
 			<Button class="p-button-secondary p-button-text !w-336px !h-48px">
@@ -59,7 +59,7 @@
 					style="width: 1.5rem"
 				/>
 				<span class="text-left tracking-3px ml-3 font-bold text-xl">
-					資訊公告
+					{{ $t("資訊公告") }}
 				</span>
 			</Button>
 			<Button
@@ -71,7 +71,7 @@
 					style="width: 1.5rem"
 				/>
 				<span class="text-left tracking-3px ml-3 font-bold text-xl">
-					申請帳號設置
+					{{ $t("申請帳號設置") }}
 				</span>
 			</Button>
 			<Button
@@ -83,7 +83,7 @@
 					style="width: 1.5rem"
 				/>
 				<span class="text-left tracking-3px ml-3 font-bold text-xl">
-					上傳欄位設置
+					{{ $t("上傳欄位設置") }}
 				</span>
 			</Button>
 			<Button
@@ -95,12 +95,12 @@
 					style="width: 1.5rem"
 				/>
 				<span class="text-left tracking-3px ml-3 font-bold text-xl">
-					上傳資料列表
+					{{ $t("上傳資料列表") }}
 				</span>
 			</Button>
 
 			<Divider align="left" class="text-xs text-ntnuRed text-base">
-				<b>審查端設定</b>
+				<b>{{ $t("審查端設定") }}</b>
 			</Divider>
 
 			<Button class="p-button-secondary p-button-text !w-336px !h-48px">
@@ -110,7 +110,7 @@
 					style="width: 1.5rem"
 				/>
 				<span class="text-left tracking-3px ml-3 font-bold text-xl">
-					審查評分設置
+					{{ $t("審查評分設置") }}
 				</span>
 			</Button>
 			<Button
@@ -122,7 +122,7 @@
 					style="width: 1.5rem"
 				/>
 				<span class="text-left tracking-3px ml-3 font-bold text-xl">
-					評分資料列表
+					{{ $t("評分資料列表") }}
 				</span>
 			</Button>
 			<div class="bg-gray-200 bg-opacity-50 !w-400 h-203px !mt-22px">
@@ -135,7 +135,7 @@
 						style="width: 1.25rem"
 					/>
 					<h1 class="tracking-1px text-xl text-gray-900">
-						管理審查者
+						{{ $t("管理審查者") }}
 					</h1>
 				</Button>
 				<Button
@@ -148,7 +148,9 @@
 						style="width: 1.25rem"
 						class="!ml-0px"
 					/>
-					<h1 class="tracking-1px text-xl text-gray-900">新增專案</h1>
+					<h1 class="tracking-1px text-xl text-gray-900">
+						{{ $t("新增專案") }}
+					</h1>
 				</Button>
 				<Dialog
 					header="新增專案"
@@ -156,7 +158,9 @@
 					class="w-484px h-282px"
 				>
 					<divider class="!mt-0px" />
-					<p class="mt-24px text-base tracking-2px">專案名稱</p>
+					<p class="mt-24px text-base tracking-2px">
+						{{ $t("專案名稱") }}
+					</p>
 					<InputText
 						type="text"
 						v-model="newProjectName"
@@ -173,7 +177,9 @@
 								style="width: 1.25rem"
 								class="!ml-0px"
 							/>
-							<span class="text-left text-xl"> 建立專案 </span>
+							<span class="text-left text-xl">{{
+								$t("建立專案")
+							}}</span>
 						</Button>
 						<Button
 							@click="closeDisplayNewProject"
@@ -185,7 +191,9 @@
 								style="width: 1.25rem"
 								class="!ml-0px"
 							/>
-							<span class="text-left text-xl"> 取消 </span>
+							<span class="text-left text-xl">{{
+								$t("取消")
+							}}</span>
 						</Button>
 					</div>
 				</Dialog>
@@ -193,22 +201,24 @@
 					<img
 						alt="logo"
 						src="../../src/assets/sidebar/User_circle.png"
-						class="h-40px w-40px ml-24px mt-56px"
+						class="h-40px w-40px ml-24px mt-50px"
 					/>
-					<div>
-						<div class="text-xs ml-16px mt-56px">管理端帳戶</div>
+					<div class="w-100px h-50px">
+						<div class="text-xs ml-16px mt-50px">
+							{{ $t("管理端帳戶") }}
+						</div>
 						<div class="text-xl ml-16px tracking-wider">
-							系辦主管
+							{{ $t("系辦主管") }}
 						</div>
 					</div>
-					<Button class="p-button-text !mt-56px !ml-50px">
+					<Button class="p-button-text !mt-46px !ml-50px">
 						<img
 							alt="logo"
 							src="../../src/assets/sidebar/Setting_alt_line.png"
 							class="w-28px h-28px"
 						/>
 					</Button>
-					<Button class="p-button-text !mt-56px">
+					<Button class="p-button-text !mt-46px">
 						<img
 							alt="logo"
 							src="../../src/assets/sidebar/Sign_out_circle.png"
