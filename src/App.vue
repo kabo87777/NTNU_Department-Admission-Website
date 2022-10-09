@@ -1,7 +1,7 @@
 <template>
-	<NavBar v-if="loggedin" />
-	<SideBar v-if="loggedin" />
-	<div v-if="loggedin" class="ml-400px mr-80px mt-62px">
+	<NavBar v-if="auth.isLoggedIn" />
+	<SideBar v-if="auth.isLoggedIn" />
+	<div v-if="auth.isLoggedIn" class="ml-400px mr-80px mt-62px">
 		<router-view />
 	</div>
 	<div v-else>
@@ -16,14 +16,15 @@ import SideBar from "./components/SideBar.vue";
 import { Ref, ref, watch } from "vue";
 import { RouteLocationNormalized, useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
+import { useAuthStore } from "./stores/auth";
 
 const { t, te, locale } = useI18n();
 
 const router = useRouter();
 
-const loggedin = ref(false);
+const auth = useAuthStore();
 
-if (!loggedin.value) {
+if (!auth.isLoggedIn) {
 	router.push("/login");
 }
 
