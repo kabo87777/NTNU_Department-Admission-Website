@@ -102,17 +102,22 @@
 			<Divider align="left" class="text-xs text-ntnuRed text-base">
 				<b>{{ $t("審查端設定") }}</b>
 			</Divider>
-
-			<Button class="p-button-secondary p-button-text !w-336px !h-48px">
-				<img
-					alt="logo"
-					src="../../src/assets/sidebar/Eye_light.png"
-					style="width: 1.5rem"
-				/>
-				<span class="text-left tracking-3px ml-3 font-bold text-xl">
-					{{ $t("審查評分設置") }}
-				</span>
-			</Button>
+			<router-link to="/reviewScoreField" custom v-slot="{ navigate }">
+				<Button
+					class="p-button-secondary p-button-text !w-336px !h-48px"
+					@click="navigate"
+					role="link"
+				>
+					<img
+						alt="logo"
+						src="../../src/assets/sidebar/Eye_light.png"
+						style="width: 1.5rem"
+					/>
+					<span class="text-left tracking-3px ml-3 font-bold text-xl">
+						{{ $t("審查評分設置") }}
+					</span>
+				</Button>
+			</router-link>
 			<Button
 				class="p-button-secondary p-button-text !mt-24px !w-336px !h-48px"
 			>
