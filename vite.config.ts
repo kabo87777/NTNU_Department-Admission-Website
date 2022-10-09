@@ -11,44 +11,44 @@ import vueI18n from "@intlify/vite-plugin-vue-i18n";
 import branch from "git-branch";
 
 switch (branch.sync()) {
-	// production
-	case "master":
-	case "main":
-		process.env.VITE_ADMISSIONS_API_ENDPOINT =
-			"https://api.admissions.birkhoff.me";
-		break;
+  // production
+  case "master":
+  case "main":
+    process.env.VITE_ADMISSIONS_API_ENDPOINT =
+      "https://api.admissions.birkhoff.me";
+    break;
 
-	// staging
-	case "develop":
-		process.env.VITE_ADMISSIONS_API_ENDPOINT =
-			"https://admissions-backend-staging.onrender.com";
-		break;
+  // staging
+  case "develop":
+    process.env.VITE_ADMISSIONS_API_ENDPOINT =
+      "https://admissions-backend-staging.onrender.com";
+    break;
 
-	// mr preview
-	default:
-		process.env.VITE_ADMISSIONS_API_ENDPOINT =
-			"https://admissions-backend-staging.onrender.com";
-		break;
+  // mr preview
+  default:
+    process.env.VITE_ADMISSIONS_API_ENDPOINT =
+      "https://admissions-backend-staging.onrender.com";
+    break;
 }
 
 // https://vitejs.dev/config/
 export default defineConfig({
-	plugins: [
-		vue({
-			include: [/\.vue$/],
-		}),
-		vueI18n({
-			include: resolve(__dirname, "./locales/**"),
-		}),
-		WindiCSS(),
-		ViteComponents({
-			resolvers: [
-				IconsResolver({
-					prefix: "i",
-				}),
-			],
-		}),
-		Icons({ autoInstall: true }),
-	],
-	test: {},
+  plugins: [
+    vue({
+      include: [/\.vue$/],
+    }),
+    vueI18n({
+      include: resolve(__dirname, "./locales/**"),
+    }),
+    WindiCSS(),
+    ViteComponents({
+      resolvers: [
+        IconsResolver({
+          prefix: "i",
+        }),
+      ],
+    }),
+    Icons({ autoInstall: true }),
+  ],
+  test: {},
 });

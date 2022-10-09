@@ -50,6 +50,11 @@ const routes: Array<RouteRecordRaw> = [
 		component: () =>
 			import("../views/home/project-application-setting.vue"),
 	},
+	{
+		path: "/projectSetting",
+		name: "projectSetting",
+		component: () => import("../views/project-setting.vue"),
+	},
 ];
 
 export const router: Router = createRouter({
