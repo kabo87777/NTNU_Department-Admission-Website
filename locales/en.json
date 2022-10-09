@@ -34,5 +34,18 @@
   "建立專案": "Create",
   "取消": "Cancel",
   "管理端帳戶": "Maneger Account",
-  "系辦主管": "Department Maneger"
+  "系辦主管": "Department Maneger",
+  "111年研究生審查": "2022 Postgraduate Review",
+  "保存": "Save",
+  "刪除": "Delete",
+  "新增到專案": "Created",
+  "專案名稱 (修改)": "Project Name (Edit)",
+  "屬性": "Category",
+  "申請端開放時間/日期": "Application Open Time/Date",
+  "申請端關閉時間/日期": "Application Close Time/Date",
+  "審查端第一階段開放時間/日期": "Reviewer Phase 1 Open Time/Date",
+  "審查端第一階段關閉時間/日期": "Reviewer Phase 1 Close Time/Date",
+  "審查端第二階段開放時間/日期": "Reviewer Phase 2 Open Time/Date",
+  "審查端第二階段關閉時間/日期": "Reviewer Phase 2 Close Time/Date",
+  "專案詳細": "Project Detail"
 }

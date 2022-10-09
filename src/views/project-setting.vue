@@ -1,9 +1,9 @@
 <template>
 	<div class="ml-128px">
-		<h1 class="text-4xl text-bold tracking-widest">專案設定</h1>
+		<h1 class="text-4xl text-bold tracking-widest">{{ $t("專案設定") }}</h1>
 		<Divider class="bg-ntnuRed" />
 		<h2 class="text-2xl text-bold tracking-widest inline-block">
-			111年研究生審查
+			{{ $t("111年研究生審查") }}
 		</h2>
 		<Button
 			class="w-100px h-40px !ml-20px p-button-outlined p-button-success"
@@ -14,7 +14,7 @@
 				style="width: 1.5rem"
 				class="fill-green-500"
 			/>
-			<span class="tracking-1px"> 保存 </span>
+			<span class="tracking-1px">{{ $t("保存") }}</span>
 		</Button>
 		<Button
 			class="w-100px h-40px !ml-20px p-button-outlined p-button-danger"
@@ -25,19 +25,23 @@
 				style="width: 1.5rem"
 				class="fill-green-500"
 			/>
-			<span class="tracking-1px"> 刪除 </span>
+			<span class="tracking-1px">{{ $t("刪除") }}</span>
 		</Button>
 		<h3 class="text-xs tracking-widest text-gray-500">
-			2022/09/15 · 新增到專案
+			2022/09/15 · {{ $t("新增到專案") }}
 		</h3>
-		<h5 class="text-base tracking-widest mt-30px">專案名稱 (修改) :</h5>
+		<h5 class="text-base tracking-widest mt-30px">
+			{{ $t("專案名稱 (修改)") }} :
+		</h5>
 		<InputText
 			type="text"
 			v-model="profect_name"
 			class="w-960px h-44px mt-10px"
 		/>
 		<div>
-			<h5 class="text-base tracking-widest mt-30px">屬性 :</h5>
+			<h5 class="text-base tracking-widest mt-30px">
+				{{ $t("屬性") }} :
+			</h5>
 			<Dropdown
 				v-model="selected_type"
 				:options="types"
@@ -48,7 +52,7 @@
 		</div>
 		<div class="inline-block">
 			<h5 class="text-base tracking-widest mt-30px">
-				申請端開放時間/日期 :
+				{{ $t("申請端開放時間/日期") }} :
 			</h5>
 			<Calendar
 				inputId="icon"
@@ -60,7 +64,7 @@
 		</div>
 		<div class="inline-block ml-100px">
 			<h5 class="text-base tracking-widest mt-30px">
-				申請端關閉時間/日期 :
+				{{ $t("申請端關閉時間/日期") }} :
 			</h5>
 			<Calendar
 				inputId="icon"
@@ -73,7 +77,7 @@
 		<br />
 		<div class="inline-block">
 			<h5 class="text-base tracking-widest mt-30px">
-				審查端第一階段開放時間/日期 :
+				{{ $t("審查端第一階段開放時間/日期") }} :
 			</h5>
 			<Calendar
 				inputId="icon"
@@ -85,7 +89,7 @@
 		</div>
 		<div class="inline-block ml-100px">
 			<h5 class="text-base tracking-widest mt-30px">
-				審查端第一階段關閉時間/日期 :
+				{{ $t("審查端第一階段關閉時間/日期") }} :
 			</h5>
 			<Calendar
 				inputId="icon"
@@ -98,7 +102,7 @@
 		<br />
 		<div class="inline-block">
 			<h5 class="text-base tracking-widest mt-30px">
-				審查端第二階段開放時間/日期 :
+				{{ $t("審查端第二階段開放時間/日期") }} :
 			</h5>
 			<Calendar
 				inputId="icon"
@@ -110,7 +114,7 @@
 		</div>
 		<div class="inline-block ml-100px">
 			<h5 class="text-base tracking-widest mt-30px">
-				審查端第二階段關閉時間/日期 :
+				{{ $t("審查端第二階段關閉時間/日期") }} :
 			</h5>
 			<Calendar
 				inputId="icon"
@@ -131,7 +135,7 @@
 			<h5
 				class="text-base tracking-widest mt-30px ml-10px align-top inline-block"
 			>
-				專案詳細 :
+				{{ $t("專案詳細") }} :
 			</h5>
 			<Textarea
 				v-model="project_details"
