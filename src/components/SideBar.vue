@@ -103,7 +103,11 @@
 				<b>{{ $t("審查端設定") }}</b>
 			</Divider>
 			<router-link to="/reviewScoreField" custom v-slot="{ navigate }">
-				<Button class="p-button-secondary p-button-text !w-336px !h-48px" @click="navigate" role="link">
+				<Button
+					class="p-button-secondary p-button-text !w-336px !h-48px"
+					@click="navigate"
+					role="link"
+				>
 					<img
 						alt="logo"
 						src="../../src/assets/sidebar/Eye_light.png"

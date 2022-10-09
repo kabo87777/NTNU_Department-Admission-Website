@@ -19,6 +19,7 @@ import ToastService from "primevue/toastservice";
 import Checkbox from "primevue/checkbox";
 import InputText from "primevue/inputtext";
 import Button from "primevue/button";
+import SelectButton from "primevue/selectbutton";
 
 import App from "./App.vue";
 import { router } from "./router/index";
@@ -43,6 +44,7 @@ app.component("Toast", Toast);
 app.component("Checkbox", Checkbox);
 app.component("InputText", InputText);
 app.component("Button", Button);
+app.component("SelectButton", SelectButton);
 
 const auth = useAuthStore();
 auth.isLoggedIn = false;
