@@ -1,4 +1,6 @@
 import { createApp } from "vue";
+import { createPinia } from "pinia";
+import { useAuthStore } from "./stores/auth";
 
 import "virtual:windi.css";
 import "./styles/style.css";
@@ -6,7 +8,6 @@ import "./styles/style.css";
 // Import Style
 import "primevue/resources/themes/lara-light-blue/theme.css";
 import "primevue/resources/primevue.min.css";
-import "primeflex/primeflex.css";
 import "primeicons/primeicons.css";
 
 // Import via Module
@@ -17,26 +18,27 @@ import Toast from "primevue/toast";
 import ToastService from "primevue/toastservice";
 
 import App from "./App.vue";
-import createRouterInstance from "./router/index";
+import { router } from "./router/index";
 
-import { i18n, computePageTitle } from "./i18n";
+import { i18n } from "./i18n";
 
-// app component
+// console.log(import.meta.env.VITE_ADMISSIONS_API_ENDPOINT);
+
+const pinia = createPinia();
 const app = createApp(App);
+
+app.use(pinia);
+app.use(i18n);
+app.use(router);
+app.use(PrimeVue);
+app.use(ToastService);
+
 app.component("Menubar", Menubar);
 app.component("Divider", Divider);
 app.component("ToastService", ToastService);
 app.component("Toast", Toast);
 
-// API
-app.use(i18n);
-
-app.use(
-	createRouterInstance({
-		computePageTitle,
-	})
-);
-app.use(PrimeVue);
-app.use(ToastService);
+const auth = useAuthStore();
+auth.isLoggedIn = false;
 
 app.mount("#app");
