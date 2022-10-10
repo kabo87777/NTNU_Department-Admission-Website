@@ -1,6 +1,6 @@
 <template>
 	<div class="pt-62px pl-128px pr-128px">
-		<div class="font-medium text-32px">申請上傳欄位</div>
+		<div class="font-medium text-32px">{{ $t("申請上傳欄位") }}</div>
 		<div class="bigRedDivider"></div>
 		<SelectButton
 			class="mt-8px"
@@ -8,7 +8,153 @@
 			:options="tabOptions"
 			aria-labelledby="single"
 		/>
-		<div v-if="currentTab === '基本資料欄位'">wait for it</div>
+		<div v-if="currentTab === '基本資料欄位'">
+			<div class="mt-16px">
+				<div>
+					<Checkbox
+						inputId="nameInfo"
+						v-model="nameInfo"
+						:binary="true"
+					/>
+					<label
+						for="nameInfo"
+						class="ml-8px text-24px font-medium"
+						>{{ $t("姓名資訊") }}</label
+					>
+				</div>
+				<div class="flex mt-40px">
+					<div class="w-1/3 pl-16px">{{ $t("※ 稱謂/後綴") }}</div>
+					<div class="w-1/3 pl-16px">{{ $t("※ 中文姓氏/名字") }}</div>
+					<div class="w-1/3 pl-16px">
+						{{ $t("※ 英文姓氏/中間名/名字") }}
+					</div>
+				</div>
+				<div class="flex relative mt-40px">
+					<div class="smallRedDivider"></div>
+					<div class="smallRedDivider absolute right-0"></div>
+				</div>
+			</div>
+			<div class="mt-16px">
+				<div>
+					<Checkbox
+						inputId="enrollment"
+						v-model="enrollment"
+						:binary="true"
+					/>
+					<label
+						for="enrollment"
+						class="ml-8px text-24px font-medium"
+						>{{ $t("入學身分") }}</label
+					>
+				</div>
+				<div class="flex mt-40px">
+					<div class="w-1/2 pl-16px">{{ $t("※ 碩士生") }}</div>
+					<div class="w-1/2 pl-16px">{{ $t("※ 博士生") }}</div>
+				</div>
+				<div class="flex relative mt-40px">
+					<div class="smallRedDivider"></div>
+					<div class="smallRedDivider absolute right-0"></div>
+				</div>
+			</div>
+			<div class="mt-16px">
+				<div>
+					<Checkbox
+						inputId="permanentAd"
+						v-model="permanentAd"
+						:binary="true"
+					/>
+					<label
+						for="permanentAd"
+						class="ml-8px text-24px font-medium"
+						>{{ $t("戶籍資訊") }}</label
+					>
+				</div>
+				<div class="flex mt-40px">
+					<div class="w-1/3 pl-16px">{{ $t("※ 國家/州") }}</div>
+					<div class="w-1/3 pl-16px">{{ $t("※ 城市/郵遞區號") }}</div>
+					<div class="w-1/3 pl-16px">{{ $t("※ 街道地址") }}</div>
+				</div>
+				<div class="flex relative mt-40px">
+					<div class="smallRedDivider"></div>
+					<div class="smallRedDivider absolute right-0"></div>
+				</div>
+			</div>
+			<div class="mt-16px">
+				<div>
+					<Checkbox
+						inputId="mailingAd"
+						v-model="mailingAd"
+						:binary="true"
+					/>
+					<label
+						for="mailingAd"
+						class="ml-8px text-24px font-medium"
+						>{{ $t("現居地址") }}</label
+					>
+				</div>
+				<div class="flex mt-40px">
+					<div class="w-1/3 pl-16px">{{ $t("※ 國家/州") }}</div>
+					<div class="w-1/3 pl-16px">{{ $t("※ 城市/郵遞區號") }}</div>
+					<div class="w-1/3 pl-16px">{{ $t("※ 街道地址") }}</div>
+				</div>
+				<div class="flex relative mt-40px">
+					<div class="smallRedDivider"></div>
+					<div class="smallRedDivider absolute right-0"></div>
+				</div>
+			</div>
+			<div class="mt-16px">
+				<div>
+					<Checkbox
+						inputId="basicIdentityInfo"
+						v-model="basicIdentityInfo"
+						:binary="true"
+					/>
+					<label
+						for="basicIdentityInfo"
+						class="ml-8px text-24px font-medium"
+						>{{ $t("身份資料") }}</label
+					>
+				</div>
+				<div class="flex mt-40px">
+					<div class="w-1/4 pl-16px">
+						{{ $t("※ 法定性別/ 性別認同") }}
+					</div>
+					<div class="w-1/4 pl-16px">{{ $t("※ 出生國") }}</div>
+					<div class="w-1/4 pl-16px">{{ $t("※ 主要國籍") }}</div>
+					<div class="w-1/4 pl-16px">{{ $t("※ 出生日期") }}</div>
+				</div>
+				<div class="flex relative mt-40px">
+					<div class="smallRedDivider"></div>
+					<div class="smallRedDivider absolute right-0"></div>
+				</div>
+			</div>
+			<div class="mt-16px">
+				<div>
+					<Checkbox
+						inputId="contactInfo"
+						v-model="contactInfo"
+						:binary="true"
+					/>
+					<label
+						for="contactInfo"
+						class="ml-8px text-24px font-medium"
+						>{{ $t("聯絡資料") }}</label
+					>
+				</div>
+				<div class="flex mt-40px">
+					<div class="w-1/4 pl-16px">{{ $t("※ 電子郵件") }}</div>
+					<div class="w-1/4 pl-16px">{{ $t("※ 電話(主要)") }}</div>
+					<div class="w-1/4 pl-16px">{{ $t("※ 電話(次要)") }}</div>
+					<div class="w-1/4 pl-16px">
+						{{ $t("※ 電話(行動電話)") }}
+					</div>
+				</div>
+				<div class="flex relative mt-40px">
+					<div class="smallRedDivider"></div>
+					<div class="smallRedDivider absolute right-0"></div>
+				</div>
+			</div>
+		</div>
 		<div v-else-if="currentTab === '檢附資料欄位'">
 			<div class="mt-16px">
 				<div>
@@ -17,14 +163,18 @@
 						v-model="schoolExpChecked"
 						:binary="true"
 					/>
-					<label for="schoolExp" class="ml-8px text-24px font-medium"
-						>就學經歷</label
+					<label
+						for="schoolExp"
+						class="ml-8px text-24px font-medium"
+						>{{ $t("就學經歷") }}</label
 					>
 				</div>
 				<div class="flex mt-40px">
-					<div class="w-1/3 pl-16px">※ 稱謂/後綴</div>
-					<div class="w-1/3 pl-16px">※ 中文姓氏/名字</div>
-					<div class="w-1/3 pl-16px">※ 英文姓氏/中間名/名字</div>
+					<div class="w-1/3 pl-16px">{{ $t("※ 稱謂/後綴") }}</div>
+					<div class="w-1/3 pl-16px">{{ $t("※ 中文姓氏/名字") }}</div>
+					<div class="w-1/3 pl-16px">
+						{{ $t("※ 英文姓氏/中間名/名字") }}
+					</div>
 				</div>
 				<div class="flex relative mt-40px">
 					<div class="smallRedDivider"></div>
@@ -38,14 +188,14 @@
 						v-model="scoreChecked"
 						:binary="true"
 					/>
-					<label for="score" class="ml-8px text-24px font-medium"
-						>考試與檢定分數</label
-					>
+					<label for="score" class="ml-8px text-24px font-medium">{{
+						$t("考試與檢定分數")
+					}}</label>
 				</div>
 				<div class="flex mt-40px">
-					<div class="w-1/3 pl-16px">※ 國家/州</div>
-					<div class="w-1/3 pl-16px">※ 城市/郵遞區號</div>
-					<div class="w-1/3 pl-16px">※ 街道地址</div>
+					<div class="w-1/3 pl-16px">{{ $t("※ 國家/州") }}</div>
+					<div class="w-1/3 pl-16px">{{ $t("※ 城市/郵遞區號") }}</div>
+					<div class="w-1/3 pl-16px">{{ $t("※ 街道地址") }}</div>
 				</div>
 				<div class="flex relative mt-40px">
 					<div class="smallRedDivider"></div>
@@ -59,14 +209,14 @@
 						v-model="otherChecked"
 						:binary="true"
 					/>
-					<label for="other" class="ml-8px text-24px font-medium"
-						>其他有利於審查資料</label
-					>
+					<label for="other" class="ml-8px text-24px font-medium">{{
+						$t("其他有利於審查資料")
+					}}</label>
 				</div>
 				<div class="flex mt-40px">
-					<div class="w-1/3 pl-16px">※ 國家/州</div>
-					<div class="w-1/3 pl-16px">※ 城市/郵遞區號</div>
-					<div class="w-1/3 pl-16px">※ 街道地址</div>
+					<div class="w-1/3 pl-16px">{{ $t("※ 國家/州") }}</div>
+					<div class="w-1/3 pl-16px">{{ $t("※ 城市/郵遞區號") }}</div>
+					<div class="w-1/3 pl-16px">{{ $t("※ 街道地址") }}</div>
 				</div>
 				<div class="flex relative mt-40px">
 					<div class="smallRedDivider"></div>
@@ -80,14 +230,18 @@
 						v-model="identityChecked"
 						:binary="true"
 					/>
-					<label for="identity" class="ml-8px text-24px font-medium"
-						>身份資料</label
+					<label
+						for="identity"
+						class="ml-8px text-24px font-medium"
+						>{{ $t("身份資料") }}</label
 					>
 				</div>
 				<div class="flex mt-40px">
-					<div class="w-1/3 pl-16px">※ 法定性別/ 性別認同</div>
-					<div class="w-1/3 pl-16px">※ 城市/郵遞區號</div>
-					<div class="w-1/3 pl-16px">※ 街道地址</div>
+					<div class="w-1/3 pl-16px">
+						{{ $t("※ 法定性別/ 性別認同") }}
+					</div>
+					<div class="w-1/3 pl-16px">{{ $t("※ 城市/郵遞區號") }}</div>
+					<div class="w-1/3 pl-16px">{{ $t("※ 街道地址") }}</div>
 				</div>
 			</div>
 		</div>
@@ -128,4 +282,10 @@ const schoolExpChecked = ref(false);
 const scoreChecked = ref(false);
 const otherChecked = ref(false);
 const identityChecked = ref(false);
+const nameInfo = ref(false);
+const enrollment = ref(false);
+const permanentAd = ref(false);
+const mailingAd = ref(false);
+const basicIdentityInfo = ref(false);
+const contactInfo = ref(false);
 </script>
