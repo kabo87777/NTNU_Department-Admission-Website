@@ -12,13 +12,13 @@
 	>
 		<img
 			alt="logo"
-			src="../assets/NTNU_LOGO.png"
+			src="/assets/NTNU_LOGO.png"
 			class="ml-4 w-178px h-32px"
 		/>
 		<nav class="w-0 h-30px border-1 mx-1 border-white"></nav>
 		<img
 			alt="logo2"
-			src="../assets/CSIE.png"
+			src="/assets/CSIE.png"
 			class="items-end px-2 gap-7px w-438px h-20px"
 		/>
 		<div class="w-full block">
