@@ -17,6 +17,7 @@ import projectSetting from "@/views/admission/manager/project-setting.vue";
 import firstloginchangepassword from "@/views/admission/FirstSigninChangePass.vue";
 import reviewScoreField from "@/views/reviewScoreField.vue";
 import resetpassword from "@/views/admission/ResetPassword.vue";
+import ResetPasswordEmailSent from "@/views/admission/ResetPasswordEmailSent.vue";
 
 const routes: Array<RouteRecordRaw> = [
 	// Choose recruitment / admission
@@ -51,6 +52,11 @@ const routes: Array<RouteRecordRaw> = [
 				path: "admission/manager/resetpassword",
 				name: "resetpassword",
 				component: resetpassword,
+			},
+			{
+				path: "admission/manager/resetpassword/emailsent",
+				name: "ResetPasswordEmailSent",
+				component: ResetPasswordEmailSent,
 			},
 			// {
 			// 	path: "firstloginchangepassword",
