@@ -33,12 +33,18 @@
 			<div class="mt-4">
 				<Checkbox v-model="rememberMe" />
 				<label for="" class="ml-1">{{ $t("記住我") }}</label>
+<<<<<<< HEAD
 				<router-link
 					:to="forgetPwdLink"
 					class="float-right text-blue-500"
 				>
 					{{ $t("忘記密碼") }}
 				</router-link>
+=======
+				<a href="" class="float-right text-blue-500">{{
+					$t("忘記密碼")
+				}}</a>
+>>>>>>> develop
 			</div>
 
 			<div class="mt-5">
@@ -50,12 +56,17 @@
 </template>
 
 <script setup lang="ts">
+<<<<<<< HEAD
 import { computed, ref, useSlots } from "vue";
+=======
+import { ref } from "vue";
+>>>>>>> develop
 import InputText from "primevue/inputtext";
 import Checkbox from "primevue/checkbox";
 import Button from "primevue/button";
 import Turnstile from "@/components/Turnstile.vue";
 
+<<<<<<< HEAD
 const props = defineProps<{
 	role: "applicant" | "manager";
 }>();
@@ -78,4 +89,11 @@ const vue_slots = useSlots();
 const hasSlot = (name: string) => {
 	return !!vue_slots[name];
 };
+=======
+defineProps<{
+	title?: string;
+}>();
+
+const rememberMe = ref(false);
+>>>>>>> develop
 </script>

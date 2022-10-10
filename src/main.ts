@@ -1,6 +1,5 @@
 import { createApp } from "vue";
 import { createPinia } from "pinia";
-import { useAuthStore } from "./stores/auth";
 
 import "virtual:windi.css";
 import "./styles/style.css";
@@ -22,8 +21,6 @@ import { router } from "./router/index";
 
 import { i18n } from "./i18n";
 
-// console.log(import.meta.env.VITE_ADMISSIONS_API_ENDPOINT);
-
 const pinia = createPinia();
 const app = createApp(App);
 
@@ -37,7 +34,5 @@ app.component("Menubar", Menubar);
 app.component("Divider", Divider);
 app.component("ToastService", ToastService);
 app.component("Toast", Toast);
-
-const auth = useAuthStore();
 
 app.mount("#app");
