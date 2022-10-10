@@ -115,7 +115,7 @@
 </template>
 
 <script setup lang="ts">
-import "../../styles/customize.css";
+import "@/styles/customize.css";
 import "primeicons/primeicons.css";
 import SelectButton from "primevue/selectbutton";
 import Checkbox from "primevue/checkbox";

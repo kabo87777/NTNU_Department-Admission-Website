@@ -1,16 +1,13 @@
 <template>
 	<div class="grid grid-cols-2 gap-15px">
 		<div>
-			<img
-				src="./../../assets/login-page/Login-img.png"
-				class="h-screen"
-			/>
+			<img src="/assets/login-page/Login-img.png" class="h-screen" />
 		</div>
 		<div class="m-auto">
 			<div class="flex m-auto h-15">
 				<div>
 					<img
-						src="./../../assets/login-page/NTNU-logo-B1.png"
+						src="/assets/login-page/NTNU-logo-B1.png"
 						class="h-15"
 					/>
 				</div>

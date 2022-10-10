@@ -1,16 +1,13 @@
 <template>
 	<div class="grid grid-cols-2 gap-15px">
 		<div>
-			<img
-				src="./../../assets/login-page/Login-img.png"
-				class="h-screen"
-			/>
+			<img src="/assets/login-page/Login-img.png" class="h-screen" />
 		</div>
 		<div class="m-auto">
 			<div class="flex m-auto h-15">
 				<div>
 					<img
-						src="./../../assets/login-page/NTNU-logo-B1.png"
+						src="/assets/login-page/NTNU-logo-B1.png"
 						class="h-15"
 					/>
 				</div>
@@ -60,7 +57,7 @@
 					</label>
 				</div>
 				<div class="absolute ml-320px text-xs">
-					<router-link to="/forgetpassword">
+					<router-link to="/admission/manager/forgetpassword">
 						<div class="text-right font-bold goldText">
 							{{ $t("忘記密碼") }}
 						</div>
@@ -68,10 +65,7 @@
 				</div>
 			</div>
 			<div class="ml-168px mt-40px">
-				<div
-					class="cf-turnstile"
-					data-sitekey="0x4AAAAAAAAwuJcK_C3iXAFh"
-				></div>
+				<Turnstile ref="turnstileToken" />
 			</div>
 			<div class="mt-50px ml-168px">
 				<Button class="bg-darkBlue h-60px w-420px" @click="handleLogin">
@@ -85,10 +79,26 @@
 </template>
 
 <script setup lang="ts">
+import type { AuthStoreState } from "@/stores/auth";
+
 import InputText from "primevue/inputtext";
 import Checkbox from "primevue/checkbox";
 import Button from "primevue/button";
-import { ref } from "vue";
+import { ref, watch } from "vue";
+import { useRouter } from "vue-router";
+
+import { useAuthStore } from "@/stores/auth";
+import Turnstile from "@/components/Turnstile.vue";
+
+const turnstileToken = ref(null);
+watch(turnstileToken, (newToken, prevToken) => {
+	console.log("watch new token", prevToken, newToken);
+});
+
+const router = useRouter();
+
+// TODO: Separate stores for manager/applicant
+const auth: AuthStoreState = useAuthStore();
 
 const rmbAccCheck = ref(false);
 
@@ -97,17 +107,12 @@ const handleCheck = () => {
 	console.log(rmbAccCheck.value);
 };
 
-// Cloudflare Turnstile challenge
-// What these lines do is appending a <script src> tag on the rendered HTML
-const cfTurnstile = document.createElement("script");
-cfTurnstile.setAttribute(
-	"src",
-	"https://challenges.cloudflare.com/turnstile/v0/api.js"
-);
-document.head.appendChild(cfTurnstile);
-
 const handleLogin = () => {
 	console.log("login button clicked");
+
+	auth.credentials.expiry = Infinity;
+
+	router.push("/admission/manager");
 };
 </script>
 
