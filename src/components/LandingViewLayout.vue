@@ -1,5 +1,5 @@
 <template>
-    <div class="grid grid-cols-9 gap-x-4">
+	<div class="grid grid-cols-9 gap-x-4">
 		<div class="col-span-5">
 			<img
 				src="/assets/login-page/Login-img.png"
@@ -32,17 +32,16 @@
 				<!-- Form -->
 				<slot name="form"></slot>
 			</div>
-
 		</div>
 	</div>
 </template>
 
 <script lang="ts" setup>
-import { useSlots } from 'vue';
+import { useSlots } from "vue";
 
-const vue_slots=useSlots()
+const vue_slots = useSlots();
 
-const hasSlot = (name: string)=>{
-	return !!vue_slots[name]
-}
+const hasSlot = (name: string) => {
+	return !!vue_slots[name];
+};
 </script>
