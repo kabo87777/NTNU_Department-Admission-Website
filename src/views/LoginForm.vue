@@ -5,19 +5,19 @@
   <h2 class="text-3xl font-bold text-gray-500 block">{{ title }}</h2>
   
   <form action="">
-    
-    <div class="mt-5">
-      <label for="" class="block">{{$t("准考證號碼")}}</label>
+
+    <div class="mt-10">
+      <label for="admission_ticket_ID" class="block">{{$t("准考證號碼")}}</label>
       <div class="pt-1">
-        <InputText class="w-full" type="text" />
+        <InputText class="w-full" type="text" id="admission_ticket_ID"/>
       </div>
     </div>
     
     <div class="mt-3">
-      <label for="" class="block">{{$t("密碼")}}</label>
+      <label for="password" class="block">{{$t("密碼")}}</label>
 
       <div class="pt-1">
-        <InputText class="w-full" type="password"></InputText>
+        <InputText class="w-full" type="password" id="password"></InputText>
       </div>
     </div>
   
