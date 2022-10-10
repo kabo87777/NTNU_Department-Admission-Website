@@ -57,7 +57,7 @@
 				<div class="flex">
 					<div class="pt-3px">
 						<Checkbox
-							v-model="rmbAccCheck"
+							v-model="isRememberAccount"
 							:binary="true"
 							@click="handleCheck()"
 						/>
@@ -78,7 +78,10 @@
 				<Turnstile ref="turnstileToken" />
 			</div>
 			<div class="mt-50px ml-168px">
-				<Button class="bg-darkBlue h-60px w-420px" @click="handleLogin">
+				<Button
+					class="bg-darkBlue h-60px w-420px"
+					@click="handleSignin"
+				>
 					<div class="m-auto text-2xl">
 						<div>{{ $t("登入") }}</div>
 					</div>
@@ -89,52 +92,97 @@
 </template>
 
 <script setup lang="ts">
-import type { AuthStoreState } from "@/stores/auth";
-
 import InputText from "primevue/inputtext";
 import Checkbox from "primevue/checkbox";
 import Button from "primevue/button";
-import { ref, watch } from "vue";
+import { ref } from "vue";
 import { useRouter } from "vue-router";
 
-import { useAuthStore } from "@/stores/auth";
+import type { AuthCredentials } from "@/stores/universalAuth";
+import { useAdmissionManagerAuthStore } from "@/stores/universalAuth";
 import { sign_in } from "@/api/admission/applicant/api";
 import Turnstile from "@/components/Turnstile.vue";
 
+const router = useRouter();
+const auth = useAdmissionManagerAuthStore();
+const redirectToMainContainer = () =>
+	router.push({ name: "AdmissionManagerMainContainer" });
+
+// Go to AdmissionManagerMainContainer if signed in
+// TODO: check session validity
+if (auth.credentials) redirectToMainContainer();
+
+// Login Form
+const turnstileToken = ref(null);
+const isRememberAccount = ref(false);
 const email = ref("asdasssddddsd@birkhoff.me");
 const password = ref("123");
 
-const turnstileToken = ref(null);
-watch(turnstileToken, (newToken, prevToken) => {
-	console.log("watch new token", prevToken, newToken);
-});
+// Get remember account status
+const lastSigninEmail = window.localStorage.getItem(
+	"AdmissionManagerSigninLastSigninEmail"
+);
 
-const router = useRouter();
+if (lastSigninEmail) {
+	isRememberAccount.value = true;
+	email.value = lastSigninEmail;
+}
 
-// TODO: Separate stores for manager/applicant
-const auth: AuthStoreState = useAuthStore();
-
-const rmbAccCheck = ref(false);
-
+// Remember account checkbox state
 const handleCheck = () => {
-	rmbAccCheck.value = !rmbAccCheck.value;
-	console.log(rmbAccCheck.value);
+	isRememberAccount.value = !isRememberAccount.value;
 };
 
-const handleLogin = () => {
-	console.log("login button clicked");
+interface AdmissionManagerAuthResponse {
+	email: string;
+	provider: string;
+	uid: string;
+	id: number;
+	allow_password_change: boolean;
+	isInit: any | null;
+	lang: any | null;
+	name: any | null;
+	nickname: any | null;
+	image: any | null;
+}
 
-	console.log(email.value);
-	console.log(password.value);
+const handleSignin = async () => {
+	// Store email in localStorage if remember account
+	if (isRememberAccount.value) {
+		window.localStorage.setItem(
+			"AdmissionManagerSigninLastSigninEmail",
+			email.value
+		);
+	}
 
-	sign_in({
-		email: email.value,
-		password: password.value,
-	});
+	try {
+		const response = await sign_in({
+			email: email.value,
+			password: password.value,
+		});
 
-	// auth.credentials.expiry = Infinity;
+		const credentials: AuthCredentials = {
+			"access-token": response.headers["access-token"] || "",
+			"token-type": response.headers["token-type"] || "",
+			client: response.headers["client"] || "",
+			expiry: Number(response.headers["expiry"] || NaN),
+			uid: response.headers["uid"] || "",
+		};
 
-	// router.push("/admission/manager");
+		if (Object.values(credentials).some((p) => !p))
+			throw new Error("Server returned invalid authorization response");
+
+		const data: AdmissionManagerAuthResponse = response.data;
+
+		if (!data.email) throw new Error("Sign-in failure: " + data);
+
+		auth.credentials = credentials;
+
+		redirectToMainContainer();
+	} catch (e) {
+		// TODO: login failed notification with toast
+		console.log(e);
+	}
 };
 </script>
 
