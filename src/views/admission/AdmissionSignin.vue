@@ -1,16 +1,13 @@
 <template>
 	<div class="grid grid-cols-2 gap-15px">
 		<div>
-			<img
-				src="./../../assets/login-page/Login-img.png"
-				class="h-screen"
-			/>
+			<img src="/assets/login-page/Login-img.png" class="h-screen" />
 		</div>
 		<div class="m-auto">
 			<div class="flex m-auto h-15">
 				<div>
 					<img
-						src="./../../assets/login-page/NTNU-logo-B1.png"
+						src="/assets/login-page/NTNU-logo-B1.png"
 						class="h-15"
 					/>
 				</div>
@@ -34,7 +31,7 @@
 				</div>
 			</div>
 			<div class="mt-50px ml-184px userLogin">
-				<router-link to="/applicantLogin">
+				<router-link to="/admission/applicant/signin">
 					<Button class="bg-darkGreen h-95px w-360px">
 						<div class="m-auto text-2xl">
 							<div>{{ $t("申請者登入") }}</div>
@@ -43,7 +40,7 @@
 				</router-link>
 			</div>
 			<div class="mt-50px ml-184px">
-				<router-link to="/managerlogin">
+				<router-link to="/admission/manager/signin">
 					<Button class="bg-darkBlue h-95px w-360px">
 						<div class="m-auto text-2xl">
 							<div>{{ $t("審查委員/行政人員登入") }}</div>
