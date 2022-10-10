@@ -78,18 +78,26 @@
 					{{ $t("申請帳號設置") }}
 				</span>
 			</Button>
-			<Button
-				class="p-button-secondary p-button-text !mt-24px !w-336px !h-48px"
+			<router-link
+				to="/admission/manager/projectSettings"
+				custom
+				v-slot="{ navigate }"
 			>
-				<img
-					alt="logo"
-					src="/assets/sidebar/Sort_alfa.png"
-					style="width: 1.5rem"
-				/>
-				<span class="text-left tracking-3px ml-3 font-bold text-xl">
-					{{ $t("上傳欄位設置") }}
-				</span>
-			</Button>
+				<Button
+					class="p-button-secondary p-button-text !mt-24px !w-336px !h-48px"
+					@click="navigate"
+					role="link"
+				>
+					<img
+						alt="logo"
+						src="/assets/sidebar/Sort_alfa.png"
+						style="width: 1.5rem"
+					/>
+					<span class="text-left tracking-3px ml-3 font-bold text-xl">
+						{{ $t("上傳欄位設置") }}
+					</span>
+				</Button>
+			</router-link>
 			<Button
 				class="p-button-secondary p-button-text !mt-24px !w-336px !h-48px"
 			>
@@ -106,7 +114,11 @@
 			<Divider align="left" class="text-xs text-ntnuRed text-base">
 				<b>{{ $t("審查端設定") }}</b>
 			</Divider>
-			<router-link to="/reviewScoreField" custom v-slot="{ navigate }">
+			<router-link
+				to="/admission/manager/reviewScoreField"
+				custom
+				v-slot="{ navigate }"
+			>
 				<Button
 					class="p-button-secondary p-button-text !w-336px !h-48px"
 					@click="navigate"
