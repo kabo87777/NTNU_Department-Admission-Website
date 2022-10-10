@@ -50,5 +50,10 @@ export default defineConfig({
     }),
     Icons({ autoInstall: true }),
   ],
+  resolve: {
+    alias: {
+      '@': resolve(__dirname, './src'),
+    },
+  },
   test: {},
 });

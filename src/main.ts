@@ -17,7 +17,7 @@ import Menubar from "primevue/menubar";
 import Toast from "primevue/toast";
 import ToastService from "primevue/toastservice";
 
-import App from "./App.vue";
+import App from "@/App.vue";
 import { router } from "./router/index";
 
 import { i18n } from "./i18n";
@@ -39,6 +39,5 @@ app.component("ToastService", ToastService);
 app.component("Toast", Toast);
 
 const auth = useAuthStore();
-auth.isLoggedIn = false;
 
 app.mount("#app");
