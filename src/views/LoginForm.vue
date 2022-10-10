@@ -22,7 +22,7 @@
     </div>
   
     <div class="mt-4">
-      <Checkbox />
+      <Checkbox v-model="rememberMe"/>
       <label for="" class="ml-1">{{$t("記住我")}}</label>
       <a href="" class="float-right text-blue-500">{{$t("忘記密碼")}}</a>
     </div>
@@ -36,6 +36,7 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue';
 import InputText from "primevue/inputtext";
 import Checkbox from "primevue/checkbox";
 import Button from "primevue/button";
@@ -43,4 +44,6 @@ import Button from "primevue/button";
 defineProps<{
   title?: string
 }>()
+
+const rememberMe = ref(false)
 </script>
