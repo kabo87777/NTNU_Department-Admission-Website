@@ -45,7 +45,7 @@
   "取消": "Cancel",
   "管理端帳戶": "Manager Account",
   "系辦主管": "Department Manager",
-  "111年研究生審查": "2022 Postgraduate Review",
+  "111年研究生審查": "2022 Master Review",
   "保存": "Save",
   "刪除": "Delete",
   "新增到專案": "Created",
@@ -83,5 +83,7 @@
   "※ 電話(行動電話)":"※ Cellphone Number",
   "就學經歷":"School Experience",
   "考試與檢定分數":"Exam and Qualification Test Score",
-  "其他有利於審查資料":"Additional Beneficial Documents"
+  "其他有利於審查資料":"Additional Beneficial Documents",
+  "取消變更": "Cancel Changes",
+  "儲存設定": "Save Changes"
 }
