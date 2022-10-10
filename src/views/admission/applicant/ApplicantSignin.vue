@@ -8,7 +8,7 @@
 
 <script setup lang="ts">
 
-import LandingViewBase from "@/views/LandingViewLayout.vue"
-import LoginForm from "@/views/LoginForm.vue"
+import LandingViewBase from "@/components/LandingViewLayout.vue"
+import LoginForm from "@/components/LoginForm.vue"
 
 </script>
