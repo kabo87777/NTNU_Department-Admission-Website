@@ -28,6 +28,7 @@
     </div>
   
     <div class="mt-5">
+      <Turnstile />
       <Button class="w-full" :label="$t('登入')" />
     </div>
   </form>
@@ -40,6 +41,7 @@ import { ref } from 'vue';
 import InputText from "primevue/inputtext";
 import Checkbox from "primevue/checkbox";
 import Button from "primevue/button";
+import Turnstile from "@/components/Turnstile.vue"
 
 defineProps<{
   title?: string
