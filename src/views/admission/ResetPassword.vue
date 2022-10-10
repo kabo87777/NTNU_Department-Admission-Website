@@ -1,16 +1,13 @@
 <template>
 	<div class="grid grid-cols-2 gap-15px">
 		<div>
-			<img
-				src="./../../assets/login-page/Login-img.png"
-				class="h-screen"
-			/>
+			<img src="/assets/login-page/Login-img.png" class="h-screen" />
 		</div>
 		<div class="m-auto">
 			<div class="flex m-auto h-15">
 				<div>
 					<img
-						src="./../../assets/login-page/NTNU-logo-B1.png"
+						src="/assets/login-page/NTNU-logo-B1.png"
 						class="h-15"
 					/>
 				</div>
@@ -29,8 +26,8 @@
 				<div class="mt-100px ml-64px text-4xl font-bold text-gray-500">
 					{{ $t("歡迎") }}
 				</div>
-				<div class="mt-36px ml-64px font-bold text-gray-500">
-					{{ $t("第一次登入更密碼説明") }}
+				<div class="mt-36px ml-64px text-4xl font-bold text-gray-500">
+					{{ $t("重設密碼") }}
 				</div>
 			</div>
 			<div class="block mt-50px ml-64px">

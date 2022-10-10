@@ -2,7 +2,7 @@
 	<div class="grid grid-cols-9 gap-x-4">
 		<div class="col-span-5 h-full">
 			<img
-				src="../../assets/login-page/Login-img.png"
+				src="/assets/login-page/Login-img.png"
 				alt=""
 				class="overflow-auto"
 			/>
@@ -12,7 +12,7 @@
 			<!-- Logo -->
 			<div class="flex mt-2 justify-center items-center">
 				<img
-					src="../../assets/login-page/NTNU-logo-B1.png"
+					src="/assets/login-page/NTNU-logo-B1.png"
 					alt=""
 					class="h-12"
 				/>
@@ -55,7 +55,7 @@
 							}}</label>
 						</span>
 						<div class="float-right">
-							<router-link to="/forgetpassword">
+							<router-link to="/admission/manager/forgetpassword">
 								<div class="text-right font-bold goldText">
 									{{ $t("忘記密碼") }}
 								</div>
@@ -67,6 +67,7 @@
 						<div
 							class="cf-turnstile"
 							data-sitekey="0x4AAAAAAAAwuJcK_C3iXAFh"
+							data-theme="light"
 						></div>
 						<Button label="登入" class="w-full" />
 					</div>
