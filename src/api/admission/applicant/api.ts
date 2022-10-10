@@ -2,9 +2,8 @@ import axios from "axios";
 import type { AdmissionApplicantSignInInput } from "./types";
 
 const instance = axios.create({
-	baseURL:
-		"https://9f88298d-a5f9-4017-ac13-88e38a638293.mock.pstmn.io/api/v1/",
-	timeout: 1000,
+	baseURL: `${import.meta.env.VITE_ADMISSIONS_API_ENDPOINT}/api/v1/`,
+	timeout: 10000,
 });
 
 instance.interceptors.request.use(
@@ -33,9 +32,5 @@ instance.interceptors.response.use(
 );
 
 export const sign_in = async (user: AdmissionApplicantSignInInput) => {
-	const response = await instance.post(
-		"/admission/auth/applicant/sign_in",
-		user
-	);
-	return response.data;
+	return await instance.post("/admission/auth/applicant/sign_in", user);
 };
