@@ -7,12 +7,15 @@ import {
 
 import LandingView from "@/views/LandingView.vue";
 import AdmissionSignin from "@/views/admission/AdmissionSignin.vue";
+// Manager section
 import AdmissionManagerMainContainer from "@/views/admission/manager/MainContainer.vue";
 import AdmissionManagerSignin from "@/views/admission/manager/ManagerSignin.vue";
 import AdmissionManagerForgetPassword from "@/views/admission/manager/ForgetPassword.vue";
 import AdmissionManagerProjectSettings from "@/views/admission/manager/ProjectSettings.vue";
+// Applicant section
 import AdmissionApplicantMainContainer from "@/views/admission/applicant/MainContainer.vue";
 import AdmissionApplicantSignin from "@/views/admission/applicant/ApplicantSignin.vue";
+import AdmissionApplicantForgetPassword from "@/views/admission/applicant/ForgetPassword.vue";
 import projectSetting from "@/views/admission/manager/project-setting.vue";
 import firstloginchangepassword from "@/views/admission/FirstSigninChangePass.vue";
 import reviewScoreField from "@/views/reviewScoreField.vue";
@@ -63,6 +66,12 @@ const routes: Array<RouteRecordRaw> = [
 			// 	name: "firstloginchangepassword",
 			// 	component: firstloginchangepassword,
 			// },
+			// Admission - applicant request password recovery
+			{
+				path: "admission/applicant/forgetPassword",
+				name: "AdmissionApplicantForgetPassword",
+				component: AdmissionApplicantForgetPassword,
+			},
 			// Admission - applicant sign in
 			{
 				path: "admission/applicant/signin",

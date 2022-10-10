@@ -1,7 +1,7 @@
 <template>
 	<LandingViewBase>
 		<template #form>
-			<LoginForm :title="$t('資訊工程學系報名系統')" />
+			<LoginForm :title="$t('資訊工程學系報名系統')" role="applicant" />
 		</template>
 	</LandingViewBase>
 </template>
