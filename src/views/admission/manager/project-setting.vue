@@ -10,7 +10,7 @@
 		>
 			<img
 				alt="logo"
-				src="../../src/assets/project-setting/Check_fill.png"
+				src="/assets/project-setting/Check_fill.png"
 				style="width: 1.5rem"
 				class="fill-green-500"
 			/>
@@ -21,7 +21,7 @@
 		>
 			<img
 				alt="logo"
-				src="../../src/assets/project-setting/Close_round.png"
+				src="/assets/project-setting/Close_round.png"
 				style="width: 1.5rem"
 				class="fill-green-500"
 			/>

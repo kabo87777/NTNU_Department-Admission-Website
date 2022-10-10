@@ -15,7 +15,11 @@
 				class="w-336px h-72px !text-3xl tracking-2px"
 			/>
 
-			<router-link to="/projectSetting" custom v-slot="{ navigate }">
+			<router-link
+				to="/admission/manager/projectSetting"
+				custom
+				v-slot="{ navigate }"
+			>
 				<Button
 					class="p-button-secondary p-button-text !mt-48px !w-336px !h-48px"
 					@click="navigate"
@@ -23,7 +27,7 @@
 				>
 					<img
 						alt="logo"
-						src="../../src/assets/sidebar/Setting_line.png"
+						src="/assets/sidebar/Setting_line.png"
 						style="width: 1.5rem"
 					/>
 					<span class="text-left tracking-3px ml-3 font-bold text-xl">
@@ -37,7 +41,7 @@
 			>
 				<img
 					alt="logo"
-					src="../../src/assets/sidebar/Chart_light.png"
+					src="/assets/sidebar/Chart_light.png"
 					style="width: 1.5rem"
 				/>
 				<span class="text-left tracking-3px ml-3 font-bold text-xl">
@@ -55,7 +59,7 @@
 			<Button class="p-button-secondary p-button-text !w-336px !h-48px">
 				<img
 					alt="logo"
-					src="../../src/assets/sidebar/Bell.png"
+					src="/assets/sidebar/Bell.png"
 					style="width: 1.5rem"
 				/>
 				<span class="text-left tracking-3px ml-3 font-bold text-xl">
@@ -67,7 +71,7 @@
 			>
 				<img
 					alt="logo"
-					src="../../src/assets/sidebar/User_add_alt.png"
+					src="/assets/sidebar/User_add_alt.png"
 					style="width: 1.5rem"
 				/>
 				<span class="text-left tracking-3px ml-3 font-bold text-xl">
@@ -79,7 +83,7 @@
 			>
 				<img
 					alt="logo"
-					src="../../src/assets/sidebar/Sort_alfa.png"
+					src="/assets/sidebar/Sort_alfa.png"
 					style="width: 1.5rem"
 				/>
 				<span class="text-left tracking-3px ml-3 font-bold text-xl">
@@ -91,7 +95,7 @@
 			>
 				<img
 					alt="logo"
-					src="../../src/assets/sidebar/File_dock_search.png"
+					src="/assets/sidebar/File_dock_search.png"
 					style="width: 1.5rem"
 				/>
 				<span class="text-left tracking-3px ml-3 font-bold text-xl">
@@ -110,7 +114,7 @@
 				>
 					<img
 						alt="logo"
-						src="../../src/assets/sidebar/Eye_light.png"
+						src="/assets/sidebar/Eye_light.png"
 						style="width: 1.5rem"
 					/>
 					<span class="text-left tracking-3px ml-3 font-bold text-xl">
@@ -123,7 +127,7 @@
 			>
 				<img
 					alt="logo"
-					src="../../src/assets/sidebar/Flag_finish.png"
+					src="/assets/sidebar/Flag_finish.png"
 					style="width: 1.5rem"
 				/>
 				<span class="text-left tracking-3px ml-3 font-bold text-xl">
@@ -136,7 +140,7 @@
 				>
 					<img
 						alt="logo"
-						src="../../src/assets/sidebar/User_box.png"
+						src="/assets/sidebar/User_box.png"
 						style="width: 1.25rem"
 					/>
 					<h1 class="tracking-1px text-xl text-gray-900">
@@ -149,7 +153,7 @@
 				>
 					<img
 						alt="logo"
-						src="../../src/assets/sidebar/Add_round.png"
+						src="/assets/sidebar/Add_round.png"
 						style="width: 1.25rem"
 						class="!ml-0px"
 					/>
@@ -178,7 +182,7 @@
 						>
 							<img
 								alt="logo"
-								src="../../src/assets/sidebar/Done_round.png"
+								src="/assets/sidebar/Done_round.png"
 								style="width: 1.25rem"
 								class="!ml-0px"
 							/>
@@ -192,7 +196,7 @@
 						>
 							<img
 								alt="logo"
-								src="../../src/assets/sidebar/Close_round.png"
+								src="/assets/sidebar/Close_round.png"
 								style="width: 1.25rem"
 								class="!ml-0px"
 							/>
@@ -205,7 +209,7 @@
 				<div class="flex">
 					<img
 						alt="logo"
-						src="../../src/assets/sidebar/User_circle.png"
+						src="/assets/sidebar/User_circle.png"
 						class="h-40px w-40px ml-24px mt-50px"
 					/>
 					<div class="w-100px h-50px">
@@ -219,14 +223,14 @@
 					<Button class="p-button-text !mt-46px !ml-50px">
 						<img
 							alt="logo"
-							src="../../src/assets/sidebar/Setting_alt_line.png"
+							src="/assets/sidebar/Setting_alt_line.png"
 							class="w-28px h-28px"
 						/>
 					</Button>
 					<Button class="p-button-text !mt-46px">
 						<img
 							alt="logo"
-							src="../../src/assets/sidebar/Sign_out_circle.png"
+							src="/assets/sidebar/Sign_out_circle.png"
 							class="w-28px h-28px"
 						/>
 					</Button>
