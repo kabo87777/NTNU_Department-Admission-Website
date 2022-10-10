@@ -32,7 +32,12 @@
 					<label for="email">{{ $t("電郵") }}</label>
 				</div>
 				<div class="mt-4px">
-					<InputText id="email" type="email" class="input" />
+					<InputText
+						v-model="email"
+						id="email"
+						type="email"
+						class="input"
+					/>
 				</div>
 			</div>
 			<div class="block mt-24px ml-168px">
@@ -40,7 +45,12 @@
 					<label for="password">{{ $t("密碼") }}</label>
 				</div>
 				<div class="mt-4px">
-					<InputText id="password" type="password" class="input" />
+					<InputText
+						v-model="password"
+						id="password"
+						type="password"
+						class="input"
+					/>
 				</div>
 			</div>
 			<div class="flex relative ml-168px mt-8px">
@@ -88,7 +98,11 @@ import { ref, watch } from "vue";
 import { useRouter } from "vue-router";
 
 import { useAuthStore } from "@/stores/auth";
+import { sign_in } from "@/api/admission/applicant/api";
 import Turnstile from "@/components/Turnstile.vue";
+
+const email = ref("asdasssddddsd@birkhoff.me");
+const password = ref("123");
 
 const turnstileToken = ref(null);
 watch(turnstileToken, (newToken, prevToken) => {
@@ -110,9 +124,17 @@ const handleCheck = () => {
 const handleLogin = () => {
 	console.log("login button clicked");
 
-	auth.credentials.expiry = Infinity;
+	console.log(email.value);
+	console.log(password.value);
 
-	router.push("/admission/manager");
+	sign_in({
+		email: email.value,
+		password: password.value,
+	});
+
+	// auth.credentials.expiry = Infinity;
+
+	// router.push("/admission/manager");
 };
 </script>
 
