@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "typeRoots": ["./src/types"],
+    "types": ["@intlify/vite-plugin-vue-i18n/client"],
     "target": "ESNext",
     "useDefineForClassFields": true,
     "module": "ESNext",
@@ -13,7 +15,7 @@
     "lib": ["ESNext", "DOM"],
     "skipLibCheck": true,
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./src/*"]
     }
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],

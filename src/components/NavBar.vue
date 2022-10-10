@@ -12,19 +12,19 @@
 	>
 		<img
 			alt="logo"
-			src="../assets/NTNU_LOGO.png"
+			src="/assets/NTNU_LOGO.png"
 			class="ml-4 w-178px h-32px"
 		/>
 		<nav class="w-0 h-30px border-1 mx-1 border-white"></nav>
 		<img
 			alt="logo2"
-			src="../assets/CSIE.png"
+			src="/assets/CSIE.png"
 			class="items-end px-2 gap-7px w-438px h-20px"
 		/>
 		<div class="w-full block">
 			<Button
 				class="border-white text-white p-button-sm p-button-outlined float-right mx-5"
-				label="i18n"
+				:label="$t('語言')"
 				icon="pi pi-angle-down"
 				iconPos="right"
 				@click="toggle"
@@ -41,40 +41,25 @@ import Menu from "primevue/menu";
 import Button from "primevue/button";
 
 import { ref } from "vue";
-import { useToast } from "primevue/usetoast";
-const toast = useToast();
+
+import { useI18n } from "vue-i18n";
+const { t, locale, availableLocales } = useI18n();
+
 const menu = ref();
-const items = ref([
-	{
-		label: "語言",
-		items: [
-			{
-				label: "中文",
-				icon: "",
-				command: () => {
-					toast.add({
-						severity: "success",
-						summary: "更新成功",
-						detail: "轉換成中文",
-						life: 3000,
-					});
-				},
+
+let items = ref(
+	(availableLocales as string[]).map((loc: string) => {
+		return {
+			label: t("語言名稱", "", { locale: loc }),
+			icon: "",
+			command: () => {
+				locale.value = loc;
+				window.localStorage.setItem("lastLocale", loc);
 			},
-			{
-				label: "English",
-				icon: "",
-				command: () => {
-					toast.add({
-						severity: "success",
-						summary: "Updated Successfully",
-						detail: "Change to English",
-						life: 3000,
-					});
-				},
-			},
-		],
-	},
-]);
+		};
+	})
+);
+
 const toggle = (event: MouseEvent) => {
 	menu.value.toggle(event);
 };
