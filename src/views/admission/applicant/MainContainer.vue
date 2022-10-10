@@ -11,14 +11,13 @@ import NavBar from "@/components/NavBar.vue";
 import SideBar from "@/components/SideBar.vue";
 
 import { useRouter } from "vue-router";
-import { useAuthStore } from "@/stores/auth";
+import { useAdmissionApplicantAuthStore } from "@/stores/universalAuth";
 
 const router = useRouter();
 
-// TODO: Separate stores for manager/applicant
-const auth = useAuthStore();
+const auth = useAdmissionApplicantAuthStore();
 
-if (!auth.isLoggedIn) {
+if (!auth.credentials) {
 	router.push("/admission/applicant/signin");
 }
 </script>
