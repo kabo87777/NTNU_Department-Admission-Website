@@ -172,9 +172,10 @@ const handleSignin = async () => {
 		if (Object.values(credentials).some((p) => !p))
 			throw new Error("Server returned invalid authorization response");
 
-		const data: AdmissionManagerAuthResponse = response.data;
+		const data: AdmissionManagerAuthResponse = response.data.data;
 
-		if (!data.email) throw new Error("Sign-in failure: " + data);
+		if (!data.email)
+			throw new Error("Sign-in failure: " + JSON.stringify(data));
 
 		auth.credentials = credentials;
 
