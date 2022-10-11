@@ -1,6 +1,8 @@
 <template>
-	<div class="pt-62px pl-128px pr-128px">
-		<div class="font-medium text-32px">{{ $t("評分資料列表") }}</div>
+	<div class="ml-128px">
+		<h1 class="text-4xl text-bold tracking-widest">
+			{{ $t("評分資料列表") }}
+		</h1>
 		<div class="bigRedDivider"></div>
 		<SelectButton
 			class="mt-8px h-45px !w-1280px"
