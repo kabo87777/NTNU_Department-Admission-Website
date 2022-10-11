@@ -98,19 +98,20 @@ const routes: Array<RouteRecordRaw> = [
 						name: "reviewScoreField",
 						component: reviewScoreField,
 					},
+					// Admission - applicants uploaded documents setting
+					{
+						path: "applicantsUploadList",
+						name: "ApplicantsUploadList",
+						component: ApplicantsUploadList,
+					},
+					{
+						path: "applicantUploadedDocs",
+						name: "ApplicantUploadedDocs",
+						component: ApplicantUploadedDocs,
+					},
 				],
 			},
 		],
-	},
-	{
-		path: "/applicantsUploadList",
-		name: "ApplicantsUploadList",
-		component: ApplicantsUploadList,
-	},
-	{
-		path: "/applicantUploadedDocs",
-		name: "ApplicantUploadedDocs",
-		component: ApplicantUploadedDocs,
 	},
 ];
 
