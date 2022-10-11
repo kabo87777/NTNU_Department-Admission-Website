@@ -86,8 +86,8 @@
 	</div>
 	<Divider />
 	<div>
-		<Button label="取消變更" class="p-button-sm" />
-		<Button label="設定儲存" class="p-button-sm" />
+		<Button label="取消變更" class="p-button-sm" ></Button>
+		<Button label="設定儲存" class="p-button-sm" ></Button>
 	</div>
 </template>
 
