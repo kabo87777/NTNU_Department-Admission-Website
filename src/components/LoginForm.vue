@@ -50,17 +50,12 @@
 </template>
 
 <script setup lang="ts">
-<<<<<<< HEAD
 import { computed, ref, useSlots } from "vue";
-=======
-import { ref } from "vue";
->>>>>>> develop
 import InputText from "primevue/inputtext";
 import Checkbox from "primevue/checkbox";
 import Button from "primevue/button";
 import Turnstile from "@/components/Turnstile.vue";
 
-<<<<<<< HEAD
 const props = defineProps<{
 	role: "applicant" | "manager";
 }>();
@@ -83,11 +78,4 @@ const vue_slots = useSlots();
 const hasSlot = (name: string) => {
 	return !!vue_slots[name];
 };
-=======
-defineProps<{
-	title?: string;
-}>();
-
-const rememberMe = ref(false);
->>>>>>> develop
 </script>
