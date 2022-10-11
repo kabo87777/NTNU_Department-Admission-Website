@@ -1,6 +1,8 @@
 <template>
 	<div class="mx-30">
-		<h2 class="text-3xl font-bold text-gray-500 block">{{ title }}</h2>
+		<h1 v-if="hasSlot('h1')" class="text-3xl font-bold text-gray-500 block">
+			<slot name="h1"></slot>
+		</h1>
 
 		<form action="">
 			<div class="mt-10">
@@ -31,9 +33,12 @@
 			<div class="mt-4">
 				<Checkbox v-model="rememberMe" />
 				<label for="" class="ml-1">{{ $t("記住我") }}</label>
-				<a href="" class="float-right text-blue-500">{{
-					$t("忘記密碼")
-				}}</a>
+				<router-link
+					:to="forgetPwdLink"
+					class="float-right text-blue-500"
+				>
+					{{ $t("忘記密碼") }}
+				</router-link>
 			</div>
 
 			<div class="mt-5">
@@ -45,15 +50,32 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref, useSlots } from "vue";
 import InputText from "primevue/inputtext";
 import Checkbox from "primevue/checkbox";
 import Button from "primevue/button";
 import Turnstile from "@/components/Turnstile.vue";
 
-defineProps<{
-	title?: string;
+const props = defineProps<{
+	role: "applicant" | "manager";
 }>();
 
 const rememberMe = ref(false);
+
+const forgetPwdLink = computed(() => {
+	// Can use this line once manager route is changed to camelCase `forgetPassword`
+	// return `/admission/${props.role}/forgetPassword`
+
+	if (props.role === "applicant") {
+		return "/admission/applicant/forgetPassword";
+	} else if (props.role === "manager") {
+		return "/admission/manager/forgetpassword";
+	} else return "";
+});
+
+const vue_slots = useSlots();
+
+const hasSlot = (name: string) => {
+	return !!vue_slots[name];
+};
 </script>

@@ -75,7 +75,7 @@
 				</div>
 			</div>
 			<div class="ml-168px mt-40px">
-				<Turnstile ref="turnstileToken" />
+				<Turnstile ref="turnstileRef" />
 			</div>
 			<div class="mt-50px ml-168px">
 				<Button
@@ -101,6 +101,7 @@ import { useRouter } from "vue-router";
 import type { AuthCredentials } from "@/stores/universalAuth";
 import { useAdmissionManagerAuthStore } from "@/stores/universalAuth";
 import { sign_in } from "@/api/admission/applicant/api";
+import type { TurnstileComponentExposes } from "@/components/Turnstile.vue";
 import Turnstile from "@/components/Turnstile.vue";
 
 const router = useRouter();
@@ -113,7 +114,7 @@ const redirectToMainContainer = () =>
 if (auth.credentials) redirectToMainContainer();
 
 // Login Form
-const turnstileToken = ref(null);
+const turnstileRef = ref<TurnstileComponentExposes>();
 const isRememberAccount = ref(false);
 const email = ref("asdasssddddsd@birkhoff.me");
 const password = ref("123");
@@ -156,9 +157,14 @@ const handleSignin = async () => {
 	}
 
 	try {
+		if (!turnstileRef.value) throw new Error();
+
+		if (!turnstileRef.value.turnstileToken) throw new Error("");
+
 		const response = await sign_in({
 			email: email.value,
 			password: password.value,
+			"cf-turnstile-response": turnstileRef.value.turnstileToken.value,
 		});
 
 		const credentials: AuthCredentials = {
