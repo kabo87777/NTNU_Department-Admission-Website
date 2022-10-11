@@ -9,8 +9,12 @@
 						<div class="m-auto">{{ $t("帳號") }}</div>
 					</template>
 					<template #body="slotProps">
-						<div class="m-auto w-50px text-center text-blue-500 hover:text-blue-300">
-							<router-link to="/admission/manager/applicantUploadedDocs">
+						<div
+							class="m-auto w-50px text-center text-blue-500 hover:text-blue-300"
+						>
+							<router-link
+								to="/admission/manager/applicantUploadedDocs"
+							>
 								{{ slotProps.data.accId }}
 							</router-link>
 						</div>
@@ -21,26 +25,43 @@
 						<div class="m-auto">{{ $t("姓名") }}</div>
 					</template>
 					<template #body="slotProps">
-						<div class="m-auto w-50px text-center text-blue-500 hover:text-blue-300">
-							<router-link to="/admission/manager/applicantUploadedDocs">
+						<div
+							class="m-auto w-50px text-center text-blue-500 hover:text-blue-300"
+						>
+							<router-link
+								to="/admission/manager/applicantUploadedDocs"
+							>
 								{{ slotProps.data.name }}
 							</router-link>
 						</div>
 					</template>
 				</Column>
 				<Column field="upload_status">
-					<template #header> 
-						<div class="m-auto">{{ $t("上傳狀態")}}</div>
+					<template #header>
+						<div class="m-auto">{{ $t("上傳狀態") }}</div>
 					</template>
 					<template #body="slotProps">
 						<div class="m-auto text-center">
-							<Tag v-if="slotProps.data.upload_status === 'sent'" severity="success">
+							<Tag
+								v-if="slotProps.data.upload_status === 'sent'"
+								severity="success"
+							>
 								{{ slotProps.data.upload_status }}
 							</Tag>
-							<Tag v-else-if="slotProps.data.upload_status === 'unstart'" severity="danger">
+							<Tag
+								v-else-if="
+									slotProps.data.upload_status === 'unstart'
+								"
+								severity="danger"
+							>
 								{{ slotProps.data.upload_status }}
 							</Tag>
-							<Tag v-else-if="slotProps.data.upload_status === 'draft'" severity="warning">
+							<Tag
+								v-else-if="
+									slotProps.data.upload_status === 'draft'
+								"
+								severity="warning"
+							>
 								{{ slotProps.data.upload_status }}
 							</Tag>
 						</div>
@@ -62,7 +83,12 @@
 					</template>
 					<template #body="slotProps">
 						<div class="m-auto text-center">
-							<Tag v-if="slotProps.data.attachment_status === 'sent'" severity="success">
+							<Tag
+								v-if="
+									slotProps.data.attachment_status === 'sent'
+								"
+								severity="success"
+							>
 								{{ slotProps.data.attachment_status }}
 							</Tag>
 						</div>
