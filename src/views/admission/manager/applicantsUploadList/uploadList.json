@@ -16,7 +16,7 @@
             "name": "美女",
             "upload_status": "sent",
             "attachment_enable": "unabled",
-            "attachment_status": "sent"
+            "attachment_status": null
         },
         {
             "id": 3,
@@ -24,7 +24,7 @@
             "name": "野獸",
             "upload_status": "unstart",
             "attachment_enable": "unabled",
-            "attachment_status": "unsent"
+            "attachment_status": null
         },
         {
             "id": 4,
@@ -32,7 +32,7 @@
             "name": "老王",
             "upload_status": "draft",
             "attachment_enable": "unabled",
-            "attachment_status": "sent"
+            "attachment_status": null
         }
     ]
 }

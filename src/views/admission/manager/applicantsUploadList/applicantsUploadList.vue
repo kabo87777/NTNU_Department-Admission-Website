@@ -6,43 +6,66 @@
 			<DataTable :value="applicantsData">
 				<Column field="accId">
 					<template #header>
-						{{ $t("ID") }}
+						<div class="m-auto">{{ $t("帳號") }}</div>
 					</template>
 					<template #body="slotProps">
-						{{ slotProps.data.accId }}
+						<div class="m-auto w-50px text-center text-blue-500 hover:text-blue-300">
+							<router-link to="/admission/manager/applicantUploadedDocs">
+								{{ slotProps.data.accId }}
+							</router-link>
+						</div>
 					</template>
 				</Column>
 				<Column field="name">
-					<template #header> Name </template>
+					<template #header>
+						<div class="m-auto">{{ $t("姓名") }}</div>
+					</template>
 					<template #body="slotProps">
-						{{ slotProps.data.name }}
+						<div class="m-auto w-50px text-center text-blue-500 hover:text-blue-300">
+							<router-link to="/admission/manager/applicantUploadedDocs">
+								{{ slotProps.data.name }}
+							</router-link>
+						</div>
 					</template>
 				</Column>
 				<Column field="upload_status">
-					<template #header> Upload Status </template>
+					<template #header> 
+						<div class="m-auto">{{ $t("上傳狀態")}}</div>
+					</template>
 					<template #body="slotProps">
-						{{ slotProps.data.upload_status }}
-						<!-- <div v-switch="slotProps.data.upload_status">
-							<p v-case="'sent'">YAY</p>
-							<p v-case="'unstart'">LAZY</p>
-							<p v-case="'draft'">WORKHARD</p>
-						</div> -->
+						<div class="m-auto text-center">
+							<Tag v-if="slotProps.data.upload_status === 'sent'" severity="success">
+								{{ slotProps.data.upload_status }}
+							</Tag>
+							<Tag v-else-if="slotProps.data.upload_status === 'unstart'" severity="danger">
+								{{ slotProps.data.upload_status }}
+							</Tag>
+							<Tag v-else-if="slotProps.data.upload_status === 'draft'" severity="warning">
+								{{ slotProps.data.upload_status }}
+							</Tag>
+						</div>
 					</template>
 				</Column>
 				<Column field="attachment_enable">
 					<template #header>
-						Additional Documents Upload System
+						<div class="m-auto">{{ $t("補件狀態") }}</div>
 					</template>
 					<template #body="slotProps">
-						{{ slotProps.data.attachment_enable }}
+						<div class="m-auto text-center">
+							{{ slotProps.data.attachment_enable }}
+						</div>
 					</template>
 				</Column>
 				<Column field="attachment_status">
 					<template #header>
-						Additional Documents Upload Status
+						<div class="m-auto">{{ $t("補件系統") }}</div>
 					</template>
 					<template #body="slotProps">
-						{{ slotProps.data.attachment_status }}
+						<div class="m-auto text-center">
+							<Tag v-if="slotProps.data.attachment_status === 'sent'" severity="success">
+								{{ slotProps.data.attachment_status }}
+							</Tag>
+						</div>
 					</template>
 				</Column>
 			</DataTable>
@@ -51,14 +74,18 @@
 </template>
 
 <script setup lang="ts">
-//import VSwitch from "v-switch-case";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
+import Tag from "primevue/tag";
 import "../../../../styles/customize.css";
 import applicantsList from "./uploadList.json";
-
-//Vue.use(VSwitch);
 
 const applicantsData = applicantsList.applicants;
 console.log(applicantsData);
 </script>
+
+<style setup lang="css">
+.green {
+	color: green;
+}
+</style>
