@@ -45,7 +45,8 @@
   "取消": "Cancel",
   "管理端帳戶": "Manager Account",
   "系辦主管": "Department Manager",
-  "111年研究生審查": "2022 Master Review",
+  "2022 研究生審查 Master Review": "2022 Master Review", 
+  "2022 博士生審查 Phd Review": "2022 Phd Review", 
   "保存": "Save",
   "刪除": "Delete",
   "新增到專案": "Created",
@@ -85,5 +86,7 @@
   "考試與檢定分數":"Exam and Qualification Test Score",
   "其他有利於審查資料":"Additional Beneficial Documents",
   "取消變更": "Cancel Changes",
-  "儲存設定": "Save Changes"
+  "儲存設定": "Save Changes",
+  "基本資料欄位": "Basic Info",
+  "檢附資料欄位": "Attachment Info"
 }

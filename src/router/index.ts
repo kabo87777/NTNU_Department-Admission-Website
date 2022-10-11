@@ -21,6 +21,8 @@ import firstloginchangepassword from "@/views/admission/FirstSigninChangePass.vu
 import reviewScoreField from "@/views/reviewScoreField.vue";
 import resetpassword from "@/views/admission/ResetPassword.vue";
 import ResetPasswordEmailSent from "@/views/admission/ResetPasswordEmailSent.vue";
+import ApplicantsUploadList from "@/views/admission/manager/applicantsUploadList/applicantsUploadList.vue";
+import ApplicantUploadedDocs from "@/views/admission/manager/applicantsUploadList/applicantUploadedDocs.vue";
 
 const routes: Array<RouteRecordRaw> = [
 	// Choose recruitment / admission
@@ -104,6 +106,17 @@ const routes: Array<RouteRecordRaw> = [
 						path: "reviewScoreField",
 						name: "reviewScoreField",
 						component: reviewScoreField,
+					},
+					// Admission - applicants uploaded documents setting
+					{
+						path: "applicantsUploadList",
+						name: "ApplicantsUploadList",
+						component: ApplicantsUploadList,
+					},
+					{
+						path: "applicantUploadedDocs",
+						name: "ApplicantUploadedDocs",
+						component: ApplicantUploadedDocs,
 					},
 				],
 			},

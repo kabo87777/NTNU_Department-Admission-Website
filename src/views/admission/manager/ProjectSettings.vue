@@ -2,13 +2,17 @@
 	<div class="pt-62px pl-128px pr-128px">
 		<div class="font-medium text-32px">{{ $t("申請上傳欄位") }}</div>
 		<div class="bigRedDivider"></div>
-		<SelectButton
-			class="mt-8px"
-			v-model="currentTab"
-			:options="tabOptions"
-			aria-labelledby="single"
-		/>
-		<div v-if="currentTab === '基本資料欄位'">
+		<div class="p-fluid">
+			<SelectButton
+				class="mt-8px"
+				v-model="activeTab"
+				:options="tabOptions"
+				optionLabel="name"
+				aria-labelledby="single"
+			>
+			</SelectButton>
+		</div>
+		<div v-if="activeTab.value === 1">
 			<div class="mt-16px">
 				<div>
 					<Checkbox
@@ -155,7 +159,7 @@
 				</div>
 			</div>
 		</div>
-		<div v-else-if="currentTab === '檢附資料欄位'">
+		<div v-else-if="activeTab.value === 2">
 			<div class="mt-16px">
 				<div>
 					<Checkbox
@@ -281,9 +285,18 @@ import SelectButton from "primevue/selectbutton";
 import Checkbox from "primevue/checkbox";
 import Button from "primevue/button";
 import { ref } from "vue";
+import { useI18n } from "vue-i18n";
 
-const currentTab = ref("基本資料欄位");
-const tabOptions = ref(["基本資料欄位", "檢附資料欄位"]);
+const { t } = useI18n();
+const translation = {
+	basicCol: t("基本資料欄位"),
+	attachmentCol: t("檢附資料欄位"),
+};
+const activeTab = ref({ name: translation.basicCol, value: 1 });
+const tabOptions = ref([
+	{ name: translation.basicCol, value: 1 },
+	{ name: translation.attachmentCol, value: 2 },
+]);
 const schoolExpChecked = ref(false);
 const scoreChecked = ref(false);
 const otherChecked = ref(false);
