@@ -27,7 +27,7 @@ switch (branch.sync()) {
   // mr preview
   default:
     process.env.VITE_ADMISSIONS_API_ENDPOINT =
-      "https://admissions-backend-staging.onrender.com";
+      "https://9f88298d-a5f9-4017-ac13-88e38a638293.mock.pstmn.io";
     break;
 }
 
@@ -52,7 +52,7 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      '@': resolve(__dirname, './src'),
+      "@": resolve(__dirname, "./src"),
     },
   },
   test: {},

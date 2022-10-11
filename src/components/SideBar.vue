@@ -12,7 +12,7 @@
 				v-model="selectedProgram"
 				:options="programs"
 				optionLabel="program_name"
-				class="w-336px h-72px !text-3xl tracking-2px"
+				class="w-336px h-72px !text-4xl tracking-2px"
 			/>
 
 			<router-link
@@ -263,10 +263,10 @@ import Dialog from "primevue/dialog";
 import InputText from "primevue/inputtext";
 
 const visibleLeft = ref(true);
-const selectedProgram = ref({ program_name: "111年研究生審查" });
-const programs = ref([
-	{ program_name: "111年研究生審查" },
-	{ program_name: "111年博士生審查" },
+let selectedProgram = ref({ program_name: "2022 研究生審查 Master Review" });
+let programs = ref([
+	{ program_name: "2022 研究生審查 Master Review" },
+	{ program_name: "2022 博士生審查 PhD Review" },
 ]);
 const displayNewProject = ref(false);
 const newProjectName = ref("");
