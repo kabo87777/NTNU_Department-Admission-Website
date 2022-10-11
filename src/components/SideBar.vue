@@ -265,7 +265,7 @@ import Dialog from "primevue/dialog";
 import InputText from "primevue/inputtext";
 import { useI18n } from "vue-i18n";
 
-const {t} = useI18n();
+const { t } = useI18n();
 const translation = {
 	masterReview: t("2022 研究生審查 Master Review"),
 	phdReview: t("2022 博士生審查 Phd Review"),

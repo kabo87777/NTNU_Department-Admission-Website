@@ -287,7 +287,7 @@ import Button from "primevue/button";
 import { ref } from "vue";
 import { useI18n } from "vue-i18n";
 
-const {t} = useI18n();
+const { t } = useI18n();
 const translation = {
 	basicCol: t("基本資料欄位"),
 	attachmentCol: t("檢附資料欄位"),
