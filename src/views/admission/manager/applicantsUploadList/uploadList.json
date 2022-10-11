@@ -1,0 +1,22 @@
+{
+    "status": "success",
+    "applicants": [
+        {
+            "id": 1,
+            "accId": 113001,
+            "name": "帥哥",
+            "upload_status": "sent",
+            "attachment_enable": "enabled",
+            "attachment_period": "2022/09/20 - 2022/10/01",
+            "attachment_status": "sent"
+        },
+        {
+            "id": 2,
+            "accId": 113002,
+            "name": "美女",
+            "upload_status": "sent",
+            "attachment_enable": "unabled",
+            "attachment_status": "sent"
+        }
+    ]
+}
