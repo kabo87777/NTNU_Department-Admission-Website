@@ -33,18 +33,12 @@
 			<div class="mt-4">
 				<Checkbox v-model="rememberMe" />
 				<label for="" class="ml-1">{{ $t("記住我") }}</label>
-<<<<<<< HEAD
 				<router-link
 					:to="forgetPwdLink"
 					class="float-right text-blue-500"
 				>
 					{{ $t("忘記密碼") }}
 				</router-link>
-=======
-				<a href="" class="float-right text-blue-500">{{
-					$t("忘記密碼")
-				}}</a>
->>>>>>> develop
 			</div>
 
 			<div class="mt-5">
