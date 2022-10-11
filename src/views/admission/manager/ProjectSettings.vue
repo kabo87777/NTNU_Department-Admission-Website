@@ -251,17 +251,23 @@
 		<div class="flex mt-24px">
 			<div class="m-auto">
 				<div class="flex">
-					<Button
-						label="取消變更"
-						icon="pi pi-times"
-						class="p-button-outlined"
-					/>
+					<Button class="bg-white h-60px w-140px border-ntnuRed">
+						<i
+							class="ml-1 mr-2 box-border text-sm text-ntnuRed pi pi-times"
+						></i>
+						<div class="m-auto text-sm text-ntnuRed tracking-2">
+							<div>{{ $t("取消變更") }}</div>
+						</div>
+					</Button>
 					<div class="w-24px"></div>
-					<Button
-						label="儲存設定"
-						icon="pi pi-check"
-						class="p-button"
-					/>
+					<Button class="bg-Green h-60px w-140px border-ntnuRed">
+						<i
+							class="ml-1 mr-2 box-border text-sm text-black pi pi-check"
+						></i>
+						<div class="m-auto text-sm text-black tracking-2">
+							<div>{{ $t("儲存設定") }}</div>
+						</div>
+					</Button>
 				</div>
 			</div>
 		</div>
@@ -289,3 +295,15 @@ const mailingAd = ref(false);
 const basicIdentityInfo = ref(false);
 const contactInfo = ref(false);
 </script>
+
+<style setup lang="css">
+.bg-Green {
+	background-color: #bcd19b;
+}
+.bg-darkBlue {
+	background-color: #07385a;
+}
+.bg-white {
+	background-color: #ffffff;
+}
+</style>
