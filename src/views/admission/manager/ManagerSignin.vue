@@ -164,7 +164,7 @@ const handleSignin = async () => {
 		const response = await sign_in({
 			email: email.value,
 			password: password.value,
-			"cf-turnstile-response": turnstileRef.value.turnstileToken,
+			"cf-turnstile-response": turnstileRef.value.turnstileToken.value,
 		});
 
 		const credentials: AuthCredentials = {
