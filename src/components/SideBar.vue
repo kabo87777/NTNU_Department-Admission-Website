@@ -98,18 +98,20 @@
 					</span>
 				</Button>
 			</router-link>
-			<Button
-				class="p-button-secondary p-button-text !mt-24px !w-336px !h-48px"
-			>
-				<img
-					alt="logo"
-					src="/assets/sidebar/File_dock_search.png"
-					style="width: 1.5rem"
-				/>
-				<span class="text-left tracking-3px ml-3 font-bold text-xl">
-					{{ $t("上傳資料列表") }}
-				</span>
-			</Button>
+			<router-link to="/admission/manager/applicantsUploadList">
+				<Button
+					class="p-button-secondary p-button-text !mt-24px !w-336px !h-48px"
+				>
+					<img
+						alt="logo"
+						src="/assets/sidebar/File_dock_search.png"
+						style="width: 1.5rem"
+					/>
+					<span class="text-left tracking-3px ml-3 font-bold text-xl">
+						{{ $t("上傳資料列表") }}
+					</span>
+				</Button>
+			</router-link>
 
 			<Divider align="left" class="text-xs text-ntnuRed text-base">
 				<b>{{ $t("審查端設定") }}</b>
@@ -261,12 +263,21 @@ import Button from "primevue/button";
 import Divider from "primevue/divider";
 import Dialog from "primevue/dialog";
 import InputText from "primevue/inputtext";
+import { useI18n } from "vue-i18n";
 
+const { t } = useI18n();
+const translation = {
+	masterReview: t("2022 研究生審查 Master Review"),
+	phdReview: t("2022 博士生審查 Phd Review"),
+};
 const visibleLeft = ref(true);
-let selectedProgram = ref({ program_name: "2022 研究生審查 Master Review" });
+let selectedProgram = ref({
+	program_name: translation.masterReview,
+	value: 1,
+});
 let programs = ref([
-	{ program_name: "2022 研究生審查 Master Review" },
-	{ program_name: "2022 博士生審查 PhD Review" },
+	{ program_name: translation.masterReview, value: 1 },
+	{ program_name: translation.phdReview, value: 2 },
 ]);
 const displayNewProject = ref(false);
 const newProjectName = ref("");

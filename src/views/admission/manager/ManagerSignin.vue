@@ -32,7 +32,12 @@
 					<label for="email">{{ $t("電郵") }}</label>
 				</div>
 				<div class="mt-4px">
-					<InputText id="email" type="email" class="input" />
+					<InputText
+						v-model="email"
+						id="email"
+						type="email"
+						class="input"
+					/>
 				</div>
 			</div>
 			<div class="block mt-24px ml-168px">
@@ -40,17 +45,18 @@
 					<label for="password">{{ $t("密碼") }}</label>
 				</div>
 				<div class="mt-4px">
-					<InputText id="password" type="password" class="input" />
+					<InputText
+						v-model="password"
+						id="password"
+						type="password"
+						class="input"
+					/>
 				</div>
 			</div>
 			<div class="flex relative ml-168px mt-8px">
 				<div class="flex">
 					<div class="pt-3px">
-						<Checkbox
-							v-model="rmbAccCheck"
-							:binary="true"
-							@click="handleCheck()"
-						/>
+						<Checkbox v-model="isRememberAccount" :binary="true" />
 					</div>
 					<label class="text-xs text-gray-500 ml-4px">
 						<div>{{ $t("下次登入記住帳號") }}</div>
@@ -65,10 +71,13 @@
 				</div>
 			</div>
 			<div class="ml-168px mt-40px">
-				<Turnstile ref="turnstileToken" />
+				<Turnstile ref="turnstileRef" />
 			</div>
 			<div class="mt-50px ml-168px">
-				<Button class="bg-darkBlue h-60px w-420px" @click="handleLogin">
+				<Button
+					class="bg-darkBlue h-60px w-420px"
+					@click="handleSignin"
+				>
 					<div class="m-auto text-2xl">
 						<div>{{ $t("登入") }}</div>
 					</div>
@@ -79,40 +88,103 @@
 </template>
 
 <script setup lang="ts">
-import type { AuthStoreState } from "@/stores/auth";
-
 import InputText from "primevue/inputtext";
 import Checkbox from "primevue/checkbox";
 import Button from "primevue/button";
 import { ref, watch } from "vue";
 import { useRouter } from "vue-router";
 
-import { useAuthStore } from "@/stores/auth";
+import { useAdmissionManagerAuthStore } from "@/stores/universalAuth";
+import { doUniversalAuth } from "@/api/universalAuth";
+import type { TurnstileComponentExposes } from "@/components/Turnstile.vue";
 import Turnstile from "@/components/Turnstile.vue";
 
-const turnstileToken = ref(null);
-watch(turnstileToken, (newToken, prevToken) => {
-	console.log("watch new token", prevToken, newToken);
-});
+interface AdmissionManagerAuthResponse {
+	email: string;
+	provider: string;
+	uid: string;
+	id: number;
+	allow_password_change: boolean;
+	isInit: any | null;
+	lang: any | null;
+	name: any | null;
+	nickname: any | null;
+	image: any | null;
+}
 
 const router = useRouter();
 
-// TODO: Separate stores for manager/applicant
-const auth: AuthStoreState = useAuthStore();
+const redirectToMainContainer = () =>
+	router.push({ name: "AdmissionManagerMainContainer" });
 
-const rmbAccCheck = ref(false);
+// Go to AdmissionManagerMainContainer if signed in
+// TODO: check session validity
+const auth = useAdmissionManagerAuthStore();
+if (auth.credentials) redirectToMainContainer();
 
-const handleCheck = () => {
-	rmbAccCheck.value = !rmbAccCheck.value;
-	console.log(rmbAccCheck.value);
-};
+// Login Form
+const turnstileRef = ref<TurnstileComponentExposes>();
+const isRememberAccount = ref(false);
+const email = ref("asdasssddddsd@birkhoff.me");
+const password = ref("123");
 
-const handleLogin = () => {
-	console.log("login button clicked");
+// Get remember account status
+const lastSigninEmail = window.localStorage.getItem(
+	"AdmissionManagerSigninLastEmail"
+);
 
-	auth.credentials.expiry = Infinity;
+if (lastSigninEmail) {
+	isRememberAccount.value = true;
+	email.value = lastSigninEmail;
+}
 
-	router.push("/admission/manager");
+// remove legacy item (renamed)
+window.localStorage.removeItem("AdmissionManagerSigninLastSigninEmail");
+
+// Store email in localStorage if remember account
+watch(isRememberAccount, (isChecked) => {
+	if (!isChecked) {
+		window.localStorage.removeItem("AdmissionManagerSigninLastEmail");
+		return;
+	}
+
+	window.localStorage.setItem("AdmissionManagerSigninLastEmail", email.value);
+});
+
+// interface AdmissionManagerAuthResponse {
+// 	email: string;
+// 	provider: string;
+// 	uid: string;
+// 	id: number;
+// 	allow_password_change: boolean;
+// 	isInit: any | null;
+// 	lang: any | null;
+// 	name: any | null;
+// 	nickname: any | null;
+// 	image: any | null;
+// }
+
+const handleSignin = async () => {
+	try {
+		if (!turnstileRef.value?.turnstileToken)
+			throw new Error("Turnstile challenge failed");
+
+		const response = await doUniversalAuth(auth, {
+			email: email.value,
+			password: password.value,
+			"cf-turnstile-response": turnstileRef.value.turnstileToken.value,
+		});
+
+		const data: AdmissionManagerAuthResponse = response.data;
+
+		if (!data.email)
+			throw new Error("Sign-in failure: " + JSON.stringify(data));
+
+		redirectToMainContainer();
+	} catch (e) {
+		// TODO: login failed notification with toast
+		console.log(e);
+	}
 };
 </script>
 
