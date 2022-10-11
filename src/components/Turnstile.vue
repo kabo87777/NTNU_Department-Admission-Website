@@ -15,7 +15,7 @@ import { Ref, ref } from "vue";
 
 export interface TurnstileComponentExposes {
 	turnstileToken: Ref<string>;
-};
+}
 
 let turnstileToken = ref("");
 
