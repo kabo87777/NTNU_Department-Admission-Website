@@ -111,7 +111,7 @@ const redirectToMainContainer = () =>
 
 // Go to AdmissionManagerMainContainer if signed in
 // TODO: check session validity
-if (auth.credentials) redirectToMainContainer();
+// if (auth.credentials) redirectToMainContainer();
 
 // Login Form
 const turnstileRef = ref<TurnstileComponentExposes>();
