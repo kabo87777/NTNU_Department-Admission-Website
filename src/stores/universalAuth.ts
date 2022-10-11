@@ -25,12 +25,15 @@ const defineUniversalAuthStore = (authStoreName: string) =>
 		},
 	});
 
-export const useAdmissionApplicantAuthStore =
-	defineUniversalAuthStore("AdmissionApplicant");
-export const useAdmissionManagerAuthStore =
-	defineUniversalAuthStore("AdmissionManager");
-export const useRecruitmentApplicantAuthStore = defineUniversalAuthStore(
-	"RecruitmentApplicant"
+export const useAdmissionApplicantAuthStore = defineUniversalAuthStore(
+	"AdmissionApplicantAuthStore"
 );
-export const useRecruitmentManagerAuthStore =
-	defineUniversalAuthStore("RecruitmentManager");
+export const useAdmissionManagerAuthStore = defineUniversalAuthStore(
+	"AdmissionManagerAuthStore"
+);
+export const useRecruitmentApplicantAuthStore = defineUniversalAuthStore(
+	"RecruitmentApplicantAuthStore"
+);
+export const useRecruitmentManagerAuthStore = defineUniversalAuthStore(
+	"RecruitmentManagerAuthStore"
+);

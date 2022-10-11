@@ -56,11 +56,7 @@
 			<div class="flex relative ml-168px mt-8px">
 				<div class="flex">
 					<div class="pt-3px">
-						<Checkbox
-							v-model="isRememberAccount"
-							:binary="true"
-							@click="handleCheck()"
-						/>
+						<Checkbox v-model="isRememberAccount" :binary="true" />
 					</div>
 					<label class="text-xs text-gray-500 ml-4px">
 						<div>{{ $t("下次登入記住帳號") }}</div>
@@ -75,7 +71,7 @@
 				</div>
 			</div>
 			<div class="ml-168px mt-40px">
-				<Turnstile ref="turnstileToken" />
+				<Turnstile ref="turnstileRef" />
 			</div>
 			<div class="mt-50px ml-168px">
 				<Button
@@ -95,43 +91,13 @@
 import InputText from "primevue/inputtext";
 import Checkbox from "primevue/checkbox";
 import Button from "primevue/button";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { useRouter } from "vue-router";
 
-import type { AuthCredentials } from "@/stores/universalAuth";
 import { useAdmissionManagerAuthStore } from "@/stores/universalAuth";
-import { sign_in } from "@/api/admission/applicant/api";
+import { doUniversalAuth } from "@/api/universalAuth";
+import type { TurnstileComponentExposes } from "@/components/Turnstile.vue";
 import Turnstile from "@/components/Turnstile.vue";
-
-const router = useRouter();
-const auth = useAdmissionManagerAuthStore();
-// const redirectToMainContainer = () =>
-// 	router.push({ name: "AdmissionManagerMainContainer" });
-
-// Go to AdmissionManagerMainContainer if signed in
-// TODO: check session validity
-if (auth.credentials) redirectToMainContainer();
-
-// Login Form
-const turnstileToken = ref(null);
-const isRememberAccount = ref(false);
-const email = ref("asdasssddddsd@birkhoff.me");
-const password = ref("123");
-
-// Get remember account status
-const lastSigninEmail = window.localStorage.getItem(
-	"AdmissionManagerSigninLastSigninEmail"
-);
-
-if (lastSigninEmail) {
-	isRememberAccount.value = true;
-	email.value = lastSigninEmail;
-}
-
-// Remember account checkbox state
-const handleCheck = () => {
-	isRememberAccount.value = !isRememberAccount.value;
-};
 
 interface AdmissionManagerAuthResponse {
 	email: string;
@@ -146,38 +112,73 @@ interface AdmissionManagerAuthResponse {
 	image: any | null;
 }
 
-const handleSignin = async () => {
-	// Store email in localStorage if remember account
-	if (isRememberAccount.value) {
-		window.localStorage.setItem(
-			"AdmissionManagerSigninLastSigninEmail",
-			email.value
-		);
+const router = useRouter();
+
+const redirectToMainContainer = () =>
+	router.push({ name: "AdmissionManagerMainContainer" });
+
+// Go to AdmissionManagerMainContainer if signed in
+// TODO: check session validity
+const auth = useAdmissionManagerAuthStore();
+if (auth.credentials) redirectToMainContainer();
+
+// Login Form
+const turnstileRef = ref<TurnstileComponentExposes>();
+const isRememberAccount = ref(false);
+const email = ref("asdasssddddsd@birkhoff.me");
+const password = ref("123");
+
+// Get remember account status
+const lastSigninEmail = window.localStorage.getItem(
+	"AdmissionManagerSigninLastEmail"
+);
+
+if (lastSigninEmail) {
+	isRememberAccount.value = true;
+	email.value = lastSigninEmail;
+}
+
+// remove legacy item (renamed)
+window.localStorage.removeItem("AdmissionManagerSigninLastSigninEmail");
+
+// Store email in localStorage if remember account
+watch(isRememberAccount, (isChecked) => {
+	if (!isChecked) {
+		window.localStorage.removeItem("AdmissionManagerSigninLastEmail");
+		return;
 	}
 
+	window.localStorage.setItem("AdmissionManagerSigninLastEmail", email.value);
+});
+
+// interface AdmissionManagerAuthResponse {
+// 	email: string;
+// 	provider: string;
+// 	uid: string;
+// 	id: number;
+// 	allow_password_change: boolean;
+// 	isInit: any | null;
+// 	lang: any | null;
+// 	name: any | null;
+// 	nickname: any | null;
+// 	image: any | null;
+// }
+
+const handleSignin = async () => {
 	try {
-		const response = await sign_in({
+		if (!turnstileRef.value?.turnstileToken)
+			throw new Error("Turnstile challenge failed");
+
+		const response = await doUniversalAuth(auth, {
 			email: email.value,
 			password: password.value,
+			"cf-turnstile-response": turnstileRef.value.turnstileToken.value,
 		});
 
-		const credentials: AuthCredentials = {
-			"access-token": response.headers["access-token"] || "",
-			"token-type": response.headers["token-type"] || "",
-			client: response.headers["client"] || "",
-			expiry: Number(response.headers["expiry"] || NaN),
-			uid: response.headers["uid"] || "",
-		};
-
-		if (Object.values(credentials).some((p) => !p))
-			throw new Error("Server returned invalid authorization response");
-
-		const data: AdmissionManagerAuthResponse = response.data.data;
+		const data: AdmissionManagerAuthResponse = response.data;
 
 		if (!data.email)
 			throw new Error("Sign-in failure: " + JSON.stringify(data));
-
-		auth.credentials = credentials;
 
 		redirectToMainContainer();
 	} catch (e) {
