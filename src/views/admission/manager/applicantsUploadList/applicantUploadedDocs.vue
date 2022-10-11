@@ -27,9 +27,9 @@
 </template>
 
 <script setup lang="ts">
-import BasicInfo from "./reviewTabs/BasicInfo.vue";
-import AttachmentInfo from "./reviewTabs/AttachmentInfo.vue";
-import AdditionalInfo from "./reviewTabs/AdditionalInfo.vue";
+import BasicInfo from "./reviewTabs/basicInfo.vue";
+import AttachmentInfo from "./reviewTabs/attachmentInfo.vue";
+import AdditionalInfo from "./reviewTabs/additionalInfo.vue";
 import SelectButton from "primevue/selectbutton";
 import "../../../../styles/customize.css";
 import { ref } from "vue";

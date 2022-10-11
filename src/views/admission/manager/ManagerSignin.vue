@@ -105,8 +105,8 @@ import Turnstile from "@/components/Turnstile.vue";
 
 const router = useRouter();
 const auth = useAdmissionManagerAuthStore();
-const redirectToMainContainer = () =>
-	router.push({ name: "AdmissionManagerMainContainer" });
+// const redirectToMainContainer = () =>
+// 	router.push({ name: "AdmissionManagerMainContainer" });
 
 // Go to AdmissionManagerMainContainer if signed in
 // TODO: check session validity
