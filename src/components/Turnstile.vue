@@ -11,10 +11,10 @@
 </template>
 
 <script setup lang="ts">
-import { Ref, ref } from "vue";
+import { ref } from "vue";
 
 export interface TurnstileComponentExposes {
-	turnstileToken: Ref<string>;
+	turnstileToken: string;
 }
 
 let turnstileToken = ref("");
@@ -41,7 +41,7 @@ window.onTurnstileFailedVerification = () => {
 
 defineExpose({
 	turnstileToken,
-} as TurnstileComponentExposes);
+});
 </script>
 
 <style setup lang="css"></style>
