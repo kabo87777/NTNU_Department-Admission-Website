@@ -135,11 +135,6 @@ const routes: Array<RouteRecordRaw> = [
 			},
 		],
 	},
-	{
-		path: "/reviewScoreField",
-		name: "reviewScoreField",
-		component: () => import("../views/reviewScoreField.vue"),
-	},
 ];
 
 export const router: Router = createRouter({
