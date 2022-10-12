@@ -1,8 +1,6 @@
-// TODO: verifySession
 import type { AuthCredentials, AuthStore } from "@/stores/universalAuth";
-import urlJoin from "url-join";
 import axios from "axios";
-import { useAdmissionManagerAuthStore } from "@/stores/universalAuth";
+// import { useAdmissionManagerAuthStore } from "@/stores/universalAuth";
 
 export interface universalAuthData {
 	username?: string;
@@ -36,16 +34,10 @@ const buildAuthCredentialsFromHeaders = (
 };
 
 export async function doUniversalAuthSignIn(
-	path: string,
 	auth: AuthStore,
 	data: universalAuthData
 ) {
-	const endpoint: string = urlJoin(
-		`${import.meta.env.VITE_ADMISSIONS_API_ENDPOINT}/api/v1`,
-		path
-	);
-
-	const response = await axios.post(endpoint, data);
+	const response = await axios.post(auth.apiEndpoint + "/sign_in", data);
 
 	const credentials = buildAuthCredentialsFromHeaders(response.headers);
 
@@ -55,10 +47,8 @@ export async function doUniversalAuthSignIn(
 	// TODO: validate response data
 
 	// Store token credentials in authStore upon successful authorization
-	auth = useAdmissionManagerAuthStore();
+	// auth = useAdmissionManagerAuthStore();
 	auth.setCredentials(credentials);
-	console.log(credentials);
-	console.log(auth.credentials);
 
 	return response.data;
 }

@@ -33,9 +33,5 @@ instance.interceptors.response.use(
 );
 
 export const sign_in = async (auth: AuthStore, data: any) => {
-	return await doUniversalAuthSignIn(
-		"/admission/auth/admin/sign_in",
-		auth,
-		data
-	);
+	return await doUniversalAuthSignIn(auth, data);
 };
