@@ -38,7 +38,7 @@
 					<template #body="slotProps">
 						<Button
 							icon="pi pi-pencil"
-							class="p-button-rounded p-button-success mr-2"
+							class="p-button-outlined p-button-success"
 							@click="editProduct(slotProps)"
 						/>
 					</template>
@@ -232,7 +232,7 @@
 					<template #body="slotProps">
 						<Button
 							icon="pi pi-pencil"
-							class="p-button-rounded p-button-success mr-2"
+							class="p-button-outlined p-button-success"
 							@click="editProduct(slotProps)"
 						/>
 					</template>
@@ -420,7 +420,204 @@
 				</Button>
 			</div>
 		</div>
-		<div v-if="currentTab === '錄取名單'">錄取名單</div>
+		<div v-if="currentTab === '錄取名單'">
+			<DataTable
+				:value="final_list"
+				responsiveLayout="scroll"
+				dataKey="id"
+				:scrollable="true"
+				scrollHeight="700px"
+			>
+				<Column field="final_result" header="審查結果"></Column>
+				<Column field="admission_order" header="錄取順序"></Column>
+				<Column field="id" header="帳戶 ID"></Column>
+				<Column field="name" header="申請人姓名"></Column>
+				<Column field="score" header="書審/口試分數"></Column>
+				<Column :exportable="false" style="min-width: 8rem">
+					<template #body="slotProps">
+						<Button
+							icon="pi pi-pencil"
+							class="p-button-outlined p-button-success"
+							@click="editProduct(slotProps)"
+						/>
+					</template>
+				</Column>
+			</DataTable>
+			<Dialog
+				v-model:visible="productDialog"
+				header="評分資料編輯"
+				:modal="true"
+				class="w-720px h-988px"
+			>
+				<Divider></Divider>
+				<div class="flex mt-24px">
+					<div class="text-lg">帳號 ID :</div>
+					<div class="text-lg ml-266px">帳號名稱 :</div>
+				</div>
+				<div class="flex mt-18.5px">
+					<div>
+						{{ id }}
+					</div>
+					<div class="text-base ml-300px">
+						{{ name }}
+					</div>
+				</div>
+				<SelectButton
+					v-if="disable1"
+					class="h-39px mt-32px !w-664px"
+					v-model="dialogCurrentTab"
+					:options="dialogTabOptions"
+				/>
+				<SelectButton
+					v-else
+					class="h-39px mt-32px !w-664px"
+					v-model="dialogCurrentTab"
+					:options="dialogTabOptions"
+					disabled
+				/>
+				<DataTable
+					:value="scores"
+					responsiveLayout="scroll"
+					dataKey="id"
+					class="text-base mt-24px"
+				>
+					<Column field="name" header="審查委員"></Column>
+					<Column
+						field="access"
+						header="逕取"
+						dataType="boolean"
+						bodyClass="text-center"
+						style="min-width: 8rem"
+					>
+						<template #body="slotProps">
+							<i
+								v-if="slotProps.data.access"
+								class="pi pi-check"
+							></i>
+							<p v-else>-</p>
+						</template>
+					</Column>
+					<Column field="score_1" header="學習歷程"></Column>
+					<Column field="score_2" header="發展潛能"></Column>
+					<Column field="score_3" header="學習潛力"></Column>
+				</DataTable>
+				<div class="flex mt-20px ml-5px">
+					<div>平均分數</div>
+					<div class="ml-240px">80</div>
+					<div class="ml-107px">70</div>
+					<div class="ml-107px">66.6</div>
+				</div>
+				<div class="flex mt-52px ml-53px">
+					<div>
+						<div>一階審查結果</div>
+						<Dropdown
+							v-model="p1_result"
+							:options="p1_result_option"
+							class="w-228px h-44px mt-8px"
+						/>
+					</div>
+					<div class="ml-120px">
+						<div>口試順序</div>
+						<InputText
+							v-if="disable1"
+							type="text"
+							v-model="oral_order"
+							class="w-148px h-44px mt-8px"
+						/>
+						<InputText
+							v-else
+							type="text"
+							v-model="oral_order"
+							disabled
+							class="w-148px h-44px mt-8px"
+						/>
+					</div>
+				</div>
+				<div class="flex mt-32px ml-52px">
+					<div>
+						<div>二階審查結果</div>
+						<Dropdown
+							v-if="disable1"
+							v-model="p2_result"
+							:options="p2_result_option"
+							class="w-228px h-44px mt-8px"
+						/>
+						<Dropdown
+							v-else
+							v-model="p2_result"
+							:options="p2_result_option"
+							disabled
+							class="w-228px h-44px mt-8px"
+						/>
+					</div>
+					<div class="ml-120px">
+						<div>錄取順序</div>
+						<InputText
+							v-if="disable1"
+							type="text"
+							v-model="oral_order"
+							class="w-148px h-44px mt-8px"
+						/>
+						<InputText
+							v-else-if="!disable1"
+							type="text"
+							v-model="oral_order"
+							disabled
+							class="w-148px h-44px mt-8px"
+						/>
+					</div>
+				</div>
+				<Button
+					class="w-140px h-44px !mt-40px !ml-200px p-button-outlined p-button-success"
+					@click="doneEdit"
+				>
+					<img
+						alt="logo"
+						src="/assets/gradeDataList/Done_round.png"
+						style="width: 1.5rem"
+						class="fill-green-500"
+					/>
+					<span class="tracking-1px">儲存變更</span>
+				</Button>
+				<Button
+					class="w-100px h-44px !mt-40px !ml-49px p-button-outlined p-button-danger"
+					@click="doneEdit"
+				>
+					<img
+						alt="logo"
+						src="/assets/project-setting/Close_round.png"
+						style="width: 1.5rem"
+						class="fill-green-500"
+					/>
+					<span class="tracking-1px">取消</span>
+				</Button>
+			</Dialog>
+			<div class="bigRedDivider !mt-50px"></div>
+			<div class="flex text-xl mt-20px">
+				<Button
+					class="w-212px h-44px !ml-430px p-button-outlined p-button-help"
+				>
+					<img
+						alt="logo"
+						src="/assets/gradeDataList/Sort_arrow.png"
+						style="width: 1.5rem"
+						class="fill-green-500"
+					/>
+					<span class="tracking-1px">依錄取順序重排</span>
+				</Button>
+				<Button
+					class="w-140px h-44px !ml-32px p-button-outlined p-button-help"
+				>
+					<img
+						alt="logo"
+						src="/assets/gradeDataList/Paper.png"
+						style="width: 1.5rem"
+						class="fill-green-500"
+					/>
+					<span class="tracking-1px">報表列印</span>
+				</Button>
+			</div>
+		</div>
 	</div>
 </template>
 
@@ -620,6 +817,79 @@ const phase2_list = ref([
 	},
 	{
 		oral_order: "X",
+		id: "1009",
+		name: "Ggg",
+		score: "65/書審未過",
+		final_result: "不錄取",
+	},
+]);
+
+const final_list = ref([
+	{
+		admission_order: "1",
+		id: "1000",
+		name: "Aaa",
+		score: "85/70",
+		final_result: "正取",
+	},
+	{
+		admission_order: "2",
+		id: "1001",
+		name: "Bbb",
+		score: "73/90",
+		final_result: "備取",
+	},
+	{
+		admission_order: "3",
+		id: "1002",
+		name: "Ccc",
+		score: "82/77",
+		final_result: "正取",
+	},
+	{
+		admission_order: "4",
+		id: "1003",
+		name: "Ddd",
+		score: "77/60",
+		final_result: "待審核",
+	},
+	{
+		admission_order: "X",
+		id: "1004",
+		name: "Eee",
+		score: "逕取通過",
+		final_result: "正取",
+	},
+	{
+		admission_order: "X",
+		id: "1005",
+		name: "Fff",
+		score: "59/書審未過",
+		final_result: "不錄取",
+	},
+	{
+		admission_order: "X",
+		id: "1006",
+		name: "Ggg",
+		score: "65/書審未過",
+		final_result: "不錄取",
+	},
+	{
+		admission_order: "X",
+		id: "1007",
+		name: "Ggg",
+		score: "65/書審未過",
+		final_result: "不錄取",
+	},
+	{
+		admission_order: "X",
+		id: "1008",
+		name: "Ggg",
+		score: "65/書審未過",
+		final_result: "不錄取",
+	},
+	{
+		admission_order: "X",
 		id: "1009",
 		name: "Ggg",
 		score: "65/書審未過",
