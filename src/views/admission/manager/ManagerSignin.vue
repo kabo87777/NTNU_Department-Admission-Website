@@ -46,6 +46,7 @@
 								:disabled="isSubmitting"
 							/>
 						</div>
+						<!-- TODO: styling -->
 						<span v-if="errorMessage && meta.touched">
 							{{ errorMessage }}
 						</span>
@@ -69,6 +70,7 @@
 								:disabled="isSubmitting"
 							/>
 						</div>
+						<!-- TODO: styling -->
 						<span v-if="errorMessage && meta.touched">
 							{{ errorMessage }}
 						</span>
@@ -148,14 +150,13 @@ const router = useRouter();
 const redirectToMainContainer = () =>
 	router.push({ name: "AdmissionManagerMainContainer" });
 
+// TODO: i18n error message
 const validationSchema = yup.object({
-	email: yup.string().required().email("Invalid email"),
-	password: yup
-		.string()
-		.required("Required")
-		.min(8, "Must be 8 characters or more")
-		.matches(/[a-z]+/, "One lowercase character")
-		.matches(/[A-Z]+/, "One uppercase character"),
+	email: yup.string().required("Required").email("Invalid email"),
+	password: yup.string().required("Required"),
+	// .min(8, "Must be 8 characters or more")
+	// .matches(/[a-z]+/, "One lowercase character")
+	// .matches(/[A-Z]+/, "One uppercase character"),
 });
 
 // Go to AdmissionManagerMainContainer if signed in
