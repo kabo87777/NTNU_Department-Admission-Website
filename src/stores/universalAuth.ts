@@ -76,7 +76,7 @@ export const useAdmissionApplicantAuthStore = defineUniversalAuthStore(
 );
 export const useAdmissionReviewerAuthStore = defineUniversalAuthStore(
 	"AdmissionReviewerAuthStore",
-	"/admission/auth/admin"
+	"/admission/auth/reviewer"
 );
 export const useAdmissionAdminAuthStore = defineUniversalAuthStore(
 	"AdmissionAdminAuthStore",
@@ -88,7 +88,7 @@ export const useRecruitmentApplicantAuthStore = defineUniversalAuthStore(
 );
 export const useRecruitmentReviewerAuthStore = defineUniversalAuthStore(
 	"RecruitmentReviewerAuthStore",
-	"/recruitment/auth/admin"
+	"/recruitment/auth/reviewer"
 );
 export const useRecruitmentAdminAuthStore = defineUniversalAuthStore(
 	"RecruitmentAdminAuthStore",
