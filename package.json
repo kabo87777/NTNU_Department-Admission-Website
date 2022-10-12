@@ -23,6 +23,7 @@
     "primevue": "^3.17.0",
     "unplugin-icons": "^0.14.11",
     "unplugin-vue-components": "^0.22.7",
+    "url-join": "^5.0.0",
     "vee-validate": "^4.7.0",
     "vite-plugin-windicss": "^1.8.8",
     "vue": "^3.2.37",

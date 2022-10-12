@@ -44,6 +44,7 @@
 								type="email"
 								class="input"
 								:disabled="isSubmitting"
+								required
 							/>
 						</div>
 						<!-- TODO: styling -->
@@ -68,6 +69,7 @@
 								type="password"
 								class="input"
 								:disabled="isSubmitting"
+								required
 							/>
 						</div>
 						<!-- TODO: styling -->
@@ -122,8 +124,8 @@ import { useRouter } from "vue-router";
 import { Field, Form, useForm } from "vee-validate";
 import * as yup from "yup";
 
+import * as api from "@/api/admission/manager/api";
 import { useAdmissionManagerAuthStore } from "@/stores/universalAuth";
-import { doUniversalAuth } from "@/api/universalAuth";
 
 import type { TurnstileComponentExposes } from "@/components/Turnstile.vue";
 import Turnstile from "@/components/Turnstile.vue";
@@ -132,23 +134,10 @@ import Checkbox from "primevue/checkbox";
 import Button from "primevue/button";
 import InputText from "primevue/inputtext";
 
-interface AdmissionManagerAuthResponse {
-	email: string;
-	provider: string;
-	uid: string;
-	id: number;
-	allow_password_change: boolean;
-	isInit: any | null;
-	lang: any | null;
-	name: any | null;
-	nickname: any | null;
-	image: any | null;
-}
-
 const router = useRouter();
 
 const redirectToMainContainer = () =>
-	router.push({ name: "AdmissionManagerMainContainer" });
+	router.replace({ name: "AdmissionManagerMainContainer" });
 
 // TODO: i18n error message
 const validationSchema = yup.object({
@@ -161,14 +150,14 @@ const validationSchema = yup.object({
 
 // Go to AdmissionManagerMainContainer if signed in
 // TODO: check session validity
-const auth = useAdmissionManagerAuthStore();
-if (auth.credentials) redirectToMainContainer();
+const authStore = useAdmissionManagerAuthStore();
+if (authStore.isValidSession) redirectToMainContainer();
 
 // Login Form
 const turnstileRef = ref<TurnstileComponentExposes>();
 const isRememberAccount = ref(false);
-const email = ref("asdasssddddsd@birkhoff.me");
-const password = ref("123");
+const email = ref("example1@email.com");
+const password = ref("Example123");
 
 // https://vee-validate.logaretm.com/v4/guide/composition-api/handling-forms/#javascript-submissions-ajax
 const { handleSubmit, isSubmitting } = useForm({
@@ -194,34 +183,40 @@ watch(isRememberAccount, (isChecked) => {
 		window.localStorage.removeItem("AdmissionManagerSigninLastEmail");
 });
 
+const resetTurnstile = () => {
+	window.turnstile?.reset();
+};
+
+const resetForm = () => {
+	password.value = "";
+	resetTurnstile();
+};
+
 const onSubmit = handleSubmit(async function (values, actions) {
 	window.localStorage.setItem("AdmissionManagerSigninLastEmail", email.value);
 
 	try {
-		// TODO: show error message
 		if (!turnstileRef.value?.turnstileToken)
 			throw new Error("Turnstile challenge failed");
 
-		const response = await doUniversalAuth(auth, {
+		const turnstileResponse = turnstileRef.value.turnstileToken;
+		resetTurnstile();
+
+		// TODO: admin, reviewer
+		await api.sign_in(authStore, {
 			email: values.email,
 			password: values.password,
-			"cf-turnstile-response": turnstileRef.value.turnstileToken,
+			"cf-turnstile-response": turnstileResponse,
 		});
 
-		// TODO: validation??
-		const data: AdmissionManagerAuthResponse = response.data;
-
-		// FIXME: verify backend error message
-		if (!data.email)
-			throw new Error("Sign-in failure: " + JSON.stringify(data));
-
-		// TODO: persistent auth store in localStorage
-
 		redirectToMainContainer();
-	} catch (e) {
-		// TODO: login failed notification with toast
+	} catch (e: any) {
+		// TODO: show error message
 		console.log(e);
+		if (e?.response?.status === 401) console.log("invalid credentials");
 	}
+
+	resetForm();
 });
 </script>
 
