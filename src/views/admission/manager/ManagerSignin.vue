@@ -106,7 +106,7 @@
 					<Button
 						class="bg-darkBlue h-60px w-420px"
 						type="submit"
-						:loading="isTurnstileRunning"
+						:loading="isTurnstileRunning || isSubmitting"
 						:label="$t('登入')"
 					/>
 				</div>
@@ -116,8 +116,6 @@
 </template>
 
 <script setup lang="ts">
-// :disabled="isSubmitting"
-// 						:loading="!turnstileRef"
 import { ref, watch, computed } from "vue";
 import { useRouter } from "vue-router";
 import { Field, useForm } from "vee-validate";
@@ -181,19 +179,19 @@ watch(isRememberAccount, (isChecked) => {
 		window.localStorage.removeItem("AdmissionManagerSigninLastEmail");
 });
 
-const resetTurnstile = () => {
+const consumeTurnstileToken = () => {
+	const token: string | undefined = turnstileRef.value?.turnstileToken;
 	window.turnstile?.reset();
+	return token;
 };
 
 const onSubmit = handleSubmit(async function (values, actions) {
 	window.localStorage.setItem("AdmissionManagerSigninLastEmail", email.value);
 
 	try {
-		if (!turnstileRef.value?.turnstileToken)
-			throw new Error("Turnstile challenge failed");
+		const turnstileResponse = consumeTurnstileToken();
 
-		const turnstileResponse = turnstileRef.value.turnstileToken;
-		resetTurnstile();
+		if (!turnstileResponse) throw new Error("Turnstile challenge failed");
 
 		// TODO: admin, reviewer
 		await api.sign_in(authStore, {
