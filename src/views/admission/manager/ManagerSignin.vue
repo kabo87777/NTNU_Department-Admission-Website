@@ -42,6 +42,7 @@
 								v-bind="field"
 								name="email"
 								type="email"
+								class="input"
 								:disabled="isSubmitting"
 							/>
 						</div>
@@ -64,6 +65,7 @@
 								v-bind="field"
 								name="password"
 								type="password"
+								class="input"
 								:disabled="isSubmitting"
 							/>
 						</div>
