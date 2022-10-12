@@ -113,11 +113,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted } from "vue";
+import { ref, watch } from "vue";
 import { useRouter } from "vue-router";
-
 import { Field, Form, useForm } from "vee-validate";
 import * as yup from "yup";
+
 import { useAdmissionManagerAuthStore } from "@/stores/universalAuth";
 import { doUniversalAuth } from "@/api/universalAuth";
 
@@ -205,10 +205,14 @@ const onSubmit = handleSubmit(async function (values, actions) {
 			"cf-turnstile-response": turnstileRef.value.turnstileToken,
 		});
 
+		// TODO: validation??
 		const data: AdmissionManagerAuthResponse = response.data;
 
+		// FIXME: verify backend error message
 		if (!data.email)
 			throw new Error("Sign-in failure: " + JSON.stringify(data));
+
+		// TODO: persistent auth store in localStorage
 
 		redirectToMainContainer();
 	} catch (e) {
