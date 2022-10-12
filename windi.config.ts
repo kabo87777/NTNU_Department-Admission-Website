@@ -11,9 +11,6 @@ export default defineConfig({
 	plugins: [AspectRatio, Filters, Forms, LineClamp, SrollSnap],
 	theme: {
 		textColor: {
-			mPrimary: '#93282C',
-			jPrimary: '#003A5C',
-			aPrimary: '#8A7B27',
 			// secondary: '',
 			success: '#62AE01',
 			warning: '#BE9505',
@@ -23,6 +20,10 @@ export default defineConfig({
 		},
 		extend: {
 			colors: {
+				mPrimary: '#93282C',
+				jPrimary: '#003A5C',
+				aPrimary: '#8A7B27',
+				// secondary: '',
 				success: '#92E826',
 				warning: '#F2C831',
 				danger: '#F23740',
