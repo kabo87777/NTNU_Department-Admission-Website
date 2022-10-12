@@ -7,7 +7,6 @@
 		data-expired-callback="onTurnstileTokenExpiration"
 		data-error-callback="onTurnstileFailedVerification"
 	></div>
-	Turnstile token: {{ turnstileToken.slice(0, 10) }}...
 </template>
 
 <script setup lang="ts">
@@ -17,7 +16,7 @@ export interface TurnstileComponentExposes {
 	turnstileToken: string;
 }
 
-let turnstileToken = ref("");
+const turnstileToken = ref("");
 
 const script = document.createElement("script");
 
@@ -33,6 +32,7 @@ window.onTurnstileSuccessfulVerification = (token: string) => {
 
 window.onTurnstileTokenExpiration = () => {
 	turnstileToken.value = "";
+	window.turnstile?.reset();
 };
 
 window.onTurnstileFailedVerification = () => {

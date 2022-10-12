@@ -106,12 +106,9 @@
 					<Button
 						class="bg-darkBlue h-60px w-420px"
 						type="submit"
-						:disabled="isSubmitting"
-					>
-						<div class="m-auto text-2xl">
-							<div>{{ $t("登入") }}</div>
-						</div>
-					</Button>
+						:loading="isTurnstileRunning"
+						:label="$t('登入')"
+					/>
 				</div>
 			</form>
 		</div>
@@ -119,13 +116,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from "vue";
+// :disabled="isSubmitting"
+// 						:loading="!turnstileRef"
+import { ref, watch, computed } from "vue";
 import { useRouter } from "vue-router";
-import { Field, Form, useForm } from "vee-validate";
+import { Field, useForm } from "vee-validate";
 import * as yup from "yup";
 
-import * as api from "@/api/admission/manager/api";
-import { useAdmissionManagerAuthStore } from "@/stores/universalAuth";
+import * as api from "@/api/admission/admin/api";
+import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
 
 import type { TurnstileComponentExposes } from "@/components/Turnstile.vue";
 import Turnstile from "@/components/Turnstile.vue";
@@ -139,18 +138,9 @@ const router = useRouter();
 const redirectToMainContainer = () =>
 	router.replace({ name: "AdmissionManagerMainContainer" });
 
-// TODO: i18n error message
-const validationSchema = yup.object({
-	email: yup.string().required("Required").email("Invalid email"),
-	password: yup.string().required("Required"),
-	// .min(8, "Must be 8 characters or more")
-	// .matches(/[a-z]+/, "One lowercase character")
-	// .matches(/[A-Z]+/, "One uppercase character"),
-});
+const authStore = useAdmissionAdminAuthStore();
 
 // Go to AdmissionManagerMainContainer if signed in
-// TODO: check session validity
-const authStore = useAdmissionManagerAuthStore();
 if (authStore.isValidSession) redirectToMainContainer();
 
 // Login Form
@@ -158,10 +148,18 @@ const turnstileRef = ref<TurnstileComponentExposes>();
 const isRememberAccount = ref(false);
 const email = ref("example1@email.com");
 const password = ref("Example123");
+const isTurnstileRunning = computed(() => !turnstileRef.value?.turnstileToken);
 
+// TODO: i18n error message
 // https://vee-validate.logaretm.com/v4/guide/composition-api/handling-forms/#javascript-submissions-ajax
 const { handleSubmit, isSubmitting } = useForm({
-	validationSchema,
+	validationSchema: yup.object({
+		email: yup.string().required("Required").email("Invalid email"),
+		password: yup.string().required("Required"),
+		// .min(8, "Must be 8 characters or more")
+		// .matches(/[a-z]+/, "One lowercase character")
+		// .matches(/[A-Z]+/, "One uppercase character"),
+	}),
 });
 
 // Get remember account status
@@ -187,11 +185,6 @@ const resetTurnstile = () => {
 	window.turnstile?.reset();
 };
 
-const resetForm = () => {
-	password.value = "";
-	resetTurnstile();
-};
-
 const onSubmit = handleSubmit(async function (values, actions) {
 	window.localStorage.setItem("AdmissionManagerSigninLastEmail", email.value);
 
@@ -215,8 +208,6 @@ const onSubmit = handleSubmit(async function (values, actions) {
 		console.log(e);
 		if (e?.response?.status === 401) console.log("invalid credentials");
 	}
-
-	resetForm();
 });
 </script>
 
