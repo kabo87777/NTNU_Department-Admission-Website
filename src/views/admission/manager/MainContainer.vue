@@ -17,8 +17,8 @@ const router = useRouter();
 
 const auth = useAdmissionManagerAuthStore();
 
-if (!auth.credentials) {
-	router.push({ name: "AdmissionManagerSignin" });
+if (!auth.isValidSession) {
+	router.replace({ name: "AdmissionManagerSignin" });
 }
 </script>
 
