@@ -77,6 +77,7 @@
 					disabled
 				/>
 				<DataTable
+					v-if="dialogCurrentTab === '第一階段 (書面審查)'"
 					:value="scores"
 					responsiveLayout="scroll"
 					dataKey="id"
@@ -102,11 +103,35 @@
 					<Column field="score_2" header="發展潛能"></Column>
 					<Column field="score_3" header="學習潛力"></Column>
 				</DataTable>
-				<div class="flex mt-20px ml-5px">
+				<DataTable
+					v-if="dialogCurrentTab === '第二階段 (口試審查)'"
+					:value="scores"
+					responsiveLayout="scroll"
+					dataKey="id"
+					class="text-base mt-24px"
+				>
+					<Column field="name" header="審查委員"></Column>
+					<Column field="score_1" header="評分項目一"></Column>
+					<Column field="score_2" header="評分項目二"></Column>
+					<Column field="score_3" header="評分項目三"></Column>
+				</DataTable>
+				<div
+					v-if="dialogCurrentTab === '第一階段 (書面審查)'"
+					class="flex mt-20px ml-5px"
+				>
 					<div>平均分數</div>
 					<div class="ml-240px">80</div>
 					<div class="ml-107px">70</div>
 					<div class="ml-107px">66.6</div>
+				</div>
+				<div
+					v-if="dialogCurrentTab === '第二階段 (口試審查)'"
+					class="flex mt-20px ml-5px"
+				>
+					<div>平均分數</div>
+					<div class="ml-95px">80</div>
+					<div class="ml-155px">70</div>
+					<div class="ml-155px">66.6</div>
 				</div>
 				<div class="flex mt-52px ml-53px">
 					<div>
@@ -123,14 +148,14 @@
 							v-if="disable1"
 							type="text"
 							v-model="oral_order"
-							class="w-148px h-44px mt-8px"
+							class="w-148px h-44px !mt-8px"
 						/>
 						<InputText
 							v-else
 							type="text"
 							v-model="oral_order"
 							disabled
-							class="w-148px h-44px mt-8px"
+							class="w-148px h-44px !mt-8px"
 						/>
 					</div>
 				</div>
@@ -157,14 +182,14 @@
 							v-if="disable1"
 							type="text"
 							v-model="oral_order"
-							class="w-148px h-44px mt-8px"
+							class="w-148px h-44px !mt-8px"
 						/>
 						<InputText
 							v-else-if="!disable1"
 							type="text"
 							v-model="oral_order"
 							disabled
-							class="w-148px h-44px mt-8px"
+							class="w-148px h-44px !mt-8px"
 						/>
 					</div>
 				</div>
@@ -296,11 +321,23 @@
 					<Column field="score_2" header="發展潛能"></Column>
 					<Column field="score_3" header="學習潛力"></Column>
 				</DataTable>
-				<div class="flex mt-20px ml-5px">
+				<div
+					v-if="dialogCurrentTab === '第一階段 (書面審查)'"
+					class="flex mt-20px ml-5px"
+				>
 					<div>平均分數</div>
 					<div class="ml-240px">80</div>
 					<div class="ml-107px">70</div>
 					<div class="ml-107px">66.6</div>
+				</div>
+				<div
+					v-if="dialogCurrentTab === '第二階段 (口試審查)'"
+					class="flex mt-20px ml-5px"
+				>
+					<div>平均分數</div>
+					<div class="ml-95px">80</div>
+					<div class="ml-155px">70</div>
+					<div class="ml-155px">66.6</div>
 				</div>
 				<div class="flex mt-52px ml-53px">
 					<div>
@@ -317,14 +354,14 @@
 							v-if="disable1"
 							type="text"
 							v-model="oral_order"
-							class="w-148px h-44px mt-8px"
+							class="w-148px h-44px !mt-8px"
 						/>
 						<InputText
 							v-else
 							type="text"
 							v-model="oral_order"
 							disabled
-							class="w-148px h-44px mt-8px"
+							class="w-148px h-44px !mt-8px"
 						/>
 					</div>
 				</div>
@@ -351,14 +388,14 @@
 							v-if="disable1"
 							type="text"
 							v-model="oral_order"
-							class="w-148px h-44px mt-8px"
+							class="w-148px h-44px !mt-8px"
 						/>
 						<InputText
 							v-else-if="!disable1"
 							type="text"
 							v-model="oral_order"
 							disabled
-							class="w-148px h-44px mt-8px"
+							class="w-148px h-44px !mt-8px"
 						/>
 					</div>
 				</div>
@@ -501,11 +538,23 @@
 					<Column field="score_2" header="發展潛能"></Column>
 					<Column field="score_3" header="學習潛力"></Column>
 				</DataTable>
-				<div class="flex mt-20px ml-5px">
+				<div
+					v-if="dialogCurrentTab === '第一階段 (書面審查)'"
+					class="flex mt-20px ml-5px"
+				>
 					<div>平均分數</div>
 					<div class="ml-240px">80</div>
 					<div class="ml-107px">70</div>
 					<div class="ml-107px">66.6</div>
+				</div>
+				<div
+					v-if="dialogCurrentTab === '第二階段 (口試審查)'"
+					class="flex mt-20px ml-5px"
+				>
+					<div>平均分數</div>
+					<div class="ml-95px">80</div>
+					<div class="ml-155px">70</div>
+					<div class="ml-155px">66.6</div>
 				</div>
 				<div class="flex mt-52px ml-53px">
 					<div>
@@ -522,14 +571,14 @@
 							v-if="disable1"
 							type="text"
 							v-model="oral_order"
-							class="w-148px h-44px mt-8px"
+							class="w-148px h-44px !mt-8px"
 						/>
 						<InputText
 							v-else
 							type="text"
 							v-model="oral_order"
 							disabled
-							class="w-148px h-44px mt-8px"
+							class="w-148px h-44px !mt-8px"
 						/>
 					</div>
 				</div>
@@ -556,14 +605,14 @@
 							v-if="disable1"
 							type="text"
 							v-model="oral_order"
-							class="w-148px h-44px mt-8px"
+							class="w-148px h-44px !mt-8px"
 						/>
 						<InputText
 							v-else-if="!disable1"
 							type="text"
 							v-model="oral_order"
 							disabled
-							class="w-148px h-44px mt-8px"
+							class="w-148px h-44px !mt-8px"
 						/>
 					</div>
 				</div>
