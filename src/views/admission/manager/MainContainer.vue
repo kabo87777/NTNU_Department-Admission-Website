@@ -10,16 +10,24 @@
 import NavBar from "@/components/NavBar.vue";
 import SideBar from "@/components/SideBar.vue";
 
+import { watch } from "vue";
 import { useRouter } from "vue-router";
-import { useAdmissionManagerAuthStore } from "@/stores/universalAuth";
+import {
+	useAdmissionAdminAuthStore,
+	useAdmissionReviewerAuthStore,
+} from "@/stores/universalAuth";
 
 const router = useRouter();
 
-const auth = useAdmissionManagerAuthStore();
+const reviewerAuth = useAdmissionReviewerAuthStore();
+const adminAuth = useAdmissionAdminAuthStore();
 
-if (!auth.credentials) {
-	router.push({ name: "AdmissionManagerSignin" });
-}
+watch(router.currentRoute, () => {
+	if (!reviewerAuth.isValidSession && !adminAuth.isValidSession) {
+		router.replace({ name: "AdmissionManagerSignin" });
+		// TODO: show session expired notification
+	}
+});
 </script>
 
 <style scoped></style>

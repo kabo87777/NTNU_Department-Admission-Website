@@ -7,17 +7,16 @@
 		data-expired-callback="onTurnstileTokenExpiration"
 		data-error-callback="onTurnstileFailedVerification"
 	></div>
-	Turnstile token: {{ turnstileToken.slice(0, 10) }}...
 </template>
 
 <script setup lang="ts">
-import { Ref, ref } from "vue";
+import { ref } from "vue";
 
 export interface TurnstileComponentExposes {
-	turnstileToken: Ref<string>;
+	turnstileToken: string;
 }
 
-let turnstileToken = ref("");
+const turnstileToken = ref("");
 
 const script = document.createElement("script");
 
@@ -33,6 +32,7 @@ window.onTurnstileSuccessfulVerification = (token: string) => {
 
 window.onTurnstileTokenExpiration = () => {
 	turnstileToken.value = "";
+	window.turnstile?.reset();
 };
 
 window.onTurnstileFailedVerification = () => {
@@ -41,7 +41,7 @@ window.onTurnstileFailedVerification = () => {
 
 defineExpose({
 	turnstileToken,
-} as TurnstileComponentExposes);
+});
 </script>
 
 <style setup lang="css"></style>

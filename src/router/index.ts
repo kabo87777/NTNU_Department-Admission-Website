@@ -16,6 +16,8 @@ import AdmissionManagerProjectSettings from "@/views/admission/manager/ProjectSe
 import AdmissionApplicantMainContainer from "@/views/admission/applicant/MainContainer.vue";
 import AdmissionApplicantSignin from "@/views/admission/applicant/ApplicantSignin.vue";
 import AdmissionApplicantForgetPassword from "@/views/admission/applicant/ForgetPassword.vue";
+import AdmissionApplicantPasswordRecvoerySentView from "@/views/admission/applicant/PasswordRecvoerySentView.vue";
+import AdmissionApplicantResetPassword from "@/views/admission/applicant/ResetPassword.vue";
 import projectSetting from "@/views/admission/manager/project-setting.vue";
 import firstloginchangepassword from "@/views/admission/FirstSigninChangePass.vue";
 import reviewScoreField from "@/views/reviewScoreField.vue";
@@ -68,7 +70,18 @@ const routes: Array<RouteRecordRaw> = [
 			// 	name: "firstloginchangepassword",
 			// 	component: firstloginchangepassword,
 			// },
+			// Admission - applicant reset password
+			{
+				path: "admission/applicant/resetPassword",
+				name: "AdmissionApplicantResetPassword",
+				component: AdmissionApplicantResetPassword,
+			},
 			// Admission - applicant request password recovery
+			{
+				path: "admission/applicant/forgetPassword/emailSent",
+				name: "AdmissionApplicantForgetPasswordEmailSent",
+				component: AdmissionApplicantPasswordRecvoerySentView,
+			},
 			{
 				path: "admission/applicant/forgetPassword",
 				name: "AdmissionApplicantForgetPassword",
