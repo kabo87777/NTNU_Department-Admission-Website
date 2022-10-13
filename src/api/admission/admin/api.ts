@@ -1,5 +1,8 @@
 import type { AuthStore } from "@/stores/universalAuth";
-import { doUniversalAuthSignIn } from "@/api/universalAuth";
+import {
+	doUniversalAuthSignIn,
+	doUniversalAuthSignOut,
+} from "@/api/universalAuth";
 import axios from "axios";
 
 const instance = axios.create({
@@ -34,4 +37,14 @@ instance.interceptors.response.use(
 
 export const sign_in = async (auth: AuthStore, data: any) => {
 	return await doUniversalAuthSignIn(auth, data);
+};
+
+export const sign_out = async (auth: AuthStore): Promise<boolean> => {
+	try {
+		await doUniversalAuthSignOut(auth);
+		return true;
+	} catch (e) {
+		// handle sign out error
+		return false;
+	}
 };
