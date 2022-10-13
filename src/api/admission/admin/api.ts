@@ -1,5 +1,6 @@
+import type { AuthStore } from "@/stores/universalAuth";
+import { doUniversalAuthSignIn } from "@/api/universalAuth";
 import axios from "axios";
-import type { AdmissionApplicantSignInInput } from "./types";
 
 const instance = axios.create({
 	baseURL: `${import.meta.env.VITE_ADMISSIONS_API_ENDPOINT}/api/v1/`,
@@ -31,6 +32,6 @@ instance.interceptors.response.use(
 	}
 );
 
-export const sign_in = async (user: AdmissionApplicantSignInInput) => {
-	return await instance.post("/admission/auth/applicant/sign_in", user);
+export const sign_in = async (auth: AuthStore, data: any) => {
+	return await doUniversalAuthSignIn(auth, data);
 };

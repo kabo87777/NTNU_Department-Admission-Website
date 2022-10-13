@@ -1,17 +1,16 @@
-// TODO: verifySession
-import type { AuthCredentials, AuthStoreState } from "@/stores/universalAuth";
-import type { Store } from "pinia";
-import { useAdmissionManagerAuthStore } from "@/stores/universalAuth";
-import { sign_in } from "@/api/admission/applicant/api";
+import type { AuthCredentials, AuthStore } from "@/stores/universalAuth";
+import axios from "axios";
+// import { useAdmissionManagerAuthStore } from "@/stores/universalAuth";
 
-export interface doUniversalAuthOptions {
-	email: string;
+export interface universalAuthData {
+	username?: string;
+	email?: string;
 	password: string;
 	"cf-turnstile-response": string;
 }
 
 // type guard
-const craftAuthCredentialsFromHeaders = (
+const buildAuthCredentialsFromHeaders = (
 	headers: any
 ): AuthCredentials | null => {
 	// All required credentials headers
@@ -34,30 +33,22 @@ const craftAuthCredentialsFromHeaders = (
 	return credentials;
 };
 
-export async function doUniversalAuth(
-	auth: Store<
-		string,
-		AuthStoreState,
-		{},
-		{
-			setAuthCredentials(c: AuthCredentials): void;
-		}
-	>,
-	options: doUniversalAuthOptions
+export async function doUniversalAuthSignIn(
+	auth: AuthStore,
+	data: universalAuthData
 ) {
-	const response = await sign_in(options);
-	const credentials = craftAuthCredentialsFromHeaders(response.headers);
+	const response = await axios.post(auth.apiEndpoint + "/sign_in", data);
+
+	const credentials = buildAuthCredentialsFromHeaders(response.headers);
 
 	if (!credentials)
 		throw new Error("Server returned invalid authorization response");
 
-	// if (!data.email)
-	// 	throw new Error("Sign-in failure: " + JSON.stringify(data));
+	// TODO: validate response data
 
 	// Store token credentials in authStore upon successful authorization
-	auth = useAdmissionManagerAuthStore();
-	auth.credentials = credentials;
+	// auth = useAdmissionManagerAuthStore();
+	auth.setCredentials(credentials);
 
-	// TODO: store token in localStorage and automatic renew
 	return response.data;
 }

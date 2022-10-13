@@ -11,14 +11,14 @@ import NavBar from "@/components/NavBar.vue";
 import SideBar from "@/components/SideBar.vue";
 
 import { useRouter } from "vue-router";
-import { useAdmissionManagerAuthStore } from "@/stores/universalAuth";
+import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
 
 const router = useRouter();
 
-const auth = useAdmissionManagerAuthStore();
+const auth = useAdmissionAdminAuthStore();
 
-if (!auth.credentials) {
-	// router.push({ name: "AdmissionManagerSignin" });
+if (!auth.isValidSession) {
+	router.replace({ name: "AdmissionManagerSignin" });
 }
 </script>
 
