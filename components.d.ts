@@ -11,6 +11,8 @@ declare module '@vue/runtime-core' {
     LandingViewLayout: typeof import('./src/components/LandingViewLayout.vue')['default']
     LoginForm: typeof import('./src/components/LoginForm.vue')['default']
     NavBar: typeof import('./src/components/NavBar.vue')['default']
+    PasswordRecoveryEmailSent: typeof import('./src/components/PasswordRecoveryEmailSent.vue')['default']
+    ResetPasswordForm: typeof import('./src/components/ResetPasswordForm.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SideBar: typeof import('./src/components/SideBar.vue')['default']

@@ -11,7 +11,10 @@ import vueI18n from "@intlify/vite-plugin-vue-i18n";
 import branch from "git-branch";
 
 if (!process.env.VITE_ADMISSIONS_API_ENDPOINT) {
-  switch (branch.sync()) {
+  // Branch name is exposed on a env var in Render builds
+  // On Render there's apparently no .git directory. So
+  // branch.sync() does not give correct result.
+  switch (process.env.RENDER_GIT_BRANCH || branch.sync()) {
     // production
     case "master":
     case "main":

@@ -27,101 +27,142 @@
 					{{ $t("審查委員及行政人員管理系統") }}
 				</div>
 			</div>
-			<div class="block mt-50px ml-168px">
-				<div class="text-base text-gray-600">
-					<label for="email">{{ $t("電郵") }}</label>
-				</div>
-				<div class="mt-4px">
-					<InputText
-						v-model="email"
-						id="email"
-						type="email"
-						class="input"
-					/>
-				</div>
-			</div>
-			<div class="block mt-24px ml-168px">
-				<div class="text-base text-gray-600">
-					<label for="password">{{ $t("密碼") }}</label>
-				</div>
-				<div class="mt-4px">
-					<InputText
-						v-model="password"
-						id="password"
-						type="password"
-						class="input"
-					/>
-				</div>
-			</div>
-			<div class="flex relative ml-168px mt-8px">
-				<div class="flex">
-					<div class="pt-3px">
-						<Checkbox
-							v-model="isRememberAccount"
-							:binary="true"
-							@click="handleCheck()"
-						/>
-					</div>
-					<label class="text-xs text-gray-500 ml-4px">
-						<div>{{ $t("下次登入記住帳號") }}</div>
-					</label>
-				</div>
-				<div class="absolute ml-320px text-xs">
-					<router-link to="/admission/manager/forgetpassword">
-						<div class="text-right font-bold goldText">
-							{{ $t("忘記密碼") }}
-						</div>
-					</router-link>
-				</div>
-			</div>
-			<div class="ml-168px mt-40px">
-				<Turnstile ref="turnstileRef" />
-			</div>
-			<div class="mt-50px ml-168px">
-				<Button
-					class="bg-darkBlue h-60px w-420px"
-					@click="handleSignin"
+			<form @submit="onSubmit" ref="form">
+				<Field
+					name="email"
+					v-slot="{ field, errorMessage, meta }"
+					v-model="email"
 				>
-					<div class="m-auto text-2xl">
-						<div>{{ $t("登入") }}</div>
+					<div class="block mt-50px ml-168px">
+						<div class="text-base text-gray-600">
+							<label for="email">{{ $t("電郵") }}</label>
+						</div>
+						<div class="mt-4px">
+							<InputText
+								v-bind="field"
+								name="email"
+								type="email"
+								class="input"
+								:disabled="isSubmitting"
+								required
+							/>
+						</div>
+						<!-- TODO: styling -->
+						<span v-if="errorMessage && meta.touched">
+							{{ errorMessage }}
+						</span>
 					</div>
-				</Button>
-			</div>
+				</Field>
+				<Field
+					name="password"
+					v-slot="{ field, errorMessage, meta }"
+					v-model="password"
+				>
+					<div class="block mt-24px ml-168px">
+						<div class="text-base text-gray-600">
+							<label for="password">{{ $t("密碼") }}</label>
+						</div>
+						<div class="mt-4px">
+							<InputText
+								v-bind="field"
+								name="password"
+								type="password"
+								class="input"
+								:disabled="isSubmitting"
+								required
+							/>
+						</div>
+						<!-- TODO: styling -->
+						<span v-if="errorMessage && meta.touched">
+							{{ errorMessage }}
+						</span>
+					</div>
+				</Field>
+				<div class="flex relative ml-168px mt-8px">
+					<div class="flex">
+						<div class="pt-3px">
+							<Checkbox
+								v-model="isRememberAccount"
+								:binary="true"
+							/>
+						</div>
+						<label class="text-xs text-gray-500 ml-4px">
+							<div>{{ $t("下次登入記住帳號") }}</div>
+						</label>
+					</div>
+					<div class="absolute ml-320px text-xs">
+						<router-link to="/admission/manager/forgetpassword">
+							<div class="text-right font-bold goldText">
+								{{ $t("忘記密碼") }}
+							</div>
+						</router-link>
+					</div>
+				</div>
+				<div class="ml-168px mt-40px">
+					<Turnstile ref="turnstileRef" />
+				</div>
+				<div class="mt-50px ml-168px">
+					<!-- TODO: add spinning wheel while Turnstile runs -->
+					<Button
+						class="bg-darkBlue h-60px w-420px"
+						type="submit"
+						:loading="isTurnstileRunning || isSubmitting"
+						:label="$t('登入')"
+					/>
+				</div>
+			</form>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import InputText from "primevue/inputtext";
-import Checkbox from "primevue/checkbox";
-import Button from "primevue/button";
-import { ref } from "vue";
+import { ref, watch, computed } from "vue";
 import { useRouter } from "vue-router";
+import { Field, useForm } from "vee-validate";
+import * as yup from "yup";
 
-import type { AuthCredentials } from "@/stores/universalAuth";
-import { useAdmissionManagerAuthStore } from "@/stores/universalAuth";
-import { sign_in } from "@/api/admission/applicant/api";
+import * as api from "@/api/admission/admin/api";
+import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
+
 import type { TurnstileComponentExposes } from "@/components/Turnstile.vue";
 import Turnstile from "@/components/Turnstile.vue";
 
+import Checkbox from "primevue/checkbox";
+import Button from "primevue/button";
+import InputText from "primevue/inputtext";
+
 const router = useRouter();
-const auth = useAdmissionManagerAuthStore();
+
 const redirectToMainContainer = () =>
-	router.push({ name: "AdmissionManagerMainContainer" });
+	router.replace({ name: "AdmissionManagerMainContainer" });
+
+const authStore = useAdmissionAdminAuthStore();
 
 // Go to AdmissionManagerMainContainer if signed in
-// TODO: check session validity
-if (auth.credentials) redirectToMainContainer();
+if (authStore.isValidSession) redirectToMainContainer();
 
 // Login Form
 const turnstileRef = ref<TurnstileComponentExposes>();
 const isRememberAccount = ref(false);
-const email = ref("asdasssddddsd@birkhoff.me");
-const password = ref("123");
+const email = ref("example1@email.com");
+const password = ref("Example123");
+const isTurnstileRunning = computed(() => !turnstileRef.value?.turnstileToken);
+
+// TODO: i18n error message
+// https://vee-validate.logaretm.com/v4/guide/composition-api/handling-forms/#javascript-submissions-ajax
+const { handleSubmit, isSubmitting } = useForm({
+	validationSchema: yup.object({
+		email: yup.string().required("Required").email("Invalid email"),
+		password: yup.string().required("Required"),
+		// .min(8, "Must be 8 characters or more")
+		// .matches(/[a-z]+/, "One lowercase character")
+		// .matches(/[A-Z]+/, "One uppercase character"),
+	}),
+});
 
 // Get remember account status
 const lastSigninEmail = window.localStorage.getItem(
-	"AdmissionManagerSigninLastSigninEmail"
+	"AdmissionManagerSigninLastEmail"
 );
 
 if (lastSigninEmail) {
@@ -129,68 +170,43 @@ if (lastSigninEmail) {
 	email.value = lastSigninEmail;
 }
 
-// Remember account checkbox state
-const handleCheck = () => {
-	isRememberAccount.value = !isRememberAccount.value;
+// remove legacy item (renamed)
+window.localStorage.removeItem("AdmissionManagerSigninLastSigninEmail");
+
+// Store email in localStorage if remember account
+watch(isRememberAccount, (isChecked) => {
+	if (!isChecked)
+		window.localStorage.removeItem("AdmissionManagerSigninLastEmail");
+});
+
+const consumeTurnstileToken = () => {
+	const token: string | undefined = turnstileRef.value?.turnstileToken;
+	window.turnstile?.reset();
+	return token;
 };
 
-interface AdmissionManagerAuthResponse {
-	email: string;
-	provider: string;
-	uid: string;
-	id: number;
-	allow_password_change: boolean;
-	isInit: any | null;
-	lang: any | null;
-	name: any | null;
-	nickname: any | null;
-	image: any | null;
-}
-
-const handleSignin = async () => {
-	// Store email in localStorage if remember account
-	if (isRememberAccount.value) {
-		window.localStorage.setItem(
-			"AdmissionManagerSigninLastSigninEmail",
-			email.value
-		);
-	}
+const onSubmit = handleSubmit(async function (values, actions) {
+	window.localStorage.setItem("AdmissionManagerSigninLastEmail", email.value);
 
 	try {
-		if (!turnstileRef.value) throw new Error();
+		const turnstileResponse = consumeTurnstileToken();
 
-		if (!turnstileRef.value.turnstileToken) throw new Error("");
+		if (!turnstileResponse) throw new Error("Turnstile challenge failed");
 
-		const response = await sign_in({
-			email: email.value,
-			password: password.value,
-			"cf-turnstile-response": turnstileRef.value.turnstileToken.value,
+		// TODO: admin, reviewer
+		await api.sign_in(authStore, {
+			email: values.email,
+			password: values.password,
+			"cf-turnstile-response": turnstileResponse,
 		});
 
-		const credentials: AuthCredentials = {
-			"access-token": response.headers["access-token"] || "",
-			"token-type": response.headers["token-type"] || "",
-			client: response.headers["client"] || "",
-			expiry: Number(response.headers["expiry"] || NaN),
-			uid: response.headers["uid"] || "",
-		};
-
-		if (Object.values(credentials).some((p) => !p))
-			throw new Error("Server returned invalid authorization response");
-
-		const data: AdmissionManagerAuthResponse = response.data.data;
-
-		if (!data.email)
-			throw new Error("Sign-in failure: " + JSON.stringify(data));
-
-		auth.credentials = credentials;
-
 		redirectToMainContainer();
-	} catch (e) {
-		// TODO: login failed notification with toast
+	} catch (e: any) {
+		// TODO: show error message
 		console.log(e);
+		if (e?.response?.status === 401) console.log("invalid credentials");
 	}
-};
+});
 </script>
 
 <style setup lang="css">
