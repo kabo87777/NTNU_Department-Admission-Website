@@ -241,7 +241,7 @@
 							class="w-28px h-28px"
 						/>
 					</Button>
-					<Button class="p-button-text !mt-46px">
+					<Button class="p-button-text !mt-46px" @click="signOut">
 						<img
 							alt="logo"
 							src="/assets/sidebar/Sign_out_circle.png"
@@ -264,6 +264,19 @@ import Divider from "primevue/divider";
 import Dialog from "primevue/dialog";
 import InputText from "primevue/inputtext";
 import { useI18n } from "vue-i18n";
+import { useRouter } from "vue-router";
+import {
+	useAdmissionAdminAuthStore,
+	useAdmissionReviewerAuthStore,
+} from "@/stores/universalAuth";
+import * as adminApi from "@/api/admission/admin/api";
+// import * as reviewerApi from "@/api/admission/reviewer/api";
+import applicantUploadedDocsVue from "@/views/admission/manager/applicantsUploadList/applicantUploadedDocs.vue";
+
+const router = useRouter();
+
+const reviewerAuth = useAdmissionReviewerAuthStore();
+const adminAuth = useAdmissionAdminAuthStore();
 
 const { t } = useI18n();
 const translation = {
@@ -288,6 +301,14 @@ function newProject() {
 
 function closeDisplayNewProject() {
 	displayNewProject.value = false;
+}
+
+async function signOut() {
+	if (adminAuth.isValidSession) {
+		if (await adminApi.sign_out(adminAuth)) {
+			router.push("/");
+		}
+	}
 }
 </script>
 

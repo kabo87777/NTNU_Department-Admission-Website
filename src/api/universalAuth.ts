@@ -1,6 +1,5 @@
 import type { AuthCredentials, AuthStore } from "@/stores/universalAuth";
 import axios from "axios";
-// import { useAdmissionManagerAuthStore } from "@/stores/universalAuth";
 
 export interface universalAuthData {
 	username?: string;
@@ -16,6 +15,7 @@ const buildAuthCredentialsFromHeaders = (
 	// All required credentials headers
 	// Uses falsy value as fallback if any being undefined
 	const credentials: AuthCredentials = {
+		authorization: headers["authorization"] || "",
 		"access-token": headers["access-token"] || "",
 		"token-type": headers["token-type"] || "",
 		client: headers["client"] || "",
@@ -44,11 +44,27 @@ export async function doUniversalAuthSignIn(
 	if (!credentials)
 		throw new Error("Server returned invalid authorization response");
 
-	// TODO: validate response data
-
-	// Store token credentials in authStore upon successful authorization
-	// auth = useAdmissionManagerAuthStore();
 	auth.setCredentials(credentials);
 
 	return response.data;
+}
+
+export async function doUniversalAuthSignOut(auth: AuthStore) {
+	const response = await axios({
+		method: "DELETE",
+		url: auth.apiEndpoint + "/sign_out",
+		headers: {
+			"Content-Type": "application/json",
+			authorization: auth.credentials?.authorization,
+		},
+		data: {},
+	});
+
+	// if (!credentials)
+	// 	throw new Error("Server returned invalid authorization response");
+	if (response.data?.success !== true) throw new Error("Sign out failed");
+
+	auth.clearCredentials();
+
+	return true;
 }

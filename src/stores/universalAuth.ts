@@ -5,6 +5,7 @@ import { useStorage } from "@vueuse/core";
 import urlJoin from "url-join";
 
 export interface AuthCredentials {
+	authorization: string;
 	"access-token": string;
 	"token-type": string;
 	client: string;
@@ -21,6 +22,7 @@ export type AuthStore = Store<
 	},
 	{
 		setCredentials(c: AuthCredentials): void;
+		clearCredentials(): void;
 	}
 >;
 
@@ -29,6 +31,15 @@ export interface AuthStoreState {
 	apiEndpoint: string;
 }
 
+const nullCredentials = {
+	authorization: "",
+	"access-token": "",
+	"token-type": "",
+	client: "",
+	expiry: NaN,
+	uid: "",
+};
+
 const defineUniversalAuthStore = (authStoreName: string, path: string) =>
 	defineStore(authStoreName, {
 		state: (): AuthStoreState => ({
@@ -36,13 +47,10 @@ const defineUniversalAuthStore = (authStoreName: string, path: string) =>
 				`${import.meta.env.VITE_ADMISSIONS_API_ENDPOINT}/api/v1`,
 				path
 			),
-			_credentials: useStorage(`${authStoreName}Credentials`, {
-				"access-token": "",
-				"token-type": "",
-				client: "",
-				expiry: NaN,
-				uid: "",
-			}),
+			_credentials: useStorage(
+				`${authStoreName}Credentials`,
+				nullCredentials
+			),
 		}),
 		getters: {
 			credentials(): AuthCredentials | null {
@@ -66,6 +74,9 @@ const defineUniversalAuthStore = (authStoreName: string, path: string) =>
 		actions: {
 			setCredentials(c: AuthCredentials) {
 				this._credentials = c;
+			},
+			clearCredentials() {
+				this._credentials = nullCredentials;
 			},
 		},
 	});
