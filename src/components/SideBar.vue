@@ -136,18 +136,26 @@
 					</span>
 				</Button>
 			</router-link>
-			<Button
-				class="p-button-secondary p-button-text !mt-24px !w-336px !h-48px"
+			<router-link
+				to="/admission/manager/gradeDataList"
+				custom
+				v-slot="{ navigate }"
 			>
-				<img
-					alt="logo"
-					src="/assets/sidebar/Flag_finish.png"
-					style="width: 1.5rem"
-				/>
-				<span class="text-left tracking-3px ml-3 font-bold text-xl">
-					{{ $t("評分資料列表") }}
-				</span>
-			</Button>
+				<Button
+					class="p-button-secondary p-button-text !mt-24px !w-336px !h-48px"
+					@click="navigate"
+					role="link"
+				>
+					<img
+						alt="logo"
+						src="/assets/sidebar/Flag_finish.png"
+						style="width: 1.5rem"
+					/>
+					<span class="text-left tracking-3px ml-3 font-bold text-xl">
+						{{ $t("評分資料列表") }}
+					</span>
+				</Button>
+			</router-link>
 			<div class="bg-gray-200 bg-opacity-50 !w-400 h-203px !mt-22px">
 				<Button
 					class="w-168px h-44px p-button-outlined !mt-24px !ml-10px"
@@ -241,7 +249,7 @@
 							class="w-28px h-28px"
 						/>
 					</Button>
-					<Button class="p-button-text !mt-46px">
+					<Button class="p-button-text !mt-46px" @click="signOut">
 						<img
 							alt="logo"
 							src="/assets/sidebar/Sign_out_circle.png"
@@ -257,13 +265,26 @@
 <script setup lang="ts">
 import "primevue/resources/primevue.min.css";
 import Sidebar from "primevue/sidebar";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import Dropdown from "primevue/dropdown";
 import Button from "primevue/button";
 import Divider from "primevue/divider";
 import Dialog from "primevue/dialog";
 import InputText from "primevue/inputtext";
 import { useI18n } from "vue-i18n";
+import { useRouter } from "vue-router";
+import {
+	useAdmissionAdminAuthStore,
+	useAdmissionReviewerAuthStore,
+} from "@/stores/universalAuth";
+import * as adminApi from "@/api/admission/admin/api";
+// import * as reviewerApi from "@/api/admission/reviewer/api";
+import applicantUploadedDocsVue from "@/views/admission/manager/applicantsUploadList/applicantUploadedDocs.vue";
+
+const router = useRouter();
+
+const reviewerAuth = useAdmissionReviewerAuthStore();
+const adminAuth = useAdmissionAdminAuthStore();
 
 const { t } = useI18n();
 const translation = {
@@ -288,6 +309,14 @@ function newProject() {
 
 function closeDisplayNewProject() {
 	displayNewProject.value = false;
+}
+
+async function signOut() {
+	if (adminAuth.isValidSession) {
+		if (await adminApi.sign_out(adminAuth)) {
+			router.push("/");
+		}
+	}
 }
 </script>
 
