@@ -13,7 +13,9 @@
 							class="m-auto w-50px text-center text-blue-500 hover:text-blue-300"
 						>
 							<router-link
-								to="/admission/manager/applicantUploadedDocs"
+								:to="{
+									path: `/admission/manager/applicantsUploadList/${slotProps.data.accId}`,
+								}"
 							>
 								{{ slotProps.data.accId }}
 							</router-link>
@@ -29,7 +31,9 @@
 							class="m-auto w-50px text-center text-blue-500 hover:text-blue-300"
 						>
 							<router-link
-								to="/admission/manager/applicantUploadedDocs"
+								:to="{
+									path: `/admission/manager/applicantsUploadList/${slotProps.data.accId}`,
+								}"
 							>
 								{{ slotProps.data.name }}
 							</router-link>
