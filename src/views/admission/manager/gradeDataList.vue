@@ -184,13 +184,13 @@
 						<InputText
 							v-if="disable1"
 							type="text"
-							v-model="oral_order"
+							v-model="admitted_order"
 							class="w-148px h-44px !mt-8px"
 						/>
 						<InputText
 							v-else-if="!disable1"
 							type="text"
-							v-model="oral_order"
+							v-model="admitted_order"
 							disabled
 							class="w-148px h-44px !mt-8px"
 						/>
@@ -392,13 +392,13 @@
 						<InputText
 							v-if="disable1"
 							type="text"
-							v-model="oral_order"
+							v-model="admitted_order"
 							class="w-148px h-44px !mt-8px"
 						/>
 						<InputText
 							v-else-if="!disable1"
 							type="text"
-							v-model="oral_order"
+							v-model="admitted_order"
 							disabled
 							class="w-148px h-44px !mt-8px"
 						/>
@@ -614,13 +614,13 @@
 						<InputText
 							v-if="disable1"
 							type="text"
-							v-model="oral_order"
+							v-model="admitted_order"
 							class="w-148px h-44px !mt-8px"
 						/>
 						<InputText
 							v-else-if="!disable1"
 							type="text"
-							v-model="oral_order"
+							v-model="admitted_order"
 							disabled
 							class="w-148px h-44px !mt-8px"
 						/>
@@ -833,6 +833,7 @@ const p2_result_option = ref([
 	translation.notAdmitted,
 ]);
 const oral_order = ref();
+const admitted_order = ref();
 const disable1 = ref<boolean>(p1_result.value === translation.passtophase2);
 
 const phase2_list = ref([
@@ -1001,7 +1002,6 @@ const reviewResult = computed(() => t("審查結果"));
 const admissionOrder = computed(() => t("錄取順序"));
 
 const editProduct = (prod: any) => {
-	console.log(prod.data.id);
 	name.value = prod.data.name;
 	id.value = prod.data.id;
 	productDialog.value = true;
