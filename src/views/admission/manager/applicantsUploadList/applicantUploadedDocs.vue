@@ -21,7 +21,9 @@
 				aria-labelledby="single"
 			>
 				<template #option="slotProps">
-					<p class="">{{ slotProps.option.name }}</p>
+					<div class="m-auto text-20px font-medium">
+						{{ slotProps.option.name }}
+					</div>
 				</template>
 			</SelectButton>
 		</div>
