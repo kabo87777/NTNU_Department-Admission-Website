@@ -23,6 +23,7 @@ import firstloginchangepassword from "@/views/admission/FirstSigninChangePass.vu
 import reviewScoreField from "@/views/reviewScoreField.vue";
 import resetpassword from "@/views/admission/ResetPassword.vue";
 import ResetPasswordEmailSent from "@/views/admission/ResetPasswordEmailSent.vue";
+import gradeDataList from "@/views/admission/manager/gradeDataList.vue";
 import ApplicantsUploadList from "@/views/admission/manager/applicantsUploadList/applicantsUploadList.vue";
 import ApplicantUploadedDocs from "@/views/admission/manager/applicantsUploadList/applicantUploadedDocs.vue";
 
@@ -119,6 +120,11 @@ const routes: Array<RouteRecordRaw> = [
 						path: "reviewScoreField",
 						name: "reviewScoreField",
 						component: reviewScoreField,
+					},
+					{
+						path: "gradeDataList",
+						name: "gradeDataList",
+						component: gradeDataList,
 					},
 					// Admission - applicants uploaded documents setting
 					{
