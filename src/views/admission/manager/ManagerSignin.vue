@@ -133,13 +133,13 @@ import InputText from "primevue/inputtext";
 
 const router = useRouter();
 
-const redirectToMainContainer = () =>
-	router.replace({ name: "AdmissionManagerMainContainer" });
+// const redirectToMainContainer = () =>
+// 	router.replace({ name: "AdmissionManagerMainContainer" });
 
 const authStore = useAdmissionAdminAuthStore();
 
 // Go to AdmissionManagerMainContainer if signed in
-if (authStore.isValidSession) redirectToMainContainer();
+// if (authStore.isValidSession) redirectToMainContainer();
 
 // Login Form
 const turnstileRef = ref<TurnstileComponentExposes>();
@@ -200,7 +200,7 @@ const onSubmit = handleSubmit(async function (values, actions) {
 			"cf-turnstile-response": turnstileResponse,
 		});
 
-		redirectToMainContainer();
+		// redirectToMainContainer();
 	} catch (e: any) {
 		// TODO: show error message
 		console.log(e);

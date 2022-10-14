@@ -18,7 +18,7 @@ const router = useRouter();
 const auth = useAdmissionApplicantAuthStore();
 
 if (!auth.credentials) {
-	router.push("/admission/applicant/signin");
+	// router.push("/admission/applicant/signin");
 }
 </script>
 

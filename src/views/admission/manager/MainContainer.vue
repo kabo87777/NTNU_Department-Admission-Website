@@ -24,7 +24,7 @@ const adminAuth = useAdmissionAdminAuthStore();
 
 watch(router.currentRoute, () => {
 	if (!reviewerAuth.isValidSession && !adminAuth.isValidSession) {
-		router.replace({ name: "AdmissionManagerSignin" });
+		// router.replace({ name: "AdmissionManagerSignin" });
 		// TODO: show session expired notification
 	}
 });
