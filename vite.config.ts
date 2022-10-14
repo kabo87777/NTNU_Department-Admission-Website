@@ -10,25 +10,30 @@ import ViteComponents from "unplugin-vue-components/vite";
 import vueI18n from "@intlify/vite-plugin-vue-i18n";
 import branch from "git-branch";
 
-switch (branch.sync()) {
-  // production
-  case "master":
-  case "main":
-    process.env.VITE_ADMISSIONS_API_ENDPOINT =
-      "https://api.admissions.birkhoff.me";
-    break;
-
-  // staging
-  case "develop":
-    process.env.VITE_ADMISSIONS_API_ENDPOINT =
-      "https://admissions-backend-staging.onrender.com";
-    break;
-
-  // mr preview
-  default:
-    process.env.VITE_ADMISSIONS_API_ENDPOINT =
-      "https://admissions-backend-staging.onrender.com";
-    break;
+if (!process.env.VITE_ADMISSIONS_API_ENDPOINT) {
+  // Branch name is exposed on a env var in Render builds
+  // On Render there's apparently no .git directory. So
+  // branch.sync() does not give correct result.
+  switch (process.env.RENDER_GIT_BRANCH || branch.sync()) {
+    // production
+    case "master":
+    case "main":
+      process.env.VITE_ADMISSIONS_API_ENDPOINT =
+        "https://api.admissions.birkhoff.me";
+      break;
+  
+    // staging
+    case "develop":
+      process.env.VITE_ADMISSIONS_API_ENDPOINT =
+        "https://admissions-backend-staging.onrender.com";
+      break;
+  
+    // mr preview
+    default:
+      process.env.VITE_ADMISSIONS_API_ENDPOINT =
+        "https://9f88298d-a5f9-4017-ac13-88e38a638293.mock.pstmn.io";
+      break;
+  }
 }
 
 // https://vitejs.dev/config/

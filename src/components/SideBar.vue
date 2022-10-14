@@ -98,18 +98,20 @@
 					</span>
 				</Button>
 			</router-link>
-			<Button
-				class="p-button-secondary p-button-text !mt-24px !w-336px !h-48px"
-			>
-				<img
-					alt="logo"
-					src="/assets/sidebar/File_dock_search.png"
-					style="width: 1.5rem"
-				/>
-				<span class="text-left tracking-3px ml-3 font-bold text-xl">
-					{{ $t("上傳資料列表") }}
-				</span>
-			</Button>
+			<router-link to="/admission/manager/applicantsUploadList">
+				<Button
+					class="p-button-secondary p-button-text !mt-24px !w-336px !h-48px"
+				>
+					<img
+						alt="logo"
+						src="/assets/sidebar/File_dock_search.png"
+						style="width: 1.5rem"
+					/>
+					<span class="text-left tracking-3px ml-3 font-bold text-xl">
+						{{ $t("上傳資料列表") }}
+					</span>
+				</Button>
+			</router-link>
 
 			<Divider align="left" class="text-xs text-ntnuRed text-base">
 				<b>{{ $t("審查端設定") }}</b>
@@ -247,7 +249,7 @@
 							class="w-28px h-28px"
 						/>
 					</Button>
-					<Button class="p-button-text !mt-46px">
+					<Button class="p-button-text !mt-46px" @click="signOut">
 						<img
 							alt="logo"
 							src="/assets/sidebar/Sign_out_circle.png"
@@ -263,18 +265,40 @@
 <script setup lang="ts">
 import "primevue/resources/primevue.min.css";
 import Sidebar from "primevue/sidebar";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import Dropdown from "primevue/dropdown";
 import Button from "primevue/button";
 import Divider from "primevue/divider";
 import Dialog from "primevue/dialog";
 import InputText from "primevue/inputtext";
+import { useI18n } from "vue-i18n";
+import { useRouter } from "vue-router";
+import {
+	useAdmissionAdminAuthStore,
+	useAdmissionReviewerAuthStore,
+} from "@/stores/universalAuth";
+import * as adminApi from "@/api/admission/admin/api";
+// import * as reviewerApi from "@/api/admission/reviewer/api";
+import applicantUploadedDocsVue from "@/views/admission/manager/applicantsUploadList/applicantUploadedDocs.vue";
 
+const router = useRouter();
+
+const reviewerAuth = useAdmissionReviewerAuthStore();
+const adminAuth = useAdmissionAdminAuthStore();
+
+const { t } = useI18n();
+const translation = {
+	masterReview: t("2022 研究生審查 Master Review"),
+	phdReview: t("2022 博士生審查 Phd Review"),
+};
 const visibleLeft = ref(true);
-let selectedProgram = ref({ program_name: "2022 研究生審查 Master Review" });
+let selectedProgram = ref({
+	program_name: translation.masterReview,
+	value: 1,
+});
 let programs = ref([
-	{ program_name: "2022 研究生審查 Master Review" },
-	{ program_name: "2022 博士生審查 PhD Review" },
+	{ program_name: translation.masterReview, value: 1 },
+	{ program_name: translation.phdReview, value: 2 },
 ]);
 const displayNewProject = ref(false);
 const newProjectName = ref("");
@@ -285,6 +309,14 @@ function newProject() {
 
 function closeDisplayNewProject() {
 	displayNewProject.value = false;
+}
+
+async function signOut() {
+	if (adminAuth.isValidSession) {
+		if (await adminApi.sign_out(adminAuth)) {
+			router.push("/");
+		}
+	}
 }
 </script>
 

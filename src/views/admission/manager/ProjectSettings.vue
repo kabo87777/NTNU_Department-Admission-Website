@@ -2,13 +2,17 @@
 	<div class="pt-62px pl-128px pr-128px">
 		<div class="font-medium text-32px">{{ $t("申請上傳欄位") }}</div>
 		<div class="bigRedDivider"></div>
-		<SelectButton
-			class="mt-8px"
-			v-model="currentTab"
-			:options="tabOptions"
-			aria-labelledby="single"
-		/>
-		<div v-if="currentTab === '基本資料欄位'">
+		<div class="p-fluid">
+			<SelectButton
+				class="mt-8px"
+				v-model="activeTab"
+				:options="tabOptions"
+				optionLabel="name"
+				aria-labelledby="single"
+			>
+			</SelectButton>
+		</div>
+		<div v-if="activeTab.value === 1">
 			<div class="mt-16px">
 				<div>
 					<Checkbox
@@ -155,7 +159,7 @@
 				</div>
 			</div>
 		</div>
-		<div v-else-if="currentTab === '檢附資料欄位'">
+		<div v-else-if="activeTab.value === 2">
 			<div class="mt-16px">
 				<div>
 					<Checkbox
@@ -251,17 +255,23 @@
 		<div class="flex mt-24px">
 			<div class="m-auto">
 				<div class="flex">
-					<Button
-						label="取消變更"
-						icon="pi pi-times"
-						class="p-button-outlined"
-					/>
+					<Button class="bg-white h-60px w-140px border-ntnuRed">
+						<i
+							class="ml-1 mr-2 box-border text-sm text-ntnuRed pi pi-times"
+						></i>
+						<div class="m-auto text-sm text-ntnuRed tracking-2">
+							<div>{{ $t("取消變更") }}</div>
+						</div>
+					</Button>
 					<div class="w-24px"></div>
-					<Button
-						label="儲存設定"
-						icon="pi pi-check"
-						class="p-button"
-					/>
+					<Button class="bg-Green h-60px w-140px border-ntnuRed">
+						<i
+							class="ml-1 mr-2 box-border text-sm text-black pi pi-check"
+						></i>
+						<div class="m-auto text-sm text-black tracking-2">
+							<div>{{ $t("儲存設定") }}</div>
+						</div>
+					</Button>
 				</div>
 			</div>
 		</div>
@@ -275,9 +285,18 @@ import SelectButton from "primevue/selectbutton";
 import Checkbox from "primevue/checkbox";
 import Button from "primevue/button";
 import { ref } from "vue";
+import { useI18n } from "vue-i18n";
 
-const currentTab = ref("基本資料欄位");
-const tabOptions = ref(["基本資料欄位", "檢附資料欄位"]);
+const { t } = useI18n();
+const translation = {
+	basicCol: t("基本資料欄位"),
+	attachmentCol: t("檢附資料欄位"),
+};
+const activeTab = ref({ name: translation.basicCol, value: 1 });
+const tabOptions = ref([
+	{ name: translation.basicCol, value: 1 },
+	{ name: translation.attachmentCol, value: 2 },
+]);
 const schoolExpChecked = ref(false);
 const scoreChecked = ref(false);
 const otherChecked = ref(false);
@@ -289,3 +308,15 @@ const mailingAd = ref(false);
 const basicIdentityInfo = ref(false);
 const contactInfo = ref(false);
 </script>
+
+<style setup lang="css">
+.bg-Green {
+	background-color: #bcd19b;
+}
+.bg-darkBlue {
+	background-color: #07385a;
+}
+.bg-white {
+	background-color: #ffffff;
+}
+</style>
