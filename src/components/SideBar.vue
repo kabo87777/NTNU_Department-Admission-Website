@@ -136,18 +136,26 @@
 					</span>
 				</Button>
 			</router-link>
-			<Button
-				class="p-button-secondary p-button-text !mt-24px !w-336px !h-48px"
+			<router-link
+				to="/admission/manager/gradeDataList"
+				custom
+				v-slot="{ navigate }"
 			>
-				<img
-					alt="logo"
-					src="/assets/sidebar/Flag_finish.png"
-					style="width: 1.5rem"
-				/>
-				<span class="text-left tracking-3px ml-3 font-bold text-xl">
-					{{ $t("評分資料列表") }}
-				</span>
-			</Button>
+				<Button
+					class="p-button-secondary p-button-text !mt-24px !w-336px !h-48px"
+					@click="navigate"
+					role="link"
+				>
+					<img
+						alt="logo"
+						src="/assets/sidebar/Flag_finish.png"
+						style="width: 1.5rem"
+					/>
+					<span class="text-left tracking-3px ml-3 font-bold text-xl">
+						{{ $t("評分資料列表") }}
+					</span>
+				</Button>
+			</router-link>
 			<div class="bg-gray-200 bg-opacity-50 !w-400 h-203px !mt-22px">
 				<Button
 					class="w-168px h-44px p-button-outlined !mt-24px !ml-10px"
