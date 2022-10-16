@@ -22,7 +22,7 @@
 			>
 				<template #option="slotProps">
 					<div class="m-auto text-20px font-medium">
-						{{ slotProps.option.name }}
+						{{ $t(slotProps.option.name) }}
 					</div>
 				</template>
 			</SelectButton>
