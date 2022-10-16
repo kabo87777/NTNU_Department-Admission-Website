@@ -837,7 +837,6 @@ const admitted_order = ref();
 const disable1 = computed(() => {
 	return p1_result.value === translation.passtophase2;
 });
-
 const phase2_list = ref([
 	{
 		oral_order: "1",

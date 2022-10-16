@@ -89,6 +89,7 @@
   "儲存設定": "Save Changes",
   "基本資料欄位": "Basic Info",
   "檢附資料欄位": "Attachment Info",
+  "補件系統欄位": "Additional Attachment",
   "帳號": "ID",
   "姓名": "Name",
   "上傳狀態": "Upload Status",
@@ -151,5 +152,10 @@
   "依錄取順序重排": "Reorder by Admission Order",
   "逕取通過": "Directly Admitted",
   "書審未過": "Written Review Not Passed",
-  "111年研究生審查": "111 Master Review"
+  "111年研究生審查": "111 Master Review",
+  "添加資料": "Upload Document",
+  "編輯": "Edit",
+  "項目名稱": "Item Name",
+  "在學證明": "Enroll Certificate",
+  "onlyPdf": "※ Only Pdf file is allowed"
 }

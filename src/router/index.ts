@@ -5,8 +5,10 @@ import {
 	createWebHistory,
 } from "vue-router";
 
+import MainPage from "@/views/MainPage.vue";
 import LandingView from "@/views/LandingView.vue";
 import AdmissionSignin from "@/views/admission/AdmissionSignin.vue";
+import RecruitmentSignin from "@/views/recruitment/RecruitmentSignin.vue";
 // Manager section
 import AdmissionManagerMainContainer from "@/views/admission/manager/MainContainer.vue";
 import AdmissionManagerSignin from "@/views/admission/manager/ManagerSignin.vue";
@@ -26,6 +28,11 @@ import ResetPasswordEmailSent from "@/views/admission/ResetPasswordEmailSent.vue
 import gradeDataList from "@/views/admission/manager/gradeDataList.vue";
 import ApplicantsUploadList from "@/views/admission/manager/applicantsUploadList/applicantsUploadList.vue";
 import ApplicantUploadedDocs from "@/views/admission/manager/applicantsUploadList/applicantUploadedDocs.vue";
+// Recruitment Applicant section
+
+// Recruitment Reviewer section
+
+// Recruitment Manager section
 
 const routes: Array<RouteRecordRaw> = [
 	// Choose recruitment / admission
@@ -35,6 +42,14 @@ const routes: Array<RouteRecordRaw> = [
 		component: LandingView,
 		children: [
 			// Admission - choose applicant / manager
+			{
+				path: "mainpage",
+				name: "MainPage",
+				meta: {
+					titleKey: "報名首頁",
+				},
+				component: MainPage,
+			},
 			{
 				path: "admission",
 				name: "AdmissionSignin",
@@ -133,11 +148,21 @@ const routes: Array<RouteRecordRaw> = [
 						component: ApplicantsUploadList,
 					},
 					{
-						path: "applicantUploadedDocs",
+						path: "applicantsUploadList/:accId",
 						name: "ApplicantUploadedDocs",
 						component: ApplicantUploadedDocs,
 					},
 				],
+			},
+
+			// Recruitment
+			{
+				path: "recruitment",
+				name: "RecruitmentSignin",
+				meta: {
+					titleKey: "登入頁面",
+				},
+				component: RecruitmentSignin,
 			},
 		],
 	},
