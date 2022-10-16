@@ -158,7 +158,7 @@
 			</router-link>
 			<div class="bg-gray-200 bg-opacity-50 !w-400 h-203px !mt-22px">
 				<Button
-					class="w-168px h-44px p-button-outlined !mt-24px !ml-10px"
+					class="w-168px h-44px p-button-outlined !mt-24px !ml-10px !bg-white"
 				>
 					<img
 						alt="logo"
@@ -171,7 +171,7 @@
 				</Button>
 				<Button
 					@click="newProject"
-					class="w-146px h-44px p-button-outlined p-button-success !mt-24px !ml-24px"
+					class="w-146px h-44px p-button-outlined p-button-success !mt-24px !ml-24px !bg-white"
 				>
 					<img
 						alt="logo"
