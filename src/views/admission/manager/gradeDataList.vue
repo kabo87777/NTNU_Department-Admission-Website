@@ -834,7 +834,9 @@ const p2_result_option = ref([
 ]);
 const oral_order = ref();
 const admitted_order = ref();
-const disable1 = ref<boolean>(p1_result.value === translation.passtophase2);
+const disable1 = computed(() => {
+	return p1_result.value === translation.passtophase2;
+});
 
 const phase2_list = ref([
 	{
@@ -1006,7 +1008,10 @@ const editProduct = (prod: any) => {
 	id.value = prod.data.id;
 	productDialog.value = true;
 	p1_result.value = prod.data.phase1_result;
-	disable1.value = p1_result.value === translation.passtophase2;
+	if (prod.data.final_result) {
+		p1_result.value = translation.passtophase2;
+		p2_result.value = prod.data.final_result;
+	}
 };
 
 function doneEdit() {
