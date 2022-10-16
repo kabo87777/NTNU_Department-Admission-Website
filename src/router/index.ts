@@ -148,7 +148,7 @@ const routes: Array<RouteRecordRaw> = [
 						component: ApplicantsUploadList,
 					},
 					{
-						path: "applicantUploadedDocs",
+						path: "applicantsUploadList/:accId",
 						name: "ApplicantUploadedDocs",
 						component: ApplicantUploadedDocs,
 					},
