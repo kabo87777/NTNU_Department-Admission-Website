@@ -10,3 +10,9 @@
   height: 1px;
   width: 45%;
 }
+
+.normalDivider {
+  background-color: #53565a;
+  height: 1px;
+  width: 100%;
+}
