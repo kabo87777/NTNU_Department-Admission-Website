@@ -6,7 +6,6 @@
 		<Button
 			class="p-button-outlined"
 			style="color: rgba(164, 188, 194, 1); margin-left: 32px"
-			@click="handleEdit"
 		>
 			<div>
 				<i class="pi pi-pencil" style="color: rgba(83, 86, 90, 1)"></i>
@@ -41,10 +40,4 @@ import Button from "primevue/button";
 import "primeicons/primeicons.css";
 
 const props = defineProps(["category", "itemName", "order"]);
-
-const emit = defineEmits(["edit"]);
-
-const handleEdit = () => {
-	emit("edit", props.order - 1, props.category);
-};
 </script>

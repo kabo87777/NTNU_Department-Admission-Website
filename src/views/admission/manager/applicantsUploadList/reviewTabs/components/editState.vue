@@ -56,7 +56,6 @@
 						class="p-button-outlined"
 						icon="pi pi-times"
 						style="color: #93282c"
-						@click="handleCancel"
 					/>
 				</div>
 			</div>
@@ -71,12 +70,7 @@ import InputText from "primevue/inputtext";
 import FileUpload from "primevue/fileupload";
 import "primeicons/primeicons.css";
 
-const props = defineProps(["category", "order", "itemName"]);
+const props = defineProps(["category", "order"]);
 
-const name = ref(props.itemName);
-
-const emit = defineEmits(["cancel"]);
-const handleCancel = () => {
-	emit("cancel", props.order - 1, props.category);
-};
+const name = ref();
 </script>
