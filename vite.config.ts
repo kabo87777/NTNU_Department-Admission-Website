@@ -21,13 +21,13 @@ if (!process.env.VITE_ADMISSIONS_API_ENDPOINT) {
       process.env.VITE_ADMISSIONS_API_ENDPOINT =
         "https://api.admissions.birkhoff.me";
       break;
-  
+
     // staging
     case "develop":
       process.env.VITE_ADMISSIONS_API_ENDPOINT =
         "https://admissions-backend-staging.onrender.com";
       break;
-  
+
     // mr preview
     default:
       process.env.VITE_ADMISSIONS_API_ENDPOINT =
