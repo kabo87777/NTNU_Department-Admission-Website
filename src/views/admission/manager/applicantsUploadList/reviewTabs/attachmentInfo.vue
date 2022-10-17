@@ -234,7 +234,7 @@ const editToCreate = (index: number, category: string) => {
 
 const createToEdit = (index: number, category: string) => {
 	switch (category) {
-	    case "就學經歷":
+		case "就學經歷":
 			schoolExpList[index].state = 4;
 			break;
 		case "考試與檢定分數":
