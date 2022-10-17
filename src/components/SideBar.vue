@@ -275,13 +275,21 @@
 					</div>
 				</div>
 				<div class="absolute right-0 mr-8px">
-					<Button class="p-button-text !mt-46px !ml-50px">
-						<img
-							alt="logo"
-							src="/assets/sidebar/Setting_alt_line.png"
-							class="w-28px h-28px"
-						/>
-					</Button>
+					<router-link
+						to="/admission/manager/managerUserSetting"
+						custom
+						v-slot="{ navigate }"
+					>
+						<Button class="p-button-text !mt-46px !ml-50px">
+							<img
+								alt="logo"
+								src="/assets/sidebar/Setting_alt_line.png"
+								class="w-28px h-28px"
+								@click="navigate"
+								role="link"
+							/>
+						</Button>
+					</router-link>
 					<Button class="p-button-text !mt-46px" @click="signOut">
 						<img
 							alt="logo"
