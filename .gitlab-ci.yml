@@ -12,6 +12,7 @@ test:
   script:
     - pnpm install
     - pnpm lint
+    - vue-tsc --noEmit
     - pnpm test
   cache:
     key:
