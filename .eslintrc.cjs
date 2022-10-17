@@ -18,7 +18,7 @@ module.exports = {
   plugins: ["vue", "@typescript-eslint", "prettier"],
   ignorePatterns: ["components.d.ts", "vite.config.ts"],
   rules: {
-    indent: ["error", "tab"],
+    indent: ["error", "tab", { "SwitchCase": 1 }],
     "linebreak-style": ["error", "unix"],
     quotes: ["error", "double"],
     semi: ["error", "always"],
