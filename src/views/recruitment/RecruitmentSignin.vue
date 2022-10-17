@@ -49,7 +49,7 @@
 				</router-link>
 			</div>
 			<div class="mt-50px ml-184px">
-				<router-link to="">
+				<router-link to="/recruitment/manager/signin">
 					<Button class="bg-darkBlue h-95px w-360px">
 						<div class="m-auto text-2xl">
 							<div>行政人員登入</div>

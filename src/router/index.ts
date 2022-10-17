@@ -33,6 +33,7 @@ import ApplicantUploadedDocs from "@/views/admission/manager/applicantsUploadLis
 // Recruitment Reviewer section
 
 // Recruitment Manager section
+import RecruitmentManagerSignin from "@/views/recruitment/manager/managerSignin.vue";
 
 const routes: Array<RouteRecordRaw> = [
 	// Choose recruitment / admission
@@ -163,6 +164,13 @@ const routes: Array<RouteRecordRaw> = [
 					titleKey: "登入頁面",
 				},
 				component: RecruitmentSignin,
+			},
+
+			// Recruitment - manager sign in
+			{
+				path: "recruitment/manager/signin",
+				name: "AdmissionManagerSignin",
+				component: RecruitmentManagerSignin,
 			},
 		],
 	},
