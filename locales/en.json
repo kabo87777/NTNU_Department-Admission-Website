@@ -157,5 +157,18 @@
   "編輯": "Edit",
   "項目名稱": "Item Name",
   "在學證明": "Enroll Certificate",
-  "onlyPdf": "※ Only Pdf file is allowed"
+  "onlyPdf": "※ Only Pdf file is allowed",
+  "使用者管理":"User Setting",
+  "修改":"Edit",
+  "輸入新名稱":"New User Name",
+  "確認修改":"Confirm",
+  "聯絡信箱":"Contact Email",
+  "輸入新信箱":"New Email Address",
+  "手機號碼":"Phone Number",
+  "輸入新號碼":"New Phone Number",
+  "修改密碼":"Reset Password",
+  "請輸入舊密碼":"Old Password",
+  "設定新密碼":"New Password",
+  "確認密碼(再輸入一次驗證密碼)":"Check Password(Text again to ensure password)",
+  "修改送出":"Send modifications"
 }
