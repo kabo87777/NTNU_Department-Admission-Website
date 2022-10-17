@@ -12,7 +12,7 @@ export default defineConfig({
 	theme: {
 		extend: {
 			colors: {
-				ntnuRed: "#d22730",
+				ntnuRed: "#94282c",
 			},
 		},
 	},
