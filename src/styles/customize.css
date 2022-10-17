@@ -16,3 +16,22 @@
   height: 1px;
   width: 100%;
 }
+
+.sidebarVerticalBigRedDivider {
+  background-color: #874b52;
+  height: 72px;
+  width: 10px;
+}
+
+.sidebarVerticalSmallRedDivider {
+  margin-left: 2px;
+  background-color: #874b52;
+  height: 72px;
+  width: 4px;
+}
+
+.sidebarRedDivider {
+  background-color: #874b52;
+  height: 2px;
+  width: 32px;
+}
