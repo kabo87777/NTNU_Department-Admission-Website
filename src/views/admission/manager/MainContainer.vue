@@ -1,8 +1,24 @@
 <template>
-	<NavBar />
-	<SideBar />
-	<div class="ml-400px mr-80px mt-62px">
-		<router-view />
+	<div>
+		<div style="position: fixed; top: 0; width: 100%; z-index: 1000">
+			<NavBar />
+		</div>
+		<div style="display: flex; margin-top: 60px; position: relative">
+			<div
+				style="
+					position: fixed;
+					float: left;
+					width: 400px;
+					border-right: 1px solid gray;
+					height: 100%;
+				"
+			>
+				<SideBar />
+			</div>
+			<div style="margin-left: 400px; position: absolute; width: 81.5%">
+				<router-view />
+			</div>
+		</div>
 	</div>
 </template>
 
