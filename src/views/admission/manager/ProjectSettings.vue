@@ -33,7 +33,7 @@
 						{{ $t("※ 英文姓氏/中間名/名字") }}
 					</div>
 				</div>
-				<FunnyDivider />
+				<ParagraphDivider />
 			</div>
 			<div class="mt-16px">
 				<div>
@@ -52,7 +52,7 @@
 					<div class="w-1/2 pl-16px">{{ $t("※ 碩士生") }}</div>
 					<div class="w-1/2 pl-16px">{{ $t("※ 博士生") }}</div>
 				</div>
-				<FunnyDivider />
+				<ParagraphDivider />
 			</div>
 			<div class="mt-16px">
 				<div>
@@ -72,7 +72,7 @@
 					<div class="w-1/3 pl-16px">{{ $t("※ 城市/郵遞區號") }}</div>
 					<div class="w-1/3 pl-16px">{{ $t("※ 街道地址") }}</div>
 				</div>
-				<FunnyDivider />
+				<ParagraphDivider />
 			</div>
 			<div class="mt-16px">
 				<div>
@@ -92,7 +92,7 @@
 					<div class="w-1/3 pl-16px">{{ $t("※ 城市/郵遞區號") }}</div>
 					<div class="w-1/3 pl-16px">{{ $t("※ 街道地址") }}</div>
 				</div>
-				<FunnyDivider />
+				<ParagraphDivider />
 			</div>
 			<div class="mt-16px">
 				<div>
@@ -115,7 +115,7 @@
 					<div class="w-1/4 pl-16px">{{ $t("※ 主要國籍") }}</div>
 					<div class="w-1/4 pl-16px">{{ $t("※ 出生日期") }}</div>
 				</div>
-				<FunnyDivider />
+				<ParagraphDivider />
 			</div>
 			<div class="mt-16px">
 				<div>
@@ -138,7 +138,7 @@
 						{{ $t("※ 電話(行動電話)") }}
 					</div>
 				</div>
-				<FunnyDivider />
+				<ParagraphDivider />
 			</div>
 		</div>
 		<div v-else-if="activeTab.value === 2">
@@ -162,7 +162,7 @@
 						{{ $t("※ 英文姓氏/中間名/名字") }}
 					</div>
 				</div>
-				<FunnyDivider />
+				<ParagraphDivider />
 			</div>
 			<div class="mt-16px">
 				<div>
@@ -180,7 +180,7 @@
 					<div class="w-1/3 pl-16px">{{ $t("※ 城市/郵遞區號") }}</div>
 					<div class="w-1/3 pl-16px">{{ $t("※ 街道地址") }}</div>
 				</div>
-				<FunnyDivider />
+				<ParagraphDivider />
 			</div>
 			<div class="mt-16px">
 				<div>
@@ -198,7 +198,7 @@
 					<div class="w-1/3 pl-16px">{{ $t("※ 城市/郵遞區號") }}</div>
 					<div class="w-1/3 pl-16px">{{ $t("※ 街道地址") }}</div>
 				</div>
-				<FunnyDivider />
+				<ParagraphDivider />
 			</div>
 			<div class="mt-16px">
 				<div>
@@ -252,7 +252,7 @@
 </template>
 
 <script setup lang="ts">
-import FunnyDivider from "../../../styles/funnyDivider.vue";
+import ParagraphDivider from "../../../styles/paragraphDivider.vue";
 import "primeicons/primeicons.css";
 import SelectButton from "primevue/selectbutton";
 import Checkbox from "primevue/checkbox";
