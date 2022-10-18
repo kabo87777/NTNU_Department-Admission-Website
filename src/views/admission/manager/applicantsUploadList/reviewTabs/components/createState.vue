@@ -11,7 +11,11 @@
 		"
 	>
 		<div style="padding: 16px; margin: auto">
-			<Button class="p-button-outlined" style="color: #53565a">
+			<Button
+				class="p-button-outlined"
+				style="color: #53565a"
+				@click="handleEdit"
+			>
 				<div>
 					<i class="pi pi-plus"></i>
 				</div>
@@ -25,5 +29,11 @@
 import Button from "primevue/button";
 import "primeicons/primeicons.css";
 
-const props = defineProps(["category"]);
+const props = defineProps(["category", "order"]);
+
+const emit = defineEmits(["edit"]);
+
+const handleEdit = () => {
+	emit("edit", props.order - 1, props.category);
+};
 </script>
