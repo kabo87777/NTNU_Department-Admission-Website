@@ -40,7 +40,7 @@
 				</router-link>
 			</div>
 			<div class="mt-50px ml-184px userLogin">
-				<router-link to="/admission/manager/signin">
+				<router-link to="/admission/reviewer/signin">
 					<Button class="bg-darkBlue h-95px w-360px">
 						<div class="m-auto text-2xl">
 							<div>{{ $t("審查委員登入") }}</div>

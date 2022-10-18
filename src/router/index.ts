@@ -28,6 +28,10 @@ import ResetPasswordEmailSent from "@/views/admission/ResetPasswordEmailSent.vue
 import gradeDataList from "@/views/admission/manager/gradeDataList.vue";
 import ApplicantsUploadList from "@/views/admission/manager/applicantsUploadList/applicantsUploadList.vue";
 import ApplicantUploadedDocs from "@/views/admission/manager/applicantsUploadList/applicantUploadedDocs.vue";
+//Reviewer section
+import AdmissionReviewerMainContainer from "@/views/admission/reviewer/MainContainer.vue";
+import AdmissionReviewerSignin from "@/views/admission/reviewer/ReviewerSignin.vue";
+
 // Recruitment Applicant section
 
 // Recruitment Reviewer section
@@ -57,6 +61,17 @@ const routes: Array<RouteRecordRaw> = [
 					titleKey: "登入頁面",
 				},
 				component: AdmissionSignin,
+			},
+			{
+				path: "admission/reviewer/signin",
+				name: "AdmissionReviewerSignin",
+				component: AdmissionReviewerSignin,
+			},
+			{
+				path: "admission/reviewer",
+				name: "AdmissionReviewerMainContainer",
+				component: AdmissionReviewerMainContainer,
+				children: [],
 			},
 			// Admission - manager sign in
 			{
