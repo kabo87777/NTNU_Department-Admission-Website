@@ -44,10 +44,8 @@
 			</div>
 		</div>
 
-		<div class="flex relative mt-40px">
-			<div class="smallRedDivider"></div>
-			<div class="smallRedDivider absolute right-0"></div>
-		</div>
+		<ParagraphDivider />
+
 		<div class="mt-16px">
 			<div>
 				<label class="ml-8px text-24px font-medium">補件需求</label>
@@ -88,10 +86,9 @@
 				<div class="smallRedDivider absolute right-0"></div>
 			</div>
 		</div>
-		<div class="flex relative mt-40px">
-			<div class="smallRedDivider"></div>
-			<div class="smallRedDivider absolute right-0"></div>
-		</div>
+		
+		<ParagraphDivider />
+
 		<div class="mt-16px">
 			<div>
 				<label class="ml-8px text-24px font-medium">提交內容</label>
@@ -101,6 +98,7 @@
 		<div class="bigRedDivider"></div>
 		<div class="mt-16px ml-20px grid justify-center">
 			<Button
+				@click="displayEmail"
 				label="Secondary"
 				class="grid justify-center p-button-outlined p-button-secondary text-20px tracking-wide"
 			>
@@ -110,6 +108,44 @@
 
 		<div class="mt-20px"></div>
 	</div>
+	<Dialog
+		header="寄送email通知"
+		v-model:visible="emailNotification"
+		class="w-484px h-238px !tracking-4px"
+	>
+		<divider class="!mt-0px" />
+		<p class="mt-24px text-base tracking-2px">
+			確定要寄送email通知已開啟補件系統嗎?
+		</p>
+		<div class="flex">
+			<Button
+				@click="closeEmail "
+				class="p-button-outlined p-button-success !ml-70px !mt-26px !w-105px !h-44px"
+			>
+				<img
+					alt="logo"
+					src="/assets/sidebar/Done_round.png"
+					style="width: 1.25rem"
+					class="!ml-0px"
+				/>
+				<span class="text-left text-xl">
+					確定
+				</span>
+			</Button>
+			<Button
+				@click="closeEmail"
+				class="p-button-outlined p-button-danger !ml-32px !mt-26px !w-105px !h-44px"
+			>
+				<img
+					alt="logo"
+					src="/assets/sidebar/Close_round.png"
+					style="width: 1.25rem"
+					class="!ml-0px"
+				/>
+				<span class="text-left text-xl">{{ $t("取消") }}</span>
+			</Button>
+		</div>
+	</Dialog>
 </template>
 
 <script setup lang="ts">
@@ -124,7 +160,9 @@ import Checkbox from "primevue/checkbox";
 import Button from "primevue/button";
 import Dropdown from "primevue/dropdown";
 import Calendar from "primevue/calendar";
-import { ref } from "vue";
+import Dialog from "primevue/dialog";
+import ParagraphDivider from "../../../../../styles/paragraphDivider.vue";
+import { ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 const selectedCity = ref();
 const { t } = useI18n();
@@ -159,6 +197,14 @@ const cities = ref([
 
 const props = defineProps(["userId"]);
 console.log(props.userId, "additional info tab");
+const emailNotification = ref(false);
+function displayEmail() {
+	emailNotification.value = true;
+}
+
+function closeEmail() {
+	emailNotification.value = false;
+}
 </script>
 
 <style setup lang="css">
