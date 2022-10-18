@@ -122,10 +122,7 @@ import { Field, useForm } from "vee-validate";
 import * as yup from "yup";
 
 import * as api from "@/api/admission/admin/api";
-import {
-	useAdmissionAdminAuthStore,
-	useAdmissionReviewerAuthStore,
-} from "@/stores/universalAuth";
+import { useAdmissionReviewerAuthStore } from "@/stores/universalAuth";
 
 import type { TurnstileComponentExposes } from "@/components/Turnstile.vue";
 import Turnstile from "@/components/Turnstile.vue";
