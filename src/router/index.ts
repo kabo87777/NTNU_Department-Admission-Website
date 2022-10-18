@@ -169,7 +169,7 @@ const routes: Array<RouteRecordRaw> = [
 			// Recruitment - manager sign in
 			{
 				path: "recruitment/manager/signin",
-				name: "AdmissionManagerSignin",
+				name: "AdmissionRecruitmentManagerSignin",
 				component: RecruitmentManagerSignin,
 			},
 		],
