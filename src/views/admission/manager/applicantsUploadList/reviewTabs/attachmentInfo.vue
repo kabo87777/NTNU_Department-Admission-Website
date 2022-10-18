@@ -118,7 +118,6 @@
 		<div class="mt-32px"></div>
 	</div>
 </template>
-
 <script setup lang="ts">
 import { reactive } from "vue";
 import ReviewState from "./components/reviewState.vue";
@@ -128,46 +127,60 @@ import ParagraphDivider from "../../../../../styles/paragraphDivider.vue";
 import "primeicons/primeicons.css";
 import AttachmentList from "./attachmentList.json";
 
+interface BasicData {
+	name?: string;
+	file_name?: string;
+	file_url?: string;
+	order?: number;
+	state?: number;
+}
+
 const props = defineProps(["userId"]);
 console.log(props.userId, "attachment info tab");
 
 const schoolExpList = reactive(
 	AttachmentList.school_exp?.map((item, index) => {
-		return { ...item, order: index, state: 1 };
+		const element: BasicData = {
+			...(item as object),
+			order: index,
+			state: 1,
+		};
+		return element;
 	})
 );
 schoolExpList.push({
 	order: schoolExpList.length,
 	state: 3,
-	name: "",
-	file_name: "",
-	file_url: "",
 });
 
 const examCertificateList = reactive(
 	AttachmentList.exam_score?.map((item, index) => {
-		return { ...item, order: index, state: 1 };
+		const element: BasicData = {
+			...(item as object),
+			order: index,
+			state: 1,
+		};
+		return element;
 	})
 );
 examCertificateList.push({
 	order: examCertificateList.length,
 	state: 3,
-	name: "",
-	file_name: "",
-	file_url: "",
 });
 
 const otherList = reactive(
 	AttachmentList.other?.map((item, index) => {
-		return { ...item, order: index, state: 1 };
+		const element: BasicData = {
+			...(item as object),
+			order: index,
+			state: 1,
+		};
+		return element;
 	})
 );
 otherList.push({
 	order: otherList.length,
 	state: 3,
-	name: "",
-	file_name: "",
-	file_url: "",
 });
 /* 判斷總共有幾個attachment 並對個別attachment宣告一個state去切換該用review state 或是 edit state 或是 create state */
 /* 方法：api讀進來，如果後端沒有宣告state的話跑回圈並對每個attachment新增 { state: 1 or 2 or 3 or 4 } */
