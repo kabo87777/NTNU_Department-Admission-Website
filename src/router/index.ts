@@ -28,6 +28,7 @@ import ResetPasswordEmailSent from "@/views/admission/ResetPasswordEmailSent.vue
 import gradeDataList from "@/views/admission/manager/gradeDataList.vue";
 import ApplicantsUploadList from "@/views/admission/manager/applicantsUploadList/applicantsUploadList.vue";
 import ApplicantUploadedDocs from "@/views/admission/manager/applicantsUploadList/applicantUploadedDocs.vue";
+import managerUserSetting from "@/views/admission/manager/managerUserSetting.vue";
 //Reviewer section
 import AdmissionReviewerMainContainer from "@/views/admission/reviewer/MainContainer.vue";
 import AdmissionReviewerSignin from "@/views/admission/reviewer/ReviewerSignin.vue";
@@ -166,6 +167,11 @@ const routes: Array<RouteRecordRaw> = [
 						path: "applicantsUploadList/:accId",
 						name: "ApplicantUploadedDocs",
 						component: ApplicantUploadedDocs,
+					},
+					{
+						path: "managerUserSetting",
+						name: "managerUserSetting",
+						component: managerUserSetting,
 					},
 				],
 			},
