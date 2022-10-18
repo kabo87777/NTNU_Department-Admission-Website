@@ -1,12 +1,18 @@
 .bigRedDivider {
-    background-color: #874B52;
-    height: 4px;
-    width: 100%;
-    margin-top: 8px;
+  background-color: #874b52;
+  height: 4px;
+  width: 100%;
+  margin-top: 8px;
 }
 
 .smallRedDivider {
-    background-color: #874B52;
-    height: 1px;
-    width: 45%;
+  background-color: #874b52;
+  height: 1px;
+  width: 45%;
+}
+
+.normalDivider {
+  background-color: #53565a;
+  height: 1px;
+  width: 100%;
 }
