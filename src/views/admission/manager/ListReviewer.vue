@@ -21,9 +21,11 @@
 		<Column field="roles">
 			<template #header>{{ $t("身份組") }}</template>
 			<template #body="slotProps">
-				<Tag v-for="role in truncateRoles(slotProps.data.roles)">{{
-					role
-				}}</Tag>
+				<Tag
+					v-for="role in truncateRoles(slotProps.data.roles)"
+					:key="role"
+					>{{ role }}</Tag
+				>
 			</template>
 		</Column>
 
@@ -80,6 +82,7 @@
 					<div
 						class="inline-flex items-center"
 						v-for="role in modalData.roles"
+						:key="role.id"
 					>
 						<Checkbox :binary="true" :value="true"></Checkbox>
 						<span class="mx-1">{{ role.name }}</span>
