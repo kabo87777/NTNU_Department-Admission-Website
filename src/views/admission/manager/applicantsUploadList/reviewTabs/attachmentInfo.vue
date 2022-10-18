@@ -6,36 +6,32 @@
 
 		<!-- SCHOOL EXPERIENCE -->
 		<div v-for="(item, index) in schoolExpList" :key="index">
-			<div v-if="item.state === 1">
-				<ReviewState
-					category="就學經歷"
-					:itemName="item.name"
-					:order="index + 1"
-					@edit="reviewToEdit"
-				/>
-			</div>
-			<div v-else-if="item.state === 2">
-				<EditState
-					category="就學經歷"
-					:itemName="item.name"
-					:order="index + 1"
-					@cancel="editToReview"
-				/>
-			</div>
-			<div v-else-if="item.state === 3">
-				<CreateState
-					category="就學經歷"
-					:order="index + 1"
-					@edit="createToEdit"
-				/>
-			</div>
-			<div v-else-if="item.state === 4">
-				<EditState
-					category="就學經歷"
-					:order="index + 1"
-					@cancel="editToCreate"
-				/>
-			</div>
+			<ReviewState
+				v-if="item.state === 1"
+				category="就學經歷"
+				:itemName="item.name"
+				:order="index + 1"
+				@edit="reviewToEdit"
+			/>
+			<EditState
+				v-else-if="item.state === 2"
+				category="就學經歷"
+				:itemName="item.name"
+				:order="index + 1"
+				@cancel="editToReview"
+			/>
+			<CreateState
+				v-else-if="item.state === 3"
+				category="就學經歷"
+				:order="index + 1"
+				@edit="createToEdit"
+			/>
+			<EditState
+				v-else-if="item.state === 4"
+				category="就學經歷"
+				:order="index + 1"
+				@cancel="editToCreate"
+			/>
 		</div>
 
 		<!-- DIVIDER -->
@@ -49,36 +45,32 @@
 
 		<!-- EXAM AND QUALIFICATION TEST SCORE -->
 		<div v-for="(item, index) in examCertificateList" :key="index">
-			<div v-if="item.state === 1">
-				<ReviewState
-					category="考試與檢定分數"
-					:itemName="item.name"
-					:order="index + 1"
-					@edit="reviewToEdit"
-				/>
-			</div>
-			<div v-else-if="item.state === 2">
-				<EditState
-					category="考試與檢定分數"
-					:itemName="item.name"
-					:order="index + 1"
-					@cancel="editToReview"
-				/>
-			</div>
-			<div v-else-if="item.state === 3">
-				<CreateState
-					category="考試與檢定分數"
-					:order="index + 1"
-					@edit="createToEdit"
-				/>
-			</div>
-			<div v-else-if="item.state === 4">
-				<EditState
-					category="考試與檢定分數"
-					:order="index + 1"
-					@cancel="editToCreate"
-				/>
-			</div>
+			<ReviewState
+				v-if="item.state === 1"
+				category="考試與檢定分數"
+				:itemName="item.name"
+				:order="index + 1"
+				@edit="reviewToEdit"
+			/>
+			<EditState
+				v-else-if="item.state === 2"
+				category="考試與檢定分數"
+				:itemName="item.name"
+				:order="index + 1"
+				@cancel="editToReview"
+			/>
+			<CreateState
+				v-else-if="item.state === 3"
+				category="考試與檢定分數"
+				:order="index + 1"
+				@edit="createToEdit"
+			/>
+			<EditState
+				v-else-if="item.state === 4"
+				category="考試與檢定分數"
+				:order="index + 1"
+				@cancel="editToCreate"
+			/>
 		</div>
 
 		<!-- DIVIDER -->
@@ -92,36 +84,32 @@
 
 		<!-- OTHER -->
 		<div v-for="(item, index) in otherList" :key="index">
-			<div v-if="item.state === 1">
-				<ReviewState
-					category="其他有利於審查資料"
-					:itemName="item.name"
-					:order="index + 1"
-					@edit="reviewToEdit"
-				/>
-			</div>
-			<div v-else-if="item.state === 2">
-				<EditState
-					category="其他有利於審查資料"
-					:itemName="item.name"
-					:order="index + 1"
-					@cancel="editToReview"
-				/>
-			</div>
-			<div v-else-if="item.state === 3">
-				<CreateState
-					category="其他有利於審查資料"
-					:order="index + 1"
-					@edit="createToEdit"
-				/>
-			</div>
-			<div v-else-if="item.state === 4">
-				<EditState
-					category="其他有利於審查資料"
-					:order="index + 1"
-					@cancel="editToCreate"
-				/>
-			</div>
+			<ReviewState
+				v-if="item.state === 1"
+				category="其他有利於審查資料"
+				:itemName="item.name"
+				:order="index + 1"
+				@edit="reviewToEdit"
+			/>
+			<EditState
+				v-else-if="item.state === 2"
+				category="其他有利於審查資料"
+				:itemName="item.name"
+				:order="index + 1"
+				@cancel="editToReview"
+			/>
+			<CreateState
+				v-else-if="item.state === 3"
+				category="其他有利於審查資料"
+				:order="index + 1"
+				@edit="createToEdit"
+			/>
+			<EditState
+				v-else-if="item.state === 4"
+				category="其他有利於審查資料"
+				:order="index + 1"
+				@cancel="editToCreate"
+			/>
 		</div>
 
 		<!-- DIVIDER -->
