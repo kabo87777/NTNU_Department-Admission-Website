@@ -162,7 +162,7 @@ const examCertificateList = reactive(
 	})
 );
 examCertificateList.push({
-	order: schoolExpList.length,
+	order: examCertificateList.length,
 	state: 3,
 	name: "",
 	file_name: "",
@@ -175,7 +175,7 @@ const otherList = reactive(
 	})
 );
 otherList.push({
-	order: schoolExpList.length,
+	order: otherList.length,
 	state: 3,
 	name: "",
 	file_name: "",
