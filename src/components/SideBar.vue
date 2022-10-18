@@ -177,24 +177,24 @@
 			</router-link>
 			<div class="bg-gray-200 bg-opacity-50 !w-400 h-203px !mt-22px">
 				<RouterLink
-				to="/admission/manager/reviewerSettings"
-				custom
-				v-slot="{ navigate }"
+					to="/admission/manager/reviewerSettings"
+					custom
+					v-slot="{ navigate }"
 				>
 					<Button
-					class="w-168px h-44px p-button-outlined !mt-24px !ml-10px !bg-white"
-					@click="navigate"
+						class="w-168px h-44px p-button-outlined !mt-24px !ml-10px !bg-white"
+						@click="navigate"
 					>
-					<img
-					alt="logo"
-					src="/assets/sidebar/User_box.png"
-					style="width: 1.25rem"
-					/>
-					<h1 class="tracking-1px text-xl text-gray-900">
-						{{ $t("管理審查者") }}
-					</h1>
-				</Button>
-			</RouterLink>
+						<img
+							alt="logo"
+							src="/assets/sidebar/User_box.png"
+							style="width: 1.25rem"
+						/>
+						<h1 class="tracking-1px text-xl text-gray-900">
+							{{ $t("管理審查者") }}
+						</h1>
+					</Button>
+				</RouterLink>
 				<Button
 					@click="newProject"
 					class="w-146px h-44px p-button-outlined p-button-success !mt-24px !ml-24px !bg-white"
