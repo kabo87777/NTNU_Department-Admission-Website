@@ -1,7 +1,7 @@
 <template>
 	<div class="mt-16px pl-8px pr-8px">
 		<!-- TITLE -->
-		<div class="mt-24px text-24px font-medium">{{ $t("就學經歷") }}</div>
+		<div class="mt-16px text-24px font-medium">{{ $t("就學經歷") }}</div>
 		<div class="mt-32px"></div>
 
 		<!-- SCHOOL EXPERIENCE -->

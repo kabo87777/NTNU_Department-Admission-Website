@@ -12,6 +12,7 @@ test:
   script:
     - pnpm install
     - pnpm lint
+    - pnpm vue-tsc --noEmit
     - pnpm test
   cache:
     key:
@@ -28,7 +29,7 @@ deploy:prd:
     - curl --fail-with-body -s "https://api.render.com/deploy/srv-${RENDER_SRV_ID}?key=${RENDER_DEPLOY_KEY}" -o file.txt >/dev/null 2>&1
   environment:
     name: Production
-    url: https://admissions-frontend-prd.onrender.com
+    url: https://admissions.birkhoff.me
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
 
