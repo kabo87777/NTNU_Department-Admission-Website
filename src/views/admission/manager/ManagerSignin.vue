@@ -144,7 +144,7 @@ if (authStore.isValidSession) redirectToMainContainer();
 // Login Form
 const turnstileRef = ref<TurnstileComponentExposes>();
 const isRememberAccount = ref(false);
-const email = ref("example1@email.com");
+const email = ref("example@email.com");
 const password = ref("Example123");
 const isTurnstileRunning = computed(() => !turnstileRef.value?.turnstileToken);
 
