@@ -2,7 +2,9 @@
 	<div class="mt-16px">
 		<div class="mt-16px">
 			<div>
-				<label class="ml-8px text-24px font-medium">系統設置</label>
+				<label class="ml-8px text-24px font-medium">{{
+					$t("系統設置")
+				}}</label>
 			</div>
 		</div>
 		<div>
@@ -16,8 +18,8 @@
 			</SelectButton>
 		</div>
 		<div class="flex mt-16px">
-			<div class="w-1/3 pl-16px">開放時間</div>
-			<div class="w-1/3 pl-16px">截止時間</div>
+			<div class="w-1/3 pl-16px">{{ $t("開放時間") }}</div>
+			<div class="w-1/3 pl-16px">{{ $t("截止時間") }}</div>
 		</div>
 		<div class="flex mt-16px">
 			<div p-fluid grid formgrid>
@@ -48,11 +50,13 @@
 
 		<div class="mt-16px">
 			<div>
-				<label class="ml-8px text-24px font-medium">補件需求</label>
+				<label class="ml-8px text-24px font-medium">{{
+					$t("補件需求")
+				}}</label>
 			</div>
 		</div>
 		<div class="block mt-16px">
-			<div class="w-1/3 pl-16px">補件需求說明:</div>
+			<div class="w-1/3 pl-16px">{{ $t("補件需求說明") }}:</div>
 			<div class="mt-8px ml-16px">
 				<InputText type="text" v-model="inputvalue" class="h-10" />
 				<span :style="{ marginLeft: '.5em' }">{{ inputvalue }}</span>
@@ -60,13 +64,15 @@
 		</div>
 		<div class="mt-16px ml-16px">
 			<Checkbox inputId="text" v-model="textChecked" :binary="true" />
-			<label for="text" class="ml-8px font-medium">文字輸入框</label>
+			<label for="text" class="ml-8px font-medium">{{
+				$t("文字輸入框")
+			}}</label>
 		</div>
 		<div class="flex mt-16px">
 			<div class="mt-16px ml-16px">
 				<Checkbox inputId="file" v-model="fileChecked" :binary="true" />
 				<label for="file" class="ml-8px font-medium"
-					>上傳檔案，檔案類型:</label
+					>{{ $t("上傳檔案，檔案類型") }}:</label
 				>
 			</div>
 			<div class="ml-16px">
@@ -86,23 +92,24 @@
 				<div class="smallRedDivider absolute right-0"></div>
 			</div>
 		</div>
-		
+
 		<ParagraphDivider />
 
 		<div class="mt-16px">
 			<div>
-				<label class="ml-8px text-24px font-medium">提交內容</label>
+				<label class="ml-8px text-24px font-medium">{{
+					$t("提交內容")
+				}}</label>
 			</div>
 		</div>
-		<div class="mt-16px">※ 尚未提交任何文字，檔案</div>
+		<div class="mt-16px">{{ $t("尚未提交任何文字，檔案") }}</div>
 		<div class="bigRedDivider"></div>
 		<div class="mt-16px ml-20px grid justify-center">
 			<Button
 				@click="displayEmail"
-				label="Secondary"
 				class="grid justify-center p-button-outlined p-button-secondary text-20px tracking-wide"
 			>
-				寄送E-mail通知
+				{{ $t("寄送E-mail通知") }}
 			</Button>
 		</div>
 
@@ -115,11 +122,11 @@
 	>
 		<divider class="!mt-0px" />
 		<p class="mt-24px text-base tracking-2px">
-			確定要寄送email通知已開啟補件系統嗎?
+			{{ $t("確定要寄送email通知已開啟補件系統嗎") }}?
 		</p>
 		<div class="flex">
 			<Button
-				@click="closeEmail "
+				@click="closeEmail"
 				class="p-button-outlined p-button-success !ml-70px !mt-26px !w-105px !h-44px"
 			>
 				<img
@@ -129,7 +136,7 @@
 					class="!ml-0px"
 				/>
 				<span class="text-left text-xl">
-					確定
+					{{ $t("確定") }}
 				</span>
 			</Button>
 			<Button
@@ -180,8 +187,8 @@ let nextYear = nextMonth === 0 ? year + 1 : year;
 
 const inputvalue = ref();
 const translation = {
-	basicCol: t("啟用"),
-	attachmentCol: t("關閉"),
+	basicCol: t("Turn ON"),
+	attachmentCol: t("TurnOFF"),
 };
 const activeTab = ref({ name: translation.basicCol, value: 1 });
 const tabOptions = ref([
