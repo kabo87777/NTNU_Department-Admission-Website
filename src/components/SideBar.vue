@@ -1,19 +1,20 @@
 <template>
-	<div class="mt-32px">
+	<div class="mt-32px relative">
 		<div class="flex">
 			<div class="sidebarVerticalBigRedDivider"></div>
 			<div class="sidebarVerticalSmallRedDivider"></div>
-			<div class="ml-16px">
+			<div class="ml-12px w-[100%]">
 				<Dropdown
 					v-model="selectedProgram"
 					:options="programs"
-					optionLabel="program_name"
-					class="w-320px h-72px"
+					:optionLabel="generateOptions"
+					class="h-60px w-[93%]"
 					style="border-radius: 8px; border: 1px solid black"
 				>
 					<template #value="slotProps">
-						<div class="mt-10px tracking-2px text-24px font-medium">
-							{{ $t(slotProps.value.program_name) }}
+						<div class="mt-6px tracking-2px text-20px font-medium">
+							{{ slotProps.value.category }}
+							{{ slotProps.value.name }}
 						</div>
 					</template>
 				</Dropdown>
@@ -26,7 +27,7 @@
 			v-slot="{ navigate }"
 		>
 			<Button
-				class="p-button-secondary p-button-text !ml-24px !mt-36px !w-336px !h-48px"
+				class="p-button-secondary p-button-text !ml-24px !mt-32px !w-336px !h-48px"
 				@click="navigate"
 				role="link"
 			>
@@ -36,7 +37,7 @@
 					style="width: 1.5rem"
 				/>
 				<span
-					class="text-left tracking-3px ml-3 font-bold text-xl text-[#2D2926]"
+					class="text-left tracking-3px ml-3 font-bold text-[20px] text-[#2D2926]"
 				>
 					{{ $t("專案設定") }}
 				</span>
@@ -44,7 +45,7 @@
 		</router-link>
 
 		<Button
-			class="p-button-secondary p-button-text !ml-24px !mt-16px !w-336px !h-48px"
+			class="p-button-secondary p-button-text !ml-24px !mt-8px !w-336px !h-48px"
 		>
 			<img
 				alt="logo"
@@ -66,7 +67,7 @@
 		</div>
 
 		<Button
-			class="p-button-secondary p-button-text !ml-24px !mt-24px !w-336px !h-48px"
+			class="p-button-secondary p-button-text !ml-24px !mt-16px !w-336px !h-48px"
 		>
 			<img
 				alt="logo"
@@ -80,7 +81,7 @@
 			</span>
 		</Button>
 		<Button
-			class="p-button-secondary p-button-text !ml-24px !mt-16px !w-336px !h-48px"
+			class="p-button-secondary p-button-text !ml-24px !mt-8px !w-336px !h-48px"
 		>
 			<img
 				alt="logo"
@@ -99,7 +100,7 @@
 			v-slot="{ navigate }"
 		>
 			<Button
-				class="p-button-secondary p-button-text !ml-24px !mt-16px !w-336px !h-48px"
+				class="p-button-secondary p-button-text !ml-24px !mt-8px !w-336px !h-48px"
 				@click="navigate"
 				role="link"
 			>
@@ -117,7 +118,7 @@
 		</router-link>
 		<router-link to="/admission/manager/applicantsUploadList">
 			<Button
-				class="p-button-secondary p-button-text !ml-24px !mt-16px !w-336px !h-48px"
+				class="p-button-secondary p-button-text !ml-24px !mt-8px !w-336px !h-48px"
 			>
 				<img
 					alt="logo"
@@ -145,7 +146,7 @@
 			v-slot="{ navigate }"
 		>
 			<Button
-				class="p-button-secondary p-button-text !ml-24px !mt-24px !w-336px !h-48px"
+				class="p-button-secondary p-button-text !ml-24px !mt-16px !w-336px !h-48px"
 				@click="navigate"
 				role="link"
 			>
@@ -167,7 +168,7 @@
 			v-slot="{ navigate }"
 		>
 			<Button
-				class="p-button-secondary p-button-text !ml-24px !mt-12px !w-336px !h-48px"
+				class="p-button-secondary p-button-text !ml-24px !mt-8px !w-336px !h-48px"
 				@click="navigate"
 				role="link"
 			>
@@ -184,8 +185,8 @@
 			</Button>
 		</router-link>
 		<div
-			class="bg-gray-200 bg-opacity-50 h-203px w-399px"
-			style="transform: translateY(35%)"
+			class="bg-gray-200 bg-opacity-50 h-200px w-[100%]"
+			style="transform: translateY(20%)"
 		>
 			<div class="flex">
 				<div class="m-auto">
@@ -260,7 +261,7 @@
 					</Button>
 				</div>
 			</Dialog>
-			<div class="flex relative">
+			<div class="flex">
 				<img
 					alt="logo"
 					src="/assets/sidebar/User_circle.png"
@@ -305,8 +306,7 @@
 
 <script setup lang="ts">
 import "primevue/resources/primevue.min.css";
-import Sidebar from "primevue/sidebar";
-import { ref, watch } from "vue";
+import { ref } from "vue";
 import Dropdown from "primevue/dropdown";
 import Button from "primevue/button";
 import Divider from "primevue/divider";
@@ -318,28 +318,48 @@ import {
 	useAdmissionAdminAuthStore,
 	useAdmissionReviewerAuthStore,
 } from "@/stores/universalAuth";
-import * as adminApi from "@/api/admission/admin/api";
+import { AdmissionAdminAPI } from "@/api/admission/admin/api";
 // import * as reviewerApi from "@/api/admission/reviewer/api";
 import applicantUploadedDocsVue from "@/views/admission/manager/applicantsUploadList/applicantUploadedDocs.vue";
+import { useQuery } from "@tanstack/vue-query";
 
 const router = useRouter();
 
 const reviewerAuth = useAdmissionReviewerAuthStore();
 const adminAuth = useAdmissionAdminAuthStore();
 
+const api = new AdmissionAdminAPI(adminAuth);
+
+const {
+	isLoading,
+	isError,
+	data: programs,
+	error,
+} = useQuery(["programList"], async () => await api.getProgramList());
+
 const { t } = useI18n();
 
-const visibleLeft = ref(true);
 const selectedProgram = ref({
-	program_name: "2022 研究生審查 Master Review",
-	value: 1,
+	id: 1,
+	category: "111年碩士班",
+	name: "A組",
+	application_start_date: "2022-10-01T00:00:00.000+08:00",
+	application_end_date: "2022-10-31T00:00:00.000+08:00",
+	review_start_date: "2022-11-01T00:00:00.000+08:00",
+	review_end_date: "2022-11-30T00:00:00.000+08:00",
+	require_file: "['file1', 'file2']",
+	stage: "application",
+	created_at: "2022-10-18T07:00:10.671+08:00",
+	updated_at: "2022-10-18T07:00:10.671+08:00",
+	applicant_required_info: null,
+	applicant_required_file: null,
+	reviewer_required_info: null,
+	reviewer_required_file: null,
 });
-const programs = ref([
-	{ program_name: "2022 研究生審查 Master Review", value: 1 },
-	{ program_name: "2022 博士生審查 Phd Review", value: 2 },
-]);
 const displayNewProject = ref(false);
 const newProjectName = ref("");
+
+const generateOptions = (data: any) => data.category + data.name;
 
 function newProject() {
 	displayNewProject.value = true;
@@ -351,7 +371,7 @@ function closeDisplayNewProject() {
 
 async function signOut() {
 	if (adminAuth.isValidSession) {
-		if (await adminApi.sign_out(adminAuth)) {
+		if (await api.invalidateSession()) {
 			router.push("/");
 		}
 	}
