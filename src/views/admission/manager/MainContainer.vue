@@ -16,7 +16,7 @@
 			>
 				<SideBar />
 			</div>
-			<div style="margin-left: 400px; position: absolute; width: 80%">
+			<div style="margin-left: 384px; width: 80%">
 				<router-view />
 			</div>
 		</div>
