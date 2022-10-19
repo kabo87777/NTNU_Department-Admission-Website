@@ -265,7 +265,7 @@
 			<div class="mt-16px ml-16px">
 				<Checkbox
 					inputId="file"
-					v-model="nationalSecond"
+					v-model="textCheckedSecondCountry"
 					:binary="true"
 				/>
 				<label for="file" class="ml-8px font-medium"
@@ -285,7 +285,7 @@
 		</div>
 		<div class="flex mt-16px">
 			<div class="mt-16px ml-16px">
-				<Checkbox inputId="file" v-model="national" :binary="true" />
+				<Checkbox inputId="file" v-model="textCheckedVisa" :binary="true" />
 				<label for="file" class="ml-8px font-medium"
 					>{{ $t("非台灣國籍，簽證類型") }}:</label
 				>
@@ -294,7 +294,7 @@
 				<span class="p-float-label">
 					<Dropdown
 						id="dropdown"
-						v-model="value8"
+						v-model="selected_visa"
 						:options="cities"
 						optionLabel="name"
 						class="h-10 w-40"
@@ -381,7 +381,9 @@ import { useI18n } from "vue-i18n";
 const props = defineProps(["userId"]);
 const title = ref("");
 const suffix = ref("");
-const selected_country = ref();
+const selected_visa = ref();
+const textCheckedSecondCountry = ref();
+const textCheckedVisa = ref();
 const textCheckedAddress = ref(false);
 const textCheckedMan = ref(false);
 const textCheckedWoman = ref(false);
