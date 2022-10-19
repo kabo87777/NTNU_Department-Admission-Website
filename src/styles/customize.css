@@ -35,3 +35,22 @@
   height: 2px;
   width: 32px;
 }
+
+.sidebarVerticalBigBlueDivider {
+  background-color: #236192;
+  height: 60px;
+  width: 10px;
+}
+
+.sidebarVerticalSmallBlueDivider {
+  margin-left: 2px;
+  background-color: #236192;
+  height: 60px;
+  width: 4px;
+}
+
+.sidebarBlueDivider {
+  background-color: #236192;
+  height: 2px;
+  width: 32px;
+}

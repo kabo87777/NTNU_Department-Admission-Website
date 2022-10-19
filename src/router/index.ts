@@ -33,6 +33,8 @@ import managerUserSetting from "@/views/admission/manager/managerUserSetting.vue
 //Reviewer section
 import AdmissionReviewerMainContainer from "@/views/admission/reviewer/MainContainer.vue";
 import AdmissionReviewerSignin from "@/views/admission/reviewer/ReviewerSignin.vue";
+import applicationReview from "@/views/admission/reviewer/applicationReview.vue";
+import oralReview from "@/views/admission/reviewer/oralReview.vue";
 
 // Recruitment Applicant section
 
@@ -73,7 +75,18 @@ const routes: Array<RouteRecordRaw> = [
 				path: "admission/reviewer",
 				name: "AdmissionReviewerMainContainer",
 				component: AdmissionReviewerMainContainer,
-				children: [],
+				children: [
+					{
+						path: "applicationReview",
+						name: "applicationReview",
+						component: applicationReview,
+					},
+					{
+						path: "oralReview",
+						name: "oralReview",
+						component: oralReview,
+					},
+				],
 			},
 			// Admission - manager sign in
 			{
