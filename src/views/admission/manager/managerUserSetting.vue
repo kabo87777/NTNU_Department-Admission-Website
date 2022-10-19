@@ -4,7 +4,7 @@
 	<div class="mt-20px">
 		{{ $t("帳號名稱") }}：{{ userId }}
 		<Button @click="editUserId" class="p-button-outlined">
-			<img src="/assets/userSetting/Edit.png" />
+			<img src="/assets/UserSetting/Edit.png" />
 			{{ $t("修改") }}
 		</Button>
 		<Dialog header="修改名稱" v-model:visible="displayUserId">
@@ -19,7 +19,7 @@
 	<div class="mt-20px">
 		{{ $t("聯絡信箱") }}：{{ email }}
 		<Button @click="editEmail" class="p-button-outlined">
-			<img src="/assets/userSetting/Edit.png" />
+			<img src="/assets/UserSetting/Edit.png" />
 			{{ $t("修改") }}
 		</Button>
 		<Dialog header="修改信箱" v-model:visible="displayEmail">
@@ -34,7 +34,7 @@
 	<div class="mt-20px">
 		{{ $t("手機號碼") }}：{{ phone }}
 		<Button @click="editPhone" class="p-button-outlined">
-			<img src="/assets/userSetting/Edit.png" />
+			<img src="/assets/UserSetting/Edit.png" />
 			{{ $t("修改") }}
 		</Button>
 		<Dialog header="修改信箱" v-model:visible="displayPhone">
@@ -47,7 +47,7 @@
 		</Dialog>
 	</div>
 	<Divider />
-	<div>{{ $t("修改密碼") }}<img src="/assets/userSetting/Lock.png" /></div>
+	<div>{{ $t("修改密碼") }}<img src="/assets/UserSetting/Lock.png" /></div>
 	<div>
 		<div>
 			<div>{{ $t("請輸入舊密碼") }}：</div>
@@ -66,7 +66,7 @@
 	</div>
 	<div>
 		<Button @click="editPassword" class="p-button-outlined">
-			<img src="/assets/userSetting/Edit.png" />
+			<img src="/assets/UserSetting/Edit.png" />
 			{{ $t("修改送出") }}
 		</Button>
 	</div>

@@ -133,13 +133,9 @@
 			</Button>
 		</router-link>
 
-		<div class="flex mt-32px">
-			<div class="sidebarRedDivider"></div>
-			<div class="mt-[-8px] ml-8px text-[#874B52] text-20px font-bold">
-				{{ $t("審查端設定") }}
-			</div>
-		</div>
-
+		<Divider align="left" class="text-xs text-ntnuRed text-base">
+			<b>{{ $t("審查端設定") }}</b>
+		</Divider>
 		<router-link
 			to="/admission/manager/reviewScoreField"
 			custom
@@ -155,9 +151,7 @@
 					src="/assets/sidebar/Eye_light.png"
 					style="width: 1.5rem"
 				/>
-				<span
-					class="text-left tracking-3px ml-3 font-bold text-xl text-[#2D2926]"
-				>
+				<span class="text-left tracking-3px ml-3 font-bold text-xl">
 					{{ $t("審查評分設置") }}
 				</span>
 			</Button>
@@ -177,9 +171,7 @@
 					src="/assets/sidebar/Flag_finish.png"
 					style="width: 1.5rem"
 				/>
-				<span
-					class="text-left tracking-3px ml-3 font-bold text-xl text-[#2D2926]"
-				>
+				<span class="text-left tracking-3px ml-3 font-bold text-xl">
 					{{ $t("評分資料列表") }}
 				</span>
 			</Button>
@@ -275,30 +267,20 @@
 						{{ $t("系辦主管") }}
 					</div>
 				</div>
-				<div class="absolute right-0 mr-8px">
-					<router-link
-						to="/admission/manager/managerUserSetting"
-						custom
-						v-slot="{ navigate }"
-					>
-						<Button class="p-button-text !mt-46px !ml-50px">
-							<img
-								alt="logo"
-								src="/assets/sidebar/Setting_alt_line.png"
-								class="w-28px h-28px"
-								@click="navigate"
-								role="link"
-							/>
-						</Button>
-					</router-link>
-					<Button class="p-button-text !mt-46px" @click="signOut">
-						<img
-							alt="logo"
-							src="/assets/sidebar/Sign_out_circle.png"
-							class="w-28px h-28px"
-						/>
-					</Button>
-				</div>
+				<Button class="p-button-text !mt-46px !ml-50px">
+					<img
+						alt="logo"
+						src="/assets/sidebar/Setting_alt_line.png"
+						class="w-28px h-28px"
+					/>
+				</Button>
+				<Button class="p-button-text !mt-46px" @click="signOut">
+					<img
+						alt="logo"
+						src="/assets/sidebar/Sign_out_circle.png"
+						class="w-28px h-28px"
+					/>
+				</Button>
 			</div>
 		</div>
 	</div>
