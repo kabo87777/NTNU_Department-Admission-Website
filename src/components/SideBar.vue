@@ -182,18 +182,28 @@
 		>
 			<div class="flex">
 				<div class="m-auto">
-					<Button
-						class="w-168px h-44px p-button-outlined !mt-24px !bg-white"
+					<router-link
+						to="/admission/manager/reviewerSettings"
+						custom
+						v-slot="{ navigate }"
 					>
-						<img
-							alt="logo"
-							src="/assets/sidebar/User_box.png"
-							style="width: 1.25rem"
-						/>
-						<h1 class="ml-8px tracking-1px text-18px text-gray-900">
-							{{ $t("管理審查者") }}
-						</h1>
-					</Button>
+						<Button
+							class="w-168px h-44px p-button-outlined !mt-24px !bg-white"
+							@click="navigate"
+							role="link"
+						>
+							<img
+								alt="logo"
+								src="/assets/sidebar/User_box.png"
+								style="width: 1.25rem"
+							/>
+							<h1
+								class="ml-8px tracking-1px text-18px text-gray-900"
+							>
+								{{ $t("管理審查者") }}
+							</h1>
+						</Button>
+					</router-link>
 					<Button
 						@click="newProject"
 						class="w-168px h-44px p-button-outlined p-button-success !ml-16px !bg-white"
