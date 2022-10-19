@@ -8,14 +8,15 @@
 				style="
 					position: fixed;
 					float: left;
-					width: 400px;
+					width: 20%;
+					min-width: 384px;
 					border-right: 1px solid gray;
 					height: 100%;
 				"
 			>
 				<SideBar />
 			</div>
-			<div style="margin-left: 400px; position: absolute; width: 81.5%">
+			<div style="margin-left: 400px; position: absolute; width: 80%">
 				<router-view />
 			</div>
 		</div>
@@ -28,19 +29,17 @@ import SideBar from "@/components/SideBar.vue";
 
 import { watch } from "vue";
 import { useRouter } from "vue-router";
-import {
-	useAdmissionAdminAuthStore,
-	useAdmissionReviewerAuthStore,
-} from "@/stores/universalAuth";
+
+import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
 
 const router = useRouter();
 
-const reviewerAuth = useAdmissionReviewerAuthStore();
 const adminAuth = useAdmissionAdminAuthStore();
 
 watch(router.currentRoute, () => {
-	if (!reviewerAuth.isValidSession && !adminAuth.isValidSession) {
+	if (!adminAuth.isValidSession) {
 		router.replace({ name: "AdmissionManagerSignin" });
+		return;
 		// TODO: show session expired notification
 	}
 });
