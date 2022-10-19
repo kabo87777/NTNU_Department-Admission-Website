@@ -24,7 +24,7 @@
 			</div>
 			<div>
 				<div class="mt-100px ml-164px text-4xl font-bold text-gray-500">
-					{{ $t("審查委員及行政人員管理系統") }}
+					{{ $t("行政人員管理系統") }}
 				</div>
 			</div>
 			<!-- <form @submit="onSubmit" ref="form"> -->
