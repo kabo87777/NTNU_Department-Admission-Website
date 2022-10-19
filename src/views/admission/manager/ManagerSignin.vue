@@ -121,7 +121,7 @@ import { useRouter } from "vue-router";
 import { Field, useForm } from "vee-validate";
 import * as yup from "yup";
 
-import * as api from "@/api/admission/admin/api";
+import { AdmissionAdminAPI } from "@/api/admission/admin/api";
 import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
 
 import type { TurnstileComponentExposes } from "@/components/Turnstile.vue";
@@ -193,8 +193,9 @@ const onSubmit = handleSubmit(async function (values, actions) {
 
 		if (!turnstileResponse) throw new Error("Turnstile challenge failed");
 
-		// TODO: admin, reviewer
-		await api.sign_in(authStore, {
+		const api = new AdmissionAdminAPI(authStore);
+
+		await api.requestNewSession({
 			email: values.email,
 			password: values.password,
 			"cf-turnstile-response": turnstileResponse,
