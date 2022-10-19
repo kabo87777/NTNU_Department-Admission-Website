@@ -121,7 +121,7 @@ import { useRouter } from "vue-router";
 import { Field, useForm } from "vee-validate";
 import * as yup from "yup";
 
-import * as api from "@/api/admission/admin/api";
+import { AdmissionReviewerAPI } from "@/api/admission/reviewer/api";
 import { useAdmissionReviewerAuthStore } from "@/stores/universalAuth";
 
 import type { TurnstileComponentExposes } from "@/components/Turnstile.vue";
@@ -170,9 +170,6 @@ if (lastSigninEmail) {
 	email.value = lastSigninEmail;
 }
 
-// remove legacy item (renamed)
-window.localStorage.removeItem("AdmissionReviewerSigninLastSigninEmail");
-
 // Store email in localStorage if remember account
 watch(isRememberAccount, (isChecked) => {
 	if (!isChecked)
@@ -197,12 +194,13 @@ const onSubmit = handleSubmit(async function (values, actions) {
 		if (!turnstileResponse) throw new Error("Turnstile challenge failed");
 
 		// TODO: reviewer sign in at /admission/reviewer
-		// const api = new AdmissionReviewerAPI(authStore);
-		// await api.requestNewSession(authStore, {
-		// 	email: values.email,
-		// 	password: values.password,
-		// 	"cf-turnstile-response": turnstileResponse,
-		// });
+		const api = new AdmissionReviewerAPI(authStore);
+
+		await api.requestNewSession({
+			email: values.email,
+			password: values.password,
+			"cf-turnstile-response": turnstileResponse,
+		});
 
 		redirectToMainContainer();
 	} catch (e: any) {
