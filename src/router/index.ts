@@ -10,6 +10,7 @@ import LandingView from "@/views/LandingView.vue";
 import AdmissionSignin from "@/views/admission/AdmissionSignin.vue";
 import RecruitmentSignin from "@/views/recruitment/RecruitmentSignin.vue";
 // Manager section
+import AdmissionListReviewer from "@/views/admission/manager/ListReviewer.vue";
 import AdmissionManagerMainContainer from "@/views/admission/manager/MainContainer.vue";
 import AdmissionManagerSignin from "@/views/admission/manager/ManagerSignin.vue";
 import AdmissionManagerForgetPassword from "@/views/admission/manager/ForgetPassword.vue";
@@ -29,6 +30,10 @@ import gradeDataList from "@/views/admission/manager/gradeDataList.vue";
 import ApplicantsUploadList from "@/views/admission/manager/applicantsUploadList/applicantsUploadList.vue";
 import ApplicantUploadedDocs from "@/views/admission/manager/applicantsUploadList/applicantUploadedDocs.vue";
 import managerUserSetting from "@/views/admission/manager/managerUserSetting.vue";
+//Reviewer section
+import AdmissionReviewerMainContainer from "@/views/admission/reviewer/MainContainer.vue";
+import AdmissionReviewerSignin from "@/views/admission/reviewer/ReviewerSignin.vue";
+
 // Recruitment Applicant section
 
 // Recruitment Reviewer section
@@ -58,6 +63,17 @@ const routes: Array<RouteRecordRaw> = [
 					titleKey: "登入頁面",
 				},
 				component: AdmissionSignin,
+			},
+			{
+				path: "admission/reviewer/signin",
+				name: "AdmissionReviewerSignin",
+				component: AdmissionReviewerSignin,
+			},
+			{
+				path: "admission/reviewer",
+				name: "AdmissionReviewerMainContainer",
+				component: AdmissionReviewerMainContainer,
+				children: [],
 			},
 			// Admission - manager sign in
 			{
@@ -157,6 +173,11 @@ const routes: Array<RouteRecordRaw> = [
 						path: "managerUserSetting",
 						name: "managerUserSetting",
 						component: managerUserSetting,
+					},
+					{
+						path: "reviewerSettings",
+						name: "reviewerSettings",
+						component: AdmissionListReviewer,
 					},
 				],
 			},

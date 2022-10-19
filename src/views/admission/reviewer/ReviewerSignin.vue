@@ -24,7 +24,7 @@
 			</div>
 			<div>
 				<div class="mt-100px ml-164px text-4xl font-bold text-gray-500">
-					{{ $t("審查委員及行政人員管理系統") }}
+					{{ $t("審查委員系統") }}
 				</div>
 			</div>
 			<form @submit="onSubmit" ref="form">
@@ -91,7 +91,7 @@
 						</label>
 					</div>
 					<div class="absolute ml-320px text-xs">
-						<router-link to="/admission/manager/forgetpassword">
+						<router-link to="/admission/reviewer/forgetpassword">
 							<div class="text-right font-bold goldText">
 								{{ $t("忘記密碼") }}
 							</div>
@@ -121,8 +121,8 @@ import { useRouter } from "vue-router";
 import { Field, useForm } from "vee-validate";
 import * as yup from "yup";
 
-import { AdmissionAdminAPI } from "@/api/admission/admin/api";
-import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
+import * as api from "@/api/admission/admin/api";
+import { useAdmissionReviewerAuthStore } from "@/stores/universalAuth";
 
 import type { TurnstileComponentExposes } from "@/components/Turnstile.vue";
 import Turnstile from "@/components/Turnstile.vue";
@@ -134,17 +134,17 @@ import InputText from "primevue/inputtext";
 const router = useRouter();
 
 const redirectToMainContainer = () =>
-	router.replace({ name: "AdmissionManagerMainContainer" });
+	router.replace({ name: "AdmissionReviewerMainContainer" });
 
-const authStore = useAdmissionAdminAuthStore();
+const authStore = useAdmissionReviewerAuthStore();
 
-// Go to AdmissionManagerMainContainer if signed in
+// Go to AdmissionReviewerMainContainer if signed in
 if (authStore.isValidSession) redirectToMainContainer();
 
 // Login Form
 const turnstileRef = ref<TurnstileComponentExposes>();
 const isRememberAccount = ref(false);
-const email = ref("example@email.com");
+const email = ref("example1@email.com");
 const password = ref("Example123");
 const isTurnstileRunning = computed(() => !turnstileRef.value?.turnstileToken);
 
@@ -162,7 +162,7 @@ const { handleSubmit, isSubmitting } = useForm({
 
 // Get remember account status
 const lastSigninEmail = window.localStorage.getItem(
-	"AdmissionManagerSigninLastEmail"
+	"AdmissionReviewerSigninLastEmail"
 );
 
 if (lastSigninEmail) {
@@ -171,12 +171,12 @@ if (lastSigninEmail) {
 }
 
 // remove legacy item (renamed)
-window.localStorage.removeItem("AdmissionManagerSigninLastSigninEmail");
+window.localStorage.removeItem("AdmissionReviewerSigninLastSigninEmail");
 
 // Store email in localStorage if remember account
 watch(isRememberAccount, (isChecked) => {
 	if (!isChecked)
-		window.localStorage.removeItem("AdmissionManagerSigninLastEmail");
+		window.localStorage.removeItem("AdmissionReviewerSigninLastEmail");
 });
 
 const consumeTurnstileToken = () => {
@@ -186,20 +186,23 @@ const consumeTurnstileToken = () => {
 };
 
 const onSubmit = handleSubmit(async function (values, actions) {
-	window.localStorage.setItem("AdmissionManagerSigninLastEmail", email.value);
+	window.localStorage.setItem(
+		"AdmissionReviewerSigninLastEmail",
+		email.value
+	);
 
 	try {
 		const turnstileResponse = consumeTurnstileToken();
 
 		if (!turnstileResponse) throw new Error("Turnstile challenge failed");
 
-		const api = new AdmissionAdminAPI(authStore);
-
-		await api.requestNewSession({
-			email: values.email,
-			password: values.password,
-			"cf-turnstile-response": turnstileResponse,
-		});
+		// TODO: reviewer sign in at /admission/reviewer
+		// const api = new AdmissionReviewerAPI(authStore);
+		// await api.requestNewSession(authStore, {
+		// 	email: values.email,
+		// 	password: values.password,
+		// 	"cf-turnstile-response": turnstileResponse,
+		// });
 
 		redirectToMainContainer();
 	} catch (e: any) {
