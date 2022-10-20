@@ -14,7 +14,7 @@
 					height: 100%;
 				"
 			>
-				<SideBar />
+				<ReviewerSideBar />
 			</div>
 			<div style="margin-left: 400px; position: absolute; width: 80%">
 				<router-view />
@@ -25,7 +25,7 @@
 
 <script setup lang="ts">
 import NavBar from "@/components/NavBar.vue";
-import SideBar from "@/components/ReviewerSidebar.vue";
+import ReviewerSideBar from "@/components/reviewerSidebar.vue";
 
 import { watch } from "vue";
 import { useRouter } from "vue-router";
