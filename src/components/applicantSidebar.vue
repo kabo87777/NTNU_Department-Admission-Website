@@ -21,16 +21,30 @@
 			</div>
 		</div>
 
-		<Button
-			class="p-button-secondary p-button-text !ml-24px !mt-24px !w-336px !h-48px"
+		<router-link
+			:to="{
+				name: 'AdmissionApplicantLatestNews',
+				params: { userId: 7 },
+			}"
+			custom
+			v-slot="{ navigate }"
 		>
-			<i class="pi pi-bell" style="font-size: 1.3rem; color: #101820" />
-			<span
-				class="text-left tracking-3px ml-4 font-bold text-xl text-[#2D2926]"
+			<Button
+				class="p-button-secondary p-button-text !ml-24px !mt-24px !w-336px !h-48px"
+				@click="navigate"
+				role="link"
 			>
-				{{ $t("最新資訊") }}
-			</span>
-		</Button>
+				<i
+					class="pi pi-bell"
+					style="font-size: 1.3rem; color: #101820"
+				/>
+				<span
+					class="text-left tracking-3px ml-4 font-bold text-xl text-[#2D2926]"
+				>
+					{{ $t("最新資訊") }}
+				</span>
+			</Button>
+		</router-link>
 
 		<div class="flex mt-32px">
 			<div class="sidebarYellowDivider"></div>
@@ -39,27 +53,55 @@
 			</div>
 		</div>
 
-		<Button
-			class="p-button-secondary p-button-text !ml-24px !mt-16px !w-336px !h-48px"
+		<router-link
+			:to="{
+				name: 'AdmissionApplicantBasicInfo',
+				params: { userId: 7 },
+			}"
+			custom
+			v-slot="{ navigate }"
 		>
-			<i class="pi pi-user" style="font-size: 1.3rem; color: #101820" />
-			<span
-				class="text-left tracking-3px ml-4 font-bold text-xl text-[#2D2926]"
+			<Button
+				class="p-button-secondary p-button-text !ml-24px !mt-16px !w-336px !h-48px"
+				@click="navigate"
+				role="link"
 			>
-				{{ $t("資訊公告") }}
-			</span>
-		</Button>
+				<i
+					class="pi pi-user"
+					style="font-size: 1.3rem; color: #101820"
+				/>
+				<span
+					class="text-left tracking-3px ml-4 font-bold text-xl text-[#2D2926]"
+				>
+					{{ $t("基本資料") }}
+				</span>
+			</Button>
+		</router-link>
 
-		<Button
-			class="p-button-secondary p-button-text !ml-24px !mt-8px !w-336px !h-48px"
+		<router-link
+			:to="{
+				name: 'AdmissionApplicantAttachment',
+				params: { userId: 7 },
+			}"
+			custom
+			v-slot="{ navigate }"
 		>
-			<i class="pi pi-book" style="font-size: 1.3rem; color: #101820" />
-			<span
-				class="text-left tracking-3px ml-4 font-bold text-xl text-[#2D2926]"
+			<Button
+				class="p-button-secondary p-button-text !ml-24px !mt-8px !w-336px !h-48px"
+				@click="navigate"
+				role="link"
 			>
-				{{ $t("附件資料") }}
-			</span>
-		</Button>
+				<i
+					class="pi pi-book"
+					style="font-size: 1.3rem; color: #101820"
+				/>
+				<span
+					class="text-left tracking-3px ml-4 font-bold text-xl text-[#2D2926]"
+				>
+					{{ $t("附件資料") }}
+				</span>
+			</Button>
+		</router-link>
 
 		<div class="flex mt-32px">
 			<div class="sidebarYellowDivider"></div>
@@ -68,31 +110,55 @@
 			</div>
 		</div>
 
-		<Button
-			class="p-button-secondary p-button-text !ml-24px !mt-16px !w-336px !h-48px"
+		<router-link
+			:to="{
+				name: 'AdmissionApplicantRecommendationLetter',
+				params: { userId: 7 },
+			}"
+			custom
+			v-slot="{ navigate }"
 		>
-			<i
-				class="pi pi-envelope"
-				style="font-size: 1.3rem; color: #101820"
-			/>
-			<span
-				class="text-left tracking-3px ml-4 font-bold text-xl text-[#2D2926]"
+			<Button
+				class="p-button-secondary p-button-text !ml-24px !mt-16px !w-336px !h-48px"
+				@click="navigate"
+				role="link"
 			>
-				{{ $t("推薦信作業") }}
-			</span>
-		</Button>
+				<i
+					class="pi pi-envelope"
+					style="font-size: 1.3rem; color: #101820"
+				/>
+				<span
+					class="text-left tracking-3px ml-4 font-bold text-xl text-[#2D2926]"
+				>
+					{{ $t("推薦信作業") }}
+				</span>
+			</Button>
+		</router-link>
 
-		<Button
-			class="p-button-secondary p-button-text !ml-24px !mt-8px !w-336px !h-48px"
-			role="link"
+		<router-link
+			:to="{
+				name: 'AdmissionApplicantAdditionalDocs',
+				params: { userId: 7 },
+			}"
+			custom
+			v-slot="{ navigate }"
 		>
-			<i class="pi pi-file" style="font-size: 1.3rem; color: #101820" />
-			<span
-				class="text-left tracking-3px ml-4 font-bold text-xl text-[#2D2926]"
+			<Button
+				class="p-button-secondary p-button-text !ml-24px !mt-8px !w-336px !h-48px"
+				@click="navigate"
+				role="link"
 			>
-				{{ $t("補交文件系統") }}
-			</span>
-		</Button>
+				<i
+					class="pi pi-file"
+					style="font-size: 1.3rem; color: #101820"
+				/>
+				<span
+					class="text-left tracking-3px ml-4 font-bold text-xl text-[#2D2926]"
+				>
+					{{ $t("補交文件系統") }}
+				</span>
+			</Button>
+		</router-link>
 
 		<div
 			class="bg-gray-200 bg-opacity-50 h-160px w-[100%]"
@@ -157,9 +223,6 @@ import "primevue/resources/primevue.min.css";
 import { ref } from "vue";
 import Dropdown from "primevue/dropdown";
 import Button from "primevue/button";
-import Divider from "primevue/divider";
-import Dialog from "primevue/dialog";
-import InputText from "primevue/inputtext";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import {
@@ -168,7 +231,6 @@ import {
 } from "@/stores/universalAuth";
 import { AdmissionAdminAPI } from "@/api/admission/admin/api";
 // import * as reviewerApi from "@/api/admission/reviewer/api";
-import applicantUploadedDocsVue from "@/views/admission/manager/applicantsUploadList/applicantUploadedDocs.vue";
 import { useQuery } from "@tanstack/vue-query";
 
 const router = useRouter();
