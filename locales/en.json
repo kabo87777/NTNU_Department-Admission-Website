@@ -168,7 +168,7 @@
   "手機號碼": "Phone Number",
   "輸入新號碼": "New Phone Number",
   "修改密碼": "Reset Password",
-  "請輸入舊密碼": "Old Password",
+  "請輸入舊密碼": "Current Password",
   "設定新密碼": "New Password",
   "確認密碼(再輸入一次驗證密碼)": "Check Password(Text again to ensure password)",
   "修改送出": "Send modifications",
@@ -208,12 +208,13 @@
   "非二元性別": "Non-Binary Gender",
   "出生國家": "Country of Birth",
   "出生日期": "Date Of Birth",
-  "是否有雙重國籍，第二國籍身分": "Dual Nationality，Second Nationality",
-  "非台灣國籍，簽證類型": "Non-Taiwanese Nationality，Type of Visa",
+  "是否有雙重國籍，第二國籍身分": "Dual Nationality, Second Nationality",
+  "非台灣國籍，簽證類型": "Non-Taiwanese Nationality, Type of Visa",
   "主要聯絡電話": "Primary Contact Number",
   "次要聯絡電話": "Secondary contact number",
   "行動電話": "mobile phone",
   "行動電話與主要聯絡電話相同": "The Mobile Phone is the same as the Primary Contact Number",
   "電子信箱": "E-mail",
-  "願意承擔手機簡訊費用": "Willingness to bear the cost of SMS"
+  "願意承擔手機簡訊費用": "Willingness to bear the cost of SMS",
+  ":": " : "
 }

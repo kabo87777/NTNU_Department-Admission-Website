@@ -198,14 +198,30 @@
 					</div>
 				</div>
 				<div class="absolute right-[0] mt-[-8px]">
-					<Button class="p-button-text">
-						<img
-							alt="logo"
-							src="/assets/sidebar/Setting_alt_line.png"
-							class="w-28px h-28px"
-						/>
-					</Button>
-					<Button class="p-button-text" @click="signOut">
+					<router-link
+						:to="{
+							name: 'AdmissionApplicantUserSetting',
+							params: { userId: 7 },
+						}"
+						custom
+						v-slot="{ navigate }"
+					>
+						<Button
+							class="p-button-secondary p-button-text"
+							@click="navigate"
+							role="link"
+						>
+							<img
+								alt="logo"
+								src="/assets/sidebar/Setting_alt_line.png"
+								class="w-28px h-28px"
+							/>
+						</Button>
+					</router-link>
+					<Button
+						class="p-button-secondary p-button-text"
+						@click="signOut"
+					>
 						<img
 							alt="logo"
 							src="/assets/sidebar/Sign_out_circle.png"

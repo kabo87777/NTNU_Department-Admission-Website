@@ -27,6 +27,7 @@ import AdmissionApplicantBasicInfo from "@/views/admission/applicant/pages/basic
 import AdmissionApplicantAttachment from "@/views/admission/applicant/pages/attachment.vue";
 import AdmissionApplicantRecommendationLetter from "@/views/admission/applicant/pages/recommendationLetter.vue";
 import AdmissionApplicantAdditionalDocs from "@/views/admission/applicant/pages/additionalDocs.vue";
+import AdmissionApplicantUserSetting from "../views/admission/applicant/pages/userSetting.vue";
 
 import projectSetting from "@/views/admission/manager/project-setting.vue";
 import firstloginchangepassword from "@/views/admission/FirstSigninChangePass.vue";
@@ -163,6 +164,11 @@ const routes: Array<RouteRecordRaw> = [
 						path: "additionalDocs",
 						name: "AdmissionApplicantAdditionalDocs",
 						component: AdmissionApplicantAdditionalDocs,
+					},
+					{
+						path: "userSetting",
+						name: "AdmissionApplicantUserSetting",
+						component: AdmissionApplicantUserSetting,
 					},
 				],
 			},
