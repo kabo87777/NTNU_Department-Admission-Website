@@ -10,6 +10,7 @@ import LandingView from "@/views/LandingView.vue";
 import AdmissionSignin from "@/views/admission/AdmissionSignin.vue";
 import RecruitmentSignin from "@/views/recruitment/RecruitmentSignin.vue";
 // Manager section
+import AdmissionListApplicant from "@/views/admission/manager/ListApplicant.vue";
 import AdmissionListReviewer from "@/views/admission/manager/ListReviewer.vue";
 import AdmissionManagerMainContainer from "@/views/admission/manager/MainContainer.vue";
 import AdmissionManagerSignin from "@/views/admission/manager/ManagerSignin.vue";
@@ -17,10 +18,16 @@ import AdmissionManagerForgetPassword from "@/views/admission/manager/ForgetPass
 import AdmissionManagerProjectSettings from "@/views/admission/manager/ProjectSettings.vue";
 // Applicant section
 import AdmissionApplicantMainContainer from "@/views/admission/applicant/MainContainer.vue";
-import AdmissionApplicantSignin from "@/views/admission/applicant/ApplicantSignin.vue";
-import AdmissionApplicantForgetPassword from "@/views/admission/applicant/ForgetPassword.vue";
-import AdmissionApplicantPasswordRecvoerySentView from "@/views/admission/applicant/PasswordRecvoerySentView.vue";
-import AdmissionApplicantResetPassword from "@/views/admission/applicant/ResetPassword.vue";
+import AdmissionApplicantSignin from "@/views/admission/applicant/login/ApplicantSignin.vue";
+import AdmissionApplicantForgetPassword from "@/views/admission/applicant/login/ForgetPassword.vue";
+import AdmissionApplicantPasswordRecvoerySentView from "@/views/admission/applicant/login/PasswordRecvoerySentView.vue";
+import AdmissionApplicantResetPassword from "@/views/admission/applicant/login/ResetPassword.vue";
+import AdmissionApplicantLatestNews from "@/views/admission/applicant/pages/latestNews.vue";
+import AdmissionApplicantBasicInfo from "@/views/admission/applicant/pages/basicInfo.vue";
+import AdmissionApplicantAttachment from "@/views/admission/applicant/pages/attachment.vue";
+import AdmissionApplicantRecommendationLetter from "@/views/admission/applicant/pages/recommendationLetter.vue";
+import AdmissionApplicantAdditionalDocs from "@/views/admission/applicant/pages/additionalDocs.vue";
+
 import projectSetting from "@/views/admission/manager/project-setting.vue";
 import firstloginchangepassword from "@/views/admission/FirstSigninChangePass.vue";
 import reviewScoreField from "@/views/reviewScoreField.vue";
@@ -130,7 +137,34 @@ const routes: Array<RouteRecordRaw> = [
 				path: "admission/applicant",
 				name: "AdmissionApplicantMainContainer",
 				component: AdmissionApplicantMainContainer,
-				children: [],
+				children: [
+					// Admission - applicant info pages
+					{
+						path: "latestNews",
+						name: "AdmissionApplicantLatestNews",
+						component: AdmissionApplicantLatestNews,
+					},
+					{
+						path: "basicInfo",
+						name: "AdmissionApplicantBasicInfo",
+						component: AdmissionApplicantBasicInfo,
+					},
+					{
+						path: "attachment",
+						name: "AdmissionApplicantAttachment",
+						component: AdmissionApplicantAttachment,
+					},
+					{
+						path: "recommendationLetter",
+						name: "AdmissionApplicantRecommendationLetter",
+						component: AdmissionApplicantRecommendationLetter,
+					},
+					{
+						path: "additionalDocs",
+						name: "AdmissionApplicantAdditionalDocs",
+						component: AdmissionApplicantAdditionalDocs,
+					},
+				],
 			},
 			{
 				path: "admission/manager",
@@ -178,6 +212,11 @@ const routes: Array<RouteRecordRaw> = [
 						path: "reviewerSettings",
 						name: "reviewerSettings",
 						component: AdmissionListReviewer,
+					},
+					{
+						path: "applicantSettings",
+						name: "applicantSettings",
+						component: AdmissionListApplicant,
 					},
 				],
 			},
