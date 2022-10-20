@@ -80,20 +80,27 @@
 				{{ $t("資訊公告") }}
 			</span>
 		</Button>
-		<Button
-			class="p-button-secondary p-button-text !ml-24px !mt-8px !w-336px !h-48px"
+		<RouterLink
+			to="/admission/manager/applicantSettings"
+			custom
+			v-slot="{ navigate }"
 		>
-			<img
-				alt="logo"
-				src="/assets/sidebar/User_add_alt.png"
-				style="width: 1.5rem"
-			/>
-			<span
-				class="text-left tracking-3px ml-3 font-bold text-xl text-[#2D2926]"
+			<Button
+				class="p-button-secondary p-button-text !ml-24px !mt-8px !w-336px !h-48px"
+				@click="navigate"
 			>
-				{{ $t("申請帳號設置") }}
-			</span>
-		</Button>
+				<img
+					alt="logo"
+					src="/assets/sidebar/User_add_alt.png"
+					style="width: 1.5rem"
+				/>
+				<span
+					class="text-left tracking-3px ml-3 font-bold text-xl text-[#2D2926]"
+				>
+					{{ $t("申請者帳號設定") }}
+				</span>
+			</Button>
+		</RouterLink>
 		<router-link
 			to="/admission/manager/projectSettings"
 			custom

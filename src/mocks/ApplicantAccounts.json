@@ -1,0 +1,25 @@
+{
+  "status": "success",
+  "accounts":[
+    {
+      "id": 228922,
+      "name": "蘇子權",
+      "email": "584neokent@gmail.com"
+    },
+    {
+      "id": 387336,
+      "name": "吳文元好電",
+      "email": "iLoveNeokent@gapps.ntnu.edu.tw"
+    },
+    {
+      "id": 114514,
+      "name": "恩歪ＫＤ武士",
+      "email": "nykd54@ntnu.edu.tw"
+    },
+    {
+      "id": 396465,
+      "name": "富田姐妹花",
+      "email": "nykd54.sister@ntnu.edu.tw"
+    }
+  ]
+}
