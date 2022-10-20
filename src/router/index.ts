@@ -35,6 +35,8 @@ import AdmissionReviewerMainContainer from "@/views/admission/reviewer/MainConta
 import AdmissionReviewerSignin from "@/views/admission/reviewer/ReviewerSignin.vue";
 import applicationReview from "@/views/admission/reviewer/applicationReview.vue";
 import oralReview from "@/views/admission/reviewer/oralReview.vue";
+import singleApplicationReview from "@/views/admission/reviewer/singleApplicationReview.vue";
+import singleOralReview from "@/views/admission/reviewer/singleOralReview.vue";
 
 // Recruitment Applicant section
 
@@ -85,6 +87,28 @@ const routes: Array<RouteRecordRaw> = [
 						path: "oralReview",
 						name: "oralReview",
 						component: oralReview,
+					},
+					{
+						path: "singleApplicationReview",
+						name: "singleApplicationReview",
+						children: [
+							{
+								path: ":id",
+								name: "id",
+								component: singleApplicationReview,
+							},
+						],
+					},
+					{
+						path: "singleOralReview",
+						name: "singleOralReview",
+						children: [
+							{
+								path: ":id",
+								name: "id",
+								component: singleOralReview,
+							},
+						],
 					},
 				],
 			},
