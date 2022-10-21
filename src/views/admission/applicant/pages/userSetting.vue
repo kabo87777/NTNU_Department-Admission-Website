@@ -88,17 +88,15 @@
 </template>
 
 <script setup lang="ts">
-import { reactive } from "vue";
+import { onMounted, reactive } from "vue";
+import { useRoute } from "vue-router";
+import { UserInfo } from "../../../../api/admission/applicant/types";
 import ParagraphDivider from "../../../../styles/paragraphDividerApplicant.vue";
 import InputText from "primevue/inputtext";
 import Button from "primevue/button";
 import "primeicons/primeicons.css";
 
-interface UserInfo {
-	name: string;
-	email: string;
-	phone: string;
-}
+const route = useRoute();
 
 const userInfo: UserInfo = {
 	name: "我很帥",
@@ -158,4 +156,8 @@ const handleSubmit = () => {
 		);
 	}
 };
+
+onMounted(() => {
+	//console.log(route.params);
+});
 </script>

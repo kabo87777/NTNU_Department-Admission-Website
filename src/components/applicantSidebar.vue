@@ -229,7 +229,7 @@
 					<div
 						class="text-[22px] font-[500] font-bold mt-[8px] tracking-wider"
 					>
-						{{ $t("我很帥") }}
+						{{ "我很帥" }}
 					</div>
 				</div>
 				<div class="absolute right-[0] mt-[-8px]">
@@ -271,9 +271,10 @@
 </template>
 
 <script setup lang="ts">
+import { ref, reactive } from "vue";
+import { Tags } from "../api/admission/applicant/types";
 import "primeicons/primeicons.css";
 import "primevue/resources/primevue.min.css";
-import { ref, reactive } from "vue";
 import Dropdown from "primevue/dropdown";
 import Button from "primevue/button";
 import UnableTag from "../styles/tags/unableTag.vue";
@@ -304,13 +305,6 @@ import IncompleteTag from "../styles/tags/incompleteTag.vue";
 // } = useQuery(["programList"], async () => await api.getProgramList());
 
 // const { t } = useI18n();
-
-interface Tags {
-	basicInfo: string;
-	attachment: string;
-	recommendLetter: string;
-	additionalDocs: string;
-}
 
 const selectedProgram = ref({
 	id: 1,
