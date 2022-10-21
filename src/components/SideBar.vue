@@ -80,27 +80,20 @@
 				{{ $t("資訊公告") }}
 			</span>
 		</Button>
-		<RouterLink
-			to="/admission/manager/applicantSettings"
-			custom
-			v-slot="{ navigate }"
+		<Button
+			class="p-button-secondary p-button-text !ml-24px !mt-8px !w-336px !h-48px"
 		>
-			<Button
-				class="p-button-secondary p-button-text !ml-24px !mt-8px !w-336px !h-48px"
-				@click="navigate"
+			<img
+				alt="logo"
+				src="/assets/sidebar/User_add_alt.png"
+				style="width: 1.5rem"
+			/>
+			<span
+				class="text-left tracking-3px ml-3 font-bold text-xl text-[#2D2926]"
 			>
-				<img
-					alt="logo"
-					src="/assets/sidebar/User_add_alt.png"
-					style="width: 1.5rem"
-				/>
-				<span
-					class="text-left tracking-3px ml-3 font-bold text-xl text-[#2D2926]"
-				>
-					{{ $t("申請者帳號設定") }}
-				</span>
-			</Button>
-		</RouterLink>
+				{{ $t("申請帳號設置") }}
+			</span>
+		</Button>
 		<router-link
 			to="/admission/manager/projectSettings"
 			custom
@@ -321,6 +314,7 @@ import { AdmissionAdminAPI } from "@/api/admission/admin/api";
 // import * as reviewerApi from "@/api/admission/reviewer/api";
 import applicantUploadedDocsVue from "@/views/admission/manager/applicantsUploadList/applicantUploadedDocs.vue";
 import { useQuery } from "@tanstack/vue-query";
+import { InvalidSessionError } from "@/api/error";
 
 const router = useRouter();
 
@@ -334,10 +328,26 @@ const {
 	isError,
 	data: programs,
 	error,
-} = useQuery(["programList"], async () => await api.getProgramList());
+} = useQuery(["programList"], async () => {
+	try {
+		return await api.getProgramList();
+	} catch (e: any) {
+		if (e instanceof InvalidSessionError) {
+			// FIXME: show session expiry notification??
+			// Why are we even here in the first place?
+			// MainContainer should have checked already.
+			console.error(
+				"Session has already expired while querying programList"
+			);
+			router.push("/");
+			return;
+		}
+	}
+});
 
 const { t } = useI18n();
 
+// FIXME: this should NOT be hardcoded.
 const selectedProgram = ref({
 	id: 1,
 	category: "111年碩士班",
