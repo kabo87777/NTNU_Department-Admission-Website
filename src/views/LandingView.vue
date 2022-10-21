@@ -7,7 +7,7 @@ import { useRouter } from "vue-router";
 
 const router = useRouter();
 
-router.push("/mainpage");
+// router.push("/mainpage");
 </script>
 
 <style scoped></style>

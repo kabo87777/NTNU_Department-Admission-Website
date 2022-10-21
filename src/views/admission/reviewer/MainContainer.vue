@@ -37,7 +37,7 @@ const reviewerAuth = useAdmissionReviewerAuthStore();
 
 watch(router.currentRoute, () => {
 	if (!reviewerAuth.isValidSession) {
-		router.replace({ name: "AdmissionReviewerSignin" });
+		// router.replace({ name: "AdmissionReviewerSignin" });
 		// TODO: show session expired notification
 	}
 });

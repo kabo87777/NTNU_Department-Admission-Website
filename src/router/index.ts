@@ -89,26 +89,14 @@ const routes: Array<RouteRecordRaw> = [
 						component: oralReview,
 					},
 					{
-						path: "singleApplicationReview",
+						path: "singleApplicationReview/:id",
 						name: "singleApplicationReview",
-						children: [
-							{
-								path: ":id",
-								name: "id",
-								component: singleApplicationReview,
-							},
-						],
+						component: singleApplicationReview,
 					},
 					{
-						path: "singleOralReview",
+						path: "singleOralReview/:id",
 						name: "singleOralReview",
-						children: [
-							{
-								path: ":id",
-								name: "id",
-								component: singleOralReview,
-							},
-						],
+						component: singleOralReview,
 					},
 				],
 			},

@@ -1,30 +1,30 @@
 {
-    "id": 1,
-    "name": "PT",
-    "school_exp": [
-        {
-            "name": "enroll certificate",
-            "file_name": "NTNU Year 4",
-            "file_url": ""
-        }
-    ],
-    "exam_score": [
-        {
-            "name": "TOEFL",
-            "file_name": "My TOEFL",
-            "file_url": ""
-        },
-        {
-            "name": "IELTS",
-            "file_name": "My IELTS",
-            "file_url": ""
-        }
-    ],
-    "other": [
-        {
-            "name": "",
-            "file_name": "",
-            "file_url": ""
-        }
-    ]
+  "id": 1,
+  "name": "PT",
+  "school_exp": [
+    {
+      "name": "enroll certificate",
+      "file_name": "NTNU Year 4",
+      "file_url": ""
+    }
+  ],
+  "exam_score": [
+    {
+      "name": "TOEFL",
+      "file_name": "My TOEFL",
+      "file_url": ""
+    },
+    {
+      "name": "IELTS",
+      "file_name": "My IELTS",
+      "file_url": ""
+    }
+  ],
+  "other": [
+    {
+      "name": "",
+      "file_name": "",
+      "file_url": ""
+    }
+  ]
 }
