@@ -321,6 +321,7 @@ import { AdmissionAdminAPI } from "@/api/admission/admin/api";
 // import * as reviewerApi from "@/api/admission/reviewer/api";
 import applicantUploadedDocsVue from "@/views/admission/manager/applicantsUploadList/applicantUploadedDocs.vue";
 import { useQuery } from "@tanstack/vue-query";
+import { InvalidSessionError } from "@/api/error";
 
 const router = useRouter();
 
@@ -334,10 +335,26 @@ const {
 	isError,
 	data: programs,
 	error,
-} = useQuery(["programList"], async () => await api.getProgramList());
+} = useQuery(["programList"], async () => {
+	try {
+		return await api.getProgramList();
+	} catch (e: any) {
+		if (e instanceof InvalidSessionError) {
+			// FIXME: show session expiry notification??
+			// Why are we even here in the first place?
+			// MainContainer should have checked already.
+			console.error(
+				"Session has already expired while querying programList"
+			);
+			router.push("/");
+			return;
+		}
+	}
+});
 
 const { t } = useI18n();
 
+// FIXME: this should NOT be hardcoded.
 const selectedProgram = ref({
 	id: 1,
 	category: "111年碩士班",
