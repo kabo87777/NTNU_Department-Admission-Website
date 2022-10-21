@@ -42,11 +42,11 @@ import AdmissionReviewerMainContainer from "@/views/admission/reviewer/MainConta
 import AdmissionReviewerSignin from "@/views/admission/reviewer/ReviewerSignin.vue";
 
 // Recruitment Applicant section
-
+import recruitmentApplicantSignin from "@/views/recruitment/applicant/applicantSignin.vue";
 // Recruitment Reviewer section
-
+import recruitmentReviewerSignin from "@/views/recruitment/reviewer/ReviewerSignin.vue"
 // Recruitment Manager section
-import RecruitmentManagerSignin from "@/views/recruitment/manager/managerSignin.vue";
+import recruitmentManagerSignin from "@/views/recruitment/manager/managerSignin.vue";
 
 const routes: Array<RouteRecordRaw> = [
 	// Choose recruitment / admission
@@ -232,11 +232,25 @@ const routes: Array<RouteRecordRaw> = [
 				component: RecruitmentSignin,
 			},
 
+			// Recruitment - applicant sign in
+			{
+				path: "recruitment/applicant/signin",
+				name: "recruitmentApplicantSignin",
+				component: recruitmentApplicantSignin,
+			},
+
 			// Recruitment - manager sign in
 			{
 				path: "recruitment/manager/signin",
-				name: "AdmissionRecruitmentManagerSignin",
-				component: RecruitmentManagerSignin,
+				name: "recruitmentManagerSignin",
+				component: recruitmentManagerSignin,
+			},
+
+			// Recruitment - manager sign in
+			{
+				path: "recruitment/reviewer/signin",
+				name: "recruitmentReviewerSignin",
+				component: recruitmentReviewerSignin,
 			},
 		],
 	},
