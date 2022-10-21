@@ -3,22 +3,22 @@
 		<div class="smallYellowDivider"></div>
 		<div class="container">
 			<div class="smallContainer">
-				<div class="cube"></div>
-				<div class="dash"></div>
-				<div class="cube"></div>
-				<div class="dash"></div>
-				<div class="cube"></div>
-				<div class="dash"></div>
-				<div class="cube"></div>
-				<div class="dash"></div>
-				<div class="cube"></div>
-				<div class="dash"></div>
-				<div class="cube"></div>
-				<div class="dash"></div>
-				<div class="cube"></div>
-				<div class="dash"></div>
-				<div class="cube"></div>
-				<div class="dash"></div>
+				<div class="yellowCube"></div>
+				<div class="yellowDash"></div>
+				<div class="yellowCube"></div>
+				<div class="yellowDash"></div>
+				<div class="yellowCube"></div>
+				<div class="yellowDash"></div>
+				<div class="yellowCube"></div>
+				<div class="yellowDash"></div>
+				<div class="yellowCube"></div>
+				<div class="yellowDash"></div>
+				<div class="yellowCube"></div>
+				<div class="yellowDash"></div>
+				<div class="yellowCube"></div>
+				<div class="yellowDash"></div>
+				<div class="yellowCube"></div>
+				<div class="yellowDash"></div>
 			</div>
 		</div>
 		<div class="smallYellowDivider absolute right-0"></div>
@@ -36,14 +36,14 @@
 	display: flex;
 }
 
-.cube {
+.yellowCube {
 	background-color: #736028;
 	height: 8px;
 	width: 4px;
 	margin-top: -4px;
 }
 
-.dash {
+.yellowDash {
 	background-color: #736028;
 	height: 2px;
 	width: 4px;

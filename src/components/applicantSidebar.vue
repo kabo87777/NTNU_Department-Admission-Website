@@ -17,7 +17,9 @@
 					style="border-radius: 8px; border: 1px solid #736028"
 				>
 					<template #value="slotProps">
-						<div class="mt-4px tracking-2px text-24px font-medium">
+						<div
+							class="mt-4px tracking-2px text-24px font-medium !font-bold"
+						>
 							{{ slotProps.value.category }}
 							{{ slotProps.value.name }}
 						</div>
