@@ -83,6 +83,13 @@
 				>
 					{{ $t("基本資料") }}
 				</span>
+				<div class="mb-28px">
+					<CompletedTag v-if="tags.basicInfo === 'completed'" />
+					<IncompleteTag
+						v-else-if="tags.basicInfo === 'incompleted'"
+					/>
+					<UnableTag v-else-if="tags.basicInfo === 'unable'" />
+				</div>
 			</Button>
 		</router-link>
 
@@ -108,6 +115,13 @@
 				>
 					{{ $t("附件資料") }}
 				</span>
+				<div class="mb-28px">
+					<CompletedTag v-if="tags.attachment === 'completed'" />
+					<IncompleteTag
+						v-else-if="tags.attachment === 'incomplete'"
+					/>
+					<UnableTag v-else-if="tags.attachment === 'unable'" />
+				</div>
 			</Button>
 		</router-link>
 
@@ -140,6 +154,13 @@
 				>
 					{{ $t("推薦信作業") }}
 				</span>
+				<div class="mb-28px">
+					<CompletedTag v-if="tags.recommendLetter === 'completed'" />
+					<IncompleteTag
+						v-else-if="tags.recommendLetter === 'incomplete'"
+					/>
+					<UnableTag v-else-if="tags.recommendLetter === 'unable'" />
+				</div>
 			</Button>
 		</router-link>
 
@@ -165,6 +186,13 @@
 				>
 					{{ $t("補交文件系統") }}
 				</span>
+				<div class="mb-28px">
+					<CompletedTag v-if="tags.additionalDocs === 'completed'" />
+					<IncompleteTag
+						v-else-if="tags.additionalDocs === 'incomplete'"
+					/>
+					<UnableTag v-else-if="tags.additionalDocs === 'unable'" />
+				</div>
 			</Button>
 		</router-link>
 
@@ -196,7 +224,7 @@
 					<div
 						class="text-[15px] font-[500] font-bold text-[#736028]"
 					>
-						{{ $t("申請端帳戶") }}
+						{{ $t("用戶名稱") }}
 					</div>
 					<div
 						class="text-[22px] font-[500] font-bold mt-[8px] tracking-wider"
@@ -245,9 +273,13 @@
 <script setup lang="ts">
 import "primeicons/primeicons.css";
 import "primevue/resources/primevue.min.css";
-import { ref } from "vue";
+import { ref, reactive } from "vue";
 import Dropdown from "primevue/dropdown";
 import Button from "primevue/button";
+import UnableTag from "../styles/tags/unableTag.vue";
+import CompletedTag from "../styles/tags/completedTag.vue";
+import IncompleteTag from "../styles/tags/incompleteTag.vue";
+// import Tag from "primevue/tag";
 // import { useI18n } from "vue-i18n";
 // import { useRouter } from "vue-router";
 // import {
@@ -273,6 +305,13 @@ import Button from "primevue/button";
 
 // const { t } = useI18n();
 
+interface Tags {
+	basicInfo: string;
+	attachment: string;
+	recommendLetter: string;
+	additionalDocs: string;
+}
+
 const selectedProgram = ref({
 	id: 1,
 	category: "111年碩士班",
@@ -289,6 +328,13 @@ const selectedProgram = ref({
 	applicant_required_file: null,
 	reviewer_required_info: null,
 	reviewer_required_file: null,
+});
+
+const tags: Tags = reactive({
+	basicInfo: "completed",
+	attachment: "incomplete",
+	recommendLetter: "unable",
+	additionalDocs: "unable",
 });
 
 // const displayNewProject = ref(false);

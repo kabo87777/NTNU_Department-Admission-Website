@@ -106,14 +106,25 @@ const userInfo: UserInfo = {
 	phone: "0912345678",
 };
 
-const password = reactive({
+const initialPassValue = {
 	isCurrentPassBlank: false,
 	isNewPassBlank: false,
 	notMatch: false,
 	currentPass: "",
 	newPass: "",
 	confirmPass: "",
-});
+};
+
+const password = reactive(initialPassValue);
+
+// const resetPassValue = () => {
+// 	password.isCurrentPassBlank = initialPassword.isCurrentPassBlank;
+// 	password.isNewPassBlank = initialPassword.isNewPassBlank;
+// 	password.notMatch = initialPassword.notMatch;
+// 	password.currentPass = initialPassword.currentPass;
+// 	password.newPass = initialPassword.newPass;
+// 	password.confirmPass = initialPassword.confirmPass;
+// };
 
 const handleSubmit = () => {
 	if (password.currentPass === "") {
@@ -139,6 +150,7 @@ const handleSubmit = () => {
 		!password.isNewPassBlank &&
 		!password.notMatch
 	) {
+		// resetPassValue();
 		console.log(
 			password.currentPass,
 			password.newPass,
