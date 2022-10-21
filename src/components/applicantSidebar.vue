@@ -4,10 +4,15 @@
 			<div class="sidebarVerticalBigYellowDivider mt-32px"></div>
 			<div class="sidebarVerticalSmallYellowDivider mt-32px"></div>
 			<div class="mt-32px ml-12px w-[100%]">
-				<Dropdown
+				<!-- <Dropdown
 					v-model="selectedProgram"
 					:options="programs"
 					:optionLabel="generateOptions"
+					class="h-60px w-[93%]"
+					style="border-radius: 8px; border: 1px solid #736028"
+				> -->
+				<Dropdown
+					v-model="selectedProgram"
 					class="h-60px w-[93%]"
 					style="border-radius: 8px; border: 1px solid #736028"
 				>
@@ -31,7 +36,7 @@
 		>
 			<Button
 				class="p-button-secondary p-button-text !ml-24px !mt-24px !w-336px !h-48px !hover:bg-[#ECEDED] !rounded-[8px]"
-				style=":active: border: 1px solid #736028 !important"
+				style="{ active: border: 1px solid #736028 !important }"
 				@click="navigate"
 				role="link"
 			>
@@ -218,10 +223,11 @@
 							/>
 						</Button>
 					</router-link>
-					<Button
+					<!-- <Button
 						class="p-button-secondary p-button-text"
 						@click="signOut"
-					>
+					> -->
+					<Button class="p-button-secondary p-button-text">
 						<img
 							alt="logo"
 							src="/assets/sidebar/Sign_out_circle.png"
@@ -240,31 +246,30 @@ import "primevue/resources/primevue.min.css";
 import { ref } from "vue";
 import Dropdown from "primevue/dropdown";
 import Button from "primevue/button";
-import { useI18n } from "vue-i18n";
-import { useRouter } from "vue-router";
-import {
-	useAdmissionAdminAuthStore,
-	useAdmissionReviewerAuthStore,
-} from "@/stores/universalAuth";
-import { AdmissionAdminAPI } from "@/api/admission/admin/api";
-// import * as reviewerApi from "@/api/admission/reviewer/api";
-import { useQuery } from "@tanstack/vue-query";
+// import { useI18n } from "vue-i18n";
+// import { useRouter } from "vue-router";
+// import {
+// 	useAdmissionAdminAuthStore,
+// 	useAdmissionReviewerAuthStore,
+// } from "@/stores/universalAuth";
+// import { AdmissionAdminAPI } from "@/api/admission/admin/api";
+// import { useQuery } from "@tanstack/vue-query";
 
-const router = useRouter();
+// const router = useRouter();
 
-const reviewerAuth = useAdmissionReviewerAuthStore();
-const adminAuth = useAdmissionAdminAuthStore();
+// const reviewerAuth = useAdmissionReviewerAuthStore();
+// const adminAuth = useAdmissionAdminAuthStore();
 
-const api = new AdmissionAdminAPI(adminAuth);
+// const api = new AdmissionAdminAPI(adminAuth);
 
-const {
-	isLoading,
-	isError,
-	data: programs,
-	error,
-} = useQuery(["programList"], async () => await api.getProgramList());
+// const {
+// 	isLoading,
+// 	isError,
+// 	data: programs,
+// 	error,
+// } = useQuery(["programList"], async () => await api.getProgramList());
 
-const { t } = useI18n();
+// const { t } = useI18n();
 
 const selectedProgram = ref({
 	id: 1,
@@ -283,27 +288,25 @@ const selectedProgram = ref({
 	reviewer_required_info: null,
 	reviewer_required_file: null,
 });
-const displayNewProject = ref(false);
-const newProjectName = ref("");
 
-const generateOptions = (data: any) => data.category + data.name;
+// const displayNewProject = ref(false);
+// const newProjectName = ref("");
 
-function newProject() {
-	displayNewProject.value = true;
-}
+// const generateOptions = (data: any) => data.category + data.name;
 
-function closeDisplayNewProject() {
-	displayNewProject.value = false;
-}
+// function newProject() {
+// 	displayNewProject.value = true;
+// }
 
-async function signOut() {
-	if (adminAuth.isValidSession) {
-		if (await api.invalidateSession()) {
-			router.push("/");
-		}
-	}
-}
+// function closeDisplayNewProject() {
+// 	displayNewProject.value = false;
+// }
+
+// async function signOut() {
+// 	if (adminAuth.isValidSession) {
+// 		if (await api.invalidateSession()) {
+// 			router.push("/");
+// 		}
+// 	}
+// }
 </script>
-
-<style></style>
-<!-- #f7f6e4 -->
