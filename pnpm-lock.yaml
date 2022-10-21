@@ -17,7 +17,6 @@ specifiers:
   eslint-plugin-prettier: ^4.2.1
   eslint-plugin-vue: ^9.5.1
   git-branch: ^2.0.1
-  pdfmake: ^0.2.6
   pinia: ^2.0.22
   prettier: ^2.7.1
   primeicons: ^5.0.0
@@ -44,7 +43,6 @@ dependencies:
   axios: 1.1.2
   eslint-config-prettier: 8.5.0_eslint@8.24.0
   eslint-plugin-prettier: 4.2.1_cfn5x6ujhhgzv3423d6k7r2zzm
-  pdfmake: 0.2.6
   pinia: 2.0.23_bfjwoga25wxjazzogo7o372nwq
   prettier: 2.7.1
   primeicons: 5.0.0
