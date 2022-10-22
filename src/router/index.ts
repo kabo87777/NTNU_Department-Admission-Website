@@ -8,7 +8,7 @@ import {
 import MainPage from "@/views/MainPage.vue";
 import LandingView from "@/views/LandingView.vue";
 import AdmissionSignin from "@/views/admission/AdmissionSignin.vue";
-import RecruitmentSignin from "@/views/recruitment/RecruitmentSignin.vue";
+import RecruitmentSignin from "@/views/recruitment/recruitmentSignin.vue";
 // Manager section
 import AdmissionListReviewer from "@/views/admission/manager/ListReviewer.vue";
 import AdmissionManagerMainContainer from "@/views/admission/manager/MainContainer.vue";
@@ -43,7 +43,7 @@ import AdmissionReviewerSignin from "@/views/admission/reviewer/ReviewerSignin.v
 // Recruitment Applicant section
 import recruitmentApplicantSignin from "@/views/recruitment/applicant/applicantSignin.vue";
 // Recruitment Reviewer section
-import recruitmentReviewerSignin from "@/views/recruitment/reviewer/ReviewerSignin.vue"
+import recruitmentReviewerSignin from "@/views/recruitment/reviewer/reviewerSignin.vue";
 // Recruitment Manager section
 import recruitmentManagerSignin from "@/views/recruitment/manager/managerSignin.vue";
 
@@ -240,7 +240,7 @@ const routes: Array<RouteRecordRaw> = [
 				component: recruitmentManagerSignin,
 			},
 
-			// Recruitment - manager sign in
+			// Recruitment - reviewer sign in
 			{
 				path: "recruitment/reviewer/signin",
 				name: "recruitmentReviewerSignin",

@@ -1,69 +1,86 @@
-<template>
-	<div class="grid grid-cols-2 gap-15px">
-		<div>
-			<img src="/assets/login-page/Login-img.png" class="h-screen" />
+<template class="overflow-hidden">
+	<div class="flex">
+		<div class="flex-shrink-1">
+			<img src="/assets/login-page/Login-img.png" class="fill" />
 		</div>
-		<div class="m-auto">
-			<div class="flex m-auto h-15">
-				<div>
-					<img
-						src="/assets/login-page/NTNU-logo-B1.png"
-						class="h-15"
-					/>
-				</div>
-				<Divider layout="vertical" />
-				<div class="mt-1.5">
-					<div class="text-4xl font-bold text-gray-500">
-						資訊工程學系
-					</div>
-					<div class="text-xs text-gray-400">
-						Department of Computer Science and Information
-						Enginering
-					</div>
-				</div>
-			</div>
+		<div class="flex-none w-150 px-6 pt-18 space-y-8">
 			<div>
-				<div class="mt-100px ml-204px text-4xl font-bold text-gray-500">
-					{{ $t("資訊工程學系報名系統") }}
+				<router-link to="mainpage">
+					<button
+						class="flex items-center gap-2 px-2 py-2"
+						bg="transparent hover:gray-100"
+						text="sm gray-400 hover:gray-600"
+						border="rounded"
+					>
+						<i class="pi pi-angle-left" />
+						<div>選擇其他系統</div>
+						<div>Select other system</div>
+					</button>
+				</router-link>
+			</div>
+			<div class="px-8 space-y-2">
+				<div class="text-s text-gray-500">
+					國立台灣師範大學資訊工程學系 NTNU CSIE
 				</div>
-				<div class="ml-204px text-xs text-gray-500">
-					NTNU CSIE Admissions
+				<div class="flex items-end gap-2 font-medium text-gray-900">
+					<div class="text-4xl">教師聘請系統</div>
+					<div class="text-xl">Teacher Recruitment System</div>
 				</div>
 			</div>
-			<div class="mt-50px ml-184px userLogin">
-				<router-link to="/recruitment/applicant/signin">
-					<Button class="bg-darkGreen h-95px w-360px">
-						<div class="m-auto text-2xl">
-							<div>招聘者登入</div>
-						</div>
-					</Button>
-				</router-link>
-			</div>
-			<div class="mt-50px ml-184px">
-				<router-link to="/recruitment/reviewer/signin">
-					<Button class="bg-darkBlue h-95px w-360px">
-						<div class="m-auto text-2xl">
-							<div>審查委員登入</div>
-						</div>
-					</Button>
-				</router-link>
-			</div>
-			<div class="mt-50px ml-184px">
-				<router-link to="/recruitment/manager/signin">
-					<Button class="bg-darkBlue h-95px w-360px">
-						<div class="m-auto text-2xl">
-							<div>行政人員登入</div>
-						</div>
-					</Button>
-				</router-link>
+			<div class="px-8 py-4 space-y-12">
+				<Divider align="center" class="text-gray-700">
+					<div>選擇身份 Select your identity</div>
+				</Divider>
+				<div class="px-18">
+					<router-link to="/recruitment/applicant/signin">
+						<button
+							class="md:mx-auto w-full py-3 ntnuGold500"
+							text="white"
+							border="rounded"
+						>
+							<div>申請者登入 Applicant Login</div>
+						</button>
+					</router-link>
+				</div>
+				<div class="px-18">
+					<router-link to="/recruitment/reviewer/signin">
+						<button
+							class="md:mx-auto w-full py-3 ntnuBlue500"
+							text="white"
+							border="rounded"
+						>
+							<div>審查委員登入 Reviewer Login</div>
+						</button>
+					</router-link>
+				</div>
+				<div class="px-18">
+					<router-link to="/recruitment/manager/signin">
+						<button
+							class="md:mx-auto w-full py-3 ntnuRed500"
+							text="white"
+							border="rounded"
+						>
+							<div>行政人員登入 Manager Login</div>
+						</button>
+					</router-link>
+				</div>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import Button from "primevue/button";
 import Divider from "primevue/divider";
 </script>
 
-<style setup lang="css"></style>
+<style setup lang="css">
+.ntnuGold500 {
+	background-color: #8a7b27;
+}
+.ntnuBlue500 {
+	background-color: #2459a4;
+}
+.ntnuRed500 {
+	background-color: #94282c;
+}
+</style>

@@ -24,7 +24,7 @@
 			</div>
 			<div>
 				<div class="mt-100px ml-64px text-4xl font-bold text-gray-500">
-					{{ $t("審查委員及行政人員管理系統") }}
+					{{ $t("行政人員登入") }}
 				</div>
 				<div class="mt-36px ml-64px text-4xl font-bold text-gray-500">
 					{{ $t("忘記密碼") }}
