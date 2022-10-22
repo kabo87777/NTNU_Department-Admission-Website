@@ -1,0 +1,30 @@
+{
+  "id": 1,
+  "name": "PT",
+  "schoolExp": [
+    {
+      "itemName": "enroll certificate",
+      "fileName": "NTNU Year 4",
+      "fileUrl": ""
+    }
+  ],
+  "examScore": [
+    {
+      "itemName": "TOEFL",
+      "fileName": "My TOEFL",
+      "fileUrl": ""
+    },
+    {
+      "itemName": "IELTS",
+      "fileName": "My IELTS",
+      "fileUrl": ""
+    }
+  ],
+  "other": [
+    {
+      "itemName": "",
+      "fileName": "",
+      "fileUrl": ""
+    }
+  ]
+}
