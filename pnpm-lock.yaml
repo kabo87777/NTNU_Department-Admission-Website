@@ -1,16 +1,16 @@
 lockfileVersion: 5.4
 
 specifiers:
-  "@intlify/vite-plugin-vue-i18n": ^6.0.3
-  "@tanstack/vue-query": ^4.12.0
-  "@types/git-branch": ^2.0.2
-  "@types/node": ^18.8.3
-  "@typescript-eslint/eslint-plugin": ^5.38.1
-  "@typescript-eslint/parser": ^5.38.1
-  "@vitejs/plugin-vue": ^3.1.0
-  "@vue/runtime-core": ^3.2.40
-  "@vue/test-utils": 2.0.0-rc.18
-  "@vueuse/core": ^9.3.0
+  '@intlify/vite-plugin-vue-i18n': ^6.0.3
+  '@tanstack/vue-query': ^4.12.0
+  '@types/git-branch': ^2.0.2
+  '@types/node': ^18.8.3
+  '@typescript-eslint/eslint-plugin': ^5.38.1
+  '@typescript-eslint/parser': ^5.38.1
+  '@vitejs/plugin-vue': ^3.1.0
+  '@vue/runtime-core': ^3.2.40
+  '@vue/test-utils': 2.0.0-rc.18
+  '@vueuse/core': ^9.3.0
   axios: ^1.1.2
   eslint: ^8.24.0
   eslint-config-prettier: ^8.5.0
@@ -38,8 +38,8 @@ specifiers:
   yup: ^0.32.11
 
 dependencies:
-  "@tanstack/vue-query": 4.12.0_vue@3.2.40
-  "@vueuse/core": 9.3.0_vue@3.2.40
+  '@tanstack/vue-query': 4.12.0_vue@3.2.40
+  '@vueuse/core': 9.3.0_vue@3.2.40
   axios: 1.1.2
   eslint-config-prettier: 8.5.0_eslint@8.24.0
   eslint-plugin-prettier: 4.2.1_cfn5x6ujhhgzv3423d6k7r2zzm
@@ -463,37 +463,28 @@ packages:
       picomatch: 2.3.1
 
   /@tanstack/match-sorter-utils/8.5.14:
-    resolution:
-      {
-        integrity: sha512-lVNhzTcOJ2bZ4IU+PeCPQ36vowBHvviJb2ZfdRFX5uhy7G0jM8N34zAMbmS5ZmVH8D2B7oU82OWo0e/5ZFzQrw==,
-      }
-    engines: { node: ">=12" }
+    resolution: {integrity: sha512-lVNhzTcOJ2bZ4IU+PeCPQ36vowBHvviJb2ZfdRFX5uhy7G0jM8N34zAMbmS5ZmVH8D2B7oU82OWo0e/5ZFzQrw==}
+    engines: {node: '>=12'}
     dependencies:
       remove-accents: 0.4.2
     dev: false
 
   /@tanstack/query-core/4.12.0:
-    resolution:
-      {
-        integrity: sha512-KEiFPNLMFByhNL2s6RBFL6Z5cNdwwQzFpW/II3GY+rEuQ343ZEoVyQ48zlUXXkEkbamQFIFg2onM8Pxf0Yo01A==,
-      }
+    resolution: {integrity: sha512-KEiFPNLMFByhNL2s6RBFL6Z5cNdwwQzFpW/II3GY+rEuQ343ZEoVyQ48zlUXXkEkbamQFIFg2onM8Pxf0Yo01A==}
     dev: false
 
   /@tanstack/vue-query/4.12.0_vue@3.2.40:
-    resolution:
-      {
-        integrity: sha512-5mA1t4TTVd6V4IVot93ftjfju5duXb89LB0sFnG5GrMRZg+GresqVfq+yJKfzN4goAnJMwp3gLd40DciaVuPHQ==,
-      }
+    resolution: {integrity: sha512-5mA1t4TTVd6V4IVot93ftjfju5duXb89LB0sFnG5GrMRZg+GresqVfq+yJKfzN4goAnJMwp3gLd40DciaVuPHQ==}
     peerDependencies:
-      "@vue/composition-api": ^1.1.2
+      '@vue/composition-api': ^1.1.2
       vue: ^2.5.0 || ^3.0.0
     peerDependenciesMeta:
-      "@vue/composition-api":
+      '@vue/composition-api':
         optional: true
     dependencies:
-      "@tanstack/match-sorter-utils": 8.5.14
-      "@tanstack/query-core": 4.12.0
-      "@vue/devtools-api": 6.4.4
+      '@tanstack/match-sorter-utils': 8.5.14
+      '@tanstack/query-core': 4.12.0
+      '@vue/devtools-api': 6.4.4
       vue: 3.2.40
       vue-demi: 0.13.11_vue@3.2.40
     dev: false
@@ -4070,17 +4061,11 @@ packages:
     dev: false
 
   /regexpp/3.2.0:
-    resolution:
-      {
-        integrity: sha512-pq2bWo9mVD43nbts2wGv17XLiNLya+GklZ8kaDLV2Z08gDCsGpnKn9BFMepvWuHCbyVvY7J5o5+BVvoQbmlJLg==,
-      }
-    engines: { node: ">=8" }
+    resolution: {integrity: sha512-pq2bWo9mVD43nbts2wGv17XLiNLya+GklZ8kaDLV2Z08gDCsGpnKn9BFMepvWuHCbyVvY7J5o5+BVvoQbmlJLg==}
+    engines: {node: '>=8'}
 
   /remove-accents/0.4.2:
-    resolution:
-      {
-        integrity: sha512-7pXIJqJOq5tFgG1A2Zxti3Ht8jJF337m4sowbuHsW30ZnkQFnDzy9qBNhgzX8ZLW4+UBcXiiR7SwR6pokHsxiA==,
-      }
+    resolution: {integrity: sha512-7pXIJqJOq5tFgG1A2Zxti3Ht8jJF337m4sowbuHsW30ZnkQFnDzy9qBNhgzX8ZLW4+UBcXiiR7SwR6pokHsxiA==}
     dev: false
 
   /repeat-element/1.1.4:
