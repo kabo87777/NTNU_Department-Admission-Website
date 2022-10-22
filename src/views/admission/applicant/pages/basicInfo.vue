@@ -1,7 +1,15 @@
 <template>
 	
 	<div class="mt-16px pl-8px pr-8px">
-		<div class="text-24px font-medium">{{ $t("姓名資訊") }}</div>
+		<div class="w-1/2">
+			<label class="text-24px font-medium">{{ $t("姓名資訊") }}</label>
+			<label class=" pl-8px ">
+				<i class="text-green pi pi-check"></i>
+			</label>
+			<label class=" pl-8px text-14px text-stone-500 ">
+				"*"米字號表示該項目為必填欄位
+			</label>
+		</div>	
 		<div class="mt-24px flex">
 			<div class="w-1/3">
 				<div class="text-16px">{{ $t("稱謂") }}：</div>
@@ -73,9 +81,16 @@
 			</div>
 		</div>
 		<ParagraphDivider />
-		<div class="mt-24px text-24px font-medium">
-			{{ $t("入學身分(本地人士)") }}
-		</div>
+		<div class="w-600px">
+			<label class="text-24px font-medium">{{ $t("入學身分(本地人士)") }}</label>
+			<label class=" pl-8px ">
+				<i class="text-green pi pi-pencil"></i>
+			</label>
+			<label class=" pl-8px text-14px text-stone-500 ">
+				"*"米字號表示該項目為必填欄位
+			</label>
+		</div>	
+		
 		<div class="mt-24px flex">
 			<div class="w-1/3">
 				<div class="text-16px">{{ $t("入學身分") }}：</div>
@@ -109,9 +124,15 @@
 			</div>
 		</div>
 		<ParagraphDivider />
-		<div class="mt-24px text-24px font-medium">
-			{{ $t("入學身分(外籍生)") }}
-		</div>
+		<div class="w-600px">
+			<label class="text-24px font-medium">{{ $t("入學身分(外籍生)") }}</label>
+			<label class=" pl-8px ">
+				<i class="text-green pi pi-pencil"></i>
+			</label>
+			<label class=" pl-8px text-14px text-stone-500 ">
+				"*"米字號表示該項目為必填欄位
+			</label>
+		</div>	
 		<div class="mt-24px flex">
 			<div class="w-1/3">
 				<div class="text-16px">{{ $t("入學身分") }}：</div>
@@ -154,7 +175,15 @@
 			</div>
 		</div>
 		<ParagraphDivider />
-		<div class="mt-24px text-24px font-medium">{{ $t("戶籍地址") }}</div>
+		<div class="w-600px">
+			<label class="text-24px font-medium">{{ $t("戶籍地址") }}</label>
+			<label class=" pl-8px ">
+				<i class="text-green pi pi-pencil"></i>
+			</label>
+			<label class=" pl-8px text-14px text-stone-500 ">
+				"*"米字號表示該項目為必填欄位
+			</label>
+		</div>
 
 		<div class="mt-24px flex">
 			<div class="w-1/2">
@@ -208,12 +237,22 @@
 			</div>
 		</div>
 		<ParagraphDivider />
-		<div class="mt-24px text-24px font-medium">{{ $t("現居地址") }}</div>
+		<div class="w-600px">
+			<label class="text-24px font-medium">{{ $t("現居地址") }}</label>
+			<label class=" pl-8px ">
+				<i class="text-green pi pi-pencil"></i>
+			</label>
+			<label class=" pl-8px text-14px text-stone-500 ">
+				"*"米字號表示該項目為必填欄位
+			</label>
+		</div>
 		<div class="mt-16px ml-16px">
 			<Checkbox
 				inputId="text"
 				v-model="textCheckedAddress"
 				:binary="true"
+				v-on:click="address"
+				
 			/>
 			<label for="text" class="ml-8px font-medium">{{
 				$t("與戶籍地址資訊相同")
@@ -272,7 +311,15 @@
 			</div>
 		</div>
 		<ParagraphDivider />
-		 <div class="mt-24px text-24px font-medium">{{ $t("身份資料") }}</div>
+		<div class="w-600px">
+			<label class="text-24px font-medium">{{ $t("身份資料") }}</label>
+			<label class=" pl-8px ">
+				<i class="text-green pi pi-pencil"></i>
+			</label>
+			<label class=" pl-8px text-14px text-stone-500 ">
+				"*"米字號表示該項目為必填欄位
+			</label>
+		</div>
 		
 		<div class="mt-24px flex">
 			<div class="w-1/3">
@@ -389,7 +436,15 @@
 			</div>
 		</div> 
 		<ParagraphDivider /> 
-		 <div class="mt-24px text-24px font-medium">{{ $t("聯絡方式") }}</div>
+		<div class="w-600px">
+			<label class="text-24px font-medium">{{ $t("聯絡方式") }}</label>
+			<label class=" pl-8px ">
+				<i class="text-green pi pi-pencil"></i>
+			</label>
+			<label class=" pl-8px text-14px text-stone-500 ">
+				"*"米字號表示該項目為必填欄位
+			</label>
+		</div>
 		<div class="mt-24px flex">
 			<div class="w-1/2">
 				<div class="text-16px">{{ $t("主要聯絡電話") }}：</div>
@@ -422,10 +477,15 @@
 				/>
 			</div>
 			<div class="mt-16px ml-16px">
-				<Checkbox inputId="file" v-model="textCheckedphone" :binary="true" />
+				<Checkbox 
+					inputId="file" 
+					v-model="textCheckedphone" 
+					:binary="true"
+					v-on:click="phone" />
 				<label for="file" class="ml-8px font-medium"
 					>{{ $t("行動電話與主要聯絡電話相同") }}</label
 				>
+				
 			</div>
 		</div>
 		<div class="mt-24px flex">
@@ -546,7 +606,19 @@ const cities = ref([
 	{ name: "Istanbul", code: "IST" },
 	{ name: "Paris", code: "PRS" },
 ]);
-console.log(props.userId, "basic info tab");
 
-
+const phone = (prod: any) => {
+	if(textCheckedphone.value === false){
+		contactInfo.value.mobilePhone=contactInfo.value.primaryPhone;
+	}
+};
+const address = (prod: any) => {
+	if(textCheckedAddress.value === false){
+		currentAddress.value.country=residentAddress.value.country;
+		currentAddress.value.state=residentAddress.value.state;
+		currentAddress.value.city=residentAddress.value.city;
+		currentAddress.value.postalCode=residentAddress.value.postalCode;
+		currentAddress.value.streetAddress=residentAddress.value.streetAddress;
+	}
+};
 </script>
