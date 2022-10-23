@@ -1,15 +1,14 @@
 <template>
-	
 	<div class="mt-16px pl-8px pr-8px">
 		<div class="w-1/2">
 			<label class="text-24px font-medium">{{ $t("姓名資訊") }}</label>
-			<label class=" pl-8px ">
+			<label class="pl-8px">
 				<i class="text-green pi pi-check"></i>
 			</label>
-			<label class=" pl-8px text-14px text-stone-500 ">
-				"*"米字號表示該項目為必填欄位
+			<label class="pl-8px text-14px text-stone-500">
+				"*"{{ $t("米字號表示該項目為必填欄位") }}
 			</label>
-		</div>	
+		</div>
 		<div class="mt-24px flex">
 			<div class="w-1/3">
 				<div class="text-16px">{{ $t("稱謂") }}：</div>
@@ -82,15 +81,17 @@
 		</div>
 		<ParagraphDivider />
 		<div class="w-600px">
-			<label class="text-24px font-medium">{{ $t("入學身分(本地人士)") }}</label>
-			<label class=" pl-8px ">
+			<label class="text-24px font-medium">{{
+				$t("入學身分(本地人士)")
+			}}</label>
+			<label class="pl-8px">
 				<i class="text-green pi pi-pencil"></i>
 			</label>
-			<label class=" pl-8px text-14px text-stone-500 ">
-				"*"米字號表示該項目為必填欄位
+			<label class="pl-8px text-14px text-stone-500">
+				"*"{{ $t("米字號表示該項目為必填欄位") }}
 			</label>
-		</div>	
-		
+		</div>
+
 		<div class="mt-24px flex">
 			<div class="w-1/3">
 				<div class="text-16px">{{ $t("入學身分") }}：</div>
@@ -125,14 +126,16 @@
 		</div>
 		<ParagraphDivider />
 		<div class="w-600px">
-			<label class="text-24px font-medium">{{ $t("入學身分(外籍生)") }}</label>
-			<label class=" pl-8px ">
+			<label class="text-24px font-medium">{{
+				$t("入學身分(外籍生)")
+			}}</label>
+			<label class="pl-8px">
 				<i class="text-green pi pi-pencil"></i>
 			</label>
-			<label class=" pl-8px text-14px text-stone-500 ">
-				"*"米字號表示該項目為必填欄位
+			<label class="pl-8px text-14px text-stone-500">
+				"*"{{ $t("米字號表示該項目為必填欄位") }}
 			</label>
-		</div>	
+		</div>
 		<div class="mt-24px flex">
 			<div class="w-1/3">
 				<div class="text-16px">{{ $t("入學身分") }}：</div>
@@ -177,11 +180,11 @@
 		<ParagraphDivider />
 		<div class="w-600px">
 			<label class="text-24px font-medium">{{ $t("戶籍地址") }}</label>
-			<label class=" pl-8px ">
+			<label class="pl-8px">
 				<i class="text-green pi pi-pencil"></i>
 			</label>
-			<label class=" pl-8px text-14px text-stone-500 ">
-				"*"米字號表示該項目為必填欄位
+			<label class="pl-8px text-14px text-stone-500">
+				"*"{{ $t("米字號表示該項目為必填欄位") }}
 			</label>
 		</div>
 
@@ -239,11 +242,11 @@
 		<ParagraphDivider />
 		<div class="w-600px">
 			<label class="text-24px font-medium">{{ $t("現居地址") }}</label>
-			<label class=" pl-8px ">
+			<label class="pl-8px">
 				<i class="text-green pi pi-pencil"></i>
 			</label>
-			<label class=" pl-8px text-14px text-stone-500 ">
-				"*"米字號表示該項目為必填欄位
+			<label class="pl-8px text-14px text-stone-500">
+				"*"{{ $t("米字號表示該項目為必填欄位") }}
 			</label>
 		</div>
 		<div class="mt-16px ml-16px">
@@ -252,7 +255,6 @@
 				v-model="textCheckedAddress"
 				:binary="true"
 				v-on:click="address"
-				
 			/>
 			<label for="text" class="ml-8px font-medium">{{
 				$t("與戶籍地址資訊相同")
@@ -313,14 +315,14 @@
 		<ParagraphDivider />
 		<div class="w-600px">
 			<label class="text-24px font-medium">{{ $t("身份資料") }}</label>
-			<label class=" pl-8px ">
+			<label class="pl-8px">
 				<i class="text-green pi pi-pencil"></i>
 			</label>
-			<label class=" pl-8px text-14px text-stone-500 ">
-				"*"米字號表示該項目為必填欄位
+			<label class="pl-8px text-14px text-stone-500">
+				"*"{{ $t("米字號表示該項目為必填欄位") }}
 			</label>
 		</div>
-		
+
 		<div class="mt-24px flex">
 			<div class="w-1/3">
 				<div class="text-16px">{{ $t("法定性別") }}：</div>
@@ -329,19 +331,31 @@
 
 		<div class="mt-24px flex">
 			<div class="field-radiobutton w-1/5">
-				<RadioButton inputId="city1" name="city" value="male" v-model="identityInfo.gender" />
-				<label for="city1" class="!border-gray-900 ml-8px font-medium">{{
-					$t("男性")
-				}}</label>
+				<RadioButton
+					inputId="city1"
+					name="city"
+					value="male"
+					v-model="identityInfo.gender"
+				/>
+				<label
+					for="city1"
+					class="!border-gray-900 ml-8px font-medium"
+					>{{ $t("男性") }}</label
+				>
 			</div>
 			<div class="field-radiobutton w-1/5">
-				<RadioButton inputId="city2" name="city" value="female" v-model="identityInfo.gender" />
-				<label  for="city2" class="ml-8px font-medium">{{
+				<RadioButton
+					inputId="city2"
+					name="city"
+					value="female"
+					v-model="identityInfo.gender"
+				/>
+				<label for="city2" class="ml-8px font-medium">{{
 					$t("女性")
 				}}</label>
 			</div>
 		</div>
-					
+
 		<div class="mt-24px flex">
 			<div class="w-1/3">
 				<div class="text-16px">{{ $t("性別認同") }}：</div>
@@ -349,19 +363,34 @@
 		</div>
 		<div class="mt-24px flex">
 			<div class="field-radiobutton w-1/5">
-				<RadioButton inputId="city3" name="sex" value="male" v-model="identityInfo.sex" />
+				<RadioButton
+					inputId="city3"
+					name="sex"
+					value="male"
+					v-model="identityInfo.sex"
+				/>
 				<label for="city3" class="ml-8px font-medium">{{
 					$t("男性")
 				}}</label>
 			</div>
 			<div class="field-radiobutton w-1/5">
-				<RadioButton inputId="city4" name="sex" value="female" v-model="identityInfo.sex" />
+				<RadioButton
+					inputId="city4"
+					name="sex"
+					value="female"
+					v-model="identityInfo.sex"
+				/>
 				<label for="city4" class="ml-8px font-medium">{{
 					$t("女性")
 				}}</label>
 			</div>
 			<div class="field-radiobutton w-1/5">
-				<RadioButton inputId="city5" name="sex" value="nonBinary" v-model="identityInfo.sex" />
+				<RadioButton
+					inputId="city5"
+					name="sex"
+					value="nonBinary"
+					v-model="identityInfo.sex"
+				/>
 				<label for="city5" class="ml-8px font-medium">{{
 					$t("非二元性別")
 				}}</label>
@@ -388,8 +417,8 @@
 					:showIcon="true"
 				>
 				</Calendar>
-			</div> 
-		</div>  
+			</div>
+		</div>
 		<div class="flex mt-16px">
 			<div class="mt-16px ml-16px">
 				<Checkbox
@@ -434,15 +463,15 @@
 					/>
 				</span>
 			</div>
-		</div> 
-		<ParagraphDivider /> 
+		</div>
+		<ParagraphDivider />
 		<div class="w-600px">
 			<label class="text-24px font-medium">{{ $t("聯絡方式") }}</label>
-			<label class=" pl-8px ">
+			<label class="pl-8px">
 				<i class="text-green pi pi-pencil"></i>
 			</label>
-			<label class=" pl-8px text-14px text-stone-500 ">
-				"*"米字號表示該項目為必填欄位
+			<label class="pl-8px text-14px text-stone-500">
+				"*"{{ $t("米字號表示該項目為必填欄位") }}
 			</label>
 		</div>
 		<div class="mt-24px flex">
@@ -466,7 +495,6 @@
 			</div>
 		</div>
 		<div class="mt-24px flex">
-			
 			<div class="w-1/2">
 				<div class="text-16px">{{ $t("行動電話") }}：</div>
 				<InputText
@@ -477,15 +505,15 @@
 				/>
 			</div>
 			<div class="mt-16px ml-16px">
-				<Checkbox 
-					inputId="file" 
-					v-model="textCheckedphone" 
+				<Checkbox
+					inputId="file"
+					v-model="textCheckedphone"
 					:binary="true"
-					v-on:click="phone" />
-				<label for="file" class="ml-8px font-medium"
-					>{{ $t("行動電話與主要聯絡電話相同") }}</label
-				>
-				
+					v-on:click="phone"
+				/>
+				<label for="file" class="ml-8px font-medium">{{
+					$t("行動電話與主要聯絡電話相同")
+				}}</label>
 			</div>
 		</div>
 		<div class="mt-24px flex">
@@ -506,8 +534,7 @@
 					>{{ $t("願意承擔手機簡訊費用") }}:</label
 				>
 			</div>
-		</div> 
-		
+		</div>
 	</div>
 </template>
 
@@ -529,7 +556,7 @@ import { ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 
 const nameInfo = ref({
-	selected_title :"" ,
+	selected_title: "",
 	suffix: "",
 	title: "",
 	chLastName: "",
@@ -540,46 +567,43 @@ const nameInfo = ref({
 });
 
 const admissionStatusLocal = ref({
-	admissionIdendity :"" ,
+	admissionIdendity: "",
 	nationality: "",
 	ID: "",
-	
 });
 
 const admissionStatus = ref({
-	admissionIdendity :"" ,
+	admissionIdendity: "",
 	nationality: "",
 	passport: "",
 	ARC: "",
 });
 
 const residentAddress = ref({
-	country :"" ,
+	country: "",
 	state: "",
 	city: "",
 	postalCode: "",
 	streetAddress: "",
-	
 });
 const currentAddress = ref({
-	country :"" ,
+	country: "",
 	state: "",
 	city: "",
 	postalCode: "",
 	streetAddress: "",
-	
 });
 const identityInfo = ref({
-	sex :"" ,
+	sex: "",
 	gender: "",
 	country: "",
-	date:Date ,
+	date: Date,
 	streetAddress: "",
 	secondCountry: "",
 	visa: "",
 });
 const contactInfo = ref({
-	primaryPhone :"" ,
+	primaryPhone: "",
 	secondPhone: "",
 	mobilePhone: "",
 	email: "",
@@ -608,17 +632,18 @@ const cities = ref([
 ]);
 
 const phone = (prod: any) => {
-	if(textCheckedphone.value === false){
-		contactInfo.value.mobilePhone=contactInfo.value.primaryPhone;
+	if (textCheckedphone.value === false) {
+		contactInfo.value.mobilePhone = contactInfo.value.primaryPhone;
 	}
 };
 const address = (prod: any) => {
-	if(textCheckedAddress.value === false){
-		currentAddress.value.country=residentAddress.value.country;
-		currentAddress.value.state=residentAddress.value.state;
-		currentAddress.value.city=residentAddress.value.city;
-		currentAddress.value.postalCode=residentAddress.value.postalCode;
-		currentAddress.value.streetAddress=residentAddress.value.streetAddress;
+	if (textCheckedAddress.value === false) {
+		currentAddress.value.country = residentAddress.value.country;
+		currentAddress.value.state = residentAddress.value.state;
+		currentAddress.value.city = residentAddress.value.city;
+		currentAddress.value.postalCode = residentAddress.value.postalCode;
+		currentAddress.value.streetAddress =
+			residentAddress.value.streetAddress;
 	}
 };
 </script>
