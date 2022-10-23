@@ -141,11 +141,18 @@ import Button from "primevue/button";
 import ProgressBar from "primevue/progressbar";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
+import { useAdmissionReviewerAuthStore } from "@/stores/universalAuth";
+import { AdmissionReviewerAPI } from "@/api/admission/reviewer/api";
+// import { useQuery } from "@tanstack/vue-query";
+
+const reviewerAuth = useAdmissionReviewerAuthStore();
+const api = new AdmissionReviewerAPI(reviewerAuth);
 
 const { t } = useI18n();
 
 const progressValue = ref(50);
 
+// TODO: 連接API
 const data_list = ref([
 	{
 		id: "1000",

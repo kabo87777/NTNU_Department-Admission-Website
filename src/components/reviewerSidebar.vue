@@ -116,23 +116,13 @@ import "primevue/resources/primevue.min.css";
 import { ref } from "vue";
 import Dropdown from "primevue/dropdown";
 import Button from "primevue/button";
-import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
-import {
-	useAdmissionAdminAuthStore,
-	useAdmissionReviewerAuthStore,
-} from "@/stores/universalAuth";
-import { AdmissionAdminAPI } from "@/api/admission/admin/api";
-// import * as reviewerApi from "@/api/admission/reviewer/api";
-import applicantUploadedDocsVue from "@/views/admission/manager/applicantsUploadList/applicantUploadedDocs.vue";
+import { useAdmissionReviewerAuthStore } from "@/stores/universalAuth";
+import { AdmissionReviewerAPI } from "@/api/admission/reviewer/api";
 import { useQuery } from "@tanstack/vue-query";
 
-const router = useRouter();
-
 const reviewerAuth = useAdmissionReviewerAuthStore();
-const adminAuth = useAdmissionAdminAuthStore();
-
-const api = new AdmissionAdminAPI(adminAuth);
+const api = new AdmissionReviewerAPI(reviewerAuth);
 
 const {
 	isLoading,
@@ -141,7 +131,7 @@ const {
 	error,
 } = useQuery(["programList"], async () => await api.getProgramList());
 
-const { t } = useI18n();
+const router = useRouter();
 
 const selectedProgram = ref({
 	id: 1,
@@ -160,21 +150,11 @@ const selectedProgram = ref({
 	reviewer_required_info: null,
 	reviewer_required_file: null,
 });
-const displayNewProject = ref(false);
-const newProjectName = ref("");
 
 const generateOptions = (data: any) => data.category + data.name;
 
-function newProject() {
-	displayNewProject.value = true;
-}
-
-function closeDisplayNewProject() {
-	displayNewProject.value = false;
-}
-
 async function signOut() {
-	if (adminAuth.isValidSession) {
+	if (reviewerAuth.isValidSession) {
 		if (await api.invalidateSession()) {
 			router.push("/");
 		}

@@ -30,23 +30,7 @@
 		</div>
 		<div class="bigBrownDivider"></div>
 		<div class="mt-10px h-670px">
-			<TabView ref="tabview1">
-				<TabPanel :header="nameInfoT">
-					<p>{{ nameInfo }}</p>
-				</TabPanel>
-				<TabPanel :header="contactInfoT">
-					<p>{{ contactInfo }}</p>
-				</TabPanel>
-				<TabPanel :header="schoolExT">
-					<p>{{ schoolEx }}</p>
-				</TabPanel>
-				<TabPanel :header="examT">
-					<p>{{ exam }}</p>
-				</TabPanel>
-				<TabPanel :header="otherInfoT">
-					<p>{{ otherInfo }}</p>
-				</TabPanel>
-			</TabView>
+			<PDFView :pdfUrl="jsPdf" class="!h650px" />
 		</div>
 		<div class="bigBlueDivider"></div>
 		<div class="flex mt-32px">
@@ -109,7 +93,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, onMounted, reactive, ref } from "vue";
 import { useRoute } from "vue-router";
 import Button from "primevue/button";
 import InputNumber from "primevue/inputnumber";
@@ -118,6 +102,8 @@ import InputText from "primevue/inputtext";
 import TabView from "primevue/tabview";
 import TabPanel from "primevue/tabpanel";
 import { useI18n } from "vue-i18n";
+import PDFView from "@/components/pdfPreview.vue";
+import jsPdf from "./test.pdf";
 
 const route = useRoute();
 const { t } = useI18n();
