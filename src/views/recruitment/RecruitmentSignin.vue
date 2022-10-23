@@ -27,16 +27,18 @@
 					<div class="text-xl">Teacher Recruitment System</div>
 				</div>
 			</div>
-			<div class="px-8 py-4 space-y-12">
+			<div class="px-8 py-4 space-y-8">
 				<Divider align="center" class="text-gray-700">
-					<div>選擇身份 Select your identity</div>
+					<div class="flex px-2 gap-2">
+						<div>選擇身份</div>
+						<div>Select your identity</div>
+					</div>
 				</Divider>
 				<div class="px-18">
 					<router-link to="/recruitment/applicant/signin">
 						<button
-							class="md:mx-auto w-full py-3 ntnuGold500"
-							text="white"
-							border="rounded"
+							class="md:mx-auto w-full py-4 applicantButtonStyle"
+							border="rounded-lg"
 						>
 							<div>申請者登入 Applicant Login</div>
 						</button>
@@ -45,9 +47,8 @@
 				<div class="px-18">
 					<router-link to="/recruitment/reviewer/signin">
 						<button
-							class="md:mx-auto w-full py-3 ntnuBlue500"
-							text="white"
-							border="rounded"
+							class="md:mx-auto w-full py-4 reviewerButtonStyle"
+							border="rounded-lg"
 						>
 							<div>審查委員登入 Reviewer Login</div>
 						</button>
@@ -56,9 +57,8 @@
 				<div class="px-18">
 					<router-link to="/recruitment/manager/signin">
 						<button
-							class="md:mx-auto w-full py-3 ntnuRed500"
-							text="white"
-							border="rounded"
+							class="md:mx-auto w-full py-4 managerButtonStyle"
+							border="rounded-lg"
 						>
 							<div>行政人員登入 Manager Login</div>
 						</button>
@@ -74,13 +74,40 @@ import Divider from "primevue/divider";
 </script>
 
 <style setup lang="css">
-.ntnuGold500 {
+.applicantButtonStyle {
+	background-color: #efeda4;
+	color: #544830;
+}
+.applicantButtonStyle:hover {
 	background-color: #8a7b27;
+	color: white;
 }
-.ntnuBlue500 {
+.applicantButtonStyle:active {
+	background-color: #624f2a;
+	color: white;
+}
+.reviewerButtonStyle {
+	background-color: #a5b9ec;
+	color: #003a5c;
+}
+.reviewerButtonStyle:hover {
 	background-color: #2459a4;
+	color: white;
 }
-.ntnuRed500 {
+.reviewerButtonStyle:active {
+	background-color: #0b4873;
+	color: white;
+}
+.managerButtonStyle {
+	background-color: #f3baae;
+	color: #4d3639;
+}
+.managerButtonStyle:hover {
 	background-color: #94282c;
+	color: white;
+}
+.managerButtonStyle:active {
+	background-color: #62373e;
+	color: white;
 }
 </style>
