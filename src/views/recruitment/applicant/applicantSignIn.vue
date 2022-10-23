@@ -32,7 +32,7 @@
 					<div class="flex-none font-medium">Applicant Login</div>
 					<Divider />
 				</div>
-				<div class="flex-col px-2">
+				<div class="flex-col px-4">
 					<div
 						class="flex items-center gap-2 pb-2"
 						text="sm gray-500"
@@ -49,7 +49,7 @@
 						required
 					/>
 				</div>
-				<div class="flex-col px-2">
+				<div class="flex-col px-4">
 					<div
 						class="flex items-center gap-2 pb-2"
 						text="sm gray-500"
@@ -66,31 +66,36 @@
 						required
 					/>
 				</div>
-				<div class="flex items-center px-2 gap-2">
+				<div class="flex items-center px-4 gap-2">
 					<Checkbox v-model="isRememberAccount" :binary="true" />
 					<div class="space-y-0.5" text="xs gray-500">
 						<div>下次登入時記住帳號</div>
 						<div>Remember Account at next Login</div>
 					</div>
 				</div>
-				<div class="flex-col items-center px-24">
-					<button class="py-2 w-full rounded-lg applicantButtonStyle">
+				<div class="flex-col px-24">
+					<button
+						class="py-2 w-full applicantButtonStyle"
+						border="2  rounded-lg"
+					>
 						<div class="flex justify-center gap-2 mx-auto">
 							<div>登入</div>
 							<div>Login</div>
 						</div>
 					</button>
-					<router-link to="">
-						<button
-							class="flex justify-center gap-2 px-1 py-1"
-							bg="transparent hover:gray-100"
-							text="sm gray-400 hover:gray-600"
-							border="rounded"
-						>
-							<div>忘記密碼</div>
-							<div>Forget Password</div>
-						</button>
-					</router-link>
+					<div class="flex py-4 w-full justify-center">
+						<router-link to="">
+							<button
+								class="flex justify-center gap-2 px-1 py-1"
+								bg="transparent hover:gray-100"
+								text="sm gray-400 hover:gray-600"
+								border="rounded"
+							>
+								<div>忘記密碼</div>
+								<div>Forget Password</div>
+							</button>
+						</router-link>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -116,15 +121,18 @@ const userLoginData = reactive({
 	color: #736028;
 }
 .applicantButtonStyle {
-	background-color: #efeda4;
+	background-color: #fafac7;
+	border-color: #dbd379;
 	color: #544830;
 }
 .applicantButtonStyle:hover {
 	background-color: #8a7b27;
+	border-color: #8a7b27;
 	color: white;
 }
 .applicantButtonStyle:active {
 	background-color: #624f2a;
+	border-color: #624f2a;
 	color: white;
 }
 </style>
