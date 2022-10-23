@@ -43,7 +43,7 @@
 					<InputText
 						name="email"
 						type="email"
-						v-model="userLoginData.email"
+						v-model="userRegistData.email"
 						class="p-inputtext-sm w-full"
 						required
 					/>
@@ -59,7 +59,7 @@
 					<InputText
 						name="password"
 						type="password"
-						v-model="userLoginData.password"
+						v-model="userRegistData.password"
 						class="p-inputtext-sm w-full"
 						required
 					/>
@@ -75,7 +75,7 @@
 					<InputText
 						name="password"
 						type="password"
-						v-model="userLoginData.password"
+						v-model="userRegistData.confirmPwd"
 						class="p-inputtext-sm w-full"
 						required
 					/>
@@ -105,9 +105,10 @@
 import { reactive } from "vue";
 import InputText from "primevue/inputtext";
 
-const userLoginData = reactive({
+const userRegistData = reactive({
 	email: "",
 	password: "",
+	confirmPwd: "",
 });
 </script>
 

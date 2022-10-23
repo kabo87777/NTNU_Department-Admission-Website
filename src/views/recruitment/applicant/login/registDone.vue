@@ -58,9 +58,8 @@
 					<div class="space-y-1">
 						<div text="xs">請至郵箱啟動帳號，並返回登入畫面</div>
 						<div text="xs">
-							Your register is Successfully. Please Check your
-							mail in order to active your account, then turn back
-							to Login page.
+							Please Check your mail in order to active your
+							account, then turn back to Login page.
 						</div>
 					</div>
 				</div>
