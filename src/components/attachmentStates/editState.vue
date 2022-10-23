@@ -15,11 +15,22 @@
 			></div>
 			<div class="mt-16px" style="width: 85%">
 				<FileUpload
+					style="
+						background-color: #bdbdbd;
+						color: black;
+						border: #bdbdbd;
+					"
+					mode="basic"
 					name="attachment"
+					:customUpload="true"
+					@uploader="handleUpload"
 					:maxFileSize="5000000"
 					:fileLimit="1"
-				/>
+					accept=".pdf"
+				>
+				</FileUpload>
 			</div>
+			<p class="mt-16px">{{ $t("onlyPdf") }}</p>
 		</div>
 		<div
 			class="bg-[#ECECEB] w-1/10"
@@ -85,6 +96,11 @@ const dynamicClass = () => {
 	}
 
 	return className.value;
+};
+
+const handleUpload = (event: any) => {
+	//event.files == files to upload
+	console.log(event);
 };
 
 const handleCancel = () => {
