@@ -42,10 +42,10 @@ import AdmissionReviewerSignin from "@/views/admission/reviewer/ReviewerSignin.v
 
 // Recruitment Applicant section
 import recruitmentApplicantSignin from "@/views/recruitment/applicant/login/signin.vue";
-import recruitmentApplicantRegist from "@/views/recruitment/applicant/login/registAccount.vue";
-import recruitmentApplicantResetPassword from "@/views/recruitment/applicant/login/resetPassword.vue";
-import recruitmentApplicantForgetPassword from "@/views/recruitment/applicant/login/forgetPassword.vue";
-import recruitmentApplicantForgetPasswordEmailSent from "@/views/recruitment/applicant/login/forgetPasswordEmailSent.vue";
+import recruitmentApplicantRegist from "@/views/recruitment/applicant/login/regist.vue";
+import recruitmentApplicantPasswordReset from "@/views/recruitment/applicant/login/pwdReset.vue";
+import recruitmentApplicantPasswordForget from "@/views/recruitment/applicant/login/pwdForget.vue";
+import recruitmentApplicantPasswordForgetEmailSent from "@/views/recruitment/applicant/login/pwdForgetEmailSent.vue";
 // Recruitment Reviewer section
 import recruitmentReviewerSignin from "@/views/recruitment/reviewer/signin.vue";
 // Recruitment Manager section
@@ -242,19 +242,19 @@ const routes: Array<RouteRecordRaw> = [
 				component: recruitmentApplicantRegist,
 			},
 			{
-				path: "recruitment/applicant/resetPassword",
-				name: "recruitmentApplicantResetPassword",
-				component: recruitmentApplicantResetPassword,
+				path: "recruitment/applicant/password/reset",
+				name: "recruitmentApplicantPasswordReset",
+				component: recruitmentApplicantPasswordReset,
 			},
 			{
-				path: "recruitment/applicant/forgetPassword",
-				name: "recruitmentApplicantForgetPassword",
-				component: recruitmentApplicantForgetPassword,
+				path: "recruitment/applicant/password/forget",
+				name: "recruitmentApplicantPasswordForget",
+				component: recruitmentApplicantPasswordForget,
 			},
 			{
-				path: "recruitment/applicant/forgetPassword/emailSent",
-				name: "recruitmentApplicantForgetPasswordEmailSent",
-				component: recruitmentApplicantForgetPasswordEmailSent,
+				path: "recruitment/applicant/password/forget/emailSent",
+				name: "recruitmentApplicantPasswordForgetEmailSent",
+				component: recruitmentApplicantPasswordForgetEmailSent,
 			},
 
 			// Recruitment - manager sign in
