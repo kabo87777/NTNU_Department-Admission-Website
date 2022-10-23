@@ -43,6 +43,7 @@ import AdmissionReviewerSignin from "@/views/admission/reviewer/ReviewerSignin.v
 // Recruitment Applicant section
 import recruitmentApplicantSignin from "@/views/recruitment/applicant/login/signin.vue";
 import recruitmentApplicantRegist from "@/views/recruitment/applicant/login/regist.vue";
+import recruitmentApplicantRegistDone from "@/views/recruitment/applicant/login/registDone.vue";
 import recruitmentApplicantPasswordReset from "@/views/recruitment/applicant/login/pwdReset.vue";
 import recruitmentApplicantPasswordForget from "@/views/recruitment/applicant/login/pwdForget.vue";
 import recruitmentApplicantPasswordForgetEmailSent from "@/views/recruitment/applicant/login/pwdForgetEmailSent.vue";
@@ -236,11 +237,18 @@ const routes: Array<RouteRecordRaw> = [
 				name: "recruitmentApplicantSignin",
 				component: recruitmentApplicantSignin,
 			},
+			// Recruitment - applicant register
 			{
 				path: "recruitment/applicant/regist",
 				name: "recruitmentApplicantRegist",
 				component: recruitmentApplicantRegist,
 			},
+			{
+				path: "recruitment/applicant/regist/done",
+				name: "recruitmentApplicantRegistDone",
+				component: recruitmentApplicantRegistDone,
+			},
+			// Recruitment - applicant forget & reset password
 			{
 				path: "recruitment/applicant/password/reset",
 				name: "recruitmentApplicantPasswordReset",

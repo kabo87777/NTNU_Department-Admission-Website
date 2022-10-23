@@ -37,7 +37,7 @@
 						class="flex items-center gap-2 pb-2"
 						text="sm gray-500"
 					>
-						<div>電子郵件</div>
+						<div>電郵地址</div>
 						<div>E-mail</div>
 					</div>
 					<InputText
@@ -73,18 +73,34 @@
 						<div>Remember Account at next Login</div>
 					</div>
 				</div>
-				<div class="flex-col px-24">
-					<button
-						class="py-2 w-full applicantButtonStyle"
-						border="2  rounded-lg"
-					>
-						<div class="flex justify-center gap-2 mx-auto">
-							<div>登入</div>
-							<div>Login</div>
-						</div>
-					</button>
-					<div class="flex py-4 w-full justify-center">
-						<router-link to="">
+				<div class="flex-col-inline px-4 gap-y-8">
+					<div class="flex justify-center">
+						<button
+							class="py-2 w-80 applicantButtonStyle"
+							border="2  rounded-lg"
+						>
+							<div class="flex justify-center gap-2 mx-auto">
+								<div>登入</div>
+								<div>Login</div>
+							</div>
+						</button>
+					</div>
+					<div class="flex justify-center items-center">
+						<router-link to="/recruitment/applicant/regist">
+							<button
+								class="flex justify-center gap-2 px-1 py-1"
+								bg="transparent hover:gray-100"
+								text="sm gray-400 hover:gray-600"
+								border="rounded"
+							>
+								<div>註冊</div>
+								<div>Register</div>
+							</button>
+						</router-link>
+						<Divider layout="vertical" />
+						<router-link
+							to="/recruitment/applicant/password/forget"
+						>
 							<button
 								class="flex justify-center gap-2 px-1 py-1"
 								bg="transparent hover:gray-100"
@@ -106,7 +122,6 @@
 import { ref } from "vue";
 import { reactive } from "vue";
 import Checkbox from "primevue/checkbox";
-import Button from "primevue/button";
 import InputText from "primevue/inputtext";
 
 const isRememberAccount = ref(false);
