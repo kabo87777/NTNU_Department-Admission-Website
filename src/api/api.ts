@@ -4,6 +4,7 @@ import type { universalAuthData } from "@/api/universalAuth";
 
 import axios from "axios";
 import { doUniversalAuthSignIn, doUniversalAuthSignOut } from "./universalAuth";
+import { InvalidSessionError } from "./error";
 
 export class GenericAPI {
 	auth: AuthStore;
@@ -21,8 +22,11 @@ export class GenericAPI {
 			(config) => {
 				config.headers = config.headers ?? {};
 
-				if (!this.auth.isValidSession)
-					throw new Error("Invalid auth session");
+				if (!this.auth.isValidSession) {
+					throw new InvalidSessionError(
+						"Local check failed: invalid auth session. An unhandled expired auth session was most likely used to perform this request."
+					);
+				}
 
 				config.headers["authorization"] =
 					this.auth.credentials!.authorization;
@@ -30,7 +34,7 @@ export class GenericAPI {
 				return config;
 			},
 			async (error) => {
-				throw new Error(error);
+				throw error;
 			}
 		);
 
@@ -43,7 +47,7 @@ export class GenericAPI {
 				return response.data;
 			},
 			async (error) => {
-				throw new Error(error);
+				throw error;
 			}
 		);
 	}

@@ -182,18 +182,28 @@
 		>
 			<div class="flex">
 				<div class="m-auto">
-					<Button
-						class="w-168px h-44px p-button-outlined !mt-24px !bg-white"
+					<router-link
+						to="/admission/manager/reviewerSettings"
+						custom
+						v-slot="{ navigate }"
 					>
-						<img
-							alt="logo"
-							src="/assets/sidebar/User_box.png"
-							style="width: 1.25rem"
-						/>
-						<h1 class="ml-8px tracking-1px text-18px text-gray-900">
-							{{ $t("管理審查者") }}
-						</h1>
-					</Button>
+						<Button
+							class="w-168px h-44px p-button-outlined !mt-24px !bg-white"
+							@click="navigate"
+							role="link"
+						>
+							<img
+								alt="logo"
+								src="/assets/sidebar/User_box.png"
+								style="width: 1.25rem"
+							/>
+							<h1
+								class="ml-8px tracking-1px text-18px text-gray-900"
+							>
+								{{ $t("管理審查者") }}
+							</h1>
+						</Button>
+					</router-link>
 					<Button
 						@click="newProject"
 						class="w-168px h-44px p-button-outlined p-button-success !ml-16px !bg-white"
@@ -304,6 +314,7 @@ import { AdmissionAdminAPI } from "@/api/admission/admin/api";
 // import * as reviewerApi from "@/api/admission/reviewer/api";
 import applicantUploadedDocsVue from "@/views/admission/manager/applicantsUploadList/applicantUploadedDocs.vue";
 import { useQuery } from "@tanstack/vue-query";
+import { InvalidSessionError } from "@/api/error";
 
 const router = useRouter();
 
@@ -317,10 +328,26 @@ const {
 	isError,
 	data: programs,
 	error,
-} = useQuery(["programList"], async () => await api.getProgramList());
+} = useQuery(["programList"], async () => {
+	try {
+		return await api.getProgramList();
+	} catch (e: any) {
+		if (e instanceof InvalidSessionError) {
+			// FIXME: show session expiry notification??
+			// Why are we even here in the first place?
+			// MainContainer should have checked already.
+			console.error(
+				"Session has already expired while querying programList"
+			);
+			router.push("/");
+			return;
+		}
+	}
+});
 
 const { t } = useI18n();
 
+// FIXME: this should NOT be hardcoded.
 const selectedProgram = ref({
 	id: 1,
 	category: "111年碩士班",
