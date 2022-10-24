@@ -99,7 +99,7 @@
 						</router-link>
 						<Divider layout="vertical" />
 						<router-link
-							to="/recruitment/applicant/password/reset"
+							to="/recruitment/applicant/password/forget"
 						>
 							<button
 								class="flex justify-center gap-2 px-1 py-1"

@@ -1,86 +1,104 @@
-<template>
-	<div class="grid grid-cols-2 gap-15px">
-		<div>
-			<img src="/assets/login-page/Login-img.png" class="h-screen" />
+<template class="overflow-hidden">
+	<div class="flex">
+		<div class="flex-shrink-1">
+			<img src="/assets/login-page/Login-img.png" class="fill" />
 		</div>
-		<div class="m-auto">
-			<div class="flex m-auto h-15">
-				<div>
-					<img
-						src="/assets/login-page/NTNU-logo-B1.png"
-						class="h-15"
-					/>
+		<div class="flex-none w-150 px-6 pt-18 space-y-8">
+			<router-link to="/recruitment">
+				<button
+					class="flex items-center gap-2 px-2 py-2"
+					bg="transparent hover:gray-100"
+					text="sm gray-400 hover:gray-600"
+					border="rounded"
+				>
+					<i class="pi pi-angle-left" />
+					<div>切換登入身份</div>
+					<div>Change your identity</div>
+				</button>
+			</router-link>
+			<div class="px-8 space-y-2">
+				<div class="text-s text-gray-500">
+					國立台灣師範大學資訊工程學系 NTNU CSIE
 				</div>
-				<Divider layout="vertical" />
-				<div class="mt-1.5">
-					<div class="text-4xl font-bold text-gray-500">
-						資訊工程學系
-					</div>
-					<div class="text-xs text-gray-400">
-						Department of Computer Science and Information
-						Enginering
-					</div>
-				</div>
-			</div>
-			<div>
-				<div class="mt-100px ml-164px text-4xl font-bold text-gray-500">
-					{{ $t("行政人員登入") }}
+				<div class="flex items-end gap-2 font-medium text-gray-900">
+					<div class="text-4xl">教師聘請系統</div>
+					<div class="text-xl">Teacher Recruitment System</div>
 				</div>
 			</div>
-			<!-- TODO: Field -->
-			<div class="block mt-24px ml-164px">
-				<div class="text-gray-600">
-					<label for="email">{{ $t("電郵") }}</label>
+			<div class="px-8 py-4 space-y-8">
+				<div class="flex items-center gap-2 managerTextColor">
+					<i class="pi pi-circle-fill" style="font-size: 0.5rem" />
+					<div class="flex-none font-medium">行政人員登入</div>
+					<div class="flex-none font-medium">Manager Login</div>
+					<Divider />
 				</div>
-				<div class="mt-4px">
+				<div class="flex-col px-4">
+					<div
+						class="flex items-center gap-2 pb-2"
+						text="sm gray-500"
+					>
+						<div>電郵地址</div>
+						<div>E-mail</div>
+					</div>
 					<InputText
 						name="email"
 						type="email"
 						v-model="userLoginData.email"
+						class="p-inputtext-sm w-full"
+						placeholder="example123@gmail.com"
 						required
 					/>
 				</div>
-			</div>
-			<div class="block mt-24px ml-168px">
-				<div class="text-base text-gray-600">
-					<label for="password">{{ $t("密碼") }}</label>
-				</div>
-				<div class="mt-4px">
+				<div class="flex-col px-4">
+					<div
+						class="flex items-center gap-2 pb-2"
+						text="sm gray-500"
+					>
+						<div>密碼</div>
+						<div>Password</div>
+					</div>
 					<InputText
 						name="password"
 						type="password"
 						v-model="userLoginData.password"
+						class="p-inputtext-sm w-full"
+						placeholder="********"
 						required
 					/>
 				</div>
-				<!-- TODO: styling -->
-			</div>
-			<div class="flex relative ml-168px mt-8px">
-				<div class="flex">
-					<div>
-						<Checkbox v-model="isRememberAccount" :binary="true" />
+				<div class="flex items-center px-4 gap-2">
+					<Checkbox v-model="isRememberAccount" :binary="true" />
+					<div class="space-y-0.5" text="xs gray-500">
+						<div>下次登入時記住帳號</div>
+						<div>Remember Account at next Login</div>
 					</div>
-					<label class="text-xs text-gray-500 ml-8px pt-5px">
-						<div>{{ $t("下次登入記住帳號") }}</div>
-					</label>
 				</div>
-				<div class="absolute ml-320px text-xs">
-					<router-link to="">
-						<div class="text-right font-bold goldText">
-							{{ $t("忘記密碼") }}
-						</div>
-					</router-link>
+				<div class="flex-col-inline px-4 gap-y-8">
+					<div class="flex justify-center">
+						<button
+							class="py-2 w-80 managerButtonStyle"
+							border="2  rounded-lg"
+						>
+							<div class="flex justify-center gap-2 mx-auto">
+								<div>登入</div>
+								<div>Login</div>
+							</div>
+						</button>
+					</div>
+					<div class="flex justify-center items-center py-4">
+						<router-link to="/recruitment/manager/password/forget">
+							<button
+								class="flex justify-center gap-2 px-1 py-1"
+								bg="transparent hover:gray-100"
+								text="sm gray-400 hover:gray-600"
+								border="rounded"
+							>
+								<div>忘記密碼</div>
+								<div>Forget Password</div>
+							</button>
+						</router-link>
+					</div>
 				</div>
-			</div>
-			<div class="ml-168px mt-40px">
-				<Turnstile ref="turnstileRef" />
-			</div>
-			<div class="mt-50px ml-168px">
-				<Button
-					class="bg-darkBlue h-60px w-420px"
-					type="submit"
-					:label="$t('登入')"
-				/>
 			</div>
 		</div>
 	</div>
@@ -90,7 +108,6 @@
 import { ref } from "vue";
 import { reactive } from "vue";
 import Checkbox from "primevue/checkbox";
-import Button from "primevue/button";
 import InputText from "primevue/inputtext";
 
 const isRememberAccount = ref(false);
@@ -101,10 +118,22 @@ const userLoginData = reactive({
 </script>
 
 <style setup lang="css">
-.goldText {
-	color: #897a27;
+.managerTextColor {
+	color: #79363c;
 }
-.bg-darkBlue {
-	background-color: #07385a;
+.managerButtonStyle {
+	background-color: #ffe4df;
+	border-color: #f3baae;
+	color: #4d3639;
+}
+.managerButtonStyle:hover {
+	background-color: #94282c;
+	border-color: #94282c;
+	color: white;
+}
+.managerButtonStyle:active {
+	background-color: #62373e;
+	border-color: #62373e;
+	color: white;
 }
 </style>

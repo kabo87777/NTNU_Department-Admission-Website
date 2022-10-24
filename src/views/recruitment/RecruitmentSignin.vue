@@ -89,7 +89,7 @@ import Divider from "primevue/divider";
 }
 .reviewerButtonStyle {
 	background-color: #dfe7fd;
-	border-color: #6c91da;
+	border-color: #a5b9ec;
 	color: #003a5c;
 }
 .reviewerButtonStyle:hover {
@@ -104,7 +104,7 @@ import Divider from "primevue/divider";
 }
 .managerButtonStyle {
 	background-color: #ffe4df;
-	border-color: #d18a7c;
+	border-color: #f3baae;
 	color: #4d3639;
 }
 .managerButtonStyle:hover {

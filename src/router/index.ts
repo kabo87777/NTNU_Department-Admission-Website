@@ -51,6 +51,9 @@ import recruitmentApplicantPasswordForgetEmailSent from "@/views/recruitment/app
 import recruitmentReviewerSignin from "@/views/recruitment/reviewer/signin.vue";
 // Recruitment Manager section
 import recruitmentManagerSignin from "@/views/recruitment/manager/login/signin.vue";
+import recruitmentManagerPasswordReset from "@/views/recruitment/manager/login/pwdReset.vue";
+import recruitmentManagerPasswordForget from "@/views/recruitment/manager/login/pwdForget.vue";
+import recruitmentManagerPasswordForgetEmailSent from "@/views/recruitment/manager/login/pwdForgetEmailSent.vue";
 
 const routes: Array<RouteRecordRaw> = [
 	// Choose recruitment / admission
@@ -270,6 +273,22 @@ const routes: Array<RouteRecordRaw> = [
 				path: "recruitment/manager/signin",
 				name: "recruitmentManagerSignin",
 				component: recruitmentManagerSignin,
+			},
+			// Recruitment - manager forget & reset password
+			{
+				path: "recruitment/manager/password/reset",
+				name: "recruitmentManagerPasswordReset",
+				component: recruitmentManagerPasswordReset,
+			},
+			{
+				path: "recruitment/manager/password/forget",
+				name: "recruitmentManagerPasswordForget",
+				component: recruitmentManagerPasswordForget,
+			},
+			{
+				path: "recruitment/manager/password/forget/emailSent",
+				name: "recruitmentManagerPasswordForgetEmailSent",
+				component: recruitmentManagerPasswordForgetEmailSent,
 			},
 
 			// Recruitment - reviewer sign in
