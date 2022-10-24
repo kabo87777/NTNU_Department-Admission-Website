@@ -2,7 +2,7 @@
 	<div class="ml-128px mr-128px mt-62px">
 		<div class="flex">
 			<router-link
-				to="/admission/reviewer/applicationReview"
+				to="/admission/reviewer/oralReview"
 				custom
 				v-slot="{ navigate }"
 			>
