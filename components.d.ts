@@ -7,6 +7,7 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    ApplicantSidebar: typeof import('./src/components/applicantSidebar.vue')['default']
     ForgetPasswordForm: typeof import('./src/components/ForgetPasswordForm.vue')['default']
     LandingViewLayout: typeof import('./src/components/LandingViewLayout.vue')['default']
     LoginForm: typeof import('./src/components/LoginForm.vue')['default']

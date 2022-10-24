@@ -60,11 +60,11 @@ export async function doUniversalAuthSignOut(auth: AuthStore) {
 		data: {},
 	});
 
-	// if (!credentials)
-	// 	throw new Error("Server returned invalid authorization response");
-	if (response.data?.success !== true) throw new Error("Sign out failed");
-
+	// It's possible the session has already expired - so we clear the
+	// localStorage anyway before handling errors
 	auth.clearCredentials();
+
+	if (response.data?.success !== true) throw new Error("Sign out failed");
 
 	return true;
 }
