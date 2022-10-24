@@ -47,12 +47,13 @@ import recruitmentApplicantRegistDone from "@/views/recruitment/applicant/login/
 import recruitmentApplicantPasswordReset from "@/views/recruitment/applicant/login/pwdReset.vue";
 import recruitmentApplicantPasswordForget from "@/views/recruitment/applicant/login/pwdForget.vue";
 import recruitmentApplicantPasswordForgetEmailSent from "@/views/recruitment/applicant/login/pwdForgetEmailSent.vue";
+
 // Recruitment Reviewer section
 import recruitmentReviewerSignin from "@/views/recruitment/reviewer/login/signin.vue";
 import recruitmentReviewerPasswordForget from "@/views/recruitment/reviewer/login/pwdForget.vue";
 import recruitmentReviewerPasswordReset from "@/views/recruitment/reviewer/login/pwdReset.vue";
 import recruitmentReviewerPasswordForgetEmailSent from "@/views/recruitment/reviewer/login/pwdForgetEmailSent.vue";
-
+import recruitmentReviewerPasswordFirstLogin from "@/views/recruitment/reviewer/login/pwdFirstLogin.vue";
 // Recruitment Manager section
 import recruitmentManagerSignin from "@/views/recruitment/manager/login/signin.vue";
 import recruitmentManagerPasswordReset from "@/views/recruitment/manager/login/pwdReset.vue";
@@ -317,6 +318,11 @@ const routes: Array<RouteRecordRaw> = [
 				path: "recruitment/reviewer/password/forget/emailSent",
 				name: "recruitmentReviewerPasswordForgetEmailSent",
 				component: recruitmentReviewerPasswordForgetEmailSent,
+			},
+			{
+				path: "recruitment/reviewer/password/firstLogin",
+				name: "recruitmentReviewerPasswordFirstLogin",
+				component: recruitmentReviewerPasswordFirstLogin,
 			},
 		],
 	},

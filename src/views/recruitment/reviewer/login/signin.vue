@@ -75,15 +75,19 @@
 				</div>
 				<div class="flex-col-inline px-4 gap-y-8">
 					<div class="flex justify-center">
-						<button
-							class="py-2 w-80 reviewerButtonStyle"
-							border="2  rounded-lg"
+						<router-link
+							to="/recruitment/reviewer/password/firstLogin"
 						>
-							<div class="flex justify-center gap-2 mx-auto">
-								<div>登入</div>
-								<div>Login</div>
-							</div>
-						</button>
+							<button
+								class="py-2 w-80 reviewerButtonStyle"
+								border="2  rounded-lg"
+							>
+								<div class="flex justify-center gap-2 mx-auto">
+									<div>登入</div>
+									<div>Login</div>
+								</div>
+							</button>
+						</router-link>
 					</div>
 					<div class="flex justify-center items-center py-4">
 						<router-link to="/recruitment/reviewer/password/forget">
