@@ -272,14 +272,14 @@
 
 <script setup lang="ts">
 import { ref, reactive } from "vue";
-import { Tags } from "../api/admission/applicant/types";
+import { Tags } from "@/api/admission/applicant/types";
 import "primeicons/primeicons.css";
 import "primevue/resources/primevue.min.css";
 import Dropdown from "primevue/dropdown";
 import Button from "primevue/button";
-import UnableTag from "../styles/tags/unableTag.vue";
-import CompletedTag from "../styles/tags/completedTag.vue";
-import IncompleteTag from "../styles/tags/incompleteTag.vue";
+import UnableTag from "@/styles/tags/unableTag.vue";
+import CompletedTag from "@/styles/tags/completedTag.vue";
+import IncompleteTag from "@/styles/tags/incompleteTag.vue";
 // import Tag from "primevue/tag";
 // import { useI18n } from "vue-i18n";
 // import { useRouter } from "vue-router";

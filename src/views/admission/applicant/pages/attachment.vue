@@ -129,12 +129,12 @@
 
 <script setup lang="ts">
 import { reactive } from "vue";
-import ReviewState from "../../../../components/attachmentStates/reviewState.vue";
-import EditState from "../../../../components/attachmentStates/editState.vue";
-import CreateState from "../../../../components/attachmentStates/createState.vue";
-import ParagraphDivider from "../../../../styles/paragraphDividerApplicant.vue";
-import { AttachmentData } from "../../../../api/admission/applicant/types";
-import AttachmentList from "../../../../mocks/attachmentList.json";
+import ReviewState from "@/components/attachmentStates/reviewState.vue";
+import EditState from "@/components/attachmentStates/editState.vue";
+import CreateState from "@/components/attachmentStates/createState.vue";
+import ParagraphDivider from "@/styles/paragraphDividerApplicant.vue";
+import { AttachmentData } from "@/api/admission/applicant/types";
+import AttachmentList from "@/mocks/attachmentList.json";
 
 const schoolExpList = reactive(
 	AttachmentList.schoolExp?.map((item, index) => {
@@ -180,9 +180,10 @@ otherList.push({
 	order: otherList.length,
 	state: 3,
 });
-/* 判斷總共有幾個attachment 並對個別attachment宣告一個state去切換該用review state 或是 edit state 或是 create state */
-/* 方法：api讀進來，如果後端沒有宣告state的話跑回圈並對每個attachment新增 { state: 1 or 2 or 3 or 4 } */
-/* 目前沒有api，先寫死 school 和 exam 和 other */
+// FIXME:
+// 判斷總共有幾個attachment 並對個別attachment宣告一個state去切換該用review state 或是 edit state 或是 create state
+// 方法：api讀進來，如果後端沒有宣告state的話跑回圈並對每個attachment新增 { state: 1 or 2 or 3 or 4 }
+// 目前沒有api，先寫死 school 和 exam 和 other
 const editToReview = (index: number, category: string) => {
 	switch (category) {
 		case "就學經歷":

@@ -83,20 +83,16 @@ const name = ref(props.itemName);
 
 const emit = defineEmits(["cancel"]);
 
-const dynamicClass = () => {
-	const className = ref("");
-
+const dynamicClass = (): string => {
 	switch (props.identity) {
 		case "admissionManager":
-			className.value = "admissionManagerEditState";
-			break;
+			return "admissionManagerCreateState";
 		case "admissionApplicant":
-			className.value = "admissionApplicantEditState";
-			break;
+			return "admissionApplicantCreateState";
 	}
-
-	return className.value;
+	return "";
 };
+
 
 const handleUpload = (event: any) => {
 	//event.files == files to upload

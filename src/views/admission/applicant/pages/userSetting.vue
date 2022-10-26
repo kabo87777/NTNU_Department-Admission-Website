@@ -90,8 +90,8 @@
 <script setup lang="ts">
 import { onMounted, reactive } from "vue";
 import { useRoute } from "vue-router";
-import { UserInfo } from "../../../../api/admission/applicant/types";
-import ParagraphDivider from "../../../../styles/paragraphDividerApplicant.vue";
+import { UserInfo } from "@/api/admission/applicant/types";
+import ParagraphDivider from "@/styles/paragraphDividerApplicant.vue";
 import InputText from "primevue/inputtext";
 import Button from "primevue/button";
 import "primeicons/primeicons.css";
