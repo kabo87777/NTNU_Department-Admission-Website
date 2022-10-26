@@ -45,7 +45,6 @@
 						type="email"
 						v-model="userLoginData.email"
 						class="p-inputtext-sm w-full"
-						placeholder="example123@gmail.com"
 						required
 					/>
 				</div>
@@ -62,7 +61,6 @@
 						type="password"
 						v-model="userLoginData.password"
 						class="p-inputtext-sm w-full"
-						placeholder="********"
 						required
 					/>
 				</div>
