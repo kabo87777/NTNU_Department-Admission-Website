@@ -93,7 +93,6 @@ const dynamicClass = (): string => {
 	return "";
 };
 
-
 const handleUpload = (event: any) => {
 	//event.files == files to upload
 	console.log(event);
