@@ -40,10 +40,19 @@ import managerUserSetting from "@/views/admission/manager/managerUserSetting.vue
 //Reviewer section
 import AdmissionReviewerMainContainer from "@/views/admission/reviewer/MainContainer.vue";
 import AdmissionReviewerSignin from "@/views/admission/reviewer/ReviewerSignin.vue";
+import applicationReview from "@/views/admission/reviewer/applicationReview.vue";
+import oralReview from "@/views/admission/reviewer/oralReview.vue";
+import singleApplicationReview from "@/views/admission/reviewer/singleApplicationReview.vue";
+import singleOralReview from "@/views/admission/reviewer/singleOralReview.vue";
 
 // Recruitment Applicant section
 
-// Recruitment Reviewer section
+//Recruitment Reviewer section
+import recruitmentReviewerMainContainer from "@/views/recruitment/reviewer/MainContainer.vue";
+import requiredDataReview from "@/views/recruitment/reviewer/requiredDataReview.vue";
+import optionalDataReview from "@/views/recruitment/reviewer/optionalDataReview.vue";
+import singleRequiredDataReview from "@/views/recruitment/reviewer/singleRequiredDataReview.vue";
+import singleOptionalDataReview from "@/views/recruitment/reviewer/singleOptionalDataReview.vue";
 
 // Recruitment Manager section
 
@@ -80,7 +89,28 @@ const routes: Array<RouteRecordRaw> = [
 				path: "admission/reviewer",
 				name: "AdmissionReviewerMainContainer",
 				component: AdmissionReviewerMainContainer,
-				children: [],
+				children: [
+					{
+						path: "applicationReview",
+						name: "applicationReview",
+						component: applicationReview,
+					},
+					{
+						path: "oralReview",
+						name: "oralReview",
+						component: oralReview,
+					},
+					{
+						path: "singleApplicationReview/:id",
+						name: "singleApplicationReview",
+						component: singleApplicationReview,
+					},
+					{
+						path: "singleOralReview/:id",
+						name: "singleOralReview",
+						component: singleOralReview,
+					},
+				],
 			},
 			// Admission - manager sign in
 			{
@@ -229,6 +259,33 @@ const routes: Array<RouteRecordRaw> = [
 					titleKey: "登入頁面",
 				},
 				component: RecruitmentSignin,
+			},
+			{
+				path: "recruitment/reviewer",
+				name: "recruitmentReviewerMainContainer",
+				component: recruitmentReviewerMainContainer,
+				children: [
+					{
+						path: "requiredDataReview",
+						name: "requiredDataReview",
+						component: requiredDataReview,
+					},
+					{
+						path: "optionalDataReview",
+						name: "optionalDataReview",
+						component: optionalDataReview,
+					},
+					{
+						path: "singleRequiredDataReview/:id",
+						name: "singleRequiredDataReview",
+						component: singleRequiredDataReview,
+					},
+					{
+						path: "singleOptionalDataReview/:id",
+						name: "singleOptionalDataReview",
+						component: singleOptionalDataReview,
+					},
+				],
 			},
 		],
 	},
