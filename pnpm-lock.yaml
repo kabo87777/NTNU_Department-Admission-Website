@@ -1,16 +1,16 @@
 lockfileVersion: 5.4
 
 specifiers:
-  '@intlify/vite-plugin-vue-i18n': ^6.0.3
-  '@tanstack/vue-query': ^4.12.0
-  '@types/git-branch': ^2.0.2
-  '@types/node': ^18.8.3
-  '@typescript-eslint/eslint-plugin': ^5.38.1
-  '@typescript-eslint/parser': ^5.38.1
-  '@vitejs/plugin-vue': ^3.1.0
-  '@vue/runtime-core': ^3.2.40
-  '@vue/test-utils': 2.0.0-rc.18
-  '@vueuse/core': ^9.3.0
+  "@intlify/vite-plugin-vue-i18n": ^6.0.3
+  "@tanstack/vue-query": ^4.12.0
+  "@types/git-branch": ^2.0.2
+  "@types/node": ^18.8.3
+  "@typescript-eslint/eslint-plugin": ^5.38.1
+  "@typescript-eslint/parser": ^5.38.1
+  "@vitejs/plugin-vue": ^3.1.0
+  "@vue/runtime-core": ^3.2.40
+  "@vue/test-utils": 2.0.0-rc.18
+  "@vueuse/core": ^9.3.0
   axios: ^1.1.2
   eslint: ^8.24.0
   eslint-config-prettier: ^8.5.0
@@ -32,14 +32,16 @@ specifiers:
   vue: ^3.2.37
   vue-eslint-parser: ^9.1.0
   vue-i18n: 9.1.10
+  vue-pdf-embed: ^1.1.4
   vue-router: "4"
   vue-tsc: ^1.0.6
+  vue3-pdfjs: ^0.1.6
   windicss: ^3.5.6
   yup: ^0.32.11
 
 dependencies:
-  '@tanstack/vue-query': 4.12.0_vue@3.2.40
-  '@vueuse/core': 9.3.0_vue@3.2.40
+  "@tanstack/vue-query": 4.12.0_vue@3.2.40
+  "@vueuse/core": 9.3.0_vue@3.2.40
   axios: 1.1.2
   eslint-config-prettier: 8.5.0_eslint@8.24.0
   eslint-plugin-prettier: 4.2.1_cfn5x6ujhhgzv3423d6k7r2zzm
@@ -55,7 +57,9 @@ dependencies:
   vue: 3.2.40
   vue-eslint-parser: 9.1.0_eslint@8.24.0
   vue-i18n: 9.1.10_vue@3.2.40
+  vue-pdf-embed: 1.1.4_vue@3.2.40
   vue-router: 4.1.5_vue@3.2.40
+  vue3-pdfjs: 0.1.6
   windicss: 3.5.6
   yup: 0.32.11
 
@@ -415,28 +419,37 @@ packages:
       picomatch: 2.3.1
 
   /@tanstack/match-sorter-utils/8.5.14:
-    resolution: {integrity: sha512-lVNhzTcOJ2bZ4IU+PeCPQ36vowBHvviJb2ZfdRFX5uhy7G0jM8N34zAMbmS5ZmVH8D2B7oU82OWo0e/5ZFzQrw==}
-    engines: {node: '>=12'}
+    resolution:
+      {
+        integrity: sha512-lVNhzTcOJ2bZ4IU+PeCPQ36vowBHvviJb2ZfdRFX5uhy7G0jM8N34zAMbmS5ZmVH8D2B7oU82OWo0e/5ZFzQrw==,
+      }
+    engines: { node: ">=12" }
     dependencies:
       remove-accents: 0.4.2
     dev: false
 
   /@tanstack/query-core/4.12.0:
-    resolution: {integrity: sha512-KEiFPNLMFByhNL2s6RBFL6Z5cNdwwQzFpW/II3GY+rEuQ343ZEoVyQ48zlUXXkEkbamQFIFg2onM8Pxf0Yo01A==}
+    resolution:
+      {
+        integrity: sha512-KEiFPNLMFByhNL2s6RBFL6Z5cNdwwQzFpW/II3GY+rEuQ343ZEoVyQ48zlUXXkEkbamQFIFg2onM8Pxf0Yo01A==,
+      }
     dev: false
 
   /@tanstack/vue-query/4.12.0_vue@3.2.40:
-    resolution: {integrity: sha512-5mA1t4TTVd6V4IVot93ftjfju5duXb89LB0sFnG5GrMRZg+GresqVfq+yJKfzN4goAnJMwp3gLd40DciaVuPHQ==}
+    resolution:
+      {
+        integrity: sha512-5mA1t4TTVd6V4IVot93ftjfju5duXb89LB0sFnG5GrMRZg+GresqVfq+yJKfzN4goAnJMwp3gLd40DciaVuPHQ==,
+      }
     peerDependencies:
-      '@vue/composition-api': ^1.1.2
+      "@vue/composition-api": ^1.1.2
       vue: ^2.5.0 || ^3.0.0
     peerDependenciesMeta:
-      '@vue/composition-api':
+      "@vue/composition-api":
         optional: true
     dependencies:
-      '@tanstack/match-sorter-utils': 8.5.14
-      '@tanstack/query-core': 4.12.0
-      '@vue/devtools-api': 6.4.4
+      "@tanstack/match-sorter-utils": 8.5.14
+      "@tanstack/query-core": 4.12.0
+      "@vue/devtools-api": 6.4.4
       vue: 3.2.40
       vue-demi: 0.13.11_vue@3.2.40
     dev: false
@@ -1446,6 +1459,13 @@ packages:
     engines: { node: ">=6.0.0" }
     dependencies:
       esutils: 2.0.3
+
+  /dommatrix/1.0.3:
+    resolution:
+      {
+        integrity: sha512-l32Xp/TLgWb8ReqbVJAFIvXmY7go4nTxxlWiAFyhoQw9RKEOHBZNnyGvJWqDVSPmq3Y9HlM4npqF/T6VMOXhww==,
+      }
+    dev: false
 
   /esbuild-android-64/0.15.10:
     resolution:
@@ -3202,6 +3222,21 @@ packages:
       }
     dev: true
 
+  /pdfjs-dist/2.16.105:
+    resolution:
+      {
+        integrity: sha512-J4dn41spsAwUxCpEoVf6GVoz908IAA3mYiLmNxg8J9kfRXc2jxpbUepcP0ocp0alVNLFthTAM8DZ1RaHh8sU0A==,
+      }
+    peerDependencies:
+      worker-loader: ^3.0.8
+    peerDependenciesMeta:
+      worker-loader:
+        optional: true
+    dependencies:
+      dommatrix: 1.0.3
+      web-streams-polyfill: 3.2.1
+    dev: false
+
   /picocolors/1.0.0:
     resolution:
       {
@@ -3375,7 +3410,10 @@ packages:
     engines: { node: ">=8" }
 
   /remove-accents/0.4.2:
-    resolution: {integrity: sha512-7pXIJqJOq5tFgG1A2Zxti3Ht8jJF337m4sowbuHsW30ZnkQFnDzy9qBNhgzX8ZLW4+UBcXiiR7SwR6pokHsxiA==}
+    resolution:
+      {
+        integrity: sha512-7pXIJqJOq5tFgG1A2Zxti3Ht8jJF337m4sowbuHsW30ZnkQFnDzy9qBNhgzX8ZLW4+UBcXiiR7SwR6pokHsxiA==,
+      }
     dev: false
 
   /repeat-element/1.1.4:
@@ -4131,6 +4169,17 @@ packages:
       "@vue/devtools-api": 6.4.2
       vue: 3.2.40
 
+  /vue-pdf-embed/1.1.4_vue@3.2.40:
+    resolution:
+      {
+        integrity: sha512-d4c7nM3LneWUiL4MssIyPHfGgVMRPh4Z7UgLsXMZ+lbAtH/6SBUFHdzZQLY2BASdh16BM/v6YCbmtQU+KIQdrg==,
+      }
+    peerDependencies:
+      vue: ^2.x || ^3.x
+    dependencies:
+      vue: 3.2.40
+    dev: false
+
   /vue-router/4.1.5_vue@3.2.40:
     resolution:
       {
@@ -4178,6 +4227,27 @@ packages:
       "@vue/runtime-dom": 3.2.40
       "@vue/server-renderer": 3.2.40_vue@3.2.40
       "@vue/shared": 3.2.40
+
+  /vue3-pdfjs/0.1.6:
+    resolution:
+      {
+        integrity: sha512-7UaWbsp8wNqB0y/rRlyo5yRb0S+XOkkSpmdUuS267Dhi07Pt4RFEetQ8inrpf/aTFJwGnW0Uc/UE4p376s+Zmw==,
+      }
+    engines: { node: ">=10.0.0" }
+    dependencies:
+      pdfjs-dist: 2.16.105
+      vue: 3.2.40
+    transitivePeerDependencies:
+      - worker-loader
+    dev: false
+
+  /web-streams-polyfill/3.2.1:
+    resolution:
+      {
+        integrity: sha512-e0MO3wdXWKrLbL0DgGnUV7WHVuw9OUvL4hjgnPkIeEvESk74gAITi5G606JtZPp39cd8HA9VQzCIvA49LpPN5Q==,
+      }
+    engines: { node: ">= 8" }
+    dev: false
 
   /webpack-sources/3.2.3:
     resolution:
