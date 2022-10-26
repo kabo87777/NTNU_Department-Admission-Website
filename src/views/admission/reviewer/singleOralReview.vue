@@ -118,6 +118,8 @@ import { l } from "vitest/dist/index-e0804ba8";
 const route = useRoute();
 const { t } = useI18n();
 
+// FIXME: logic may refactor
+
 const ID = computed(() => route.params.id);
 const inputScore_1 = ref(25);
 const inputScore_2 = ref(22);
@@ -134,6 +136,8 @@ const learnPotentialProportion = ref(40);
 
 const vfield = ref();
 const field = ref(["基本資料欄位", "檢附資料欄位"]);
+
+// FIXME: This should not be hardcode.
 
 const data_list = ref([
 	{

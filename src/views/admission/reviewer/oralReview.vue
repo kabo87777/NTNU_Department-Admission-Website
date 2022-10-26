@@ -9,6 +9,7 @@
 					{{ $t("開放時段") }} | {{ $t("評分中") }}
 				</div>
 			</div>
+			<!-- FIXME: program opening time must be got by using API -->
 			<div class="mt-20px ml-600px">
 				{{ $t("開放時間") }} : 09/29 00:00 - 10/30 23:59
 			</div>
@@ -110,6 +111,7 @@
 					:showValue="false"
 					class="!w-439px ml-24px mt-5px"
 				/>
+				<!-- FIXME: program amount of people must be got by using API -->
 				<div class="ml-24px">17 / 32 {{ $t("位") }}</div>
 
 				<Button class="w-140px h-44px !ml-480px p-button-success">
@@ -265,6 +267,8 @@ const data_list = ref([
 		access_reason: "",
 	},
 ]);
+
+// FIXME: logic may refactor
 
 const ID = computed(() => t("帳號ID"));
 const applicantName = computed(() => t("申請人姓名"));

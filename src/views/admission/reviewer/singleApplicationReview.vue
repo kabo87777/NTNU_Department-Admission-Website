@@ -110,6 +110,8 @@ import jsPdf from "./test.pdf";
 const route = useRoute();
 const { t } = useI18n();
 
+// FIXME: logic may refactor
+
 const ID = computed(() => route.params.id);
 const inputScore_1 = ref(25);
 const inputScore_2 = ref(22);
@@ -123,6 +125,8 @@ const total_score = computed(
 const learningExProportion = ref(30);
 const devPotentialProportion = ref(30);
 const learnPotentialProportion = ref(40);
+
+// FIXME: This should not be hardcode.
 
 const data_list = ref([
 	{

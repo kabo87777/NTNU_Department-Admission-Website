@@ -104,6 +104,8 @@ const total_score = computed(
 );
 const reason = ref("");
 
+// FIXME: logic may refactor
+
 const translation = {
 	noRating: computed(() => t("未評比")),
 	notRecommanded: computed(() => t("不推薦")),
