@@ -29,14 +29,16 @@ import ReviewerSideBar from "@/components/reviewerSidebar.vue";
 
 import { watch } from "vue";
 import { useRouter } from "vue-router";
+
 import { useAdmissionReviewerAuthStore } from "@/stores/universalAuth";
+import { doUniversalAuthSessionValidation } from "@/api/universalAuth";
 
 const router = useRouter();
 
 const reviewerAuth = useAdmissionReviewerAuthStore();
 
-watch(router.currentRoute, () => {
-	if (!reviewerAuth.isValidSession) {
+watch(router.currentRoute, async () => {
+	if (!(await doUniversalAuthSessionValidation(reviewerAuth))) {
 		router.replace({ name: "AdmissionReviewerSignin" });
 		// TODO: show session expired notification
 	}

@@ -372,11 +372,8 @@ function closeDisplayNewProject() {
 }
 
 async function signOut() {
-	if (adminAuth.isValidSession) {
-		if (await api.invalidateSession()) {
-			router.push("/");
-		}
-	}
+	await api.invalidateSession();
+	router.push("/");
 }
 </script>
 
