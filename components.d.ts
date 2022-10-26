@@ -8,12 +8,15 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     ApplicantSidebar: typeof import('./src/components/applicantSidebar.vue')['default']
+    CreateState: typeof import('./src/components/attachmentStates/createState.vue')['default']
+    EditState: typeof import('./src/components/attachmentStates/editState.vue')['default']
     ForgetPasswordForm: typeof import('./src/components/ForgetPasswordForm.vue')['default']
     LandingViewLayout: typeof import('./src/components/LandingViewLayout.vue')['default']
     LoginForm: typeof import('./src/components/LoginForm.vue')['default']
     NavBar: typeof import('./src/components/NavBar.vue')['default']
     PasswordRecoveryEmailSent: typeof import('./src/components/PasswordRecoveryEmailSent.vue')['default']
     ResetPasswordForm: typeof import('./src/components/ResetPasswordForm.vue')['default']
+    ReviewState: typeof import('./src/components/attachmentStates/reviewState.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SideBar: typeof import('./src/components/SideBar.vue')['default']

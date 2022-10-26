@@ -4,15 +4,22 @@
 			<div class="sidebarVerticalBigYellowDivider mt-32px"></div>
 			<div class="sidebarVerticalSmallYellowDivider mt-32px"></div>
 			<div class="mt-32px ml-12px w-[100%]">
-				<Dropdown
+				<!-- <Dropdown
 					v-model="selectedProgram"
 					:options="programs"
 					:optionLabel="generateOptions"
 					class="h-60px w-[93%]"
 					style="border-radius: 8px; border: 1px solid #736028"
+				> -->
+				<Dropdown
+					v-model="selectedProgram"
+					class="h-60px w-[93%]"
+					style="border-radius: 8px; border: 1px solid #736028"
 				>
 					<template #value="slotProps">
-						<div class="mt-4px tracking-2px text-24px font-medium">
+						<div
+							class="mt-4px tracking-2px text-24px font-medium !font-bold"
+						>
 							{{ slotProps.value.category }}
 							{{ slotProps.value.name }}
 						</div>
@@ -31,7 +38,7 @@
 		>
 			<Button
 				class="p-button-secondary p-button-text !ml-24px !mt-24px !w-336px !h-48px !hover:bg-[#ECEDED] !rounded-[8px]"
-				style=":active: border: 1px solid #736028 !important"
+				style="{ active: border: 1px solid #736028 !important }"
 				@click="navigate"
 				role="link"
 			>
@@ -76,6 +83,13 @@
 				>
 					{{ $t("基本資料") }}
 				</span>
+				<div class="mb-28px">
+					<CompletedTag v-if="tags.basicInfo === 'completed'" />
+					<IncompleteTag
+						v-else-if="tags.basicInfo === 'incompleted'"
+					/>
+					<UnableTag v-else-if="tags.basicInfo === 'unable'" />
+				</div>
 			</Button>
 		</router-link>
 
@@ -101,6 +115,13 @@
 				>
 					{{ $t("附件資料") }}
 				</span>
+				<div class="mb-28px">
+					<CompletedTag v-if="tags.attachment === 'completed'" />
+					<IncompleteTag
+						v-else-if="tags.attachment === 'incomplete'"
+					/>
+					<UnableTag v-else-if="tags.attachment === 'unable'" />
+				</div>
 			</Button>
 		</router-link>
 
@@ -133,6 +154,13 @@
 				>
 					{{ $t("推薦信作業") }}
 				</span>
+				<div class="mb-28px">
+					<CompletedTag v-if="tags.recommendLetter === 'completed'" />
+					<IncompleteTag
+						v-else-if="tags.recommendLetter === 'incomplete'"
+					/>
+					<UnableTag v-else-if="tags.recommendLetter === 'unable'" />
+				</div>
 			</Button>
 		</router-link>
 
@@ -158,6 +186,13 @@
 				>
 					{{ $t("補交文件系統") }}
 				</span>
+				<div class="mb-28px">
+					<CompletedTag v-if="tags.additionalDocs === 'completed'" />
+					<IncompleteTag
+						v-else-if="tags.additionalDocs === 'incomplete'"
+					/>
+					<UnableTag v-else-if="tags.additionalDocs === 'unable'" />
+				</div>
 			</Button>
 		</router-link>
 
@@ -189,23 +224,40 @@
 					<div
 						class="text-[15px] font-[500] font-bold text-[#736028]"
 					>
-						{{ $t("申請端帳戶") }}
+						{{ $t("用戶名稱") }}
 					</div>
 					<div
 						class="text-[22px] font-[500] font-bold mt-[8px] tracking-wider"
 					>
-						{{ $t("我很帥") }}
+						{{ "我很帥" }}
 					</div>
 				</div>
 				<div class="absolute right-[0] mt-[-8px]">
-					<Button class="p-button-text">
-						<img
-							alt="logo"
-							src="/assets/sidebar/Setting_alt_line.png"
-							class="w-28px h-28px"
-						/>
-					</Button>
-					<Button class="p-button-text" @click="signOut">
+					<router-link
+						:to="{
+							name: 'AdmissionApplicantUserSetting',
+							params: { userId: 7 },
+						}"
+						custom
+						v-slot="{ navigate }"
+					>
+						<Button
+							class="p-button-secondary p-button-text"
+							@click="navigate"
+							role="link"
+						>
+							<img
+								alt="logo"
+								src="/assets/sidebar/Setting_alt_line.png"
+								class="w-28px h-28px"
+							/>
+						</Button>
+					</router-link>
+					<!-- <Button
+						class="p-button-secondary p-button-text"
+						@click="signOut"
+					> -->
+					<Button class="p-button-secondary p-button-text">
 						<img
 							alt="logo"
 							src="/assets/sidebar/Sign_out_circle.png"
@@ -219,36 +271,40 @@
 </template>
 
 <script setup lang="ts">
+import { ref, reactive } from "vue";
+import { Tags } from "@/api/admission/applicant/types";
 import "primeicons/primeicons.css";
 import "primevue/resources/primevue.min.css";
-import { ref } from "vue";
 import Dropdown from "primevue/dropdown";
 import Button from "primevue/button";
-import { useI18n } from "vue-i18n";
-import { useRouter } from "vue-router";
-import {
-	useAdmissionAdminAuthStore,
-	useAdmissionReviewerAuthStore,
-} from "@/stores/universalAuth";
-import { AdmissionAdminAPI } from "@/api/admission/admin/api";
-// import * as reviewerApi from "@/api/admission/reviewer/api";
-import { useQuery } from "@tanstack/vue-query";
+import UnableTag from "@/styles/tags/unableTag.vue";
+import CompletedTag from "@/styles/tags/completedTag.vue";
+import IncompleteTag from "@/styles/tags/incompleteTag.vue";
+// import Tag from "primevue/tag";
+// import { useI18n } from "vue-i18n";
+// import { useRouter } from "vue-router";
+// import {
+// 	useAdmissionAdminAuthStore,
+// 	useAdmissionReviewerAuthStore,
+// } from "@/stores/universalAuth";
+// import { AdmissionAdminAPI } from "@/api/admission/admin/api";
+// import { useQuery } from "@tanstack/vue-query";
 
-const router = useRouter();
+// const router = useRouter();
 
-const reviewerAuth = useAdmissionReviewerAuthStore();
-const adminAuth = useAdmissionAdminAuthStore();
+// const reviewerAuth = useAdmissionReviewerAuthStore();
+// const adminAuth = useAdmissionAdminAuthStore();
 
-const api = new AdmissionAdminAPI(adminAuth);
+// const api = new AdmissionAdminAPI(adminAuth);
 
-const {
-	isLoading,
-	isError,
-	data: programs,
-	error,
-} = useQuery(["programList"], async () => await api.getProgramList());
+// const {
+// 	isLoading,
+// 	isError,
+// 	data: programs,
+// 	error,
+// } = useQuery(["programList"], async () => await api.getProgramList());
 
-const { t } = useI18n();
+// const { t } = useI18n();
 
 const selectedProgram = ref({
 	id: 1,
@@ -267,27 +323,32 @@ const selectedProgram = ref({
 	reviewer_required_info: null,
 	reviewer_required_file: null,
 });
-const displayNewProject = ref(false);
-const newProjectName = ref("");
 
-const generateOptions = (data: any) => data.category + data.name;
+const tags: Tags = reactive({
+	basicInfo: "completed",
+	attachment: "incomplete",
+	recommendLetter: "unable",
+	additionalDocs: "unable",
+});
 
-function newProject() {
-	displayNewProject.value = true;
-}
+// const displayNewProject = ref(false);
+// const newProjectName = ref("");
 
-function closeDisplayNewProject() {
-	displayNewProject.value = false;
-}
+// const generateOptions = (data: any) => data.category + data.name;
 
-async function signOut() {
-	if (adminAuth.isValidSession) {
-		if (await api.invalidateSession()) {
-			router.push("/");
-		}
-	}
-}
+// function newProject() {
+// 	displayNewProject.value = true;
+// }
+
+// function closeDisplayNewProject() {
+// 	displayNewProject.value = false;
+// }
+
+// async function signOut() {
+// 	if (adminAuth.isValidSession) {
+// 		if (await api.invalidateSession()) {
+// 			router.push("/");
+// 		}
+// 	}
+// }
 </script>
-
-<style></style>
-<!-- #f7f6e4 -->
