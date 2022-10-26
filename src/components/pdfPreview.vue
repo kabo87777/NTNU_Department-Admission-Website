@@ -58,6 +58,8 @@ function pageZoomIn() {
 	}
 }
 
+// TODO: finished here while add API
+
 onMounted(async () => {
 	interface loadingTaskResponse {
 		numPages: number;
@@ -66,7 +68,7 @@ onMounted(async () => {
 	// try {
 	//     const pdf: Promise<loadingTaskResponse> = await createLoadingTask(state.source);
 	//     state.numPages = pdf.numpages
-	// } catch (e: any) { }
+	// } catch (e: any) { // handle errors... }
 });
 </script>
 <style lang="css" scoped>
