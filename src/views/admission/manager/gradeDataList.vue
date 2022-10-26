@@ -233,7 +233,7 @@
 				<Divider layout="vertical" class="!ml-30px" />
 				<div class="!ml-30px">{{ $t("不錄取") }} 1 {{ $t("位") }}</div>
 				<Button
-					class="w-140px h-44px !ml-500px p-button-outlined p-button-help"
+					class="w-140px h-44px !ml-480px p-button-outlined p-button-help"
 				>
 					<img
 						alt="logo"
@@ -253,7 +253,11 @@
 				:scrollable="true"
 				scrollHeight="700px"
 			>
-				<Column field="oral_order" :header="oralOrder"></Column>
+				<Column
+					field="oral_order"
+					:header="oralOrder"
+					:sortable="true"
+				></Column>
 				<Column field="id" :header="ID"></Column>
 				<Column field="name" :header="applicantName"></Column>
 				<Column field="score" :header="woScore"></Column>
@@ -441,18 +445,7 @@
 				<Divider layout="vertical" class="!ml-30px" />
 				<div class="!ml-30px">{{ $t("不錄取") }} 1 {{ $t("位") }}</div>
 				<Button
-					class="w-212px h-44px !ml-256px p-button-outlined p-button-help"
-				>
-					<img
-						alt="logo"
-						src="/assets/gradeDataList/Sort_arrow.png"
-						style="width: 1.5rem"
-						class="fill-green-500"
-					/>
-					<span class="tracking-1px">{{ $t("依口試順序重排") }}</span>
-				</Button>
-				<Button
-					class="w-140px h-44px !ml-32px p-button-outlined p-button-help"
+					class="w-140px h-44px !ml-480px p-button-outlined p-button-help"
 				>
 					<img
 						alt="logo"
@@ -476,6 +469,7 @@
 				<Column
 					field="admission_order"
 					:header="admissionOrder"
+					:sortable="true"
 				></Column>
 				<Column field="id" :header="ID"></Column>
 				<Column field="name" :header="applicantName"></Column>
@@ -654,18 +648,7 @@
 			<div class="bigRedDivider !mt-50px"></div>
 			<div class="flex text-xl mt-20px">
 				<Button
-					class="w-212px h-44px !ml-430px p-button-outlined p-button-help"
-				>
-					<img
-						alt="logo"
-						src="/assets/gradeDataList/Sort_arrow.png"
-						style="width: 1.5rem"
-						class="fill-green-500"
-					/>
-					<span class="tracking-1px">{{ $t("依錄取順序重排") }}</span>
-				</Button>
-				<Button
-					class="w-140px h-44px !ml-32px p-button-outlined p-button-help"
+					class="w-140px h-44px !ml-560px p-button-outlined p-button-help"
 				>
 					<img
 						alt="logo"

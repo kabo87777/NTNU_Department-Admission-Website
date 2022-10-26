@@ -26,6 +26,7 @@ import AdmissionApplicantBasicInfo from "@/views/admission/applicant/pages/basic
 import AdmissionApplicantAttachment from "@/views/admission/applicant/pages/attachment.vue";
 import AdmissionApplicantRecommendationLetter from "@/views/admission/applicant/pages/recommendationLetter.vue";
 import AdmissionApplicantAdditionalDocs from "@/views/admission/applicant/pages/additionalDocs.vue";
+import AdmissionApplicantUserSetting from "@/views/admission/applicant/pages/userSetting.vue";
 
 import projectSetting from "@/views/admission/manager/project-setting.vue";
 import firstloginchangepassword from "@/views/admission/FirstSigninChangePass.vue";
@@ -39,6 +40,10 @@ import managerUserSetting from "@/views/admission/manager/managerUserSetting.vue
 //Reviewer section
 import AdmissionReviewerMainContainer from "@/views/admission/reviewer/MainContainer.vue";
 import AdmissionReviewerSignin from "@/views/admission/reviewer/ReviewerSignin.vue";
+import applicationReview from "@/views/admission/reviewer/applicationReview.vue";
+import oralReview from "@/views/admission/reviewer/oralReview.vue";
+import singleApplicationReview from "@/views/admission/reviewer/singleApplicationReview.vue";
+import singleOralReview from "@/views/admission/reviewer/singleOralReview.vue";
 
 // Recruitment Applicant section
 import recruitmentApplicantSignin from "@/views/recruitment/applicant/login/signin.vue";
@@ -54,6 +59,13 @@ import recruitmentReviewerPasswordForget from "@/views/recruitment/reviewer/logi
 import recruitmentReviewerPasswordReset from "@/views/recruitment/reviewer/login/pwdReset.vue";
 import recruitmentReviewerPasswordForgetEmailSent from "@/views/recruitment/reviewer/login/pwdForgetEmailSent.vue";
 import recruitmentReviewerPasswordFirstLogin from "@/views/recruitment/reviewer/login/pwdFirstLogin.vue";
+//Recruitment Reviewer section
+import recruitmentReviewerMainContainer from "@/views/recruitment/reviewer/MainContainer.vue";
+import requiredDataReview from "@/views/recruitment/reviewer/requiredDataReview.vue";
+import optionalDataReview from "@/views/recruitment/reviewer/optionalDataReview.vue";
+import singleRequiredDataReview from "@/views/recruitment/reviewer/singleRequiredDataReview.vue";
+import singleOptionalDataReview from "@/views/recruitment/reviewer/singleOptionalDataReview.vue";
+
 // Recruitment Manager section
 import recruitmentManagerSignin from "@/views/recruitment/manager/login/signin.vue";
 import recruitmentManagerPasswordReset from "@/views/recruitment/manager/login/pwdReset.vue";
@@ -93,7 +105,28 @@ const routes: Array<RouteRecordRaw> = [
 				path: "admission/reviewer",
 				name: "AdmissionReviewerMainContainer",
 				component: AdmissionReviewerMainContainer,
-				children: [],
+				children: [
+					{
+						path: "applicationReview",
+						name: "applicationReview",
+						component: applicationReview,
+					},
+					{
+						path: "oralReview",
+						name: "oralReview",
+						component: oralReview,
+					},
+					{
+						path: "singleApplicationReview/:id",
+						name: "singleApplicationReview",
+						component: singleApplicationReview,
+					},
+					{
+						path: "singleOralReview/:id",
+						name: "singleOralReview",
+						component: singleOralReview,
+					},
+				],
 			},
 			// Admission - manager sign in
 			{
@@ -176,6 +209,11 @@ const routes: Array<RouteRecordRaw> = [
 						path: "additionalDocs",
 						name: "AdmissionApplicantAdditionalDocs",
 						component: AdmissionApplicantAdditionalDocs,
+					},
+					{
+						path: "userSetting",
+						name: "AdmissionApplicantUserSetting",
+						component: AdmissionApplicantUserSetting,
 					},
 				],
 			},
@@ -323,6 +361,33 @@ const routes: Array<RouteRecordRaw> = [
 				path: "recruitment/reviewer/password/firstLogin",
 				name: "recruitmentReviewerPasswordFirstLogin",
 				component: recruitmentReviewerPasswordFirstLogin,
+			},
+			{
+				path: "recruitment/reviewer",
+				name: "recruitmentReviewerMainContainer",
+				component: recruitmentReviewerMainContainer,
+				children: [
+					{
+						path: "requiredDataReview",
+						name: "requiredDataReview",
+						component: requiredDataReview,
+					},
+					{
+						path: "optionalDataReview",
+						name: "optionalDataReview",
+						component: optionalDataReview,
+					},
+					{
+						path: "singleRequiredDataReview/:id",
+						name: "singleRequiredDataReview",
+						component: singleRequiredDataReview,
+					},
+					{
+						path: "singleOptionalDataReview/:id",
+						name: "singleOptionalDataReview",
+						component: singleOptionalDataReview,
+					},
+				],
 			},
 		],
 	},

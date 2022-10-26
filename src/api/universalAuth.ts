@@ -49,7 +49,15 @@ export async function doUniversalAuthSignIn(
 	return response.data;
 }
 
+// This makes sure the session is invalid and the localStorage cleared
 export async function doUniversalAuthSignOut(auth: AuthStore) {
+	// No need to ask backend to invalidate the session if it does not pass
+	// our check in the first place.
+	if (!auth.isValidCredentials) {
+		auth.clearCredentials();
+		return;
+	}
+
 	const response = await axios({
 		method: "DELETE",
 		url: auth.apiEndpoint + "/sign_out",
@@ -65,6 +73,22 @@ export async function doUniversalAuthSignOut(auth: AuthStore) {
 	auth.clearCredentials();
 
 	if (response.data?.success !== true) throw new Error("Sign out failed");
+}
+
+export async function doUniversalAuthSessionValidation(auth: AuthStore) {
+	if (!auth.isValidCredentials) return false;
+
+	const response = await axios({
+		method: "GET",
+		url: auth.apiEndpoint + "/validate_token",
+		headers: {
+			"Content-Type": "application/json",
+			authorization: auth.credentials?.authorization,
+		},
+		data: {},
+	});
+
+	if (!response.data?.success) return false;
 
 	return true;
 }
