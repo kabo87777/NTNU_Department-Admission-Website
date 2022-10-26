@@ -31,15 +31,15 @@ import { watch } from "vue";
 import { useRouter } from "vue-router";
 
 import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
+import { doUniversalAuthSessionValidation } from "@/api/universalAuth";
 
 const router = useRouter();
 
 const adminAuth = useAdmissionAdminAuthStore();
 
-watch(router.currentRoute, () => {
-	if (!adminAuth.isValidSession) {
+watch(router.currentRoute, async () => {
+	if (!(await doUniversalAuthSessionValidation(adminAuth))) {
 		router.replace({ name: "AdmissionManagerSignin" });
-		return;
 		// TODO: show session expired notification
 	}
 });
