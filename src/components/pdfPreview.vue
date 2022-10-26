@@ -58,11 +58,15 @@ function pageZoomIn() {
 	}
 }
 
-onMounted(() => {
-	const loadingTask = createLoadingTask(state.source);
-	loadingTask.promise.then((pdf: { numPages: number }) => {
-		state.numPages = pdf.numPages;
-	});
+onMounted(async () => {
+	interface loadingTaskResponse {
+		numPages: number;
+	}
+
+	// try {
+	//     const pdf: Promise<loadingTaskResponse> = await createLoadingTask(state.source);
+	//     state.numPages = pdf.numpages
+	// } catch (e: any) { }
 });
 </script>
 <style lang="css" scoped>

@@ -40,14 +40,16 @@
 		</div>
 		<div class="bigBlueDivider"></div>
 		<div class="flex mt-32px">
-			<div class="text-xl mt-5px">{{ $t("學習歷程") }} (30%)</div>
+			<div class="text-xl mt-5px">
+				{{ $t("學習歷程") }} ({{ learningExProportion }}%)
+			</div>
 			<InputNumber
 				inputId="integeronly"
 				v-model="inputScore_1"
 				class="ml-34px !w-132px !h-44px"
 			/>
 			<div class="text-xl ml-125px mt-5px">
-				{{ $t("發展潛能") }} (30%)
+				{{ $t("發展潛能") }} ({{ devPotentialProportion }}%)
 			</div>
 			<InputNumber
 				inputId="integeronly"
@@ -55,7 +57,7 @@
 				class="ml-34px !w-132px !h-44px"
 			/>
 			<div class="text-xl ml-125px mt-5px">
-				{{ $t("學習潛力") }} (40%)
+				{{ $t("學習潛力") }} ({{ learnPotentialProportion }}%)
 			</div>
 			<InputNumber
 				inputId="integeronly"
@@ -126,6 +128,9 @@ const accessReason = ref("");
 const total_score = computed(
 	() => inputScore_1.value + inputScore_2.value + inputScore_3.value
 );
+const learningExProportion = ref(30);
+const devPotentialProportion = ref(30);
+const learnPotentialProportion = ref(40);
 
 const vfield = ref();
 const field = ref(["基本資料欄位", "檢附資料欄位"]);

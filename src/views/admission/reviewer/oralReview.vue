@@ -269,16 +269,32 @@ const data_list = ref([
 const ID = computed(() => t("帳號ID"));
 const applicantName = computed(() => t("申請人姓名"));
 const reviewerGrade = computed(() => t("評分分數"));
-const learningEx = computed(() => t("學習歷程 30%"));
-const devPotential = computed(() => t("發展潛能 30%"));
-const learnPotential = computed(() => t("學習潛力 40%"));
+const learningExT = computed(() => t("學習歷程"));
+const devPotentialT = computed(() => t("發展潛能"));
+const learnPotentialT = computed(() => t("學習潛力"));
 const totalscore = computed(() => t("分數合計"));
 const reason = computed(() => t("逕取理由"));
+
+const learningExProportion = ref(30);
+const devPotentialProportion = ref(30);
+const learnPotentialProportion = ref(40);
+
+const learningEx = computed(() => {
+	return learningExT.value + learningExProportion.value + "%";
+});
+
+const devPotential = computed(() => {
+	return devPotentialT.value + devPotentialProportion.value + "%";
+});
+
+const learnPotential = computed(() => {
+	return learnPotentialT.value + learnPotentialProportion.value + "%";
+});
 
 const selectedData = ref();
 const router = useRouter();
 const onRowSelect = (event: any) => {
-	selectedData.value = ref();
+	selectedData.value = "";
 	router.push("/admission/reviewer/singleOralReview/" + event.data.id);
 };
 </script>

@@ -14,22 +14,14 @@
 					<template #value="slotProps">
 						<div class="mt-6px tracking-2px text-20px font-medium">
 							{{ slotProps.value.category }}
-							{{ slotProps.value.name }}
 						</div>
 					</template>
 				</Dropdown>
 			</div>
 		</div>
 
-		<div class="flex mt-32px">
-			<div class="sidebarBlueDivider"></div>
-			<div class="mt-[-8px] ml-8px text-[#236192] text-20px font-bold">
-				{{ $t("第一階段審查") }}
-			</div>
-		</div>
-
 		<router-link
-			to="/admission/reviewer/applicationReview"
+			to="/recruitment/reviewer/requiredDataReview"
 			custom
 			v-slot="{ navigate }"
 		>
@@ -46,13 +38,13 @@
 				<span
 					class="text-left tracking-3px ml-3 font-bold text-[20px] text-[#2D2926]"
 				>
-					{{ $t("書面資料評閱") }}
+					{{ $t("必看資料評閱") }}
 				</span>
 			</Button>
 		</router-link>
 
 		<router-link
-			to="/admission/reviewer/oralReview"
+			to="/recruitment/reviewer/optionalDataReview"
 			custom
 			v-slot="{ navigate }"
 		>
@@ -69,13 +61,13 @@
 				<span
 					class="text-left tracking-3px ml-3 font-bold text-[20px] text-[#2D2926]"
 				>
-					{{ $t("口試資料評閱") }}
+					{{ $t("選看資料評閱") }}
 				</span>
 			</Button>
 		</router-link>
 
 		<div
-			class="bg-gray-200 bg-opacity-50 h-104px w-[100%] !mt-600px"
+			class="bg-gray-200 bg-opacity-50 h-104px w-[100%] !mt-650px"
 			style="transform: translateY(20%)"
 		>
 			<div class="flex">
@@ -125,34 +117,37 @@ import { InvalidSessionError } from "@/api/error";
 const reviewerAuth = useAdmissionReviewerAuthStore();
 const api = new AdmissionReviewerAPI(reviewerAuth);
 
-const {
-	isLoading,
-	isError,
-	data: programs,
-	error,
-} = useQuery(["programList"], async () => {
-	try {
-		return await api.getProgramList();
-	} catch (e: any) {
-		if (e instanceof InvalidSessionError) {
-			// FIXME: show session expiry notification??
-			// Why are we even here in the first place?
-			// MainContainer should have checked already.
-			console.error(
-				"Session has already expired while querying programList"
-			);
-			router.push("/");
-			return;
-		}
-	}
-});
+const programs = ref([]);
+// API isn't ready
+
+// const {
+// 	isLoading,
+// 	isError,
+// 	data: programs,
+// 	error,
+// } = useQuery(["programList"], async () => {
+// 	try {
+// 		return await api.getProgramList();
+// 	} catch (e: any) {
+// 		if (e instanceof InvalidSessionError) {
+// 			// FIXME: show session expiry notification??
+// 			// Why are we even here in the first place?
+// 			// MainContainer should have checked already.
+// 			console.error(
+// 				"Session has already expired while querying programList"
+// 			);
+// 			router.push("/");
+// 			return;
+// 		}
+// 	}
+// });
 
 const router = useRouter();
 
 // FIXME: this should NOT be hardcoded.
 const selectedProgram = ref({
 	id: 1,
-	category: "111年碩士班",
+	category: "111年教師應徵",
 	name: "A組",
 	application_start_date: "2022-10-01T00:00:00.000+08:00",
 	application_end_date: "2022-10-31T00:00:00.000+08:00",
@@ -168,7 +163,7 @@ const selectedProgram = ref({
 	reviewer_required_file: null,
 });
 
-const generateOptions = (data: any) => data.category + data.name;
+const generateOptions = (data: any) => data.category;
 
 async function signOut() {
 	if (reviewerAuth.isValidSession) {
