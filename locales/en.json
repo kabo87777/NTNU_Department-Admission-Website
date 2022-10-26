@@ -217,6 +217,7 @@
   "行動電話": "mobile phone",
   "行動電話與主要聯絡電話相同": "The Mobile Phone is the same as the Primary Contact Number",
   "電子信箱": "E-mail",
+  "米字號表示該項目為必填欄位": "Fields marked * are required",
   "願意承擔手機簡訊費用": "Willingness to bear the cost of SMS",
   "111年碩士班": "111 Master",
   "111年博士班": "111 Phd",
@@ -263,5 +264,7 @@
   "未完成": "Incomplete",
   "未開放": "Unable",
   "資料填寫、上傳": "Fill out information form & data upload",
-  "相關作業、系統": "Beneficial Documents"
+  "相關作業、系統": "Beneficial Documents",
+  "願意承擔手機簡訊費用": "Willingness to bear the cost of SMS",
+  "米字號表示該項目為必填欄位": "Fields marked * are required"
 }
