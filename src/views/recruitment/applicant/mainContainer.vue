@@ -25,20 +25,20 @@
 
 <script setup lang="ts">
 import NavBar from "@/components/NavBar.vue";
-import SideBar from "@/components/sidebars/admissionApplicantSidebar.vue";
+import SideBar from "@/components/sidebars/recruitmentApplicantSidebar.vue";
 
 import { useRouter } from "vue-router";
-import { useAdmissionApplicantAuthStore } from "@/stores/universalAuth";
+import { useRecruitmentApplicantAuthStore } from "@/stores/universalAuth";
 
 const router = useRouter();
 
-const auth = useAdmissionApplicantAuthStore();
+const auth = useRecruitmentApplicantAuthStore();
 
-if (!auth.credentials) {
-	router.push("/admission/applicant/signin");
-} else {
-	router.push("/admission/applicant/latestNews");
-}
+// if (!auth.credentials) {
+// 	router.push("/recruitment/applicant/signin");
+// } else {
+// 	router.push("/recruitment/applicant/basicInfo");
+// }
 </script>
 
 <style scoped></style>

@@ -52,6 +52,11 @@ import recruitmentApplicantRegistDone from "@/views/recruitment/applicant/login/
 import recruitmentApplicantPasswordReset from "@/views/recruitment/applicant/login/pwdReset.vue";
 import recruitmentApplicantPasswordForget from "@/views/recruitment/applicant/login/pwdForget.vue";
 import recruitmentApplicantPasswordForgetEmailSent from "@/views/recruitment/applicant/login/pwdForgetEmailSent.vue";
+import recruitmentApplicantMainContainer from "@/views/recruitment/applicant/mainContainer.vue";
+import recruitmentApplicantBasicInfo from "@/views/recruitment/applicant/pages/basicInfo.vue";
+import recruitmentApplicantAttachment from "@/views/recruitment/applicant/pages/attachment.vue";
+import recruitmentApplicantAdditionalDocs from "@/views/recruitment/applicant/pages/additionalDocs.vue";
+import recruitmentApplicantUserSetting from "@/views/recruitment/applicant/pages/userSetting.vue";
 
 // Recruitment Reviewer section
 import recruitmentReviewerSignin from "@/views/recruitment/reviewer/login/signin.vue";
@@ -309,6 +314,34 @@ const routes: Array<RouteRecordRaw> = [
 				path: "recruitment/applicant/password/forget/emailSent",
 				name: "recruitmentApplicantPasswordForgetEmailSent",
 				component: recruitmentApplicantPasswordForgetEmailSent,
+			},
+			{
+				path: "recruitment/applicant",
+				name: "recruimentApplicantMainContainer",
+				component: recruitmentApplicantMainContainer,
+				children: [
+					//Recruitment - applicant info pages
+					{
+						path: "basicInfo",
+						name: "recruitmentApplicantBasicInfo",
+						component: recruitmentApplicantBasicInfo,
+					},
+					{
+						path: "attachment",
+						name: "recruitmentApplicantAttachment",
+						component: recruitmentApplicantAttachment,
+					},
+					{
+						path: "additionalDocs",
+						name: "recruitmentApplicantAdditionalDocs",
+						component: recruitmentApplicantAdditionalDocs,
+					},
+					{
+						path: "userSetting",
+						name: "recruitmentApplicantUserSetting",
+						component: recruitmentApplicantUserSetting,
+					},
+				],
 			},
 
 			// Recruitment - manager sign in
