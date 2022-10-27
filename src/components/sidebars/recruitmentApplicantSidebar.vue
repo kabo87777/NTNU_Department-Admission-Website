@@ -11,7 +11,14 @@
 					class="h-60px w-[93%]"
 					style="border-radius: 8px; border: 1px solid #736028"
 				> -->
-				<div class="sidebarTitleBar">{{ "111年教師應聘" }}</div>
+				<div class="sidebarTitleBar">
+					{{
+						$t("recruitmentApplicantSidebarTitle", {
+							year: currentYear,
+							roc: rocYear,
+						})
+					}}
+				</div>
 			</div>
 		</div>
 
@@ -25,7 +32,6 @@
 		<router-link
 			:to="{
 				name: 'recruitmentApplicantBasicInfo',
-				params: { userId: 7 },
 			}"
 			custom
 			v-slot="{ navigate }"
@@ -57,7 +63,6 @@
 		<router-link
 			:to="{
 				name: 'recruitmentApplicantAttachment',
-				params: { userId: 7 },
 			}"
 			custom
 			v-slot="{ navigate }"
@@ -96,7 +101,6 @@
 		<router-link
 			:to="{
 				name: 'recruitmentApplicantAdditionalDocs',
-				params: { userId: 7 },
 			}"
 			custom
 			v-slot="{ navigate }"
@@ -165,7 +169,6 @@
 					<router-link
 						:to="{
 							name: 'recruitmentApplicantUserSetting',
-							params: { userId: 7 },
 						}"
 						custom
 						v-slot="{ navigate }"
@@ -200,7 +203,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from "vue";
+import { reactive } from "vue";
 import { Tags } from "@/api/recruitment/applicant/types";
 import "primeicons/primeicons.css";
 import "primevue/resources/primevue.min.css";
@@ -234,23 +237,8 @@ import IncompleteTag from "@/styles/tags/incompleteTag.vue";
 
 // const { t } = useI18n();
 
-const selectedProgram = ref({
-	id: 1,
-	category: "111年碩士班",
-	name: "A組",
-	application_start_date: "2022-10-01T00:00:00.000+08:00",
-	application_end_date: "2022-10-31T00:00:00.000+08:00",
-	review_start_date: "2022-11-01T00:00:00.000+08:00",
-	review_end_date: "2022-11-30T00:00:00.000+08:00",
-	require_file: "['file1', 'file2']",
-	stage: "application",
-	created_at: "2022-10-18T07:00:10.671+08:00",
-	updated_at: "2022-10-18T07:00:10.671+08:00",
-	applicant_required_info: null,
-	applicant_required_file: null,
-	reviewer_required_info: null,
-	reviewer_required_file: null,
-});
+const currentYear = new Date().getFullYear();
+const rocYear = currentYear - 1911;
 
 const tags: Tags = reactive({
 	basicInfo: "completed",

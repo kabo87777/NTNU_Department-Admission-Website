@@ -85,6 +85,7 @@
   "※ 電話(次要)": "※ Phone Number(Secondary)",
   "※ 電話(行動電話)": "※ Cellphone Number",
   "就學經歷": "School Experience",
+  "教學經歷": "Teaching Experience",
   "考試與檢定分數": "Exam and Qualification Test Score",
   "其他有利於審查資料": "Additional Beneficial Documents",
   "取消變更": "Cancel Changes",
@@ -265,6 +266,5 @@
   "未開放": "Unable",
   "資料填寫、上傳": "Fill out information form & data upload",
   "相關作業、系統": "Beneficial Documents",
-  "願意承擔手機簡訊費用": "Willingness to bear the cost of SMS",
-  "米字號表示該項目為必填欄位": "Fields marked * are required"
+  "recruitmentApplicantSidebarTitle": "{ year } Recruitment"
 }

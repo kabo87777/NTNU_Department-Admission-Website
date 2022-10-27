@@ -3,3 +3,11 @@ export interface Tags {
 	attachment: string;
 	additionalDocs: string;
 }
+
+export interface AttachmentData {
+	itemName?: string;
+	fileName?: string;
+	fileUrl?: string;
+	order?: number;
+	state?: number;
+}
