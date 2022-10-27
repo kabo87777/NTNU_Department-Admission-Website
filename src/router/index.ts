@@ -8,7 +8,7 @@ import {
 import MainPage from "@/views/MainPage.vue";
 import LandingView from "@/views/LandingView.vue";
 import AdmissionSignin from "@/views/admission/AdmissionSignin.vue";
-import RecruitmentSignin from "@/views/recruitment/RecruitmentSignin.vue";
+import RecruitmentSignin from "@/views/recruitment/recruitmentSignin.vue";
 // Manager section
 import AdmissionListReviewer from "@/views/admission/manager/ListReviewer.vue";
 import AdmissionManagerMainContainer from "@/views/admission/manager/MainContainer.vue";
@@ -40,12 +40,37 @@ import managerUserSetting from "@/views/admission/manager/managerUserSetting.vue
 //Reviewer section
 import AdmissionReviewerMainContainer from "@/views/admission/reviewer/MainContainer.vue";
 import AdmissionReviewerSignin from "@/views/admission/reviewer/ReviewerSignin.vue";
+import applicationReview from "@/views/admission/reviewer/applicationReview.vue";
+import oralReview from "@/views/admission/reviewer/oralReview.vue";
+import singleApplicationReview from "@/views/admission/reviewer/singleApplicationReview.vue";
+import singleOralReview from "@/views/admission/reviewer/singleOralReview.vue";
 
 // Recruitment Applicant section
+import recruitmentApplicantSignin from "@/views/recruitment/applicant/login/signin.vue";
+import recruitmentApplicantRegist from "@/views/recruitment/applicant/login/regist.vue";
+import recruitmentApplicantRegistDone from "@/views/recruitment/applicant/login/registDone.vue";
+import recruitmentApplicantPasswordReset from "@/views/recruitment/applicant/login/pwdReset.vue";
+import recruitmentApplicantPasswordForget from "@/views/recruitment/applicant/login/pwdForget.vue";
+import recruitmentApplicantPasswordForgetEmailSent from "@/views/recruitment/applicant/login/pwdForgetEmailSent.vue";
 
 // Recruitment Reviewer section
+import recruitmentReviewerSignin from "@/views/recruitment/reviewer/login/signin.vue";
+import recruitmentReviewerPasswordForget from "@/views/recruitment/reviewer/login/pwdForget.vue";
+import recruitmentReviewerPasswordReset from "@/views/recruitment/reviewer/login/pwdReset.vue";
+import recruitmentReviewerPasswordForgetEmailSent from "@/views/recruitment/reviewer/login/pwdForgetEmailSent.vue";
+import recruitmentReviewerPasswordFirstLogin from "@/views/recruitment/reviewer/login/pwdFirstLogin.vue";
+//Recruitment Reviewer section
+import recruitmentReviewerMainContainer from "@/views/recruitment/reviewer/MainContainer.vue";
+import requiredDataReview from "@/views/recruitment/reviewer/requiredDataReview.vue";
+import optionalDataReview from "@/views/recruitment/reviewer/optionalDataReview.vue";
+import singleRequiredDataReview from "@/views/recruitment/reviewer/singleRequiredDataReview.vue";
+import singleOptionalDataReview from "@/views/recruitment/reviewer/singleOptionalDataReview.vue";
 
 // Recruitment Manager section
+import recruitmentManagerSignin from "@/views/recruitment/manager/login/signin.vue";
+import recruitmentManagerPasswordReset from "@/views/recruitment/manager/login/pwdReset.vue";
+import recruitmentManagerPasswordForget from "@/views/recruitment/manager/login/pwdForget.vue";
+import recruitmentManagerPasswordForgetEmailSent from "@/views/recruitment/manager/login/pwdForgetEmailSent.vue";
 
 const routes: Array<RouteRecordRaw> = [
 	// Choose recruitment / admission
@@ -80,7 +105,28 @@ const routes: Array<RouteRecordRaw> = [
 				path: "admission/reviewer",
 				name: "AdmissionReviewerMainContainer",
 				component: AdmissionReviewerMainContainer,
-				children: [],
+				children: [
+					{
+						path: "applicationReview",
+						name: "applicationReview",
+						component: applicationReview,
+					},
+					{
+						path: "oralReview",
+						name: "oralReview",
+						component: oralReview,
+					},
+					{
+						path: "singleApplicationReview/:id",
+						name: "singleApplicationReview",
+						component: singleApplicationReview,
+					},
+					{
+						path: "singleOralReview/:id",
+						name: "singleOralReview",
+						component: singleOralReview,
+					},
+				],
 			},
 			// Admission - manager sign in
 			{
@@ -229,6 +275,119 @@ const routes: Array<RouteRecordRaw> = [
 					titleKey: "登入頁面",
 				},
 				component: RecruitmentSignin,
+			},
+
+			// Recruitment - applicant sign in
+			{
+				path: "recruitment/applicant/signin",
+				name: "recruitmentApplicantSignin",
+				component: recruitmentApplicantSignin,
+			},
+			// Recruitment - applicant register
+			{
+				path: "recruitment/applicant/regist",
+				name: "recruitmentApplicantRegist",
+				component: recruitmentApplicantRegist,
+			},
+			{
+				path: "recruitment/applicant/regist/done",
+				name: "recruitmentApplicantRegistDone",
+				component: recruitmentApplicantRegistDone,
+			},
+			// Recruitment - applicant forget & reset password
+			{
+				path: "recruitment/applicant/password/reset",
+				name: "recruitmentApplicantPasswordReset",
+				component: recruitmentApplicantPasswordReset,
+			},
+			{
+				path: "recruitment/applicant/password/forget",
+				name: "recruitmentApplicantPasswordForget",
+				component: recruitmentApplicantPasswordForget,
+			},
+			{
+				path: "recruitment/applicant/password/forget/emailSent",
+				name: "recruitmentApplicantPasswordForgetEmailSent",
+				component: recruitmentApplicantPasswordForgetEmailSent,
+			},
+
+			// Recruitment - manager sign in
+			{
+				path: "recruitment/manager/signin",
+				name: "recruitmentManagerSignin",
+				component: recruitmentManagerSignin,
+			},
+			// Recruitment - manager forget & reset password
+			{
+				path: "recruitment/manager/password/reset",
+				name: "recruitmentManagerPasswordReset",
+				component: recruitmentManagerPasswordReset,
+			},
+			{
+				path: "recruitment/manager/password/forget",
+				name: "recruitmentManagerPasswordForget",
+				component: recruitmentManagerPasswordForget,
+			},
+			{
+				path: "recruitment/manager/password/forget/emailSent",
+				name: "recruitmentManagerPasswordForgetEmailSent",
+				component: recruitmentManagerPasswordForgetEmailSent,
+			},
+
+			// Recruitment - reviewer sign in
+			{
+				path: "recruitment/reviewer/signin",
+				name: "recruitmentReviewerSignin",
+				component: recruitmentReviewerSignin,
+			},
+
+			// Recruitment - manager forget & reset password
+			{
+				path: "recruitment/reviewer/password/reset",
+				name: "recruitmenReviewerPasswordReset",
+				component: recruitmentReviewerPasswordReset,
+			},
+			{
+				path: "recruitment/reviewer/password/forget",
+				name: "recruitmentReviewerPasswordForget",
+				component: recruitmentReviewerPasswordForget,
+			},
+			{
+				path: "recruitment/reviewer/password/forget/emailSent",
+				name: "recruitmentReviewerPasswordForgetEmailSent",
+				component: recruitmentReviewerPasswordForgetEmailSent,
+			},
+			{
+				path: "recruitment/reviewer/password/firstLogin",
+				name: "recruitmentReviewerPasswordFirstLogin",
+				component: recruitmentReviewerPasswordFirstLogin,
+			},
+			{
+				path: "recruitment/reviewer",
+				name: "recruitmentReviewerMainContainer",
+				component: recruitmentReviewerMainContainer,
+				children: [
+					{
+						path: "requiredDataReview",
+						name: "requiredDataReview",
+						component: requiredDataReview,
+					},
+					{
+						path: "optionalDataReview",
+						name: "optionalDataReview",
+						component: optionalDataReview,
+					},
+					{
+						path: "singleRequiredDataReview/:id",
+						name: "singleRequiredDataReview",
+						component: singleRequiredDataReview,
+					},
+					{
+						path: "singleOptionalDataReview/:id",
+						name: "singleOptionalDataReview",
+						component: singleOptionalDataReview,
+					},
+				],
 			},
 		],
 	},

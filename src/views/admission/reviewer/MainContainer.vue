@@ -1,25 +1,44 @@
 <template>
-	<NavBar />
-	<SideBar />
-	<div class="ml-400px mr-80px mt-62px">
-		<router-view />
+	<div>
+		<div style="position: fixed; top: 0; width: 100%; z-index: 1000">
+			<NavBar />
+		</div>
+		<div style="display: flex; margin-top: 60px; position: relative">
+			<div
+				style="
+					position: fixed;
+					float: left;
+					width: 20%;
+					min-width: 384px;
+					border-right: 1px solid gray;
+					height: 100%;
+				"
+			>
+				<ReviewerSideBar />
+			</div>
+			<div style="margin-left: 400px; position: absolute; width: 80%">
+				<router-view />
+			</div>
+		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
 import NavBar from "@/components/NavBar.vue";
-import SideBar from "@/components/SideBar.vue";
+import ReviewerSideBar from "@/components/reviewerSidebar.vue";
 
 import { watch } from "vue";
 import { useRouter } from "vue-router";
+
 import { useAdmissionReviewerAuthStore } from "@/stores/universalAuth";
+import { doUniversalAuthSessionValidation } from "@/api/universalAuth";
 
 const router = useRouter();
 
 const reviewerAuth = useAdmissionReviewerAuthStore();
 
-watch(router.currentRoute, () => {
-	if (!reviewerAuth.isValidSession) {
+watch(router.currentRoute, async () => {
+	if (!(await doUniversalAuthSessionValidation(reviewerAuth))) {
 		router.replace({ name: "AdmissionReviewerSignin" });
 		// TODO: show session expired notification
 	}

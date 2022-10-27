@@ -22,7 +22,7 @@ export class GenericAPI {
 			(config) => {
 				config.headers = config.headers ?? {};
 
-				if (!this.auth.isValidSession) {
+				if (!this.auth.isValidCredentials) {
 					throw new InvalidSessionError(
 						"Local check failed: invalid auth session. An unhandled expired auth session was most likely used to perform this request."
 					);
@@ -57,14 +57,8 @@ export class GenericAPI {
 		return await doUniversalAuthSignIn(this.auth, data);
 	}
 
-	// Sign in
-	async invalidateSession() {
-		try {
-			await doUniversalAuthSignOut(this.auth);
-			return true;
-		} catch (e) {
-			// handle sign out error
-			return false;
-		}
+	// Sign out
+	async invalidateSession(): Promise<void> {
+		await doUniversalAuthSignOut(this.auth);
 	}
 }

@@ -18,7 +18,7 @@ export type AuthStore = Store<
 	AuthStoreState,
 	{
 		credentials(): AuthCredentials | null;
-		isValidSession(): boolean;
+		isValidCredentials(): boolean;
 	},
 	{
 		setCredentials(c: AuthCredentials): void;
@@ -56,7 +56,7 @@ const defineUniversalAuthStore = (authStoreName: string, path: string) =>
 			credentials(): AuthCredentials | null {
 				return this._credentials ? this._credentials : null;
 			},
-			isValidSession(): boolean {
+			isValidCredentials(): boolean {
 				// invalid if _credentials == null
 				if (!this._credentials) return false;
 

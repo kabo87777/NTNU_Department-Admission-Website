@@ -138,9 +138,6 @@ const redirectToMainContainer = () =>
 
 const authStore = useAdmissionReviewerAuthStore();
 
-// Go to AdmissionReviewerMainContainer if signed in
-if (authStore.isValidSession) redirectToMainContainer();
-
 // Login Form
 const turnstileRef = ref<TurnstileComponentExposes>();
 const isRememberAccount = ref(false);
