@@ -216,5 +216,9 @@
   "行動電話與主要聯絡電話相同": "The Mobile Phone is the same as the Primary Contact Number",
   "電子信箱": "E-mail",
   "願意承擔手機簡訊費用": "Willingness to bear the cost of SMS",
-  "米字號表示該項目為必填欄位": "Fields marked * are required"
+  "米字號表示該項目為必填欄位": "Fields marked * are required",
+  "入學身分(外籍生)": "Admission Status(Foreigner)",
+  "戶籍地址": "Residential Address",
+  "護照號碼": "Passport number",
+  "居留證統一證號": "Passport number"
 }

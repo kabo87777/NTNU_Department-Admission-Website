@@ -111,7 +111,7 @@
 					type="text"
 					v-model="admissionStatusLocal.nationality"
 					placeholder="Text"
-					class="!border-gray-900 !w-300px !h-40px !mt-5px"
+					class="!border-gray-900 !w-300px !h-40px !mt-5px" 
 				/>
 			</div>
 			<div class="w-1/3">
