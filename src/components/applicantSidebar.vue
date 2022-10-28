@@ -253,11 +253,10 @@
 							/>
 						</Button>
 					</router-link>
-					<!-- <Button
+					<Button
 						class="p-button-secondary p-button-text"
 						@click="signOut"
-					> -->
-					<Button class="p-button-secondary p-button-text">
+					>
 						<img
 							alt="logo"
 							src="/assets/sidebar/Sign_out_circle.png"
@@ -282,20 +281,17 @@ import CompletedTag from "@/styles/tags/completedTag.vue";
 import IncompleteTag from "@/styles/tags/incompleteTag.vue";
 // import Tag from "primevue/tag";
 // import { useI18n } from "vue-i18n";
-// import { useRouter } from "vue-router";
-// import {
-// 	useAdmissionAdminAuthStore,
-// 	useAdmissionReviewerAuthStore,
-// } from "@/stores/universalAuth";
-// import { AdmissionAdminAPI } from "@/api/admission/admin/api";
+import { useRouter } from "vue-router";
+import { useAdmissionApplicantAuthStore } from "@/stores/universalAuth";
+import { AdmissionApplicantAPI } from "@/api/admission/applicant/api";
 // import { useQuery } from "@tanstack/vue-query";
 
-// const router = useRouter();
+const router = useRouter();
 
 // const reviewerAuth = useAdmissionReviewerAuthStore();
-// const adminAuth = useAdmissionAdminAuthStore();
+const applicantAuth = useAdmissionApplicantAuthStore();
 
-// const api = new AdmissionAdminAPI(adminAuth);
+const api = new AdmissionApplicantAPI(applicantAuth);
 
 // const {
 // 	isLoading,
@@ -346,8 +342,8 @@ const tags: Tags = reactive({
 // 	displayNewProject.value = false;
 // }
 
-// async function signOut() {
-// 	await api.invalidateSession();
-// 	router.push("/");
-// }
+async function signOut() {
+	await api.invalidateSession();
+	router.push("/admission/applicant/signin");
+}
 </script>
