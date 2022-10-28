@@ -113,7 +113,6 @@ import SelectButton from "primevue/selectbutton";
 import { useI18n } from "vue-i18n";
 import PDFView from "@/components/pdfPreview.vue";
 import jsPdf from "./test.pdf";
-import { l } from "vitest/dist/index-e0804ba8";
 
 const route = useRoute();
 const { t } = useI18n();

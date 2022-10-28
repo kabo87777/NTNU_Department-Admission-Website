@@ -331,6 +331,8 @@ const tags: Tags = reactive({
 	additionalDocs: "unable",
 });
 
+// TODO: disannotation here and fix here during connect API
+
 // const displayNewProject = ref(false);
 // const newProjectName = ref("");
 
@@ -345,10 +347,7 @@ const tags: Tags = reactive({
 // }
 
 // async function signOut() {
-// 	if (adminAuth.isValidSession) {
-// 		if (await api.invalidateSession()) {
-// 			router.push("/");
-// 		}
-// 	}
+// 	await api.invalidateSession();
+// 	router.push("/");
 // }
 </script>

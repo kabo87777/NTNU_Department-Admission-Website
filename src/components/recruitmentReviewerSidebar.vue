@@ -166,11 +166,8 @@ const selectedProgram = ref({
 const generateOptions = (data: any) => data.category;
 
 async function signOut() {
-	if (reviewerAuth.isValidSession) {
-		if (await api.invalidateSession()) {
-			router.push("/");
-		}
-	}
+	await api.invalidateSession();
+	router.push("/");
 }
 </script>
 
