@@ -5,7 +5,7 @@
 			<div class="sidebarVerticalSmallRedDivider"></div>
 			<div class="ml-12px w-[100%]">
 				<Dropdown
-					v-model="selectedProgram"
+					v-model="updateProgram"
 					:options="programs"
 					:optionLabel="generateOptions"
 					class="h-60px w-[93%]"
@@ -302,7 +302,7 @@
 
 <script setup lang="ts">
 import "primevue/resources/primevue.min.css";
-import { ref, toRaw } from "vue";
+import { ref, toRaw, computed } from "vue";
 import Dropdown from "primevue/dropdown";
 import Button from "primevue/button";
 import Divider from "primevue/divider";
@@ -322,7 +322,6 @@ const { t } = useI18n();
 
 const router = useRouter();
 
-const reviewerAuth = useAdmissionReviewerAuthStore();
 const adminAuth = useAdmissionAdminAuthStore();
 
 const api = new AdmissionAdminAPI(adminAuth);
@@ -356,8 +355,18 @@ const dataPrograms = () => {
 	}
 }; //convert proxy to array or object
 
-// FIXME: this should NOT be hardcoded.
 const selectedProgram = ref(dataPrograms());
+
+// FIXME: this should NOT be hardcoded.
+const updateProgram = computed({
+	get: () => {
+		return selectedProgram.value;
+	},
+	set: (val) => {
+		selectedProgram.value = toRaw(val);
+	},
+});
+
 const displayNewProject = ref(false);
 const newProjectName = ref("");
 
