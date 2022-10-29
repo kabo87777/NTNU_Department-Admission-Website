@@ -109,13 +109,13 @@ import { ref } from "vue";
 import Dropdown from "primevue/dropdown";
 import Button from "primevue/button";
 import { useRouter } from "vue-router";
-import { useAdmissionReviewerAuthStore } from "@/stores/universalAuth";
-import { AdmissionReviewerAPI } from "@/api/admission/reviewer/api";
+import { useRecruitmentReviewerAuthStore } from "@/stores/universalAuth";
+import { RecruitmentReviewerAPI } from "@/api/recruitment/reviewer/api";
 import { useQuery } from "@tanstack/vue-query";
 import { InvalidSessionError } from "@/api/error";
 
-const reviewerAuth = useAdmissionReviewerAuthStore();
-const api = new AdmissionReviewerAPI(reviewerAuth);
+const reviewerAuth = useRecruitmentReviewerAuthStore();
+const api = new RecruitmentReviewerAPI(reviewerAuth);
 
 const programs = ref([]);
 // API isn't ready
@@ -167,7 +167,7 @@ const generateOptions = (data: any) => data.category;
 
 async function signOut() {
 	await api.invalidateSession();
-	router.push("/");
+	router.push("/recruitment/reviewer/signin");
 }
 </script>
 

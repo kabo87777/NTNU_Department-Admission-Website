@@ -1,18 +1,18 @@
 import type { AuthStore } from "@/stores/universalAuth";
 import { GenericAPI } from "@/api/api";
-// TODO: disannotation while backend finished reviewer get program API
-// import type { RecruitmentReviewerListResponse } from "./types";
+// TODO: disannotation while backend finished applicant get program API
+// import type { RecruitmentApplicantListResponse } from "./types";
 // import type { APIGenericResponse } from "@/api/types";
 
-export class RecruitmentReviewerAPI extends GenericAPI {
+export class RecruitmentApplicantAPI extends GenericAPI {
 	constructor(auth: AuthStore) {
 		super(auth);
 	}
 
-	// TODO: disannotation while backend finished reviewer get program API
-	// async getProgramList(): Promise<RecruitmentReviewerProgramListResponse[]> {
+	// TODO: disannotation while backend finished applicant get program API
+	// async getProgramList(): Promise<RecruitmentApplicantProgramListResponse[]> {
 	// 	const data: APIGenericResponse = await this.instance.get(
-	// 		"/recruitment/reviewer/program"
+	// 		"/recruitment/applicant/program"
 	// 	);
 
 	// 	if (data.error === true || typeof data.data.programs === "undefined")
