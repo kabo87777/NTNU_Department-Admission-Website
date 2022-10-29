@@ -29,16 +29,16 @@ import recruitmentReviewerSideBar from "@/components/recruitmentReviewerSidebar.
 
 import { watch } from "vue";
 import { useRouter } from "vue-router";
-import { useAdmissionReviewerAuthStore } from "@/stores/universalAuth";
+import { useRecruitmentReviewerAuthStore } from "@/stores/universalAuth";
 import { doUniversalAuthSessionValidation } from "@/api/universalAuth";
 
 const router = useRouter();
 
-const reviewerAuth = useAdmissionReviewerAuthStore();
+const reviewerAuth = useRecruitmentReviewerAuthStore();
 
 watch(router.currentRoute, async () => {
 	if (!(await doUniversalAuthSessionValidation(reviewerAuth))) {
-		router.replace({ name: "AdmissionReviewerSignin" });
+		router.replace({ name: "RecruitmentReviewerSignin" });
 		// TODO: show session expired notification
 	}
 });
