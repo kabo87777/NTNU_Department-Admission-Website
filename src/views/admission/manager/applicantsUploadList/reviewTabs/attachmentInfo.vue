@@ -9,6 +9,7 @@
 			<ReviewState
 				v-if="item.state === 1"
 				category="就學經歷"
+				identity="admissionManager"
 				:itemName="item.name"
 				:order="index + 1"
 				@edit="reviewToEdit"
@@ -16,6 +17,7 @@
 			<EditState
 				v-else-if="item.state === 2"
 				category="就學經歷"
+				identity="admissionManager"
 				:itemName="item.name"
 				:order="index + 1"
 				@cancel="editToReview"
@@ -23,12 +25,14 @@
 			<CreateState
 				v-else-if="item.state === 3"
 				category="就學經歷"
+				identity="admissionManager"
 				:order="index + 1"
 				@edit="createToEdit"
 			/>
 			<EditState
 				v-else-if="item.state === 4"
 				category="就學經歷"
+				identity="admissionManager"
 				:order="index + 1"
 				@cancel="editToCreate"
 			/>
@@ -48,6 +52,7 @@
 			<ReviewState
 				v-if="item.state === 1"
 				category="考試與檢定分數"
+				identity="admissionManager"
 				:itemName="item.name"
 				:order="index + 1"
 				@edit="reviewToEdit"
@@ -55,6 +60,7 @@
 			<EditState
 				v-else-if="item.state === 2"
 				category="考試與檢定分數"
+				identity="admissionManager"
 				:itemName="item.name"
 				:order="index + 1"
 				@cancel="editToReview"
@@ -62,12 +68,14 @@
 			<CreateState
 				v-else-if="item.state === 3"
 				category="考試與檢定分數"
+				identity="admissionManager"
 				:order="index + 1"
 				@edit="createToEdit"
 			/>
 			<EditState
 				v-else-if="item.state === 4"
 				category="考試與檢定分數"
+				identity="admissionManager"
 				:order="index + 1"
 				@cancel="editToCreate"
 			/>
@@ -87,6 +95,7 @@
 			<ReviewState
 				v-if="item.state === 1"
 				category="其他有利於審查資料"
+				identity="admissionManager"
 				:itemName="item.name"
 				:order="index + 1"
 				@edit="reviewToEdit"
@@ -94,6 +103,7 @@
 			<EditState
 				v-else-if="item.state === 2"
 				category="其他有利於審查資料"
+				identity="admissionManager"
 				:itemName="item.name"
 				:order="index + 1"
 				@cancel="editToReview"
@@ -101,12 +111,14 @@
 			<CreateState
 				v-else-if="item.state === 3"
 				category="其他有利於審查資料"
+				identity="admissionManager"
 				:order="index + 1"
 				@edit="createToEdit"
 			/>
 			<EditState
 				v-else-if="item.state === 4"
 				category="其他有利於審查資料"
+				identity="admissionManager"
 				:order="index + 1"
 				@cancel="editToCreate"
 			/>
@@ -120,10 +132,10 @@
 </template>
 <script setup lang="ts">
 import { reactive } from "vue";
-import ReviewState from "./components/reviewState.vue";
-import EditState from "./components/editState.vue";
-import CreateState from "./components/createState.vue";
-import ParagraphDivider from "../../../../../styles/paragraphDivider.vue";
+import ReviewState from "@/components/attachmentStates/reviewState.vue";
+import EditState from "@/components/attachmentStates/editState.vue";
+import CreateState from "@/components/attachmentStates/createState.vue";
+import ParagraphDivider from "@/styles/paragraphDivider.vue";
 import "primeicons/primeicons.css";
 import AttachmentList from "./attachmentList.json";
 

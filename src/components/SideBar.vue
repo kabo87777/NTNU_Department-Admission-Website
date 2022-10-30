@@ -5,7 +5,7 @@
 			<div class="sidebarVerticalSmallRedDivider"></div>
 			<div class="ml-12px w-[100%]">
 				<Dropdown
-					v-model="selectedProgram"
+					v-model="updateProgram"
 					:options="programs"
 					:optionLabel="generateOptions"
 					class="h-60px w-[93%]"
@@ -13,9 +13,13 @@
 				>
 					<template #value="slotProps">
 						<div class="mt-6px tracking-2px text-20px font-medium">
-							{{ slotProps.value.category }}
-							{{ slotProps.value.name }}
+							{{ slotProps?.value?.category }}
+							{{ slotProps?.value?.name }}
 						</div>
+					</template>
+					<template #option="slotProps">
+						{{ slotProps?.option?.category }}
+						{{ slotProps?.option?.name }}
 					</template>
 				</Dropdown>
 			</div>
@@ -298,7 +302,7 @@
 
 <script setup lang="ts">
 import "primevue/resources/primevue.min.css";
-import { ref } from "vue";
+import { ref, toRaw, computed } from "vue";
 import Dropdown from "primevue/dropdown";
 import Button from "primevue/button";
 import Divider from "primevue/divider";
@@ -311,14 +315,13 @@ import {
 	useAdmissionReviewerAuthStore,
 } from "@/stores/universalAuth";
 import { AdmissionAdminAPI } from "@/api/admission/admin/api";
-// import * as reviewerApi from "@/api/admission/reviewer/api";
-import applicantUploadedDocsVue from "@/views/admission/manager/applicantsUploadList/applicantUploadedDocs.vue";
 import { useQuery } from "@tanstack/vue-query";
 import { InvalidSessionError } from "@/api/error";
 
+const { t } = useI18n();
+
 const router = useRouter();
 
-const reviewerAuth = useAdmissionReviewerAuthStore();
 const adminAuth = useAdmissionAdminAuthStore();
 
 const api = new AdmissionAdminAPI(adminAuth);
@@ -345,26 +348,25 @@ const {
 	}
 });
 
-const { t } = useI18n();
+const dataPrograms = () => {
+	if (programs.value) {
+		const temp = toRaw(programs.value);
+		return temp[0];
+	}
+}; //convert proxy to array or object
+
+const selectedProgram = ref(dataPrograms());
 
 // FIXME: this should NOT be hardcoded.
-const selectedProgram = ref({
-	id: 1,
-	category: "111年碩士班",
-	name: "A組",
-	application_start_date: "2022-10-01T00:00:00.000+08:00",
-	application_end_date: "2022-10-31T00:00:00.000+08:00",
-	review_start_date: "2022-11-01T00:00:00.000+08:00",
-	review_end_date: "2022-11-30T00:00:00.000+08:00",
-	require_file: "['file1', 'file2']",
-	stage: "application",
-	created_at: "2022-10-18T07:00:10.671+08:00",
-	updated_at: "2022-10-18T07:00:10.671+08:00",
-	applicant_required_info: null,
-	applicant_required_file: null,
-	reviewer_required_info: null,
-	reviewer_required_file: null,
+const updateProgram = computed({
+	get: () => {
+		return selectedProgram.value;
+	},
+	set: (val) => {
+		selectedProgram.value = toRaw(val);
+	},
 });
+
 const displayNewProject = ref(false);
 const newProjectName = ref("");
 
@@ -379,11 +381,8 @@ function closeDisplayNewProject() {
 }
 
 async function signOut() {
-	if (adminAuth.isValidSession) {
-		if (await api.invalidateSession()) {
-			router.push("/");
-		}
-	}
+	await api.invalidateSession();
+	router.push("/");
 }
 </script>
 

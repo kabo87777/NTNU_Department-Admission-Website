@@ -23,15 +23,9 @@ if (!process.env.VITE_ADMISSIONS_API_ENDPOINT) {
       break;
 
     // staging
-    case "develop":
-      process.env.VITE_ADMISSIONS_API_ENDPOINT =
-        "https://admissions-backend-stg.birkhoff.me";
-      break;
-
-    // mr preview
     default:
       process.env.VITE_ADMISSIONS_API_ENDPOINT =
-        "https://9f88298d-a5f9-4017-ac13-88e38a638293.mock.pstmn.io";
+        "https://admissions-backend-stg.birkhoff.me";
       break;
   }
 }

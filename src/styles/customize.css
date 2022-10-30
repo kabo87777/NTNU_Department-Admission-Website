@@ -11,6 +11,19 @@
   width: 45%;
 }
 
+.bigYellowDivider {
+  background-color: #736028;
+  height: 4px;
+  width: 100%;
+  margin-top: 8px;
+}
+
+.smallYellowDivider {
+  background-color: #736028;
+  height: 1px;
+  width: 45%;
+}
+
 .normalDivider {
   background-color: #53565a;
   height: 1px;
@@ -37,14 +50,14 @@
 }
 
 .sidebarVerticalBigYellowDivider {
-  background-color: #8A7B27;
+  background-color: #8a7b27;
   height: 60px;
   width: 10px;
 }
 
 .sidebarVerticalSmallYellowDivider {
   margin-left: 2px;
-  background-color: #8A7B27;
+  background-color: #8a7b27;
   height: 60px;
   width: 4px;
 }
@@ -53,4 +66,37 @@
   background-color: #736028;
   height: 2px;
   width: 32px;
+}
+
+.sidebarVerticalBigBlueDivider {
+  background-color: #236192;
+  height: 60px;
+  width: 10px;
+}
+
+.sidebarVerticalSmallBlueDivider {
+  margin-left: 2px;
+  background-color: #236192;
+  height: 60px;
+  width: 4px;
+}
+
+.sidebarBlueDivider {
+  background-color: #236192;
+  height: 2px;
+  width: 32px;
+}
+
+.bigBlueDivider {
+  background-color: #236192;
+  height: 4px;
+  width: 100%;
+  margin-top: 8px;
+}
+
+.bigBrownDivider {
+  background-color: #736028;
+  height: 4px;
+  width: 100%;
+  margin-top: 8px;
 }
