@@ -17,16 +17,17 @@ export interface RecruitmentManagerAuthResponse {
 	image: any | null;
 }
 
-export interface RecruitmentReviewerApplicantListResponse {
-	id: number;
-	provider: string;
-	uid: string;
-	isInit: any | null;
-	lang: any | null;
-	name: any | null;
-	nickname: any | null;
-	image: any | null;
-	email: string;
-	created_at: string;
-	updated_at: string;
-}
+// TODO: disannotation while backend finished reviewer get program API
+// export interface RecruitmentReviewerApplicantListResponse {
+// 	id: number;
+// 	provider: string;
+// 	uid: string;
+// 	isInit: any | null;
+// 	lang: any | null;
+// 	name: any | null;
+// 	nickname: any | null;
+// 	image: any | null;
+// 	email: string;
+// 	created_at: string;
+// 	updated_at: string;
+// }

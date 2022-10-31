@@ -1,32 +1,24 @@
-export interface AdmissionApplicantSignInInput {
+export interface RecruitmentApplicantSignInInput {
 	email: string;
 	password: string;
 	"cf-turnstile-response": string;
 }
 
-export interface AdmissionApplicantAuthResponse {
+export interface RecruitmentApplicantAuthResponse {
 	email: string;
-	username: string;
-	id: number;
 	provider: string;
 	uid: string;
+	id: number;
 	allow_password_change: boolean;
 	isInit: any | null;
 	lang: any | null;
 	name: any | null;
 	nickname: any | null;
 	image: any | null;
-	docs_order: number | null;
-	oral_order: number | null;
-	file: any | null;
-	docs_stage: any | null;
-	oral_stage: any | null;
-	s_program_id: number | null;
-	application_stage: any | null;
 }
 
 // TODO: disannotation while backend finished applicant get program API
-// export interface AdmissionApplicantProgramListResponse {
+// export interface RecruitmentApplicantProgramListResponse {
 // 	id: number;
 // 	category: string;
 // 	name: string;
@@ -43,24 +35,3 @@ export interface AdmissionApplicantAuthResponse {
 // 	reviewer_required_info: null;
 // 	reviewer_required_file: null;
 // }
-
-export interface UserInfo {
-	name: string;
-	email: string;
-	phone: string;
-}
-
-export interface Tags {
-	basicInfo: string;
-	attachment: string;
-	recommendLetter: string;
-	additionalDocs: string;
-}
-
-export interface AttachmentData {
-	itemName?: string;
-	fileName?: string;
-	fileUrl?: string;
-	order?: number;
-	state?: number;
-}

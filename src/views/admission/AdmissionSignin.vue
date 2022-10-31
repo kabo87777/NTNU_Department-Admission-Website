@@ -31,7 +31,7 @@
 				</div>
 			</div>
 			<div class="mt-50px ml-184px userLogin">
-				<router-link to="/admission/applicant/">
+				<router-link to="/admission/applicant/signin">
 					<Button class="bg-darkGreen h-95px w-360px">
 						<div class="m-auto text-2xl">
 							<div>{{ $t("申請者登入") }}</div>
@@ -40,7 +40,7 @@
 				</router-link>
 			</div>
 			<div class="mt-50px ml-184px userLogin">
-				<router-link to="/admission/reviewer/">
+				<router-link to="/admission/reviewer/signin">
 					<Button class="bg-darkBlue h-95px w-360px">
 						<div class="m-auto text-2xl">
 							<div>{{ $t("審查委員登入") }}</div>
@@ -49,7 +49,7 @@
 				</router-link>
 			</div>
 			<div class="mt-50px ml-184px">
-				<router-link to="/admission/manager/">
+				<router-link to="/admission/manager/signin">
 					<Button class="bg-darkBlue h-95px w-360px">
 						<div class="m-auto text-2xl">
 							<div>{{ $t("行政人員登入") }}</div>
