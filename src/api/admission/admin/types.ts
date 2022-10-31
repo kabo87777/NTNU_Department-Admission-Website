@@ -1,3 +1,5 @@
+import { BooleanLocale } from "yup/lib/locale";
+
 export interface AdmissionManagerSignInInput {
 	email: string;
 	password: string;
@@ -33,4 +35,28 @@ export interface AdmissionAdminProgramListResponse {
 	applicant_required_file: null;
 	reviewer_required_info: null;
 	reviewer_required_file: null;
+}
+
+// BELOW APIs not connected CURRENTLY
+export interface AdmissionAdminGetApplicantsListResponse {
+	id: number;
+	provider: string;
+	uid: string;
+	allow_password_change?: boolean;
+	isInit?: boolean;
+	lang?: string;
+	name: string;
+	nickname?: string;
+	image?: string;
+	email: string;
+	username: string;
+	docs_order?: string;
+	oral_order?: string;
+	file?: any;
+	docs_stage?: string | number;
+	oral_stage?: string | number;
+	created_at?: string;
+	updated_at?: string;
+	s_program_id?: number;
+	application_stage?: string | number;
 }
