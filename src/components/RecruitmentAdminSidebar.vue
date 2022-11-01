@@ -1,8 +1,8 @@
 <template>
 	<div class="mt-32px relative">
 		<div class="flex">
-			<div class="sidebarVerticalBigBlueDivider"></div>
-			<div class="sidebarVerticalSmallBlueDivider"></div>
+			<div class="sidebarVerticalBigRedDivider"></div>
+			<div class="sidebarVerticalSmallRedDivider"></div>
 			<div class="ml-12px w-[100%]">
 				<Dropdown
 					v-model="selectedProgram"
@@ -19,7 +19,7 @@
 				</Dropdown>
 			</div>
 		</div>
-		//router & logo 還沒改
+
 		<router-link
 			to="/recruitment/reviewer/requiredDataReview"
 			custom
@@ -38,7 +38,7 @@
 				<span
 					class="text-left tracking-3px ml-3 font-bold text-[20px] text-[#2D2926]"
 				>
-					{{ $t("專案設定") }}
+					{{ $t("必看資料評閱") }}
 				</span>
 			</Button>
 		</router-link>
@@ -61,145 +61,7 @@
 				<span
 					class="text-left tracking-3px ml-3 font-bold text-[20px] text-[#2D2926]"
 				>
-					{{ $t("專案狀態") }}
-				</span>
-			</Button>
-		</router-link>
-
-		<router-link
-			to="/recruitment/reviewer/optionalDataReview"
-			custom
-			v-slot="{ navigate }"
-		>
-			<Button
-				class="p-button-secondary p-button-text !ml-24px !mt-32px !w-336px !h-48px"
-				@click="navigate"
-				role="link"
-			>
-				<img
-					alt="logo"
-					src="/assets/reviewer-page/Arhive-1.png"
-					style="width: 1.5rem"
-				/>
-				<span
-					class="text-left tracking-3px ml-3 font-bold text-[20px] text-[#2D2926]"
-				>
-					{{ $t("申請帳戶設置") }}
-				</span>
-			</Button>
-		</router-link>
-
-		<router-link
-			to="/recruitment/reviewer/optionalDataReview"
-			custom
-			v-slot="{ navigate }"
-		>
-			<Button
-				class="p-button-secondary p-button-text !ml-24px !mt-32px !w-336px !h-48px"
-				@click="navigate"
-				role="link"
-			>
-				<img
-					alt="logo"
-					src="/assets/reviewer-page/Arhive-1.png"
-					style="width: 1.5rem"
-				/>
-				<span
-					class="text-left tracking-3px ml-3 font-bold text-[20px] text-[#2D2926]"
-				>
-					{{ $t("上傳欄位設置") }}
-				</span>
-			</Button>
-		</router-link>
-
-		<router-link
-			to="/recruitment/reviewer/optionalDataReview"
-			custom
-			v-slot="{ navigate }"
-		>
-			<Button
-				class="p-button-secondary p-button-text !ml-24px !mt-32px !w-336px !h-48px"
-				@click="navigate"
-				role="link"
-			>
-				<img
-					alt="logo"
-					src="/assets/reviewer-page/Arhive-1.png"
-					style="width: 1.5rem"
-				/>
-				<span
-					class="text-left tracking-3px ml-3 font-bold text-[20px] text-[#2D2926]"
-				>
-					{{ $t("上傳資料列表") }}
-				</span>
-			</Button>
-		</router-link>
-
-		<router-link
-			to="/recruitment/reviewer/optionalDataReview"
-			custom
-			v-slot="{ navigate }"
-		>
-			<Button
-				class="p-button-secondary p-button-text !ml-24px !mt-32px !w-336px !h-48px"
-				@click="navigate"
-				role="link"
-			>
-				<img
-					alt="logo"
-					src="/assets/reviewer-page/Arhive-1.png"
-					style="width: 1.5rem"
-				/>
-				<span
-					class="text-left tracking-3px ml-3 font-bold text-[20px] text-[#2D2926]"
-				>
-					{{ $t("審查評分設置") }}
-				</span>
-			</Button>
-		</router-link>
-
-		<router-link
-			to="/recruitment/reviewer/optionalDataReview"
-			custom
-			v-slot="{ navigate }"
-		>
-			<Button
-				class="p-button-secondary p-button-text !ml-24px !mt-32px !w-336px !h-48px"
-				@click="navigate"
-				role="link"
-			>
-				<img
-					alt="logo"
-					src="/assets/reviewer-page/Arhive-1.png"
-					style="width: 1.5rem"
-				/>
-				<span
-					class="text-left tracking-3px ml-3 font-bold text-[20px] text-[#2D2926]"
-				>
-					{{ $t("評分資料列表") }}
-				</span>
-			</Button>
-		</router-link>
-
-		<router-link
-			to="/recruitment/reviewer/optionalDataReview"
-			custom
-			v-slot="{ navigate }"
-		>
-			<Button
-				class="p-button-secondary p-button-text !ml-24px !mt-32px !w-336px !h-48px"
-				@click="navigate"
-				role="link"
-			>
-				<img
-					alt="logo"
-					src="/assets/reviewer-page/Arhive-1.png"
-					style="width: 1.5rem"
-				/>
-				<span
-					class="text-left tracking-3px ml-3 font-bold text-[20px] text-[#2D2926]"
-				>
-					{{ $t("審查人員與進度") }}
+					{{ $t("選看資料評閱") }}
 				</span>
 			</Button>
 		</router-link>
@@ -305,7 +167,7 @@ const generateOptions = (data: any) => data.category;
 
 async function signOut() {
 	await api.invalidateSession();
-	router.push("/recruitment/manager/login/signin");
+	router.push("/recruitment/manager/signin");
 }
 </script>
 

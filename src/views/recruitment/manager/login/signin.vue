@@ -152,7 +152,7 @@ import InputText from "primevue/inputtext";
 const router = useRouter();
 
 const redirectToMainContainer = () =>
-	router.replace({ name: "recruitmentAdminMainContainer" });
+	router.replace({ name: "RecruitmentTest" });
 
 const authStore = useRecruitmentAdminAuthStore();
 
