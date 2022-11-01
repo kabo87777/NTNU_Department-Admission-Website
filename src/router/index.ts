@@ -317,7 +317,7 @@ const routes: Array<RouteRecordRaw> = [
 			},
 			{
 				path: "recruitment/applicant",
-				name: "recruimentApplicantMainContainer",
+				name: "recruitmentApplicantMainContainer",
 				component: recruitmentApplicantMainContainer,
 				children: [
 					//Recruitment - applicant info pages

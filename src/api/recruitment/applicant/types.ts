@@ -32,7 +32,7 @@ export interface RecruitmentApplicantAuthResponse {
 }
 
 // BELOW APIs not connected CURRENTLY
-export interface RecruitmentApplicantGetProgramNameResponse {
+export interface RecruitmentApplicantGetProgramResponse {
 	id: number;
 	category: string;
 	name: string;

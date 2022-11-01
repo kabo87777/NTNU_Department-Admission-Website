@@ -284,7 +284,7 @@ import IncompleteTag from "@/styles/tags/incompleteTag.vue";
 import { useRouter } from "vue-router";
 import { useAdmissionApplicantAuthStore } from "@/stores/universalAuth";
 import { AdmissionApplicantAPI } from "@/api/admission/applicant/api";
-// import { useQuery } from "@tanstack/vue-query";
+import { useQuery } from "@tanstack/vue-query";
 
 const router = useRouter();
 
@@ -293,12 +293,12 @@ const applicantAuth = useAdmissionApplicantAuthStore();
 
 const api = new AdmissionApplicantAPI(applicantAuth);
 
-// const {
-// 	isLoading,
-// 	isError,
-// 	data: programs,
-// 	error,
-// } = useQuery(["programList"], async () => await api.getProgramList());
+const {
+	isLoading,
+	isError,
+	data: programs,
+	error,
+} = useQuery(["programList"], async () => await api.getProgramList());
 
 // const { t } = useI18n();
 

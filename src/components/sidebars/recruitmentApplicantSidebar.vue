@@ -214,26 +214,22 @@ import IncompleteTag from "@/styles/tags/incompleteTag.vue";
 // import Tag from "primevue/tag";
 // import { useI18n } from "vue-i18n";
 // import { useRouter } from "vue-router";
-// import {
-// 	useAdmissionAdminAuthStore,
-// 	useAdmissionReviewerAuthStore,
-// } from "@/stores/universalAuth";
-// import { AdmissionAdminAPI } from "@/api/admission/admin/api";
-// import { useQuery } from "@tanstack/vue-query";
+import { useRecruitmentApplicantAuthStore } from "@/stores/universalAuth";
+import { RecruitmentApplicantAPI } from "@/api/recruitment/applicant/api";
+import { useQuery } from "@tanstack/vue-query";
 
 // const router = useRouter();
 
-// const reviewerAuth = useAdmissionReviewerAuthStore();
-// const adminAuth = useAdmissionAdminAuthStore();
+const applicantAuth = useRecruitmentApplicantAuthStore();
 
-// const api = new AdmissionAdminAPI(adminAuth);
+const api = new RecruitmentApplicantAPI(applicantAuth);
 
-// const {
-// 	isLoading,
-// 	isError,
-// 	data: programs,
-// 	error,
-// } = useQuery(["programList"], async () => await api.getProgramList());
+const {
+	isLoading,
+	isError,
+	data: programs,
+	error,
+} = useQuery(["programList"], async () => await api.getProgramList());
 
 // const { t } = useI18n();
 
