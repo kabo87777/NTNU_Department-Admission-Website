@@ -1,23 +1,10 @@
-export interface Tags {
-	basicInfo: string;
-	attachment: string;
-	additionalDocs: string;
-}
-
-export interface AttachmentData {
-	itemName?: string;
-	fileName?: string;
-	fileUrl?: string;
-	order?: number;
-	state?: number;
-}
-export interface RecruitmentApplicantSignInInput {
+export interface RecruitmentAdminSignInInput {
 	email: string;
 	password: string;
 	"cf-turnstile-response": string;
 }
 
-export interface RecruitmentApplicantAuthResponse {
+export interface RecruitmentAdminAuthResponse {
 	email: string;
 	provider: string;
 	uid: string;
@@ -30,8 +17,8 @@ export interface RecruitmentApplicantAuthResponse {
 	image: any | null;
 }
 
-// TODO: disannotation while backend finished applicant get program API
-// export interface RecruitmentApplicantProgramListResponse {
+// TODO: disannotation while backend finished admin get program API
+// export interface RecruitmentAdminProgramListResponse {
 // 	id: number;
 // 	category: string;
 // 	name: string;
