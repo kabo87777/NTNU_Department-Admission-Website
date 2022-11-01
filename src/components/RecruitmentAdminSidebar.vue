@@ -32,13 +32,13 @@
 			>
 				<img
 					alt="logo"
-					src="/assets/reviewer-page/Arhive.png"
+					src="/assets/recruit-manger-page/Setting_line.svg"
 					style="width: 1.5rem"
 				/>
 				<span
 					class="text-left tracking-3px ml-3 font-bold text-[20px] text-[#2D2926]"
 				>
-					{{ $t("必看資料評閱") }}
+					{{ $t("專案設定") }}
 				</span>
 			</Button>
 		</router-link>
@@ -55,13 +55,157 @@
 			>
 				<img
 					alt="logo"
-					src="/assets/reviewer-page/Arhive-1.png"
+					src="/assets/recruit-manger-page/Chart_light.svg"
 					style="width: 1.5rem"
 				/>
 				<span
 					class="text-left tracking-3px ml-3 font-bold text-[20px] text-[#2D2926]"
 				>
-					{{ $t("選看資料評閱") }}
+					{{ $t("專案狀態") }}
+				</span>
+			</Button>
+		</router-link>
+		<div class="flex mt-32px">
+			<div class="sidebarRedDivider"></div>
+			<div class="mt-[-8px] ml-8px text-[#93282C] text-20px font-bold">
+				{{ $t("申請端設定") }}
+			</div>
+		</div>
+		<router-link
+			to="recruitment/manager/MainContainer"
+			custom
+			v-slot="{ navigate }"
+		>
+			<Button
+				class="p-button-secondary p-button-text !ml-24px !mt-32px !w-336px !h-48px"
+				@click="navigate"
+				role="link"
+			>
+				<img
+					alt="logo"
+					src="/assets/recruit-manger-page/User_add_alt.svg"
+					style="width: 1.5rem"
+				/>
+				<span
+					class="text-left tracking-3px ml-3 font-bold text-[20px] text-[#2D2926]"
+				>
+					{{ $t("申請帳戶設置") }}
+				</span>
+			</Button>
+		</router-link>
+		<router-link
+			to="/recruitment/reviewer/optionalDataReview"
+			custom
+			v-slot="{ navigate }"
+		>
+			<Button
+				class="p-button-secondary p-button-text !ml-24px !mt-32px !w-336px !h-48px"
+				@click="navigate"
+				role="link"
+			>
+				<img
+					alt="logo"
+					src="/assets/recruit-manger-page/Sort_alfa.svg"
+					style="width: 1.5rem"
+				/>
+				<span
+					class="text-left tracking-3px ml-3 font-bold text-[20px] text-[#2D2926]"
+				>
+					{{ $t("上傳欄位設置") }}
+				</span>
+			</Button>
+		</router-link>
+		<router-link
+			to="/recruitment/reviewer/optionalDataReview"
+			custom
+			v-slot="{ navigate }"
+		>
+			<Button
+				class="p-button-secondary p-button-text !ml-24px !mt-32px !w-336px !h-48px"
+				@click="navigate"
+				role="link"
+			>
+				<img
+					alt="logo"
+					src="/assets/recruit-manger-page/File_dock_search.svg"
+					style="width: 1.5rem"
+				/>
+				<span
+					class="text-left tracking-3px ml-3 font-bold text-[20px] text-[#2D2926]"
+				>
+					{{ $t("上傳資料列表") }}
+				</span>
+			</Button>
+		</router-link>
+		<div class="flex mt-32px">
+			<div class="sidebarRedDivider"></div>
+			<div class="mt-[-8px] ml-8px text-[#93282C] text-20px font-bold">
+				{{ $t("審查端設定") }}
+			</div>
+		</div>
+		<router-link
+			to="/recruitment/reviewer/optionalDataReview"
+			custom
+			v-slot="{ navigate }"
+		>
+			<Button
+				class="p-button-secondary p-button-text !ml-24px !mt-32px !w-336px !h-48px"
+				@click="navigate"
+				role="link"
+			>
+				<img
+					alt="logo"
+					src="/assets/recruit-manger-page/Eye_light.svg"
+					style="width: 1.5rem"
+				/>
+				<span
+					class="text-left tracking-3px ml-3 font-bold text-[20px] text-[#2D2926]"
+				>
+					{{ $t("審查評分設置") }}
+				</span>
+			</Button>
+		</router-link>
+		<router-link
+			to="/recruitment/reviewer/optionalDataReview"
+			custom
+			v-slot="{ navigate }"
+		>
+			<Button
+				class="p-button-secondary p-button-text !ml-24px !mt-32px !w-336px !h-48px"
+				@click="navigate"
+				role="link"
+			>
+				<img
+					alt="logo"
+					src="/assets/recruit-manger-page/Flag_finish.svg"
+					style="width: 1.5rem"
+				/>
+				<span
+					class="text-left tracking-3px ml-3 font-bold text-[20px] text-[#2D2926]"
+				>
+					{{ $t("評分資料列表") }}
+				</span>
+			</Button>
+		</router-link>
+		<router-link
+			to="/recruitment/reviewer/optionalDataReview"
+			custom
+			v-slot="{ navigate }"
+		>
+			<Button
+				class="p-button-secondary p-button-text !ml-24px !mt-32px !w-336px !h-48px"
+				@click="navigate"
+				role="link"
+			>
+				<img
+					alt="logo"
+					src="/assets/recruit-manger-page/User_light.svg"
+					style="width: 1.5rem"
+				/>
+				<span
+					class="text-left tracking-3px ml-3 font-bold text-[20px] text-[#2D2926]"
+				>
+					{{ $t("審查人員與進度") }}
 				</span>
 			</Button>
 		</router-link>
