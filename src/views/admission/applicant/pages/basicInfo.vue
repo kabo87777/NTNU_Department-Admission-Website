@@ -541,7 +541,7 @@
 <script setup lang="ts">
 import "@/styles/customize.css";
 import "primeicons/primeicons.css";
-import { onMounted } from "vue";
+import { ref, watch, onMounted } from "vue";
 
 import SelectButton from "primevue/selectbutton";
 import MultiSelect from "primevue/multiselect";
@@ -551,8 +551,7 @@ import Checkbox from "primevue/checkbox";
 import Button from "primevue/button";
 import Calendar from "primevue/calendar";
 import Dropdown from "primevue/dropdown";
-import ParagraphDivider from "../../../../styles/paragraphDivider.vue";
-import { ref, watch } from "vue";
+import ParagraphDivider from "@/styles/paragraphDivider.vue";
 import { useI18n } from "vue-i18n";
 
 const nameInfo = ref({
@@ -597,7 +596,7 @@ const identityInfo = ref({
 	sex: "",
 	gender: "",
 	country: "",
-	date: Date,
+	date: new Date(),
 	streetAddress: "",
 	secondCountry: "",
 	visa: "",
@@ -638,12 +637,7 @@ const phone = (prod: any) => {
 };
 const address = (prod: any) => {
 	if (textCheckedAddress.value === false) {
-		currentAddress.value.country = residentAddress.value.country;
-		currentAddress.value.state = residentAddress.value.state;
-		currentAddress.value.city = residentAddress.value.city;
-		currentAddress.value.postalCode = residentAddress.value.postalCode;
-		currentAddress.value.streetAddress =
-			residentAddress.value.streetAddress;
+		Object.assign(currentAddress.value, residentAddress.value);
 	}
 };
 </script>
