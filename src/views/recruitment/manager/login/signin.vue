@@ -152,7 +152,8 @@ import InputText from "primevue/inputtext";
 const router = useRouter();
 
 const redirectToMainContainer = () =>
-	router.replace({ name: "RecruitmentTest" });
+	// TODO: Change Tag - Manager to Admin
+	router.replace({ name: "recruitmentManagerMainContainer" });
 
 const authStore = useRecruitmentAdminAuthStore();
 

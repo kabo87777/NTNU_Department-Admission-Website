@@ -20,11 +20,7 @@
 			</div>
 		</div>
 
-		<router-link
-			to="/recruitment/reviewer/requiredDataReview"
-			custom
-			v-slot="{ navigate }"
-		>
+		<router-link to="" custom v-slot="{ navigate }">
 			<Button
 				class="p-button-secondary p-button-text !ml-24px !mt-32px !w-336px !h-48px"
 				@click="navigate"
@@ -43,11 +39,7 @@
 			</Button>
 		</router-link>
 
-		<router-link
-			to="/recruitment/reviewer/optionalDataReview"
-			custom
-			v-slot="{ navigate }"
-		>
+		<router-link to="" custom v-slot="{ navigate }">
 			<Button
 				class="p-button-secondary p-button-text !ml-24px !mt-32px !w-336px !h-48px"
 				@click="navigate"
@@ -71,11 +63,7 @@
 				{{ $t("申請端設定") }}
 			</div>
 		</div>
-		<router-link
-			to="recruitment/manager/MainContainer"
-			custom
-			v-slot="{ navigate }"
-		>
+		<router-link to="" custom v-slot="{ navigate }">
 			<Button
 				class="p-button-secondary p-button-text !ml-24px !mt-32px !w-336px !h-48px"
 				@click="navigate"
@@ -93,11 +81,7 @@
 				</span>
 			</Button>
 		</router-link>
-		<router-link
-			to="/recruitment/reviewer/optionalDataReview"
-			custom
-			v-slot="{ navigate }"
-		>
+		<router-link to="" custom v-slot="{ navigate }">
 			<Button
 				class="p-button-secondary p-button-text !ml-24px !mt-32px !w-336px !h-48px"
 				@click="navigate"
@@ -115,11 +99,7 @@
 				</span>
 			</Button>
 		</router-link>
-		<router-link
-			to="/recruitment/reviewer/optionalDataReview"
-			custom
-			v-slot="{ navigate }"
-		>
+		<router-link to="" custom v-slot="{ navigate }">
 			<Button
 				class="p-button-secondary p-button-text !ml-24px !mt-32px !w-336px !h-48px"
 				@click="navigate"
@@ -143,11 +123,7 @@
 				{{ $t("審查端設定") }}
 			</div>
 		</div>
-		<router-link
-			to="/recruitment/reviewer/optionalDataReview"
-			custom
-			v-slot="{ navigate }"
-		>
+		<router-link to="" custom v-slot="{ navigate }">
 			<Button
 				class="p-button-secondary p-button-text !ml-24px !mt-32px !w-336px !h-48px"
 				@click="navigate"
@@ -165,11 +141,7 @@
 				</span>
 			</Button>
 		</router-link>
-		<router-link
-			to="/recruitment/reviewer/optionalDataReview"
-			custom
-			v-slot="{ navigate }"
-		>
+		<router-link to="" custom v-slot="{ navigate }">
 			<Button
 				class="p-button-secondary p-button-text !ml-24px !mt-32px !w-336px !h-48px"
 				@click="navigate"
@@ -188,7 +160,7 @@
 			</Button>
 		</router-link>
 		<router-link
-			to="/recruitment/reviewer/optionalDataReview"
+			to="/recruitment/manager/reviewProgress"
 			custom
 			v-slot="{ navigate }"
 		>

@@ -26,10 +26,8 @@
 <script setup lang="ts">
 import NavBar from "@/components/NavBar.vue";
 import SideBar from "@/components/RecruitmentAdminSidebar.vue";
-
 import { watch } from "vue";
 import { useRouter } from "vue-router";
-
 import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
 import { doUniversalAuthSessionValidation } from "@/api/universalAuth";
 
