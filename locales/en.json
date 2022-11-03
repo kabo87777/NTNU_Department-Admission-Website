@@ -264,5 +264,10 @@
   "未完成": "Incomplete",
   "未開放": "Unable",
   "資料填寫、上傳": "Fill out information form & data upload",
-  "相關作業、系統": "Beneficial Documents"
+  "相關作業、系統": "Beneficial Documents",
+  "審查人員與進度": "Reviewers & Progress",
+  "通過": "Pass",
+  "推薦/不推薦": "Recommend/Not Recommend",
+  "面試時間": "Interview Time",
+  "操作": "Edit"
 }

@@ -71,6 +71,8 @@ import recruitmentManagerSignin from "@/views/recruitment/manager/login/signin.v
 import recruitmentManagerPasswordReset from "@/views/recruitment/manager/login/pwdReset.vue";
 import recruitmentManagerPasswordForget from "@/views/recruitment/manager/login/pwdForget.vue";
 import recruitmentManagerPasswordForgetEmailSent from "@/views/recruitment/manager/login/pwdForgetEmailSent.vue";
+import recruitmentManagerMainContainer from "@/views/recruitment/manager/MainContainer.vue";
+import recruitmentGradeDataList from "@/views/recruitment/manager/gradeDataList.vue";
 
 const routes: Array<RouteRecordRaw> = [
 	// Choose recruitment / admission
@@ -332,6 +334,18 @@ const routes: Array<RouteRecordRaw> = [
 				path: "recruitment/manager/password/forget/emailSent",
 				name: "recruitmentManagerPasswordForgetEmailSent",
 				component: recruitmentManagerPasswordForgetEmailSent,
+			},
+			{
+				path: "recruitment/manager",
+				name: "recruitmentAdminMainContainer",
+				component: recruitmentManagerMainContainer,
+				children: [
+					{
+						path: "gradeDataList",
+						name: "recruitmentGradeDataList",
+						component: recruitmentGradeDataList,
+					},
+				],
 			},
 
 			// Recruitment - reviewer sign in
