@@ -128,13 +128,42 @@
 </template>
 
 <script setup lang="ts">
-import { reactive } from "vue";
+import { reactive, toRaw } from "vue";
+import { useRouter } from "vue-router";
 import ReviewState from "@/components/attachmentStates/reviewState.vue";
 import EditState from "@/components/attachmentStates/editState.vue";
 import CreateState from "@/components/attachmentStates/createState.vue";
 import ParagraphDivider from "@/styles/paragraphDividerApplicant.vue";
 import { AttachmentData } from "@/api/recruitment/applicant/types";
+import { useRecruitmentApplicantAuthStore } from "@/stores/universalAuth";
+import { RecruitmentApplicantAPI } from "@/api/recruitment/applicant/api";
+import { useQuery } from "@tanstack/vue-query";
+import { InvalidSessionError } from "@/api/error";
 import AttachmentList from "@/mocks/attachmentList.json";
+
+const router = useRouter();
+const applicantAuth = useRecruitmentApplicantAuthStore();
+const api = new RecruitmentApplicantAPI(applicantAuth);
+
+const { isLoading, isError, data, error } = useQuery(
+	["attachmentList"],
+	async () => {
+		try {
+			return await api.getFileList();
+		} catch (e: any) {
+			if (e instanceof InvalidSessionError) {
+				console.error(
+					"Session has already expired while querying attachment list"
+				);
+				router.push("/");
+				return;
+			}
+		}
+	}
+);
+
+const attachmentList = toRaw(data.value);
+console.log(attachmentList);
 
 const schoolExpList = reactive(
 	AttachmentList.schoolExp?.map((item, index) => {

@@ -203,7 +203,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive } from "vue";
+import { reactive, toRaw } from "vue";
 import { Tags } from "@/api/recruitment/applicant/types";
 import "primeicons/primeicons.css";
 import "primevue/resources/primevue.min.css";
@@ -224,13 +224,13 @@ const applicantAuth = useRecruitmentApplicantAuthStore();
 
 const api = new RecruitmentApplicantAPI(applicantAuth);
 
-const {
-	isLoading,
-	isError,
-	data: programs,
-	error,
-} = useQuery(["programList"], async () => await api.getProgramList());
+const { isLoading, isError, data, error } = useQuery(
+	["programList"],
+	async () => await api.getProgramList()
+);
 
+const programList = toRaw(data.value);
+console.log(programList);
 // const { t } = useI18n();
 
 const currentYear = new Date().getFullYear();

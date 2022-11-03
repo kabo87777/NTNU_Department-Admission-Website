@@ -1,6 +1,9 @@
 import type { AuthStore } from "@/stores/universalAuth";
 import { GenericAPI } from "@/api/api";
-import type { RecruitmentApplicantGetProgramResponse } from "./types";
+import type {
+	RecruitmentApplicantProgramResponse,
+	RecruitmentApplicantFileListResponse,
+} from "./types";
 import type { APIGenericResponse } from "@/api/types";
 
 export class RecruitmentApplicantAPI extends GenericAPI {
@@ -8,14 +11,25 @@ export class RecruitmentApplicantAPI extends GenericAPI {
 		super(auth);
 	}
 
-	async getProgramList(): Promise<RecruitmentApplicantGetProgramResponse[]> {
+	async getProgramList(): Promise<RecruitmentApplicantProgramResponse[]> {
 		const data: APIGenericResponse = await this.instance.get(
 			"/recruitment/applicant/program"
 		);
 
-		if (data.error === true || typeof data.data.programs === "undefined")
+		if (data.error === true || typeof data.data === "undefined")
 			throw new Error("Failed to fetch program list");
-		console.log(data);
-		return data.data.programs;
+
+		return data.data;
+	}
+
+	async getFileList(): Promise<RecruitmentApplicantFileListResponse[]> {
+		const data: APIGenericResponse = await this.instance.get(
+			"/recruitment/applicant/program/1/file"
+		);
+
+		if (data.error === true || typeof data.data === "undefined")
+			throw new Error("Failed to fetch file list");
+
+		return data.data;
 	}
 }

@@ -32,7 +32,7 @@ export interface RecruitmentApplicantAuthResponse {
 }
 
 // BELOW APIs not connected CURRENTLY
-export interface RecruitmentApplicantGetProgramResponse {
+export interface RecruitmentApplicantProgramResponse {
 	id: number;
 	category: string;
 	name: string;
@@ -50,7 +50,7 @@ export interface RecruitmentApplicantGetProgramResponse {
 	reviewer_required_file: null;
 }
 
-export interface RecruitmentApplicantGetFileListResponse {
+export interface RecruitmentApplicantFileListResponse {
 	id: number;
 	category: string;
 	name: string;

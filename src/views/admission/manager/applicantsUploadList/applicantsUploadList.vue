@@ -104,14 +104,44 @@
 </template>
 
 <script setup lang="ts">
+import { toRaw } from "vue";
+import { router } from "@/router";
+import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
+import { AdmissionAdminAPI } from "@/api/admission/admin/api";
+import { useQuery } from "@tanstack/vue-query";
+import { InvalidSessionError } from "@/api/error";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import Tag from "primevue/tag";
 import "../../../../styles/customize.css";
 import applicantsList from "./uploadList.json";
 
+const adminAuth = useAdmissionAdminAuthStore();
+const api = new AdmissionAdminAPI(adminAuth);
+
+const {
+	isLoading,
+	isError,
+	data: applicants,
+	error,
+} = useQuery(["applicantList"], async () => {
+	try {
+		return await api.getApplicantList();
+	} catch (e: any) {
+		if (e instanceof InvalidSessionError) {
+			console.error(
+				"Session has already expired while quering appliacntList"
+			);
+			router.push("/");
+			return;
+		}
+	}
+});
+
+const applicantList = toRaw(applicants.value);
+
 const applicantsData = applicantsList.applicants;
-console.log(applicantsData);
+console.log(applicantsData, applicantList);
 </script>
 
 <style setup lang="css">
