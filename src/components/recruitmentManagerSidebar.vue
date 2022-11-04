@@ -142,7 +142,9 @@
 					src="/assets/sidebar/Eye_light.png"
 					style="width: 1.5rem"
 				/>
-				<span class="text-left tracking-3px ml-3 font-bold text-xl text-[#2D2926]">
+				<span
+					class="text-left tracking-3px ml-3 font-bold text-xl text-[#2D2926]"
+				>
 					{{ $t("審查評分設置") }}
 				</span>
 			</Button>
@@ -162,7 +164,9 @@
 					src="/assets/sidebar/Flag_finish.png"
 					style="width: 1.5rem"
 				/>
-				<span class="text-left tracking-3px ml-3 font-bold text-xl text-[#2D2926]">
+				<span
+					class="text-left tracking-3px ml-3 font-bold text-xl text-[#2D2926]"
+				>
 					{{ $t("評分資料列表") }}
 				</span>
 			</Button>
@@ -182,7 +186,9 @@
 					src="/assets/sidebar/User_light.png"
 					style="width: 1.5rem"
 				/>
-				<span class="text-left tracking-3px ml-3 font-bold text-xl text-[#2D2926]">
+				<span
+					class="text-left tracking-3px ml-3 font-bold text-xl text-[#2D2926]"
+				>
 					{{ $t("審查人員與進度") }}
 				</span>
 			</Button>
