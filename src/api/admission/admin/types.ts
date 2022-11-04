@@ -38,21 +38,21 @@ export interface AdmissionAdminProgramListResponse {
 }
 
 // BELOW APIs not connected CURRENTLY
-export interface AdmissionAdminGetApplicantsListResponse {
-	id: number;
-	provider: string;
-	uid: string;
+export interface AdmissionAdminApplicantsListResponse {
+	id?: number;
+	provider?: string;
+	uid?: string;
 	allow_password_change?: boolean;
 	isInit?: boolean;
 	lang?: string;
-	name: string;
+	name?: string;
 	nickname?: string;
 	image?: string;
-	email: string;
-	username: string;
+	email?: string;
+	username?: string;
 	docs_order?: string;
 	oral_order?: string;
-	file?: any;
+	file?: string;
 	docs_stage?: string | number;
 	oral_stage?: string | number;
 	created_at?: string;

@@ -203,7 +203,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive } from "vue";
+import { reactive, toRaw } from "vue";
 import { Tags } from "@/api/recruitment/applicant/types";
 import "primeicons/primeicons.css";
 import "primevue/resources/primevue.min.css";
@@ -214,27 +214,23 @@ import IncompleteTag from "@/styles/tags/incompleteTag.vue";
 // import Tag from "primevue/tag";
 // import { useI18n } from "vue-i18n";
 // import { useRouter } from "vue-router";
-// import {
-// 	useAdmissionAdminAuthStore,
-// 	useAdmissionReviewerAuthStore,
-// } from "@/stores/universalAuth";
-// import { AdmissionAdminAPI } from "@/api/admission/admin/api";
-// import { useQuery } from "@tanstack/vue-query";
+import { useRecruitmentApplicantAuthStore } from "@/stores/universalAuth";
+import { RecruitmentApplicantAPI } from "@/api/recruitment/applicant/api";
+import { useQuery } from "@tanstack/vue-query";
 
 // const router = useRouter();
 
-// const reviewerAuth = useAdmissionReviewerAuthStore();
-// const adminAuth = useAdmissionAdminAuthStore();
+const applicantAuth = useRecruitmentApplicantAuthStore();
 
-// const api = new AdmissionAdminAPI(adminAuth);
+const api = new RecruitmentApplicantAPI(applicantAuth);
 
-// const {
-// 	isLoading,
-// 	isError,
-// 	data: programs,
-// 	error,
-// } = useQuery(["programList"], async () => await api.getProgramList());
+const { isLoading, isError, data, error } = useQuery(
+	["programList"],
+	async () => await api.getProgramList()
+);
 
+const programList = toRaw(data.value);
+console.log(programList);
 // const { t } = useI18n();
 
 const currentYear = new Date().getFullYear();

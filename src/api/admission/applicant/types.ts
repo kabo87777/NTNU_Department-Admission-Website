@@ -47,7 +47,7 @@ export interface AttachmentData {
 }
 
 // BELOW APIs not connected CURRENTLY
-export interface AdmissionApplicantGetProgramNameResponse {
+export interface AdmissionApplicantGetProgramResponse {
 	id: number;
 	category: string;
 	name: string;

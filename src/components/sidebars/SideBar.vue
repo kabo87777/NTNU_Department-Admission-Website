@@ -310,10 +310,7 @@ import Dialog from "primevue/dialog";
 import InputText from "primevue/inputtext";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
-import {
-	useAdmissionAdminAuthStore,
-	useAdmissionReviewerAuthStore,
-} from "@/stores/universalAuth";
+import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
 import { AdmissionAdminAPI } from "@/api/admission/admin/api";
 import { useQuery } from "@tanstack/vue-query";
 import { InvalidSessionError } from "@/api/error";
