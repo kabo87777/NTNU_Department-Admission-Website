@@ -323,15 +323,10 @@ import Dialog from "primevue/dialog";
 import InputText from "primevue/inputtext";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
-import {
-	useRecruitmentAdminAuthStore,
-	useRecruitmentReviewerAuthStore,
-} from "@/stores/universalAuth";
+import { useRecruitmentAdminAuthStore } from "@/stores/universalAuth";
 import { RecruitmentAdminAPI } from "@/api/recruitment/admin/api";
 import { useQuery } from "@tanstack/vue-query";
 import { InvalidSessionError } from "@/api/error";
-
-const { t } = useI18n();
 
 const router = useRouter();
 
