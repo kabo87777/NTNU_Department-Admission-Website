@@ -121,10 +121,12 @@
 				</span>
 			</Button>
 		</router-link>
-
-		<Divider align="left" class="text-xs text-ntnuRed text-base">
-			<b>{{ $t("審查端設定") }}</b>
-		</Divider>
+		<div class="flex mt-32px">
+			<div class="sidebarRedDivider"></div>
+			<div class="mt-[-8px] ml-8px text-[#874B52] text-20px font-bold">
+				{{ $t("審查端設定") }}
+			</div>
+		</div>
 		<router-link
 			to="/recruitment/manager/reviewScoreField"
 			custom
@@ -140,7 +142,7 @@
 					src="/assets/sidebar/Eye_light.png"
 					style="width: 1.5rem"
 				/>
-				<span class="text-left tracking-3px ml-3 font-bold text-xl">
+				<span class="text-left tracking-3px ml-3 font-bold text-xl text-[#2D2926]">
 					{{ $t("審查評分設置") }}
 				</span>
 			</Button>
@@ -160,7 +162,7 @@
 					src="/assets/sidebar/Flag_finish.png"
 					style="width: 1.5rem"
 				/>
-				<span class="text-left tracking-3px ml-3 font-bold text-xl">
+				<span class="text-left tracking-3px ml-3 font-bold text-xl text-[#2D2926]">
 					{{ $t("評分資料列表") }}
 				</span>
 			</Button>
@@ -180,7 +182,7 @@
 					src="/assets/sidebar/User_light.png"
 					style="width: 1.5rem"
 				/>
-				<span class="text-left tracking-3px ml-3 font-bold text-xl">
+				<span class="text-left tracking-3px ml-3 font-bold text-xl text-[#2D2926]">
 					{{ $t("審查人員與進度") }}
 				</span>
 			</Button>
