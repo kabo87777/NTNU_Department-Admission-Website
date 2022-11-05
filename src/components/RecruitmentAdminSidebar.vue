@@ -183,7 +183,7 @@
 		</router-link>
 
 		<div
-			class="bg-gray-200 bg-opacity-50 h-104px w-[100%] !mt-650px"
+			class="bg-gray-200 bg-opacity-50 h-104px w-[100%]"
 			style="transform: translateY(20%)"
 		>
 			<div class="flex">
