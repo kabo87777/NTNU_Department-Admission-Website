@@ -12,7 +12,6 @@ export interface AttachmentData {
 	order?: number;
 	state?: number;
 }
-
 export interface RecruitmentApplicantSignInInput {
 	email: string;
 	password: string;
