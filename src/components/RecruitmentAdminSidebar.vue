@@ -234,7 +234,7 @@ const reviewerAuth = useRecruitmentReviewerAuthStore();
 const api = new RecruitmentReviewerAPI(reviewerAuth);
 
 const programs = ref([]);
-// API isn't ready
+// TODO: add API for ProgramList
 
 // const {
 // 	isLoading,

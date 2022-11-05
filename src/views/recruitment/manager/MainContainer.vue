@@ -28,20 +28,19 @@ import NavBar from "@/components/NavBar.vue";
 import SideBar from "@/components/RecruitmentAdminSidebar.vue";
 import { watch } from "vue";
 import { useRouter } from "vue-router";
-import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
+import { useRecruitmentAdminAuthStore } from "@/stores/universalAuth";
 import { doUniversalAuthSessionValidation } from "@/api/universalAuth";
 
-// const router = useRouter();
+const router = useRouter();
 
-// const adminAuth = useAdmissionAdminAuthStore();
+const adminAuth = useRecruitmentAdminAuthStore();
 
-// watch(router.currentRoute, async () => {
-// 	if (!(await doUniversalAuthSessionValidation(adminAuth))) {
-// 		router.replace({ name: "RecruitmentManagerSignin" });
-// 		// TODO: show session expired notification
-// 	}
-// });
-//
+watch(router.currentRoute, async () => {
+	if (!(await doUniversalAuthSessionValidation(adminAuth))) {
+		router.replace({ name: "RecruitmentManagerSignin" });
+		// TODO: show session expired notification
+	}
+});
 </script>
 
 <style scoped></style>
