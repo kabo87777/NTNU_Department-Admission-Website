@@ -55,7 +55,9 @@ import recruitmentApplicantPasswordForgetEmailSent from "@/views/recruitment/app
 import recruitmentApplicantMainContainer from "@/views/recruitment/applicant/mainContainer.vue";
 import recruitmentApplicantBasicInfo from "@/views/recruitment/applicant/pages/basicInfo.vue";
 import recruitmentApplicantAttachment from "@/views/recruitment/applicant/pages/attachment.vue";
+import recruitmentApplicantSubmitConfirm from "@/views/recruitment/applicant/pages/SubmitConfirm.vue";
 import recruitmentApplicantAdditionalDocs from "@/views/recruitment/applicant/pages/additionalDocs.vue";
+import recruitmentApplicantSwitchProject from "@/views/recruitment/applicant/pages/SwitchProject.vue";
 import recruitmentApplicantUserSetting from "@/views/recruitment/applicant/pages/userSetting.vue";
 
 // Recruitment Reviewer section
@@ -332,9 +334,19 @@ const routes: Array<RouteRecordRaw> = [
 						component: recruitmentApplicantAttachment,
 					},
 					{
+						path: "submitConfirm",
+						name: "recruitmentApplicantSubmitConfirm",
+						component: recruitmentApplicantSubmitConfirm,
+					},
+					{
 						path: "additionalDocs",
 						name: "recruitmentApplicantAdditionalDocs",
 						component: recruitmentApplicantAdditionalDocs,
+					},
+					{
+						path: "switchProject",
+						name: "recruitmentApplicantSwitchProject",
+						component: recruitmentApplicantSwitchProject,
 					},
 					{
 						path: "userSetting",

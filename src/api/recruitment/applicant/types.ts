@@ -2,6 +2,7 @@ export interface Tags {
 	basicInfo: string;
 	attachment: string;
 	additionalDocs: string;
+	submitConfirm: string;
 }
 
 export interface AttachmentData {
@@ -31,23 +32,21 @@ export interface RecruitmentApplicantAuthResponse {
 	image: any | null;
 }
 
-// BELOW APIs not connected CURRENTLY
 export interface RecruitmentApplicantProgramResponse {
 	id: number;
 	category: string;
 	name: string;
-	application_start_date: string;
-	application_end_date: string;
-	review_start_date: string;
-	review_end_date: string;
-	require_file: string; // Array or string ??
-	stage: string;
-	created_at: string;
+	applicant_required_file?: {} | [];
+	applicant_required_info?: {} | [];
+	created_at?: string;
+	recruit_end_date: string;
+	recruit_start_date: string;
+	require_file?: [];
+	review_end_date?: string;
+	review_start_date?: string;
+	reviewer_required_file?: {} | [];
+	reviewer_required_info?: {} | [];
 	updated_at: string;
-	applicant_required_info: null; // ??
-	applicant_required_file: null;
-	reviewer_required_info: null;
-	reviewer_required_file: null;
 }
 
 export interface RecruitmentApplicantFileListResponse {

@@ -266,5 +266,9 @@
   "未開放": "Unable",
   "資料填寫、上傳": "Fill out information form & data upload",
   "相關作業、系統": "Beneficial Documents",
-  "recruitmentApplicantSidebarTitle": "{ year } Recruitment"
+  "recruitmentApplicantSidebarTitle": "{ year } Recruitment",
+  "資料確認送出": "Submit Confirmation",
+  "切換專案": "Switch Project",
+  "當前專案": "Current Project",
+  "進入專案": "Enter Project"
 }

@@ -4,13 +4,6 @@
 			<div class="sidebarVerticalBigYellowDivider mt-32px"></div>
 			<div class="sidebarVerticalSmallYellowDivider mt-32px"></div>
 			<div class="mt-32px ml-12px w-[100%]">
-				<!-- <Dropdown
-					v-model="selectedProgram"
-					:options="programs"
-					:optionLabel="generateOptions"
-					class="h-60px w-[93%]"
-					style="border-radius: 8px; border: 1px solid #736028"
-				> -->
 				<div class="sidebarTitleBar">
 					{{
 						$t("recruitmentApplicantSidebarTitle", {
@@ -91,6 +84,37 @@
 			</Button>
 		</router-link>
 
+		<router-link
+			:to="{
+				name: 'recruitmentApplicantSubmitConfirm',
+			}"
+			custom
+			v-slot="{ navigate }"
+		>
+			<Button
+				class="p-button-secondary p-button-text !ml-24px !mt-8px !w-336px !h-48px !hover:bg-[#ECEDED] !rounded-[8px]"
+				@click="navigate"
+				role="link"
+			>
+				<i
+					class="pi pi-check-square"
+					style="font-size: 1.3rem; color: #101820"
+				/>
+				<span
+					class="text-left tracking-3px ml-4 font-bold text-xl text-[#2D2926]"
+				>
+					{{ $t("資料確認送出") }}
+				</span>
+				<div class="mb-28px">
+					<CompletedTag v-if="tags.submitConfirm === 'completed'" />
+					<IncompleteTag
+						v-else-if="tags.submitConfirm === 'incomplete'"
+					/>
+					<UnableTag v-else-if="tags.submitConfirm === 'unable'" />
+				</div>
+			</Button>
+		</router-link>
+
 		<div class="flex mt-32px">
 			<div class="sidebarYellowDivider"></div>
 			<div class="mt-[-8px] ml-8px text-[#736028] text-20px font-bold">
@@ -130,7 +154,7 @@
 		</router-link>
 
 		<div
-			class="bg-gray-200 bg-opacity-50 h-160px w-[100%]"
+			class="bg-gray-200 bg-opacity-50 h-240px w-[100%]"
 			style="
 				position: absolute;
 				bottom: 0px;
@@ -138,7 +162,30 @@
 				padding-right: 8px;
 			"
 		>
-			<div class="mt-28px flex relative">
+			<div class="mt-24px">
+				<router-link
+					:to="{
+						name: 'recruitmentApplicantSwitchProject',
+					}"
+					custom
+					v-slot="{ navigate }"
+				>
+					<Button
+						class="p-button-secondary p-button-outlined"
+						style="
+							height: 40px;
+							left: 50%;
+							transform: translateX(-50%);
+						"
+						@click="navigate"
+						role="link"
+					>
+						<div><i class="pi pi-sort-alt"></i></div>
+						<div class="ml-8px font-bold">{{ $t("切換專案") }}</div>
+					</Button>
+				</router-link>
+			</div>
+			<div class="mt-40px flex relative">
 				<div
 					style="
 						background-color: #8a7b27;
@@ -185,11 +232,10 @@
 							/>
 						</Button>
 					</router-link>
-					<!-- <Button
+					<Button
 						class="p-button-secondary p-button-text"
 						@click="signOut"
-					> -->
-					<Button class="p-button-secondary p-button-text">
+					>
 						<img
 							alt="logo"
 							src="/assets/sidebar/Sign_out_circle.png"
@@ -203,7 +249,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, toRaw } from "vue";
+import { reactive } from "vue";
 import { Tags } from "@/api/recruitment/applicant/types";
 import "primeicons/primeicons.css";
 import "primevue/resources/primevue.min.css";
@@ -211,28 +257,12 @@ import Button from "primevue/button";
 import UnableTag from "@/styles/tags/unableTag.vue";
 import CompletedTag from "@/styles/tags/completedTag.vue";
 import IncompleteTag from "@/styles/tags/incompleteTag.vue";
-// import Tag from "primevue/tag";
-// import { useI18n } from "vue-i18n";
-// import { useRouter } from "vue-router";
+import { useRouter } from "vue-router";
 import { useRecruitmentApplicantAuthStore } from "@/stores/universalAuth";
 import { RecruitmentApplicantAPI } from "@/api/recruitment/applicant/api";
-import { useQuery } from "@tanstack/vue-query";
+import "primeicons/primeicons.css";
 
-// const router = useRouter();
-
-const applicantAuth = useRecruitmentApplicantAuthStore();
-
-const api = new RecruitmentApplicantAPI(applicantAuth);
-
-const { isLoading, isError, data, error } = useQuery(
-	["programList"],
-	async () => await api.getProgramList()
-);
-
-const programList = toRaw(data.value);
-console.log(programList);
-// const { t } = useI18n();
-
+const router = useRouter();
 const currentYear = new Date().getFullYear();
 const rocYear = currentYear - 1911;
 
@@ -240,27 +270,16 @@ const tags: Tags = reactive({
 	basicInfo: "completed",
 	attachment: "incomplete",
 	additionalDocs: "unable",
+	submitConfirm: "incomplete",
 });
 
-// TODO: disannotation here and fix here during connect API
+const applicantAuth = useRecruitmentApplicantAuthStore();
+const api = new RecruitmentApplicantAPI(applicantAuth);
 
-// const displayNewProject = ref(false);
-// const newProjectName = ref("");
-
-// const generateOptions = (data: any) => data.category + data.name;
-
-// function newProject() {
-// 	displayNewProject.value = true;
-// }
-
-// function closeDisplayNewProject() {
-// 	displayNewProject.value = false;
-// }
-
-// async function signOut() {
-// 	await api.invalidateSession();
-// 	router.push("/");
-// }
+async function signOut() {
+	await api.invalidateSession();
+	router.push("/mainpage");
+}
 </script>
 
 <style setup lang="css">

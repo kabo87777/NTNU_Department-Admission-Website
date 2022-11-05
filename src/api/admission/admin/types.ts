@@ -1,5 +1,3 @@
-import { BooleanLocale } from "yup/lib/locale";
-
 export interface AdmissionManagerSignInInput {
 	email: string;
 	password: string;
@@ -37,7 +35,6 @@ export interface AdmissionAdminProgramListResponse {
 	reviewer_required_file: null;
 }
 
-// BELOW APIs not connected CURRENTLY
 export interface AdmissionAdminApplicantsListResponse {
 	id?: number;
 	provider?: string;

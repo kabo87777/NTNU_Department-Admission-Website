@@ -5,6 +5,13 @@
   margin-top: 8px;
 }
 
+.normalRedDivider {
+  background-color: #874b52;
+  height: 2px;
+  width: 100%;
+  margin-top: 8px;
+}
+
 .smallRedDivider {
   background-color: #874b52;
   height: 1px;
@@ -14,6 +21,13 @@
 .bigYellowDivider {
   background-color: #736028;
   height: 4px;
+  width: 100%;
+  margin-top: 8px;
+}
+
+.normalYellowDivider {
+  background-color: #736028;
+  height: 2px;
   width: 100%;
   margin-top: 8px;
 }
