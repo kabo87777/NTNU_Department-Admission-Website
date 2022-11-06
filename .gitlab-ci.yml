@@ -31,9 +31,6 @@ install dependencies:
 
 test:
   stage: test
-  needs:
-    - job: install dependencies
-      artifacts: false
   interruptible: true
   script:
     - pnpm lint
@@ -42,9 +39,6 @@ test:
 
 .vercel:
   stage: deploy
-  needs:
-    - job: install dependencies
-      artifacts: false
   before_script:
     - npm install --location=global pnpm@7 vercel
     - pnpm config set store-dir .pnpm-store
