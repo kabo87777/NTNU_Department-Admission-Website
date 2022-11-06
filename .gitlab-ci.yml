@@ -20,27 +20,43 @@ test:
         - pnpm-lock.yaml
     paths:
       - .pnpm-store
-
-deploy:prd:
+      
+.vercel:
   stage: deploy
-  image: curlimages/curl:latest
+  image: node:16.16.0
+  before_script:
+    - npm install --global vercel
+
+deploy for preview:
+  extends: .vercel
+  except:
+    - develop
+    - main
   script:
-    - echo "Deploying production"
-    - curl --fail-with-body -s "https://api.render.com/deploy/srv-${RENDER_SRV_ID}?key=${RENDER_DEPLOY_KEY}" -o file.txt >/dev/null 2>&1
+    - vercel pull --yes --environment=preview --token=$VERCEL_TOKEN
+    - vercel build --token=$VERCEL_TOKEN
+    - vercel deploy --prebuilt --token=$VERCEL_TOKEN
+
+deploy to staging:
+  extends: .vercel
+  only:
+    - develop
+  script:
+    - vercel pull --yes --environment=development --token=$VERCEL_TOKEN
+    - vercel build --token=$VERCEL_TOKEN
+    - vercel deploy --prebuilt --token=$VERCEL_TOKEN
+  environment:
+    name: Staging
+    url: https://admissions-frontend-staging.birkhoff.me
+
+deploy to production:
+  extends: .vercel
+  only:
+    - main
+  script:
+    - vercel pull --yes --environment=production --token=$VERCEL_TOKEN
+    - vercel build --token=$VERCEL_TOKEN
+    - vercel deploy --prebuilt --token=$VERCEL_TOKEN
   environment:
     name: Production
     url: https://admissions.birkhoff.me
-  rules:
-    - if: $CI_COMMIT_BRANCH == "main"
-
-deploy:staging:
-  stage: deploy
-  image: curlimages/curl:latest
-  script:
-    - echo "Deploying staging"
-    - curl --fail-with-body -s "https://api.render.com/deploy/srv-${RENDER_SRV_ID}?key=${RENDER_DEPLOY_KEY}" -o file.txt >/dev/null 2>&1
-  environment:
-    name: Staging
-    url: https://admissions-frontend-staging.onrender.com
-  rules:
-    - if: $CI_COMMIT_BRANCH == "develop"
