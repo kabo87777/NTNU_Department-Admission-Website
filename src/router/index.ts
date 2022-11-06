@@ -58,7 +58,7 @@ import recruitmentApplicantAttachment from "@/views/recruitment/applicant/pages/
 import recruitmentApplicantAdditionalDocs from "@/views/recruitment/applicant/pages/additionalDocs.vue";
 import recruitmentApplicantUserSetting from "@/views/recruitment/applicant/pages/userSetting.vue";
 
-// Recruitment Reviewer section
+// Recruitment Reviewer siginin section
 import recruitmentReviewerSignin from "@/views/recruitment/reviewer/login/signin.vue";
 import recruitmentReviewerPasswordForget from "@/views/recruitment/reviewer/login/pwdForget.vue";
 import recruitmentReviewerPasswordReset from "@/views/recruitment/reviewer/login/pwdReset.vue";
@@ -71,11 +71,15 @@ import optionalDataReview from "@/views/recruitment/reviewer/optionalDataReview.
 import singleRequiredDataReview from "@/views/recruitment/reviewer/singleRequiredDataReview.vue";
 import singleOptionalDataReview from "@/views/recruitment/reviewer/singleOptionalDataReview.vue";
 
-// Recruitment Manager section
+// Recruitment Manager signin section
 import recruitmentManagerSignin from "@/views/recruitment/manager/login/signin.vue";
 import recruitmentManagerPasswordReset from "@/views/recruitment/manager/login/pwdReset.vue";
 import recruitmentManagerPasswordForget from "@/views/recruitment/manager/login/pwdForget.vue";
 import recruitmentManagerPasswordForgetEmailSent from "@/views/recruitment/manager/login/pwdForgetEmailSent.vue";
+
+// Recruitment Manager section
+import recruitmentManagerMainContainer from "@/views/recruitment/manager/MainContainer.vue";
+import recruitmentManagerReviewProgress from "@/views/recruitment/manager/pages/ReviewProgress.vue";
 
 const routes: Array<RouteRecordRaw> = [
 	// Choose recruitment / admission
@@ -366,6 +370,19 @@ const routes: Array<RouteRecordRaw> = [
 				name: "recruitmentManagerPasswordForgetEmailSent",
 				component: recruitmentManagerPasswordForgetEmailSent,
 			},
+			// Recruitment - manager
+			{
+				path: "recruitment/manager",
+				name: "recruitmentManagerMainContainer",
+				component: recruitmentManagerMainContainer,
+				children: [
+					{
+						path: "reviewProgress",
+						name: "recruitmentManagerReviewProgress",
+						component: recruitmentManagerReviewProgress,
+					},
+				],
+			},
 
 			// Recruitment - reviewer sign in
 			{
@@ -374,7 +391,7 @@ const routes: Array<RouteRecordRaw> = [
 				component: recruitmentReviewerSignin,
 			},
 
-			// Recruitment - manager forget & reset password
+			// Recruitment - reviewer forget & reset password
 			{
 				path: "recruitment/reviewer/password/reset",
 				name: "recruitmenReviewerPasswordReset",
@@ -395,6 +412,12 @@ const routes: Array<RouteRecordRaw> = [
 				name: "recruitmentReviewerPasswordFirstLogin",
 				component: recruitmentReviewerPasswordFirstLogin,
 			},
+			{
+				path: "recruitment/reviewer/password/firstLogin",
+				name: "recruitmentReviewerPasswordFirstLogin",
+				component: recruitmentReviewerPasswordFirstLogin,
+			},
+
 			{
 				path: "recruitment/reviewer",
 				name: "recruitmentReviewerMainContainer",
