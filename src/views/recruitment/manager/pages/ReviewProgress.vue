@@ -2,7 +2,7 @@
 	<div class="ml-128px mr-128px mt-62px">
 		<div class="flex">
 			<div class="text-4xl text-bold tracking-widest">
-				{{ $t("審查人員與進度") }}
+				{{ translate.reviewProgress }}
 			</div>
 		</div>
 		<div class="bigRedDivider" />
@@ -17,14 +17,18 @@
 				scrollHeight="700px"
 			>
 				<template #empty>
-					<div>{{ $t("本專案目前未有審查人員") }}</div>
+					<div>{{ translate.thereisnoReviewer }}</div>
 				</template>
 				<!-- Column : User ID -->
-				<Column field="accountID" :header="account" width="100" />
+				<Column
+					field="accountID"
+					:header="translate.account"
+					width="100"
+				/>
 				<!-- Column : User Name -->
-				<Column field="name" :header="userName" width="100" />
+				<Column field="name" :header="translate.name" width="100" />
 				<!-- Column : Optional Data Progress -->
-				<Column :header="optionalData" width="100">
+				<Column :header="translate.optionalData" width="100">
 					<template #body="slotProps">
 						<div class="flex justify-center items center gap-4">
 							<div class="flex items center gap-1">
@@ -37,13 +41,17 @@
 								</div>
 							</div>
 							<div class="text-s p-2 bg-yellow-100 rounded-lg">
-								{{ trans(slotProps.data.optionalDataStatus) }}
+								{{
+									translate.status(
+										slotProps.data.optionalDataStatus
+									)
+								}}
 							</div>
 						</div>
 					</template>
 				</Column>
 				<!-- Column : Required Data Progress -->
-				<Column :header="requiredData" width="100">
+				<Column :header="translate.requiredData" width="100">
 					<template #body="slotProps">
 						<div class="flex justify-center items center gap-4">
 							<div class="flex items center gap-1">
@@ -56,7 +64,11 @@
 								</div>
 							</div>
 							<div class="text-s p-2 bg-yellow-100 rounded-lg">
-								{{ trans(slotProps.data.requiredDataStatus) }}
+								{{
+									translate.status(
+										slotProps.data.requiredDataStatus
+									)
+								}}
 							</div>
 						</div>
 					</template>
@@ -90,14 +102,20 @@
 		<div class="bigRedDivider"></div>
 
 		<div class="flex p-4 gap-4 text-l items-center">
-			<div>{{ t("未開放") }}</div>
-			<div>{{ countStatus("notStarted") }} {{ t(" 位") }}</div>
+			<div>{{ translate.status("notStarted") }}</div>
+			<div>
+				{{ countStatus("notStarted") }} {{ translate.unitofPerson }}
+			</div>
 			<Divider layout="vertical" />
-			<div>{{ t("評比中") }}</div>
-			<div>{{ countStatus("inProgess") }} {{ t(" 位") }}</div>
+			<div>{{ translate.status("inProgress") }}</div>
+			<div>
+				{{ countStatus("inProgess") }} {{ translate.unitofPerson }}
+			</div>
 			<Divider layout="vertical" />
-			<div>{{ t("已送出") }}</div>
-			<div>{{ countStatus("complete") }} {{ t(" 位") }}</div>
+			<div>{{ translate.status("complete") }}</div>
+			<div>
+				{{ countStatus("complete") }} {{ translate.unitofPerson }}
+			</div>
 		</div>
 	</div>
 
@@ -110,14 +128,14 @@
 	>
 		<template #header>
 			<div class="w-full">
-				<div class="text-xl">{{ $t("必看名單編輯") }}</div>
+				<div class="text-xl">{{ translate.editRequiredList }}</div>
 				<div class="smallRedDivider w-100%" />
 			</div>
 		</template>
 
 		<div class="flex w-full">
-			<div class="w-80">帳號：</div>
-			<div class="w-80">姓名：</div>
+			<div class="w-80">{{ translate.account }}{{ translate.colon }}</div>
+			<div class="w-80">{{ translate.name }}{{ translate.colon }}</div>
 		</div>
 		<div class="flex w-full">
 			<div class="w-80">{{ accountID }}</div>
@@ -135,11 +153,11 @@
 				<!-- Column : Selection -->
 				<Column selectionMode="multiple" width="10" />
 				<!-- Column : ID -->
-				<Column field="accId" :header="account" width="10" />
+				<Column field="accId" :header="translate.account" width="10" />
 				<!-- Column : Name -->
-				<Column field="name" :header="userName" width="10" />
+				<Column field="name" :header="translate.name" width="10" />
 				<!-- Column : Required Reviewer list -->
-				<Column :header="requiredReviewer" width="10">
+				<Column :header="translate.requiredReviewer" width="10">
 					<template #body="slotProps">
 						<div class="flex gap-2">
 							<div
@@ -154,7 +172,7 @@
 			</DataTable>
 		</div>
 		<div class="flex">
-			<div>{{ $t("必看人數：") }}</div>
+			<div>{{ translate.requiredAmount }} {{ translate.colon }}</div>
 			<div>{{ selectReviewer.length }}</div>
 		</div>
 
@@ -167,7 +185,7 @@
 					@click="closeRequiredList(true)"
 				>
 					<i class="pi pi-check" />
-					<div class="text-l">儲存變更</div>
+					<div class="text-l">{{ translate.save }}</div>
 				</button>
 				<button
 					class="flex items-center px-4 py-2 gap-2"
@@ -176,7 +194,7 @@
 					@click="closeRequiredList(false)"
 				>
 					<i class="pi pi-times" />
-					<div class="text-l">取消關閉</div>
+					<div class="text-l">{{ translate.cancel }}</div>
 				</button>
 			</div>
 		</template>
@@ -191,13 +209,13 @@
 	>
 		<template #header>
 			<div class="w-full">
-				<div class="text-xl">{{ $t("審查進度確認") }}</div>
+				<div class="text-xl">{{ translate.checkReviewProgress }}</div>
 				<div class="smallRedDivider" />
 			</div>
 		</template>
 		<div class="flex w-full">
-			<div class="w-80">帳號：</div>
-			<div class="w-80">姓名：</div>
+			<div class="w-80">{{ translate.account }}{{ translate.colon }}</div>
+			<div class="w-80">{{ translate.name }}{{ translate.colon }}</div>
 		</div>
 		<div class="flex w-full">
 			<div class="w-80">{{ accountID }}</div>
@@ -214,9 +232,9 @@
 				bg="red-200"
 				border="rounded-lg"
 			>
-				<div>{{ $t("必看名單") }}</div>
+				<div>{{ translate.requiredData }}</div>
 				<div class="text-xs p-1 bg-yellow-100 rounded-lg">
-					{{ trans(requiredDataStatus) }}
+					{{ translate.status(requiredDataStatus) }}
 				</div>
 			</button>
 			<button
@@ -225,9 +243,9 @@
 				border="rounded-lg"
 				@click="switchTab(false)"
 			>
-				<div>{{ $t("選看名單") }}</div>
+				<div>{{ translate.optionalData }}</div>
 				<div class="text-xs p-1 bg-yellow-100 rounded-lg">
-					{{ trans(optionalDataStatus) }}
+					{{ translate.status(optionalDataStatus) }}
 				</div>
 			</button>
 		</div>
@@ -243,9 +261,9 @@
 				border="rounded-lg"
 				@click="switchTab(true)"
 			>
-				<div>{{ $t("必看名單") }}</div>
+				<div>{{ translate.requiredData }}</div>
 				<div class="text-xs p-1 bg-yellow-100 rounded-lg">
-					{{ trans(requiredDataStatus) }}
+					{{ translate.status(requiredDataStatus) }}
 				</div>
 			</button>
 			<button
@@ -253,9 +271,9 @@
 				bg="red-200"
 				border="rounded-lg"
 			>
-				<div>{{ $t("選看名單") }}</div>
+				<div>{{ translate.optionalData }}</div>
 				<div class="text-xs p-1 bg-yellow-100 rounded-lg">
-					{{ trans(optionalDataStatus) }}
+					{{ translate.status(optionalDataStatus) }}
 				</div>
 			</button>
 		</div>
@@ -269,13 +287,13 @@
 				scrollHeight="400px"
 			>
 				<!-- Column : ID -->
-				<Column field="accId" :header="account" width="10" />
+				<Column field="accId" :header="translate.account" width="10" />
 				<!-- Column : Name -->
-				<Column field="name" :header="userName" width="10" />
+				<Column field="name" :header="translate.name" width="10" />
 				<!-- Column : Review Viewed -->
 				<Column
 					field="access"
-					:header="viewed"
+					:header="translate.viewed"
 					dataType="boolean"
 					bodyClass="text-center"
 					style="min-width: 8rem"
@@ -312,14 +330,14 @@
 					</template>
 				</Column>
 				<!-- Column : Review Graded -->
-				<Column :header="judgeStatus" width="10">
+				<Column :header="translate.reviewStatus" width="10">
 					<template #body="slotProps">
 						<div
 							class="text-s p-2 bg-yellow-100 rounded-lg"
 							v-if="currentTab"
 						>
 							{{
-								trans(
+								translate.status(
 									slotProps.data.requiredRecommand[
 										indexofReviewer(
 											accountID,
@@ -331,7 +349,7 @@
 						</div>
 						<div class="text-s p-2 bg-yellow-100 rounded-lg" v-else>
 							{{
-								trans(
+								translate.status(
 									slotProps.data.optionalRecommand[
 										indexofReviewer(
 											accountID,
@@ -354,7 +372,7 @@
 					@click="closeProgressInfo"
 				>
 					<i class="pi pi-check" />
-					<div class="text-l">完成</div>
+					<div class="text-l">{{ translate.okay }}</div>
 				</button>
 			</div>
 		</template>
@@ -367,7 +385,6 @@ import Column from "primevue/column";
 import DataTable from "primevue/datatable";
 import Divider from "primevue/divider";
 import Dialog from "primevue/dialog";
-import SelectButton from "primevue/selectbutton";
 
 import { useI18n } from "vue-i18n";
 import { ref, computed } from "vue";
@@ -380,28 +397,40 @@ import { RecruitmentAdminAPI } from "@/api/recruitment/admin/api";
 
 // i18n Translation
 const { t } = useI18n();
-const account = computed(() => t("帳號"));
-const userName = computed(() => t("姓名"));
-const optionalData = computed(() => t("選看資料"));
-const requiredData = computed(() => t("必看資料"));
-const requiredReviewer = computed(() => t("必看審查者"));
-const viewed = computed(() => t("已閱讀"));
-const judgeStatus = computed(() => t("評比狀態"));
-const trans = (word: string) => {
-	switch (word) {
-		case "notStarted":
-			return t("未開放");
-		case "inProgress":
-			return t("評比中");
-		case "complete":
-			return t("已送出");
-		case "unJudge":
-			return t("未評比");
-		case "notRecommand":
-			return t("不推薦");
-		case "recommand":
-			return t("推薦");
-	}
+const translate = {
+	reviewProgress: t("審查人員與進度"),
+	thereisnoReviewer: t("本專案目前未有審查人員"),
+	checkReviewProgress: t("審查進度確認"),
+	account: t("帳號"),
+	name: t("姓名"),
+	optionalData: t("選看資料"),
+	requiredData: t("必看資料"),
+	editRequiredList: t("編輯必看名單"),
+	requiredReviewer: t("必看審查者"),
+	requiredAmount: t("必看人數"),
+	viewed: t("已閱讀"),
+	reviewStatus: t("評比狀態"),
+	okay: t("確定"),
+	save: t("保存"),
+	cancel: t("取消"),
+	unitofPerson: t("位"),
+	colon: t(":"),
+	status: (state: string) => {
+		switch (state) {
+			case "notStarted":
+				return t("未開放");
+			case "inProgress":
+				return t("未完成");
+			case "complete":
+				return t("已完成");
+			case "unJudge":
+				return t("未評比");
+			case "notRecommand":
+				return t("不推薦");
+			case "recommand":
+				return t("推薦");
+		}
+	},
 };
 
 // Tab Selection

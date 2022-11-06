@@ -268,5 +268,14 @@
   "審查人員與進度": "Reviewing Progress",
   "申請帳戶設置": "Manage Applicant Account",
   "必看名單編輯": "Edit Required Review List",
-  "審查者帳號": "Reviewer Account"
+  "審查者帳號": "Reviewer Account",
+  "本專案目前未有審查人員": "There is no Reviewer in the Project",
+  "審查進度確認": "Check Review Status",
+  "評比狀態": "Review Status",
+  "必看資料": "Required Data",
+  "選看資料": "Optional Data",
+  "編輯必看名單": "Edit Required List",
+  "必看審查者": "required reviewer",
+  "必看人數": "Required",
+  "已閱讀": "Viewed"
 }
