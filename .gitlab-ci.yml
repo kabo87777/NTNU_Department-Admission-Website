@@ -1,4 +1,5 @@
 stages:
+  - dependencies
   - test
   - deploy
 
@@ -19,6 +20,7 @@ default:
     policy: pull
 
 install dependencies:
+  stage: dependencies
   interruptible: true
   when: always
   cache:
@@ -29,9 +31,6 @@ install dependencies:
 
 test:
   stage: test
-  needs:
-    - job: install dependencies
-      artifacts: false
   interruptible: true
   script:
     - pnpm lint
@@ -40,9 +39,6 @@ test:
 
 .vercel:
   stage: deploy
-  needs:
-    - job: install dependencies
-      artifacts: false
   before_script:
     - npm install --location=global pnpm@7 vercel
     - pnpm config set store-dir .pnpm-store
@@ -54,12 +50,8 @@ deploy for review:
   script:
     - vercel pull --yes --environment=preview --token=$VERCEL_TOKEN
     - vercel build --token=$VERCEL_TOKEN
-    - exec 5>&1
-    - VERCEL_DEPLOY_OUTPUT=$(vercel deploy --prebuilt --token=$VERCEL_TOKEN | tee >(cat - >&5))
-    - echo $VERCEL_DEPLOY_OUTPUT
-    - >
-      DEPLOY_URL=$($VERCEL_DEPLOY_OUTPUT | grep "Preview: " | awk '{print $2}')
-    - echo "DYNAMIC_ENVIRONMENT_URL=$DEPLOY_URL" >> deploy.env
+    - DEPLOYMENT_URL=$(vercel deploy --prebuilt --token=$VERCEL_TOKEN)
+    - echo "DYNAMIC_ENVIRONMENT_URL=$DEPLOYMENT_URL" >> deploy.env
   artifacts:
     reports:
       dotenv: deploy.env
