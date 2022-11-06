@@ -54,7 +54,7 @@ deploy for review:
     - VERCEL_DEPLOY_OUTPUT=$(vercel deploy --prebuilt --token=$VERCEL_TOKEN | tee >(cat - >&5))
     - echo $VERCEL_DEPLOY_OUTPUT
     - >
-      DEPLOY_URL=$($VERCEL_DEPLOY_OUTPUT | grep "Preview: " | awk '{print $2}')
+      DEPLOY_URL=$(echo $VERCEL_DEPLOY_OUTPUT | grep "Preview: " | awk '{print $2}')
     - echo "DYNAMIC_ENVIRONMENT_URL=$DEPLOY_URL" >> deploy.env
   artifacts:
     reports:
