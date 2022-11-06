@@ -48,15 +48,25 @@ test:
     - npm install --location=global pnpm@7 vercel
     - pnpm config set store-dir .pnpm-store
 
-deploy for preview:
+deploy for review:
   extends: .vercel
-  except:
-    - develop
-    - main
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event' # deploy for review for every MR.
   script:
     - vercel pull --yes --environment=preview --token=$VERCEL_TOKEN
     - vercel build --token=$VERCEL_TOKEN
-    - vercel deploy --prebuilt --token=$VERCEL_TOKEN
+    - exec 5>&1
+    - VERCEL_DEPLOY_OUTPUT=$(vercel deploy --prebuilt --token=$VERCEL_TOKEN | tee >(cat - >&5))
+    - echo $VERCEL_DEPLOY_OUTPUT
+    - >
+      DEPLOY_URL=$($VERCEL_DEPLOY_OUTPUT | grep "Preview: " | awk '{print $2}')
+    - echo "DYNAMIC_ENVIRONMENT_URL=$DEPLOY_URL" >> deploy.env
+  artifacts:
+    reports:
+      dotenv: deploy.env
+  environment:
+    name: review/$CI_COMMIT_REF_SLUG
+    url: $DYNAMIC_ENVIRONMENT_URL
 
 deploy to staging:
   extends: .vercel
