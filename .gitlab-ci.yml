@@ -1,5 +1,4 @@
 stages:
-  - dependencies
   - test
   - deploy
 
@@ -20,7 +19,6 @@ default:
     policy: pull
 
 install dependencies:
-  stage: dependencies
   interruptible: true
   cache:
     <<: *cache
