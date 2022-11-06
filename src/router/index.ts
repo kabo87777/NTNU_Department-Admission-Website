@@ -81,6 +81,7 @@ import recruitmentManagerPasswordForgetEmailSent from "@/views/recruitment/manag
 
 // Recruitment Manager section
 import recruitmentManagerMainContainer from "@/views/recruitment/manager/MainContainer.vue";
+import recruitmentManagerApplicantUploadList from "@/views/recruitment/manager/pages/ApplicantUploadList/TableList.vue";
 import recruitmentManagerReviewProgress from "@/views/recruitment/manager/pages/ReviewProgress.vue";
 
 const routes: Array<RouteRecordRaw> = [
@@ -392,6 +393,11 @@ const routes: Array<RouteRecordRaw> = [
 						path: "reviewProgress",
 						name: "recruitmentManagerReviewProgress",
 						component: recruitmentManagerReviewProgress,
+					},
+					{
+						path: "attachmentList",
+						name: "recruitmentManagerApplicantUploadList",
+						component: recruitmentManagerApplicantUploadList,
 					},
 				],
 			},
