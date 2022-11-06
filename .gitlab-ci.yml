@@ -20,6 +20,7 @@ default:
 
 install dependencies:
   interruptible: true
+  when: always
   cache:
     <<: *cache
     policy: push
