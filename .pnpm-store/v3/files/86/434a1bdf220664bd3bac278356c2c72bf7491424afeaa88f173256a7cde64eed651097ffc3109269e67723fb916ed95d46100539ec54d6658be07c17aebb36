@@ -1,0 +1,3 @@
+/// <reference types="jest" />
+import { QueryClient } from '../queryClient';
+export declare const useQueryClient: jest.Mock<QueryClient, []>;

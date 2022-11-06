@@ -1,0 +1,80 @@
+import { isVue2 } from 'vue-demi';
+import { QueryClient } from './queryClient.mjs';
+import { getClientKey } from './utils.mjs';
+import { setupDevtools } from './devtools/devtools.mjs';
+
+const VueQueryPlugin = {
+  install: (app, options = {}) => {
+    const clientKey = getClientKey(options.queryClientKey);
+    let client;
+
+    if ('queryClient' in options && options.queryClient) {
+      client = options.queryClient;
+    } else {
+      if (options.contextSharing && typeof window !== 'undefined') {
+        if (!window.__VUE_QUERY_CONTEXT__) {
+          const clientConfig = 'queryClientConfig' in options ? options.queryClientConfig : undefined;
+          client = new QueryClient(clientConfig);
+          window.__VUE_QUERY_CONTEXT__ = client;
+        } else {
+          client = window.__VUE_QUERY_CONTEXT__;
+        }
+      } else {
+        const clientConfig = 'queryClientConfig' in options ? options.queryClientConfig : undefined;
+        client = new QueryClient(clientConfig);
+      }
+    }
+
+    client.mount();
+
+    const cleanup = () => {
+      client.unmount();
+    };
+
+    if (app.onUnmount) {
+      app.onUnmount(cleanup);
+    } else {
+      const originalUnmount = app.unmount;
+
+      app.unmount = function vueQueryUnmount() {
+        cleanup();
+        originalUnmount();
+      };
+    }
+    /* istanbul ignore next */
+
+
+    if (isVue2) {
+      app.mixin({
+        beforeCreate() {
+          // HACK: taken from provide(): https://github.com/vuejs/composition-api/blob/master/src/apis/inject.ts#L30
+          if (!this._provided) {
+            const provideCache = {};
+            Object.defineProperty(this, '_provided', {
+              get: () => provideCache,
+              set: v => Object.assign(provideCache, v)
+            });
+          }
+
+          this._provided[clientKey] = client;
+
+          if (process.env.NODE_ENV === 'development') {
+            if (this === this.$root) {
+              setupDevtools(this, client);
+            }
+          }
+        }
+
+      });
+    } else {
+      app.provide(clientKey, client);
+
+      if (process.env.NODE_ENV === 'development') {
+        setupDevtools(app, client);
+      }
+    }
+  }
+};
+
+export { VueQueryPlugin };
+//# sourceMappingURL=vueQueryPlugin.mjs.map
