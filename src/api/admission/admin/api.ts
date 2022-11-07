@@ -22,14 +22,14 @@ export class AdmissionAdminAPI extends GenericAPI {
 		return data.data.programs;
 	}
 
-	async getApplicantList(): Promise<AdmissionAdminApplicantsListResponse[]> {
+	async getApplicantList(
+		programID: number
+	): Promise<AdmissionAdminApplicantsListResponse[]> {
 		const data: APIGenericResponse = await this.instance.get(
-			"/admission/admin/program/1/applicant"
+			`/admission/admin/program/${programID}/applicant`
 		);
-
 		if (data.error === true || typeof data.data.applicants === "undefined")
 			throw new Error("Failed to fetch applicant list");
-
 		return data.data.applicants;
 	}
 }
