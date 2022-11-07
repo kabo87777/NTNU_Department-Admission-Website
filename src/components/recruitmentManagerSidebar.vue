@@ -5,10 +5,9 @@
 			<div class="sidebarVerticalSmallRedDivider"></div>
 			<div class="ml-12px w-[100%]">
 				<Dropdown
-					v-model="selectedProgram"
+					v-model="updateProgram"
 					:options="programs"
 					:optionLabel="generateOptions"
-					:loading="isLoading"
 					class="h-60px w-[93%]"
 					style="border-radius: 8px; border: 1px solid black"
 				>
@@ -27,7 +26,7 @@
 		</div>
 
 		<router-link
-			to="/admission/manager/projectSetting"
+			to="/recruitment/manager/projectSetting"
 			custom
 			v-slot="{ navigate }"
 		>
@@ -70,44 +69,22 @@
 				{{ $t("申請端設定") }}
 			</div>
 		</div>
-
 		<Button
-			class="p-button-secondary p-button-text !ml-24px !mt-16px !w-336px !h-48px"
+			class="p-button-secondary p-button-text !ml-24px !mt-8px !w-336px !h-48px"
 		>
 			<img
 				alt="logo"
-				src="/assets/sidebar/Bell.png"
+				src="/assets/sidebar/User_add_alt.png"
 				style="width: 1.5rem"
 			/>
 			<span
 				class="text-left tracking-3px ml-3 font-bold text-xl text-[#2D2926]"
 			>
-				{{ $t("資訊公告") }}
+				{{ $t("申請帳號設置") }}
 			</span>
 		</Button>
-		<RouterLink
-			to="/admission/manager/manageApplicants"
-			custom
-			v-slot="{ navigate }"
-		>
-			<Button
-				class="p-button-secondary p-button-text !ml-24px !mt-8px !w-336px !h-48px"
-				@click="navigate"
-			>
-				<img
-					alt="logo"
-					src="/assets/sidebar/User_add_alt.png"
-					style="width: 1.5rem"
-				/>
-				<span
-					class="text-left tracking-3px ml-3 font-bold text-xl text-[#2D2926]"
-				>
-					{{ $t("申請帳號設置") }}
-				</span>
-			</Button>
-		</RouterLink>
 		<router-link
-			to="/admission/manager/projectSettings"
+			to="/recruitment/manager/applicationUploadSetting"
 			custom
 			v-slot="{ navigate }"
 		>
@@ -128,7 +105,7 @@
 				</span>
 			</Button>
 		</router-link>
-		<router-link to="/admission/manager/applicantsUploadList">
+		<router-link to="/recruitment/manager/applicantsUploadList">
 			<Button
 				class="p-button-secondary p-button-text !ml-24px !mt-8px !w-336px !h-48px"
 			>
@@ -144,12 +121,14 @@
 				</span>
 			</Button>
 		</router-link>
-
-		<Divider align="left" class="text-xs text-ntnuRed text-base">
-			<b>{{ $t("審查端設定") }}</b>
-		</Divider>
+		<div class="flex mt-32px">
+			<div class="sidebarRedDivider"></div>
+			<div class="mt-[-8px] ml-8px text-[#874B52] text-20px font-bold">
+				{{ $t("審查端設定") }}
+			</div>
+		</div>
 		<router-link
-			to="/admission/manager/reviewScoreField"
+			to="/recruitment/manager/reviewScoreField"
 			custom
 			v-slot="{ navigate }"
 		>
@@ -163,13 +142,15 @@
 					src="/assets/sidebar/Eye_light.png"
 					style="width: 1.5rem"
 				/>
-				<span class="text-left tracking-3px ml-3 font-bold text-xl">
+				<span
+					class="text-left tracking-3px ml-3 font-bold text-xl text-[#2D2926]"
+				>
 					{{ $t("審查評分設置") }}
 				</span>
 			</Button>
 		</router-link>
 		<router-link
-			to="/admission/manager/gradeDataList"
+			to="/recruitment/manager/gradeDataList"
 			custom
 			v-slot="{ navigate }"
 		>
@@ -183,8 +164,32 @@
 					src="/assets/sidebar/Flag_finish.png"
 					style="width: 1.5rem"
 				/>
-				<span class="text-left tracking-3px ml-3 font-bold text-xl">
+				<span
+					class="text-left tracking-3px ml-3 font-bold text-xl text-[#2D2926]"
+				>
 					{{ $t("評分資料列表") }}
+				</span>
+			</Button>
+		</router-link>
+		<router-link
+			to="/recruitment/manager/gradeDataList"
+			custom
+			v-slot="{ navigate }"
+		>
+			<Button
+				class="p-button-secondary p-button-text !ml-24px !mt-8px !w-336px !h-48px"
+				@click="navigate"
+				role="link"
+			>
+				<img
+					alt="logo"
+					src="/assets/sidebar/User_light.png"
+					style="width: 1.5rem"
+				/>
+				<span
+					class="text-left tracking-3px ml-3 font-bold text-xl text-[#2D2926]"
+				>
+					{{ $t("審查人員與進度") }}
 				</span>
 			</Button>
 		</router-link>
@@ -195,7 +200,7 @@
 			<div class="flex">
 				<div class="m-auto">
 					<router-link
-						to="/admission/manager/reviewerSettings"
+						to="/recruitment/manager/reviewerSettings"
 						custom
 						v-slot="{ navigate }"
 					>
@@ -290,12 +295,12 @@
 					</div>
 				</div>
 				<router-link
-					to="/admission/manager/userSetting"
+					to="/recruitment/manager/userSetting"
 					custom
 					v-slot="{ navigate }"
 				>
 					<Button
-						class="p-button-text !mt-25px !ml-50px"
+						class="p-button-text !mt-46px !ml-50px"
 						@click="navigate"
 						role="link"
 					>
@@ -320,7 +325,7 @@
 
 <script setup lang="ts">
 import "primevue/resources/primevue.min.css";
-import { ref, toRaw, watchEffect, watch } from "vue";
+import { ref, toRaw, computed } from "vue";
 import Dropdown from "primevue/dropdown";
 import Button from "primevue/button";
 import Divider from "primevue/divider";
@@ -328,18 +333,16 @@ import Dialog from "primevue/dialog";
 import InputText from "primevue/inputtext";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
-import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
-import { AdmissionAdminAPI } from "@/api/admission/admin/api";
+import { useRecruitmentAdminAuthStore } from "@/stores/universalAuth";
+import { RecruitmentAdminAPI } from "@/api/recruitment/admin/api";
 import { useQuery } from "@tanstack/vue-query";
 import { InvalidSessionError } from "@/api/error";
-import { useGlobalStore } from "@/stores/globalStore";
-import { AdmissionAdminProgramListResponse } from "@/api/admission/admin/types";
 
 const router = useRouter();
 
-const adminAuth = useAdmissionAdminAuthStore();
-const store = useGlobalStore();
-const api = new AdmissionAdminAPI(adminAuth);
+const adminAuth = useRecruitmentAdminAuthStore();
+
+const api = new RecruitmentAdminAPI(adminAuth);
 
 const {
 	isLoading,
@@ -363,31 +366,29 @@ const {
 	}
 });
 
-const selectedProgram = ref<AdmissionAdminProgramListResponse>();
-
-watchEffect(() => {
-	if (programs.value && programs.value.length > 1) {
-		const temp = programs.value[0];
-		store.$patch((state) => {
-			state.program = temp;
-		});
-		// selectedProgram.value=toRaw(programs.value[0])
-		selectedProgram.value = programs.value[0];
+const dataPrograms = () => {
+	if (programs.value) {
+		const temp = toRaw(programs.value);
+		return temp[0];
 	}
-});
+}; //convert proxy to array or object
 
-watch(selectedProgram, (selection) => {
-	store.$patch({ program: selectedProgram.value });
+const selectedProgram = ref(dataPrograms());
 
-	console.debug("Selected program:\n" + JSON.stringify(selection, null, 2));
+// FIXME: this should NOT be hardcoded.
+const updateProgram = computed({
+	get: () => {
+		return selectedProgram.value;
+	},
+	set: (val) => {
+		selectedProgram.value = toRaw(val);
+	},
 });
 
 const displayNewProject = ref(false);
 const newProjectName = ref("");
 
-const generateOptions = (data: AdmissionAdminProgramListResponse) => {
-	return data.category + data.name;
-};
+const generateOptions = (data: any) => data.category + data.name;
 
 function newProject() {
 	displayNewProject.value = true;
@@ -399,6 +400,8 @@ function closeDisplayNewProject() {
 
 async function signOut() {
 	await api.invalidateSession();
-	router.push("/");
+	router.push("/recruitment/manager/signin");
 }
 </script>
+
+<style></style>
