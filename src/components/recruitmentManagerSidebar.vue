@@ -84,7 +84,7 @@
 			</span>
 		</Button>
 		<router-link
-			to="/recruitment/manager/projectSettings"
+			to="/recruitment/manager/applicationUploadSetting"
 			custom
 			v-slot="{ navigate }"
 		>
@@ -294,13 +294,23 @@
 						{{ $t("系辦主管") }}
 					</div>
 				</div>
-				<Button class="p-button-text !mt-46px !ml-50px">
-					<img
-						alt="logo"
-						src="/assets/sidebar/Setting_alt_line.png"
-						class="w-28px h-28px"
-					/>
-				</Button>
+				<router-link
+					to="/recruitment/manager/userSetting"
+					custom
+					v-slot="{ navigate }"
+				>
+					<Button
+						class="p-button-text !mt-46px !ml-50px"
+						@click="navigate"
+						role="link"
+					>
+						<img
+							alt="logo"
+							src="/assets/sidebar/Setting_alt_line.png"
+							class="w-28px h-28px"
+						/>
+					</Button>
+				</router-link>
 				<Button class="p-button-text !mt-46px" @click="signOut">
 					<img
 						alt="logo"
@@ -390,7 +400,7 @@ function closeDisplayNewProject() {
 
 async function signOut() {
 	await api.invalidateSession();
-	router.push("/");
+	router.push("/recruitment/manager/signin");
 }
 </script>
 
