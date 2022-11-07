@@ -10,7 +10,7 @@
 			</Button>
 			<Dialog header="修改名稱" v-model:visible="displayUserId">
 				<div>{{ $t("輸入新名稱") }}</div>
-				<InputText type="text" v-model="userId"></InputText>
+				<InputText type="text" v-model="newUserId"></InputText>
 				<div class="mt-10px">
 					<Button @click="ensureUserId">{{ $t("確認修改") }}</Button>
 					<Button @click="cancelUserId">{{ $t("取消") }}</Button>
@@ -81,6 +81,7 @@ import InputText from "primevue/inputtext";
 import { ref } from "vue";
 import Dialog from "primevue/dialog";
 const userId = ref("系辦主管");
+const newUserId = ref();
 const displayUserId = ref();
 const editUserId = () => {
 	displayUserId.value = true;
