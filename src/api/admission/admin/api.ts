@@ -23,7 +23,7 @@ export class AdmissionAdminAPI extends GenericAPI {
 	}
 
 	async getApplicantList(
-		programID = 1
+		programID: number
 	): Promise<AdmissionAdminApplicantsListResponse[]> {
 		const data: APIGenericResponse = await this.instance.get(
 			`/admission/admin/program/${programID}/applicant`

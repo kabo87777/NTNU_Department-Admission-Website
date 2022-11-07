@@ -1,7 +1,8 @@
 <template>
 	<h1 class="text-4xl font-bold">{{ $t("申請者帳號設定") }}</h1>
+	<Button @click="printProgramID">Program ID</Button>
 	<Divider />
-	<DataTable :value="tableData">
+	<DataTable :value="tableData" :loading="isLoading">
 		<template #empty>
 			<h2>{{ $t("尚無申請者帳號") }}</h2>
 		</template>
@@ -108,27 +109,55 @@ import DataTable from "primevue/datatable";
 import Dialog from "primevue/dialog";
 import Divider from "primevue/divider";
 import InputText from "primevue/inputtext";
-import { Ref, ref } from "vue";
+import { computed, Ref, ref, toRaw, watch, watchEffect } from "vue";
 import {
 	useAdmissionAdminAuthStore,
 	useAdmissionReviewerAuthStore,
 } from "@/stores/universalAuth";
 import { AdmissionAdminAPI } from "@/api/admission/admin/api";
 import { useQuery } from "@tanstack/vue-query";
-import { InvalidSessionError } from "@/api/error"
+import { InvalidSessionError } from "@/api/error";
 import { router } from "@/router";
+import { AdmissionAdminApplicantsListResponse } from "@/api/admission/admin/types";
+import { useGlobalStore } from "@/stores/globalStore";
+import { MutationType } from "pinia";
 
-const adminAuth = useAdmissionAdminAuthStore()
-const api = new AdmissionAdminAPI(adminAuth)
+const store = useGlobalStore();
+const adminAuth = useAdmissionAdminAuthStore();
+const api = new AdmissionAdminAPI(adminAuth);
+
+// TODO: refresh datatable when program ID changes
+const fetchList = () => {
+	return useQuery(["applicantList"], async () => {
+		try {
+			if (store.program)
+				return await api.getApplicantList(store.program.id);
+		} catch (e: any) {
+			if (e instanceof InvalidSessionError) {
+				// FIXME: show session expiry notification??
+				// Why are we even here in the first place?
+				// MainContainer should have checked already.
+				console.error(
+					"Session has already expired while querying applicantList"
+				);
+				router.push("/");
+				return;
+			}
+
+			throw e;
+		}
+	});
+};
+
 // NOTE: Copy and modified from SideBar.vue
-const {
+let {
 	isLoading,
 	isError,
 	data: applicants,
 	error,
 } = useQuery(["applicantList"], async () => {
 	try {
-		return await api.getApplicantList();
+		if (store.program) return await api.getApplicantList(store.program.id);
 	} catch (e: any) {
 		if (e instanceof InvalidSessionError) {
 			// FIXME: show session expiry notification??
@@ -140,21 +169,40 @@ const {
 			router.push("/");
 			return;
 		}
+
+		throw e;
 	}
 });
+
+const tableData = ref<AdmissionAdminApplicantsListResponse[]>();
+
+watchEffect(() => {
+	if (isLoading.value === false) {
+		console.log("Load applicant list");
+		tableData.value = applicants.value;
+	}
+});
+
+store.$subscribe((mutation, state) => {
+	if (state.program) {
+		console.log(state.program.category + state.program.name);
+	}
+});
+
 const modalVisible = ref(false);
+const modalData = ref();
 
-
-const tableData: Ref<OwO[]> = ref(mockData);
-const modalData: Ref<OwO> = ref({} as OwO);
-
-const openModal = (data) => {
+const openModal = (data: AdmissionAdminApplicantsListResponse) => {
+	console.log(data);
 	modalData.value = data;
 	modalVisible.value = true;
 };
 
 const saveChange = () => {
-	let index = tableData.value.findIndex((x) => x.id === modalData.value.id);
+	if (!tableData.value) return;
+	let index = tableData.value.findIndex(
+		(x: AdmissionAdminApplicantsListResponse) => x.id === modalData.value.id
+	);
 	console.log(index);
 	if (!isNaN(index)) {
 		tableData.value[index] = modalData.value;
@@ -162,4 +210,6 @@ const saveChange = () => {
 	}
 	modalVisible.value = false;
 };
+
+const printProgramID = () => console.debug("Program ID: " + store.program?.id);
 </script>
