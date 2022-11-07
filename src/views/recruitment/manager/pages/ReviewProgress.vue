@@ -389,7 +389,7 @@ import Dialog from "primevue/dialog";
 import { useI18n } from "vue-i18n";
 import { ref, computed } from "vue";
 // FIXME: DataList should connect to API not hard code.
-import DataList from "./ReviewList.json";
+import DataList from "@/mocks/ReviewList.json";
 // TODO: Connect API
 import { useRouter } from "vue-router";
 import { useRecruitmentAdminAuthStore } from "@/stores/universalAuth";
