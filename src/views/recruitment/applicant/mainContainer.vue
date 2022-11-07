@@ -29,7 +29,7 @@ import { useRouter } from "vue-router";
 import { useQuery } from "@tanstack/vue-query";
 import { RecruitmentApplicantAPI } from "@/api/recruitment/applicant/api";
 import { useRecruitmentApplicantAuthStore } from "@/stores/universalAuth";
-import { useProjectIdStore } from "@/api/recruitment/applicant/store";
+import { useProjectIdStore } from "@/stores/RecruitmentApplicantStore";
 import type { RecruitmentApplicantProgramResponse } from "@/api/recruitment/applicant/types";
 import NavBar from "@/components/NavBar.vue";
 import SideBar from "@/components/sidebars/recruitmentApplicantSidebar.vue";
