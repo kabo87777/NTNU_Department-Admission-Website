@@ -1,6 +1,8 @@
 <template>
 	<div class="ml-128px mr-128px mt-62px">
-		<h1 class="text-4xl text-bold tracking-widest">{{ $t("審查評分欄位") }}</h1>
+		<h1 class="text-4xl text-bold tracking-widest">
+			{{ $t("審查評分欄位") }}
+		</h1>
 		<div class="bigRedDivider"></div>
 		<div class="p-fluid mt-12px">
 			<SelectButton
@@ -22,8 +24,8 @@
 				</div>
 			</div>
 			<div class="flex ml-12px">
-				<div class="w-1/2"><InputText class="!w-500px"/></div>
-				<div class="w-1/2"><InputText class="!w-500px"/></div>
+				<div class="w-1/2"><InputText class="!w-500px" /></div>
+				<div class="w-1/2"><InputText class="!w-500px" /></div>
 			</div>
 			<div class="flex ml-12px mt-30px text-blackLight">
 				<div class="w-1/2">
@@ -34,8 +36,8 @@
 				</div>
 			</div>
 			<div class="flex ml-12px">
-				<div class="w-1/2"><InputText class="!w-500px"/></div>
-				<div class="w-1/2"><InputText class="!w-500px"/></div>
+				<div class="w-1/2"><InputText class="!w-500px" /></div>
+				<div class="w-1/2"><InputText class="!w-500px" /></div>
 			</div>
 			<div class="flex ml-12px mt-30px text-blackLight">
 				<div class="w-1/2">
@@ -46,14 +48,14 @@
 				</div>
 			</div>
 			<div class="flex ml-12px">
-				<div class="w-1/2"><InputText class="!w-500px"/></div>
-				<div class="w-1/2"><InputText class="!w-500px"/></div>
+				<div class="w-1/2"><InputText class="!w-500px" /></div>
+				<div class="w-1/2"><InputText class="!w-500px" /></div>
 			</div>
 		</div>
 		<ParagraphDivider />
 		<div class="mt-20px">
 			<h1 class="text-3xl">
-				{{ $t("顯示欄位：基本資料") }}	
+				{{ $t("顯示欄位：基本資料") }}
 			</h1>
 		</div>
 		<div class="mt-24px">
@@ -101,8 +103,8 @@
 					</Button>
 				</div>
 			</div>
+		</div>
 	</div>
-</div>
 </template>
 
 <script setup lang="ts">
