@@ -172,7 +172,7 @@
 			</Button>
 		</router-link>
 		<router-link
-			to="/recruitment/manager/gradeDataList"
+			to="/recruitment/manager/reviewProgress"
 			custom
 			v-slot="{ navigate }"
 		>
