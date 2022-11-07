@@ -11,6 +11,7 @@ import AdmissionSignin from "@/views/admission/AdmissionSignin.vue";
 import RecruitmentSignin from "@/views/recruitment/recruitmentSignin.vue";
 // Manager section
 import AdmissionListReviewer from "@/views/admission/manager/ListReviewer.vue";
+import AdmissionListApplicant from "@/views/admission/manager/ListApplicant.vue";
 import AdmissionManagerMainContainer from "@/views/admission/manager/MainContainer.vue";
 import AdmissionManagerSignin from "@/views/admission/manager/ManagerSignin.vue";
 import AdmissionManagerForgetPassword from "@/views/admission/manager/ForgetPassword.vue";
@@ -71,12 +72,13 @@ import recruitmentManagerSignin from "@/views/recruitment/manager/login/signin.v
 import recruitmentManagerPasswordReset from "@/views/recruitment/manager/login/pwdReset.vue";
 import recruitmentManagerPasswordForget from "@/views/recruitment/manager/login/pwdForget.vue";
 import recruitmentManagerPasswordForgetEmailSent from "@/views/recruitment/manager/login/pwdForgetEmailSent.vue";
-
 // Recruitment Manager section
 import recruitmentManagerMainContainer from "@/views/recruitment/manager/MainContainer.vue";
 import recruitmentManagerReviewProgress from "@/views/recruitment/manager/pages/ReviewProgress.vue";
 import recruitmentManagerUserSetting from "@/views/recruitment/manager/pages/RecruitmentManagerSelfSetting.vue";
 import recruitmentApplicationUpload from "@/views/recruitment/manager/pages/RecruitmentApplicationSetting.vue";
+import recruitmentGradeDataList from "@/views/recruitment/manager/gradeDataList.vue";
+import recruitmentReviewScroreField from "@/views/recruitment/manager/reviewScoreField.vue";
 
 const routes: Array<RouteRecordRaw> = [
 	// Choose recruitment / admission
@@ -270,6 +272,11 @@ const routes: Array<RouteRecordRaw> = [
 						name: "reviewerSettings",
 						component: AdmissionListReviewer,
 					},
+					{
+						path: "manageApplicants",
+						name: "manageApplicants",
+						component: AdmissionListApplicant,
+					},
 				],
 			},
 
@@ -345,6 +352,16 @@ const routes: Array<RouteRecordRaw> = [
 				name: "recruitmentManagerMainContainer",
 				component: recruitmentManagerMainContainer,
 				children: [
+					{
+						path: "gradeDataList",
+						name: "recruitmentGradeDataList",
+						component: recruitmentGradeDataList,
+					},
+					{
+						path: "reviewScoreField",
+						name: "recruitmentReviewScoreField",
+						component: recruitmentReviewScroreField,
+					},
 					{
 						path: "reviewProgress",
 						name: "recruitmentManagerReviewProgress",
