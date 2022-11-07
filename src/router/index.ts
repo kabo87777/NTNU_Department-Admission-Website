@@ -73,6 +73,7 @@ import recruitmentManagerPasswordForget from "@/views/recruitment/manager/login/
 import recruitmentManagerPasswordForgetEmailSent from "@/views/recruitment/manager/login/pwdForgetEmailSent.vue";
 import recruitmentManagerMainContainer from "@/views/recruitment/manager/MainContainer.vue";
 import recruitmentGradeDataList from "@/views/recruitment/manager/gradeDataList.vue";
+import recruitmentReviewScroreField from "@/views/recruitment/manager/reviewScoreField.vue";
 
 const routes: Array<RouteRecordRaw> = [
 	// Choose recruitment / admission
@@ -344,6 +345,11 @@ const routes: Array<RouteRecordRaw> = [
 						path: "gradeDataList",
 						name: "recruitmentGradeDataList",
 						component: recruitmentGradeDataList,
+					},
+					{
+						path: "reviewScoreField",
+						name: "recruitmentReviewScoreField",
+						component: recruitmentReviewScroreField,
 					},
 				],
 			},

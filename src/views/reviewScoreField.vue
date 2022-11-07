@@ -74,7 +74,7 @@
 	</div>
 	<div>
 		<Checkbox :binary="true" m-model="enrollProver" />
-		{{ $t("就學證明") }}
+		{{ $t("教學證明") }}
 	</div>
 	<div>
 		<Checkbox :binary="true" m-model="enrollProver" />

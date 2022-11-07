@@ -113,7 +113,7 @@
   "城市/郵遞區號": "City/Postal Area Code",
   "街道地址": "Street Address",
   "顯示欄位：檢附資料": "Shows the Field: Attached Information",
-  "就學證明": "Prover of Enrollment",
+  "教學證明": "Prover of Enrollment",
   "考試與其他分數": "Scores of Tests",
   "其他有利於審查之資料": "Any Beneficial for Scoring",
   "帳號ID": "Account ID",
@@ -269,5 +269,7 @@
   "通過": "Pass",
   "推薦/不推薦": "Recommend/Not Recommend",
   "面試時間": "Interview Time",
-  "操作": "Edit"
+  "操作": "Edit",
+  "必閱基本資料": "Must Read Basic Info",
+  "必閱檢附資料": "Must Read Attach Info"
 }
