@@ -5,9 +5,10 @@
 			<div class="sidebarVerticalSmallRedDivider"></div>
 			<div class="ml-12px w-[100%]">
 				<Dropdown
-					v-model="updateProgram"
+					v-model="selectedProgram"
 					:options="programs"
 					:optionLabel="generateOptions"
+					:loading="isLoading"
 					class="h-60px w-[93%]"
 					style="border-radius: 8px; border: 1px solid black"
 				>
@@ -84,20 +85,27 @@
 				{{ $t("資訊公告") }}
 			</span>
 		</Button>
-		<Button
-			class="p-button-secondary p-button-text !ml-24px !mt-8px !w-336px !h-48px"
+		<RouterLink
+			to="/admission/manager/manageApplicants"
+			custom
+			v-slot="{ navigate }"
 		>
-			<img
-				alt="logo"
-				src="/assets/sidebar/User_add_alt.png"
-				style="width: 1.5rem"
-			/>
-			<span
-				class="text-left tracking-3px ml-3 font-bold text-xl text-[#2D2926]"
+			<Button
+				class="p-button-secondary p-button-text !ml-24px !mt-8px !w-336px !h-48px"
+				@click="navigate"
 			>
-				{{ $t("申請帳號設置") }}
-			</span>
-		</Button>
+				<img
+					alt="logo"
+					src="/assets/sidebar/User_add_alt.png"
+					style="width: 1.5rem"
+				/>
+				<span
+					class="text-left tracking-3px ml-3 font-bold text-xl text-[#2D2926]"
+				>
+					{{ $t("申請帳號設置") }}
+				</span>
+			</Button>
+		</RouterLink>
 		<router-link
 			to="/admission/manager/projectSettings"
 			custom
@@ -302,7 +310,7 @@
 
 <script setup lang="ts">
 import "primevue/resources/primevue.min.css";
-import { ref, toRaw, computed } from "vue";
+import { ref, toRaw, watchEffect, watch } from "vue";
 import Dropdown from "primevue/dropdown";
 import Button from "primevue/button";
 import Divider from "primevue/divider";
@@ -317,13 +325,15 @@ import {
 import { AdmissionAdminAPI } from "@/api/admission/admin/api";
 import { useQuery } from "@tanstack/vue-query";
 import { InvalidSessionError } from "@/api/error";
+import { useGlobalStore } from "@/stores/globalStore";
+import { AdmissionAdminProgramListResponse } from "@/api/admission/admin/types";
 
 const { t } = useI18n();
 
 const router = useRouter();
 
 const adminAuth = useAdmissionAdminAuthStore();
-
+const store = useGlobalStore();
 const api = new AdmissionAdminAPI(adminAuth);
 
 const {
@@ -348,29 +358,31 @@ const {
 	}
 });
 
-const dataPrograms = () => {
-	if (programs.value) {
-		const temp = toRaw(programs.value);
-		return temp[0];
+const selectedProgram = ref<AdmissionAdminProgramListResponse>();
+
+watchEffect(() => {
+	if (programs.value && programs.value.length > 1) {
+		const temp = programs.value[0];
+		store.$patch((state) => {
+			state.program = temp;
+		});
+		// selectedProgram.value=toRaw(programs.value[0])
+		selectedProgram.value = programs.value[0];
 	}
-}; //convert proxy to array or object
+});
 
-const selectedProgram = ref(dataPrograms());
+watch(selectedProgram, (selection) => {
+	store.$patch({ program: selectedProgram.value });
 
-// FIXME: this should NOT be hardcoded.
-const updateProgram = computed({
-	get: () => {
-		return selectedProgram.value;
-	},
-	set: (val) => {
-		selectedProgram.value = toRaw(val);
-	},
+	console.debug("Selected program:\n" + JSON.stringify(selection, null, 2));
 });
 
 const displayNewProject = ref(false);
 const newProjectName = ref("");
 
-const generateOptions = (data: any) => data.category + data.name;
+const generateOptions = (data: AdmissionAdminProgramListResponse) => {
+	return data.category + data.name;
+};
 
 function newProject() {
 	displayNewProject.value = true;
@@ -385,5 +397,3 @@ async function signOut() {
 	router.push("/");
 }
 </script>
-
-<style></style>

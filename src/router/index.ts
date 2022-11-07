@@ -11,6 +11,7 @@ import AdmissionSignin from "@/views/admission/AdmissionSignin.vue";
 import RecruitmentSignin from "@/views/recruitment/recruitmentSignin.vue";
 // Manager section
 import AdmissionListReviewer from "@/views/admission/manager/ListReviewer.vue";
+import AdmissionListApplicant from "@/views/admission/manager/ListApplicant.vue";
 import AdmissionManagerMainContainer from "@/views/admission/manager/MainContainer.vue";
 import AdmissionManagerSignin from "@/views/admission/manager/ManagerSignin.vue";
 import AdmissionManagerForgetPassword from "@/views/admission/manager/ForgetPassword.vue";
@@ -267,6 +268,11 @@ const routes: Array<RouteRecordRaw> = [
 						path: "reviewerSettings",
 						name: "reviewerSettings",
 						component: AdmissionListReviewer,
+					},
+					{
+						path: "manageApplicants",
+						name: "manageApplicants",
+						component: AdmissionListApplicant,
 					},
 				],
 			},
