@@ -105,17 +105,25 @@
 				</span>
 			</Button>
 		</router-link>
-		<router-link to="/recruitment/manager/applicantsUploadList">
+		<router-link
+			:to="{
+				name: 'recruitmentManagerApplicantUploadList',
+			}"
+			custom
+			v-slot="{ navigate }"
+		>
 			<Button
 				class="p-button-secondary p-button-text !ml-24px !mt-8px !w-336px !h-48px"
+				@click="navigate"
+				role="link"
 			>
 				<img
 					alt="logo"
-					src="/assets/sidebar/File_dock_search.png"
+					src="/assets/recruit-manger-page/File_dock_search.svg"
 					style="width: 1.5rem"
 				/>
 				<span
-					class="text-left tracking-3px ml-3 font-bold text-xl text-[#2D2926]"
+					class="text-left tracking-3px ml-3 font-bold text-[20px] text-[#2D2926]"
 				>
 					{{ $t("上傳資料列表") }}
 				</span>
