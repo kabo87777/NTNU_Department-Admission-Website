@@ -25,9 +25,9 @@ export class RecruitmentAdminAPI extends GenericAPI {
 	// 		"/recruitment/admin/program"
 	// 	);
 
-	// 	if (data.error === true || typeof data.data.programs === "undefined")
-	// 		throw new Error("Failed to fetch program list");
+		if (data.error === true || typeof data.data.programs === "undefined")
+			throw new Error("Failed to fetch program list");
 
-	// 	return data.data.programs;
-	// }
+		return data.data.programs;
+	}
 }

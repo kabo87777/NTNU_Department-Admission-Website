@@ -4,59 +4,8 @@
 			{{ $t("審查評分欄位") }}
 		</h1>
 		<div class="bigRedDivider"></div>
-		<div class="p-fluid mt-12px">
-			<SelectButton
-				v-model="selectStage"
-				:options="stage"
-				optionLabel="name"
-			/>
-		</div>
-		<div class="mt-28px">
-			<h1 class="text-3xl">
-				{{ $t("評分設定") }}
-			</h1>
-			<div class="flex ml-12px mt-24px text-blackLight">
-				<div class="w-1/2">
-					{{ $t("評分項目一 名稱：") }}
-				</div>
-				<div class="w-1/2">
-					{{ $t("評分項目一 分數佔比：") }}
-				</div>
-			</div>
-			<div class="flex ml-12px">
-				<div class="w-1/2"><InputText class="!w-500px" /></div>
-				<div class="w-1/2"><InputText class="!w-500px" /></div>
-			</div>
-			<div class="flex ml-12px mt-30px text-blackLight">
-				<div class="w-1/2">
-					{{ $t("評分項目二 名稱：") }}
-				</div>
-				<div class="w-1/2">
-					{{ $t("評分項目二 分數佔比：") }}
-				</div>
-			</div>
-			<div class="flex ml-12px">
-				<div class="w-1/2"><InputText class="!w-500px" /></div>
-				<div class="w-1/2"><InputText class="!w-500px" /></div>
-			</div>
-			<div class="flex ml-12px mt-30px text-blackLight">
-				<div class="w-1/2">
-					{{ $t("評分項目三 名稱：") }}
-				</div>
-				<div class="w-1/2">
-					{{ $t("評分項目三 分數佔比：") }}
-				</div>
-			</div>
-			<div class="flex ml-12px">
-				<div class="w-1/2"><InputText class="!w-500px" /></div>
-				<div class="w-1/2"><InputText class="!w-500px" /></div>
-			</div>
-		</div>
-		<ParagraphDivider />
-		<div class="mt-20px">
-			<h1 class="text-3xl">
-				{{ $t("顯示欄位：基本資料") }}
-			</h1>
+		<div class="mt-20px text-2xl">
+			{{ $t("必閱基本資料") }}
 		</div>
 		<div class="mt-24px">
 			<div class="flex mt-40px text-blackLight">
@@ -66,10 +15,8 @@
 			</div>
 		</div>
 		<ParagraphDivider />
-		<div class="mt-20px">
-			<h1 class="text-3xl">
-				{{ $t("顯示欄位：檢附資料") }}
-			</h1>
+		<div class="mt-20px text-2xl">
+			{{ $t("必閱檢附資料") }}
 		</div>
 		<div class="mt-24px">
 			<Checkbox :binary="true" v-model="enrollProver"> </Checkbox>
@@ -77,7 +24,6 @@
 				$t("教學證明")
 			}}</label>
 		</div>
-		<div class="mt-57px"></div>
 		<div class="bigRedDivider"></div>
 		<div class="flex mt-24px">
 			<div class="m-auto">
@@ -108,14 +54,13 @@
 </template>
 
 <script setup lang="ts">
+import ParagraphDivider from "../../../styles/paragraphDivider.vue";
 import { reactive, ref } from "vue";
 import Checkbox from "primevue/checkbox";
 import InputText from "primevue/inputtext";
 import Button from "primevue/button";
 import SelectButton from "primevue/selectbutton";
-import ParagraphDivider from "../styles/paragraphDivider.vue";
 
-//FIX: API
 const enrollProver = ref();
 const selectStage = ref(true);
 const stage = reactive([

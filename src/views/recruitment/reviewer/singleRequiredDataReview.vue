@@ -79,7 +79,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, reactive, ref } from "vue";
+import { computed, ref } from "vue";
 import { useRoute } from "vue-router";
 import Button from "primevue/button";
 import Dropdown from "primevue/dropdown";
@@ -93,15 +93,7 @@ const route = useRoute();
 const { t } = useI18n();
 
 const ID = computed(() => route.params.id);
-const inputScore_1 = ref(25);
-const inputScore_2 = ref(22);
-const inputScore_3 = ref(31);
 const checked = ref();
-const disable = computed(() => !checked.value);
-const accessReason = ref("");
-const total_score = computed(
-	() => inputScore_1.value + inputScore_2.value + inputScore_3.value
-);
 const reason = ref("");
 
 // FIXME: logic may refactor
@@ -190,12 +182,6 @@ const data_list = ref([
 ]);
 
 const name = computed(
-	() =>
-		data_list.value[data_list.value.findIndex((obj) => obj.id == ID.value)]
-			.name
-);
-
-const nameInfo = computed(
 	() =>
 		data_list.value[data_list.value.findIndex((obj) => obj.id == ID.value)]
 			.name
