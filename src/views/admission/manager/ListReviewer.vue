@@ -125,28 +125,51 @@ import Button from "primevue/button";
 import Dialog from "primevue/dialog";
 import InputText from "primevue/inputtext";
 import Checkbox from "primevue/checkbox";
-import mockData from "@/mocks/reviewers.json";
+import { useQuery } from "@tanstack/vue-query";
+import { InvalidSessionError } from "@/api/error";
+import { useRouter } from "vue-router";
+import {
+	useAdmissionAdminAuthStore,
+	useAdmissionReviewerAuthStore,
+} from "@/stores/universalAuth";
+import { AdmissionAdminAPI } from "@/api/admission/admin/api";
 const { t } = useI18n();
 
-const response = mockData.reviewers;
+const router = useRouter();
 
-interface OwO {
-	id: string | number;
-	name: string;
-	email: string;
-	roles: {
-		id: string | number;
-		name: string;
-		checked?: boolean;
-	}[];
-}
+const reviewerAuth = useAdmissionReviewerAuthStore();
+const adminAuth = useAdmissionAdminAuthStore();
 
-const tableData: Ref<OwO[]> = ref<OwO[]>(response);
+const api = new AdmissionAdminAPI(adminAuth);
+
+const {
+	isLoading,
+	isError,
+	data: reviewers,
+	error,
+} = useQuery(["reviewerList"], async () => {
+	try {
+		return await api.getReviewerList();
+	} catch (e: any) {
+		if (e instanceof InvalidSessionError) {
+			// FIXME: show session expiry notification??
+			// Why are we even here in the first place?
+			// MainContainer should have checked already.
+			console.error(
+				"Session has already expired while querying reviewerList"
+			);
+			router.push("/");
+			return;
+		}
+	}
+});
+
+const tableData = ref(reviewers);
 
 const modalVisible = ref(false);
-const modalData: Ref<OwO> = ref<OwO>({} as OwO);
+const modalData = ref({});
 
-const openModal = (data: OwO) => {
+const openModal = (data) => {
 	// Make a copy of original data
 	modalData.value = { ...data };
 	modalVisible.value = true;

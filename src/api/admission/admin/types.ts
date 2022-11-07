@@ -34,3 +34,9 @@ export interface AdmissionAdminProgramListResponse {
 	reviewer_required_info: null;
 	reviewer_required_file: null;
 }
+
+export interface AdmissionAdminReviewerListResponse {
+	id: number;
+	name: string;
+	// TODO: Some fields to be implemented by backend
+}
