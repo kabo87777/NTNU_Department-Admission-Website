@@ -90,21 +90,21 @@
 			custom
 			v-slot="{ navigate }"
 		>
-		<Button
-			class="p-button-secondary p-button-text !ml-24px !mt-8px !w-336px !h-48px"
-			@click="navigate"
-		>
-			<img
-				alt="logo"
-				src="/assets/sidebar/User_add_alt.png"
-				style="width: 1.5rem"
-			/>
-			<span
-				class="text-left tracking-3px ml-3 font-bold text-xl text-[#2D2926]"
+			<Button
+				class="p-button-secondary p-button-text !ml-24px !mt-8px !w-336px !h-48px"
+				@click="navigate"
 			>
-				{{ $t("申請帳號設置") }}
-			</span>
-		</Button>
+				<img
+					alt="logo"
+					src="/assets/sidebar/User_add_alt.png"
+					style="width: 1.5rem"
+				/>
+				<span
+					class="text-left tracking-3px ml-3 font-bold text-xl text-[#2D2926]"
+				>
+					{{ $t("申請帳號設置") }}
+				</span>
+			</Button>
 		</RouterLink>
 		<router-link
 			to="/admission/manager/projectSettings"
@@ -333,7 +333,7 @@ const { t } = useI18n();
 const router = useRouter();
 
 const adminAuth = useAdmissionAdminAuthStore();
-const store = useGlobalStore()
+const store = useGlobalStore();
 const api = new AdmissionAdminAPI(adminAuth);
 
 const {
@@ -358,32 +358,31 @@ const {
 	}
 });
 
-
 const selectedProgram = ref<AdmissionAdminProgramListResponse>();
 
-watchEffect(()=>{
-	if(programs.value && programs.value.length>1){
-		const temp = programs.value[0]
-		store.$patch((state)=>{
-			state.program=temp
-		})
+watchEffect(() => {
+	if (programs.value && programs.value.length > 1) {
+		const temp = programs.value[0];
+		store.$patch((state) => {
+			state.program = temp;
+		});
 		// selectedProgram.value=toRaw(programs.value[0])
-		selectedProgram.value=programs.value[0]
+		selectedProgram.value = programs.value[0];
 	}
-})
+});
 
-watch(selectedProgram, (selection)=>{
-	store.$patch({ program: selectedProgram.value })
+watch(selectedProgram, (selection) => {
+	store.$patch({ program: selectedProgram.value });
 
-	console.debug("Selected program:\n" + JSON.stringify(selection, null, 2) )
-})
+	console.debug("Selected program:\n" + JSON.stringify(selection, null, 2));
+});
 
 const displayNewProject = ref(false);
 const newProjectName = ref("");
 
 const generateOptions = (data: AdmissionAdminProgramListResponse) => {
 	return data.category + data.name;
-}
+};
 
 function newProject() {
 	displayNewProject.value = true;
@@ -398,4 +397,3 @@ async function signOut() {
 	router.push("/");
 }
 </script>
-
