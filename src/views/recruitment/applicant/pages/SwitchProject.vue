@@ -61,7 +61,7 @@ import { toRaw } from "vue";
 import { useQuery } from "@tanstack/vue-query";
 import { useRecruitmentApplicantAuthStore } from "@/stores/universalAuth";
 import { RecruitmentApplicantAPI } from "@/api/recruitment/applicant/api";
-import { useProjectIdStore } from "@/api/recruitment/applicant/store";
+import { useProjectIdStore } from "@/stores/RecruitmentApplicantStore";
 import type { RecruitmentApplicantProgramResponse } from "@/api/recruitment/applicant/types";
 import Button from "primevue/button";
 
