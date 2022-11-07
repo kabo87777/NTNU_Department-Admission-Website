@@ -22,9 +22,11 @@ export class RecruitmentApplicantAPI extends GenericAPI {
 		return data.data;
 	}
 
-	async getFileList(): Promise<RecruitmentApplicantFileListResponse[]> {
+	async getFileList(
+		pid: number
+	): Promise<RecruitmentApplicantFileListResponse[]> {
 		const data: APIGenericResponse = await this.instance.get(
-			"/recruitment/applicant/program/1/file"
+			`/recruitment/applicant/program/${pid}/file`
 		);
 
 		if (data.error === true || typeof data.data === "undefined")

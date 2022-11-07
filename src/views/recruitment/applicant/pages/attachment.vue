@@ -137,6 +137,7 @@ import ParagraphDivider from "@/styles/paragraphDividerApplicant.vue";
 import { AttachmentData } from "@/api/recruitment/applicant/types";
 import { useRecruitmentApplicantAuthStore } from "@/stores/universalAuth";
 import { RecruitmentApplicantAPI } from "@/api/recruitment/applicant/api";
+import { useProjectIdStore } from "@/stores/RecruitmentApplicantStore";
 import { useQuery } from "@tanstack/vue-query";
 import { InvalidSessionError } from "@/api/error";
 import AttachmentList from "@/mocks/attachmentList.json";
@@ -144,12 +145,13 @@ import AttachmentList from "@/mocks/attachmentList.json";
 const router = useRouter();
 const applicantAuth = useRecruitmentApplicantAuthStore();
 const api = new RecruitmentApplicantAPI(applicantAuth);
+const project = useProjectIdStore();
 
 const { isLoading, isError, data, error } = useQuery(
 	["attachmentList"],
 	async () => {
 		try {
-			return await api.getFileList();
+			return await api.getFileList(project.pid);
 		} catch (e: any) {
 			if (e instanceof InvalidSessionError) {
 				console.error(
