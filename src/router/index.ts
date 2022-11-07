@@ -347,7 +347,7 @@ const routes: Array<RouteRecordRaw> = [
 			// Recruitment - manager
 			{
 				path: "recruitment/manager",
-				name: "recruitmentAdminMainContainer",
+				name: "recruitmentManagerMainContainer",
 				component: recruitmentManagerMainContainer,
 				children: [
 					{
