@@ -72,10 +72,11 @@ import recruitmentManagerSignin from "@/views/recruitment/manager/login/signin.v
 import recruitmentManagerPasswordReset from "@/views/recruitment/manager/login/pwdReset.vue";
 import recruitmentManagerPasswordForget from "@/views/recruitment/manager/login/pwdForget.vue";
 import recruitmentManagerPasswordForgetEmailSent from "@/views/recruitment/manager/login/pwdForgetEmailSent.vue";
-
 // Recruitment Manager section
 import recruitmentManagerMainContainer from "@/views/recruitment/manager/MainContainer.vue";
 import recruitmentManagerReviewProgress from "@/views/recruitment/manager/pages/ReviewProgress.vue";
+import recruitmentGradeDataList from "@/views/recruitment/manager/gradeDataList.vue";
+import recruitmentReviewScroreField from "@/views/recruitment/manager/reviewScoreField.vue";
 
 const routes: Array<RouteRecordRaw> = [
 	// Choose recruitment / admission
@@ -349,6 +350,16 @@ const routes: Array<RouteRecordRaw> = [
 				name: "recruitmentManagerMainContainer",
 				component: recruitmentManagerMainContainer,
 				children: [
+					{
+						path: "gradeDataList",
+						name: "recruitmentGradeDataList",
+						component: recruitmentGradeDataList,
+					},
+					{
+						path: "reviewScoreField",
+						name: "recruitmentReviewScoreField",
+						component: recruitmentReviewScroreField,
+					},
 					{
 						path: "reviewProgress",
 						name: "recruitmentManagerReviewProgress",
