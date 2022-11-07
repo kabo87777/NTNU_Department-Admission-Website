@@ -53,6 +53,13 @@ import recruitmentApplicantRegistDone from "@/views/recruitment/applicant/login/
 import recruitmentApplicantPasswordReset from "@/views/recruitment/applicant/login/pwdReset.vue";
 import recruitmentApplicantPasswordForget from "@/views/recruitment/applicant/login/pwdForget.vue";
 import recruitmentApplicantPasswordForgetEmailSent from "@/views/recruitment/applicant/login/pwdForgetEmailSent.vue";
+import recruitmentApplicantMainContainer from "@/views/recruitment/applicant/mainContainer.vue";
+import recruitmentApplicantBasicInfo from "@/views/recruitment/applicant/pages/basicInfo.vue";
+import recruitmentApplicantAttachment from "@/views/recruitment/applicant/pages/attachment.vue";
+import recruitmentApplicantSubmitConfirm from "@/views/recruitment/applicant/pages/SubmitConfirm.vue";
+import recruitmentApplicantAdditionalDocs from "@/views/recruitment/applicant/pages/additionalDocs.vue";
+import recruitmentApplicantSwitchProject from "@/views/recruitment/applicant/pages/SwitchProject.vue";
+import recruitmentApplicantUserSetting from "@/views/recruitment/applicant/pages/userSetting.vue";
 
 // Recruitment Reviewer siginin section
 import recruitmentReviewerSignin from "@/views/recruitment/reviewer/login/signin.vue";
@@ -74,6 +81,7 @@ import recruitmentManagerPasswordForget from "@/views/recruitment/manager/login/
 import recruitmentManagerPasswordForgetEmailSent from "@/views/recruitment/manager/login/pwdForgetEmailSent.vue";
 // Recruitment Manager section
 import recruitmentManagerMainContainer from "@/views/recruitment/manager/MainContainer.vue";
+import recruitmentManagerApplicantUploadList from "@/views/recruitment/manager/pages/ApplicantUploadList/TableList.vue";
 import recruitmentManagerReviewProgress from "@/views/recruitment/manager/pages/ReviewProgress.vue";
 import recruitmentManagerUserSetting from "@/views/recruitment/manager/pages/RecruitmentManagerSelfSetting.vue";
 import recruitmentApplicationUpload from "@/views/recruitment/manager/pages/RecruitmentApplicationSetting.vue";
@@ -323,6 +331,44 @@ const routes: Array<RouteRecordRaw> = [
 				name: "recruitmentApplicantPasswordForgetEmailSent",
 				component: recruitmentApplicantPasswordForgetEmailSent,
 			},
+			{
+				path: "recruitment/applicant",
+				name: "recruitmentApplicantMainContainer",
+				component: recruitmentApplicantMainContainer,
+				children: [
+					//Recruitment - applicant info pages
+					{
+						path: "basicInfo",
+						name: "recruitmentApplicantBasicInfo",
+						component: recruitmentApplicantBasicInfo,
+					},
+					{
+						path: "attachment",
+						name: "recruitmentApplicantAttachment",
+						component: recruitmentApplicantAttachment,
+					},
+					{
+						path: "submitConfirm",
+						name: "recruitmentApplicantSubmitConfirm",
+						component: recruitmentApplicantSubmitConfirm,
+					},
+					{
+						path: "additionalDocs",
+						name: "recruitmentApplicantAdditionalDocs",
+						component: recruitmentApplicantAdditionalDocs,
+					},
+					{
+						path: "switchProject",
+						name: "recruitmentApplicantSwitchProject",
+						component: recruitmentApplicantSwitchProject,
+					},
+					{
+						path: "userSetting",
+						name: "recruitmentApplicantUserSetting",
+						component: recruitmentApplicantUserSetting,
+					},
+				],
+			},
 
 			// Recruitment - manager sign in
 			{
@@ -366,6 +412,11 @@ const routes: Array<RouteRecordRaw> = [
 						path: "reviewProgress",
 						name: "recruitmentManagerReviewProgress",
 						component: recruitmentManagerReviewProgress,
+					},
+					{
+						path: "attachmentList",
+						name: "recruitmentManagerApplicantUploadList",
+						component: recruitmentManagerApplicantUploadList,
 					},
 					{
 						path: "userSetting",

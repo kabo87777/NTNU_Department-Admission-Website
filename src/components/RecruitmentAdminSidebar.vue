@@ -103,7 +103,13 @@
 				</span>
 			</Button>
 		</router-link>
-		<router-link to="" custom v-slot="{ navigate }">
+		<router-link
+			:to="{
+				name: 'recruitmentManagerApplicantUploadList',
+			}"
+			custom
+			v-slot="{ navigate }"
+		>
 			<Button
 				class="p-button-secondary p-button-text !ml-24px !mt-32px !w-336px !h-48px"
 				@click="navigate"

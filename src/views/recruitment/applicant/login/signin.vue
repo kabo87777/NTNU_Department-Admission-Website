@@ -163,9 +163,9 @@ import InputText from "primevue/inputtext";
 
 const router = useRouter();
 
-const redirectToMainContainer = () =>
+const redirectToMainContainer = () => {
 	router.replace({ name: "recruitmentApplicantMainContainer" });
-
+};
 const authStore = useRecruitmentApplicantAuthStore();
 
 // Login Form
