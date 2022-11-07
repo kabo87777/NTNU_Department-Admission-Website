@@ -115,6 +115,7 @@ import { toRaw } from "vue";
 import { router } from "@/router";
 import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
 import { AdmissionAdminAPI } from "@/api/admission/admin/api";
+import { useGlobalStore } from "@/stores/globalStore";
 import { useQuery } from "@tanstack/vue-query";
 import { InvalidSessionError } from "@/api/error";
 import DataTable from "primevue/datatable";
@@ -125,6 +126,7 @@ import "../../../../styles/customize.css";
 import applicantsList from "./uploadList.json";
 
 const adminAuth = useAdmissionAdminAuthStore();
+const store = useGlobalStore();
 const api = new AdmissionAdminAPI(adminAuth);
 
 const {
@@ -134,7 +136,7 @@ const {
 	error,
 } = useQuery(["applicantList"], async () => {
 	try {
-		return await api.getApplicantList();
+		if (store.program) return await api.getApplicantList(store.program.id);
 	} catch (e: any) {
 		if (e instanceof InvalidSessionError) {
 			console.error(
