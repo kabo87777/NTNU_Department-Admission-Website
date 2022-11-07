@@ -25,11 +25,9 @@
 
 <script setup lang="ts">
 import NavBar from "@/components/NavBar.vue";
-import SideBar from "@/components/recruitmentManagerSidebar.vue";
-
+import SideBar from "@/components/RecruitmentAdminSidebar.vue";
 import { watch } from "vue";
 import { useRouter } from "vue-router";
-
 import { useRecruitmentAdminAuthStore } from "@/stores/universalAuth";
 import { doUniversalAuthSessionValidation } from "@/api/universalAuth";
 
@@ -39,7 +37,7 @@ const adminAuth = useRecruitmentAdminAuthStore();
 
 watch(router.currentRoute, async () => {
 	if (!(await doUniversalAuthSessionValidation(adminAuth))) {
-		router.replace({ name: "recruitmentManagerSignin" });
+		router.replace({ name: "RecruitmentManagerSignin" });
 		// TODO: show session expired notification
 	}
 });

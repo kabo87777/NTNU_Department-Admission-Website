@@ -100,3 +100,29 @@
   width: 100%;
   margin-top: 8px;
 }
+
+.sidebarVerticalBigRedDivider {
+  background-color: #93282C;
+  height: 60px;
+  width: 10px;
+}
+
+.sidebarVerticalSmallRedDivider {
+  margin-left: 2px;
+  background-color: #93282C;
+  height: 60px;
+  width: 4px;
+}
+
+.sidebarRedDivider {
+  background-color: #93282C;
+  height: 2px;
+  width: 32px;
+}
+
+.bigRedDivider {
+  background-color: #93282C;
+  height: 4px;
+  width: 100%;
+  margin-top: 8px;
+}

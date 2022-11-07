@@ -14,7 +14,7 @@ if (!process.env.VITE_ADMISSIONS_API_ENDPOINT) {
   // Branch name is exposed on a env var in Render builds
   // On Render there's apparently no .git directory. So
   // branch.sync() does not give correct result.
-  switch (process.env.RENDER_GIT_BRANCH || branch.sync()) {
+  switch (process.env.RENDER_GIT_BRANCH || process.env.VERCEL_GIT_COMMIT_REF || branch.sync() || "") {
     // production
     case "master":
     case "main":
