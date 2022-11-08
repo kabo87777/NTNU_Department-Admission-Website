@@ -13,6 +13,24 @@
 		</div>
 		<div class="mt-28px">
 			<h1 class="text-3xl">
+				{{ $t("總評分設定") }}
+			</h1>
+			<div class="flex ml-12px mt-24px text-blackLight">
+				<div class="w-1/2">
+					{{ $t("第一階段佔比：") }}
+				</div>
+				<div class="w-1/2">
+					{{ $t("第二階段佔比：") }}
+				</div>
+			</div>
+			<div class="flex ml-12px">
+				<div class="w-1/2"><InputText class="!w-500px" /></div>
+				<div class="w-1/2"><InputText class="!w-500px" /></div>
+			</div>
+		</div>
+		<ParagraphDivider />
+		<div class="mt-28px">
+			<h1 class="text-3xl">
 				{{ $t("評分設定") }}
 			</h1>
 			<div class="flex ml-12px mt-24px text-blackLight">
@@ -52,7 +70,7 @@
 				<div class="w-1/2"><InputText class="!w-500px" /></div>
 			</div>
 		</div>
-		<ParagraphDivider />
+		<!-- <ParagraphDivider />
 		<div class="mt-20px">
 			<h1 class="text-3xl">
 				{{ $t("顯示欄位：基本資料") }}
@@ -76,7 +94,7 @@
 			<label for="enrollProver" class="ml-8px text-s text-blackLight">{{
 				$t("教學證明")
 			}}</label>
-		</div>
+		</div> -->
 		<div class="mt-57px"></div>
 		<div class="bigRedDivider"></div>
 		<div class="flex mt-24px">

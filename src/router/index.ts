@@ -45,6 +45,8 @@ import applicationReview from "@/views/admission/reviewer/applicationReview.vue"
 import oralReview from "@/views/admission/reviewer/oralReview.vue";
 import singleApplicationReview from "@/views/admission/reviewer/singleApplicationReview.vue";
 import singleOralReview from "@/views/admission/reviewer/singleOralReview.vue";
+import AdmissionReviewerUserSetting from "@/views/admission/reviewer/userSetting.vue";
+import AdmissionReviewerForgetpassword from "@/views/admission/reviewer/ResetPassword.vue";
 
 // Recruitment Applicant section
 import recruitmentApplicantSignin from "@/views/recruitment/applicant/login/signin.vue";
@@ -73,6 +75,7 @@ import requiredDataReview from "@/views/recruitment/reviewer/requiredDataReview.
 import optionalDataReview from "@/views/recruitment/reviewer/optionalDataReview.vue";
 import singleRequiredDataReview from "@/views/recruitment/reviewer/singleRequiredDataReview.vue";
 import singleOptionalDataReview from "@/views/recruitment/reviewer/singleOptionalDataReview.vue";
+import recruitmentReviewerUserSetting from "@/views/recruitment/reviewer/userSetting.vue";
 
 // Recruitment Manager signin section
 import recruitmentManagerSignin from "@/views/recruitment/manager/login/signin.vue";
@@ -87,6 +90,8 @@ import recruitmentManagerUserSetting from "@/views/recruitment/manager/pages/Rec
 import recruitmentApplicationUpload from "@/views/recruitment/manager/pages/RecruitmentApplicationSetting.vue";
 import recruitmentGradeDataList from "@/views/recruitment/manager/gradeDataList.vue";
 import recruitmentReviewScroreField from "@/views/recruitment/manager/reviewScoreField.vue";
+import recruitmentProjectSetting from "@/views/recruitment/manager/pages/ProjectSetting.vue";
+import recruitmentManagerApplicationAccountSetting from "@/views/recruitment/manager/pages/ApplicationAccountSetting.vue";
 
 const routes: Array<RouteRecordRaw> = [
 	// Choose recruitment / admission
@@ -118,6 +123,12 @@ const routes: Array<RouteRecordRaw> = [
 				component: AdmissionReviewerSignin,
 			},
 			{
+				path: "/admission/reviewer/forgetpassword",
+				name: "AdmissionReviewerForgetpassword",
+				component: AdmissionReviewerForgetpassword,
+			},
+
+			{
 				path: "admission/reviewer",
 				name: "AdmissionReviewerMainContainer",
 				component: AdmissionReviewerMainContainer,
@@ -141,6 +152,11 @@ const routes: Array<RouteRecordRaw> = [
 						path: "singleOralReview/:id",
 						name: "singleOralReview",
 						component: singleOralReview,
+					},
+					{
+						path: "reviewerUserSetting",
+						name: "AdmissionReviewerUserSetting",
+						component: AdmissionReviewerUserSetting,
 					},
 				],
 			},
@@ -399,6 +415,16 @@ const routes: Array<RouteRecordRaw> = [
 				component: recruitmentManagerMainContainer,
 				children: [
 					{
+						path: "projectSetting",
+						name: "recruitmentProjectSetting",
+						component: recruitmentProjectSetting,
+					},
+					{
+						path: "applicationAccountSetting",
+						name: "recruitmentManagerApplicationAccountSetting",
+						component: recruitmentManagerApplicationAccountSetting,
+					},
+					{
 						path: "gradeDataList",
 						name: "recruitmentGradeDataList",
 						component: recruitmentGradeDataList,
@@ -489,6 +515,11 @@ const routes: Array<RouteRecordRaw> = [
 						path: "singleOptionalDataReview/:id",
 						name: "singleOptionalDataReview",
 						component: singleOptionalDataReview,
+					},
+					{
+						path: "userSetting",
+						name: "recruitmentReviewerUserSetting",
+						component: recruitmentReviewerUserSetting,
 					},
 				],
 			},

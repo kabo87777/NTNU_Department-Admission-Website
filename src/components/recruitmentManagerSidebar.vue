@@ -69,20 +69,28 @@
 				{{ $t("申請端設定") }}
 			</div>
 		</div>
-		<Button
-			class="p-button-secondary p-button-text !ml-24px !mt-8px !w-336px !h-48px"
+		<router-link
+			to="/recruitment/manager/applicationAccountSetting"
+			custom
+			v-slot="{ navigate }"
 		>
-			<img
-				alt="logo"
-				src="/assets/sidebar/User_add_alt.png"
-				style="width: 1.5rem"
-			/>
-			<span
-				class="text-left tracking-3px ml-3 font-bold text-xl text-[#2D2926]"
+			<Button
+				class="p-button-secondary p-button-text !ml-24px !mt-32px !w-336px !h-48px"
+				@click="navigate"
+				role="link"
 			>
-				{{ $t("申請帳號設置") }}
-			</span>
-		</Button>
+				<img
+					alt="logo"
+					src="/assets/sidebar/User_add_alt.png"
+					style="width: 1.5rem"
+				/>
+				<span
+					class="text-left tracking-3px ml-3 font-bold text-xl text-[#2D2926]"
+				>
+					{{ $t("申請帳號設置") }}
+				</span>
+			</Button>
+		</router-link>
 		<router-link
 			to="/recruitment/manager/applicationUploadSetting"
 			custom
@@ -135,7 +143,7 @@
 				{{ $t("審查端設定") }}
 			</div>
 		</div>
-		<router-link
+		<!-- <router-link
 			to="/recruitment/manager/reviewScoreField"
 			custom
 			v-slot="{ navigate }"
@@ -156,7 +164,7 @@
 					{{ $t("審查評分設置") }}
 				</span>
 			</Button>
-		</router-link>
+		</router-link> -->
 		<router-link
 			to="/recruitment/manager/gradeDataList"
 			custom
@@ -207,11 +215,7 @@
 		>
 			<div class="flex">
 				<div class="m-auto">
-					<router-link
-						to="/recruitment/manager/reviewerSettings"
-						custom
-						v-slot="{ navigate }"
-					>
+					<router-link to="" custom v-slot="{ navigate }">
 						<Button
 							class="w-168px h-44px p-button-outlined !mt-24px !bg-white"
 							@click="navigate"
