@@ -1,3 +1,5 @@
+import { string } from "yup";
+
 export interface Tags {
 	basicInfo: string;
 	attachment: string;
@@ -81,4 +83,13 @@ export interface RecruitmentApplicantGetUserInfoResponse {
 	r_applicant_id?: number;
 	created_at?: string;
 	updated_at?: string;
+}
+const body = {
+	// name: "haha",
+	// email: "2@mail.com",
+	// uid: 21,
+};
+export interface RecruitmentRegisterEamialPostResponse {
+	status: string;
+	errorMessage: string;
 }

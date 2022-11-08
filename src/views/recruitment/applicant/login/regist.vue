@@ -103,13 +103,29 @@
 
 <script setup lang="ts">
 import { reactive } from "vue";
+import { useQuery, useMutation } from "@tanstack/vue-query";
 import InputText from "primevue/inputtext";
+import axios from "axios";
+import ApplicantUploadedDocs from "@/views/admission/manager/applicantsUploadList/applicantUploadedDocs.vue";
 
 const userRegistData = reactive({
 	email: "",
 	password: "",
 	confirmPwd: "",
 });
+const mutation = useMutation(async (newEmailRegister) => {
+	try{
+		return await async (params:type) => {
+	api
+}.postEmailRegister();
+
+		//return axios.post("/todos", newEmailRegister);
+	}
+	});
+
+function buttonRegister() {
+
+}
 </script>
 
 <style setup lang="css">

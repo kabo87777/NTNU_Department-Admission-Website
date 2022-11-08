@@ -3,6 +3,7 @@ import { GenericAPI } from "@/api/api";
 import type {
 	RecruitmentApplicantProgramResponse,
 	RecruitmentApplicantFileListResponse,
+	RecruitmentRegisterEamialPostResponse,
 } from "./types";
 import type { APIGenericResponse } from "@/api/types";
 
@@ -31,6 +32,21 @@ export class RecruitmentApplicantAPI extends GenericAPI {
 
 		if (data.error === true || typeof data.data === "undefined")
 			throw new Error("Failed to fetch file list");
+
+		return data.data;
+	}
+	async postEmailRegister(
+		newPostEmailRegister: any
+	): Promise<RecruitmentRegisterEamialPostResponse[]> {
+		const data: APIGenericResponse = await this.instance.post(
+			"/recruitment/auth/applicant",
+			{
+				body: newPostEmailRegister,
+			}
+		);
+
+		if (data.error === true || typeof data.data === "undefined")
+			throw new Error("Failed to fetch program list");
 
 		return data.data;
 	}
