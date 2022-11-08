@@ -101,21 +101,17 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, reactive, ref } from "vue";
+import { computed, ref } from "vue";
 import { useRoute } from "vue-router";
 import Button from "primevue/button";
 import InputNumber from "primevue/inputnumber";
 import Checkbox from "primevue/checkbox";
 import InputText from "primevue/inputtext";
-import TabView from "primevue/tabview";
-import TabPanel from "primevue/tabpanel";
 import SelectButton from "primevue/selectbutton";
-import { useI18n } from "vue-i18n";
 import PDFView from "@/components/pdfPreview.vue";
 import jsPdf from "./test.pdf";
 
 const route = useRoute();
-const { t } = useI18n();
 
 // FIXME: logic may refactor
 
@@ -278,38 +274,6 @@ const name = computed(
 		data_list.value[data_list.value.findIndex((obj) => obj.id == ID.value)]
 			.name
 );
-
-const nameInfo = computed(
-	() =>
-		data_list.value[data_list.value.findIndex((obj) => obj.id == ID.value)]
-			.name
-);
-const contactInfo = computed(
-	() =>
-		data_list.value[data_list.value.findIndex((obj) => obj.id == ID.value)]
-			.contactInfo
-);
-const schoolEx = computed(
-	() =>
-		data_list.value[data_list.value.findIndex((obj) => obj.id == ID.value)]
-			.schoolEx
-);
-const exam = computed(
-	() =>
-		data_list.value[data_list.value.findIndex((obj) => obj.id == ID.value)]
-			.exam
-);
-const otherInfo = computed(
-	() =>
-		data_list.value[data_list.value.findIndex((obj) => obj.id == ID.value)]
-			.otherInfo
-);
-
-const nameInfoT = computed(() => t("姓名資訊"));
-const contactInfoT = computed(() => t("聯絡資訊"));
-const schoolExT = computed(() => t("就學經歷"));
-const examT = computed(() => t("考試證明"));
-const otherInfoT = computed(() => t("其他資訊"));
 
 function saveScore() {
 	data_list.value[

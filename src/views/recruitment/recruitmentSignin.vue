@@ -1,12 +1,33 @@
 <template class="overflow-hidden">
 	<div class="flex">
-		<div class="flex-shrink-1">
+		<!-- <div class="flex-shrink-1">
 			<img src="/assets/login-page/Login-img.png" class="fill" />
+		</div> -->
+		<div>
+			<img src="/assets/login-page/Login-img.png" class="h-screen" />
 		</div>
-		<div class="flex-none w-150 px-6 pt-18 space-y-8">
+		<div class="m-auto">
+			<div class="flex m-auto h-15">
+				<div>
+					<img
+						src="/assets/login-page/NTNU-logo-B1.png"
+						class="h-15"
+					/>
+				</div>
+				<Divider layout="vertical" />
+				<div class="mt-1.5">
+					<div class="text-4xl font-bold text-gray-500">
+						資訊工程學系
+					</div>
+					<div class="text-xs text-gray-400">
+						Department of Computer Science and Information
+						Enginering
+					</div>
+				</div>
+			</div>
 			<router-link to="mainpage">
 				<button
-					class="flex items-center gap-2 px-2 py-2"
+					class="flex items-center gap-2 px-2 py-2 mt-5 mb-3"
 					bg="transparent hover:gray-100"
 					text="sm gray-400 hover:gray-600"
 					border="rounded"
@@ -17,9 +38,9 @@
 				</button>
 			</router-link>
 			<div class="px-8 space-y-2">
-				<div class="text-s text-gray-500">
+				<!-- <div class="text-s text-gray-500">
 					國立台灣師範大學資訊工程學系 NTNU CSIE
-				</div>
+				</div> -->
 				<div class="flex items-end gap-2 font-medium text-gray-900">
 					<div class="text-4xl">教師聘請系統</div>
 					<div class="text-xl">Teacher Recruitment System</div>
@@ -32,30 +53,30 @@
 						<div>Select your identity</div>
 					</div>
 				</Divider>
-				<div class="px-18">
+				<div class="flex items-center justify-center">
 					<router-link to="/recruitment/applicant/signin">
 						<button
-							class="md:mx-auto w-full py-4 applicantButtonStyle"
+							class="text-xl h-90px w-420px md:mx-auto w-full py-4 applicantButtonStyle"
 							border="2  rounded-lg"
 						>
 							<div>申請者登入 Applicant Login</div>
 						</button>
 					</router-link>
 				</div>
-				<div class="px-18">
+				<div class="flex items-center justify-center">
 					<router-link to="/recruitment/reviewer/signin">
 						<button
-							class="md:mx-auto w-full py-4 reviewerButtonStyle"
+							class="text-xl h-90px w-420px md:mx-auto w-full py-4 reviewerButtonStyle"
 							border="2  rounded-lg"
 						>
 							<div>審查委員登入 Reviewer Login</div>
 						</button>
 					</router-link>
 				</div>
-				<div class="px-18">
+				<div class="flex items-center justify-center">
 					<router-link to="/recruitment/manager/signin">
 						<button
-							class="md:mx-auto w-full py-4 managerButtonStyle"
+							class="text-xl h-90px w-420px md:mx-auto w-full py-4 managerButtonStyle"
 							border="2  rounded-lg"
 						>
 							<div>行政人員登入 Manager Login</div>
