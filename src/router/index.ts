@@ -29,7 +29,7 @@ import AdmissionApplicantRecommendationLetter from "@/views/admission/applicant/
 import AdmissionApplicantAdditionalDocs from "@/views/admission/applicant/pages/additionalDocs.vue";
 import AdmissionApplicantUserSetting from "@/views/admission/applicant/pages/userSetting.vue";
 
-import projectSetting from "@/views/admission/manager/project-setting.vue";
+import AdmissionManagerProjectSetting from "@/views/admission/manager/project-setting.vue";
 import firstloginchangepassword from "@/views/admission/FirstSigninChangePass.vue";
 import reviewScoreField from "@/views/reviewScoreField.vue";
 import resetpassword from "@/views/admission/ResetPassword.vue";
@@ -263,7 +263,7 @@ const routes: Array<RouteRecordRaw> = [
 					{
 						path: "projectSetting",
 						name: "projectSetting",
-						component: projectSetting,
+						component: AdmissionManagerProjectSetting,
 					},
 					{
 						path: "reviewScoreField",

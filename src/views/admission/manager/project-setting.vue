@@ -3,10 +3,11 @@
 		<h1 class="text-4xl text-bold tracking-widest">{{ $t("專案設定") }}</h1>
 		<Divider class="bg-ntnuRed" />
 		<h2 class="text-2xl text-bold tracking-widest inline-block">
-			{{ $t("111年研究生審查") }}
+			{{ oldProgramName }}
 		</h2>
 		<Button
 			class="w-110px h-40px !ml-20px p-button-outlined p-button-success"
+			@click="update"
 		>
 			<img
 				alt="logo"
@@ -35,7 +36,7 @@
 		</h5>
 		<InputText
 			type="text"
-			v-model="profect_name"
+			v-model="programName"
 			class="w-960px h-44px mt-10px"
 		/>
 		<div>
@@ -59,6 +60,7 @@
 				v-model="application_start_time"
 				:showIcon="true"
 				:showTime="true"
+				:showSeconds="true"
 				class="w-320px h-44px mt-10px"
 			/>
 		</div>
@@ -71,6 +73,7 @@
 				v-model="application_end_time"
 				:showIcon="true"
 				:showTime="true"
+				:showSeconds="true"
 				class="w-320px h-44px mt-10px"
 			/>
 		</div>
@@ -84,6 +87,7 @@
 				v-model="review_stage1_start_time"
 				:showIcon="true"
 				:showTime="true"
+				:showSeconds="true"
 				class="w-320px h-44px mt-10px"
 			/>
 		</div>
@@ -96,6 +100,7 @@
 				v-model="review_stage1_end_time"
 				:showIcon="true"
 				:showTime="true"
+				:showSeconds="true"
 				class="w-320px h-44px mt-10px"
 			/>
 		</div>
@@ -109,6 +114,7 @@
 				v-model="review_stage2_start_time"
 				:showIcon="true"
 				:showTime="true"
+				:showSeconds="true"
 				class="w-320px h-44px mt-10px"
 			/>
 		</div>
@@ -121,6 +127,7 @@
 				v-model="review_stage2_end_time"
 				:showIcon="true"
 				:showTime="true"
+				:showSeconds="true"
 				class="w-320px h-44px mt-10px"
 			/>
 		</div>
@@ -156,15 +163,21 @@ import Dropdown from "primevue/dropdown";
 import Calendar from "primevue/calendar";
 import Textarea from "primevue/textarea";
 import Checkbox from "primevue/checkbox";
+import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
+import { useGlobalStore } from "@/stores/globalStore";
+import { AdmissionAdminAPI } from "@/api/admission/admin/api";
+import { useMutation, useQuery } from "@tanstack/vue-query";
+import { InvalidSessionError } from "@/api/error";
+import { router } from "@/router";
 
-const profect_name = ref<string>("111年研究生審查");
-const selected_type = ref({});
+const programName = ref<string>("");
+const selected_type = ref();
 const types = ref([
 	{ type_name: "特殊選才" },
 	{ type_name: "碩士班徵試入學" },
 	{ type_name: "博士班徵試入學" },
 ]);
-const application_start_time = ref();
+const application_start_time = ref<Date>();
 const application_end_time = ref();
 const review_stage1_start_time = ref();
 const review_stage1_end_time = ref();
@@ -172,4 +185,67 @@ const review_stage2_start_time = ref();
 const review_stage2_end_time = ref();
 const project_details = ref("");
 const checked = ref(false);
+
+const globalStore = useGlobalStore();
+const adminAuth = useAdmissionAdminAuthStore();
+const api = new AdmissionAdminAPI(adminAuth);
+const programData = useMutation(async (newProgramData: any) => {
+	try {
+		return await api.updateProgramData(
+			globalStore.program!.id,
+			newProgramData
+		);
+	} catch (error) {
+		console.log(error);
+	}
+});
+const {
+	isLoading,
+	isError,
+	data: oldProgramName,
+	error,
+} = useQuery(["programName"], async () => {
+	try {
+		const programName = (await api.getProgramList()).filter(
+			(program) => program.id === globalStore.program!.id
+		)[0].name;
+		return programName;
+	} catch (e: any) {
+		if (e instanceof InvalidSessionError) {
+			// FIXME: show session expiry notification??
+			// Why are we even here in the first place?
+			// MainContainer should have checked already.
+			console.error(
+				"Session has already expired while querying programList"
+			);
+			router.push("/");
+			return;
+		}
+	}
+});
+
+function update() {
+	programData.mutate({
+		category: selected_type.value,
+		name: programName.value,
+		application_start_date:
+			dateTransform(application_start_time.value) + "+08:00",
+		application_end_date:
+			dateTransform(application_end_time.value) + "+08:00",
+		review_start_date:
+			dateTransform(review_stage1_start_time.value) + "+08:00",
+		review_end_date: dateTransform(review_stage1_end_time.value) + "+08:00",
+		require_file: "require_file",
+		stage: "application",
+		created_at: "2022-11-05T18:48:48.110+08:00",
+		updated_at: "2022-11-07T16:41:34.135+08:00",
+	});
+}
+
+function dateTransform(date?: Date) {
+	const result = new Date(date!.setHours(date!.getHours() + 8))
+		.toJSON()
+		.replace("Z", "");
+	return result;
+}
 </script>

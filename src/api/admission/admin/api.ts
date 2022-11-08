@@ -32,4 +32,16 @@ export class AdmissionAdminAPI extends GenericAPI {
 			throw new Error("Failed to fetch applicant list");
 		return data.data.applicants;
 	}
+
+	async updateProgramData(
+		programID: number,
+		data: AdmissionAdminProgramListResponse
+	): Promise<any> {
+		const response: APIGenericResponse = await this.instance.patch(
+			`/admission/admin/program/${programID}`,
+			data
+		);
+		if (response.error === true)
+			throw new Error("Failed to update program");
+	}
 }
