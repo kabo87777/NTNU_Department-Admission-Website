@@ -1,6 +1,3 @@
 <template>
-	<p>this is sumit confirmation page</p>
-	<p>
-		qwertyuioplkjhgfdsazxcvbnmqwertyuioplkjhgfdsazxcvbnmqwertyuioplkjhgfdsazxcvbnmqwertyuioplkjhgfdsazxcvbnmqwertyuioplkjhgfdsazxcvbnm
-	</p>
+	<p class="text-xl">資料未成功送出</p>
 </template>

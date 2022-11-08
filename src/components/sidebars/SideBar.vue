@@ -71,7 +71,7 @@
 			</div>
 		</div>
 
-		<Button
+		<!-- <Button
 			class="p-button-secondary p-button-text !ml-24px !mt-16px !w-336px !h-48px"
 		>
 			<img
@@ -84,14 +84,14 @@
 			>
 				{{ $t("資訊公告") }}
 			</span>
-		</Button>
+		</Button> -->
 		<RouterLink
 			to="/admission/manager/manageApplicants"
 			custom
 			v-slot="{ navigate }"
 		>
 			<Button
-				class="p-button-secondary p-button-text !ml-24px !mt-8px !w-336px !h-48px"
+				class="p-button-secondary p-button-text !ml-24px !mt-18px !w-336px !h-48px"
 				@click="navigate"
 			>
 				<img
@@ -189,7 +189,7 @@
 			</Button>
 		</router-link>
 		<div
-			class="bg-gray-200 bg-opacity-50 h-200px w-[100%]"
+			class="bg-gray-200 bg-opacity-50 h-250px w-[100%]"
 			style="transform: translateY(20%)"
 		>
 			<div class="flex">
@@ -295,7 +295,7 @@
 					v-slot="{ navigate }"
 				>
 					<Button
-						class="p-button-text !mt-25px !ml-50px"
+						class="p-button-text !mt-46px !ml-50px"
 						@click="navigate"
 						role="link"
 					>

@@ -278,7 +278,7 @@ const api = new RecruitmentApplicantAPI(applicantAuth);
 
 async function signOut() {
 	await api.invalidateSession();
-	router.push("/mainpage");
+	router.push("/recruitment/applicant/signin");
 }
 </script>
 
