@@ -11,9 +11,9 @@ import vueI18n from "@intlify/vite-plugin-vue-i18n";
 import branch from "git-branch";
 
 if (!process.env.VITE_ADMISSIONS_API_ENDPOINT) {
-  if (process.env.VITE_VERCEL_ENV) {
+  if (process.env.VERCEL_ENV) {
     // project being built on Vercel
-    if (process.env.VITE_VERCEL_ENV === "production")
+    if (process.env.VERCEL_ENV === "production")
       process.env.VITE_ADMISSIONS_API_ENDPOINT = "https://admissions-backend-prd.birkhoff.me";
     else
       process.env.VITE_ADMISSIONS_API_ENDPOINT = "https://admissions-backend-stg.birkhoff.me";
@@ -34,7 +34,7 @@ if (!process.env.VITE_ADMISSIONS_API_ENDPOINT) {
 
 if (!process.env.VITE_IS_SKIP_CAPTCHA) {
   // by default, we only enable CAPTCHA for Vercel production environment
-  process.env.VITE_IS_SKIP_CAPTCHA = (process.env.VITE_VERCEL_ENV === "production") ? "false" : "true";
+  process.env.VITE_IS_SKIP_CAPTCHA = (process.env.VERCEL_ENV === "production") ? "false" : "true";
 }
 
 console.log("VITE_ADMISSIONS_API_ENDPOINT =", process.env.VITE_ADMISSIONS_API_ENDPOINT);
