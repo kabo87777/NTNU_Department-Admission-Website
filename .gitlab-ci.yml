@@ -68,7 +68,7 @@ deploy to staging:
     - vercel build --token=$VERCEL_TOKEN
     - export DEPLOYMENT_URL=$(vercel deploy --prebuilt --token=$VERCEL_TOKEN)
     - timeout 300 bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' '"$DEPLOYMENT_URL"')" != "200" ]]; do sleep 5; done' || false
-    - vercel alias set "$DEPLOYMENT_URL" "admissions-frontend-staging.birkhoff.me"
+    - vercel alias set --token=$VERCEL_TOKEN "$DEPLOYMENT_URL" "admissions-frontend-staging.birkhoff.me"
   environment:
     name: Staging
     url: https://admissions-frontend-staging.birkhoff.me
@@ -82,7 +82,7 @@ deploy to production:
     - vercel build --token=$VERCEL_TOKEN
     - export DEPLOYMENT_URL=$(vercel deploy --prebuilt --token=$VERCEL_TOKEN)
     - timeout 300 bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' '"$DEPLOYMENT_URL"')" != "200" ]]; do sleep 5; done' || false
-    - vercel alias set "$DEPLOYMENT_URL" "admissions.birkhoff.me"
+    - vercel alias set --token=$VERCEL_TOKEN "$DEPLOYMENT_URL" "admissions.birkhoff.me"
   environment:
     name: Production
     url: https://admissions.birkhoff.me
