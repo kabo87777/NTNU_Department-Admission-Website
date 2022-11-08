@@ -32,6 +32,11 @@ if (!process.env.VITE_ADMISSIONS_API_ENDPOINT) {
   }
 }
 
+if (!process.env.VITE_IS_SKIP_CAPTCHA) {
+  // by default, we only enable CAPTCHA for Vercel production environment
+  process.env.VITE_IS_SKIP_CAPTCHA = (process.env.VITE_VERCEL_ENV === "production") ? "false" : "true";
+}
+
 console.log("VITE_ADMISSIONS_API_ENDPOINT =", process.env.VITE_ADMISSIONS_API_ENDPOINT);
 
 // https://vitejs.dev/config/
