@@ -38,25 +38,24 @@ export interface AdmissionAdminProgramListResponse {
 }
 
 export interface AdmissionAdminApplicantsListResponse {
-	// TODO: Wait backend to give exact type fields currently using null
-	id: number;
-	provider: string;
-	uid: string;
-	allow_password_change: boolean;
-	isInit: null;
-	lang: null;
-	name: string;
-	nickname: null;
-	image: null;
-	email: string;
-	username: string;
-	docs_order: null;
-	oral_order: null;
-	file: null;
-	docs_stage: null;
-	oral_stage: null;
-	created_at: string;
-	updated_at: string;
-	s_program_id: number;
-	application_stage: null;
+	id?: number;
+	provider?: string;
+	uid?: string;
+	allow_password_change?: boolean;
+	isInit?: boolean;
+	lang?: string;
+	name?: string;
+	nickname?: string;
+	image?: string;
+	email?: string;
+	username?: string;
+	docs_order?: string;
+	oral_order?: string;
+	file?: string;
+	docs_stage?: string | number;
+	oral_stage?: string | number;
+	created_at?: string;
+	updated_at?: string;
+	s_program_id?: number;
+	application_stage?: string | number;
 }

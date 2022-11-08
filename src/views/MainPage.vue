@@ -32,20 +32,22 @@
 			</div>
 			<div class="mt-50px ml-184px userLogin">
 				<router-link to="/admission">
-					<Button class="bg-yellow h-95px w-360px">
-						<div class="m-auto text-2xl">
-							<div>{{ $t("招生系統") }}</div>
-						</div>
-					</Button>
+					<button
+						class="text-xl h-90px w-420px md:mx-auto w-full py-4 admissionButtonStyle"
+						border="2  rounded-lg"
+					>
+						<div>招生系統 Admission System</div>
+					</button>
 				</router-link>
 			</div>
 			<div class="mt-50px ml-184px">
 				<router-link to="/recruitment">
-					<Button class="bg-red h-95px w-360px">
-						<div class="m-auto text-2xl">
-							<div>{{ $t("教師聘請系統") }}</div>
-						</div>
-					</Button>
+					<button
+						class="text-xl h-90px w-420px md:mx-auto w-full py-4 recruitmentButtonStyle"
+						border="2  rounded-lg"
+					>
+						<div>教師聘請系統 Recruitment System</div>
+					</button>
 				</router-link>
 			</div>
 		</div>
@@ -58,10 +60,34 @@ import Divider from "primevue/divider";
 </script>
 
 <style setup lang="css">
-.bg-yellow {
-	background-color: #b8b800;
+.admissionButtonStyle {
+	background-color: #fafac7;
+	border-color: #dbd379;
+	color: #544830;
 }
-.bg-red {
-	background-color: #ff0000;
+.admissionButtonStyle:hover {
+	background-color: #8a7b27;
+	border-color: #8a7b27;
+	color: white;
+}
+.admissionButtonStyle:active {
+	background-color: #624f2a;
+	border-color: #624f2a;
+	color: white;
+}
+.recruitmentButtonStyle {
+	background-color: #dfe7fd;
+	border-color: #a5b9ec;
+	color: #003a5c;
+}
+.recruitmentButtonStyle:hover {
+	background-color: #2459a4;
+	border-color: #2459a4;
+	color: white;
+}
+.recruitmentButtonStyle:active {
+	background-color: #0b4873;
+	border-color: #0b4873;
+	color: white;
 }
 </style>

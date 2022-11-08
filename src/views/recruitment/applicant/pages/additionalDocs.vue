@@ -1,6 +1,3 @@
 <template>
-	<p>this is additional documents page</p>
-	<p>
-		qwertyuioplkjhgfdsazxcvbnmqwertyuioplkjhgfdsazxcvbnmqwertyuioplkjhgfdsazxcvbnmqwertyuioplkjhgfdsazxcvbnmqwertyuioplkjhgfdsazxcvbnm
-	</p>
+	<p class="text-xl">畫面與功能維修中</p>
 </template>

@@ -67,7 +67,7 @@
 		</router-link>
 
 		<div
-			class="bg-gray-200 bg-opacity-50 h-104px w-[100%] !mt-650px"
+			class="bg-gray-200 bg-opacity-50 h-104px w-[100%] !mt-530px"
 			style="transform: translateY(20%)"
 		>
 			<div class="flex">
@@ -84,13 +84,23 @@
 						{{ $t("系辦主管") }}
 					</div>
 				</div>
-				<Button class="p-button-text !mt-25px !ml-50px">
-					<img
-						alt="logo"
-						src="/assets/sidebar/Setting_alt_line.png"
-						class="w-28px h-28px"
-					/>
-				</Button>
+				<router-link
+					to="/recruitment/reviewer/userSetting"
+					custom
+					v-slot="{ navigate }"
+				>
+					<Button
+						class="p-button-text !mt-25px !ml-50px"
+						@click="navigate"
+						role="link"
+					>
+						<img
+							alt="logo"
+							src="/assets/sidebar/Setting_alt_line.png"
+							class="w-28px h-28px"
+						/>
+					</Button>
+				</router-link>
 				<Button class="p-button-text !mt-25px" @click="signOut">
 					<img
 						alt="logo"

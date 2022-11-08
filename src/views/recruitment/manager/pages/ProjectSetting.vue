@@ -1,9 +1,9 @@
 <template>
-	<div class="ml-128px mt-20 mb-20">
+	<div>
 		<h1 class="text-4xl text-bold tracking-widest">{{ $t("專案設定") }}</h1>
 		<Divider class="bg-ntnuRed" />
 		<h2 class="text-2xl text-bold tracking-widest inline-block">
-			{{ $t("111年研究生審查") }}
+			{{ $t("111年教授徵聘 A 組") }}
 		</h2>
 		<Button
 			class="w-110px h-40px !ml-20px p-button-outlined p-button-success"
@@ -30,7 +30,7 @@
 		<h3 class="text-xs tracking-widest text-gray-500">
 			2022/09/15 · {{ $t("新增到專案") }}
 		</h3>
-		<h5 class="text-base tracking-widest mt-30px">
+		<h5 class="text-base tracking-widest mt-30px mb-10px">
 			{{ $t("專案名稱 (修改)") }} :
 		</h5>
 		<InputText
@@ -39,7 +39,7 @@
 			class="w-960px h-44px mt-10px"
 		/>
 		<div>
-			<h5 class="text-base tracking-widest mt-30px">
+			<!-- <h5 class="text-base tracking-widest mt-30px">
 				{{ $t("屬性") }} :
 			</h5>
 			<Dropdown
@@ -48,7 +48,7 @@
 				optionLabel="type_name"
 				optionValue="type_name"
 				class="!w-320px !h-44px mt-10px"
-			/>
+			/> -->
 		</div>
 		<div class="inline-block">
 			<h5 class="text-base tracking-widest mt-30px">
@@ -77,7 +77,7 @@
 		<br />
 		<div class="inline-block">
 			<h5 class="text-base tracking-widest mt-30px">
-				{{ $t("審查端第一階段開放時間/日期") }} :
+				{{ $t("審查端開放時間/日期") }} :
 			</h5>
 			<Calendar
 				inputId="icon"
@@ -89,36 +89,11 @@
 		</div>
 		<div class="inline-block ml-100px">
 			<h5 class="text-base tracking-widest mt-30px">
-				{{ $t("審查端第一階段關閉時間/日期") }} :
+				{{ $t("審查端關閉時間/日期") }} :
 			</h5>
 			<Calendar
 				inputId="icon"
 				v-model="review_stage1_end_time"
-				:showIcon="true"
-				:showTime="true"
-				class="w-320px h-44px mt-10px"
-			/>
-		</div>
-		<br />
-		<div class="inline-block">
-			<h5 class="text-base tracking-widest mt-30px">
-				{{ $t("審查端第二階段開放時間/日期") }} :
-			</h5>
-			<Calendar
-				inputId="icon"
-				v-model="review_stage2_start_time"
-				:showIcon="true"
-				:showTime="true"
-				class="w-320px h-44px mt-10px"
-			/>
-		</div>
-		<div class="inline-block ml-100px">
-			<h5 class="text-base tracking-widest mt-30px">
-				{{ $t("審查端第二階段關閉時間/日期") }} :
-			</h5>
-			<Calendar
-				inputId="icon"
-				v-model="review_stage2_end_time"
 				:showIcon="true"
 				:showTime="true"
 				class="w-320px h-44px mt-10px"
@@ -157,12 +132,12 @@ import Calendar from "primevue/calendar";
 import Textarea from "primevue/textarea";
 import Checkbox from "primevue/checkbox";
 
-const profect_name = ref<string>("111年研究生審查");
+const profect_name = ref<string>("教授徵聘 A 組");
 const selected_type = ref({});
 const types = ref([
-	{ type_name: "特殊選才" },
-	{ type_name: "碩士班徵試入學" },
-	{ type_name: "博士班徵試入學" },
+	{ type_name: "教授徵聘 A 組" },
+	{ type_name: "教授徵聘 B 組" },
+	{ type_name: "教授徵聘 C 組" },
 ]);
 const application_start_time = ref();
 const application_end_time = ref();
