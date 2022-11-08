@@ -1,130 +1,164 @@
 <template class="overflow-hidden">
 	<div class="flex">
-		<div class="flex-shrink-1">
+		<!-- <div class="flex-shrink-1">
 			<img src="/assets/login-page/Login-img.png" class="fill" />
+		</div> -->
+		<div>
+			<img src="/assets/login-page/Login-img.png" class="h-screen" />
 		</div>
-		<div class="flex-none w-150 px-6 pt-18 space-y-8">
-			<router-link to="/recruitment">
-				<button
-					class="flex items-center gap-2 px-2 py-2"
-					bg="transparent hover:gray-100"
-					text="sm gray-400 hover:gray-600"
-					border="rounded"
-				>
-					<i class="pi pi-angle-left" />
-					<div>切換登入身份</div>
-					<div>Change your identity</div>
-				</button>
-			</router-link>
-			<div class="px-8 space-y-2">
-				<div class="text-s text-gray-500">
-					國立台灣師範大學資訊工程學系 NTNU CSIE
+		<div class="m-auto">
+			<div class="px-8">
+				<div class="flex m-auto h-15">
+					<div>
+						<img
+							src="/assets/login-page/NTNU-logo-B1.png"
+							class="h-15"
+						/>
+					</div>
+					<Divider layout="vertical" />
+					<div class="mt-1.5">
+						<div class="text-4xl font-bold text-gray-500">
+							資訊工程學系
+						</div>
+						<div class="text-xs text-gray-400">
+							Department of Computer Science and Information
+							Enginering
+						</div>
+					</div>
 				</div>
-				<div class="flex items-end gap-2 font-medium text-gray-900">
-					<div class="text-4xl">教師聘請系統</div>
-					<div class="text-xl">Teacher Recruitment System</div>
+				<div>
+					<router-link to="/recruitment">
+						<button
+							class="flex items-center gap-2 px-2 py-2 mt-5 mb-3"
+							bg="transparent hover:gray-100"
+							text="sm gray-400 hover:gray-600"
+							border="rounded"
+						>
+							<i class="pi pi-angle-left" />
+							<div>切換登入身份</div>
+							<div>Change your identity</div>
+						</button>
+					</router-link>
+				</div>
+				<div class="px-8 space-y-2">
+					<!-- <div class="text-s text-gray-500">
+						國立台灣師範大學資訊工程學系 NTNU CSIE
+					</div> -->
+					<div class="flex items-end gap-2 font-medium text-gray-900">
+						<div class="text-4xl">教師聘請系統</div>
+						<div class="text-xl">Teacher Recruitment System</div>
+					</div>
 				</div>
 			</div>
 			<div class="px-8 py-4 space-y-8">
-				<div class="flex items-center gap-2 managerTextColor">
-					<i class="pi pi-circle-fill" style="font-size: 0.5rem" />
-					<div class="flex-none font-medium">行政人員登入</div>
-					<div class="flex-none font-medium">Manager Login</div>
-					<Divider />
-				</div>
-				<form @submit="onSubmit" ref="form">
-					<Field
-						name="email"
-						v-slot="{ field, errorMessage, meta }"
-						v-model="email"
-					>
-						<div class="flex-col px-4">
-							<div
-								class="flex items-center gap-2 pb-2"
-								text="sm gray-500"
-							>
-								<div>電郵地址</div>
-								<div>E-mail</div>
-							</div>
-							<InputText
-								v-bind="field"
-								name="email"
-								type="email"
-								class="input p-inputtext-sm w-full"
-								:disabled="isSubmitting"
-								required
-							/>
-							<!-- TODO: styling -->
-							<span v-if="errorMessage && meta.touched">
-								{{ errorMessage }}
-							</span>
-						</div>
-					</Field>
-					<Field
-						name="password"
-						v-slot="{ field, errorMessage, meta }"
-						v-model="password"
-					>
-						<div class="flex-col px-4">
-							<div
-								class="flex items-center gap-2 pb-2"
-								text="sm gray-500"
-							>
-								<div>密碼</div>
-								<div>Password</div>
-							</div>
-							<InputText
-								v-bind="field"
-								name="password"
-								type="password"
-								class="input p-inputtext-sm w-full"
-								:disabled="isSubmitting"
-								required
-							/>
-							<!-- TODO: styling -->
-							<span v-if="errorMessage && meta.touched">
-								{{ errorMessage }}
-							</span>
-						</div>
-					</Field>
-					<div class="flex items-center px-4 gap-2">
-						<Checkbox v-model="isRememberAccount" :binary="true" />
-						<div class="space-y-0.5" text="xs gray-500">
-							<div>下次登入時記住帳號</div>
-							<div>Remember Account at next Login</div>
-						</div>
+				<Divider align="center" class="managerTextColor">
+					<div class="flex px-2 gap-2">
+						<div>行政人員登入</div>
+						<div>Manager Login</div>
 					</div>
-					<div class="flex-col-inline px-4 gap-y-8">
-						<div class="ml-168px mt-40px">
-							<Turnstile ref="turnstileRef" />
-						</div>
-						<div class="flex justify-center">
-							<Button
-								class="py-2 w-80 managerButtonStyle"
-								border="2  rounded-lg"
-								type="submit"
-								:loading="isTurnstileRunning || isSubmitting"
-							>
-								<div class="flex justify-center gap-2 mx-auto">
-									<div>登入</div>
-									<div>Login</div>
-								</div>
-							</Button>
-						</div>
-						<div class="flex justify-center items-center py-4">
-							<router-link
-								to="/recruitment/manager/password/forget"
-							>
-								<button
-									class="flex justify-center gap-2 px-1 py-1"
-									bg="transparent hover:gray-100"
-									text="sm gray-400 hover:gray-600"
-									border="rounded"
+				</Divider>
+				<form @submit="onSubmit" ref="form">
+					<div class="px-150px">
+						<Field
+							name="email"
+							v-slot="{ field, errorMessage, meta }"
+							v-model="email"
+						>
+							<div class="flex-col px-4">
+								<div
+									class="flex items-center gap-2 pb-2"
+									text="sm gray-500"
 								>
-									<div>忘記密碼</div>
-									<div>Forget Password</div>
-								</button>
-							</router-link>
+									<div>電郵地址</div>
+									<div>E-mail</div>
+								</div>
+								<InputText
+									v-bind="field"
+									name="email"
+									type="email"
+									class="input p-inputtext-sm w-full"
+									:disabled="isSubmitting"
+									required
+								/>
+								<!-- TODO: styling -->
+								<span v-if="errorMessage && meta.touched">
+									{{ errorMessage }}
+								</span>
+							</div>
+						</Field>
+						<Field
+							name="password"
+							v-slot="{ field, errorMessage, meta }"
+							v-model="password"
+						>
+							<div class="flex-col px-4">
+								<div
+									class="flex items-center gap-2 pb-2"
+									text="sm gray-500"
+								>
+									<div>密碼</div>
+									<div>Password</div>
+								</div>
+								<InputText
+									v-bind="field"
+									name="password"
+									type="password"
+									class="input p-inputtext-sm w-full"
+									:disabled="isSubmitting"
+									required
+								/>
+								<!-- TODO: styling -->
+								<span v-if="errorMessage && meta.touched">
+									{{ errorMessage }}
+								</span>
+							</div>
+						</Field>
+						<div class="flex items-center px-4 gap-2">
+							<Checkbox
+								v-model="isRememberAccount"
+								:binary="true"
+							/>
+							<div class="space-y-0.5 mt-3" text="xs gray-500">
+								<div>下次登入時記住帳號</div>
+								<div>Remember Account at next Login</div>
+							</div>
+						</div>
+						<div class="flex-col-inline px-4 gap-y-8">
+							<div class="ml-168px mt-40px">
+								<Turnstile ref="turnstileRef" />
+							</div>
+							<div class="flex justify-center">
+								<Button
+									class="py-2 w-80"
+									border="2  rounded-lg"
+									type="submit"
+									:loading="
+										isTurnstileRunning || isSubmitting
+									"
+								>
+									<div
+										class="flex justify-center gap-2 mx-auto"
+									>
+										<div>登入</div>
+										<div>Login</div>
+									</div>
+								</Button>
+							</div>
+							<div class="flex justify-center items-center py-4">
+								<router-link
+									to="/recruitment/manager/password/forget"
+								>
+									<button
+										class="flex justify-center gap-2 px-1 py-1"
+										bg="transparent hover:gray-100"
+										text="sm gray-400 hover:gray-600"
+										border="rounded"
+									>
+										<div>忘記密碼</div>
+										<div>Forget Password</div>
+									</button>
+								</router-link>
+							</div>
 						</div>
 					</div>
 				</form>
@@ -151,10 +185,10 @@ import InputText from "primevue/inputtext";
 
 const router = useRouter();
 
-const redirectToMainContainer = () =>
+const redirectToMainContainer = () => {
 	// TODO: Change Tag - Manager to Admin
 	router.replace({ name: "recruitmentManagerMainContainer" });
-
+};
 const authStore = useRecruitmentAdminAuthStore();
 
 // Login Form
@@ -185,9 +219,6 @@ if (lastSigninEmail) {
 	isRememberAccount.value = true;
 	email.value = lastSigninEmail;
 }
-
-// remove legacy item (renamed)
-window.localStorage.removeItem("RecruitmentAdminSigninLastSigninEmail");
 
 // Store email in localStorage if remember account
 watch(isRememberAccount, (isChecked) => {

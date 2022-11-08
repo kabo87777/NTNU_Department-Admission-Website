@@ -4,57 +4,18 @@
 			<div class="sidebarVerticalBigYellowDivider mt-32px"></div>
 			<div class="sidebarVerticalSmallYellowDivider mt-32px"></div>
 			<div class="mt-32px ml-12px w-[100%]">
-				<!-- <Dropdown
-					v-model="selectedProgram"
-					:options="programs"
-					:optionLabel="generateOptions"
-					class="h-60px w-[93%]"
-					style="border-radius: 8px; border: 1px solid #736028"
-				> -->
-				<Dropdown
-					v-model="selectedProgram"
-					class="h-60px w-[93%]"
-					style="border-radius: 8px; border: 1px solid #736028"
-				>
-					<template #value="slotProps">
-						<div
-							class="mt-4px tracking-2px text-24px font-medium !font-bold"
-						>
-							{{ slotProps.value.category }}
-							{{ slotProps.value.name }}
-						</div>
-					</template>
-				</Dropdown>
+				<div class="sidebarTitleBar">
+					{{
+						$t("recruitmentApplicantSidebarTitle", {
+							year: currentYear,
+							roc: rocYear,
+						})
+					}}
+				</div>
 			</div>
 		</div>
 
-		<router-link
-			:to="{
-				name: 'AdmissionApplicantLatestNews',
-				params: { userId: 7 },
-			}"
-			custom
-			v-slot="{ navigate }"
-		>
-			<Button
-				class="p-button-secondary p-button-text !ml-24px !mt-24px !w-336px !h-48px !hover:bg-[#ECEDED] !rounded-[8px]"
-				style="{ active: border: 1px solid #736028 !important }"
-				@click="navigate"
-				role="link"
-			>
-				<i
-					class="pi pi-bell"
-					style="font-size: 1.3rem; color: #101820"
-				/>
-				<span
-					class="text-left tracking-3px ml-4 font-bold text-xl text-[#2D2926]"
-				>
-					{{ $t("最新資訊") }}
-				</span>
-			</Button>
-		</router-link>
-
-		<div class="flex mt-32px">
+		<div class="flex mt-60px">
 			<div class="sidebarYellowDivider"></div>
 			<div class="mt-[-8px] ml-8px text-[#736028] text-20px font-bold">
 				{{ $t("資料填寫、上傳") }}
@@ -63,8 +24,7 @@
 
 		<router-link
 			:to="{
-				name: 'AdmissionApplicantBasicInfo',
-				params: { userId: 7 },
+				name: 'recruitmentApplicantBasicInfo',
 			}"
 			custom
 			v-slot="{ navigate }"
@@ -95,8 +55,7 @@
 
 		<router-link
 			:to="{
-				name: 'AdmissionApplicantAttachment',
-				params: { userId: 7 },
+				name: 'recruitmentApplicantAttachment',
 			}"
 			custom
 			v-slot="{ navigate }"
@@ -125,6 +84,37 @@
 			</Button>
 		</router-link>
 
+		<router-link
+			:to="{
+				name: 'recruitmentApplicantSubmitConfirm',
+			}"
+			custom
+			v-slot="{ navigate }"
+		>
+			<Button
+				class="p-button-secondary p-button-text !ml-24px !mt-8px !w-336px !h-48px !hover:bg-[#ECEDED] !rounded-[8px]"
+				@click="navigate"
+				role="link"
+			>
+				<i
+					class="pi pi-check-square"
+					style="font-size: 1.3rem; color: #101820"
+				/>
+				<span
+					class="text-left tracking-3px ml-4 font-bold text-xl text-[#2D2926]"
+				>
+					{{ $t("資料確認送出") }}
+				</span>
+				<div class="mb-28px">
+					<CompletedTag v-if="tags.submitConfirm === 'completed'" />
+					<IncompleteTag
+						v-else-if="tags.submitConfirm === 'incomplete'"
+					/>
+					<UnableTag v-else-if="tags.submitConfirm === 'unable'" />
+				</div>
+			</Button>
+		</router-link>
+
 		<div class="flex mt-32px">
 			<div class="sidebarYellowDivider"></div>
 			<div class="mt-[-8px] ml-8px text-[#736028] text-20px font-bold">
@@ -134,40 +124,7 @@
 
 		<router-link
 			:to="{
-				name: 'AdmissionApplicantRecommendationLetter',
-				params: { userId: 7 },
-			}"
-			custom
-			v-slot="{ navigate }"
-		>
-			<Button
-				class="p-button-secondary p-button-text !ml-24px !mt-16px !w-336px !h-48px !hover:bg-[#ECEDED] !rounded-[8px]"
-				@click="navigate"
-				role="link"
-			>
-				<i
-					class="pi pi-envelope"
-					style="font-size: 1.3rem; color: #101820"
-				/>
-				<span
-					class="text-left tracking-3px ml-4 font-bold text-xl text-[#2D2926]"
-				>
-					{{ $t("推薦信作業") }}
-				</span>
-				<div class="mb-28px">
-					<CompletedTag v-if="tags.recommendLetter === 'completed'" />
-					<IncompleteTag
-						v-else-if="tags.recommendLetter === 'incomplete'"
-					/>
-					<UnableTag v-else-if="tags.recommendLetter === 'unable'" />
-				</div>
-			</Button>
-		</router-link>
-
-		<router-link
-			:to="{
-				name: 'AdmissionApplicantAdditionalDocs',
-				params: { userId: 7 },
+				name: 'recruitmentApplicantAdditionalDocs',
 			}"
 			custom
 			v-slot="{ navigate }"
@@ -197,7 +154,7 @@
 		</router-link>
 
 		<div
-			class="bg-gray-200 bg-opacity-50 h-160px w-[100%]"
+			class="bg-gray-200 bg-opacity-50 h-240px w-[100%]"
 			style="
 				position: absolute;
 				bottom: 0px;
@@ -205,7 +162,30 @@
 				padding-right: 8px;
 			"
 		>
-			<div class="mt-28px flex relative">
+			<div class="mt-24px">
+				<router-link
+					:to="{
+						name: 'recruitmentApplicantSwitchProject',
+					}"
+					custom
+					v-slot="{ navigate }"
+				>
+					<Button
+						class="p-button-secondary p-button-outlined"
+						style="
+							height: 40px;
+							left: 50%;
+							transform: translateX(-50%);
+						"
+						@click="navigate"
+						role="link"
+					>
+						<div><i class="pi pi-sort-alt"></i></div>
+						<div class="ml-8px font-bold">{{ $t("切換專案") }}</div>
+					</Button>
+				</router-link>
+			</div>
+			<div class="mt-40px flex relative">
 				<div
 					style="
 						background-color: #8a7b27;
@@ -235,8 +215,7 @@
 				<div class="absolute right-[0] mt-[-8px]">
 					<router-link
 						:to="{
-							name: 'AdmissionApplicantUserSetting',
-							params: { userId: 7 },
+							name: 'recruitmentApplicantUserSetting',
 						}"
 						custom
 						v-slot="{ navigate }"
@@ -270,80 +249,49 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from "vue";
-import { Tags } from "@/api/admission/applicant/types";
+import { reactive } from "vue";
+import { Tags } from "@/api/recruitment/applicant/types";
 import "primeicons/primeicons.css";
 import "primevue/resources/primevue.min.css";
-import Dropdown from "primevue/dropdown";
 import Button from "primevue/button";
 import UnableTag from "@/styles/tags/unableTag.vue";
 import CompletedTag from "@/styles/tags/completedTag.vue";
 import IncompleteTag from "@/styles/tags/incompleteTag.vue";
-// import Tag from "primevue/tag";
-// import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
-import { useAdmissionApplicantAuthStore } from "@/stores/universalAuth";
-import { AdmissionApplicantAPI } from "@/api/admission/applicant/api";
-// import { useQuery } from "@tanstack/vue-query";
+import { useRecruitmentApplicantAuthStore } from "@/stores/universalAuth";
+import { RecruitmentApplicantAPI } from "@/api/recruitment/applicant/api";
+import "primeicons/primeicons.css";
 
 const router = useRouter();
-
-// const reviewerAuth = useAdmissionReviewerAuthStore();
-const applicantAuth = useAdmissionApplicantAuthStore();
-
-const api = new AdmissionApplicantAPI(applicantAuth);
-
-// const {
-// 	isLoading,
-// 	isError,
-// 	data: programs,
-// 	error,
-// } = useQuery(["programList"], async () => await api.getProgramList());
-
-// const { t } = useI18n();
-
-const selectedProgram = ref({
-	id: 1,
-	category: "111年碩士班",
-	name: "A組",
-	application_start_date: "2022-10-01T00:00:00.000+08:00",
-	application_end_date: "2022-10-31T00:00:00.000+08:00",
-	review_start_date: "2022-11-01T00:00:00.000+08:00",
-	review_end_date: "2022-11-30T00:00:00.000+08:00",
-	require_file: "['file1', 'file2']",
-	stage: "application",
-	created_at: "2022-10-18T07:00:10.671+08:00",
-	updated_at: "2022-10-18T07:00:10.671+08:00",
-	applicant_required_info: null,
-	applicant_required_file: null,
-	reviewer_required_info: null,
-	reviewer_required_file: null,
-});
+const currentYear = new Date().getFullYear();
+const rocYear = currentYear - 1911;
 
 const tags: Tags = reactive({
 	basicInfo: "completed",
 	attachment: "incomplete",
-	recommendLetter: "unable",
 	additionalDocs: "unable",
+	submitConfirm: "incomplete",
 });
 
-// TODO: disannotation here and fix here during connect API
-
-// const displayNewProject = ref(false);
-// const newProjectName = ref("");
-
-// const generateOptions = (data: any) => data.category + data.name;
-
-// function newProject() {
-// 	displayNewProject.value = true;
-// }
-
-// function closeDisplayNewProject() {
-// 	displayNewProject.value = false;
-// }
+const applicantAuth = useRecruitmentApplicantAuthStore();
+const api = new RecruitmentApplicantAPI(applicantAuth);
 
 async function signOut() {
 	await api.invalidateSession();
-	router.push("/admission/applicant/signin");
+	router.push("/recruitment/applicant/signin");
 }
 </script>
+
+<style setup lang="css">
+.sidebarTitleBar {
+	border: 1px solid #736028;
+	border-radius: 8px;
+	font-weight: bold;
+	font-size: 24px;
+	letter-spacing: 0.16em;
+	height: 60px;
+	width: 93%;
+	padding-left: 20px;
+	padding-top: 10px;
+}
+</style>

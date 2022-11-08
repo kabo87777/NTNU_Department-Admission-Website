@@ -1,12 +1,12 @@
 <template>
-	<div class="ml-128px">
+	<div class="ml-128px mt-20 mb-20">
 		<h1 class="text-4xl text-bold tracking-widest">{{ $t("專案設定") }}</h1>
 		<Divider class="bg-ntnuRed" />
 		<h2 class="text-2xl text-bold tracking-widest inline-block">
 			{{ $t("111年研究生審查") }}
 		</h2>
 		<Button
-			class="w-100px h-40px !ml-20px p-button-outlined p-button-success"
+			class="w-110px h-40px !ml-20px p-button-outlined p-button-success"
 		>
 			<img
 				alt="logo"
@@ -17,7 +17,7 @@
 			<span class="tracking-1px">{{ $t("保存") }}</span>
 		</Button>
 		<Button
-			class="w-100px h-40px !ml-20px p-button-outlined p-button-danger"
+			class="w-110px h-40px !ml-20px p-button-outlined p-button-danger"
 		>
 			<img
 				alt="logo"
