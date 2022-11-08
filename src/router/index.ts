@@ -11,6 +11,7 @@ import AdmissionSignin from "@/views/admission/AdmissionSignin.vue";
 import RecruitmentSignin from "@/views/recruitment/recruitmentSignin.vue";
 // Manager section
 import AdmissionListReviewer from "@/views/admission/manager/ListReviewer.vue";
+import AdmissionListApplicant from "@/views/admission/manager/ListApplicant.vue";
 import AdmissionManagerMainContainer from "@/views/admission/manager/MainContainer.vue";
 import AdmissionManagerSignin from "@/views/admission/manager/ManagerSignin.vue";
 import AdmissionManagerForgetPassword from "@/views/admission/manager/ForgetPassword.vue";
@@ -36,7 +37,7 @@ import ResetPasswordEmailSent from "@/views/admission/ResetPasswordEmailSent.vue
 import gradeDataList from "@/views/admission/manager/gradeDataList.vue";
 import ApplicantsUploadList from "@/views/admission/manager/applicantsUploadList/applicantsUploadList.vue";
 import ApplicantUploadedDocs from "@/views/admission/manager/applicantsUploadList/applicantUploadedDocs.vue";
-import managerUserSetting from "@/views/admission/manager/managerUserSetting.vue";
+import AdmissionManagerUserSetting from "@/views/admission/manager/managerUserSetting.vue";
 //Reviewer section
 import AdmissionReviewerMainContainer from "@/views/admission/reviewer/MainContainer.vue";
 import AdmissionReviewerSignin from "@/views/admission/reviewer/ReviewerSignin.vue";
@@ -44,6 +45,8 @@ import applicationReview from "@/views/admission/reviewer/applicationReview.vue"
 import oralReview from "@/views/admission/reviewer/oralReview.vue";
 import singleApplicationReview from "@/views/admission/reviewer/singleApplicationReview.vue";
 import singleOralReview from "@/views/admission/reviewer/singleOralReview.vue";
+import AdmissionReviewerUserSetting from "@/views/admission/reviewer/userSetting.vue";
+import AdmissionReviewerForgetpassword from "@/views/admission/reviewer/ResetPassword.vue";
 
 // Recruitment Applicant section
 import recruitmentApplicantSignin from "@/views/recruitment/applicant/login/signin.vue";
@@ -52,6 +55,13 @@ import recruitmentApplicantRegistDone from "@/views/recruitment/applicant/login/
 import recruitmentApplicantPasswordReset from "@/views/recruitment/applicant/login/pwdReset.vue";
 import recruitmentApplicantPasswordForget from "@/views/recruitment/applicant/login/pwdForget.vue";
 import recruitmentApplicantPasswordForgetEmailSent from "@/views/recruitment/applicant/login/pwdForgetEmailSent.vue";
+import recruitmentApplicantMainContainer from "@/views/recruitment/applicant/mainContainer.vue";
+import recruitmentApplicantBasicInfo from "@/views/recruitment/applicant/pages/basicInfo.vue";
+import recruitmentApplicantAttachment from "@/views/recruitment/applicant/pages/attachment.vue";
+import recruitmentApplicantSubmitConfirm from "@/views/recruitment/applicant/pages/SubmitConfirm.vue";
+import recruitmentApplicantAdditionalDocs from "@/views/recruitment/applicant/pages/additionalDocs.vue";
+import recruitmentApplicantSwitchProject from "@/views/recruitment/applicant/pages/SwitchProject.vue";
+import recruitmentApplicantUserSetting from "@/views/recruitment/applicant/pages/userSetting.vue";
 
 // Recruitment Reviewer siginin section
 import recruitmentReviewerSignin from "@/views/recruitment/reviewer/login/signin.vue";
@@ -65,6 +75,7 @@ import requiredDataReview from "@/views/recruitment/reviewer/requiredDataReview.
 import optionalDataReview from "@/views/recruitment/reviewer/optionalDataReview.vue";
 import singleRequiredDataReview from "@/views/recruitment/reviewer/singleRequiredDataReview.vue";
 import singleOptionalDataReview from "@/views/recruitment/reviewer/singleOptionalDataReview.vue";
+import recruitmentReviewerUserSetting from "@/views/recruitment/reviewer/userSetting.vue";
 
 // Recruitment Manager signin section
 import recruitmentManagerSignin from "@/views/recruitment/manager/login/signin.vue";
@@ -73,7 +84,14 @@ import recruitmentManagerPasswordForget from "@/views/recruitment/manager/login/
 import recruitmentManagerPasswordForgetEmailSent from "@/views/recruitment/manager/login/pwdForgetEmailSent.vue";
 // Recruitment Manager section
 import recruitmentManagerMainContainer from "@/views/recruitment/manager/MainContainer.vue";
+import recruitmentManagerApplicantUploadList from "@/views/recruitment/manager/pages/ApplicantUploadList/TableList.vue";
 import recruitmentManagerReviewProgress from "@/views/recruitment/manager/pages/ReviewProgress.vue";
+import recruitmentManagerUserSetting from "@/views/recruitment/manager/pages/RecruitmentManagerSelfSetting.vue";
+import recruitmentApplicationUpload from "@/views/recruitment/manager/pages/RecruitmentApplicationSetting.vue";
+import recruitmentGradeDataList from "@/views/recruitment/manager/gradeDataList.vue";
+import recruitmentReviewScroreField from "@/views/recruitment/manager/reviewScoreField.vue";
+import recruitmentProjectSetting from "@/views/recruitment/manager/pages/ProjectSetting.vue";
+import recruitmentManagerApplicationAccountSetting from "@/views/recruitment/manager/pages/ApplicationAccountSetting.vue";
 import recruitmentGradeDataList from "@/views/recruitment/manager/gradeDataList.vue";
 import recruitmentReviewScroreField from "@/views/recruitment/manager/reviewScoreField.vue";
 
@@ -107,6 +125,12 @@ const routes: Array<RouteRecordRaw> = [
 				component: AdmissionReviewerSignin,
 			},
 			{
+				path: "/admission/reviewer/forgetpassword",
+				name: "AdmissionReviewerForgetpassword",
+				component: AdmissionReviewerForgetpassword,
+			},
+
+			{
 				path: "admission/reviewer",
 				name: "AdmissionReviewerMainContainer",
 				component: AdmissionReviewerMainContainer,
@@ -130,6 +154,11 @@ const routes: Array<RouteRecordRaw> = [
 						path: "singleOralReview/:id",
 						name: "singleOralReview",
 						component: singleOralReview,
+					},
+					{
+						path: "reviewerUserSetting",
+						name: "AdmissionReviewerUserSetting",
+						component: AdmissionReviewerUserSetting,
 					},
 				],
 			},
@@ -260,14 +289,19 @@ const routes: Array<RouteRecordRaw> = [
 						component: ApplicantUploadedDocs,
 					},
 					{
-						path: "managerUserSetting",
-						name: "managerUserSetting",
-						component: managerUserSetting,
+						path: "userSetting",
+						name: "AdmissionManagerUserSetting",
+						component: AdmissionManagerUserSetting,
 					},
 					{
 						path: "reviewerSettings",
 						name: "reviewerSettings",
 						component: AdmissionListReviewer,
+					},
+					{
+						path: "manageApplicants",
+						name: "manageApplicants",
+						component: AdmissionListApplicant,
 					},
 				],
 			},
@@ -315,6 +349,44 @@ const routes: Array<RouteRecordRaw> = [
 				name: "recruitmentApplicantPasswordForgetEmailSent",
 				component: recruitmentApplicantPasswordForgetEmailSent,
 			},
+			{
+				path: "recruitment/applicant",
+				name: "recruitmentApplicantMainContainer",
+				component: recruitmentApplicantMainContainer,
+				children: [
+					//Recruitment - applicant info pages
+					{
+						path: "basicInfo",
+						name: "recruitmentApplicantBasicInfo",
+						component: recruitmentApplicantBasicInfo,
+					},
+					{
+						path: "attachment",
+						name: "recruitmentApplicantAttachment",
+						component: recruitmentApplicantAttachment,
+					},
+					{
+						path: "submitConfirm",
+						name: "recruitmentApplicantSubmitConfirm",
+						component: recruitmentApplicantSubmitConfirm,
+					},
+					{
+						path: "additionalDocs",
+						name: "recruitmentApplicantAdditionalDocs",
+						component: recruitmentApplicantAdditionalDocs,
+					},
+					{
+						path: "switchProject",
+						name: "recruitmentApplicantSwitchProject",
+						component: recruitmentApplicantSwitchProject,
+					},
+					{
+						path: "userSetting",
+						name: "recruitmentApplicantUserSetting",
+						component: recruitmentApplicantUserSetting,
+					},
+				],
+			},
 
 			// Recruitment - manager sign in
 			{
@@ -345,6 +417,16 @@ const routes: Array<RouteRecordRaw> = [
 				component: recruitmentManagerMainContainer,
 				children: [
 					{
+						path: "projectSetting",
+						name: "recruitmentProjectSetting",
+						component: recruitmentProjectSetting,
+					},
+					{
+						path: "applicationAccountSetting",
+						name: "recruitmentManagerApplicationAccountSetting",
+						component: recruitmentManagerApplicationAccountSetting,
+					},
+					{
 						path: "gradeDataList",
 						name: "recruitmentGradeDataList",
 						component: recruitmentGradeDataList,
@@ -358,6 +440,21 @@ const routes: Array<RouteRecordRaw> = [
 						path: "reviewProgress",
 						name: "recruitmentManagerReviewProgress",
 						component: recruitmentManagerReviewProgress,
+					},
+					{
+						path: "attachmentList",
+						name: "recruitmentManagerApplicantUploadList",
+						component: recruitmentManagerApplicantUploadList,
+					},
+					{
+						path: "userSetting",
+						name: "recruitmentManagerUserSetting",
+						component: recruitmentManagerUserSetting,
+					},
+					{
+						path: "applicationUploadSetting",
+						name: "recruitmentApplicationUpload",
+						component: recruitmentApplicationUpload,
 					},
 				],
 			},
@@ -420,6 +517,11 @@ const routes: Array<RouteRecordRaw> = [
 						path: "singleOptionalDataReview/:id",
 						name: "singleOptionalDataReview",
 						component: singleOptionalDataReview,
+					},
+					{
+						path: "userSetting",
+						name: "recruitmentReviewerUserSetting",
+						component: recruitmentReviewerUserSetting,
 					},
 				],
 			},

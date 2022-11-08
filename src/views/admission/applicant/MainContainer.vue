@@ -25,7 +25,7 @@
 
 <script setup lang="ts">
 import NavBar from "@/components/NavBar.vue";
-import SideBar from "@/components/applicantSidebar.vue";
+import SideBar from "@/components/sidebars/admissionApplicantSidebar.vue";
 
 import { useRouter } from "vue-router";
 import { useAdmissionApplicantAuthStore } from "@/stores/universalAuth";
@@ -36,6 +36,8 @@ const auth = useAdmissionApplicantAuthStore();
 
 if (!auth.credentials) {
 	router.push("/admission/applicant/signin");
+} else {
+	router.push("/admission/applicant/latestNews");
 }
 </script>
 

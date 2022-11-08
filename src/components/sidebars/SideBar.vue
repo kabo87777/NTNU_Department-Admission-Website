@@ -5,9 +5,10 @@
 			<div class="sidebarVerticalSmallRedDivider"></div>
 			<div class="ml-12px w-[100%]">
 				<Dropdown
-					v-model="updateProgram"
+					v-model="selectedProgram"
 					:options="programs"
 					:optionLabel="generateOptions"
+					:loading="isLoading"
 					class="h-60px w-[93%]"
 					style="border-radius: 8px; border: 1px solid black"
 				>
@@ -70,7 +71,7 @@
 			</div>
 		</div>
 
-		<Button
+		<!-- <Button
 			class="p-button-secondary p-button-text !ml-24px !mt-16px !w-336px !h-48px"
 		>
 			<img
@@ -83,21 +84,28 @@
 			>
 				{{ $t("資訊公告") }}
 			</span>
-		</Button>
-		<Button
-			class="p-button-secondary p-button-text !ml-24px !mt-8px !w-336px !h-48px"
+		</Button> -->
+		<RouterLink
+			to="/admission/manager/manageApplicants"
+			custom
+			v-slot="{ navigate }"
 		>
-			<img
-				alt="logo"
-				src="/assets/sidebar/User_add_alt.png"
-				style="width: 1.5rem"
-			/>
-			<span
-				class="text-left tracking-3px ml-3 font-bold text-xl text-[#2D2926]"
+			<Button
+				class="p-button-secondary p-button-text !ml-24px !mt-18px !w-336px !h-48px"
+				@click="navigate"
 			>
-				{{ $t("申請帳號設置") }}
-			</span>
-		</Button>
+				<img
+					alt="logo"
+					src="/assets/sidebar/User_add_alt.png"
+					style="width: 1.5rem"
+				/>
+				<span
+					class="text-left tracking-3px ml-3 font-bold text-xl text-[#2D2926]"
+				>
+					{{ $t("申請帳號設置") }}
+				</span>
+			</Button>
+		</RouterLink>
 		<router-link
 			to="/admission/manager/projectSettings"
 			custom
@@ -181,7 +189,7 @@
 			</Button>
 		</router-link>
 		<div
-			class="bg-gray-200 bg-opacity-50 h-200px w-[100%]"
+			class="bg-gray-200 bg-opacity-50 h-250px w-[100%]"
 			style="transform: translateY(20%)"
 		>
 			<div class="flex">
@@ -281,13 +289,23 @@
 						{{ $t("系辦主管") }}
 					</div>
 				</div>
-				<Button class="p-button-text !mt-46px !ml-50px">
-					<img
-						alt="logo"
-						src="/assets/sidebar/Setting_alt_line.png"
-						class="w-28px h-28px"
-					/>
-				</Button>
+				<router-link
+					to="/admission/manager/userSetting"
+					custom
+					v-slot="{ navigate }"
+				>
+					<Button
+						class="p-button-text !mt-46px !ml-50px"
+						@click="navigate"
+						role="link"
+					>
+						<img
+							alt="logo"
+							src="/assets/sidebar/Setting_alt_line.png"
+							class="w-28px h-28px"
+						/>
+					</Button>
+				</router-link>
 				<Button class="p-button-text !mt-46px" @click="signOut">
 					<img
 						alt="logo"
@@ -302,7 +320,7 @@
 
 <script setup lang="ts">
 import "primevue/resources/primevue.min.css";
-import { ref, toRaw, computed } from "vue";
+import { ref, toRaw, watchEffect, watch } from "vue";
 import Dropdown from "primevue/dropdown";
 import Button from "primevue/button";
 import Divider from "primevue/divider";
@@ -314,11 +332,13 @@ import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
 import { AdmissionAdminAPI } from "@/api/admission/admin/api";
 import { useQuery } from "@tanstack/vue-query";
 import { InvalidSessionError } from "@/api/error";
+import { useGlobalStore } from "@/stores/globalStore";
+import { AdmissionAdminProgramListResponse } from "@/api/admission/admin/types";
 
 const router = useRouter();
 
 const adminAuth = useAdmissionAdminAuthStore();
-
+const store = useGlobalStore();
 const api = new AdmissionAdminAPI(adminAuth);
 
 const {
@@ -343,29 +363,31 @@ const {
 	}
 });
 
-const dataPrograms = () => {
-	if (programs.value) {
-		const temp = toRaw(programs.value);
-		return temp[0];
+const selectedProgram = ref<AdmissionAdminProgramListResponse>();
+
+watchEffect(() => {
+	if (programs.value && programs.value.length > 1) {
+		const temp = programs.value[0];
+		store.$patch((state) => {
+			state.program = temp;
+		});
+		// selectedProgram.value=toRaw(programs.value[0])
+		selectedProgram.value = programs.value[0];
 	}
-}; //convert proxy to array or object
+});
 
-const selectedProgram = ref(dataPrograms());
+watch(selectedProgram, (selection) => {
+	store.$patch({ program: selectedProgram.value });
 
-// FIXME: this should NOT be hardcoded.
-const updateProgram = computed({
-	get: () => {
-		return selectedProgram.value;
-	},
-	set: (val) => {
-		selectedProgram.value = toRaw(val);
-	},
+	console.debug("Selected program:\n" + JSON.stringify(selection, null, 2));
 });
 
 const displayNewProject = ref(false);
 const newProjectName = ref("");
 
-const generateOptions = (data: any) => data.category + data.name;
+const generateOptions = (data: AdmissionAdminProgramListResponse) => {
+	return data.category + data.name;
+};
 
 function newProject() {
 	displayNewProject.value = true;
@@ -380,5 +402,3 @@ async function signOut() {
 	router.push("/");
 }
 </script>
-
-<style></style>
