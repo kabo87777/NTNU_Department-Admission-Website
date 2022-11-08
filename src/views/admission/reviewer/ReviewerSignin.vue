@@ -181,9 +181,6 @@ if (lastSigninEmail) {
 	email.value = lastSigninEmail;
 }
 
-// remove legacy item (renamed)
-window.localStorage.removeItem("AdmissionReviewerSigninLastSigninUsername");
-
 // Store email in localStorage if remember account
 watch(isRememberAccount, (isChecked) => {
 	if (!isChecked)
