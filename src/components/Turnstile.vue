@@ -6,6 +6,7 @@
 		data-callback="onTurnstileSuccessfulVerification"
 		data-expired-callback="onTurnstileTokenExpiration"
 		data-error-callback="onTurnstileFailedVerification"
+		v-if="enableTurnstile"
 	></div>
 </template>
 
@@ -16,28 +17,35 @@ export interface TurnstileComponentExposes {
 	turnstileToken: string;
 }
 
+const enableTurnstile = import.meta.env.VITE_IS_SKIP_CAPTCHA !== "true";
+
 const turnstileToken = ref("");
 
-const script = document.createElement("script");
+if (enableTurnstile) {
+	const script = document.createElement("script");
 
-script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js";
-script.async = true;
-script.defer = true;
+	script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js";
+	script.async = true;
+	script.defer = true;
 
-document.head.appendChild(script);
+	document.head.appendChild(script);
 
-window.onTurnstileSuccessfulVerification = (token: string) => {
-	turnstileToken.value = token;
-};
+	window.onTurnstileSuccessfulVerification = (token: string) => {
+		turnstileToken.value = token;
+	};
 
-window.onTurnstileTokenExpiration = () => {
-	turnstileToken.value = "";
-	window.turnstile?.reset();
-};
+	window.onTurnstileTokenExpiration = () => {
+		turnstileToken.value = "";
+		window.turnstile?.reset();
+	};
 
-window.onTurnstileFailedVerification = () => {
-	turnstileToken.value = "";
-};
+	window.onTurnstileFailedVerification = () => {
+		turnstileToken.value = "";
+	};
+} else {
+	// let's set it to some empty value to pass internal checks
+	turnstileToken.value = "haha";
+}
 
 defineExpose({
 	turnstileToken,
