@@ -21,18 +21,18 @@
 
 		<Column field="roles">
 			<template #header>{{ $t("身份組") }}</template>
-			<template #body="slotProps">
-				<!-- <Tag
+			<!-- <template #body="slotProps">
+				<Tag
 					v-for="role in truncateRoles(slotProps.data)"
 					:key="role"
 					>{{ role }}</Tag
-				> -->
-			</template>
+				>
+			</template> -->
 		</Column>
 
 		<Column>
 			<template #header>{{ $t("動作") }}</template>
-			<template #body="slotProps">
+			<template #body>
 				<Button
 					icon="pi pi-pencil"
 					class="p-button-outlined p-button-success"
@@ -98,7 +98,6 @@
 						icon="pi pi-check"
 						:label="$t('儲存')"
 						class="p-button-outlined p-button-success"
-						@click=""
 					></Button>
 					<Button
 						icon="pi pi-times"
