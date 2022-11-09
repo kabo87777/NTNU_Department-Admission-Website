@@ -248,7 +248,7 @@
 				/>
 				<div class="flex">
 					<Button
-						@click="closeDisplayNewProject"
+						@click="addNewProject"
 						class="p-button-outlined p-button-success !ml-70px !mt-26px !w-142px !h-44px"
 					>
 						<img
@@ -400,7 +400,7 @@ function newProject() {
 	displayNewProject.value = true;
 }
 
-function closeDisplayNewProject() {
+function addNewProject() {
 	const today = new Date();
 	try {
 		programData.mutate({
@@ -419,6 +419,10 @@ function closeDisplayNewProject() {
 	} catch (error) {
 		// toast.add({severity:'error', summary: '資料錯誤', life: 3000});
 	}
+	displayNewProject.value = false;
+}
+
+function closeDisplayNewProject() {
 	displayNewProject.value = false;
 }
 
