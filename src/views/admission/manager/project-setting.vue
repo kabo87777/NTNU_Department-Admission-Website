@@ -169,6 +169,7 @@ import { AdmissionAdminAPI } from "@/api/admission/admin/api";
 import { useMutation, useQuery } from "@tanstack/vue-query";
 import { InvalidSessionError } from "@/api/error";
 import { router } from "@/router";
+import { useToast } from "primevue/usetoast";
 
 const programName = ref<string>("");
 const selected_type = ref();
@@ -224,22 +225,29 @@ const {
 	}
 });
 
+const toast = useToast();
 function update() {
-	programData.mutate({
-		category: selected_type.value,
-		name: programName.value,
-		application_start_date:
-			dateTransform(application_start_time.value) + "+08:00",
-		application_end_date:
-			dateTransform(application_end_time.value) + "+08:00",
-		review_start_date:
-			dateTransform(review_stage1_start_time.value) + "+08:00",
-		review_end_date: dateTransform(review_stage1_end_time.value) + "+08:00",
-		require_file: "require_file",
-		stage: "application",
-		created_at: "2022-11-05T18:48:48.110+08:00",
-		updated_at: "2022-11-07T16:41:34.135+08:00",
-	});
+	try {
+		programData.mutate({
+			category: selected_type.value,
+			name: programName.value,
+			application_start_date:
+				dateTransform(application_start_time.value) + "+08:00",
+			application_end_date:
+				dateTransform(application_end_time.value) + "+08:00",
+			review_start_date:
+				dateTransform(review_stage1_start_time.value) + "+08:00",
+			review_end_date:
+				dateTransform(review_stage1_end_time.value) + "+08:00",
+			require_file: "require_file",
+			stage: "application",
+			created_at: "2022-11-09T01:16:26.335+08:00",
+			updated_at: "2022-11-09T01:16:26.335+08:00",
+		});
+		toast.add({ severity: "success", summary: "更改成功", life: 3000 });
+	} catch (error) {
+		toast.add({ severity: "error", summary: "資料錯誤", life: 3000 });
+	}
 }
 
 function dateTransform(date?: Date) {

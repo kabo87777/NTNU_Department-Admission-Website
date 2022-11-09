@@ -330,7 +330,7 @@ import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
 import { AdmissionAdminAPI } from "@/api/admission/admin/api";
-import { useQuery } from "@tanstack/vue-query";
+import { useMutation, useQuery } from "@tanstack/vue-query";
 import { InvalidSessionError } from "@/api/error";
 import { useGlobalStore } from "@/stores/globalStore";
 import { AdmissionAdminProgramListResponse } from "@/api/admission/admin/types";
@@ -340,6 +340,13 @@ const router = useRouter();
 const adminAuth = useAdmissionAdminAuthStore();
 const store = useGlobalStore();
 const api = new AdmissionAdminAPI(adminAuth);
+const programData = useMutation(async (newProgramData: any) => {
+	try {
+		return await api.addNewProgram(newProgramData);
+	} catch (error) {
+		console.log(error);
+	}
+});
 
 const {
 	isLoading,
@@ -394,7 +401,32 @@ function newProject() {
 }
 
 function closeDisplayNewProject() {
+	const today = new Date();
+	try {
+		programData.mutate({
+			category: "",
+			name: newProjectName.value,
+			application_start_date: dateTransform(today) + "+08:00",
+			application_end_date: dateTransform(today) + "+08:00",
+			review_start_date: dateTransform(today) + "+08:00",
+			review_end_date: dateTransform(today) + "+08:00",
+			require_file: "require_file",
+			stage: "application",
+			created_at: dateTransform(today) + "+08:00",
+			updated_at: dateTransform(today) + "+08:00",
+		});
+		// toast.add({severity:'success', summary: '更改成功', life: 3000});
+	} catch (error) {
+		// toast.add({severity:'error', summary: '資料錯誤', life: 3000});
+	}
 	displayNewProject.value = false;
+}
+
+function dateTransform(date?: Date) {
+	const result = new Date(date!.setHours(date!.getHours() + 8))
+		.toJSON()
+		.replace("Z", "");
+	return result;
 }
 
 async function signOut() {

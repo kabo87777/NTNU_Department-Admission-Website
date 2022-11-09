@@ -44,4 +44,13 @@ export class AdmissionAdminAPI extends GenericAPI {
 		if (response.error === true)
 			throw new Error("Failed to update program");
 	}
+
+	async addNewProgram(data: AdmissionAdminProgramListResponse): Promise<any> {
+		const response: APIGenericResponse = await this.instance.post(
+			"/admission/admin/program",
+			data
+		);
+		if (response.error === true)
+			throw new Error("Failed to update program");
+	}
 }
