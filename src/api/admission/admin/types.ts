@@ -51,17 +51,17 @@ export interface AdmAdminReviewerListResponse {
 	// "updated_at": "2022-11-07T01:31:21.153+08:00",
 	// "isDisabled": false
 	id: number;
-	provider: string
-	uid: string
-	allow_password_change: boolean
-	lang: string|null
-	name: string
-	nickname: string|null
-	image: string|null
-	email: string
-	created_at: string
-	updated_at: string
-	isDisabled: boolean
+	provider: string;
+	uid: string;
+	allow_password_change: boolean;
+	lang: string | null;
+	name: string;
+	nickname: string | null;
+	image: string | null;
+	email: string;
+	created_at: string;
+	updated_at: string;
+	isDisabled: boolean;
 }
 
 export interface AdmAdminReviewerRelatedProgramResponse {
@@ -88,21 +88,22 @@ export interface AdmAdminReviewerRelatedProgramResponse {
 	id: number;
 	category: string;
 	name: string;
-	application_start_date: string
-	application_end_date: string
-	review_start_date: string
-	review_end_date: string
-	require_file: string[]
-	stage: string
-	created_at: string
-	updated_at: string
-	applicant_required_info: null
-	applicant_required_file: null
-	reviewer_required_info: null
-	reviewer_required_file: null
+	application_start_date: string;
+	application_end_date: string;
+	review_start_date: string;
+	review_end_date: string;
+	require_file: string[];
+	stage: string;
+	created_at: string;
+	updated_at: string;
+	applicant_required_info: null;
+	applicant_required_file: null;
+	reviewer_required_info: null;
+	reviewer_required_file: null;
 }
-export interface AdmAdminReviewerAndProgramResponse extends AdmAdminReviewerListResponse {
-	relatedPrograms: AdmAdminReviewerRelatedProgramResponse[]
+export interface AdmAdminReviewerAndProgramResponse
+	extends AdmAdminReviewerListResponse {
+	relatedPrograms?: AdmAdminReviewerRelatedProgramResponse[];
 }
 export interface AdmissionAdminApplicantsListResponse {
 	// TODO: Wait backend to give exact data type

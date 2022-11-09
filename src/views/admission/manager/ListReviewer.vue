@@ -1,5 +1,6 @@
 <template>
 	<h1 class="text-4xl font-bold">{{ $t("管理審查者") }}</h1>
+	<Button @click="filterRelatedProgramName(1)">Button</Button>
 	<Divider></Divider>
 	<DataTable :value="tableData">
 		<template #empty>
@@ -21,11 +22,11 @@
 		<Column field="roles">
 			<template #header>{{ $t("身份組") }}</template>
 			<template #body="slotProps">
-				<Tag
-					v-for="role in truncateRoles(slotProps.data.roles)"
+				<!-- <Tag
+					v-for="role in truncateRoles(slotProps.data)"
 					:key="role"
 					>{{ role }}</Tag
-				>
+				> -->
 			</template>
 		</Column>
 
@@ -35,7 +36,7 @@
 				<Button
 					icon="pi pi-pencil"
 					class="p-button-outlined p-button-success"
-					@click="openModal(slotProps.data)"
+					@click="openModal"
 				></Button>
 			</template>
 		</Column>
@@ -97,7 +98,7 @@
 						icon="pi pi-check"
 						:label="$t('儲存')"
 						class="p-button-outlined p-button-success"
-						@click="saveChange"
+						@click=""
 					></Button>
 					<Button
 						icon="pi pi-times"
@@ -116,7 +117,7 @@ import DataTable from "primevue/datatable";
 import Row from "primevue/row";
 import Column from "primevue/column";
 import ColumnGroup from "primevue/columngroup";
-import { ref } from "vue";
+import { ref, watch, watchEffect } from "vue";
 import type { Ref } from "vue";
 import { useI18n } from "vue-i18n";
 import Divider from "primevue/divider";
@@ -133,69 +134,91 @@ import {
 	useAdmissionReviewerAuthStore,
 } from "@/stores/universalAuth";
 import { AdmissionAdminAPI } from "@/api/admission/admin/api";
+import { useGlobalStore } from "@/stores/globalStore";
+import {
+	AdmAdminReviewerListResponse,
+	AdmAdminReviewerAndProgramResponse,
+} from "@/api/admission/admin/types";
 const { t } = useI18n();
 
 const router = useRouter();
-
 const reviewerAuth = useAdmissionReviewerAuthStore();
 const adminAuth = useAdmissionAdminAuthStore();
 
+const store = useGlobalStore();
 const api = new AdmissionAdminAPI(adminAuth);
 
-const {
-	isLoading,
-	isError,
-	data: reviewers,
-	error,
-} = useQuery(["reviewerList"], async () => {
-	try {
-		return await api.getReviewerList();
-	} catch (e: any) {
-		if (e instanceof InvalidSessionError) {
-			// FIXME: show session expiry notification??
-			// Why are we even here in the first place?
-			// MainContainer should have checked already.
-			console.error(
-				"Session has already expired while querying reviewerList"
-			);
-			router.push("/");
-			return;
+const fetchReviewerList = () => {
+	return useQuery(["reviewerList"], async () => {
+		try {
+			return await api.getReviewerList();
+		} catch (e: any) {
+			if (e instanceof InvalidSessionError) {
+				// FIXME: show session expiry notification??
+				// Why are we even here in the first place?
+				// MainContainer should have checked already.
+				console.error(
+					"Session has already expired while querying reviewerList"
+				);
+				router.push("/");
+				return;
+			}
 		}
+	});
+};
+
+const fetchReviewerProgram = (rID: number) => {
+	return useQuery(["reviewerProgram", { rID: rID }], async () => {
+		try {
+			return await api.getReviewerPrograms(rID);
+		} catch (e: any) {
+			if (e instanceof InvalidSessionError) {
+				// FIXME: show session expiry notification??
+				// Why are we even here in the first place?
+				// MainContainer should have checked already.
+				console.error(
+					"Session has already expired while querying reviewerProgram"
+				);
+				router.push("/");
+				return;
+			}
+		}
+	});
+};
+
+const tableData = ref<AdmAdminReviewerAndProgramResponse[]>();
+
+const {
+	isError,
+	isLoading: isReviewerListLoading,
+	isSuccess,
+	data: reviewers,
+} = fetchReviewerList();
+
+watchEffect(() => {
+	// Update table once loaded
+	if (isSuccess.value && reviewers.value) {
+		console.log("Load reviewer list");
+		tableData.value = reviewers.value;
 	}
 });
-
-const tableData = ref(reviewers);
+// TODO: get programs related to reviewers
 
 const modalVisible = ref(false);
-const modalData = ref({});
+const modalData = ref();
 
-const openModal = (data) => {
-	// Make a copy of original data
-	modalData.value = { ...data };
+const openModal = () => {
 	modalVisible.value = true;
 };
 
-const saveChange = () => {
-	console.log(modalData.value);
-	let index = tableData.value.findIndex((x) => x.id === modalData.value.id);
-	console.log(index);
-	if (!isNaN(index)) {
-		tableData.value[index] = modalData.value;
-		console.log(tableData.value);
+const filterRelatedProgramName = (rID: number) => {
+	const { isLoading, isSuccess, data } = fetchReviewerProgram(rID);
+
+	if (isSuccess.value && data.value) {
+		data.value[0].id;
+		const result = data.value.map((program) => program.name);
+		console.log(result);
+		return result;
 	}
-	modalVisible.value = false;
-};
-
-const truncateRoles = (rolesData: { id: number; name: string }[]) => {
-	let result: string[];
-
-	if (rolesData.length > 3) {
-		result = rolesData.slice(0, 3).map((x) => x.name);
-		result = result.concat(["..."]);
-	} else {
-		result = rolesData.map((x) => x.name);
-	}
-
-	return result;
 };
 </script>
