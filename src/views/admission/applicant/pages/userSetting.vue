@@ -91,10 +91,16 @@
 import { onMounted, reactive } from "vue";
 import { useRoute } from "vue-router";
 import { UserInfo } from "@/api/admission/applicant/types";
+import { useAdmissionApplicantAuthStore } from "@/stores/universalAuth";
+import { AdmissionApplicantAPI } from "@/api/admission/applicant/api";
+import { useQuery } from "@tanstack/vue-query";
 import ParagraphDivider from "@/styles/paragraphDividerApplicant.vue";
 import InputText from "primevue/inputtext";
 import Button from "primevue/button";
 import "primeicons/primeicons.css";
+
+const applicantAuth = useAdmissionApplicantAuthStore();
+const api = new AdmissionApplicantAPI(applicantAuth);
 
 const route = useRoute();
 

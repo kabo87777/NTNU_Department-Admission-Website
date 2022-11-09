@@ -287,8 +287,6 @@ import { AdmissionApplicantAPI } from "@/api/admission/applicant/api";
 import { useQuery } from "@tanstack/vue-query";
 
 const router = useRouter();
-
-// const reviewerAuth = useAdmissionReviewerAuthStore();
 const applicantAuth = useAdmissionApplicantAuthStore();
 
 const api = new AdmissionApplicantAPI(applicantAuth);
