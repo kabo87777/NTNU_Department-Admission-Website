@@ -239,7 +239,7 @@ function update() {
 				dateTransform(review_stage1_start_time.value) + "+08:00",
 			review_end_date:
 				dateTransform(review_stage1_end_time.value) + "+08:00",
-			require_file: "require_file",
+			require_file: "[\"file1\", \"file2\"]",
 			stage: "application",
 			created_at: "2022-11-09T01:16:26.335+08:00",
 			updated_at: "2022-11-09T01:16:26.335+08:00",
