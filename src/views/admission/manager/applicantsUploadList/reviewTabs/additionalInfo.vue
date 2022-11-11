@@ -197,10 +197,7 @@ const tabOptions = ref([
 ]);
 const selectedCities1 = ref();
 const value8 = ref();
-const cities = ref([
-	{ name: ".pdf", code: "pdf" },
-	{ name: ".doc", code: "doc" },
-]);
+const cities = ref([{ name: ".pdf", code: "pdf" }]);
 
 const props = defineProps(["userId"]);
 console.log(props.userId, "additional info tab");

@@ -26,7 +26,7 @@
 		</div>
 
 		<router-link
-			to="/admission/manager/projectSetting"
+			to="/recruitment/manager/projectSetting"
 			custom
 			v-slot="{ navigate }"
 		>
@@ -69,37 +69,30 @@
 				{{ $t("申請端設定") }}
 			</div>
 		</div>
-
-		<Button
-			class="p-button-secondary p-button-text !ml-24px !mt-16px !w-336px !h-48px"
-		>
-			<img
-				alt="logo"
-				src="/assets/sidebar/Bell.png"
-				style="width: 1.5rem"
-			/>
-			<span
-				class="text-left tracking-3px ml-3 font-bold text-xl text-[#2D2926]"
-			>
-				{{ $t("資訊公告") }}
-			</span>
-		</Button>
-		<Button
-			class="p-button-secondary p-button-text !ml-24px !mt-8px !w-336px !h-48px"
-		>
-			<img
-				alt="logo"
-				src="/assets/sidebar/User_add_alt.png"
-				style="width: 1.5rem"
-			/>
-			<span
-				class="text-left tracking-3px ml-3 font-bold text-xl text-[#2D2926]"
-			>
-				{{ $t("申請帳號設置") }}
-			</span>
-		</Button>
 		<router-link
-			to="/admission/manager/projectSettings"
+			to="/recruitment/manager/applicationAccountSetting"
+			custom
+			v-slot="{ navigate }"
+		>
+			<Button
+				class="p-button-secondary p-button-text !ml-24px !mt-32px !w-336px !h-48px"
+				@click="navigate"
+				role="link"
+			>
+				<img
+					alt="logo"
+					src="/assets/sidebar/User_add_alt.png"
+					style="width: 1.5rem"
+				/>
+				<span
+					class="text-left tracking-3px ml-3 font-bold text-xl text-[#2D2926]"
+				>
+					{{ $t("申請帳號設置") }}
+				</span>
+			</Button>
+		</router-link>
+		<router-link
+			to="/recruitment/manager/applicationUploadSetting"
 			custom
 			v-slot="{ navigate }"
 		>
@@ -120,28 +113,38 @@
 				</span>
 			</Button>
 		</router-link>
-		<router-link to="/admission/manager/applicantsUploadList">
+		<router-link
+			:to="{
+				name: 'recruitmentManagerApplicantUploadList',
+			}"
+			custom
+			v-slot="{ navigate }"
+		>
 			<Button
 				class="p-button-secondary p-button-text !ml-24px !mt-8px !w-336px !h-48px"
+				@click="navigate"
+				role="link"
 			>
 				<img
 					alt="logo"
-					src="/assets/sidebar/File_dock_search.png"
+					src="/assets/recruit-manger-page/File_dock_search.svg"
 					style="width: 1.5rem"
 				/>
 				<span
-					class="text-left tracking-3px ml-3 font-bold text-xl text-[#2D2926]"
+					class="text-left tracking-3px ml-3 font-bold text-[20px] text-[#2D2926]"
 				>
 					{{ $t("上傳資料列表") }}
 				</span>
 			</Button>
 		</router-link>
-
-		<Divider align="left" class="text-xs text-ntnuRed text-base">
-			<b>{{ $t("審查端設定") }}</b>
-		</Divider>
-		<router-link
-			to="/admission/manager/reviewScoreField"
+		<div class="flex mt-32px">
+			<div class="sidebarRedDivider"></div>
+			<div class="mt-[-8px] ml-8px text-[#874B52] text-20px font-bold">
+				{{ $t("審查端設定") }}
+			</div>
+		</div>
+		<!-- <router-link
+			to="/recruitment/manager/reviewScoreField"
 			custom
 			v-slot="{ navigate }"
 		>
@@ -155,13 +158,15 @@
 					src="/assets/sidebar/Eye_light.png"
 					style="width: 1.5rem"
 				/>
-				<span class="text-left tracking-3px ml-3 font-bold text-xl">
+				<span
+					class="text-left tracking-3px ml-3 font-bold text-xl text-[#2D2926]"
+				>
 					{{ $t("審查評分設置") }}
 				</span>
 			</Button>
-		</router-link>
+		</router-link> -->
 		<router-link
-			to="/admission/manager/gradeDataList"
+			to="/recruitment/manager/gradeDataList"
 			custom
 			v-slot="{ navigate }"
 		>
@@ -175,8 +180,32 @@
 					src="/assets/sidebar/Flag_finish.png"
 					style="width: 1.5rem"
 				/>
-				<span class="text-left tracking-3px ml-3 font-bold text-xl">
+				<span
+					class="text-left tracking-3px ml-3 font-bold text-xl text-[#2D2926]"
+				>
 					{{ $t("評分資料列表") }}
+				</span>
+			</Button>
+		</router-link>
+		<router-link
+			to="/recruitment/manager/reviewProgress"
+			custom
+			v-slot="{ navigate }"
+		>
+			<Button
+				class="p-button-secondary p-button-text !ml-24px !mt-8px !w-336px !h-48px"
+				@click="navigate"
+				role="link"
+			>
+				<img
+					alt="logo"
+					src="/assets/sidebar/User_light.png"
+					style="width: 1.5rem"
+				/>
+				<span
+					class="text-left tracking-3px ml-3 font-bold text-xl text-[#2D2926]"
+				>
+					{{ $t("審查人員與進度") }}
 				</span>
 			</Button>
 		</router-link>
@@ -186,11 +215,7 @@
 		>
 			<div class="flex">
 				<div class="m-auto">
-					<router-link
-						to="/admission/manager/reviewerSettings"
-						custom
-						v-slot="{ navigate }"
-					>
+					<router-link to="" custom v-slot="{ navigate }">
 						<Button
 							class="w-168px h-44px p-button-outlined !mt-24px !bg-white"
 							@click="navigate"
@@ -281,13 +306,23 @@
 						{{ $t("系辦主管") }}
 					</div>
 				</div>
-				<Button class="p-button-text !mt-46px !ml-50px">
-					<img
-						alt="logo"
-						src="/assets/sidebar/Setting_alt_line.png"
-						class="w-28px h-28px"
-					/>
-				</Button>
+				<router-link
+					to="/recruitment/manager/userSetting"
+					custom
+					v-slot="{ navigate }"
+				>
+					<Button
+						class="p-button-text !mt-46px !ml-50px"
+						@click="navigate"
+						role="link"
+					>
+						<img
+							alt="logo"
+							src="/assets/sidebar/Setting_alt_line.png"
+							class="w-28px h-28px"
+						/>
+					</Button>
+				</router-link>
 				<Button class="p-button-text !mt-46px" @click="signOut">
 					<img
 						alt="logo"
@@ -310,16 +345,16 @@ import Dialog from "primevue/dialog";
 import InputText from "primevue/inputtext";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
-import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
-import { AdmissionAdminAPI } from "@/api/admission/admin/api";
+import { useRecruitmentAdminAuthStore } from "@/stores/universalAuth";
+import { RecruitmentAdminAPI } from "@/api/recruitment/admin/api";
 import { useQuery } from "@tanstack/vue-query";
 import { InvalidSessionError } from "@/api/error";
 
 const router = useRouter();
 
-const adminAuth = useAdmissionAdminAuthStore();
+const adminAuth = useRecruitmentAdminAuthStore();
 
-const api = new AdmissionAdminAPI(adminAuth);
+const api = new RecruitmentAdminAPI(adminAuth);
 
 const {
 	isLoading,
@@ -377,7 +412,7 @@ function closeDisplayNewProject() {
 
 async function signOut() {
 	await api.invalidateSession();
-	router.push("/");
+	router.push("/recruitment/manager/signin");
 }
 </script>
 
