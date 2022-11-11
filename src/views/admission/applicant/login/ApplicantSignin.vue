@@ -196,9 +196,6 @@ if (lastSigninUsername) {
 	username.value = lastSigninUsername;
 }
 
-// remove legacy item (renamed)
-window.localStorage.removeItem("AdmissionApplicantSigninLastSigninUsername");
-
 // Store username in localStorage if remember account
 watch(isRememberAccount, (isChecked) => {
 	if (!isChecked)
