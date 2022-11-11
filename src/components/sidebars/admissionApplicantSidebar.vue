@@ -31,7 +31,6 @@
 		<router-link
 			:to="{
 				name: 'AdmissionApplicantLatestNews',
-				params: { userId: 7 },
 			}"
 			custom
 			v-slot="{ navigate }"
@@ -64,7 +63,6 @@
 		<router-link
 			:to="{
 				name: 'AdmissionApplicantBasicInfo',
-				params: { userId: 7 },
 			}"
 			custom
 			v-slot="{ navigate }"
@@ -96,7 +94,6 @@
 		<router-link
 			:to="{
 				name: 'AdmissionApplicantAttachment',
-				params: { userId: 7 },
 			}"
 			custom
 			v-slot="{ navigate }"
@@ -135,7 +132,6 @@
 		<router-link
 			:to="{
 				name: 'AdmissionApplicantRecommendationLetter',
-				params: { userId: 7 },
 			}"
 			custom
 			v-slot="{ navigate }"
@@ -167,7 +163,6 @@
 		<router-link
 			:to="{
 				name: 'AdmissionApplicantAdditionalDocs',
-				params: { userId: 7 },
 			}"
 			custom
 			v-slot="{ navigate }"
@@ -236,7 +231,6 @@
 					<router-link
 						:to="{
 							name: 'AdmissionApplicantUserSetting',
-							params: { userId: 7 },
 						}"
 						custom
 						v-slot="{ navigate }"
@@ -291,12 +285,12 @@ const applicantAuth = useAdmissionApplicantAuthStore();
 
 const api = new AdmissionApplicantAPI(applicantAuth);
 
-const {
-	isLoading,
-	isError,
-	data: programs,
-	error,
-} = useQuery(["programList"], async () => await api.getProgramList());
+// const {
+// 	isLoading,
+// 	isError,
+// 	data: programs,
+// 	error,
+// } = useQuery(["programList"], async () => await api.getProgramList());
 
 // const { t } = useI18n();
 

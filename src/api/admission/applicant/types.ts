@@ -11,18 +11,20 @@ export interface AdmissionApplicantAuthResponse {
 	provider: string;
 	uid: string;
 	allow_password_change: boolean;
-	isInit: any | null;
-	lang: any | null;
-	name: any | null;
-	nickname: any | null;
-	image: any | null;
-	docs_order: number | null;
-	oral_order: number | null;
-	file: any | null;
-	docs_stage: any | null;
-	oral_stage: any | null;
-	s_program_id: number | null;
-	application_stage: any | null;
+	isInit: boolean;
+	lang: string;
+	name: string;
+	nickname: string;
+	image: any;
+	docs_order: number;
+	oral_order: number;
+	file: any;
+	docs_stage: any;
+	oral_stage: any;
+	created_at: string;
+	updated_at: string;
+	s_program_id: number;
+	application_stage: any;
 }
 
 export interface UserInfo {
