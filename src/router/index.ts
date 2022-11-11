@@ -440,6 +440,7 @@ const routes: Array<RouteRecordRaw> = [
 						component: recruitmentManagerReviewProgress,
 					},
 					{
+						path: "applicantUploadList",
 						name: "recruitmentManagerApplicantUploadList",
 						component: recruitmentManagerApplicantUploadList,
 					},
