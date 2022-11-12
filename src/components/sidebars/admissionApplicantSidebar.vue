@@ -224,7 +224,7 @@
 					<div
 						class="text-[22px] font-[500] font-bold mt-[8px] tracking-wider"
 					>
-						{{ "我很帥" }}
+						{{ applicantName }}
 					</div>
 				</div>
 				<div class="absolute right-[0] mt-[-8px]">
@@ -264,7 +264,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from "vue";
+import { ref, reactive, toRaw } from "vue";
+import { useRouter } from "vue-router";
+import { useAdmissionApplicantAuthStore } from "@/stores/universalAuth";
+import { AdmissionApplicantAPI } from "@/api/admission/applicant/api";
+import { useUserInfoStore } from "@/stores/AdmissionApplicantStore";
 import { Tags } from "@/api/admission/applicant/types";
 import "primeicons/primeicons.css";
 import "primevue/resources/primevue.min.css";
@@ -275,13 +279,12 @@ import CompletedTag from "@/styles/tags/completedTag.vue";
 import IncompleteTag from "@/styles/tags/incompleteTag.vue";
 // import Tag from "primevue/tag";
 // import { useI18n } from "vue-i18n";
-import { useRouter } from "vue-router";
-import { useAdmissionApplicantAuthStore } from "@/stores/universalAuth";
-import { AdmissionApplicantAPI } from "@/api/admission/applicant/api";
 import { useQuery } from "@tanstack/vue-query";
 
 const router = useRouter();
 const applicantAuth = useAdmissionApplicantAuthStore();
+const applicantStore = useUserInfoStore();
+const applicantName = toRaw(applicantStore.userInfo.name);
 
 const api = new AdmissionApplicantAPI(applicantAuth);
 
