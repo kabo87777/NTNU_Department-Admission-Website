@@ -92,13 +92,13 @@
 <script setup lang="ts">
 import { onMounted, reactive, ref, toRaw } from "vue";
 import { useQuery } from "@tanstack/vue-query";
-import { useToast } from "primevue/usetoast";
 import { AdmissionApplicantAuthResponse } from "@/api/admission/applicant/types";
 import { useAdmissionApplicantAuthStore } from "@/stores/universalAuth";
 import { useUserInfoStore } from "@/stores/AdmissionApplicantStore";
 import { AdmissionApplicantAPI } from "@/api/admission/applicant/api";
 import { InvalidSessionError } from "@/api/error";
 import ParagraphDivider from "@/styles/paragraphDividerApplicant.vue";
+import { useToast } from "primevue/usetoast";
 import InputText from "primevue/inputtext";
 import Button from "primevue/button";
 import "primeicons/primeicons.css";
@@ -112,7 +112,6 @@ const applicantInfo: AdmissionApplicantAuthResponse = toRaw(
 	applicantStore.userInfo
 );
 
-console.log(applicantInfo, "setting");
 // const {
 // 	isLoading,
 // 	isError,

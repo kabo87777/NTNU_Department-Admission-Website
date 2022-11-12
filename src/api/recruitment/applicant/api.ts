@@ -34,4 +34,18 @@ export class RecruitmentApplicantAPI extends GenericAPI {
 
 		return data.data;
 	}
+
+	async changePassword(
+		body: object
+	): Promise<RecruitmentApplicantProgramResponse[]> {
+		const data: APIGenericResponse = await this.instance.patch(
+			"recruitment/auth/applicant/password",
+			body
+		);
+		console.log(data);
+		if (data.error === true || typeof data.data === "undefined")
+			throw new Error("Failed to change password");
+
+		return data.data;
+	}
 }

@@ -6,13 +6,16 @@
 		<div class="bigYellowDivider"></div>
 		<div class="mt-8px px-12px py-24px">
 			<div class="text-[20px] font-[350]">
-				{{ $t("帳號名稱") }}{{ $t(":") }}{{ " " }}{{ userInfo.name }}
+				{{ $t("帳號名稱") }}{{ $t(":") }}{{ " "
+				}}{{ applicantInfo.name }}
 			</div>
 			<div class="mt-36px text-[20px] font-[350]">
-				{{ $t("聯絡信箱") }}{{ $t(":") }}{{ " " }}{{ userInfo.email }}
+				{{ $t("聯絡信箱") }}{{ $t(":") }}{{ " "
+				}}{{ applicantInfo.email }}
 			</div>
 			<div class="mt-36px text-[20px] font-[350]">
-				{{ $t("手機號碼") }}{{ $t(":") }}{{ " " }}{{ userInfo.phone }}
+				{{ $t("手機號碼") }}{{ $t(":") }}{{ " "
+				}}{{ applicantInfo.uid }}
 			</div>
 		</div>
 		<ParagraphDivider class="mt-12px" />
@@ -75,31 +78,38 @@
 				</div>
 			</div>
 			<Button
-				class="p-button-sm p-button-secondary p-button-outlined !mt-60px"
-				@click="handleSubmit"
-			>
-				<i class="pi pi-pencil" />
-				<p class="ml-8px text-16px font-[500] font-bold">
-					{{ $t("修改送出") }}
-				</p>
-			</Button>
+				class="p-button-sm p-button-secondary p-button-outlined !mt-60px !text-[16px]"
+				type="submit"
+				icon="pi pi-pencil"
+				:loading="isChangePassLoading"
+				@click="handleSubmit()"
+				:label="$t('修改送出')"
+			/>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive } from "vue";
-import { UserInfo } from "@/api/admission/applicant/types";
+import { onMounted, reactive, toRaw, ref } from "vue";
+import { useRecruitmentApplicantAuthStore } from "@/stores/universalAuth";
+import { RecruitmentApplicantAuthResponse } from "@/api/recruitment/applicant/types";
+import { RecruitmentApplicantAPI } from "@/api/recruitment/applicant/api";
 import ParagraphDivider from "@/styles/paragraphDividerApplicant.vue";
+import { useUserInfoStore } from "@/stores/RecruitmentApplicantStore";
+import { InvalidSessionError } from "@/api/error";
+import { useToast } from "primevue/usetoast";
 import InputText from "primevue/inputtext";
 import Button from "primevue/button";
 import "primeicons/primeicons.css";
 
-const userInfo: UserInfo = {
-	name: "我很帥",
-	email: "IAmSoHandsome@handsome.com",
-	phone: "0912345678",
-};
+const toast = useToast();
+const applicantAuth = useRecruitmentApplicantAuthStore();
+const applicantStore = useUserInfoStore();
+const api = new RecruitmentApplicantAPI(applicantAuth);
+
+const applicantInfo: RecruitmentApplicantAuthResponse = toRaw(
+	applicantStore.userInfo
+);
 
 const initialPassValue = {
 	isCurrentPassBlank: false,
@@ -110,18 +120,41 @@ const initialPassValue = {
 	confirmPass: "",
 };
 
-const password = reactive(initialPassValue);
+const isChangePassLoading = ref(false);
 
-// const resetPassValue = () => {
-// 	password.isCurrentPassBlank = initialPassword.isCurrentPassBlank;
-// 	password.isNewPassBlank = initialPassword.isNewPassBlank;
-// 	password.notMatch = initialPassword.notMatch;
-// 	password.currentPass = initialPassword.currentPass;
-// 	password.newPass = initialPassword.newPass;
-// 	password.confirmPass = initialPassword.confirmPass;
-// };
+const password = reactive({
+	isCurrentPassBlank: false,
+	isNewPassBlank: false,
+	notMatch: false,
+	currentPass: "",
+	newPass: "",
+	confirmPass: "",
+});
 
-const handleSubmit = () => {
+const resetPassValue = () => {
+	password.isCurrentPassBlank = initialPassValue.isCurrentPassBlank;
+	password.isNewPassBlank = initialPassValue.isNewPassBlank;
+	password.notMatch = initialPassValue.notMatch;
+	password.currentPass = initialPassValue.currentPass;
+	password.newPass = initialPassValue.newPass;
+	password.confirmPass = initialPassValue.confirmPass;
+};
+
+const patchChangePassword = async (body: object) => {
+	try {
+		return await api.changePassword(body);
+	} catch (e: any) {
+		if (e instanceof InvalidSessionError) {
+			console.error(
+				"Session has already expired while changing password"
+			);
+
+			return;
+		}
+	}
+};
+
+const handleSubmit = async () => {
 	if (password.currentPass === "") {
 		password.isCurrentPassBlank = true;
 	} else {
@@ -145,12 +178,25 @@ const handleSubmit = () => {
 		!password.isNewPassBlank &&
 		!password.notMatch
 	) {
-		// resetPassValue();
-		console.log(
-			password.currentPass,
-			password.newPass,
-			password.confirmPass
-		);
+		isChangePassLoading.value = true;
+
+		const body = {
+			current_password: password.currentPass,
+			password: password.newPass,
+			password_confirmation: password.confirmPass,
+		};
+
+		const response = patchChangePassword(body);
+		if (await response) {
+			isChangePassLoading.value = false;
+			toast.add({
+				severity: "success",
+				summary: "Success",
+				detail: "Your password has been successfully updated",
+				life: 3000,
+			});
+			resetPassValue();
+		}
 	}
 };
 
