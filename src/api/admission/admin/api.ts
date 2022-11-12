@@ -2,9 +2,11 @@ import type { AuthStore } from "@/stores/universalAuth";
 import type {
 	AdmissionAdminProgramListResponse,
 	AdmissionAdminApplicantsListResponse,
+	AdmissionAdminScoreFieldResponse,
 } from "./types";
 import type { APIGenericResponse } from "@/api/types";
 import { GenericAPI } from "@/api/api";
+import { Interface } from "readline";
 
 export class AdmissionAdminAPI extends GenericAPI {
 	constructor(auth: AuthStore) {
@@ -31,5 +33,18 @@ export class AdmissionAdminAPI extends GenericAPI {
 		if (data.error === true || typeof data.data.applicants === "undefined")
 			throw new Error("Failed to fetch applicant list");
 		return data.data.applicants;
+	}
+
+	async patchScoreField(
+		programID: number,
+		newData: AdmissionAdminScoreFieldResponse
+	): Promise<APIGenericResponse> {
+		const data: APIGenericResponse = await this.instance.patch(
+			`/admission/admin/program/grading/${programID}`,
+			newData
+		);
+		if (data.error === true || typeof data.data.applicants === "undefined")
+			throw new Error("Failed to fetch applicant list");
+		return data;
 	}
 }

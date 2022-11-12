@@ -57,3 +57,20 @@ export interface AdmissionAdminApplicantsListResponse {
 	s_program_id?: number;
 	application_stage?: string | number;
 }
+
+export interface AdmissionAdminScoreFieldResponse {
+	docs_weight: number;
+	oral_weight: number;
+	docs_grade_name_1: string;
+	docs_grade_name_2: string;
+	docs_grade_name_3: string;
+	docs_grade_weight_1: number;
+	docs_grade_weight_2: number;
+	docs_grade_weight_3: number;
+	oral_grade_name_1: string;
+	oral_grade_name_2: string;
+	oral_grade_name_3: string;
+	oral_grade_weight_1: number;
+	oral_grade_weight_2: number;
+	oral_grade_weight_3: number;
+}
