@@ -1,11 +1,11 @@
 <template>
 	<div class="mt-32px relative">
 		<div class="flex">
-			<div class="sidebarVerticalBigBlueDivider"></div>
-			<div class="sidebarVerticalSmallBlueDivider"></div>
+			<div class="sidebarVerticalBigRedDivider"></div>
+			<div class="sidebarVerticalSmallRedDivider"></div>
 			<div class="ml-12px w-[100%]">
 				<Dropdown
-					v-model="selectedProgram"
+					v-model="updateProgram"
 					:options="programs"
 					:optionLabel="generateOptions"
 					class="h-60px w-[93%]"
@@ -13,9 +13,13 @@
 				>
 					<template #value="slotProps">
 						<div class="mt-6px tracking-2px text-20px font-medium">
-							{{ slotProps.value.category }}
-							{{ slotProps.value.name }}
+							{{ slotProps?.value?.category }}
+							{{ slotProps?.value?.name }}
 						</div>
+					</template>
+					<template #option="slotProps">
+						{{ slotProps?.option?.category }}
+						{{ slotProps?.option?.name }}
 					</template>
 				</Dropdown>
 			</div>
@@ -73,7 +77,6 @@
 				</span>
 			</Button>
 		</router-link>
-
 		<div
 			class="bg-gray-200 bg-opacity-50 h-104px w-[100%] !mt-475px"
 			style="transform: translateY(20%)"
@@ -123,7 +126,7 @@
 
 <script setup lang="ts">
 import "primevue/resources/primevue.min.css";
-import { ref } from "vue";
+import { ref, toRaw, computed } from "vue";
 import Dropdown from "primevue/dropdown";
 import Button from "primevue/button";
 import { useRouter } from "vue-router";
@@ -132,8 +135,11 @@ import { AdmissionReviewerAPI } from "@/api/admission/reviewer/api";
 import { useQuery } from "@tanstack/vue-query";
 import { InvalidSessionError } from "@/api/error";
 
-const reviewerAuth = useAdmissionReviewerAuthStore();
-const api = new AdmissionReviewerAPI(reviewerAuth);
+const router = useRouter();
+
+const adminAuth = useAdmissionReviewerAuthStore();
+
+const api = new AdmissionReviewerAPI(adminAuth);
 
 const {
 	isLoading,
@@ -157,32 +163,30 @@ const {
 	}
 });
 
-const router = useRouter();
+const dataPrograms = () => {
+	if (programs.value) {
+		const temp = toRaw(programs.value);
+		return temp[0];
+	}
+}; //convert proxy to array or object
+
+const selectedProgram = ref(dataPrograms());
 
 // FIXME: this should NOT be hardcoded.
-const selectedProgram = ref({
-	id: 1,
-	category: "111年碩士班",
-	name: "A組",
-	application_start_date: "2022-10-01T00:00:00.000+08:00",
-	application_end_date: "2022-10-31T00:00:00.000+08:00",
-	review_start_date: "2022-11-01T00:00:00.000+08:00",
-	review_end_date: "2022-11-30T00:00:00.000+08:00",
-	require_file: "['file1', 'file2']",
-	stage: "application",
-	created_at: "2022-10-18T07:00:10.671+08:00",
-	updated_at: "2022-10-18T07:00:10.671+08:00",
-	applicant_required_info: null,
-	applicant_required_file: null,
-	reviewer_required_info: null,
-	reviewer_required_file: null,
+const updateProgram = computed({
+	get: () => {
+		return selectedProgram.value;
+	},
+	set: (val) => {
+		selectedProgram.value = toRaw(val);
+	},
 });
 
 const generateOptions = (data: any) => data.category + data.name;
 
 async function signOut() {
 	await api.invalidateSession();
-	router.push("/admission/reviewer/signin");
+	router.push("/recruitment/reviewer/signin");
 }
 </script>
 
