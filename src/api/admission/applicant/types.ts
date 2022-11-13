@@ -46,6 +46,8 @@ export interface AttachmentData {
 	fileUrl?: string;
 	order?: number;
 	state?: number;
+	schoolName?: string;
+	score?: number | string;
 }
 
 // BELOW APIs not connected CURRENTLY

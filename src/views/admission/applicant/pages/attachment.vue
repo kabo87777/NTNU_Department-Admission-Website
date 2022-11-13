@@ -17,6 +17,7 @@
 					category="就學經歷"
 					identity="admissionApplicant"
 					:itemName="item.itemName"
+					:schoolName="item.schoolName"
 					:order="index + 1"
 					@edit="reviewToEdit"
 				/>
@@ -25,6 +26,7 @@
 					category="就學經歷"
 					identity="admissionApplicant"
 					:itemName="item.itemName"
+					:schoolName="item.schoolName"
 					:order="index + 1"
 					@cancel="editToReview"
 				/>
@@ -57,6 +59,7 @@
 					category="考試與檢定分數"
 					identity="admissionApplicant"
 					:itemName="item.itemName"
+					:score="item.score"
 					:order="index + 1"
 					@edit="reviewToEdit"
 				/>
@@ -65,6 +68,7 @@
 					category="考試與檢定分數"
 					identity="admissionApplicant"
 					:itemName="item.itemName"
+					:score="item.score"
 					:order="index + 1"
 					@cancel="editToReview"
 				/>
