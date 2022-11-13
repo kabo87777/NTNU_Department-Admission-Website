@@ -20,7 +20,7 @@ module.exports = {
   rules: {
     indent: ["error", "tab", { SwitchCase: 1 }],
     "linebreak-style": ["error", "unix"],
-    quotes: ["error", "double"],
+    quotes: ["error", "double", { avoidEscape: true }],
     semi: ["error", "always"],
     "@typescript-eslint/no-non-null-assertion": "off",
     "@typescript-eslint/ban-types": [
