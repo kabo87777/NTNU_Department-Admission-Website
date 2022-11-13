@@ -13,6 +13,7 @@ export default defineConfig({
 		extend: {
 			colors: {
 				ntnuRed: "#94282c",
+				blackLight: "#2D2926",
 			},
 		},
 	},
