@@ -9,6 +9,7 @@
 						$t("admissionApplicantSidebarTitle", {
 							year: currentYear,
 							roc: rocYear,
+							// FIX THIS HARD-CODED ISSUE
 							category: "API",
 							name: "API",
 						})

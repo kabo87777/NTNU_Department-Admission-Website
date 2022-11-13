@@ -187,6 +187,7 @@ const handleSubmit = async () => {
 		};
 
 		const response = patchChangePassword(body);
+		// FIX ME: CASE FAIL TO CHANGE PASSWORD
 		if (await response) {
 			isChangePassLoading.value = false;
 			toast.add({
