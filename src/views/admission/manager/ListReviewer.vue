@@ -1,6 +1,6 @@
 <template>
 	<h1 class="text-4xl font-bold">{{ $t("管理審查者") }}</h1>
-	<Button @click="filterRelatedProgramName(1)">Button</Button>
+	<Button @click="getRelatedPrograms">Button</Button>
 	<Divider></Divider>
 	<DataTable :value="tableData">
 		<template #empty>
@@ -22,12 +22,12 @@
 		<Column field="roles">
 			<template #header>{{ $t("身份組") }}</template>
 			<!-- <template #body="slotProps">
-				<Tag
-					v-for="role in truncateRoles(slotProps.data)"
-					:key="role"
-					>{{ role }}</Tag
-				>
-			</template> -->
+        <Tag
+          v-for="role in truncateRoles(slotProps.data)"
+          :key="role"
+          >{{ role }}
+          </Tag>
+      </template> -->
 		</Column>
 
 		<Column>
@@ -115,8 +115,7 @@
 import DataTable from "primevue/datatable";
 import Row from "primevue/row";
 import Column from "primevue/column";
-import ColumnGroup from "primevue/columngroup";
-import { ref, watch, watchEffect } from "vue";
+import { ref, toRaw, watch, watchEffect } from "vue";
 import type { Ref } from "vue";
 import { useI18n } from "vue-i18n";
 import Divider from "primevue/divider";
@@ -134,21 +133,61 @@ import {
 } from "@/stores/universalAuth";
 import { AdmissionAdminAPI } from "@/api/admission/admin/api";
 import { useGlobalStore } from "@/stores/globalStore";
-import {
-	AdmAdminReviewerListResponse,
-	AdmAdminReviewerAndProgramResponse,
-} from "@/api/admission/admin/types";
+import { AdmAdminReviewerListResponse } from "@/api/admission/admin/types";
 const { t } = useI18n();
 
 const router = useRouter();
-const reviewerAuth = useAdmissionReviewerAuthStore();
 const adminAuth = useAdmissionAdminAuthStore();
 
 const store = useGlobalStore();
 const api = new AdmissionAdminAPI(adminAuth);
+const tableData = ref<AdmAdminReviewerListResponse[]>();
 
-const fetchReviewerList = () => {
-	return useQuery(["reviewerList"], async () => {
+const relatedProgram: Record<number, any> = {};
+const reviewerID = ref(1);
+const programQuery = useQuery(
+	["reviewerProgram", reviewerID],
+	async () => {
+		try {
+			return await api.getReviewerPrograms(reviewerID);
+		} catch (e: any) {
+			if (e instanceof InvalidSessionError) {
+				// FIXME: show session expiry notification??
+				// Why are we even here in the first place?
+				// MainContainer should have checked already.
+				console.error(
+					"Session has already expired while querying reviewerProgram"
+				);
+				router.push("/");
+				return;
+			}
+		}
+	},
+	{
+		enabled: false,
+		select: (programData) => {
+			// Select the data fields we are interested in
+			if (!programData) return programData;
+			return programData.map((program) => {
+				return {
+					id: program.id,
+					category: program.category,
+					name: program.name,
+				};
+			});
+		},
+		onSuccess: (data) => {
+			// data is filtered by option select
+			console.log("Success");
+			console.log(data);
+      // TODO: save result after getting response
+		},
+	}
+);
+
+const { data: reviewers } = useQuery(
+	["reviewerList"],
+	async () => {
 		try {
 			return await api.getReviewerList();
 		} catch (e: any) {
@@ -163,46 +202,18 @@ const fetchReviewerList = () => {
 				return;
 			}
 		}
-	});
-};
+	},
+	{
+		onSuccess: () => {
+			tableData.value = reviewers.value;
 
-const fetchReviewerProgram = (rID: number) => {
-	return useQuery(["reviewerProgram", { rID: rID }], async () => {
-		try {
-			return await api.getReviewerPrograms(rID);
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				// FIXME: show session expiry notification??
-				// Why are we even here in the first place?
-				// MainContainer should have checked already.
-				console.error(
-					"Session has already expired while querying reviewerProgram"
-				);
-				router.push("/");
-				return;
-			}
-		}
-	});
-};
-
-const tableData = ref<AdmAdminReviewerAndProgramResponse[]>();
-
-const {
-	isError,
-	isLoading: isReviewerListLoading,
-	isSuccess,
-	data: reviewers,
-} = fetchReviewerList();
-
-watchEffect(() => {
-	// Update table once loaded
-	if (isSuccess.value && reviewers.value) {
-		console.log("Load reviewer list");
-		tableData.value = reviewers.value;
+			tableData.value?.map((x) => {
+				reviewerID.value = x.id;
+				programQuery.refetch();
+			});
+		},
 	}
-});
-// TODO: get programs related to reviewers
-
+);
 const modalVisible = ref(false);
 const modalData = ref();
 
@@ -210,14 +221,8 @@ const openModal = () => {
 	modalVisible.value = true;
 };
 
-const filterRelatedProgramName = (rID: number) => {
-	const { isLoading, isSuccess, data } = fetchReviewerProgram(rID);
-
-	if (isSuccess.value && data.value) {
-		data.value[0].id;
-		const result = data.value.map((program) => program.name);
-		console.log(result);
-		return result;
-	}
+const getRelatedPrograms = () => {
+	if (!programQuery.isFetched.value)
+		programQuery.refetch({ throwOnError: true });
 };
 </script>

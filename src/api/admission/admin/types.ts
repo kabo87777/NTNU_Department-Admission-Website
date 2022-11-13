@@ -100,10 +100,7 @@ export interface AdmAdminReviewerRelatedProgramResponse {
 	applicant_required_file: null;
 	reviewer_required_info: null;
 	reviewer_required_file: null;
-}
-export interface AdmAdminReviewerAndProgramResponse
-	extends AdmAdminReviewerListResponse {
-	relatedPrograms?: AdmAdminReviewerRelatedProgramResponse[];
+	relation?: AdmAdminReviewerRelatedProgramResponse[];
 }
 export interface AdmissionAdminApplicantsListResponse {
 	// TODO: Wait backend to give exact data type

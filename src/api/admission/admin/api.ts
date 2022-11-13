@@ -7,6 +7,7 @@ import type {
 } from "./types";
 import type { APIGenericResponse } from "@/api/types";
 import { GenericAPI } from "@/api/api";
+import { Ref } from "vue";
 
 export class AdmissionAdminAPI extends GenericAPI {
 	constructor(auth: AuthStore) {
@@ -36,10 +37,10 @@ export class AdmissionAdminAPI extends GenericAPI {
 	}
 
 	async getReviewerPrograms(
-		rID: number
+		reviewerID: Ref<number>
 	): Promise<AdmAdminReviewerRelatedProgramResponse[]> {
 		const data: APIGenericResponse = await this.instance.get(
-			`/admission/admin/reviewer/${rID}/relation`
+			`/admission/admin/reviewer/${reviewerID.value}/relation`
 		);
 		if (data.error === true || typeof data.data === "undefined")
 			throw new Error("Failed to fetch reviewer-related program list");
