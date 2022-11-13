@@ -1,10 +1,13 @@
 import type { AuthStore } from "@/stores/universalAuth";
 import type {
 	AdmissionAdminProgramListResponse,
+	AdmAdminReviewerListResponse,
 	AdmissionAdminApplicantsListResponse,
+	AdmAdminReviewerRelatedProgramResponse,
 } from "./types";
 import type { APIGenericResponse } from "@/api/types";
 import { GenericAPI } from "@/api/api";
+import { Ref } from "vue";
 
 export class AdmissionAdminAPI extends GenericAPI {
 	constructor(auth: AuthStore) {
@@ -20,6 +23,29 @@ export class AdmissionAdminAPI extends GenericAPI {
 			throw new Error("Failed to fetch program list");
 
 		return data.data.programs;
+	}
+
+	async getReviewerList(): Promise<AdmAdminReviewerListResponse[]> {
+		const data: APIGenericResponse = await this.instance.get(
+			"/admission/admin/reviewer"
+		);
+
+		if (data.error === true || typeof data.data.reviewers === "undefined")
+			throw new Error("Failed to fetch reviewer list");
+
+		return data.data.reviewers;
+	}
+
+	async getReviewerPrograms(
+		reviewerID: Ref<number>
+	): Promise<AdmAdminReviewerRelatedProgramResponse[]> {
+		const data: APIGenericResponse = await this.instance.get(
+			`/admission/admin/reviewer/${reviewerID.value}/relation`
+		);
+		if (data.error === true || typeof data.data === "undefined")
+			throw new Error("Failed to fetch reviewer-related program list");
+
+		return data.data;
 	}
 
 	async getApplicantList(

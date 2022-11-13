@@ -1,5 +1,6 @@
 <template>
 	<h1 class="text-4xl font-bold">{{ $t("管理審查者") }}</h1>
+	<Button @click="getRelatedPrograms">Button</Button>
 	<Divider></Divider>
 	<DataTable :value="tableData">
 		<template #empty>
@@ -20,22 +21,22 @@
 
 		<Column field="roles">
 			<template #header>{{ $t("身份組") }}</template>
-			<template #body="slotProps">
-				<Tag
-					v-for="role in truncateRoles(slotProps.data.roles)"
-					:key="role"
-					>{{ role }}</Tag
-				>
-			</template>
+			<!-- <template #body="slotProps">
+        <Tag
+          v-for="role in truncateRoles(slotProps.data)"
+          :key="role"
+          >{{ role }}
+          </Tag>
+      </template> -->
 		</Column>
 
 		<Column>
 			<template #header>{{ $t("動作") }}</template>
-			<template #body="slotProps">
+			<template #body>
 				<Button
 					icon="pi pi-pencil"
 					class="p-button-outlined p-button-success"
-					@click="openModal(slotProps.data)"
+					@click="openModal"
 				></Button>
 			</template>
 		</Column>
@@ -97,7 +98,6 @@
 						icon="pi pi-check"
 						:label="$t('儲存')"
 						class="p-button-outlined p-button-success"
-						@click="saveChange"
 					></Button>
 					<Button
 						icon="pi pi-times"
@@ -115,8 +115,7 @@
 import DataTable from "primevue/datatable";
 import Row from "primevue/row";
 import Column from "primevue/column";
-import ColumnGroup from "primevue/columngroup";
-import { ref } from "vue";
+import { ref, toRaw, watch, watchEffect } from "vue";
 import type { Ref } from "vue";
 import { useI18n } from "vue-i18n";
 import Divider from "primevue/divider";
@@ -125,54 +124,105 @@ import Button from "primevue/button";
 import Dialog from "primevue/dialog";
 import InputText from "primevue/inputtext";
 import Checkbox from "primevue/checkbox";
-import mockData from "@/mocks/reviewers.json";
+import { useQuery } from "@tanstack/vue-query";
+import { InvalidSessionError } from "@/api/error";
+import { useRouter } from "vue-router";
+import {
+	useAdmissionAdminAuthStore,
+	useAdmissionReviewerAuthStore,
+} from "@/stores/universalAuth";
+import { AdmissionAdminAPI } from "@/api/admission/admin/api";
+import { useGlobalStore } from "@/stores/globalStore";
+import { AdmAdminReviewerListResponse } from "@/api/admission/admin/types";
 const { t } = useI18n();
 
-const response = mockData.reviewers;
+const router = useRouter();
+const adminAuth = useAdmissionAdminAuthStore();
 
-interface OwO {
-	id: string | number;
-	name: string;
-	email: string;
-	roles: {
-		id: string | number;
-		name: string;
-		checked?: boolean;
-	}[];
-}
+const store = useGlobalStore();
+const api = new AdmissionAdminAPI(adminAuth);
+const tableData = ref<AdmAdminReviewerListResponse[]>();
 
-const tableData: Ref<OwO[]> = ref<OwO[]>(response);
+const relatedProgram: Record<number, any> = {};
+const reviewerID = ref(1);
+const programQuery = useQuery(
+	["reviewerProgram", reviewerID],
+	async () => {
+		try {
+			return await api.getReviewerPrograms(reviewerID);
+		} catch (e: any) {
+			if (e instanceof InvalidSessionError) {
+				// FIXME: show session expiry notification??
+				// Why are we even here in the first place?
+				// MainContainer should have checked already.
+				console.error(
+					"Session has already expired while querying reviewerProgram"
+				);
+				router.push("/");
+				return;
+			}
+		}
+	},
+	{
+		enabled: false,
+		select: (programData) => {
+			// Select the data fields we are interested in
+			if (!programData) return programData;
+			return programData.map((program) => {
+				return {
+					id: program.id,
+					category: program.category,
+					name: program.name,
+				};
+			});
+		},
+		onSuccess: (data) => {
+			// data is filtered by option select
+			console.log("Success");
+			console.log(data);
+      // TODO: save result after getting response
+		},
+	}
+);
 
+const { data: reviewers } = useQuery(
+	["reviewerList"],
+	async () => {
+		try {
+			return await api.getReviewerList();
+		} catch (e: any) {
+			if (e instanceof InvalidSessionError) {
+				// FIXME: show session expiry notification??
+				// Why are we even here in the first place?
+				// MainContainer should have checked already.
+				console.error(
+					"Session has already expired while querying reviewerList"
+				);
+				router.push("/");
+				return;
+			}
+		}
+	},
+	{
+		onSuccess: () => {
+			tableData.value = reviewers.value;
+
+			tableData.value?.map((x) => {
+				reviewerID.value = x.id;
+				programQuery.refetch();
+			});
+		},
+	}
+);
 const modalVisible = ref(false);
-const modalData: Ref<OwO> = ref<OwO>({} as OwO);
+const modalData = ref();
 
-const openModal = (data: OwO) => {
-	// Make a copy of original data
-	modalData.value = { ...data };
+const openModal = () => {
 	modalVisible.value = true;
 };
 
-const saveChange = () => {
-	console.log(modalData.value);
-	let index = tableData.value.findIndex((x) => x.id === modalData.value.id);
-	console.log(index);
-	if (!isNaN(index)) {
-		tableData.value[index] = modalData.value;
-		console.log(tableData.value);
-	}
-	modalVisible.value = false;
-};
-
-const truncateRoles = (rolesData: { id: number; name: string }[]) => {
-	let result: string[];
-
-	if (rolesData.length > 3) {
-		result = rolesData.slice(0, 3).map((x) => x.name);
-		result = result.concat(["..."]);
-	} else {
-		result = rolesData.map((x) => x.name);
-	}
-
-	return result;
+const getRelatedPrograms = () => {
+	if (!programQuery.isFetched.value)
+		programQuery.refetch({ throwOnError: true });
 };
 </script>
