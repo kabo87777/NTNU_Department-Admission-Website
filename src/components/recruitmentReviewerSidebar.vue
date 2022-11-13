@@ -115,7 +115,7 @@
 
 <script setup lang="ts">
 import "primevue/resources/primevue.min.css";
-import { ref } from "vue";
+import { ref, toRaw, computed } from "vue";
 import Dropdown from "primevue/dropdown";
 import Button from "primevue/button";
 import { useRouter } from "vue-router";
@@ -126,54 +126,70 @@ import { InvalidSessionError } from "@/api/error";
 
 const reviewerAuth = useRecruitmentReviewerAuthStore();
 const api = new RecruitmentReviewerAPI(reviewerAuth);
-
-const programs = ref([]);
 // API isn't ready
 
-// const {
-// 	isLoading,
-// 	isError,
-// 	data: programs,
-// 	error,
-// } = useQuery(["programList"], async () => {
-// 	try {
-// 		return await api.getProgramList();
-// 	} catch (e: any) {
-// 		if (e instanceof InvalidSessionError) {
-// 			// FIXME: show session expiry notification??
-// 			// Why are we even here in the first place?
-// 			// MainContainer should have checked already.
-// 			console.error(
-// 				"Session has already expired while querying programList"
-// 			);
-// 			router.push("/");
-// 			return;
-// 		}
-// 	}
-// });
+const {
+	isLoading,
+	isError,
+	data: programs,
+	error,
+} = useQuery(["programList"], async () => {
+	try {
+		return await api.getProgramList();
+	} catch (e: any) {
+		if (e instanceof InvalidSessionError) {
+			// FIXME: show session expiry notification??
+			// Why are we even here in the first place?
+			// MainContainer should have checked already.
+			console.error(
+				"Session has already expired while querying programList"
+			);
+			router.push("/");
+			return;
+		}
+	}
+});
+
+const dataPrograms = () => {
+	if (programs.value) {
+		const temp = toRaw(programs.value);
+		return temp[0];
+	}
+}; //convert proxy to array or object
+
+const selectedProgram = ref(dataPrograms());
+
+const updateProgram = computed({
+	get: () => {
+		return selectedProgram.value;
+	},
+	set: (val) => {
+		selectedProgram.value = toRaw(val);
+	},
+});
 
 const router = useRouter();
 
 // FIXME: this should NOT be hardcoded.
-const selectedProgram = ref({
-	id: 1,
-	category: "111年教師應徵",
-	name: "A組",
-	application_start_date: "2022-10-01T00:00:00.000+08:00",
-	application_end_date: "2022-10-31T00:00:00.000+08:00",
-	review_start_date: "2022-11-01T00:00:00.000+08:00",
-	review_end_date: "2022-11-30T00:00:00.000+08:00",
-	require_file: "['file1', 'file2']",
-	stage: "application",
-	created_at: "2022-10-18T07:00:10.671+08:00",
-	updated_at: "2022-10-18T07:00:10.671+08:00",
-	applicant_required_info: null,
-	applicant_required_file: null,
-	reviewer_required_info: null,
-	reviewer_required_file: null,
-});
+// const selectedProgram = ref({
+// 	id: 1,
+// 	category: "111年教師應徵",
+// 	name: "A組",
+// 	application_start_date: "2022-10-01T00:00:00.000+08:00",
+// 	application_end_date: "2022-10-31T00:00:00.000+08:00",
+// 	review_start_date: "2022-11-01T00:00:00.000+08:00",
+// 	review_end_date: "2022-11-30T00:00:00.000+08:00",
+// 	require_file: "['file1', 'file2']",
+// 	stage: "application",
+// 	created_at: "2022-10-18T07:00:10.671+08:00",
+// 	updated_at: "2022-10-18T07:00:10.671+08:00",
+// 	applicant_required_info: null,
+// 	applicant_required_file: null,
+// 	reviewer_required_info: null,
+// 	reviewer_required_file: null,
+// });
 
-const generateOptions = (data: any) => data.category;
+const generateOptions = (data: any) => data.category + data.name;
 
 async function signOut() {
 	await api.invalidateSession();
