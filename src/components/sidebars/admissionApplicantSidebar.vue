@@ -4,27 +4,16 @@
 			<div class="sidebarVerticalBigYellowDivider mt-32px"></div>
 			<div class="sidebarVerticalSmallYellowDivider mt-32px"></div>
 			<div class="mt-32px ml-12px w-[100%]">
-				<!-- <Dropdown
-					v-model="selectedProgram"
-					:options="programs"
-					:optionLabel="generateOptions"
-					class="h-60px w-[93%]"
-					style="border-radius: 8px; border: 1px solid #736028"
-				> -->
-				<Dropdown
-					v-model="selectedProgram"
-					class="h-60px w-[93%]"
-					style="border-radius: 8px; border: 1px solid #736028"
-				>
-					<template #value="slotProps">
-						<div
-							class="mt-4px tracking-2px text-24px font-medium !font-bold"
-						>
-							{{ slotProps.value.category }}
-							{{ slotProps.value.name }}
-						</div>
-					</template>
-				</Dropdown>
+				<div class="sidebarTitleBar">
+					{{
+						$t("admissionApplicantSidebarTitle", {
+							year: currentYear,
+							roc: rocYear,
+							category: "API",
+							name: "API",
+						})
+					}}
+				</div>
 			</div>
 		</div>
 
@@ -288,6 +277,8 @@ const applicantName = toRaw(applicantStore.userInfo.name);
 
 const api = new AdmissionApplicantAPI(applicantAuth);
 
+const currentYear = new Date().getFullYear();
+const rocYear = currentYear - 1911;
 // const {
 // 	isLoading,
 // 	isError,
