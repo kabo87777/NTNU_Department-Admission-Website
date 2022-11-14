@@ -13,9 +13,9 @@ export class AdmissionReviewerAPI extends GenericAPI {
 			"/admission/reviewer/program"
 		);
 
-		if (data.error === true || typeof data.data.programs === "undefined")
+		if (data.error === true || typeof data.data === "undefined")
 			throw new Error("Failed to fetch program list");
 
-		return data.data.programs;
+		return data.data;
 	}
 }

@@ -5,7 +5,7 @@
 			<div class="sidebarVerticalSmallBlueDivider"></div>
 			<div class="ml-12px w-[100%]">
 				<Dropdown
-					v-model="selectedProgram"
+					v-model="updateProgram"
 					:options="programs"
 					:optionLabel="generateOptions"
 					class="h-60px w-[93%]"
