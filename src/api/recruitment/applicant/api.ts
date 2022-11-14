@@ -3,6 +3,7 @@ import { GenericAPI } from "@/api/api";
 import type {
 	RecruitmentApplicantProgramResponse,
 	RecruitmentApplicantFileListResponse,
+	RecruitmentApplicantChangePassResponse,
 } from "./types";
 import type { APIGenericResponse } from "@/api/types";
 
@@ -37,15 +38,22 @@ export class RecruitmentApplicantAPI extends GenericAPI {
 
 	async changePassword(
 		body: object
-	): Promise<RecruitmentApplicantProgramResponse[]> {
+	): Promise<RecruitmentApplicantChangePassResponse> {
 		const data: APIGenericResponse = await this.instance.patch(
 			"recruitment/auth/applicant/password",
 			body
 		);
-		console.log(data);
-		if (data.error === true || typeof data.data === "undefined")
-			throw new Error("Failed to change password");
 
-		return data.data;
+		if (data.success === false && data.errors !== undefined) {
+			return {
+				success: data.success,
+				message: data.errors.full_messages,
+			};
+		}
+
+		return {
+			success: data.success,
+			message: data.message,
+		};
 	}
 }

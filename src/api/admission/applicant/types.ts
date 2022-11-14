@@ -50,7 +50,6 @@ export interface AttachmentData {
 	score?: number | string;
 }
 
-// BELOW APIs not connected CURRENTLY
 export interface AdmissionApplicantGetProgramResponse {
 	id: number;
 	category: string;
@@ -67,6 +66,11 @@ export interface AdmissionApplicantGetProgramResponse {
 	applicant_required_file: null;
 	reviewer_required_info: null;
 	reviewer_required_file: null;
+}
+
+export interface AdmissionApplicantChangePassResponse {
+	success?: boolean;
+	message?: string | [];
 }
 
 export interface AdmissionApplicantGetFileListResponse {

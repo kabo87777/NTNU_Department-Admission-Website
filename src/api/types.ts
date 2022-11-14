@@ -3,4 +3,6 @@ export interface APIGenericResponse {
 	message?: string;
 	status?: "success" | "error";
 	data?: any;
+	errors?: any;
+	success?: boolean;
 }

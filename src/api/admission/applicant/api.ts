@@ -1,5 +1,8 @@
 import type { AuthStore } from "@/stores/universalAuth";
-import type { AdmissionApplicantGetProgramResponse } from "./types";
+import type {
+	AdmissionApplicantGetProgramResponse,
+	AdmissionApplicantChangePassResponse,
+} from "./types";
 import type { APIGenericResponse } from "@/api/types";
 import { GenericAPI } from "@/api/api";
 
@@ -32,15 +35,22 @@ export class AdmissionApplicantAPI extends GenericAPI {
 
 	async changePassword(
 		body: object
-	): Promise<AdmissionApplicantGetProgramResponse[]> {
+	): Promise<AdmissionApplicantChangePassResponse> {
 		const data: APIGenericResponse = await this.instance.patch(
 			"admission/auth/applicant/password",
 			body
 		);
 
-		if (data.error === true || typeof data.data === "undefined")
-			throw new Error("Failed to change password");
+		if (data.success === false && data.errors !== undefined) {
+			return {
+				success: data.success,
+				message: data.errors.full_messages,
+			};
+		}
 
-		return data.data;
+		return {
+			success: data.success,
+			message: data.message,
+		};
 	}
 }

@@ -130,6 +130,11 @@ const initialPassValue = {
 
 const isChangePassLoading = ref(false);
 
+const changePassRes = reactive({
+	success: false,
+	message: "" as string | [],
+});
+
 const password = reactive({
 	isCurrentPassBlank: false,
 	isNewPassBlank: false,
@@ -194,17 +199,34 @@ const handleSubmit = async () => {
 		};
 
 		const response = patchChangePassword(body);
-		// FIX ME: CASE FAIL TO CHANGE PASSWORD
-		if (await response) {
+
+		await response.then((res) => {
+			if (res?.success !== undefined && res?.message !== undefined) {
+				changePassRes.success = toRaw(res.success);
+				changePassRes.message = toRaw(res.message);
+			}
+
 			isChangePassLoading.value = false;
-			toast.add({
-				severity: "success",
-				summary: "Success",
-				detail: "Your password has been successfully updated",
-				life: 3000,
-			});
-			resetPassValue();
-		}
+
+			if (changePassRes.success) {
+				resetPassValue();
+				toast.add({
+					severity: "success",
+					summary: "Success",
+					detail: changePassRes.message,
+					life: 3000,
+				});
+			} else {
+				toast.add({
+					severity: "error",
+					summary: "Error",
+					detail: changePassRes.message[
+						changePassRes.message.length - 1
+					],
+					life: 5000,
+				});
+			}
+		});
 	}
 };
 
