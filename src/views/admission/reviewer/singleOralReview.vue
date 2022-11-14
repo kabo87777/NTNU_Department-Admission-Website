@@ -29,12 +29,14 @@
 			</div>
 		</div>
 		<div class="bigBrownDivider"></div>
-		<SelectButton
-			v-model="vfield"
-			:options="field"
-			aria-labelledby="single"
-			class=""
-		></SelectButton>
+		<div class="p-fluid">
+			<SelectButton
+				v-model="vfield"
+				:options="field"
+				aria-labelledby="single"
+				class=""
+			></SelectButton>
+		</div>
 		<div class="mt-10px h-670px">
 			<PDFView :pdfUrl="jsPdf" class="!h650px" />
 		</div>

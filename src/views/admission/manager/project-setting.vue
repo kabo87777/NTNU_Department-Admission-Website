@@ -30,7 +30,7 @@
 			<span class="tracking-1px">{{ $t("刪除") }}</span>
 		</Button>
 		<h3 class="text-xs tracking-widest text-gray-500">
-			2022/09/15 · {{ $t("新增到專案") }}
+			{{ programCreateDate }} · {{ $t("新增到專案") }}
 		</h3>
 		<h5 class="text-base tracking-widest mt-30px">
 			{{ $t("專案名稱 (修改)") }} :
@@ -187,6 +187,7 @@ const review_stage2_start_time = ref();
 const review_stage2_end_time = ref();
 const project_details = ref("");
 const checked = ref(false);
+const programCreateDate = ref("");
 
 const globalStore = useGlobalStore();
 const adminAuth = useAdmissionAdminAuthStore();
@@ -211,6 +212,9 @@ const {
 		const programName = (await api.getProgramList()).filter(
 			(program) => program.id === globalStore.program!.id
 		)[0].name;
+		programCreateDate.value = (await api.getProgramList())
+			.filter((program) => program.id === globalStore.program!.id)[0]
+			.created_at.slice(0, 10);
 		return programName;
 	} catch (e: any) {
 		if (e instanceof InvalidSessionError) {

@@ -4,12 +4,14 @@
 			{{ $t("評分資料列表") }}
 		</h1>
 		<div class="bigRedDivider"></div>
-		<SelectButton
-			class="mt-20px h-45px !w-1280px"
-			v-model="currentTab"
-			:options="tabOptions"
-			aria-labelledby="single"
-		/>
+		<div class="p-fluid">
+			<SelectButton
+				class="mt-20px h-45px !w-1280px"
+				v-model="currentTab"
+				:options="tabOptions"
+				aria-labelledby="single"
+			/>
+		</div>
 		<div v-if="currentTab === translation.phase1">
 			<DataTable
 				:value="phase1_list"
@@ -67,19 +69,21 @@
 						{{ name }}
 					</div>
 				</div>
-				<SelectButton
-					v-if="disable1"
-					class="h-39px mt-32px !w-664px"
-					v-model="dialogCurrentTab"
-					:options="dialogTabOptions"
-				/>
-				<SelectButton
-					v-else
-					class="h-39px mt-32px !w-664px"
-					v-model="dialogCurrentTab"
-					:options="dialogTabOptions"
-					disabled
-				/>
+				<div class="p-fluid">
+					<SelectButton
+						v-if="disable1"
+						class="h-39px mt-32px !w-664px"
+						v-model="dialogCurrentTab"
+						:options="dialogTabOptions"
+					/>
+					<SelectButton
+						v-else
+						class="h-39px mt-32px !w-664px"
+						v-model="dialogCurrentTab"
+						:options="dialogTabOptions"
+						disabled
+					/>
+				</div>
 				<DataTable
 					v-if="dialogCurrentTab === translation.phase1"
 					:value="scores"
@@ -307,19 +311,21 @@
 						{{ name }}
 					</div>
 				</div>
-				<SelectButton
-					v-if="disable1"
-					class="h-39px mt-32px !w-664px"
-					v-model="dialogCurrentTab"
-					:options="dialogTabOptions"
-				/>
-				<SelectButton
-					v-else
-					class="h-39px mt-32px !w-664px"
-					v-model="dialogCurrentTab"
-					:options="dialogTabOptions"
-					disabled
-				/>
+				<div class="p-fluid">
+					<SelectButton
+						v-if="disable1"
+						class="h-39px mt-32px !w-664px"
+						v-model="dialogCurrentTab"
+						:options="dialogTabOptions"
+					/>
+					<SelectButton
+						v-else
+						class="h-39px mt-32px !w-664px"
+						v-model="dialogCurrentTab"
+						:options="dialogTabOptions"
+						disabled
+					/>
+				</div>
 				<DataTable
 					v-if="dialogCurrentTab === translation.phase1"
 					:value="scores"
