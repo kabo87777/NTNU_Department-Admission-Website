@@ -53,4 +53,12 @@ export class AdmissionAdminAPI extends GenericAPI {
 		if (response.error === true)
 			throw new Error("Failed to update program");
 	}
+
+	async deleteProgram(programID: number): Promise<any> {
+		const response: APIGenericResponse = await this.instance.delete(
+			`/admission/admin/program/${programID}`
+		);
+		if (response.error === true)
+			throw new Error("Failed to update program");
+	}
 }

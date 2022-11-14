@@ -19,6 +19,7 @@
 		</Button>
 		<Button
 			class="w-110px h-40px !ml-20px p-button-outlined p-button-danger"
+			@click="deleteProject"
 		>
 			<img
 				alt="logo"
@@ -227,6 +228,7 @@ const {
 
 const toast = useToast();
 function update() {
+	const today = new Date();
 	try {
 		programData.mutate({
 			category: selected_type.value,
@@ -241,12 +243,20 @@ function update() {
 				dateTransform(review_stage1_end_time.value) + "+08:00",
 			require_file: '["file1", "file2"]',
 			stage: "application",
-			created_at: "2022-11-09T01:16:26.335+08:00",
-			updated_at: "2022-11-09T01:16:26.335+08:00",
+			updated_at: dateTransform(today) + "+08:00",
 		});
 		toast.add({ severity: "success", summary: "更改成功", life: 3000 });
 	} catch (error) {
 		toast.add({ severity: "error", summary: "資料錯誤", life: 3000 });
+	}
+}
+
+function deleteProject() {
+	try {
+		api.deleteProgram(globalStore.program!.id);
+		toast.add({ severity: "success", summary: "刪除成功", life: 3000 });
+	} catch (error) {
+		toast.add({ severity: "error", summary: "刪除失敗", life: 3000 });
 	}
 }
 
