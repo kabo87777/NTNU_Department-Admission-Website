@@ -13,8 +13,13 @@
 				>
 					<template #value="slotProps">
 						<div class="mt-6px tracking-2px text-20px font-medium">
-							{{ slotProps.value.category }}
+							{{ slotProps?.value?.category }}
+							{{ slotProps?.value?.name }}
 						</div>
+					</template>
+					<template #option="slotProps">
+						{{ slotProps?.option?.category }}
+						{{ slotProps?.option?.name }}
 					</template>
 				</Dropdown>
 			</div>
