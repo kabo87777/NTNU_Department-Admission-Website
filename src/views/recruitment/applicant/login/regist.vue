@@ -11,7 +11,7 @@
 					text="sm gray-400 hover:gray-600"
 					border="rounded"
 				>
-					<i class="pi pi-angle-left" />
+					<div class="pi pi-angle-left" />
 					<div>返回登入頁面</div>
 					<div>Back to Login</div>
 				</button>
@@ -104,27 +104,49 @@
 <script setup lang="ts">
 import { reactive } from "vue";
 import { useQuery, useMutation } from "@tanstack/vue-query";
+import { RecruitmentApplicantAPI } from "@/api/recruitment/applicant/api";
+import { useRecruitmentApplicantAuthStore } from "@/stores/universalAuth";
 import InputText from "primevue/inputtext";
 import axios from "axios";
 import ApplicantUploadedDocs from "@/views/admission/manager/applicantsUploadList/applicantUploadedDocs.vue";
+import { useRouter } from "vue-router";
+import { InvalidSessionError } from "@/api/error";
+import type { newPostEmailRegister } from "@/api/recruitment/applicant/types";
 
-const userRegistData = reactive({
+const applicantAuth = useRecruitmentApplicantAuthStore();
+const router = useRouter();
+const authStore = useRecruitmentApplicantAuthStore();
+const api = new RecruitmentApplicantAPI(applicantAuth);
+
+const userRegistData: newPostEmailRegister = reactive({
 	email: "",
+	name: "",
+	confirm_success_url: "",
 	password: "",
 	confirmPwd: "",
 });
-const mutation = useMutation(async (newEmailRegister) => {
-	try{
-		return await async (params:type) => {
-	api
-}.postEmailRegister();
+function buttonOnclick() {
+	//applicatsData.mutate({});
+}
 
+const mutation = useMutation(["postEmailRegister"], async () => {
+	try {
+		return await api.postEmailRegister(userRegistData);
 		//return axios.post("/todos", newEmailRegister);
+	} catch (e: any) {
+		if (e instanceof InvalidSessionError) {
+			// FIXME: show session expiry notification??
+			// Why are we even here in the first place?
+			// MainContainer should have checked already.
+			console.error(
+				"Session has already expired while querying programList"
+			);
+			return;
+		}
 	}
-	});
-
-function buttonRegister() {
-
+});
+if ((confirmPwd = password)) {
+	console.log("This will always executed.");
 }
 </script>
 

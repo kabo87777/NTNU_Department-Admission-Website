@@ -84,11 +84,13 @@ export interface RecruitmentApplicantGetUserInfoResponse {
 	created_at?: string;
 	updated_at?: string;
 }
-const body = {
-	// name: "haha",
-	// email: "2@mail.com",
-	// uid: 21,
-};
+
+export interface newPostEmailRegister {
+	email: string;
+	name: string;
+	confirm_success_url: string;
+	password: string;
+}
 export interface RecruitmentRegisterEamialPostResponse {
 	status: string;
 	errorMessage: string;
