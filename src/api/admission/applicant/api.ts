@@ -11,15 +11,15 @@ export class AdmissionApplicantAPI extends GenericAPI {
 		super(auth);
 	}
 
-	async getProgramList(): Promise<AdmissionApplicantGetProgramResponse[]> {
+	async getProgram(): Promise<AdmissionApplicantGetProgramResponse> {
 		const data: APIGenericResponse = await this.instance.get(
 			"/admission/applicant/program"
 		);
 
-		if (data.error === true || typeof data.data.programs === "undefined")
+		if (data.error === true || typeof data.data === "undefined")
 			throw new Error("Failed to fetch program list");
-		console.log(data);
-		return data.data.programs;
+
+		return data.data;
 	}
 
 	// async getUserInfo(): Promise<> {

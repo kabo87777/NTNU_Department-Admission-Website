@@ -9,9 +9,8 @@
 						$t("admissionApplicantSidebarTitle", {
 							year: currentYear,
 							roc: rocYear,
-							// FIX THIS HARD-CODED ISSUE
-							category: "API",
-							name: "API",
+							category: applicantProgram.category,
+							name: applicantProgram.name,
 						})
 					}}
 				</div>
@@ -254,7 +253,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, toRaw } from "vue";
+import { reactive, toRaw, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useAdmissionApplicantAuthStore } from "@/stores/universalAuth";
 import { AdmissionApplicantAPI } from "@/api/admission/applicant/api";
@@ -262,14 +261,10 @@ import { useUserInfoStore } from "@/stores/AdmissionApplicantStore";
 import { Tags } from "@/api/admission/applicant/types";
 import "primeicons/primeicons.css";
 import "primevue/resources/primevue.min.css";
-import Dropdown from "primevue/dropdown";
 import Button from "primevue/button";
 import UnableTag from "@/styles/tags/unableTag.vue";
 import CompletedTag from "@/styles/tags/completedTag.vue";
 import IncompleteTag from "@/styles/tags/incompleteTag.vue";
-// import Tag from "primevue/tag";
-// import { useI18n } from "vue-i18n";
-import { useQuery } from "@tanstack/vue-query";
 
 const router = useRouter();
 const applicantAuth = useAdmissionApplicantAuthStore();
@@ -280,31 +275,11 @@ const api = new AdmissionApplicantAPI(applicantAuth);
 
 const currentYear = new Date().getFullYear();
 const rocYear = currentYear - 1911;
-// const {
-// 	isLoading,
-// 	isError,
-// 	data: programs,
-// 	error,
-// } = useQuery(["programList"], async () => await api.getProgramList());
 
-// const { t } = useI18n();
-
-const selectedProgram = ref({
+const applicantProgram = reactive({
 	id: 1,
 	category: "111年碩士班",
 	name: "A組",
-	application_start_date: "2022-10-01T00:00:00.000+08:00",
-	application_end_date: "2022-10-31T00:00:00.000+08:00",
-	review_start_date: "2022-11-01T00:00:00.000+08:00",
-	review_end_date: "2022-11-30T00:00:00.000+08:00",
-	require_file: "['file1', 'file2']",
-	stage: "application",
-	created_at: "2022-10-18T07:00:10.671+08:00",
-	updated_at: "2022-10-18T07:00:10.671+08:00",
-	applicant_required_info: null,
-	applicant_required_file: null,
-	reviewer_required_info: null,
-	reviewer_required_file: null,
 });
 
 const tags: Tags = reactive({
@@ -314,20 +289,13 @@ const tags: Tags = reactive({
 	additionalDocs: "unable",
 });
 
-// TODO: disannotation here and fix here during connect API
-
-// const displayNewProject = ref(false);
-// const newProjectName = ref("");
-
-// const generateOptions = (data: any) => data.category + data.name;
-
-// function newProject() {
-// 	displayNewProject.value = true;
-// }
-
-// function closeDisplayNewProject() {
-// 	displayNewProject.value = false;
-// }
+onMounted(async () => {
+	await api.getProgram().then((res) => {
+		applicantProgram.id = res.id;
+		applicantProgram.category = res.category;
+		applicantProgram.name = res.name;
+	});
+});
 
 async function signOut() {
 	await api.invalidateSession();
