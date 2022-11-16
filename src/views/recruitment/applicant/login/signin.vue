@@ -185,9 +185,12 @@ import * as yup from "yup";
 
 import { RecruitmentApplicantAPI } from "@/api/recruitment/applicant/api";
 import { useRecruitmentApplicantAuthStore } from "@/stores/universalAuth";
+import { useUserInfoStore } from "@/stores/RecruitmentApplicantStore";
 
 import type { TurnstileComponentExposes } from "@/components/Turnstile.vue";
 import Turnstile from "@/components/Turnstile.vue";
+
+import type { RecruitmentApplicantAuthResponse } from "@/api/recruitment/applicant/types";
 
 import Button from "primevue/button";
 import Checkbox from "primevue/checkbox";
@@ -199,6 +202,7 @@ const redirectToMainContainer = () => {
 	router.replace({ name: "recruitmentApplicantMainContainer" });
 };
 const authStore = useRecruitmentApplicantAuthStore();
+const userInfo = useUserInfoStore();
 
 // Login Form
 const turnstileRef = ref<TurnstileComponentExposes>();
@@ -254,11 +258,24 @@ const onSubmit = handleSubmit(async function (values, actions) {
 
 		const api = new RecruitmentApplicantAPI(authStore);
 
-		await api.requestNewSession({
-			email: values.email,
-			password: values.password,
-			"cf-turnstile-response": turnstileResponse,
-		});
+		const doLogin = async () => {
+			return await api.requestNewSession({
+				email: values.email,
+				password: values.password,
+				"cf-turnstile-response": turnstileResponse,
+			});
+		};
+
+		const handleDataType = async () => {
+			const applicantInfo: RecruitmentApplicantAuthResponse =
+				await doLogin().then((res) => {
+					return res.data;
+				});
+
+			return applicantInfo;
+		};
+
+		userInfo.saveUserInfo(await handleDataType());
 
 		redirectToMainContainer();
 	} catch (e: any) {

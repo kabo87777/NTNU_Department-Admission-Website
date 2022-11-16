@@ -31,6 +31,11 @@ export interface RecruitmentApplicantAuthResponse {
 	image: any | null;
 }
 
+export interface RecruitmentApplicantChangePassResponse {
+	success?: boolean;
+	message?: string | [];
+}
+
 export interface RecruitmentApplicantProgramResponse {
 	id: number;
 	category: string;
