@@ -47,7 +47,8 @@ export class GenericAPI {
 				return response.data;
 			},
 			async (error) => {
-				throw error;
+				return error.response.data;
+				// throw error;
 			}
 		);
 	}

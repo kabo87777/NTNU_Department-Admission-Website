@@ -11,18 +11,20 @@ export interface AdmissionApplicantAuthResponse {
 	provider: string;
 	uid: string;
 	allow_password_change: boolean;
-	isInit: any | null;
-	lang: any | null;
-	name: any | null;
-	nickname: any | null;
-	image: any | null;
-	docs_order: number | null;
-	oral_order: number | null;
-	file: any | null;
-	docs_stage: any | null;
-	oral_stage: any | null;
-	s_program_id: number | null;
-	application_stage: any | null;
+	isInit: boolean;
+	lang: string;
+	name: string;
+	nickname: string;
+	image: any;
+	docs_order: number;
+	oral_order: number;
+	file: any;
+	docs_stage: any;
+	oral_stage: any;
+	created_at: string;
+	updated_at: string;
+	s_program_id: number;
+	application_stage: any;
 }
 
 export interface UserInfo {
@@ -44,9 +46,10 @@ export interface AttachmentData {
 	fileUrl?: string;
 	order?: number;
 	state?: number;
+	schoolName?: string;
+	score?: number | string;
 }
 
-// BELOW APIs not connected CURRENTLY
 export interface AdmissionApplicantGetProgramResponse {
 	id: number;
 	category: string;
@@ -55,7 +58,7 @@ export interface AdmissionApplicantGetProgramResponse {
 	application_end_date: string;
 	review_start_date: string;
 	review_end_date: string;
-	require_file: string; // Array or string ??
+	require_file: [];
 	stage: string;
 	created_at: string;
 	updated_at: string;
@@ -63,6 +66,11 @@ export interface AdmissionApplicantGetProgramResponse {
 	applicant_required_file: null;
 	reviewer_required_info: null;
 	reviewer_required_file: null;
+}
+
+export interface AdmissionApplicantChangePassResponse {
+	success?: boolean;
+	message?: string | [];
 }
 
 export interface AdmissionApplicantGetFileListResponse {
