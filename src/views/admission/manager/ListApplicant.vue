@@ -71,11 +71,16 @@
 					<label for="password" class="block font-black">{{
 						$t("密碼")
 					}}</label>
-					<InputText
-						type="password"
-						class="w-full mt-1"
-						v-model:model-value="modalData.passowrd"
-					></InputText>
+					<!--  -->
+					<Password
+						class="mt-1 w-full"
+						v-model="modalData.password"
+						:feedback="false"
+						:disabled="modalData.allow_password_change === false"
+						:toggle-mask="modalData.allow_password_change === true"
+						@focus.once="modalData.password = ''"
+						input-class="w-full"
+					/>
 				</div>
 			</div>
 		</template>
@@ -109,6 +114,7 @@ import DataTable from "primevue/datatable";
 import Dialog from "primevue/dialog";
 import Divider from "primevue/divider";
 import InputText from "primevue/inputtext";
+import Password from "primevue/password";
 import { computed, Ref, ref, toRaw, watch, watchEffect } from "vue";
 import {
 	useAdmissionAdminAuthStore,
@@ -176,24 +182,30 @@ store.$subscribe((mutation, state) => {
 });
 
 const modalVisible = ref(false);
-const modalData = ref();
+const modalData = ref<modalForm>({} as modalForm);
 
-const openModal = (data: AdmissionAdminApplicantsListResponse) => {
-	console.log(data);
-	modalData.value = data;
+const openModal = (applicantData: AdmissionAdminApplicantsListResponse) => {
+	// Pick properties we need for form
+	const formData: modalForm = (({
+		id,
+		name,
+		email,
+		allow_password_change,
+	}: AdmissionAdminApplicantsListResponse) => ({
+		id,
+		name,
+		email,
+		password: "JUST A PLACEHOLDER",
+		allow_password_change,
+	}))(applicantData);
+
+	modalData.value=formData
 	modalVisible.value = true;
 };
 
 const saveChange = () => {
 	if (!tableData.value) return;
-	let index = tableData.value.findIndex(
-		(x: AdmissionAdminApplicantsListResponse) => x.id === modalData.value.id
-	);
-	console.log(index);
-	if (!isNaN(index)) {
-		tableData.value[index] = modalData.value;
-		console.log(tableData.value);
-	}
+	// TODO: send patch request to backend
 	modalVisible.value = false;
 };
 
