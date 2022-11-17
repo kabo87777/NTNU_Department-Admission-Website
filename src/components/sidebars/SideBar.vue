@@ -495,16 +495,8 @@ const {
 	}
 });
 
-// const noProgram = computed(() => {
-// 	return programs.value! === undefined || programs.value!.length === 0;
-// 	// return false
-// });
-
-const noProgram = computed({
-	get: () => programs.value! === undefined || programs.value!.length === 0,
-	set: (newVal) => {
-		noProgram.value = newVal;
-	},
+const noProgram = computed(() => {
+	return programs.value! === undefined || programs.value!.length === 0;
 });
 
 const selectedProgram = ref<AdmissionAdminProgramListResponse>();

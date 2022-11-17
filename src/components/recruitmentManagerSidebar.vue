@@ -50,7 +50,7 @@
 			</router-link>
 
 			<Button
-				class="p-button-secondary p-button-text !ml-24px !mt-8px !w-336px !h-48px"
+				class="p-button-secondary p-button-text !ml-24px !mt-16px !w-336px !h-48px"
 			>
 				<img
 					alt="logo"
@@ -100,7 +100,7 @@
 				v-slot="{ navigate }"
 			>
 				<Button
-					class="p-button-secondary p-button-text !ml-24px !mt-8px !w-336px !h-48px"
+					class="p-button-secondary p-button-text !ml-24px !mt-16px !w-336px !h-48px"
 					@click="navigate"
 					role="link"
 				>
@@ -124,7 +124,7 @@
 				v-slot="{ navigate }"
 			>
 				<Button
-					class="p-button-secondary p-button-text !ml-24px !mt-8px !w-336px !h-48px"
+					class="p-button-secondary p-button-text !ml-24px !mt-16px !w-336px !h-48px"
 					@click="navigate"
 					role="link"
 				>
@@ -176,7 +176,7 @@
 				v-slot="{ navigate }"
 			>
 				<Button
-					class="p-button-secondary p-button-text !ml-24px !mt-8px !w-336px !h-48px"
+					class="p-button-secondary p-button-text !ml-24px !mt-32px !w-336px !h-48px"
 					@click="navigate"
 					role="link"
 				>
@@ -198,7 +198,7 @@
 				v-slot="{ navigate }"
 			>
 				<Button
-					class="p-button-secondary p-button-text !ml-24px !mt-8px !w-336px !h-48px"
+					class="p-button-secondary p-button-text !ml-24px !mt-16px !w-336px !h-48px"
 					@click="navigate"
 					role="link"
 				>
@@ -272,7 +272,7 @@
 				/>
 				<div class="flex">
 					<Button
-						@click="closeDisplayNewProject"
+						@click="addNewProject"
 						class="p-button-outlined p-button-success !ml-70px !mt-26px !w-142px !h-44px"
 					>
 						<img
@@ -342,7 +342,7 @@
 		<div
 			v-else
 			class="bg-gray-200 bg-opacity-50 h-200px w-[100%]"
-			style="transform: translateY(100%)"
+			style="transform: translateY(70%)"
 		>
 			<div class="flex">
 				<div class="m-auto">
@@ -396,7 +396,7 @@
 				/>
 				<div class="flex">
 					<Button
-						@click="closeDisplayNewProject"
+						@click="addNewProject"
 						class="p-button-outlined p-button-success !ml-70px !mt-26px !w-142px !h-44px"
 					>
 						<img
@@ -518,11 +518,8 @@ const {
 	}
 });
 
-const noProgram = computed({
-	get: () => programs.value! === undefined || programs.value!.length === 0,
-	set: (newVal) => {
-		noProgram.value = newVal;
-	},
+const noProgram = computed(() => {
+	return programs.value! === undefined || programs.value!.length === 0;
 });
 
 const selectedProgram = ref<RecruitmentAdminProgramListResponse>();
@@ -559,12 +556,11 @@ function addNewProject() {
 		programData.mutate({
 			category: "",
 			name: newProjectName.value,
-			application_start_date: dateTransform(today) + "+08:00",
-			application_end_date: dateTransform(today) + "+08:00",
+			recruit_start_date: dateTransform(today) + "+08:00",
+			recruit_end_date: dateTransform(today) + "+08:00",
 			review_start_date: dateTransform(today) + "+08:00",
 			review_end_date: dateTransform(today) + "+08:00",
 			require_file: '["file1", "file2"]',
-			stage: "application",
 			created_at: dateTransform(today) + "+08:00",
 			updated_at: dateTransform(today) + "+08:00",
 		});

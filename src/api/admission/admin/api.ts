@@ -51,7 +51,7 @@ export class AdmissionAdminAPI extends GenericAPI {
 			data
 		);
 		if (response.error === true)
-			throw new Error("Failed to update program");
+			throw new Error("Failed to add new program");
 	}
 
 	async deleteProgram(programID: number): Promise<any> {
@@ -59,6 +59,6 @@ export class AdmissionAdminAPI extends GenericAPI {
 			`/admission/admin/program/${programID}`
 		);
 		if (response.error === true)
-			throw new Error("Failed to update program");
+			throw new Error("Failed to delete program");
 	}
 }
