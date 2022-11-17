@@ -1,8 +1,9 @@
 <template>
 	<div>
+		<!-- 新增推薦人 Dialog -->
 		<Dialog
-			v-model:visible="isModalVisible"
-			style="width: 900px"
+			v-model:visible="isModalVisible.create"
+			style="width: 1000px"
 			:draggable="false"
 			:modal="true"
 		>
@@ -156,6 +157,16 @@
 					</div>
 					<div class="mt-32px">
 						<div>{{ $t("簽名檔") }}</div>
+						<div class="mt-8px">
+							<FileUpload
+								mode="basic"
+								:maxFileSize="1000000"
+								:customUpload="true"
+								:fileLimit="1"
+								@uploader="onUpload"
+							>
+							</FileUpload>
+						</div>
 					</div>
 				</div>
 				<div class="bigYellowDivider" style="margin-top: 40px"></div>
@@ -172,6 +183,7 @@
 					icon="pi pi-save"
 					iconClass="text-[#736028]"
 					:label="$t('暫存')"
+					@click="handleSave()"
 				/>
 				<Button
 					class="p-button-outlined p-button-secondary"
@@ -184,13 +196,16 @@
 					icon="pi pi-envelope"
 					iconClass="text-[#53565A]"
 					:label="$t('送出')"
+					@click="handleSend()"
 				/>
 			</template>
 		</Dialog>
+		<!-- 頁面大標題 -->
 		<div class="font-[500] text-[32px] font-bold">
 			{{ $t("推薦信作業") }}
 		</div>
 		<div class="bigYellowDivider"></div>
+		<!-- 新增推薦人按鈕 -->
 		<Button
 			class="p-button-secondary"
 			style="
@@ -202,8 +217,9 @@
 			"
 			icon="pi pi-plus"
 			:label="$t('新增推薦人')"
-			@click="isModalVisible = true"
+			@click="openModal('create')"
 		/>
+		<!-- 推薦信列表頭(有資料時) -->
 		<div
 			v-if="letterList[0]?.length"
 			class="flex mt-24px font-bold text-[18px]"
@@ -213,6 +229,7 @@
 			<div class="recTableTitleCol">{{ $t("作業狀態") }}</div>
 			<div class="recTableTitleCol">{{ $t("操作") }}</div>
 		</div>
+		<!-- 畫面顯示(無資料時) -->
 		<div v-else class="relative h-150">
 			<div class="recNoData">
 				<img
@@ -225,8 +242,10 @@
 				</div>
 			</div>
 		</div>
+		<!-- 推薦信列表(有資料時) -->
 		<div v-if="letterList[0]?.length !== 0">
 			<div v-for="(item, index) in letterList[0]" :key="index">
+				<!-- 列表收起狀態 -->
 				<div v-if="!item.isCollapse" class="recTableRowIncollapse">
 					<div class="recTableCol">
 						{{ convertTime(item.created_at) }}
@@ -261,6 +280,7 @@
 						@click="item.isCollapse = !item.isCollapse"
 					></i>
 				</div>
+				<!-- 列表展開狀態 -->
 				<div v-else class="recTableRowCollapse">
 					<div class="recTableRowCollapseItem font-bold">
 						<div class="recTableCol">
@@ -354,6 +374,7 @@ import { useRouter } from "vue-router";
 import Button from "primevue/button";
 import Dialog from "primevue/dialog";
 import InputText from "primevue/inputtext";
+import FileUpload from "primevue/fileupload";
 import "primeicons/primeicons.css";
 
 const router = useRouter();
@@ -362,7 +383,10 @@ const applicantAuth = useAdmissionApplicantAuthStore();
 const api = new AdmissionApplicantAPI(applicantAuth);
 
 const isAPILoading = ref(false);
-const isModalVisible = ref(false);
+const isModalVisible = reactive({
+	create: false,
+	edit: false,
+});
 
 const modalValue = reactive({
 	name: "",
@@ -421,12 +445,49 @@ const convertTime = (originTime: string) => {
 	);
 };
 
+const onUpload = (e: any) => {
+	console.log(e, "upload clicked");
+};
+
+const openModal = (type: string) => {
+	if (type === "create") isModalVisible[type] = true;
+	else if (type === "edit") isModalVisible[type] = true;
+
+	isModalValueBlank.name = false;
+	isModalValueBlank.appellation = false;
+	isModalValueBlank.relationship = false;
+	isModalValueBlank.phone = false;
+	isModalValueBlank.email = false;
+	isModalValueBlank.organization = false;
+	isModalValueBlank.position = false;
+	isModalValueBlank.sign = false;
+};
+
 const handleEdit = () => {
 	console.log("edit button clicked");
 };
 
 const handleDelete = () => {
 	console.log("delete button clicked");
+};
+
+const handleSave = () => {
+	console.log("save button clicked");
+};
+
+const handleSend = () => {
+	isModalValueBlank.name = modalValue.name === "" ? true : false;
+	isModalValueBlank.appellation =
+		modalValue.appellation === "" ? true : false;
+	isModalValueBlank.relationship =
+		modalValue.relationship === "" ? true : false;
+	isModalValueBlank.phone = modalValue.phone === "" ? true : false;
+	isModalValueBlank.email = modalValue.email === "" ? true : false;
+	isModalValueBlank.organization =
+		modalValue.organization === "" ? true : false;
+	isModalValueBlank.position = modalValue.position === "" ? true : false;
+	isModalValueBlank.sign = modalValue.sign === "" ? true : false;
+	console.log("send button clicked");
 };
 console.log(letterList, "here");
 </script>
