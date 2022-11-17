@@ -34,3 +34,22 @@ export interface AdmissionReviewerProgramListResponse {
 	reviewer_required_info: null;
 	reviewer_required_file: null;
 }
+
+export interface AdmissionReviewerApplicantGradeResponse {
+	id: number;
+	s_program_id: number;
+	s_applicant_id: number;
+	s_reviewer_id: number;
+	docs_grade_1: number;
+	docs_grade_2: number;
+	docs_grade_3: number;
+	oral_grade_1: number;
+	oral_grade_2: number;
+	oral_grade_3: number;
+	isImmediateEnroll: boolean | null;
+	immediate_enroll_comment: string;
+	isDocsGraded: boolean | null;
+	isOralGraded: boolean | null;
+	created_at: string;
+	updated_at: string;
+}

@@ -187,7 +187,7 @@ const router = useRouter();
 
 const redirectToMainContainer = () => {
 	// TODO: Change Tag - Manager to Admin
-	router.replace({ name: "recruitmentManagerMainContainer" });
+	router.replace({ name: "recruitmentAdminMainContainer" });
 };
 const authStore = useRecruitmentAdminAuthStore();
 

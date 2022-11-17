@@ -34,4 +34,27 @@ export class RecruitmentAdminAPI extends GenericAPI {
 
 		return data.data.programs;
 	}
+
+	async updateProgramData(
+		programID: number,
+		data: RecruitmentAdminProgramListResponse
+	): Promise<any> {
+		const response: APIGenericResponse = await this.instance.patch(
+			`/recruitment/admin/program/${programID}`,
+			data
+		);
+		if (response.error === true)
+			throw new Error("Failed to update program");
+	}
+
+	async addNewProgram(
+		data: RecruitmentAdminProgramListResponse
+	): Promise<any> {
+		const response: APIGenericResponse = await this.instance.post(
+			"/recruitment/admin/program",
+			data
+		);
+		if (response.error === true)
+			throw new Error("Failed to update program");
+	}
 }
