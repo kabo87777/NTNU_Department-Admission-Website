@@ -31,6 +31,18 @@
 	<div class="mt-16px font-medium text-16px">
 		{{ $t("項目名稱") }}{{ $t(":") }}{{ props.itemName }}
 	</div>
+	<div
+		v-if="props.category === '就學經歷' || props.category === '教學經歷'"
+		class="mt-8px font-medium text-16px"
+	>
+		{{ $t("所屬學校") }}{{ $t(":") }}{{ props.schoolName }}
+	</div>
+	<div
+		v-if="props.category === '考試與檢定分數'"
+		class="mt-8px font-medium text-16px"
+	>
+		{{ $t("考試與檢定分數") }}{{ $t(":") }}{{ props.score }}
+	</div>
 	<div class="mt-8px font-medium text-16px">【檔案名稱】</div>
 	<div>【檔案】</div>
 	<div class="font-[350]">{{ $t("onlyPdf") }}</div>
@@ -40,7 +52,14 @@
 import Button from "primevue/button";
 import "primeicons/primeicons.css";
 
-const props = defineProps(["category", "identity", "itemName", "order"]);
+const props = defineProps([
+	"category",
+	"identity",
+	"itemName",
+	"order",
+	"schoolName",
+	"score",
+]);
 
 const emit = defineEmits(["edit"]);
 
