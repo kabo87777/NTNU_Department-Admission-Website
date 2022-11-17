@@ -120,15 +120,19 @@ import { InvalidSessionError } from "@/api/error";
 import { router } from "@/router";
 import { AdmissionAdminApplicantsListResponse } from "@/api/admission/admin/types";
 import { useGlobalStore } from "@/stores/globalStore";
-import { MutationType } from "pinia";
 
 const store = useGlobalStore();
 const adminAuth = useAdmissionAdminAuthStore();
 const api = new AdmissionAdminAPI(adminAuth);
+const tableData = ref<AdmissionAdminApplicantsListResponse[]>();
 
-// TODO: refresh datatable when program ID changes
-const fetchList = () => {
-	return useQuery(["applicantList"], async () => {
+// NOTE: Copy and modified from SideBar.vue
+const {
+	isLoading,
+	data: applicants,
+} = useQuery(
+	["applicantList"],
+	async () => {
 		try {
 			if (store.program)
 				return await api.getApplicantList(store.program.id);
@@ -138,50 +142,32 @@ const fetchList = () => {
 				// Why are we even here in the first place?
 				// MainContainer should have checked already.
 				console.error(
-					"Session has already expired while querying applicantList"
+					"Session has already expired while querying applicant list"
 				);
 				router.push("/");
 				return;
 			}
-
 			throw e;
 		}
-	});
-};
-
-// NOTE: Copy and modified from SideBar.vue
-let {
-	isLoading,
-	isError,
-	data: applicants,
-	error,
-} = useQuery(["applicantList"], async () => {
-	try {
-		if (store.program) return await api.getApplicantList(store.program.id);
-	} catch (e: any) {
-		if (e instanceof InvalidSessionError) {
-			// FIXME: show session expiry notification??
-			// Why are we even here in the first place?
-			// MainContainer should have checked already.
-			console.error(
-				"Session has already expired while querying applicantList"
-			);
-			router.push("/");
-			return;
-		}
-
-		throw e;
+	},
+	{
+		onSuccess: (data) => {
+			if (!data) {
+				throw new Error("Error. Gotten undefined applicant list.");
+			}
+			console.log("Loaded applicant list");
+			tableData.value = data;
+		},
 	}
-});
+);
 
-const tableData = ref<AdmissionAdminApplicantsListResponse[]>();
-
-watchEffect(() => {
-	if (isLoading.value === false) {
-		console.log("Load applicant list");
-		tableData.value = applicants.value;
-	}
-});
+interface modalForm {
+	id: number;
+	name: string;
+	email: string;
+	password: string;
+	allow_password_change: boolean;
+}
 
 store.$subscribe((mutation, state) => {
 	if (state.program) {
