@@ -10,6 +10,34 @@
 				v-model="name"
 			/>
 			<div
+				v-if="
+					props.category === '就學經歷' ||
+					props.category === '教學經歷'
+				"
+				class="font-[350] mt-16px"
+			>
+				{{ $t("所屬學校") }}{{ $t(":") }}
+			</div>
+			<InputText
+				v-if="
+					props.category === '就學經歷' ||
+					props.category === '教學經歷'
+				"
+				style="margin-top: 8px; border: 1px solid; width: 30%"
+				v-model="schoolName"
+			/>
+			<div
+				v-if="props.category === '考試與檢定分數'"
+				class="font-[350] mt-16px"
+			>
+				{{ $t("分數") }}{{ $t(":") }}
+			</div>
+			<InputText
+				v-if="props.category === '考試與檢定分數'"
+				style="margin-top: 8px; border: 1px solid; width: 30%"
+				v-model="score"
+			/>
+			<div
 				class="normalDivider"
 				style="width: 85%; margin-top: 16px"
 			></div>
@@ -77,9 +105,18 @@ import InputText from "primevue/inputtext";
 import FileUpload from "primevue/fileupload";
 import "primeicons/primeicons.css";
 
-const props = defineProps(["category", "identity", "order", "itemName"]);
+const props = defineProps([
+	"category",
+	"identity",
+	"order",
+	"itemName",
+	"schoolName",
+	"score",
+]);
 
 const name = ref(props.itemName);
+const schoolName = ref(props.schoolName);
+const score = ref(props.score);
 
 const emit = defineEmits(["cancel"]);
 
