@@ -5,5 +5,14 @@ import { Ref, ref } from "vue";
 export const useGlobalStore = defineStore("global", () => {
 	const program = ref<AdmissionAdminProgramListResponse>();
 
-	return { program };
+	const updateProgramData = (
+		newProgram: AdmissionAdminProgramListResponse
+	) => {
+		program.value = newProgram;
+	};
+
+	return {
+		program,
+		updateProgramData,
+	};
 });
