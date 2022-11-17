@@ -68,6 +68,22 @@ export interface AdmissionApplicantGetProgramResponse {
 	reviewer_required_file: null;
 }
 
+export interface AdmissionApplicantRecLetListRes {
+	id: number;
+	name: string;
+	email: string;
+	phone: string;
+	relation: string;
+	positon: string;
+	instuition: string;
+	status: string;
+	s_applicant_id: number;
+	created_at: string;
+	updated_at: string;
+	content: string;
+	token: string;
+}
+
 export interface AdmissionApplicantChangePassResponse {
 	success?: boolean;
 	message?: string | [];
