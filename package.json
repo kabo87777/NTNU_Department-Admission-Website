@@ -22,7 +22,7 @@
     "pinia": "^2.0.23",
     "prettier": "^2.7.1",
     "primeicons": "^5.0.0",
-    "primevue": "^3.17.0",
+    "primevue": "3.19.0",
     "unplugin-icons": "^0.14.12",
     "unplugin-vue-components": "^0.22.8",
     "url-join": "^5.0.0",
