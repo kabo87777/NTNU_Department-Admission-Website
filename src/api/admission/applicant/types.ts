@@ -74,14 +74,18 @@ export interface AdmissionApplicantRecLetListRes {
 	email: string;
 	phone: string;
 	relation: string;
-	positon: string;
-	instuition: string;
+	position: string;
+	institution: string;
 	status: string;
 	s_applicant_id: number;
 	created_at: string;
 	updated_at: string;
 	content: string;
 	token: string;
+	title: string;
+	filepath: {
+		url: string;
+	};
 }
 
 export interface AdmissionApplicantChangePassResponse {

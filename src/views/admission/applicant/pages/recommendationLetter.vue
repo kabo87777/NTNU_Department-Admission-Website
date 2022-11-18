@@ -3,7 +3,7 @@
 		<!-- 新增推薦人 Dialog -->
 		<Dialog
 			v-model:visible="isModalVisible.create"
-			style="width: 1000px"
+			style="width: 900px"
 			:draggable="false"
 			:modal="true"
 		>
@@ -245,6 +245,17 @@
 		<!-- 推薦信列表(有資料時) -->
 		<div v-if="letterList[0]?.length !== 0">
 			<div v-for="(item, index) in letterList[0]" :key="index">
+				<!-- <ConfirmDialog group="templating">
+					<template #message="slotProps">
+						<div class="flex p-4">
+							<i
+								:class="slotProps.message.icon"
+								style="font-size: 1.5rem"
+							></i>
+							<p class="pl-2">{{ slotProps.message.message }}</p>
+						</div>
+					</template>
+				</ConfirmDialog> -->
 				<!-- 列表收起狀態 -->
 				<div v-if="!item.isCollapse" class="recTableRowIncollapse">
 					<div class="recTableCol">
@@ -323,7 +334,7 @@
 						</div>
 						<div class="recTableSemiCol">
 							{{ $t("推薦人稱謂") + $t(":") }}
-							{{ item.positon }}
+							{{ item.title }}
 						</div>
 					</div>
 					<div class="recTableRowCollapseItem">
@@ -345,11 +356,11 @@
 					<div class="recTableRowCollapseItem">
 						<div class="recTableSemiCol">
 							{{ $t("單位") + $t(":") }}
-							{{ item.instuition }}
+							{{ item.institution }}
 						</div>
 						<div class="recTableSemiCol">
 							{{ $t("職稱") + $t(":") }}
-							{{ item.positon }}
+							{{ item.position }}
 						</div>
 					</div>
 					<div class="recTableRowCollapseItem">
@@ -371,16 +382,22 @@ import { AdmissionApplicantAPI } from "@/api/admission/applicant/api";
 import { InvalidSessionError } from "@/api/error";
 import { useQuery } from "@tanstack/vue-query";
 import { useRouter } from "vue-router";
+import { useI18n } from "vue-i18n";
+import { useConfirm } from "primevue/useconfirm";
 import Button from "primevue/button";
 import Dialog from "primevue/dialog";
 import InputText from "primevue/inputtext";
 import FileUpload from "primevue/fileupload";
+import ConfirmDialog from "primevue/confirmdialog";
 import "primeicons/primeicons.css";
 
+const { t } = useI18n();
 const router = useRouter();
 
 const applicantAuth = useAdmissionApplicantAuthStore();
 const api = new AdmissionApplicantAPI(applicantAuth);
+
+// const confirm = useConfirm();
 
 const isAPILoading = ref(false);
 const isModalVisible = reactive({
@@ -468,6 +485,20 @@ const handleEdit = () => {
 };
 
 const handleDelete = () => {
+	// confirm.require({
+	// 	group: "templating",
+	// 	message: t("確認刪除"),
+	// 	header: t("確認"),
+	// 	icon: "pi pi-exclamation-triangle",
+	// 	acceptIcon: "pi pi-check",
+	// 	rejectIcon: "pi pi-times",
+	// 	accept: () => {
+	// 		console.log("accepted");
+	// 	},
+	// 	reject: () => {
+	// 		console.log("rejected");
+	// 	},
+	// });
 	console.log("delete button clicked");
 };
 
