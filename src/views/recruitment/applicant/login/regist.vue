@@ -83,17 +83,16 @@
 			</div>
 			<div class="flex-col-inline px-4 gap-y-8">
 				<div class="flex justify-center">
-					<router-link to="/recruitment/applicant/regist/done">
-						<button
-							class="py-2 w-80 applicantButtonStyle"
-							border="2  rounded-lg"
-						>
-							<div class="flex justify-center gap-2 mx-auto">
-								<div>註冊</div>
-								<div>Register</div>
-							</div>
-						</button>
-					</router-link>
+					<button
+						class="py-2 w-80 applicantButtonStyle"
+						border="2  rounded-lg"
+						@click="buttonOnclick"
+					>
+						<div class="flex justify-center gap-2 mx-auto">
+							<div>註冊</div>
+							<div>Register</div>
+						</div>
+					</button>
 				</div>
 				<div></div>
 			</div>
@@ -126,7 +125,8 @@ const userRegistData: newPostEmailRegister = reactive({
 	confirmPwd: "",
 });
 function buttonOnclick() {
-	//applicatsData.mutate({});
+	const errorMessage = mutation;
+	errorMessage.error;
 }
 
 const mutation = useMutation(["postEmailRegister"], async () => {
@@ -145,9 +145,6 @@ const mutation = useMutation(["postEmailRegister"], async () => {
 		}
 	}
 });
-if ((confirmPwd = password)) {
-	console.log("This will always executed.");
-}
 </script>
 
 <style setup lang="css">

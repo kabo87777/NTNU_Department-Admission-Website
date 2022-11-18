@@ -90,6 +90,7 @@ export interface newPostEmailRegister {
 	name: string;
 	confirm_success_url: string;
 	password: string;
+	confirmPwd: string;
 }
 export interface RecruitmentRegisterEamialPostResponse {
 	status: string;
