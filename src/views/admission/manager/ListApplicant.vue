@@ -29,6 +29,10 @@
 				></Button>
 			</template>
 		</Column>
+
+		<template #footer>
+			<p>{{ $t("applicant_table_items_count", getTableItemQty) }}</p>
+		</template>
 	</DataTable>
 
 	<Dialog v-model:visible="modalVisible" :modal="true">
@@ -53,6 +57,7 @@
 						type="text"
 						class="w-full mt-1"
 						v-model:model-value="modalData.name"
+						disabled="true"
 					></InputText>
 				</div>
 
@@ -64,6 +69,7 @@
 						type="email"
 						class="w-full mt-1"
 						v-model:model-value="modalData.email"
+						:disabled="true"
 					></InputText>
 				</div>
 
@@ -133,10 +139,7 @@ const api = new AdmissionAdminAPI(adminAuth);
 const tableData = ref<AdmissionAdminApplicantsListResponse[]>();
 
 // NOTE: Copy and modified from SideBar.vue
-const {
-	isLoading,
-	data: applicants,
-} = useQuery(
+const { isLoading, data: applicants } = useQuery(
 	["applicantList"],
 	async () => {
 		try {
@@ -199,15 +202,20 @@ const openModal = (applicantData: AdmissionAdminApplicantsListResponse) => {
 		allow_password_change,
 	}))(applicantData);
 
-	modalData.value=formData
+	modalData.value = formData;
 	modalVisible.value = true;
 };
 
 const saveChange = () => {
 	if (!tableData.value) return;
 	// TODO: send patch request to backend
+	api.updateApplicantData(modalData.value.id, modalData.value);
 	modalVisible.value = false;
 };
 
 const printProgramID = () => console.debug("Program ID: " + store.program?.id);
+
+const getTableItemQty = computed(() => {
+	return tableData.value ? tableData.value.length : 0;
+});
 </script>
