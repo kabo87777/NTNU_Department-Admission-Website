@@ -25,7 +25,7 @@
 			</div>
 		</div>
 
-		<div v-if="!noProgram">
+		<div v-if="!noProgram || newProgram">
 			<router-link
 				to="/recruitment/manager/projectSetting"
 				custom
@@ -216,7 +216,7 @@
 			</router-link>
 		</div>
 		<div
-			v-if="noProgram"
+			v-if="noProgram && !newProgram"
 			class="bg-gray-200 bg-opacity-50 h-200px w-[100%]"
 			style="transform: translateY(280%)"
 		>
@@ -550,6 +550,7 @@ function newProject() {
 	displayNewProject.value = true;
 }
 
+const newProgram = ref(false);
 function addNewProject() {
 	const today = new Date();
 	try {
@@ -560,10 +561,14 @@ function addNewProject() {
 			recruit_end_date: dateTransform(today) + "+08:00",
 			review_start_date: dateTransform(today) + "+08:00",
 			review_end_date: dateTransform(today) + "+08:00",
-			require_file: '["file1", "file2"]',
 			created_at: dateTransform(today) + "+08:00",
 			updated_at: dateTransform(today) + "+08:00",
+			applicant_required_info: '["file1", "file2"]',
+			applicant_required_file: '["file3", "file4"]',
+			reviewer_required_info: '["file1", "file2"]',
+			reviewer_required_file: '["file3", "file4"]',
 		});
+		newProgram.value = true;
 		// toast.add({severity:'success', summary: '更改成功', life: 3000});
 	} catch (error) {
 		// toast.add({severity:'error', summary: '資料錯誤', life: 3000});
