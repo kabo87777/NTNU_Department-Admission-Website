@@ -3,6 +3,7 @@ import { GenericAPI } from "@/api/api";
 import type {
 	RecruitmentApplicantProgramResponse,
 	RecruitmentApplicantFileListResponse,
+	RecruitmentApplicantChangePassResponse,
 } from "./types";
 import type { APIGenericResponse } from "@/api/types";
 
@@ -33,5 +34,26 @@ export class RecruitmentApplicantAPI extends GenericAPI {
 			throw new Error("Failed to fetch file list");
 
 		return data.data;
+	}
+
+	async changePassword(
+		body: object
+	): Promise<RecruitmentApplicantChangePassResponse> {
+		const data: APIGenericResponse = await this.instance.patch(
+			"recruitment/auth/applicant/password",
+			body
+		);
+
+		if (data.success === false && data.errors !== undefined) {
+			return {
+				success: data.success,
+				message: data.errors.full_messages,
+			};
+		}
+
+		return {
+			success: data.success,
+			message: data.message,
+		};
 	}
 }

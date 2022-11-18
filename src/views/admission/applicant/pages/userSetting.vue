@@ -6,13 +6,16 @@
 		<div class="bigYellowDivider"></div>
 		<div class="mt-8px px-12px py-24px">
 			<div class="text-[20px] font-[350]">
-				{{ $t("帳號名稱") }}{{ $t(":") }}{{ " " }}{{ userInfo.name }}
+				{{ $t("帳號名稱") }}{{ $t(":") }}{{ " "
+				}}{{ applicantInfo.username }}
 			</div>
 			<div class="mt-36px text-[20px] font-[350]">
-				{{ $t("聯絡信箱") }}{{ $t(":") }}{{ " " }}{{ userInfo.email }}
+				{{ $t("聯絡信箱") }}{{ $t(":") }}{{ " "
+				}}{{ applicantInfo.email }}
 			</div>
 			<div class="mt-36px text-[20px] font-[350]">
-				{{ $t("手機號碼") }}{{ $t(":") }}{{ " " }}{{ userInfo.phone }}
+				{{ $t("手機號碼") }}{{ $t(":") }}{{ " "
+				}}{{ applicantInfo.name }}
 			</div>
 		</div>
 		<ParagraphDivider class="mt-12px" />
@@ -75,34 +78,46 @@
 				</div>
 			</div>
 			<Button
-				class="p-button-sm p-button-secondary p-button-outlined !mt-60px"
-				@click="handleSubmit"
-			>
-				<i class="pi pi-pencil" />
-				<p class="ml-8px text-16px font-[500] font-bold">
-					{{ $t("修改送出") }}
-				</p>
-			</Button>
+				class="p-button-sm p-button-secondary p-button-outlined !mt-60px !text-[16px]"
+				type="submit"
+				icon="pi pi-pencil"
+				:loading="isChangePassLoading"
+				@click="handleSubmit()"
+				:label="$t('修改送出')"
+			/>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive } from "vue";
-import { useRoute } from "vue-router";
-import { UserInfo } from "@/api/admission/applicant/types";
+import { onMounted, reactive, ref, toRaw } from "vue";
+import { useQuery } from "@tanstack/vue-query";
+import { AdmissionApplicantAuthResponse } from "@/api/admission/applicant/types";
+import { useAdmissionApplicantAuthStore } from "@/stores/universalAuth";
+import { useUserInfoStore } from "@/stores/AdmissionApplicantStore";
+import { AdmissionApplicantAPI } from "@/api/admission/applicant/api";
+import { InvalidSessionError } from "@/api/error";
 import ParagraphDivider from "@/styles/paragraphDividerApplicant.vue";
+import { useToast } from "primevue/usetoast";
 import InputText from "primevue/inputtext";
 import Button from "primevue/button";
 import "primeicons/primeicons.css";
 
-const route = useRoute();
+const toast = useToast();
+const applicantAuth = useAdmissionApplicantAuthStore();
+const applicantStore = useUserInfoStore();
+const api = new AdmissionApplicantAPI(applicantAuth);
 
-const userInfo: UserInfo = {
-	name: "我很帥",
-	email: "IAmSoHandsome@handsome.com",
-	phone: "0912345678",
-};
+const applicantInfo: AdmissionApplicantAuthResponse = toRaw(
+	applicantStore.userInfo
+);
+
+// const {
+// 	isLoading,
+// 	isError,
+// 	data: programs,
+// 	error,
+// } = useQuery(["userInfo"], async () => await api.getUserInfo());
 
 const initialPassValue = {
 	isCurrentPassBlank: false,
@@ -113,18 +128,45 @@ const initialPassValue = {
 	confirmPass: "",
 };
 
-const password = reactive(initialPassValue);
+const isChangePassLoading = ref(false);
 
-// const resetPassValue = () => {
-// 	password.isCurrentPassBlank = initialPassword.isCurrentPassBlank;
-// 	password.isNewPassBlank = initialPassword.isNewPassBlank;
-// 	password.notMatch = initialPassword.notMatch;
-// 	password.currentPass = initialPassword.currentPass;
-// 	password.newPass = initialPassword.newPass;
-// 	password.confirmPass = initialPassword.confirmPass;
-// };
+const changePassRes = reactive({
+	success: false,
+	message: "" as string | [],
+});
 
-const handleSubmit = () => {
+const password = reactive({
+	isCurrentPassBlank: false,
+	isNewPassBlank: false,
+	notMatch: false,
+	currentPass: "",
+	newPass: "",
+	confirmPass: "",
+});
+
+const resetPassValue = () => {
+	password.isCurrentPassBlank = initialPassValue.isCurrentPassBlank;
+	password.isNewPassBlank = initialPassValue.isNewPassBlank;
+	password.notMatch = initialPassValue.notMatch;
+	password.currentPass = initialPassValue.currentPass;
+	password.newPass = initialPassValue.newPass;
+	password.confirmPass = initialPassValue.confirmPass;
+};
+
+const patchChangePassword = async (body: object) => {
+	try {
+		return await api.changePassword(body);
+	} catch (e: any) {
+		if (e instanceof InvalidSessionError) {
+			console.error(
+				"Session has already expired while changing password"
+			);
+			return;
+		}
+	}
+};
+
+const handleSubmit = async () => {
 	if (password.currentPass === "") {
 		password.isCurrentPassBlank = true;
 	} else {
@@ -148,12 +190,43 @@ const handleSubmit = () => {
 		!password.isNewPassBlank &&
 		!password.notMatch
 	) {
-		// resetPassValue();
-		console.log(
-			password.currentPass,
-			password.newPass,
-			password.confirmPass
-		);
+		isChangePassLoading.value = true;
+
+		const body = {
+			current_password: password.currentPass,
+			password: password.newPass,
+			password_confirmation: password.confirmPass,
+		};
+
+		const response = patchChangePassword(body);
+
+		await response.then((res) => {
+			if (res?.success !== undefined && res?.message !== undefined) {
+				changePassRes.success = toRaw(res.success);
+				changePassRes.message = toRaw(res.message);
+			}
+
+			isChangePassLoading.value = false;
+
+			if (changePassRes.success) {
+				resetPassValue();
+				toast.add({
+					severity: "success",
+					summary: "Success",
+					detail: changePassRes.message,
+					life: 3000,
+				});
+			} else {
+				toast.add({
+					severity: "error",
+					summary: "Error",
+					detail: changePassRes.message[
+						changePassRes.message.length - 1
+					],
+					life: 5000,
+				});
+			}
+		});
 	}
 };
 
