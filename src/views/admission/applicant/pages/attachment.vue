@@ -158,9 +158,9 @@
 <script setup lang="ts">
 import { reactive, onMounted, toRaw, watch } from "vue";
 import { InvalidSessionError } from "@/api/error";
-import ReviewState from "@/components/attachmentStates/ReviewState.vue";
-import EditState from "@/components/attachmentStates/EditState.vue";
-import CreateState from "@/components/attachmentStates/CreateState.vue";
+import ReviewState from "@/components/attachmentStates/reviewState.vue";
+import EditState from "@/components/attachmentStates/editState.vue";
+import CreateState from "@/components/attachmentStates/createState.vue";
 import CorrectionState from "@/components/attachmentStates/CorrectionState.vue";
 import ParagraphDivider from "@/styles/paragraphDividerApplicant.vue";
 import {

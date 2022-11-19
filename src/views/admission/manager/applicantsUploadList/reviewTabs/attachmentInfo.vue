@@ -132,9 +132,9 @@
 </template>
 <script setup lang="ts">
 import { reactive } from "vue";
-import ReviewState from "@/components/attachmentStates/ReviewState.vue";
-import EditState from "@/components/attachmentStates/EditState.vue";
-import CreateState from "@/components/attachmentStates/CreateState.vue";
+import ReviewState from "@/components/attachmentStates/reviewState.vue";
+import EditState from "@/components/attachmentStates/editState.vue";
+import CreateState from "@/components/attachmentStates/createState.vue";
 import ParagraphDivider from "@/styles/paragraphDivider.vue";
 import "primeicons/primeicons.css";
 import AttachmentList from "./attachmentList.json";
