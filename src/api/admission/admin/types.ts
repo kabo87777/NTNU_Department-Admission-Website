@@ -1,5 +1,3 @@
-import { BooleanLocale } from "yup/lib/locale";
-
 export interface AdmissionManagerSignInInput {
 	email: string;
 	password: string;
