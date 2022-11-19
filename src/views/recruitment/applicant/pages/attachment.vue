@@ -151,7 +151,7 @@ const { isLoading, isError, data, error } = useQuery(
 	["attachmentList"],
 	async () => {
 		try {
-			return await api.getFileList(project.pid);
+			return await api.getFileList(project.project.pid);
 		} catch (e: any) {
 			if (e instanceof InvalidSessionError) {
 				console.error(
