@@ -306,5 +306,17 @@
   "職稱": "Position",
   "暫存": "Save",
   "送出": "Send",
-  "此為必填欄位": "Required"
+  "此為必填欄位": "Required",
+  "確認刪除": "Confirm Delete",
+  "?": "?",
+  "確認": "Confirm",
+  "create": "Create",
+  "edit": "Edit",
+  "選擇檔案": "Choose File",
+  "僅接受.pdf或.jpg檔": "Only .pdf or .jpg file is allowed",
+  "上傳": "Upload",
+  "發出邀請": "Send request",
+  "確認送出": "Confirm Send",
+  "儲存": "Save",
+  "請上傳簽名檔": "Please upload"
 }

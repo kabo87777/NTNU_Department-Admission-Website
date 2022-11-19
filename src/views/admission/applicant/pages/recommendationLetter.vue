@@ -2,9 +2,10 @@
 	<div>
 		<!-- 新增推薦人 Dialog -->
 		<Dialog
-			v-model:visible="isModalVisible.create"
+			v-model:visible="isModalVisible.fill"
 			style="width: 900px"
 			:draggable="false"
+			:closable="false"
 			:modal="true"
 		>
 			<template #header>
@@ -155,17 +156,67 @@
 							</div>
 						</div>
 					</div>
-					<div class="mt-32px">
-						<div>{{ $t("簽名檔") }}</div>
-						<div class="mt-8px">
-							<FileUpload
-								mode="basic"
-								:maxFileSize="1000000"
-								:customUpload="true"
-								:fileLimit="1"
-								@uploader="onUpload"
+					<div class="flex mt-32px">
+						<div class="w-1/2">
+							<div>{{ $t("簽名檔") }}</div>
+							<div class="mt-8px">
+								<div v-if="!uploadFile.isUploaded" class="flex">
+									<FileUpload
+										style="
+											background-color: #bdbdbd;
+											color: black;
+											border: #bdbdbd;
+										"
+										mode="basic"
+										:maxFileSize="1000000"
+										:customUpload="true"
+										:fileLimit="1"
+										:chooseLabel="t('選擇檔案')"
+										aria-describedby="upload-help"
+										@uploader="onUpload"
+									/>
+									<div
+										class="ml-8px mt-16px"
+										v-if="isModalValueBlank.sign"
+									>
+										<small id="upload-help" class="p-error">
+											{{ t("請上傳簽名檔") }}
+										</small>
+									</div>
+								</div>
+								<Button
+									v-else
+									style="
+										background-color: #bdbdbd;
+										color: black;
+										border: #bdbdbd;
+									"
+									disabled
+								>
+									{{ uploadFile.name }}
+								</Button>
+							</div>
+							<div class="mt-8px text-[15px]">
+								{{ $t("僅接受.pdf或.jpg檔") }}
+							</div>
+						</div>
+						<div class="w-1/2">
+							<div
+								v-if="modalShowErr"
+								style="
+									background-color: #ef9a9a;
+									width: 300px;
+									height: 80px;
+									border-radius: 8px;
+									border: 2px solid #c62828;
+									margin-top: 8px;
+									padding: 8px 8px;
+									color: #c62828;
+									text-align: center;
+								"
 							>
-							</FileUpload>
+								{{ fetchResponse.message }}
+							</div>
 						</div>
 					</div>
 				</div>
@@ -180,10 +231,10 @@
 						background-color: #f0dfad;
 						height: 44px;
 					"
-					icon="pi pi-save"
+					icon="pi pi-times"
 					iconClass="text-[#736028]"
-					:label="$t('暫存')"
-					@click="handleSave()"
+					:label="$t('取消')"
+					@click="isModalVisible.fill = false"
 				/>
 				<Button
 					class="p-button-outlined p-button-secondary"
@@ -193,10 +244,11 @@
 						background-color: #d3e8b3;
 						height: 44px;
 					"
-					icon="pi pi-envelope"
+					icon="pi pi-save"
 					iconClass="text-[#53565A]"
-					:label="$t('送出')"
-					@click="handleSend()"
+					:label="$t('儲存')"
+					:loading="isActionLoading.save"
+					@click="handleSave()"
 				/>
 			</template>
 		</Dialog>
@@ -212,12 +264,12 @@
 				margin-top: 32px;
 				height: 44px;
 				background-color: #f0dfad;
-				border: 1px solid #a18b4a;
+				border: 2px solid #a18b4a;
 				color: #736028;
 			"
 			icon="pi pi-plus"
 			:label="$t('新增推薦人')"
-			@click="openModal('create')"
+			@click="openModal()"
 		/>
 		<!-- 推薦信列表頭(有資料時) -->
 		<div
@@ -245,17 +297,115 @@
 		<!-- 推薦信列表(有資料時) -->
 		<div v-if="letterList[0]?.length !== 0">
 			<div v-for="(item, index) in letterList[0]" :key="index">
-				<!-- <ConfirmDialog group="templating">
-					<template #message="slotProps">
-						<div class="flex p-4">
-							<i
-								:class="slotProps.message.icon"
-								style="font-size: 1.5rem"
-							></i>
-							<p class="pl-2">{{ slotProps.message.message }}</p>
+				<!-- 送出邀請Dialog -->
+				<Dialog
+					v-model:visible="isModalVisible.request"
+					style="width: 500px"
+					:closable="false"
+					:draggable="false"
+					:modal="true"
+				>
+					<template #header>
+						<div class="font-bold text-[24px]">
+							{{ $t("發出邀請") }}
 						</div>
 					</template>
-				</ConfirmDialog> -->
+					<template #default>
+						<div class="flex">
+							<div class="mt-2px">
+								<i
+									class="pi pi-question-circle"
+									style="font-size: 20px"
+								/>
+							</div>
+							<div class="ml-4px">
+								{{ $t("確認送出") + $t("?") }}
+							</div>
+						</div>
+					</template>
+					<template #footer>
+						<Button
+							class="p-button-outlined p-button-secondary"
+							style="
+								border: 2px solid #a18b4a;
+								color: #736028;
+								height: 36px;
+							"
+							icon="pi pi-times"
+							iconClass="text-[#736028]"
+							:label="$t('取消')"
+							@click="isModalVisible.request = false"
+						/>
+						<Button
+							class="p-button-outlined p-button-secondary"
+							style="
+								color: #53565a;
+								border: 2px solid #bcd19b;
+								margin-left: 16px;
+								height: 36px;
+							"
+							icon="pi pi-check"
+							iconClass="text-[#53565A]"
+							:label="$t('確認')"
+							:loading="isActionLoading.request"
+							@click="handleRequest(item.id)"
+						/>
+					</template>
+				</Dialog>
+				<!-- 刪除Dialog -->
+				<Dialog
+					v-model:visible="isModalVisible.delete"
+					style="width: 500px"
+					:closable="false"
+					:draggable="false"
+					:modal="true"
+				>
+					<template #header>
+						<div class="font-bold text-[24px]">
+							{{ $t("刪除") }}
+						</div>
+					</template>
+					<template #default>
+						<div class="flex">
+							<div class="mt-2px">
+								<i
+									class="pi pi-exclamation-triangle"
+									style="font-size: 20px"
+								/>
+							</div>
+							<div class="ml-4px">
+								{{ $t("確認刪除") + $t("?") }}
+							</div>
+						</div>
+					</template>
+					<template #footer>
+						<Button
+							class="p-button-outlined p-button-secondary"
+							style="
+								border: 2px solid #a18b4a;
+								color: #736028;
+								height: 36px;
+							"
+							icon="pi pi-times"
+							iconClass="text-[#736028]"
+							:label="$t('取消')"
+							@click="isModalVisible.delete = false"
+						/>
+						<Button
+							class="p-button-outlined p-button-secondary"
+							style="
+								color: #93282c;
+								border: 2px solid #93282c;
+								margin-left: 16px;
+								height: 36px;
+							"
+							icon="pi pi-check"
+							iconClass="text-[#93282C]"
+							:label="$t('確認')"
+							@click="handleDelete(item.id)"
+						/>
+					</template>
+				</Dialog>
 				<!-- 列表收起狀態 -->
 				<div v-if="!item.isCollapse" class="recTableRowIncollapse">
 					<div class="recTableCol">
@@ -270,9 +420,10 @@
 								border: 2px solid #bcd19b;
 								font-size: xx-small;
 							"
-							icon="pi pi-pencil"
+							icon="pi pi-envelope"
 							iconClass="text-[#53565A]"
-							@click="handleEdit()"
+							v-tooltip.top="t('發出邀請')"
+							@click="isModalVisible.request = true"
 						/>
 						<Button
 							class="p-button-outlined p-button-secondary"
@@ -283,7 +434,8 @@
 							"
 							icon="pi pi-trash"
 							iconClass="text-[#93282C]"
-							@click="handleDelete()"
+							v-tooltip.top="t('刪除')"
+							@click="isModalVisible.delete = true"
 						/>
 					</div>
 					<i
@@ -306,9 +458,9 @@
 									border: 2px solid #bcd19b;
 									font-size: xx-small;
 								"
-								icon="pi pi-pencil"
+								icon="pi pi-envelope"
 								iconClass="text-[#53565A]"
-								@click="handleEdit()"
+								v-tooltip.top="t('發出邀請')"
 							/>
 							<Button
 								class="p-button-outlined p-button-secondary"
@@ -319,7 +471,8 @@
 								"
 								icon="pi pi-trash"
 								iconClass="text-[#93282C]"
-								@click="handleDelete()"
+								v-tooltip.top="t('刪除')"
+								@click="isModalVisible.delete = true"
 							/>
 						</div>
 						<i
@@ -376,19 +529,19 @@
 </template>
 
 <script setup lang="ts">
-import { toRaw, ref, reactive } from "vue";
+import { toRaw, ref, reactive, watch } from "vue";
 import { useAdmissionApplicantAuthStore } from "@/stores/universalAuth";
 import { AdmissionApplicantAPI } from "@/api/admission/applicant/api";
+import type { AdmissionApplicantRecLetListRes } from "@/api/admission/applicant/types";
 import { InvalidSessionError } from "@/api/error";
 import { useQuery } from "@tanstack/vue-query";
 import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
-import { useConfirm } from "primevue/useconfirm";
+import { useToast } from "primevue/usetoast";
 import Button from "primevue/button";
 import Dialog from "primevue/dialog";
 import InputText from "primevue/inputtext";
 import FileUpload from "primevue/fileupload";
-import ConfirmDialog from "primevue/confirmdialog";
 import "primeicons/primeicons.css";
 
 const { t } = useI18n();
@@ -397,12 +550,21 @@ const router = useRouter();
 const applicantAuth = useAdmissionApplicantAuthStore();
 const api = new AdmissionApplicantAPI(applicantAuth);
 
-// const confirm = useConfirm();
+const toast = useToast();
 
-const isAPILoading = ref(false);
+const isActionLoading = reactive({
+	request: false,
+	save: false,
+	delete: false,
+	fetch: false,
+});
+
+const modalShowErr = ref(false);
+
 const isModalVisible = reactive({
-	create: false,
-	edit: false,
+	fill: false,
+	delete: false,
+	request: false,
 });
 
 const modalValue = reactive({
@@ -427,19 +589,45 @@ const isModalValueBlank = reactive({
 	sign: false,
 });
 
-const { isLoading, data } = useQuery(["recommendLetterList"], async () => {
-	try {
-		return await api.getRecommendLetterList();
-	} catch (e: any) {
-		if (e instanceof InvalidSessionError) {
-			console.error(
-				"Session has already expired while querying programList"
-			);
-			router.push("/");
-			return;
-		}
-	}
+const fetchResponse = reactive({
+	success: false,
+	message: "" as string | [],
 });
+
+const uploadFile = reactive({
+	fileUrl: "",
+	name: "",
+	size: 0,
+	type: "",
+	isUploaded: false,
+});
+
+const { data } = useQuery(
+	["recommendLetterList"],
+	async () => {
+		try {
+			return await api.getRecommendLetterList();
+		} catch (e: any) {
+			if (e instanceof InvalidSessionError) {
+				console.error(
+					"Session has already expired while querying programList"
+				);
+				router.push("/");
+				return;
+			}
+		}
+	},
+	{
+		onSuccess: (data) => {
+			letterList[0] = data!.map((item) => {
+				return {
+					...item,
+					isCollapse: false,
+				};
+			});
+		},
+	}
+);
 
 const letterList = reactive([
 	data.value?.map((item) => {
@@ -462,14 +650,18 @@ const convertTime = (originTime: string) => {
 	);
 };
 
-const onUpload = (e: any) => {
-	console.log(e, "upload clicked");
+const clearModalValue = () => {
+	modalValue.name = "";
+	modalValue.appellation = "";
+	modalValue.relationship = "";
+	modalValue.phone = "";
+	modalValue.email = "";
+	modalValue.organization = "";
+	modalValue.position = "";
+	modalValue.sign = "";
 };
 
-const openModal = (type: string) => {
-	if (type === "create") isModalVisible[type] = true;
-	else if (type === "edit") isModalVisible[type] = true;
-
+const resetIsModalValueBlank = () => {
 	isModalValueBlank.name = false;
 	isModalValueBlank.appellation = false;
 	isModalValueBlank.relationship = false;
@@ -480,33 +672,105 @@ const openModal = (type: string) => {
 	isModalValueBlank.sign = false;
 };
 
-const handleEdit = () => {
-	console.log("edit button clicked");
+const clearFetchResponse = () => {
+	fetchResponse.success = false;
+	fetchResponse.message = "";
 };
 
-const handleDelete = () => {
-	// confirm.require({
-	// 	group: "templating",
-	// 	message: t("確認刪除"),
-	// 	header: t("確認"),
-	// 	icon: "pi pi-exclamation-triangle",
-	// 	acceptIcon: "pi pi-check",
-	// 	rejectIcon: "pi pi-times",
-	// 	accept: () => {
-	// 		console.log("accepted");
-	// 	},
-	// 	reject: () => {
-	// 		console.log("rejected");
-	// 	},
-	// });
-	console.log("delete button clicked");
+const onUpload = (e: any) => {
+	uploadFile.fileUrl = e.files[0].objectURL;
+	uploadFile.name = e.files[0].name;
+	uploadFile.size = e.files[0].size;
+	uploadFile.type = e.files[0].type;
+	uploadFile.isUploaded = true;
+	modalValue.sign = e.files[0].objectURL;
+	// 優化使用者體驗可能用到以下代碼
+	// const [file] = e.files;
+	// const objectURL = window.URL.createObjectURL(file);
+	// console.log(e, "upload clicked", uploadFile);
 };
 
-const handleSave = () => {
-	console.log("save button clicked");
+const openModal = () => {
+	uploadFile.isUploaded = false;
+	isModalVisible.fill = true;
+	resetIsModalValueBlank();
+	clearModalValue();
 };
 
-const handleSend = () => {
+const deleteRecommendLetter = async (letterId: number) => {
+	try {
+		return await api.deleteRecommendLetter(letterId);
+	} catch (e: any) {
+		if (e instanceof InvalidSessionError) {
+			console.error(
+				"Session has already expired while changing password"
+			);
+			return;
+		}
+	}
+};
+
+const postRecommendLetter = async (body: object) => {
+	try {
+		return await api.saveRecommendLetter(body);
+	} catch (e: any) {
+		if (e instanceof InvalidSessionError) {
+			console.error(
+				"Session has already expired while changing password"
+			);
+			return;
+		}
+	}
+};
+
+const requestRecommendLetter = async (letterId: number) => {
+	try {
+		return await api.requestRecommendLetter(letterId);
+	} catch (e: any) {
+		if (e instanceof InvalidSessionError) {
+			console.error(
+				"Session has already expired while changing password"
+			);
+			return;
+		}
+	}
+};
+
+const handleDelete = async (letterId: number) => {
+	isActionLoading.delete = true;
+	const response = deleteRecommendLetter(letterId);
+
+	await response.then((res) => {
+		if (res?.success !== undefined && res?.message !== undefined) {
+			fetchResponse.success = toRaw(res.success);
+			fetchResponse.message = toRaw(res.message);
+		}
+
+		isActionLoading.delete = false;
+		isActionLoading.fetch = true;
+
+		if (fetchResponse.success) {
+			toast.add({
+				severity: "success",
+				summary: "Success",
+				detail: fetchResponse.message,
+				life: 3000,
+			});
+		} else {
+			toast.add({
+				severity: "error",
+				summary: "Error",
+				detail: fetchResponse.message,
+				life: 5000,
+			});
+		}
+
+		clearFetchResponse();
+		isModalVisible.delete = false;
+	});
+};
+
+const handleSave = async () => {
 	isModalValueBlank.name = modalValue.name === "" ? true : false;
 	isModalValueBlank.appellation =
 		modalValue.appellation === "" ? true : false;
@@ -518,9 +782,110 @@ const handleSend = () => {
 		modalValue.organization === "" ? true : false;
 	isModalValueBlank.position = modalValue.position === "" ? true : false;
 	isModalValueBlank.sign = modalValue.sign === "" ? true : false;
-	console.log("send button clicked");
+
+	if (
+		!isModalValueBlank.name &&
+		!isModalValueBlank.appellation &&
+		!isModalValueBlank.relationship &&
+		!isModalValueBlank.phone &&
+		!isModalValueBlank.email &&
+		!isModalValueBlank.organization &&
+		!isModalValueBlank.position &&
+		!isModalValueBlank.sign
+	) {
+		isActionLoading.fetch = true;
+		isActionLoading.save = true;
+		const body = {
+			name: modalValue.name,
+			title: modalValue.appellation,
+			email: modalValue.email,
+			phone: modalValue.phone,
+			relation: modalValue.relationship,
+			institution: modalValue.organization,
+			position: modalValue.position,
+			filepath: {
+				url: modalValue.sign,
+			},
+		};
+
+		const response = postRecommendLetter(body);
+
+		await response.then((res) => {
+			if (res?.success !== undefined && res?.message !== undefined) {
+				fetchResponse.success = toRaw(res.success);
+				fetchResponse.message = toRaw(res.message);
+			}
+
+			isActionLoading.save = false;
+
+			if (fetchResponse.success) {
+				resetIsModalValueBlank();
+				clearModalValue();
+				modalShowErr.value = false;
+				isModalVisible.fill = false;
+				toast.add({
+					severity: "success",
+					summary: "Success",
+					detail: fetchResponse.message,
+					life: 3000,
+				});
+			} else {
+				modalShowErr.value = true;
+			}
+
+			clearFetchResponse();
+		});
+	}
 };
-console.log(letterList, "here");
+
+const handleRequest = async (letterId: number) => {
+	isActionLoading.request = true;
+	const response = requestRecommendLetter(letterId);
+
+	await response.then((res) => {
+		if (res?.success !== undefined && res?.message !== undefined) {
+			fetchResponse.success = toRaw(res.success);
+			fetchResponse.message = toRaw(res.message);
+		}
+
+		isActionLoading.request = false;
+		isActionLoading.fetch = true;
+
+		if (fetchResponse.success) {
+			toast.add({
+				severity: "success",
+				summary: "Success",
+				detail: fetchResponse.message,
+				life: 3000,
+			});
+		} else {
+			toast.add({
+				severity: "error",
+				summary: "Error",
+				detail: fetchResponse.message,
+				life: 5000,
+			});
+		}
+
+		clearFetchResponse();
+		isModalVisible.request = false;
+	});
+};
+
+watch(
+	() => isActionLoading.fetch,
+	async () => {
+		const response: AdmissionApplicantRecLetListRes[] =
+			await api.getRecommendLetterList();
+		letterList[0] = response?.map((item) => {
+			return {
+				...item,
+				isCollapse: false,
+			};
+		});
+		isActionLoading.fetch = false;
+	}
+);
 </script>
 
 <style setup lang="css">

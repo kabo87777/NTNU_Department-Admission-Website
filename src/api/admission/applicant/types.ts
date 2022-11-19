@@ -88,7 +88,7 @@ export interface AdmissionApplicantRecLetListRes {
 	};
 }
 
-export interface AdmissionApplicantChangePassResponse {
+export interface AdmissionApplicantGenericResponse {
 	success?: boolean;
 	message?: string | [];
 }

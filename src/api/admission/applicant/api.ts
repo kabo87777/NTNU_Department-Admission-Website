@@ -1,7 +1,7 @@
 import type { AuthStore } from "@/stores/universalAuth";
 import type {
 	AdmissionApplicantGetProgramResponse,
-	AdmissionApplicantChangePassResponse,
+	AdmissionApplicantGenericResponse,
 	AdmissionApplicantRecLetListRes,
 } from "./types";
 import type { APIGenericResponse } from "@/api/types";
@@ -36,7 +36,7 @@ export class AdmissionApplicantAPI extends GenericAPI {
 
 	async changePassword(
 		body: object
-	): Promise<AdmissionApplicantChangePassResponse> {
+	): Promise<AdmissionApplicantGenericResponse> {
 		const data: APIGenericResponse = await this.instance.patch(
 			"admission/auth/applicant/password",
 			body
@@ -66,10 +66,10 @@ export class AdmissionApplicantAPI extends GenericAPI {
 		return data.data;
 	}
 
-	async sendRecommendLetterReq(
+	async saveRecommendLetter(
 		body: object
 		// CHANGE THE RESPONSE TYPE ONCE BACKEND CONFIRM THE DATA STRUCTURE
-	): Promise<AdmissionApplicantChangePassResponse> {
+	): Promise<AdmissionApplicantGenericResponse> {
 		const data: APIGenericResponse = await this.instance.post(
 			"admission/applicant/recommendletter",
 			body
@@ -77,12 +77,50 @@ export class AdmissionApplicantAPI extends GenericAPI {
 
 		if (data.error !== false)
 			return {
-				success: data.success,
-				message: data.errors.full_messages,
+				success: false,
+				message: data.message,
 			};
 
 		return {
-			success: data.success,
+			success: true,
+			message: data.message,
+		};
+	}
+
+	async deleteRecommendLetter(
+		letterId: number
+	): Promise<AdmissionApplicantGenericResponse> {
+		const data: APIGenericResponse = await this.instance.delete(
+			`admission/applicant/recommendletter/${letterId}`
+		);
+
+		if (data.error !== false)
+			return {
+				success: false,
+				message: data.message,
+			};
+
+		return {
+			success: true,
+			message: data.message,
+		};
+	}
+
+	async requestRecommendLetter(
+		letterId: number
+	): Promise<AdmissionApplicantGenericResponse> {
+		const data: APIGenericResponse = await this.instance.get(
+			`admission/applicant/recommendletter/${letterId}/send_email`
+		);
+
+		if (data.error !== false)
+			return {
+				success: false,
+				message: data.message,
+			};
+
+		return {
+			success: true,
 			message: data.message,
 		};
 	}
