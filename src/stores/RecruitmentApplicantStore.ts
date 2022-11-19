@@ -15,14 +15,20 @@ const info = {
 };
 
 export const useProjectIdStore = defineStore({
-	id: "pid",
+	id: "project",
 	state: () => ({
-		pid: 0,
+		project: {
+			pid: 1,
+			category: "",
+			name: "",
+		},
 	}),
 	getters: {},
 	actions: {
-		switchPid(pid: number) {
-			this.pid = pid;
+		switchProject(project: any) {
+			this.project.pid = project.pid;
+			this.project.category = project.category;
+			this.project.name = project.name;
 		},
 	},
 });

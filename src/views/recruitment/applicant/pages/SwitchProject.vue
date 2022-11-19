@@ -31,7 +31,7 @@
 					padding-right: 5%;
 					text-align: right;
 				"
-				v-if="item.id === project.pid"
+				v-if="item.id === project.project.pid"
 			>
 				{{ $t("當前專案") }}
 			</div>
@@ -46,7 +46,13 @@
 						position: absolute;
 						right: 12%;
 					"
-					@click="project.switchPid(item.id)"
+					@click="
+						project.switchProject({
+							pid: item.id,
+							category: item.category,
+							name: item.name,
+						})
+					"
 				>
 					<i class="pi pi-directions"></i>
 					<div class="ml-8px">{{ $t("進入專案") }}</div>
