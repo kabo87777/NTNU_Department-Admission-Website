@@ -53,8 +53,8 @@
 						icon="pi pi-check"
 						iconClass="text-[#53565A]"
 						:label="$t('確認')"
-						:loading="isCreateLoading"
-						@click="handleCreate"
+						:loading="isEditLoading"
+						@click="handleEdit"
 					/>
 				</template>
 			</Dialog>
@@ -177,10 +177,11 @@ const props = defineProps([
 	"category",
 	"identity",
 	"order",
+	"itemId",
 	"itemName",
 	"schoolName",
 	"score",
-	"isCreateLoading",
+	"isEditLoading",
 ]);
 
 const name = ref(props.itemName);
@@ -196,7 +197,7 @@ const file = reactive({
 
 const isModalVisible = ref(false);
 
-const emit = defineEmits(["cancel", "create"]);
+const emit = defineEmits(["cancel", "correction"]);
 
 const dynamicClass = (): string => {
 	switch (props.identity) {
@@ -221,14 +222,14 @@ const handleCancel = () => {
 	emit("cancel", props.order - 1, props.category);
 };
 
-const handleCreate = () => {
+const handleEdit = () => {
 	const body = {
 		name: name.value,
 		category: props.category,
 		filepath: file.fileUrl,
 	};
 	console.log(body);
-	emit("create", body);
+	emit("correction", body, props.itemId);
 };
 </script>
 

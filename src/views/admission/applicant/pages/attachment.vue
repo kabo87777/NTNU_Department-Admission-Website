@@ -16,19 +16,25 @@
 					v-if="item.state === 1"
 					category="就學經歷"
 					identity="admissionApplicant"
-					:itemName="item.itemName"
-					:schoolName="item.schoolName"
+					:itemId="item.id"
+					:itemName="item.name"
+					:schoolName="item.name"
 					:order="index + 1"
+					:isDeleteLoading="isLoading.delete"
 					@edit="reviewToEdit"
+					@delete="handleDelete"
 				/>
-				<EditState
+				<CorrectionState
 					v-else-if="item.state === 2"
 					category="就學經歷"
 					identity="admissionApplicant"
-					:itemName="item.itemName"
-					:schoolName="item.schoolName"
+					:itemId="item.id"
+					:itemName="item.name"
+					:schoolName="item.name"
 					:order="index + 1"
+					:isEditLoading="isLoading.edit"
 					@cancel="editToReview"
+					@correction="handleEdit"
 				/>
 				<CreateState
 					v-else-if="item.state === 3"
@@ -41,8 +47,10 @@
 					v-else-if="item.state === 4"
 					category="就學經歷"
 					identity="admissionApplicant"
+					:isCreateLoading="isLoading.create"
 					:order="index + 1"
 					@cancel="editToCreate"
+					@create="handleCreate"
 				/>
 			</div>
 		</div>
@@ -58,19 +66,25 @@
 					v-if="item.state === 1"
 					category="考試與檢定分數"
 					identity="admissionApplicant"
-					:itemName="item.itemName"
-					:score="item.score"
+					:itemId="item.id"
+					:itemName="item.name"
+					:score="item.name"
 					:order="index + 1"
+					:isDeleteLoading="isLoading.delete"
 					@edit="reviewToEdit"
+					@delete="handleDelete"
 				/>
-				<EditState
+				<CorrectionState
 					v-else-if="item.state === 2"
 					category="考試與檢定分數"
 					identity="admissionApplicant"
-					:itemName="item.itemName"
-					:score="item.score"
+					:itemId="item.id"
+					:itemName="item.name"
+					:score="item.name"
 					:order="index + 1"
+					:isEditLoading="isLoading.edit"
 					@cancel="editToReview"
+					@correction="handleEdit"
 				/>
 				<CreateState
 					v-else-if="item.state === 3"
@@ -83,8 +97,10 @@
 					v-else-if="item.state === 4"
 					category="考試與檢定分數"
 					identity="admissionApplicant"
+					:isCreateLoading="isLoading.create"
 					:order="index + 1"
 					@cancel="editToCreate"
+					@create="handleCreate"
 				/>
 			</div>
 		</div>
@@ -100,17 +116,23 @@
 					v-if="item.state === 1"
 					category="其他有利於審查資料"
 					identity="admissionApplicant"
-					:itemName="item.itemName"
+					:itemId="item.id"
+					:itemName="item.name"
 					:order="index + 1"
+					:isDeleteLoading="isLoading.delete"
 					@edit="reviewToEdit"
+					@delete="handleDelete"
 				/>
-				<EditState
+				<CorrectionState
 					v-else-if="item.state === 2"
 					category="其他有利於審查資料"
 					identity="admissionApplicant"
-					:itemName="item.itemName"
+					:isEditLoading="isLoading.edit"
+					:itemId="item.id"
+					:itemName="item.name"
 					:order="index + 1"
 					@cancel="editToReview"
+					@correction="handleEdit"
 				/>
 				<CreateState
 					v-else-if="item.state === 3"
@@ -123,8 +145,10 @@
 					v-else-if="item.state === 4"
 					category="其他有利於審查資料"
 					identity="admissionApplicant"
+					:isCreateLoading="isLoading.create"
 					:order="index + 1"
 					@cancel="editToCreate"
+					@create="handleCreate"
 				/>
 			</div>
 		</div>
@@ -132,68 +156,44 @@
 </template>
 
 <script setup lang="ts">
-import { reactive } from "vue";
-import ReviewState from "@/components/attachmentStates/reviewState.vue";
-import EditState from "@/components/attachmentStates/editState.vue";
-import CreateState from "@/components/attachmentStates/createState.vue";
+import { reactive, onMounted, toRaw, watch } from "vue";
+import { InvalidSessionError } from "@/api/error";
+import ReviewState from "@/components/attachmentStates/ReviewState.vue";
+import EditState from "@/components/attachmentStates/EditState.vue";
+import CreateState from "@/components/attachmentStates/CreateState.vue";
+import CorrectionState from "@/components/attachmentStates/CorrectionState.vue";
 import ParagraphDivider from "@/styles/paragraphDividerApplicant.vue";
-import { AttachmentData } from "@/api/admission/applicant/types";
-import AttachmentList from "@/mocks/attachmentList.json";
+import {
+	AdmissionApplicantGetFileListResponse,
+	AttachmentData,
+	AttachmentDetailData,
+} from "@/api/admission/applicant/types";
 import { useAdmissionApplicantAuthStore } from "@/stores/universalAuth";
 import { AdmissionApplicantAPI } from "@/api/admission/applicant/api";
-import { useQuery } from "@tanstack/vue-query";
+import { useToast } from "primevue/usetoast";
 
 const applicantAuth = useAdmissionApplicantAuthStore();
 const api = new AdmissionApplicantAPI(applicantAuth);
 
-const schoolExpList = reactive(
-	AttachmentList.schoolExp?.map((item, index) => {
-		const element: AttachmentData = {
-			...(item as object),
-			order: index,
-			state: 1,
-		};
-		return element;
-	})
-);
-schoolExpList.push({
-	order: schoolExpList.length,
-	state: 3,
+const attachmentList: AttachmentData[] = reactive([]);
+const schoolExpList: AttachmentDetailData[] = reactive([]);
+const examCertificateList: AttachmentDetailData[] = reactive([]);
+const otherList: AttachmentDetailData[] = reactive([]);
+
+const toast = useToast();
+
+const isLoading = reactive({
+	delete: false,
+	create: false,
+	edit: false,
+	fetch: false,
 });
 
-const examCertificateList = reactive(
-	AttachmentList.examScore?.map((item, index) => {
-		const element: AttachmentData = {
-			...(item as object),
-			order: index,
-			state: 1,
-		};
-		return element;
-	})
-);
-examCertificateList.push({
-	order: examCertificateList.length,
-	state: 3,
+const fetchResponse = reactive({
+	success: false,
+	message: "" as string | [],
 });
 
-const otherList = reactive(
-	AttachmentList.other?.map((item, index) => {
-		const element: AttachmentData = {
-			...(item as object),
-			order: index,
-			state: 1,
-		};
-		return element;
-	})
-);
-otherList.push({
-	order: otherList.length,
-	state: 3,
-});
-// FIXME:
-// 判斷總共有幾個attachment 並對個別attachment宣告一個state去切換該用review state 或是 edit state 或是 create state
-// 方法：api讀進來，如果後端沒有宣告state的話跑回圈並對每個attachment新增 { state: 1 or 2 or 3 or 4 }
-// 目前沒有api，先寫死 school 和 exam 和 other
 const editToReview = (index: number, category: string) => {
 	switch (category) {
 		case "就學經歷":
@@ -257,4 +257,235 @@ const createToEdit = (index: number, category: string) => {
 			break;
 	}
 };
+
+const deleteFile = async (fileId: number) => {
+	try {
+		return await api.deleteFile(fileId);
+	} catch (e: any) {
+		if (e instanceof InvalidSessionError) {
+			console.error(
+				"Session has already expired while changing password"
+			);
+			return;
+		}
+	}
+};
+
+const createFile = async (body: object) => {
+	try {
+		return await api.createFile(body);
+	} catch (e: any) {
+		if (e instanceof InvalidSessionError) {
+			console.error(
+				"Session has already expired while changing password"
+			);
+			return;
+		}
+	}
+};
+
+const editFile = async (body: object, fileId: number) => {
+	try {
+		return await api.editFile(body, fileId);
+	} catch (e: any) {
+		if (e instanceof InvalidSessionError) {
+			console.error(
+				"Session has already expired while changing password"
+			);
+			return;
+		}
+	}
+};
+
+const handleDelete = async (fileId: number) => {
+	isLoading.delete = true;
+
+	const response = deleteFile(fileId);
+
+	await response.then((res) => {
+		if (res?.success !== undefined && res?.message !== undefined) {
+			fetchResponse.success = toRaw(res.success);
+			fetchResponse.message = toRaw(res.message);
+		}
+
+		isLoading.delete = false;
+		isLoading.fetch = true;
+
+		if (fetchResponse.success) {
+			toast.add({
+				severity: "success",
+				summary: "Success",
+				detail: fetchResponse.message,
+				life: 3000,
+			});
+		} else {
+			toast.add({
+				severity: "error",
+				summary: "Error",
+				detail: fetchResponse.message,
+				life: 5000,
+			});
+		}
+
+		isLoading.fetch = true;
+	});
+};
+
+const handleCreate = async (body: object) => {
+	isLoading.create = true;
+
+	const response = createFile(body);
+
+	await response.then((res) => {
+		if (res?.success !== undefined && res?.message !== undefined) {
+			fetchResponse.success = toRaw(res.success);
+			fetchResponse.message = toRaw(res.message);
+		}
+
+		isLoading.create = false;
+		isLoading.fetch = true;
+
+		if (fetchResponse.success) {
+			toast.add({
+				severity: "success",
+				summary: "Success",
+				detail: fetchResponse.message,
+				life: 3000,
+			});
+		} else {
+			toast.add({
+				severity: "error",
+				summary: "Error",
+				detail: fetchResponse.message,
+				life: 5000,
+			});
+		}
+
+		isLoading.fetch = true;
+	});
+};
+
+const handleEdit = async (body: object, fileId: number) => {
+	isLoading.edit = true;
+
+	const response = editFile(body, fileId);
+
+	await response.then((res) => {
+		if (res?.success !== undefined && res?.message !== undefined) {
+			fetchResponse.success = toRaw(res.success);
+			fetchResponse.message = toRaw(res.message);
+		}
+
+		isLoading.edit = false;
+		isLoading.fetch = true;
+
+		if (fetchResponse.success) {
+			toast.add({
+				severity: "success",
+				summary: "Success",
+				detail: fetchResponse.message,
+				life: 3000,
+			});
+		} else {
+			toast.add({
+				severity: "error",
+				summary: "Error",
+				detail: fetchResponse.message,
+				life: 5000,
+			});
+		}
+
+		isLoading.fetch = true;
+	});
+};
+
+const splitThreeList = async (fullList: AttachmentData[]) => {
+	fullList.map((item) => {
+		switch (item.category) {
+			case "就學經歷": {
+				schoolExpList.push({
+					...item,
+					order: schoolExpList.length,
+					state: 1,
+				});
+				break;
+			}
+			case "考試與檢定分數": {
+				examCertificateList.push({
+					...item,
+					order: examCertificateList.length,
+					state: 1,
+				});
+				break;
+			}
+			default: {
+				otherList.push({
+					...item,
+					order: otherList.length,
+					state: 1,
+				});
+			}
+		}
+	});
+
+	schoolExpList.push({
+		order: schoolExpList.length,
+		state: 3,
+	});
+
+	examCertificateList.push({
+		order: examCertificateList.length,
+		state: 3,
+	});
+
+	otherList.push({
+		order: otherList.length,
+		state: 3,
+	});
+};
+
+const clearAllList = () => {
+	attachmentList.splice(0, attachmentList.length);
+	schoolExpList.splice(0, schoolExpList.length);
+	examCertificateList.splice(0, examCertificateList.length);
+	otherList.splice(0, otherList.length);
+};
+
+const getFileList = async () => {
+	return await api.getFileList();
+};
+
+onMounted(async () => {
+	const response = getFileList();
+	await response.then((res) => {
+		res.map((item) => {
+			if (item) {
+				attachmentList.push(item);
+			}
+		});
+	});
+
+	splitThreeList(toRaw(attachmentList));
+});
+
+watch(
+	() => isLoading.fetch,
+	async () => {
+		const response = getFileList();
+
+		clearAllList();
+
+		await response.then((res) => {
+			res.map((item) => {
+				if (item) {
+					attachmentList.push(item);
+				}
+			});
+		});
+
+		isLoading.fetch = false;
+
+		splitThreeList(toRaw(attachmentList));
+	}
+);
 </script>

@@ -41,13 +41,29 @@ export interface Tags {
 }
 
 export interface AttachmentData {
-	itemName?: string;
-	fileName?: string;
-	fileUrl?: string;
+	id: number;
+	category: string;
+	name: string;
+	filepath: {
+		url: string | any;
+	};
+	r_applicants_r_program_id: number;
+	created_at: string;
+	updated_at: string;
+}
+
+export interface AttachmentDetailData {
+	id?: number;
+	category?: string;
+	name?: string;
+	filepath?: {
+		url?: string | any;
+	};
+	r_applicants_r_program_id?: number;
+	created_at?: string;
+	updated_at?: string;
 	order?: number;
 	state?: number;
-	schoolName?: string;
-	score?: number | string;
 }
 
 export interface AdmissionApplicantGetProgramResponse {
@@ -97,7 +113,9 @@ export interface AdmissionApplicantGetFileListResponse {
 	id: number;
 	category: string;
 	name: string;
-	filepath: object;
+	filepath: {
+		url: string | any;
+	};
 	r_applicants_r_program_id: number;
 	created_at: string;
 	updated_at: string;

@@ -1,6 +1,7 @@
 import type { AuthStore } from "@/stores/universalAuth";
 import type {
 	AdmissionApplicantGetProgramResponse,
+	AdmissionApplicantGetFileListResponse,
 	AdmissionApplicantGenericResponse,
 	AdmissionApplicantRecLetListRes,
 } from "./types";
@@ -33,6 +34,77 @@ export class AdmissionApplicantAPI extends GenericAPI {
 	// 	console.log(data);
 	// 	return data.data.programs;
 	// }
+
+	async getFileList(): Promise<AdmissionApplicantGetFileListResponse[]> {
+		const data: APIGenericResponse = await this.instance.get(
+			"admission/applicant/file"
+		);
+
+		if (data.error === true) throw new Error("Failed to fetch file list");
+
+		return data.data;
+	}
+
+	async deleteFile(
+		fileId: number
+	): Promise<AdmissionApplicantGenericResponse> {
+		const data: APIGenericResponse = await this.instance.delete(
+			`admission/applicant/file/${fileId}`
+		);
+
+		if (data.error !== false && data.message !== undefined) {
+			return {
+				success: false,
+				message: data.message,
+			};
+		}
+
+		return {
+			success: true,
+			message: data.message,
+		};
+	}
+
+	async createFile(body: object): Promise<AdmissionApplicantGenericResponse> {
+		const data: APIGenericResponse = await this.instance.post(
+			"admission/applicant/file",
+			body
+		);
+
+		if (data.error !== false && data.message !== undefined) {
+			return {
+				success: false,
+				message: data.message,
+			};
+		}
+
+		return {
+			success: true,
+			message: data.message,
+		};
+	}
+
+	async editFile(
+		body: object,
+		fileId: number
+	): Promise<AdmissionApplicantGenericResponse> {
+		const data: APIGenericResponse = await this.instance.patch(
+			`admission/applicant/file/${fileId}`,
+			body
+		);
+
+		if (data.error !== false && data.message !== undefined) {
+			return {
+				success: false,
+				message: data.message,
+			};
+		}
+
+		return {
+			success: true,
+			message: data.message,
+		};
+	}
 
 	async changePassword(
 		body: object

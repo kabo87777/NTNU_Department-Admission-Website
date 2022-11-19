@@ -130,9 +130,9 @@
 <script setup lang="ts">
 import { reactive, toRaw } from "vue";
 import { useRouter } from "vue-router";
-import ReviewState from "@/components/attachmentStates/reviewState.vue";
-import EditState from "@/components/attachmentStates/editState.vue";
-import CreateState from "@/components/attachmentStates/createState.vue";
+import ReviewState from "@/components/attachmentStates/ReviewState.vue";
+import EditState from "@/components/attachmentStates/EditState.vue";
+import CreateState from "@/components/attachmentStates/CreateState.vue";
 import ParagraphDivider from "@/styles/paragraphDividerApplicant.vue";
 import { AttachmentData } from "@/api/recruitment/applicant/types";
 import { useRecruitmentApplicantAuthStore } from "@/stores/universalAuth";
