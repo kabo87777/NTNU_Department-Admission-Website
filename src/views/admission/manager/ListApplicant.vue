@@ -8,7 +8,7 @@
 		</template>
 
 		<Column field="id">
-			<template #header>{{ $t("申請者帳號") }}</template>
+			<template #header>{{ $t("ID") }}</template>
 		</Column>
 
 		<Column field="name">
@@ -135,7 +135,7 @@ import {
 	useAdmissionReviewerAuthStore,
 } from "@/stores/universalAuth";
 import { AdmissionAdminAPI } from "@/api/admission/admin/api";
-import { useQuery } from "@tanstack/vue-query";
+import { useMutation, useQuery } from "@tanstack/vue-query";
 import { InvalidSessionError } from "@/api/error";
 import { router } from "@/router";
 import { AdmissionAdminApplicantsListResponse } from "@/api/admission/admin/types";
@@ -196,6 +196,7 @@ const modalVisible = ref(false);
 const modalData = ref<modalForm>({} as modalForm);
 
 const openModal = (applicantData: AdmissionAdminApplicantsListResponse) => {
+	console.log(applicantData);
 	// Pick properties we need for form
 	const formData: modalForm = (({
 		id,
@@ -226,4 +227,11 @@ const printProgramID = () => console.debug("Program ID: " + store.program?.id);
 const getTableItemQty = computed(() => {
 	return tableData.value ? tableData.value.length : 0;
 });
+
+// const updateApplicant = useMutation({
+// 	mutationFn: (applicantID: number)=>{
+// 		return api.updateApplicantData(applicantID, {})
+
+// 	}
+// })
 </script>
