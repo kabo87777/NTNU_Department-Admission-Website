@@ -80,3 +80,31 @@ export interface AdmissionReviewerApplicantInfoResponse {
 	updated_at: string;
 	isDisabled: boolean;
 }
+
+export interface AdmissionReviewerProgramGradingResponse {
+	docs_weight: number;
+	oral_weight: number;
+	docs_grade_name_1: string;
+	docs_grade_name_2: string;
+	docs_grade_name_3: string;
+	docs_grade_weight_1: number;
+	docs_grade_weight_2: number;
+	docs_grade_weight_3: number;
+	oral_grade_name_1: string;
+	oral_grade_name_2: string;
+	oral_grade_name_3: string;
+	oral_grade_weight_1: number;
+	oral_grade_weight_2: number;
+	oral_grade_weight_3: number;
+	s_program_id: number;
+	created_at: string;
+	updated_at: string;
+	docs_grade_name_4: string | null;
+	docs_grade_name_5: string | null;
+	oral_grade_name_4: string | null;
+	oral_grade_name_5: string | null;
+	docs_grade_weight_4: number | null;
+	docs_grade_weight_5: number | null;
+	oral_grade_weight_4: number | null;
+	oral_grade_weight_5: number | null;
+}

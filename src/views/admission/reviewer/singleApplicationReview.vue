@@ -36,7 +36,7 @@
 		<div class="bigBlueDivider"></div>
 		<div class="flex mt-16px">
 			<div class="text-xl mt-5px">
-				{{ $t("學習歷程") }} ({{ learningExProportion }}%)
+				{{ score1Title }} ({{ score1Proportion }}%)
 			</div>
 			<InputNumber
 				inputId="integeronly"
@@ -44,7 +44,7 @@
 				class="ml-34px !w-132px !h-44px"
 			/>
 			<div class="text-xl ml-125px mt-5px">
-				{{ $t("發展潛能") }} ({{ devPotentialProportion }}%)
+				{{ score2Title }} ({{ score2Proportion }}%)
 			</div>
 			<InputNumber
 				inputId="integeronly"
@@ -52,7 +52,7 @@
 				class="ml-34px !w-132px !h-44px"
 			/>
 			<div class="text-xl ml-125px mt-5px">
-				{{ $t("學習潛力") }} ({{ learnPotentialProportion }}%)
+				{{ score3Title }} ({{ score3Proportion }}%)
 			</div>
 			<InputNumber
 				inputId="integeronly"
@@ -62,7 +62,7 @@
 		</div>
 		<div class="flex mt-16px">
 			<div class="text-xl mt-5px">
-				{{ $t("評分項目四") }} ({{ score4Proportion }}%)
+				{{ score4Title }} ({{ score4Proportion }}%)
 			</div>
 			<InputNumber
 				inputId="integeronly"
@@ -70,7 +70,7 @@
 				class="ml-34px !w-132px !h-44px"
 			/>
 			<div class="text-xl ml-125px mt-5px">
-				{{ $t("評分項目五") }} ({{ score5Proportion }}%)
+				{{ score5Title }} ({{ score5Proportion }}%)
 			</div>
 			<InputNumber
 				inputId="integeronly"
@@ -151,11 +151,16 @@ const newApplicantGrade = useMutation(async (newProgramData: any) => {
 const accessChecked = ref();
 const disable = computed(() => !accessChecked.value);
 const accessReason = ref("");
-const learningExProportion = ref(30);
-const devPotentialProportion = ref(30);
-const learnPotentialProportion = ref(40);
+const score1Proportion = ref(30);
+const score2Proportion = ref(30);
+const score3Proportion = ref(40);
 const score4Proportion = ref(0);
 const score5Proportion = ref(0);
+const score1Title = ref("");
+const score2Title = ref("");
+const score3Title = ref("");
+const score4Title = ref("評分項目四");
+const score5Title = ref("評分項目五");
 const inputScore_1 = ref(0);
 const inputScore_2 = ref(0);
 const inputScore_3 = ref(0);
@@ -164,9 +169,9 @@ const inputScore_5 = ref(0);
 const name = ref("");
 const total_score = computed(() => {
 	return (
-		(inputScore_1!.value! * learningExProportion.value) / 100 +
-		(inputScore_2!.value! * devPotentialProportion.value) / 100 +
-		(inputScore_3!.value! * learnPotentialProportion.value) / 100 +
+		(inputScore_1!.value! * score1Proportion.value) / 100 +
+		(inputScore_2!.value! * score2Proportion.value) / 100 +
+		(inputScore_3!.value! * score3Proportion.value) / 100 +
 		(inputScore_4!.value! * score4Proportion.value) / 100 +
 		(inputScore_5!.value! * score5Proportion.value) / 100
 	);
@@ -229,6 +234,50 @@ const { data: applicantInfo } = useQuery(
 	{
 		onSuccess: (data) => {
 			name.value = data![0].name;
+		},
+	}
+);
+
+const { data: programGrading } = useQuery(
+	["programGrading"],
+	async () => {
+		try {
+			return await api.getProgramGrading(
+				store.admissionReviewerProgram!.id
+			);
+		} catch (e: any) {
+			if (e instanceof InvalidSessionError) {
+				// FIXME: show session expiry notification??
+				// Why are we even here in the first place?
+				// MainContainer should have checked already.
+				console.error(
+					"Session has already expired while querying applicantInfo"
+				);
+				router.push("/");
+				return;
+			}
+		}
+	},
+	{
+		onSuccess: (data) => {
+			score1Title.value = data!.docs_grade_name_1;
+			score2Title.value = data!.docs_grade_name_2;
+			score3Title.value = data!.docs_grade_name_3;
+			if (data!.docs_grade_name_4) {
+				score4Title.value = data!.docs_grade_name_4;
+			}
+			if (data!.docs_grade_name_5) {
+				score5Title.value = data!.docs_grade_name_5;
+			}
+			score1Proportion.value = data!.docs_grade_weight_1;
+			score2Proportion.value = data!.docs_grade_weight_2;
+			score3Proportion.value = data!.docs_grade_weight_3;
+			if (data!.docs_grade_weight_4) {
+				score4Proportion.value = data!.docs_grade_weight_4;
+			}
+			if (data!.docs_grade_weight_5) {
+				score5Proportion.value = data!.docs_grade_weight_5;
+			}
 		},
 	}
 );

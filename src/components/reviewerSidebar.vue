@@ -127,7 +127,7 @@
 
 <script setup lang="ts">
 import "primevue/resources/primevue.min.css";
-import { ref, watchEffect } from "vue";
+import { ref, watch, watchEffect } from "vue";
 import Dropdown from "primevue/dropdown";
 import Button from "primevue/button";
 import { RouterLink, useRouter } from "vue-router";
@@ -136,9 +136,11 @@ import { AdmissionReviewerAPI } from "@/api/admission/reviewer/api";
 import { useQuery } from "@tanstack/vue-query";
 import { InvalidSessionError } from "@/api/error";
 import { AdmissionReviewerProgramListResponse } from "@/api/admission/reviewer/types";
+import { useGlobalStore } from "@/stores/globalStore";
 
 const reviewerAuth = useAdmissionReviewerAuthStore();
 const api = new AdmissionReviewerAPI(reviewerAuth);
+const store = useGlobalStore();
 
 const {
 	isLoading,
@@ -168,8 +170,17 @@ const router = useRouter();
 const selectedProgram = ref<AdmissionReviewerProgramListResponse>();
 watchEffect(() => {
 	if (programs.value && programs.value.length > 1) {
+		const temp = programs.value[0];
+		store.updateadmissionReviewerProgramData(temp);
+		// selectedProgram.value=toRaw(programs.value[0])
 		selectedProgram.value = programs.value[0];
 	}
+});
+
+watch(selectedProgram, (selection) => {
+	store.updateadmissionReviewerProgramData(selectedProgram!.value!);
+
+	console.debug("Selected program:\n" + JSON.stringify(selection, null, 2));
 });
 
 const generateOptions = (data: any) => data.category + data.name;

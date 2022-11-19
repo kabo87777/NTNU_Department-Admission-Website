@@ -17,6 +17,22 @@ export interface RecruitmentManagerAuthResponse {
 	image: any | null;
 }
 
+export interface RecruitmentReviewerProgramListResponse {
+	id: number;
+	category: string;
+	name: string;
+	recruit_start_date: string;
+	recruit_end_date: string;
+	review_start_date: string;
+	review_end_date: string;
+	created_at: string;
+	updated_at: string;
+	applicant_required_info: null;
+	applicant_required_file: null;
+	reviewer_required_info: null;
+	reviewer_required_file: null;
+}
+
 // TODO: disannotation while backend finished reviewer get program API
 // export interface RecruitmentReviewerApplicantListResponse {
 // 	id: number;

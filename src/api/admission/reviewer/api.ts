@@ -4,6 +4,7 @@ import type {
 	AdmissionReviewerProgramListResponse,
 	AdmissionReviewerApplicantGradeResponse,
 	AdmissionReviewerApplicantInfoResponse,
+	AdmissionReviewerProgramGradingResponse,
 } from "./types";
 import type { APIGenericResponse } from "@/api/types";
 
@@ -58,6 +59,19 @@ export class AdmissionReviewerAPI extends GenericAPI {
 
 		if (data.error === true || typeof data.data === "undefined")
 			throw new Error("Failed to fetch ApplicantInfo");
+
+		return data.data;
+	}
+
+	async getProgramGrading(
+		programID: number
+	): Promise<AdmissionReviewerProgramGradingResponse> {
+		const data: APIGenericResponse = await this.instance.get(
+			`/admission/reviewer/program/${programID}/grading`
+		);
+
+		if (data.error === true || typeof data.data === "undefined")
+			throw new Error("Failed to fetch ProgramGrading");
 
 		return data.data;
 	}
