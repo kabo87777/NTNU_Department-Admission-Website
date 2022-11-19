@@ -157,7 +157,7 @@ const progressValue = ref(50);
 // TODO: 連接API
 const data_list = ref([
 	{
-		id: "1000",
+		id: "0",
 		name: "Aaa",
 		score_1: 25,
 		score_2: 25,
@@ -167,7 +167,7 @@ const data_list = ref([
 		access_reason: "",
 	},
 	{
-		id: "1001",
+		id: "1",
 		name: "Bbb",
 		score_1: 25,
 		score_2: 25,
@@ -177,7 +177,7 @@ const data_list = ref([
 		access_reason: "",
 	},
 	{
-		id: "1002",
+		id: "2",
 		name: "Ccc",
 		score_1: 25,
 		score_2: 25,
@@ -187,7 +187,7 @@ const data_list = ref([
 		access_reason: "great student",
 	},
 	{
-		id: "1003",
+		id: "3",
 		name: "Ddd",
 		score_1: 25,
 		score_2: 25,
@@ -197,7 +197,7 @@ const data_list = ref([
 		access_reason: "",
 	},
 	{
-		id: "1004",
+		id: "4",
 		name: "Eee",
 		score_1: 25,
 		score_2: 25,
@@ -207,7 +207,7 @@ const data_list = ref([
 		access_reason: "nice",
 	},
 	{
-		id: "1005",
+		id: "5",
 		name: "fff",
 		score_1: 25,
 		score_2: 25,
@@ -217,7 +217,7 @@ const data_list = ref([
 		access_reason: "",
 	},
 	{
-		id: "1006",
+		id: "6",
 		name: "Ggg",
 		score_1: 25,
 		score_2: 25,
@@ -227,7 +227,7 @@ const data_list = ref([
 		access_reason: "",
 	},
 	{
-		id: "1007",
+		id: "7",
 		name: "Hhh",
 		score_1: 25,
 		score_2: 25,
@@ -237,7 +237,7 @@ const data_list = ref([
 		access_reason: "",
 	},
 	{
-		id: "1008",
+		id: "8",
 		name: "Iii",
 		score_1: 25,
 		score_2: 25,
@@ -247,7 +247,7 @@ const data_list = ref([
 		access_reason: "",
 	},
 	{
-		id: "1009",
+		id: "9",
 		name: "Jjj",
 		score_1: 25,
 		score_2: 25,

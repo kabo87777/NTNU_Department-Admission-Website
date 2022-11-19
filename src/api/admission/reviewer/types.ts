@@ -52,4 +52,31 @@ export interface AdmissionReviewerApplicantGradeResponse {
 	isOralGraded: boolean | null;
 	created_at: string;
 	updated_at: string;
+	docs_grade_4: number;
+	docs_grade_5: number;
+	oral_grade_4: number;
+	oral_grade_5: number;
+}
+
+export interface AdmissionReviewerApplicantInfoResponse {
+	id: number;
+	name: string;
+	national_id: string;
+	admission_id: string;
+	sex: string;
+	birth: string;
+	day_phone: string;
+	night_phone: string;
+	mobile_phone: string;
+	household_address: string;
+	household_zipcode: string;
+	communicate_address: string;
+	communicate_zipcode: string;
+	graduated_school: string;
+	graduated_major: string;
+	isSameDept: boolean;
+	s_applicant_id: number;
+	created_at: string;
+	updated_at: string;
+	isDisabled: boolean;
 }

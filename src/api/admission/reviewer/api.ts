@@ -3,6 +3,7 @@ import { GenericAPI } from "@/api/api";
 import type {
 	AdmissionReviewerProgramListResponse,
 	AdmissionReviewerApplicantGradeResponse,
+	AdmissionReviewerApplicantInfoResponse,
 } from "./types";
 import type { APIGenericResponse } from "@/api/types";
 
@@ -22,8 +23,8 @@ export class AdmissionReviewerAPI extends GenericAPI {
 		return data.data;
 	}
 
-	async getApplicantGrade(
-		applicantID: number
+	async getSingleApplicantGrade(
+		applicantID: string | string[]
 	): Promise<AdmissionReviewerApplicantGradeResponse> {
 		const data: APIGenericResponse = await this.instance.get(
 			`/admission/reviewer/applicant/${applicantID}/grade`
@@ -32,7 +33,31 @@ export class AdmissionReviewerAPI extends GenericAPI {
 		if (data.error === true || typeof data.data === "undefined")
 			throw new Error("Failed to fetch ApplicantGrade");
 
-		console.log(data.data);
+		return data.data;
+	}
+
+	async updateSingleApplicantGrade(
+		applicantID: string | string[],
+		grade: any
+	): Promise<any> {
+		const response: APIGenericResponse = await this.instance.patch(
+			`/admission/reviewer/applicant/${applicantID}`,
+			grade
+		);
+
+		if (response.error === true)
+			throw new Error("Failed to update ApplicantGrade");
+	}
+
+	async getSingleApplicantInfo(
+		applicantID: string | string[]
+	): Promise<AdmissionReviewerApplicantInfoResponse[]> {
+		const data: APIGenericResponse = await this.instance.get(
+			`/admission/reviewer/applicant/${applicantID}/info`
+		);
+
+		if (data.error === true || typeof data.data === "undefined")
+			throw new Error("Failed to fetch ApplicantInfo");
 
 		return data.data;
 	}
