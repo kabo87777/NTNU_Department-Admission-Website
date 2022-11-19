@@ -22,11 +22,19 @@
 		<Column>
 			<template #header>{{ $t("操作") }}</template>
 			<template #body="slotProps">
-				<Button
-					icon="pi pi-pencil"
-					class="p-button-outlined p-button-success"
-					@click="openModal(slotProps.data)"
-				></Button>
+				<span class="flex gap-x-3">
+					<!-- Edit button -->
+					<Button
+						icon="pi pi-pencil"
+						class="p-button-outlined p-button-success"
+						@click="openModal(slotProps.data)"
+					></Button>
+					<!-- Delete button -->
+					<Button
+						icon="pi pi-times"
+						class="p-button-outlined p-button-danger"
+					/>
+				</span>
 			</template>
 		</Column>
 
