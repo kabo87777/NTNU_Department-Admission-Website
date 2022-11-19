@@ -125,3 +125,10 @@ export interface AdmissionAdminApplicantsListResponse {
 	s_program_id: number;
 	application_stage: null;
 }
+
+export interface AdmAdminEditApplicantRequest {
+	id: number;
+	name: string;
+	email: string;
+	password?: string;
+}

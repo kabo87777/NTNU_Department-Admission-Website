@@ -4,6 +4,7 @@ import type {
 	AdmAdminReviewerListResponse,
 	AdmissionAdminApplicantsListResponse,
 	AdmAdminReviewerRelatedProgramResponse,
+	AdmAdminEditApplicantRequest,
 } from "./types";
 import type { APIGenericResponse } from "@/api/types";
 import { GenericAPI } from "@/api/api";
@@ -57,6 +58,45 @@ export class AdmissionAdminAPI extends GenericAPI {
 		if (data.error === true || typeof data.data.applicants === "undefined")
 			throw new Error("Failed to fetch applicant list");
 		return data.data.applicants;
+	}
+	async importApplicantsXlsx(programID: number) {
+		const response: APIGenericResponse = await this.instance.post(
+			`/admission/admin/program/${programID}/import`
+		);
+		if (
+			response.error === true ||
+			typeof response.data.totalImport === "undefined"
+		)
+			throw new Error("Failed to import applicant accounts.");
+
+		return response;
+	}
+
+	async deleteApplicant(applicantID: number) {
+		const response: APIGenericResponse = await this.instance.delete(
+			`/admission/admin/applicant/${applicantID}`
+		);
+
+		if (response.error === true)
+			throw new Error(
+				`Failed to delete applicant account: ${applicantID}`
+			);
+
+		return response;
+	}
+
+	async updateApplicantData(
+		applicantID: number,
+		data: AdmAdminEditApplicantRequest
+	) {
+		const response: APIGenericResponse = await this.instance.patch(
+			`/admission/admin/applicant/${applicantID}`,
+			data
+		);
+		if (response.error === true)
+			throw new Error(`Failed to update applicant: ${applicantID}`);
+
+		return response;
 	}
 
 	async updateProgramData(
