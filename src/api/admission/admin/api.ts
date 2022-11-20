@@ -59,9 +59,20 @@ export class AdmissionAdminAPI extends GenericAPI {
 			throw new Error("Failed to fetch applicant list");
 		return data.data.applicants;
 	}
-	async importApplicantsXlsx(programID: number) {
+	async postApplicantsXlsx(programID: number, data: FormData) {
+		console.log("POST");
 		const response: APIGenericResponse = await this.instance.post(
-			`/admission/admin/program/${programID}/import`
+			`/admission/admin/program/${programID}/import`,
+			data,
+			{
+				onUploadProgress(progressEvent) {
+					// TODO: Pass PrimeVue ProgressBar argument
+					console.log(progressEvent.progress);
+				},
+				headers: {
+					"Content-Type": "multipart/form-data",
+				},
+			}
 		);
 		if (
 			response.error === true ||

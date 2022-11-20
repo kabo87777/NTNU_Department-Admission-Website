@@ -1,7 +1,19 @@
 <template>
 	<h1 class="text-4xl font-bold">{{ $t("申請者帳號設定") }}</h1>
-	<Button @click="printProgramID">Program ID</Button>
 	<Divider />
+
+	<div>
+		<h3 class="inline font-black">匯入申請者帳號</h3>
+		<FileUpload
+			mode="basic"
+			:choose-label="$t('選擇檔案')"
+			accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+			:custom-upload="true"
+			@uploader="importApplicantCallback"
+		>
+		</FileUpload>
+	</div>
+
 	<DataTable :value="tableData" :loading="isLoading">
 		<template #empty>
 			<h2>{{ $t("尚無申請者帳號") }}</h2>
@@ -33,6 +45,7 @@
 					<Button
 						icon="pi pi-times"
 						class="p-button-outlined p-button-danger"
+						@click="deleteApplicant(slotProps.data.id)"
 					/>
 				</span>
 			</template>
@@ -85,7 +98,7 @@
 					<label for="password" class="block font-black">{{
 						$t("密碼")
 					}}</label>
-					<!--  -->
+
 					<Password
 						class="mt-1 w-full"
 						v-model="modalData.password"
@@ -140,11 +153,16 @@ import { InvalidSessionError } from "@/api/error";
 import { router } from "@/router";
 import { AdmissionAdminApplicantsListResponse } from "@/api/admission/admin/types";
 import { useGlobalStore } from "@/stores/globalStore";
+import FileUpload, { FileUploadBeforeUploadEvent } from "primevue/fileupload";
+import { FileUploadUploaderEvent } from "primevue/fileupload";
+import ProgressBar from "primevue/progressbar";
 
 const store = useGlobalStore();
 const adminAuth = useAdmissionAdminAuthStore();
 const api = new AdmissionAdminAPI(adminAuth);
-const tableData = ref<AdmissionAdminApplicantsListResponse[]>();
+const tableData = ref<AdmissionAdminApplicantsListResponse[]>(
+	[] as AdmissionAdminApplicantsListResponse[]
+);
 
 // NOTE: Copy and modified from SideBar.vue
 const { isLoading, data: applicants } = useQuery(
@@ -228,10 +246,28 @@ const getTableItemQty = computed(() => {
 	return tableData.value ? tableData.value.length : 0;
 });
 
-// const updateApplicant = useMutation({
-// 	mutationFn: (applicantID: number)=>{
-// 		return api.updateApplicantData(applicantID, {})
+const { mutate: uploadApplicantImport } = useMutation({
+	mutationFn: (data: FormData) => {
+		if (!store.program) throw new Error("Invalid state: program");
+		console.log("mutate");
+		return api.postApplicantsXlsx(store.program.id, data);
+	},
+});
 
-// 	}
-// })
+const { mutate: deleteApplicant } = useMutation({
+	mutationFn: (id: number) => {
+		return api.deleteApplicant(id);
+	},
+	onError: () => {
+		// TODO: Show error dialog
+	},
+});
+
+const importApplicantCallback = (event: FileUploadUploaderEvent) => {
+	console.log(toRaw(event.files));
+	const file = Array.isArray(event.files) ? event.files[0] : event.files;
+	const formdata = new FormData();
+	formdata.append("file", file);
+	uploadApplicantImport(formdata);
+};
 </script>
