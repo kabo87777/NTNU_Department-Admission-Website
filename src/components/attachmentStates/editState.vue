@@ -103,7 +103,6 @@
 						border: #bdbdbd;
 					"
 					mode="basic"
-					name="attachment"
 					:customUpload="true"
 					@uploader="handleUpload"
 					:maxFileSize="5000000"
@@ -227,7 +226,7 @@ const handleCreate = () => {
 		category: props.category,
 		filepath: file.fileUrl,
 	};
-	console.log(body);
+
 	emit("create", body);
 };
 </script>

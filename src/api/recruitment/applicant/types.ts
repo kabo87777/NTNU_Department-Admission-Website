@@ -81,7 +81,9 @@ export interface RecruitmentApplicantFileListResponse {
 	id: number;
 	category: string;
 	name: string;
-	filepath: object;
+	filepath: {
+		url: string | any;
+	};
 	r_applicants_r_program_id: number;
 	created_at: string;
 	updated_at: string;

@@ -164,7 +164,6 @@ import CreateState from "@/components/attachmentStates/createState.vue";
 import CorrectionState from "@/components/attachmentStates/CorrectionState.vue";
 import ParagraphDivider from "@/styles/paragraphDividerApplicant.vue";
 import {
-	AdmissionApplicantGetFileListResponse,
 	AttachmentData,
 	AttachmentDetailData,
 } from "@/api/admission/applicant/types";

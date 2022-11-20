@@ -103,7 +103,6 @@
 						border: #bdbdbd;
 					"
 					mode="basic"
-					name="attachment"
 					:customUpload="true"
 					@uploader="handleUpload"
 					:maxFileSize="5000000"
@@ -211,6 +210,7 @@ const dynamicClass = (): string => {
 
 const handleUpload = (event: any) => {
 	//event.files == files to upload
+	console.log("check here");
 	file.fileUrl = event.files[0].objectURL;
 	file.name = event.files[0].name;
 	file.size = event.files[0].size;
