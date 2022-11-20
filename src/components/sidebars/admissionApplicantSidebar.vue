@@ -42,144 +42,157 @@
 			</Button>
 		</router-link>
 
-		<div class="flex mt-32px">
-			<div class="sidebarYellowDivider"></div>
-			<div class="mt-[-8px] ml-8px text-[#736028] text-20px font-bold">
-				{{ $t("資料填寫、上傳") }}
+		<div v-if="isProgramAvailable">
+			<div class="flex mt-32px">
+				<div class="sidebarYellowDivider"></div>
+				<div
+					class="mt-[-8px] ml-8px text-[#736028] text-20px font-bold"
+				>
+					{{ $t("資料填寫、上傳") }}
+				</div>
 			</div>
-		</div>
 
-		<router-link
-			:to="{
-				name: 'AdmissionApplicantBasicInfo',
-			}"
-			custom
-			v-slot="{ navigate }"
-		>
-			<Button
-				class="p-button-secondary p-button-text !ml-24px !mt-16px !w-336px !h-48px !hover:bg-[#ECEDED] !rounded-[8px]"
-				@click="navigate"
-				role="link"
+			<router-link
+				:to="{
+					name: 'AdmissionApplicantBasicInfo',
+				}"
+				custom
+				v-slot="{ navigate }"
 			>
-				<i
-					class="pi pi-user"
-					style="font-size: 1.3rem; color: #101820"
-				/>
-				<span
-					class="text-left tracking-3px ml-4 font-bold text-xl text-[#2D2926]"
+				<Button
+					class="p-button-secondary p-button-text !ml-24px !mt-16px !w-336px !h-48px !hover:bg-[#ECEDED] !rounded-[8px]"
+					@click="navigate"
+					role="link"
 				>
-					{{ $t("基本資料") }}
-				</span>
-				<div class="mb-28px">
-					<CompletedTag v-if="tags.basicInfo === 'completed'" />
-					<IncompleteTag
-						v-else-if="tags.basicInfo === 'incompleted'"
+					<i
+						class="pi pi-user"
+						style="font-size: 1.3rem; color: #101820"
 					/>
-					<UnableTag v-else-if="tags.basicInfo === 'unable'" />
-				</div>
-			</Button>
-		</router-link>
+					<span
+						class="text-left tracking-3px ml-4 font-bold text-xl text-[#2D2926]"
+					>
+						{{ $t("基本資料") }}
+					</span>
+					<div class="mb-28px">
+						<CompletedTag v-if="tags.basicInfo === 'completed'" />
+						<IncompleteTag
+							v-else-if="tags.basicInfo === 'incompleted'"
+						/>
+						<UnableTag v-else-if="tags.basicInfo === 'unable'" />
+					</div>
+				</Button>
+			</router-link>
 
-		<router-link
-			:to="{
-				name: 'AdmissionApplicantAttachment',
-			}"
-			custom
-			v-slot="{ navigate }"
-		>
-			<Button
-				class="p-button-secondary p-button-text !ml-24px !mt-8px !w-336px !h-48px !hover:bg-[#ECEDED] !rounded-[8px]"
-				@click="navigate"
-				role="link"
+			<router-link
+				:to="{
+					name: 'AdmissionApplicantAttachment',
+				}"
+				custom
+				v-slot="{ navigate }"
 			>
-				<i
-					class="pi pi-book"
-					style="font-size: 1.3rem; color: #101820"
-				/>
-				<span
-					class="text-left tracking-3px ml-4 font-bold text-xl text-[#2D2926]"
+				<Button
+					class="p-button-secondary p-button-text !ml-24px !mt-8px !w-336px !h-48px !hover:bg-[#ECEDED] !rounded-[8px]"
+					@click="navigate"
+					role="link"
 				>
-					{{ $t("附件資料") }}
-				</span>
-				<div class="mb-28px">
-					<CompletedTag v-if="tags.attachment === 'completed'" />
-					<IncompleteTag
-						v-else-if="tags.attachment === 'incomplete'"
+					<i
+						class="pi pi-book"
+						style="font-size: 1.3rem; color: #101820"
 					/>
-					<UnableTag v-else-if="tags.attachment === 'unable'" />
-				</div>
-			</Button>
-		</router-link>
+					<span
+						class="text-left tracking-3px ml-4 font-bold text-xl text-[#2D2926]"
+					>
+						{{ $t("附件資料") }}
+					</span>
+					<div class="mb-28px">
+						<CompletedTag v-if="tags.attachment === 'completed'" />
+						<IncompleteTag
+							v-else-if="tags.attachment === 'incomplete'"
+						/>
+						<UnableTag v-else-if="tags.attachment === 'unable'" />
+					</div>
+				</Button>
+			</router-link>
 
-		<div class="flex mt-32px">
-			<div class="sidebarYellowDivider"></div>
-			<div class="mt-[-8px] ml-8px text-[#736028] text-20px font-bold">
-				{{ $t("相關作業、系統") }}
+			<div class="flex mt-32px">
+				<div class="sidebarYellowDivider"></div>
+				<div
+					class="mt-[-8px] ml-8px text-[#736028] text-20px font-bold"
+				>
+					{{ $t("相關作業、系統") }}
+				</div>
 			</div>
+
+			<router-link
+				:to="{
+					name: 'AdmissionApplicantRecommendationLetter',
+				}"
+				custom
+				v-slot="{ navigate }"
+			>
+				<Button
+					class="p-button-secondary p-button-text !ml-24px !mt-16px !w-336px !h-48px !hover:bg-[#ECEDED] !rounded-[8px]"
+					@click="navigate"
+					role="link"
+				>
+					<i
+						class="pi pi-envelope"
+						style="font-size: 1.3rem; color: #101820"
+					/>
+					<span
+						class="text-left tracking-3px ml-4 font-bold text-xl text-[#2D2926]"
+					>
+						{{ $t("推薦信作業") }}
+					</span>
+					<div class="mb-28px">
+						<CompletedTag
+							v-if="tags.recommendLetter === 'completed'"
+						/>
+						<IncompleteTag
+							v-else-if="tags.recommendLetter === 'incomplete'"
+						/>
+						<UnableTag
+							v-else-if="tags.recommendLetter === 'unable'"
+						/>
+					</div>
+				</Button>
+			</router-link>
+
+			<router-link
+				:to="{
+					name: 'AdmissionApplicantAdditionalDocs',
+				}"
+				custom
+				v-slot="{ navigate }"
+			>
+				<Button
+					class="p-button-secondary p-button-text !ml-24px !mt-8px !w-336px !h-48px !hover:bg-[#ECEDED] !rounded-[8px]"
+					@click="navigate"
+					role="link"
+				>
+					<i
+						class="pi pi-file"
+						style="font-size: 1.3rem; color: #101820"
+					/>
+					<span
+						class="text-left tracking-3px ml-4 font-bold text-xl text-[#2D2926]"
+					>
+						{{ $t("補交文件系統") }}
+					</span>
+					<div class="mb-28px">
+						<CompletedTag
+							v-if="tags.additionalDocs === 'completed'"
+						/>
+						<IncompleteTag
+							v-else-if="tags.additionalDocs === 'incomplete'"
+						/>
+						<UnableTag
+							v-else-if="tags.additionalDocs === 'unable'"
+						/>
+					</div>
+				</Button>
+			</router-link>
 		</div>
-
-		<router-link
-			:to="{
-				name: 'AdmissionApplicantRecommendationLetter',
-			}"
-			custom
-			v-slot="{ navigate }"
-		>
-			<Button
-				class="p-button-secondary p-button-text !ml-24px !mt-16px !w-336px !h-48px !hover:bg-[#ECEDED] !rounded-[8px]"
-				@click="navigate"
-				role="link"
-			>
-				<i
-					class="pi pi-envelope"
-					style="font-size: 1.3rem; color: #101820"
-				/>
-				<span
-					class="text-left tracking-3px ml-4 font-bold text-xl text-[#2D2926]"
-				>
-					{{ $t("推薦信作業") }}
-				</span>
-				<div class="mb-28px">
-					<CompletedTag v-if="tags.recommendLetter === 'completed'" />
-					<IncompleteTag
-						v-else-if="tags.recommendLetter === 'incomplete'"
-					/>
-					<UnableTag v-else-if="tags.recommendLetter === 'unable'" />
-				</div>
-			</Button>
-		</router-link>
-
-		<router-link
-			:to="{
-				name: 'AdmissionApplicantAdditionalDocs',
-			}"
-			custom
-			v-slot="{ navigate }"
-		>
-			<Button
-				class="p-button-secondary p-button-text !ml-24px !mt-8px !w-336px !h-48px !hover:bg-[#ECEDED] !rounded-[8px]"
-				@click="navigate"
-				role="link"
-			>
-				<i
-					class="pi pi-file"
-					style="font-size: 1.3rem; color: #101820"
-				/>
-				<span
-					class="text-left tracking-3px ml-4 font-bold text-xl text-[#2D2926]"
-				>
-					{{ $t("補交文件系統") }}
-				</span>
-				<div class="mb-28px">
-					<CompletedTag v-if="tags.additionalDocs === 'completed'" />
-					<IncompleteTag
-						v-else-if="tags.additionalDocs === 'incomplete'"
-					/>
-					<UnableTag v-else-if="tags.additionalDocs === 'unable'" />
-				</div>
-			</Button>
-		</router-link>
-
 		<div
 			class="bg-gray-200 bg-opacity-50 h-160px w-[100%]"
 			style="
@@ -253,7 +266,8 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, toRaw, onMounted } from "vue";
+import { addHours } from "date-fns";
+import { reactive, toRaw, onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useAdmissionApplicantAuthStore } from "@/stores/universalAuth";
 import { AdmissionApplicantAPI } from "@/api/admission/applicant/api";
@@ -275,11 +289,14 @@ const api = new AdmissionApplicantAPI(applicantAuth);
 
 const currentYear = new Date().getFullYear();
 const rocYear = currentYear - 1911;
+const isProgramAvailable = ref(false);
 
 const applicantProgram = reactive({
 	id: 1,
 	category: "111年碩士班",
 	name: "A組",
+	start_date: "",
+	end_date: "",
 });
 
 const tags: Tags = reactive({
@@ -289,11 +306,53 @@ const tags: Tags = reactive({
 	additionalDocs: "unable",
 });
 
+const checkProgramAvailably = () => {
+	const start = {
+		year: parseInt(applicantProgram.start_date.slice(0, 4)),
+		month: parseInt(applicantProgram.start_date.slice(5, 7)),
+		day: parseInt(applicantProgram.start_date.slice(8, 10)),
+		hour: parseInt(applicantProgram.start_date.slice(11, 13)),
+	};
+	const end = {
+		year: parseInt(applicantProgram.end_date.slice(0, 4)),
+		month: parseInt(applicantProgram.end_date.slice(5, 7)),
+		day: parseInt(applicantProgram.end_date.slice(8, 10)),
+		hour: parseInt(applicantProgram.end_date.slice(11, 13)),
+	};
+
+	const currentTime = new Date().toLocaleString("zh-TW"); //GET TAIWAN DATE
+	const current = {
+		year: parseInt(currentTime.slice(0, 4)),
+		month: parseInt(currentTime.slice(5, 7)),
+		day: parseInt(currentTime.slice(8, 10)),
+	};
+
+	if (
+		current.year < start.year ||
+		current.year > end.year ||
+		(current.year === start.year && current.month < start.month) ||
+		(current.year === end.year && current.month > end.month) ||
+		(current.year === start.year &&
+			current.month === start.month &&
+			current.day < start.day) ||
+		(current.year === end.year &&
+			current.month === end.month &&
+			current.day > end.day)
+	) {
+		isProgramAvailable.value = false;
+	} else isProgramAvailable.value = true;
+	console.log(isProgramAvailable.value);
+};
+
 onMounted(async () => {
 	await api.getProgram().then((res) => {
 		applicantProgram.id = res.id;
 		applicantProgram.category = res.category;
 		applicantProgram.name = res.name;
+		applicantProgram.start_date = res.application_start_date;
+		applicantProgram.end_date = res.application_end_date;
+		console.log(res, applicantProgram);
+		checkProgramAvailably();
 	});
 });
 
