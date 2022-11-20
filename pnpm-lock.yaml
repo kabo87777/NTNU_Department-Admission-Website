@@ -20,7 +20,7 @@ specifiers:
   pinia: ^2.0.23
   prettier: ^2.7.1
   primeicons: ^5.0.0
-  primevue: 3.19.0
+  primevue: 3.20.0
   typescript: ^4.8.4
   unplugin-icons: ^0.14.12
   unplugin-vue-components: ^0.22.8
@@ -48,7 +48,7 @@ dependencies:
   pinia: 2.0.23_l7r24p6nevbtlimqmqcwa3ouhu
   prettier: 2.7.1
   primeicons: 5.0.0
-  primevue: 3.19.0_2jw6famotrktt5gw7ifjfdiz5e
+  primevue: 3.20.0_2jw6famotrktt5gw7ifjfdiz5e
   unplugin-icons: 0.14.12
   unplugin-vue-components: 0.22.8_vue@3.2.41
   url-join: 5.0.0
@@ -223,8 +223,8 @@ packages:
       vue-i18n:
         optional: true
     dependencies:
-      '@intlify/message-compiler': 9.3.0-beta.7
-      '@intlify/shared': 9.3.0-beta.7
+      '@intlify/message-compiler': 9.3.0-beta.8
+      '@intlify/shared': 9.3.0-beta.8
       jsonc-eslint-parser: 1.4.1
       source-map: 0.6.1
       vue-i18n: 9.1.10_vue@3.2.41
@@ -256,11 +256,11 @@ packages:
       '@intlify/shared': 9.1.10
       source-map: 0.6.1
 
-  /@intlify/message-compiler/9.3.0-beta.7:
-    resolution: {integrity: sha512-70r2UNp6DyKtIM4FgYCwdSuBK7xqCx2rVSXLMFiDRQi8pwooBklmOuzA0j7Q8ffbwKlFUJEEr2xPHZz2TJ6NAw==}
+  /@intlify/message-compiler/9.3.0-beta.8:
+    resolution: {integrity: sha512-iwFqsUonpFBRTlpOoI6xRrE5d0jdR4yudkiu0q5d9T7lKrs6S0nwjQfBkANA8Esz1Wy0cjqWp0Qj0j9YZ75aZQ==}
     engines: {node: '>= 14'}
     dependencies:
-      '@intlify/shared': 9.3.0-beta.7
+      '@intlify/shared': 9.3.0-beta.8
       source-map: 0.6.1
     dev: true
 
@@ -280,8 +280,8 @@ packages:
     resolution: {integrity: sha512-Om54xJeo1Vw+K1+wHYyXngE8cAbrxZHpWjYzMR9wCkqbhGtRV5VLhVc214Ze2YatPrWlS2WSMOWXR8JktX/IgA==}
     engines: {node: '>= 10'}
 
-  /@intlify/shared/9.3.0-beta.7:
-    resolution: {integrity: sha512-weWqKXyv94rdPXbSFYvA4yIwLYDhzgIWfgrVQ6UYARobPFE3BN+woWmjlGmASTyXMzZtTsq21b0LCN9SHN8pxQ==}
+  /@intlify/shared/9.3.0-beta.8:
+    resolution: {integrity: sha512-hF81ExYPVTYH/5xCZuXjMJb8G5EH1owUfij3oIPydJao5RcLSWlol8jGgR6GZpG1mdYW9rX965pqnyQLkqoV6A==}
     engines: {node: '>= 14'}
     dev: true
 
@@ -301,7 +301,7 @@ packages:
         optional: true
     dependencies:
       '@intlify/bundle-utils': 3.2.1_vue-i18n@9.1.10
-      '@intlify/shared': 9.3.0-beta.7
+      '@intlify/shared': 9.3.0-beta.8
       '@rollup/pluginutils': 4.2.1
       debug: 4.3.4
       fast-glob: 3.2.12
@@ -2465,8 +2465,8 @@ packages:
     resolution: {integrity: sha512-heygWF0X5HFI1otlZE62pp6ye7sZ8om78J9au2BRkg8O7Y8AHTZ9qKMRzchZUHLe8zUAvdi6hZzzm9XxgwIExw==}
     dev: false
 
-  /primevue/3.19.0_2jw6famotrktt5gw7ifjfdiz5e:
-    resolution: {integrity: sha512-CPBTlEZdZ3Sg1hM4JVz0JmHNcQu8FlaDjrR77g2U8XLY+xcieVnayUJv9d6OvhlbCG/D7eCn9h5/joqgGUHIpQ==}
+  /primevue/3.20.0_2jw6famotrktt5gw7ifjfdiz5e:
+    resolution: {integrity: sha512-qLIp1Bwf7lk/ZAvQXqemkoUMh7WQwmVy/Cp8PR+uGGd6szxC0QZWAit/gSjSjD55gZJDtbsiHFVB2a78gN7tdA==}
     peerDependencies:
       primeicons: ^5.0.0 || ^6.0.0
       vue: ^3.0.0
