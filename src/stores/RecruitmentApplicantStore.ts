@@ -18,7 +18,7 @@ export const useProjectIdStore = defineStore({
 	id: "project",
 	state: () => ({
 		project: {
-			pid: 1,
+			pid: 0,
 			category: "",
 			name: "",
 		},

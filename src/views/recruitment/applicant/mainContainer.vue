@@ -55,16 +55,17 @@ const { data } = useQuery(
 	},
 	{
 		onSuccess: (data) => {
-			if (data)
+			if (data && project.project.pid === 0)
 				project.switchProject({
 					pid: data[0].id,
 					category: data[0].category,
 					name: data[0].name,
 				});
-			router.push("/recruitment/applicant/switchProject");
 		},
 	}
 );
+
+router.push("/recruitment/applicant/switchProject");
 </script>
 
 <style scoped></style>
