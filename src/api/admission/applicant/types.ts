@@ -1,3 +1,8 @@
+export interface AdmissionApplicantGenericResponse {
+	success?: boolean;
+	message?: string | [];
+}
+
 export interface AdmissionApplicantSignInInput {
 	email: string;
 	password: string;
@@ -102,11 +107,6 @@ export interface AdmissionApplicantRecLetListRes {
 	filepath: {
 		url: string;
 	};
-}
-
-export interface AdmissionApplicantGenericResponse {
-	success?: boolean;
-	message?: string | [];
 }
 
 export interface AdmissionApplicantGetFileListResponse {
