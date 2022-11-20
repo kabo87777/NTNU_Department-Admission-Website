@@ -266,7 +266,6 @@
 </template>
 
 <script setup lang="ts">
-import { addHours } from "date-fns";
 import { reactive, toRaw, onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useAdmissionApplicantAuthStore } from "@/stores/universalAuth";
