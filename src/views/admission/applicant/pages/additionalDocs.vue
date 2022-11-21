@@ -13,6 +13,15 @@
 				{{ $t("需求需求需求需求") }}
 			</div>
 			<ParagraphDivider />
+			<div class="mt-16px text-[24px] font-[50] font-bold">
+				{{ $t("提交內容") }}
+				<InputText
+					type="text"
+					v-model="submitText"
+					placeholder="Text"
+					class="!border-gray-900 !w-300px !h-40px !mt-5px"
+				/>
+			</div>
 			<div v-for="(item, index) in schoolExpList" :key="index">
 				<ReviewState
 					v-if="item.state === 1"
@@ -47,11 +56,8 @@
 			</div>
 		</div>
 		<ParagraphDivider />
-		<div >
-			<div >
-				
-				
-			</div>
+		<div>
+			<div></div>
 		</div>
 	</div>
 </template>
@@ -80,11 +86,12 @@ import InputText from "primevue/inputtext";
 import FileUpload from "primevue/fileupload";
 import "primeicons/primeicons.css";
 
-
 const router = useRouter();
 const applicantAuth = useRecruitmentApplicantAuthStore();
 const api = new RecruitmentApplicantAPI(applicantAuth);
 const project = useProjectIdStore();
+
+const submitText = ref();
 
 const { isLoading, isError, data, error } = useQuery(
 	["attachmentList"],
@@ -217,8 +224,6 @@ const createToEdit = (index: number, category: string) => {
 			break;
 	}
 };
-
-
 </script>
 
 <style setup lang="css">
@@ -289,4 +294,3 @@ const createToEdit = (index: number, category: string) => {
 	width: 500px;
 }
 </style>
-
