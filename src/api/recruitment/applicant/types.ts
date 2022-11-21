@@ -90,13 +90,8 @@ export interface RecruitmentApplicantGetUserInfoResponse {
 	updated_at?: string;
 }
 
-export interface RecruitmentApplicantForgotPwdPassResponse {
-	success?: boolean;
-	message?: string | [];
-}
-
 export interface RecruitmentApplicantForgotPwdResponse {
 	email: string;
 	redirect_url: string;
-	"cf-turnstile-response": string;
+	"cf-turnstile-response"?: string;
 }

@@ -59,12 +59,13 @@ export class RecruitmentApplicantAPI extends GenericAPI {
 	async sendForgotPwd(
 		data: RecruitmentApplicantForgotPwdResponse
 	): Promise<any> {
+		console.log(data);
 		const response: APIGenericResponse = await this.instance.post(
 			"recruitment/auth/applicant/password",
 			data
 		);
 		console.log("HNo");
-		if (response.error === true)
+		if (response.error === true && response.errors !== undefined)
 			throw new Error("Failed to update program");
 	}
 }

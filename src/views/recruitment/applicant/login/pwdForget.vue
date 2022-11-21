@@ -72,8 +72,6 @@
 					<Button
 						class="py-2 w-80 applicantButtonStyle"
 						@click="enterEmail"
-						type="submit"
-						:loading="isTurnstileRunning || isSendEmailPassLoading"
 					>
 						<div>提交</div>
 						<div>Submit</div>
@@ -88,6 +86,7 @@
 </template>
 
 <script setup lang="ts">
+import Button from "primevue/button";
 import { reactive, ref, watch, computed, toRaw } from "vue";
 import InputText from "primevue/inputtext";
 import { useRouter } from "vue-router";
@@ -125,12 +124,18 @@ const enterEmail = async () => {
 	const turnstileResponse = consumeTurnstileToken();
 	if (!turnstileResponse) throw new Error("Turnstile challenge failed");
 	try{
-		const body = {
+		postEnteredEmailString.mutate({
 			email: forgetPwdEmail.value,
 			redirect_url: redirectUrl,
 			"cf-turnstile-response": turnstileResponse,
-		};
-		postEnteredEmailString.mutate(body);
+		});
+		console.log(
+			{
+				email: forgetPwdEmail.value,
+				redirect_url: redirectUrl,
+				"cf-turnstile-response": turnstileResponse,
+			}
+		)
 	} catch(error) {
 		console.log(error);
 	}
@@ -151,8 +156,6 @@ const enterEmail = async () => {
 // 		// toast.add({severity:'error', summary: '資料錯誤', life: 3000});
 // 	}
 // }
-const redirectToSuccessSendEmail = () =>
-	router.replace("/recruitment/applicant/password/forget/emailSent");
 </script>
 
 <style setup lang="css">
