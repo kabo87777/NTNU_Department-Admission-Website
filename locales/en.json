@@ -319,5 +319,7 @@
   "確認送出": "Confirm Send",
   "儲存": "Save",
   "請上傳簽名檔": "Please upload",
-  "applicant_table_items_count": "No applicants. | {n} applicant in total. | {n} applicants in total."
+  "applicant_table_items_count": "No applicants. | {n} applicant in total. | {n} applicants in total.",
+  "補件文件系統": "Additional Documents",
+  "提交文字": " Submit Text"
 }

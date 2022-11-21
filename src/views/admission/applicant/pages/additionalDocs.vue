@@ -15,12 +15,17 @@
 			<ParagraphDivider />
 			<div class="mt-16px text-[24px] font-[50] font-bold">
 				{{ $t("提交內容") }}
-				<InputText
-					type="text"
-					v-model="submitText"
-					placeholder="Text"
-					class="!border-gray-900 !w-300px !h-40px !mt-5px"
-				/>
+			</div>
+			<div class="mt-24px">
+				<div class="w-1/3">
+					<div class="text-20px">{{ $t("提交文字") }}：</div>
+					<InputText
+						type="text"
+						v-model="submitText"
+						placeholder="Text"
+						class="!border-gray-900 !w-300px !h-40px !mt-5px"
+					/>
+				</div>
 			</div>
 			<div v-for="(item, index) in schoolExpList" :key="index">
 				<ReviewState
