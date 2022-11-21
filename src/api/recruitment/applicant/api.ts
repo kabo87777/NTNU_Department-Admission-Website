@@ -4,7 +4,7 @@ import type {
 	RecruitmentApplicantProgramResponse,
 	RecruitmentApplicantFileListResponse,
 	RecruitmentApplicantChangePassResponse,
-	RecruitmentRegisterEamialPostResponse,
+	RecruitmentRegisterEmailPostResponse,
 	newPostEmailRegister,
 } from "./types";
 import type { APIGenericResponse } from "@/api/types";
@@ -60,7 +60,7 @@ export class RecruitmentApplicantAPI extends GenericAPI {
 	}
 	async postEmailRegister(
 		newData: newPostEmailRegister
-	): Promise<RecruitmentRegisterEamialPostResponse[]> {
+	): Promise<RecruitmentRegisterEmailPostResponse[]> {
 		const data: APIGenericResponse = await this.instance.post(
 			"/recruitment/auth/applicant",
 			{
