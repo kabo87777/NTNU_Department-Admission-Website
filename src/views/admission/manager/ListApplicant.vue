@@ -225,7 +225,9 @@ const openModal = (applicantData: AdmissionAdminApplicantsListResponse) => {
 		id,
 		name,
 		email,
-		password: "JUST A PLACEHOLDER",
+		// This is used to show dots as visual hint for user
+		// After user click the password input box, the value will be cleared
+		password: "JUST A PLACEHOLDER",	
 		allow_password_change,
 	}))(applicantData);
 
@@ -240,7 +242,6 @@ const saveChange = () => {
 	modalVisible.value = false;
 };
 
-const printProgramID = () => console.debug("Program ID: " + store.program?.id);
 
 const getTableItemQty = computed(() => {
 	return tableData.value ? tableData.value.length : 0;
