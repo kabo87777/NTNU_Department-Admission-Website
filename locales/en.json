@@ -290,5 +290,6 @@
   "面試時間": "Interview Time",
   "操作": "Edit",
   "必閱基本資料": "Must Read Basic Info",
-  "必閱檢附資料": "Must Read Attach Info"
+  "必閱檢附資料": "Must Read Attach Info",
+  "applicant_table_items_count": "No applicants. | {n} applicant in total. | {n} applicants in total."
 }
