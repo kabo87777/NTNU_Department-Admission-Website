@@ -37,12 +37,12 @@ const router = useRouter();
 
 const adminAuth = useAdmissionAdminAuthStore();
 
-watch(router.currentRoute, async () => {
-	if (!(await doUniversalAuthSessionValidation(adminAuth))) {
-		router.replace({ name: "AdmissionManagerSignin" });
-		// TODO: show session expired notification
-	}
-});
+// watch(router.currentRoute, async () => {
+// 	if (!(await doUniversalAuthSessionValidation(adminAuth))) {
+// 		router.replace({ name: "AdmissionManagerSignin" });
+// 		// TODO: show session expired notification
+// 	}
+// });
 </script>
 
 <style scoped></style>

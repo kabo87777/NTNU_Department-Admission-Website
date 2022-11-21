@@ -14,9 +14,11 @@ if (!process.env.VITE_ADMISSIONS_API_ENDPOINT) {
   if (process.env.VERCEL_ENV) {
     // project being built on Vercel
     if (process.env.VERCEL_ENV === "production")
-      process.env.VITE_ADMISSIONS_API_ENDPOINT = "https://admissions-backend-prd.birkhoff.me";
+      process.env.VITE_ADMISSIONS_API_ENDPOINT =
+        "https://admissions-backend-prd.birkhoff.me";
     else
-      process.env.VITE_ADMISSIONS_API_ENDPOINT = "https://admissions-backend-stg.birkhoff.me";
+      process.env.VITE_ADMISSIONS_API_ENDPOINT =
+        "https://admissions-backend-stg.birkhoff.me";
   } else {
     // project being built locally
     const gitBranch = branch.sync() || "";
@@ -24,20 +26,25 @@ if (!process.env.VITE_ADMISSIONS_API_ENDPOINT) {
     // use respective endpoints for prod & staging branch.
     // for other branches, use localhost.
     if (gitBranch === "main")
-      process.env.VITE_ADMISSIONS_API_ENDPOINT = "https://admissions-backend-prd.birkhoff.me";
+      process.env.VITE_ADMISSIONS_API_ENDPOINT =
+        "https://admissions-backend-prd.birkhoff.me";
     else if (gitBranch === "develop")
-      process.env.VITE_ADMISSIONS_API_ENDPOINT = "https://admissions-backend-stg.birkhoff.me";
-    else
-      process.env.VITE_ADMISSIONS_API_ENDPOINT = "http://127.0.0.1:3000";
+      process.env.VITE_ADMISSIONS_API_ENDPOINT =
+        "https://admissions-backend-stg.birkhoff.me";
+    else process.env.VITE_ADMISSIONS_API_ENDPOINT = "http://127.0.0.1:3000";
   }
 }
 
 if (!process.env.VITE_IS_SKIP_CAPTCHA) {
   // by default, we only enable CAPTCHA for Vercel production environment
-  process.env.VITE_IS_SKIP_CAPTCHA = (process.env.VERCEL_ENV === "production") ? "false" : "true";
+  process.env.VITE_IS_SKIP_CAPTCHA =
+    process.env.VERCEL_ENV === "production" ? "false" : "true";
 }
 
-console.log("VITE_ADMISSIONS_API_ENDPOINT =", process.env.VITE_ADMISSIONS_API_ENDPOINT);
+console.log(
+  "VITE_ADMISSIONS_API_ENDPOINT =",
+  process.env.VITE_ADMISSIONS_API_ENDPOINT
+);
 
 // https://vitejs.dev/config/
 export default defineConfig({
