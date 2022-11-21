@@ -10,7 +10,8 @@
     "lint": "eslint . --ext .jsx,.js,.ts,.tsx,.vue",
     "prettier": "prettier --write .",
     "test": "vitest",
-    "coverage": "vitest run --coverage"
+    "coverage": "vitest run --coverage",
+    "backend": "docker run --pull=always -it -e \"RAILS_MASTER_KEY=db33cafdf676961f3a9e16dfd035636a\" -p 3000:3000 registry.gitlab.com/ntnu-csie-admissions/backend:staging"
   },
   "dependencies": {
     "@tanstack/vue-query": "^4.12.0",
@@ -21,7 +22,7 @@
     "pinia": "^2.0.23",
     "prettier": "^2.7.1",
     "primeicons": "^5.0.0",
-    "primevue": "3.19.0",
+    "primevue": "3.20.0",
     "unplugin-icons": "^0.14.12",
     "unplugin-vue-components": "^0.22.8",
     "url-join": "^5.0.0",
@@ -51,6 +52,6 @@
     "typescript": "^4.8.4",
     "vite": "^3.1.8",
     "vitest": "^0.24.3",
-    "vue-tsc": "^1.0.8"
+    "vue-tsc": "^1.0.9"
   }
 }
