@@ -43,7 +43,7 @@
 					<InputText
 						name="email"
 						type="email"
-						v-model="forgetPwdVerify.email"
+						v-model="forgetPwdEmail"
 						class="p-inputtext-sm w-full"
 						required
 					/>
@@ -69,29 +69,90 @@
 				<router-link
 					to="/recruitment/applicant/password/forget/emailSent"
 				>
-					<button
+					<Button
 						class="py-2 w-80 applicantButtonStyle"
-						border="2  rounded-lg"
+						@click="enterEmail"
+						type="submit"
+						:loading="isTurnstileRunning || isSendEmailPassLoading"
 					>
-						<div class="flex justify-center gap-2 mx-auto">
-							<div>提交</div>
-							<div>Submit</div>
-						</div>
-					</button>
+						<div>提交</div>
+						<div>Submit</div>
+					</Button>
 				</router-link>
 			</div>
-			<div></div>
+			<div class="ml-168px mt-40px">
+				<Turnstile ref="turnstileRef" />
+			</div>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { reactive } from "vue";
+import { reactive, ref, watch, computed, toRaw } from "vue";
 import InputText from "primevue/inputtext";
+import { useRouter } from "vue-router";
+import { useRecruitmentApplicantAuthStore } from "@/stores/universalAuth"
+import { RecruitmentApplicantAPI } from "@/api/recruitment/applicant/api"
+import { useMutation } from "@tanstack/vue-query";
+import type { TurnstileComponentExposes } from "@/components/Turnstile.vue";
+import Turnstile from "@/components/Turnstile.vue";
 
-const forgetPwdVerify = reactive({
-	email: "",
+const router = useRouter();
+const applicantAuth = useRecruitmentApplicantAuthStore();
+const api = new RecruitmentApplicantAPI(applicantAuth);
+const turnstileRef = ref<TurnstileComponentExposes>();
+const isTurnstileRunning = computed(() => !turnstileRef.value?.turnstileToken);
+const isSendEmailPassLoading = ref(false);
+
+const forgetPwdEmail = ref("");
+
+const postEnteredEmailString = useMutation(async (enteredEmail: any) => {
+	try{
+		return await api.sendForgotPwd(enteredEmail);
+	} catch (error) {
+		console.log(error);
+	}
 });
+
+const consumeTurnstileToken = () => {
+	const token: string | undefined = turnstileRef.value?.turnstileToken;
+	window.turnstile?.reset();
+	return token;
+};
+const enterEmail = async () => {
+	const redirectUrl =
+		"http://127.0.0.1:5173/recruitment/applicant/password/reset";
+	const turnstileResponse = consumeTurnstileToken();
+	if (!turnstileResponse) throw new Error("Turnstile challenge failed");
+	try{
+		const body = {
+			email: forgetPwdEmail.value,
+			redirect_url: redirectUrl,
+			"cf-turnstile-response": turnstileResponse,
+		};
+		postEnteredEmailString.mutate(body);
+	} catch(error) {
+		console.log(error);
+	}
+}
+// function enterEmail() {
+// 	const redirectUrl =
+// 		"http://127.0.0.1:5173/recruitment/applicant/password/reset";
+// 	try {
+// 		const turnstileResponse = consumeTurnstileToken();
+// 		if (!turnstileResponse) throw new Error("Turnstile challenge failed");
+// 		enteredEmailString.mutate({
+// 			email: forgetPwdEmail.value,
+// 			redirect_url: redirectUrl,
+// 			"cf-turnstile-response": turnstileResponse,
+// 		});
+// 		// toast.add({severity:'success', summary: '更改成功', life: 3000});
+// 	} catch (error) {
+// 		// toast.add({severity:'error', summary: '資料錯誤', life: 3000});
+// 	}
+// }
+const redirectToSuccessSendEmail = () =>
+	router.replace("/recruitment/applicant/password/forget/emailSent");
 </script>
 
 <style setup lang="css">

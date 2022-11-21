@@ -1,3 +1,5 @@
+import { StringLocale } from "yup/lib/locale";
+
 export interface Tags {
 	basicInfo: string;
 	attachment: string;
@@ -86,4 +88,15 @@ export interface RecruitmentApplicantGetUserInfoResponse {
 	r_applicant_id?: number;
 	created_at?: string;
 	updated_at?: string;
+}
+
+export interface RecruitmentApplicantForgotPwdPassResponse {
+	success?: boolean;
+	message?: string | [];
+}
+
+export interface RecruitmentApplicantForgotPwdResponse {
+	email: string;
+	redirect_url: string;
+	"cf-turnstile-response": string;
 }

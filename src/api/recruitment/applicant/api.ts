@@ -4,6 +4,7 @@ import type {
 	RecruitmentApplicantProgramResponse,
 	RecruitmentApplicantFileListResponse,
 	RecruitmentApplicantChangePassResponse,
+	RecruitmentApplicantForgotPwdResponse,
 } from "./types";
 import type { APIGenericResponse } from "@/api/types";
 
@@ -43,17 +44,27 @@ export class RecruitmentApplicantAPI extends GenericAPI {
 			"recruitment/auth/applicant/password",
 			body
 		);
-
 		if (data.success === false && data.errors !== undefined) {
 			return {
 				success: data.success,
 				message: data.errors.full_messages,
 			};
 		}
-
 		return {
 			success: data.success,
 			message: data.message,
 		};
+	}
+	
+	async sendForgotPwd(
+		data: RecruitmentApplicantForgotPwdResponse
+	): Promise<any> {
+		const response: APIGenericResponse = await this.instance.post(
+			"recruitment/auth/applicant/password",
+			data
+		);
+		console.log("HNo");
+		if (response.error === true)
+			throw new Error("Failed to update program");
 	}
 }
