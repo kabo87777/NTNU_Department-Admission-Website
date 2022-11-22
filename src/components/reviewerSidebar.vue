@@ -136,7 +136,7 @@ import { AdmissionReviewerAPI } from "@/api/admission/reviewer/api";
 import { useQuery } from "@tanstack/vue-query";
 import { InvalidSessionError } from "@/api/error";
 import { AdmissionReviewerProgramListResponse } from "@/api/admission/reviewer/types";
-import { useGlobalStore } from "@/stores/globalStore";
+import { useGlobalStore } from "@/stores/AdmissionReviewerStore";
 
 const reviewerAuth = useAdmissionReviewerAuthStore();
 const api = new AdmissionReviewerAPI(reviewerAuth);
