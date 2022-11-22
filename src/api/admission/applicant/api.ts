@@ -1,7 +1,9 @@
 import type { AuthStore } from "@/stores/universalAuth";
 import type {
 	AdmissionApplicantGetProgramResponse,
-	AdmissionApplicantChangePassResponse,
+	AdmissionApplicantGetFileListResponse,
+	AdmissionApplicantGenericResponse,
+	AdmissionApplicantRecLetListRes,
 } from "./types";
 import type { APIGenericResponse } from "@/api/types";
 import { GenericAPI } from "@/api/api";
@@ -33,23 +35,164 @@ export class AdmissionApplicantAPI extends GenericAPI {
 	// 	return data.data.programs;
 	// }
 
+	async getFileList(): Promise<AdmissionApplicantGetFileListResponse[]> {
+		const data: APIGenericResponse = await this.instance.get(
+			"admission/applicant/file"
+		);
+
+		if (data.error === true) throw new Error("Failed to fetch file list");
+
+		return data.data;
+	}
+
+	async deleteFile(
+		fileId: number
+	): Promise<AdmissionApplicantGenericResponse> {
+		const data: APIGenericResponse = await this.instance.delete(
+			`admission/applicant/file/${fileId}`
+		);
+
+		if (data.error !== false && data.message !== undefined) {
+			return {
+				success: false,
+				message: data.message,
+			};
+		}
+
+		return {
+			success: true,
+			message: data.message,
+		};
+	}
+
+	async createFile(body: object): Promise<AdmissionApplicantGenericResponse> {
+		const data: APIGenericResponse = await this.instance.post(
+			"admission/applicant/file",
+			body
+		);
+
+		if (data.error !== false && data.message !== undefined) {
+			return {
+				success: false,
+				message: data.message,
+			};
+		}
+
+		return {
+			success: true,
+			message: data.message,
+		};
+	}
+
+	async editFile(
+		body: object,
+		fileId: number
+	): Promise<AdmissionApplicantGenericResponse> {
+		const data: APIGenericResponse = await this.instance.patch(
+			`admission/applicant/file/${fileId}`,
+			body
+		);
+
+		if (data.error !== false && data.message !== undefined) {
+			return {
+				success: false,
+				message: data.message,
+			};
+		}
+
+		return {
+			success: true,
+			message: data.message,
+		};
+	}
+
 	async changePassword(
 		body: object
-	): Promise<AdmissionApplicantChangePassResponse> {
+	): Promise<AdmissionApplicantGenericResponse> {
 		const data: APIGenericResponse = await this.instance.patch(
 			"admission/auth/applicant/password",
 			body
 		);
 
-		if (data.success === false && data.errors !== undefined) {
+		if (data.error !== false) {
 			return {
-				success: data.success,
-				message: data.errors.full_messages,
+				success: false,
+				message: data.message.full_messages,
 			};
 		}
 
 		return {
-			success: data.success,
+			success: true,
+			message: data.message,
+		};
+	}
+
+	async getRecommendLetterList(): Promise<AdmissionApplicantRecLetListRes[]> {
+		const data: APIGenericResponse = await this.instance.get(
+			"admission/applicant/recommendletter"
+		);
+
+		if (data.error !== false)
+			throw new Error("Failed to fetch recommendation letter list");
+
+		return data.data;
+	}
+
+	async saveRecommendLetter(
+		body: object
+		// CHANGE THE RESPONSE TYPE ONCE BACKEND CONFIRM THE DATA STRUCTURE
+	): Promise<AdmissionApplicantGenericResponse> {
+		const data: APIGenericResponse = await this.instance.post(
+			"admission/applicant/recommendletter",
+			body
+		);
+
+		if (data.error !== false)
+			return {
+				success: false,
+				message: data.message,
+			};
+
+		return {
+			success: true,
+			message: data.message,
+		};
+	}
+
+	async deleteRecommendLetter(
+		letterId: number
+	): Promise<AdmissionApplicantGenericResponse> {
+		const data: APIGenericResponse = await this.instance.delete(
+			`admission/applicant/recommendletter/${letterId}`
+		);
+
+		if (data.error !== false)
+			return {
+				success: false,
+				message: data.message,
+			};
+
+		return {
+			success: true,
+			message: data.message,
+		};
+	}
+
+	async requestRecommendLetter(
+		letterId: number
+	): Promise<AdmissionApplicantGenericResponse> {
+		const data: APIGenericResponse = await this.instance.get(
+			`admission/applicant/recommendletter/${letterId}/send_email`
+		);
+
+		if (data.error !== false)
+			return {
+				success: false,
+				message: data.message,
+			};
+
+		return {
+			success: true,
 			message: data.message,
 		};
 	}
