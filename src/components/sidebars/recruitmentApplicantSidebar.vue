@@ -6,9 +6,13 @@
 			<div class="mt-32px ml-12px w-[100%]">
 				<div class="sidebarTitleBar">
 					{{
-						$t("recruitmentApplicantSidebarTitle", {
+						$t("sidebarTitleYear", {
 							year: currentYear,
 							roc: rocYear,
+						}) +
+						$t(project.project.category) +
+						$t("sidebarTitleGroup", {
+							group: project.project.name["0"],
 						})
 					}}
 				</div>
@@ -253,6 +257,7 @@ import { reactive, toRaw } from "vue";
 import { useRecruitmentApplicantAuthStore } from "@/stores/universalAuth";
 import { RecruitmentApplicantAPI } from "@/api/recruitment/applicant/api";
 import { useUserInfoStore } from "@/stores/RecruitmentApplicantStore";
+import { useProjectIdStore } from "@/stores/RecruitmentApplicantStore";
 import { Tags } from "@/api/recruitment/applicant/types";
 import "primeicons/primeicons.css";
 import "primevue/resources/primevue.min.css";
@@ -265,8 +270,8 @@ import "primeicons/primeicons.css";
 
 const router = useRouter();
 const applicantStore = useUserInfoStore();
+const project = useProjectIdStore();
 const applicantName = toRaw(applicantStore.userInfo.name);
-
 const currentYear = new Date().getFullYear();
 const rocYear = currentYear - 1911;
 
