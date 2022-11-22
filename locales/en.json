@@ -324,5 +324,8 @@
   "請上傳簽名檔": "Please upload",
   "applicant_table_items_count": "No applicants. | {n} applicant in total. | {n} applicants in total.",
   "error": "Error",
-  "!": "!"
+  "!": "!",
+  "所屬學校": "School Name",
+  "檔案名稱": "File Name",
+  "檔案": "File"
 }

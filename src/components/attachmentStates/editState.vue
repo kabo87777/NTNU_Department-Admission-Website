@@ -95,13 +95,14 @@
 				class="normalDivider"
 				style="width: 85%; margin-top: 16px"
 			></div>
-			<div v-if="file.name === ''" class="mt-16px" style="width: 85%">
+			<div v-if="fileName === ''" class="mt-16px" style="width: 85%">
 				<FileUpload
 					style="
 						background-color: #bdbdbd;
 						color: black;
 						border: #bdbdbd;
 					"
+					:chooseLabel="$t('選擇檔案')"
 					mode="basic"
 					:customUpload="true"
 					@uploader="handleUpload"
@@ -121,7 +122,7 @@
 				"
 				disabled
 			>
-				{{ file.name }}
+				{{ fileName }}
 			</Button>
 			<p class="mt-16px">{{ $t("onlyPdf") }}</p>
 		</div>
@@ -168,7 +169,7 @@
 import { ref, reactive } from "vue";
 import Button from "primevue/button";
 import InputText from "primevue/inputtext";
-import FileUpload from "primevue/fileupload";
+import FileUpload, { FileUploadUploaderEvent } from "primevue/fileupload";
 import Dialog from "primevue/dialog";
 import "primeicons/primeicons.css";
 
@@ -185,15 +186,11 @@ const props = defineProps([
 const name = ref(props.itemName);
 const schoolName = ref(props.schoolName);
 const score = ref(props.score);
-const file = reactive({
-	fileUrl: "",
-	name: "",
-	size: 0,
-	type: "",
-	isUploaded: false,
-});
+const fileName = ref("");
 
 const isModalVisible = ref(false);
+
+const formData = new FormData();
 
 const emit = defineEmits(["cancel", "create"]);
 
@@ -207,13 +204,12 @@ const dynamicClass = (): string => {
 	return "";
 };
 
-const handleUpload = (event: any) => {
-	//event.files == files to upload
-	file.fileUrl = event.files[0].objectURL;
-	file.name = event.files[0].name;
-	file.size = event.files[0].size;
-	file.type = event.files[0].type;
-	file.isUploaded = true;
+const handleUpload = (event: FileUploadUploaderEvent) => {
+	const uploadedFile = Array.isArray(event.files)
+		? event.files[0]
+		: event.files;
+	formData.append("filepath", uploadedFile);
+	fileName.value = uploadedFile.name;
 };
 
 const handleCancel = () => {
@@ -221,13 +217,9 @@ const handleCancel = () => {
 };
 
 const handleCreate = () => {
-	const body = {
-		name: name.value,
-		category: props.category,
-		filepath: file.fileUrl,
-	};
-
-	emit("create", body);
+	formData.append("name", name.value);
+	formData.append("category", props.category);
+	emit("create", formData);
 };
 </script>
 
