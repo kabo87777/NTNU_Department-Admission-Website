@@ -227,7 +227,7 @@ const openModal = (applicantData: AdmissionAdminApplicantsListResponse) => {
 		email,
 		// This is used to show dots as visual hint for user
 		// After user click the password input box, the value will be cleared
-		password: "JUST A PLACEHOLDER",	
+		password: "JUST A PLACEHOLDER",
 		allow_password_change,
 	}))(applicantData);
 
@@ -241,7 +241,6 @@ const saveChange = () => {
 	api.updateApplicantData(modalData.value.id, modalData.value);
 	modalVisible.value = false;
 };
-
 
 const getTableItemQty = computed(() => {
 	return tableData.value ? tableData.value.length : 0;
