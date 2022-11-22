@@ -296,6 +296,7 @@
   "操作": "Edit",
   "必閱基本資料": "Must Read Basic Info",
   "必閱檢附資料": "Must Read Attach Info",
+<<<<<<< locales/en.json
   "上傳時間": "Upload Time",
   "推薦人姓名": "Recommender",
   "作業狀態": "Status",
@@ -321,5 +322,6 @@
   "發出邀請": "Send request",
   "確認送出": "Confirm Send",
   "儲存": "Save",
-  "請上傳簽名檔": "Please upload"
+  "請上傳簽名檔": "Please upload",
+  "applicant_table_items_count": "No applicants. | {n} applicant in total. | {n} applicants in total."
 }
