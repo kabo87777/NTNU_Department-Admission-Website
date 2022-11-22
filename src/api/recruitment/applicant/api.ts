@@ -4,7 +4,6 @@ import type {
 	RecruitmentApplicantGenericResponse,
 	RecruitmentApplicantProgramResponse,
 	RecruitmentApplicantFileListResponse,
-	RecruitmentApplicantChangePassResponse,
 } from "./types";
 import type { APIGenericResponse } from "@/api/types";
 
@@ -105,7 +104,7 @@ export class RecruitmentApplicantAPI extends GenericAPI {
 
 	async changePassword(
 		body: object
-	): Promise<RecruitmentApplicantChangePassResponse> {
+	): Promise<RecruitmentApplicantGenericResponse> {
 		const data: APIGenericResponse = await this.instance.patch(
 			"recruitment/auth/applicant/password",
 			body
@@ -117,7 +116,6 @@ export class RecruitmentApplicantAPI extends GenericAPI {
 				message: data.message.full_messages,
 			};
 		}
-
 		return {
 			success: true,
 			message: data.message,
