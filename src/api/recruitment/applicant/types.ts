@@ -57,11 +57,6 @@ export interface RecruitmentApplicantAuthResponse {
 	image: any | null;
 }
 
-export interface RecruitmentApplicantChangePassResponse {
-	success?: boolean;
-	message?: string | [];
-}
-
 export interface RecruitmentApplicantProgramResponse {
 	id: number;
 	category: string;
@@ -114,10 +109,4 @@ export interface RecruitmentApplicantGetUserInfoResponse {
 	r_applicant_id?: number;
 	created_at?: string;
 	updated_at?: string;
-}
-
-export interface RecruitmentApplicantForgotPwdResponse {
-	email: string;
-	redirect_url: string;
-	"cf-turnstile-response"?: string;
 }

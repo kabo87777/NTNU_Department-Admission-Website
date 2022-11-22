@@ -67,7 +67,7 @@
 			</div>
 			<div class="flex justify-center px-4">
 				<router-link
-					to="/recruitment/reviewer/password/forget/emailSent"
+					to="/recruitment/reviewer/forgetpassword/emailSent"
 				>
 					<button
 						class="py-2 w-80 reviewerButtonStyle"
