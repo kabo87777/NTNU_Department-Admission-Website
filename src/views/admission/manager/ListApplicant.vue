@@ -165,7 +165,7 @@ const tableData = ref<AdmissionAdminApplicantsListResponse[]>(
 );
 
 // NOTE: Copy and modified from SideBar.vue
-const { isLoading, data: applicants } = useQuery(
+const { isLoading, data: applicants, refetch } = useQuery(
 	["applicantList"],
 	async () => {
 		try {
@@ -253,6 +253,10 @@ const { mutate: uploadApplicantImport } = useMutation({
 		console.log("mutate");
 		return api.postApplicantsXlsx(store.program.id, data);
 	},
+	onSuccess: ()=>{
+		// Refetch applicnt list on successful import
+		refetch()
+	}
 });
 
 const { mutate: deleteApplicant } = useMutation({
