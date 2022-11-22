@@ -60,7 +60,7 @@
 				class="ml-34px !w-132px !h-44px"
 			/>
 		</div>
-		<div class="flex mt-16px">
+		<div class="flex mt-16px" v-if="programGrading?.docs_grade_name_4">
 			<div class="text-xl mt-5px">
 				{{ score4Title }} ({{ score4Proportion }}%)
 			</div>
@@ -69,13 +69,17 @@
 				v-model="inputScore_4"
 				class="ml-34px !w-132px !h-44px"
 			/>
-			<div class="text-xl ml-125px mt-5px">
+			<div
+				class="text-xl ml-125px mt-5px"
+				v-if="programGrading?.docs_grade_name_5"
+			>
 				{{ score5Title }} ({{ score5Proportion }}%)
 			</div>
 			<InputNumber
 				inputId="integeronly"
 				v-model="inputScore_5"
 				class="ml-34px !w-132px !h-44px"
+				v-if="programGrading?.docs_grade_name_5"
 			/>
 		</div>
 		<div class="flex mt-24px">
@@ -159,8 +163,8 @@ const score5Proportion = ref(0);
 const score1Title = ref("");
 const score2Title = ref("");
 const score3Title = ref("");
-const score4Title = ref("評分項目四");
-const score5Title = ref("評分項目五");
+const score4Title = ref("");
+const score5Title = ref("");
 const inputScore_1 = ref(0);
 const inputScore_2 = ref(0);
 const inputScore_3 = ref(0);
