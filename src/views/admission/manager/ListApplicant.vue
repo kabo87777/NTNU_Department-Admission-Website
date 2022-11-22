@@ -14,7 +14,7 @@
 		</FileUpload>
 	</div>
 
-	<DataTable :value="tableData" :loading="isLoading">
+	<DataTable :value="tableData" :loading="isTableLoading">
 		<template #empty>
 			<h2>{{ $t("尚無申請者帳號") }}</h2>
 		</template>
@@ -165,7 +165,12 @@ const tableData = ref<AdmissionAdminApplicantsListResponse[]>(
 );
 
 // NOTE: Copy and modified from SideBar.vue
-const { isLoading, data: applicants } = useQuery(
+const {
+	isLoading,
+	isRefetching,
+	data: applicants,
+	refetch,
+} = useQuery(
 	["applicantList"],
 	async () => {
 		try {
@@ -192,9 +197,13 @@ const { isLoading, data: applicants } = useQuery(
 			}
 			console.log("Loaded applicant list");
 			tableData.value = data;
+			isImporting.value = false;
 		},
 	}
 );
+
+const isImporting = ref(false);
+const isTableLoading = computed(() => isLoading.value || isImporting.value);
 
 interface modalForm {
 	id: number;
@@ -250,7 +259,12 @@ const { mutate: uploadApplicantImport } = useMutation({
 	mutationFn: (data: FormData) => {
 		if (!store.program) throw new Error("Invalid state: program");
 		console.log("mutate");
+		isImporting.value = true;
 		return api.postApplicantsXlsx(store.program.id, data);
+	},
+	onSuccess: () => {
+		// Refetch applicnt list on successful import
+		refetch().then(() => (isImporting.value = false));
 	},
 });
 
