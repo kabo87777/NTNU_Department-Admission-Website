@@ -1,5 +1,3 @@
-import { StringLocale } from "yup/lib/locale";
-
 export interface Tags {
 	basicInfo: string;
 	attachment: string;
