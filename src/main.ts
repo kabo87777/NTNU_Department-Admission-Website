@@ -16,6 +16,7 @@ import Divider from "primevue/divider";
 import Menubar from "primevue/menubar";
 import Toast from "primevue/toast";
 import ToastService from "primevue/toastservice";
+import Tooltip from "primevue/tooltip";
 
 import App from "@/App.vue";
 import { router } from "./router/index";
@@ -31,6 +32,8 @@ app.use(router);
 app.use(PrimeVue);
 app.use(ToastService);
 app.use(VueQueryPlugin);
+
+app.directive("tooltip", Tooltip);
 
 app.component("Menubar", Menubar);
 app.component("Divider", Divider);
