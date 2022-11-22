@@ -63,25 +63,49 @@
 </template>
 
 <script setup lang="ts">
-import { toRaw } from "vue";
+import { ref } from "vue";
+import { useRouter } from "vue-router";
 import { useQuery } from "@tanstack/vue-query";
 import { useRecruitmentApplicantAuthStore } from "@/stores/universalAuth";
 import { RecruitmentApplicantAPI } from "@/api/recruitment/applicant/api";
 import { useProjectIdStore } from "@/stores/RecruitmentApplicantStore";
-import type { RecruitmentApplicantProgramResponse } from "@/api/recruitment/applicant/types";
+import { RecruitmentApplicantProgramResponse } from "@/api/recruitment/applicant/types";
+import { InvalidSessionError } from "@/api/error";
 import Button from "primevue/button";
+
+const router = useRouter();
 
 const applicantAuth = useRecruitmentApplicantAuthStore();
 const api = new RecruitmentApplicantAPI(applicantAuth);
 const project = useProjectIdStore();
 
-const { data } = useQuery(
-	["programList"],
-	async () => await api.getProgramList()
+const programList = ref<RecruitmentApplicantProgramResponse[]>(
+	[] as RecruitmentApplicantProgramResponse[]
 );
 
-const programList: RecruitmentApplicantProgramResponse[] | undefined = toRaw(
-	data.value
+const { data } = useQuery(
+	["programList"],
+	async () => {
+		try {
+			return await api.getProgramList();
+		} catch (e: any) {
+			if (e instanceof InvalidSessionError) {
+				console.error(
+					"Session has already expired while querying programList"
+				);
+				router.push("/");
+				return;
+			}
+		}
+	},
+	{
+		onSuccess: (data) => {
+			if (!data) {
+				throw new Error("Failed to fetch program list.");
+			}
+			programList.value = data;
+		},
+	}
 );
 
 const period = (start_date: string, end_date: string) => {
