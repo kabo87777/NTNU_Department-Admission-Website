@@ -165,7 +165,11 @@ const tableData = ref<AdmissionAdminApplicantsListResponse[]>(
 );
 
 // NOTE: Copy and modified from SideBar.vue
-const { isLoading, data: applicants, refetch } = useQuery(
+const {
+	isLoading,
+	data: applicants,
+	refetch,
+} = useQuery(
 	["applicantList"],
 	async () => {
 		try {
@@ -227,7 +231,7 @@ const openModal = (applicantData: AdmissionAdminApplicantsListResponse) => {
 		email,
 		// This is used to show dots as visual hint for user
 		// After user click the password input box, the value will be cleared
-		password: "JUST A PLACEHOLDER",	
+		password: "JUST A PLACEHOLDER",
 		allow_password_change,
 	}))(applicantData);
 
@@ -242,7 +246,6 @@ const saveChange = () => {
 	modalVisible.value = false;
 };
 
-
 const getTableItemQty = computed(() => {
 	return tableData.value ? tableData.value.length : 0;
 });
@@ -253,10 +256,10 @@ const { mutate: uploadApplicantImport } = useMutation({
 		console.log("mutate");
 		return api.postApplicantsXlsx(store.program.id, data);
 	},
-	onSuccess: ()=>{
+	onSuccess: () => {
 		// Refetch applicnt list on successful import
-		refetch()
-	}
+		refetch();
+	},
 });
 
 const { mutate: deleteApplicant } = useMutation({
