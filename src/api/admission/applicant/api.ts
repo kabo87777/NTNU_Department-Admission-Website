@@ -114,15 +114,15 @@ export class AdmissionApplicantAPI extends GenericAPI {
 			body
 		);
 
-		if (data.success === false && data.errors !== undefined) {
+		if (data.error !== false) {
 			return {
-				success: data.success,
-				message: data.errors.full_messages,
+				success: false,
+				message: data.message.full_messages,
 			};
 		}
 
 		return {
-			success: data.success,
+			success: true,
 			message: data.message,
 		};
 	}
