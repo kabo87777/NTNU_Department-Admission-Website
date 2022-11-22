@@ -72,7 +72,7 @@ export async function doUniversalAuthSignOut(auth: AuthStore) {
 	// localStorage anyway before handling errors
 	auth.clearCredentials();
 
-	if (response.data?.success !== true) throw new Error("Sign out failed");
+	if (response.data?.error !== false) throw new Error("Sign out failed");
 }
 
 export async function doUniversalAuthSessionValidation(auth: AuthStore) {
