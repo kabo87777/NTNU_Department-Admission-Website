@@ -55,7 +55,7 @@ export class RecruitmentApplicantAPI extends GenericAPI {
 			message: data.message,
 		};
 	}
-	
+
 	async sendForgotPwd(
 		data: RecruitmentApplicantForgotPwdResponse
 	): Promise<any> {

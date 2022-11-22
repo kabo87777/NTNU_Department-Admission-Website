@@ -90,8 +90,8 @@ import Button from "primevue/button";
 import { reactive, ref, watch, computed, toRaw } from "vue";
 import InputText from "primevue/inputtext";
 import { useRouter } from "vue-router";
-import { useRecruitmentApplicantAuthStore } from "@/stores/universalAuth"
-import { RecruitmentApplicantAPI } from "@/api/recruitment/applicant/api"
+import { useRecruitmentApplicantAuthStore } from "@/stores/universalAuth";
+import { RecruitmentApplicantAPI } from "@/api/recruitment/applicant/api";
 import { useMutation } from "@tanstack/vue-query";
 import type { TurnstileComponentExposes } from "@/components/Turnstile.vue";
 import Turnstile from "@/components/Turnstile.vue";
@@ -106,7 +106,7 @@ const isSendEmailPassLoading = ref(false);
 const forgetPwdEmail = ref("");
 
 const postEnteredEmailString = useMutation(async (enteredEmail: any) => {
-	try{
+	try {
 		return await api.sendForgotPwd(enteredEmail);
 	} catch (error) {
 		console.log(error);
@@ -123,23 +123,21 @@ const enterEmail = async () => {
 		"http://127.0.0.1:5173/recruitment/applicant/password/reset";
 	const turnstileResponse = consumeTurnstileToken();
 	if (!turnstileResponse) throw new Error("Turnstile challenge failed");
-	try{
+	try {
 		postEnteredEmailString.mutate({
 			email: forgetPwdEmail.value,
 			redirect_url: redirectUrl,
 			"cf-turnstile-response": turnstileResponse,
 		});
-		console.log(
-			{
-				email: forgetPwdEmail.value,
-				redirect_url: redirectUrl,
-				"cf-turnstile-response": turnstileResponse,
-			}
-		)
-	} catch(error) {
+		console.log({
+			email: forgetPwdEmail.value,
+			redirect_url: redirectUrl,
+			"cf-turnstile-response": turnstileResponse,
+		});
+	} catch (error) {
 		console.log(error);
 	}
-}
+};
 // function enterEmail() {
 // 	const redirectUrl =
 // 		"http://127.0.0.1:5173/recruitment/applicant/password/reset";
