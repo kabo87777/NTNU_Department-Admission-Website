@@ -61,16 +61,24 @@ export interface AdmissionAdminApplicantsListResponse {
 export interface AdmissionAdminScoreFieldResponse {
 	docs_weight: number;
 	oral_weight: number;
-	docs_grade_name_1: string;
-	docs_grade_name_2: string;
-	docs_grade_name_3: string;
-	docs_grade_weight_1: number;
-	docs_grade_weight_2: number;
-	docs_grade_weight_3: number;
-	oral_grade_name_1: string;
-	oral_grade_name_2: string;
-	oral_grade_name_3: string;
-	oral_grade_weight_1: number;
-	oral_grade_weight_2: number;
-	oral_grade_weight_3: number;
+	docs_grade_name_1?: string;
+	docs_grade_name_2?: string;
+	docs_grade_name_3?: string;
+	docs_grade_name_4?: string;
+	docs_grade_name_5?: string;
+	docs_grade_weight_1?: number;
+	docs_grade_weight_2?: number;
+	docs_grade_weight_3?: number;
+	docs_grade_weight_4?: number;
+	docs_grade_weight_5?: number;
+	oral_grade_name_1?: string;
+	oral_grade_name_2?: string;
+	oral_grade_name_3?: string;
+	oral_grade_name_4?: string;
+	oral_grade_name_5?: string;
+	oral_grade_weight_1?: number;
+	oral_grade_weight_2?: number;
+	oral_grade_weight_3?: number;
+	oral_grade_weight_4?: number;
+	oral_grade_weight_5?: number;
 }

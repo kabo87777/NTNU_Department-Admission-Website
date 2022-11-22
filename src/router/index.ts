@@ -31,7 +31,7 @@ import AdmissionApplicantUserSetting from "@/views/admission/applicant/pages/use
 
 import projectSetting from "@/views/admission/manager/project-setting.vue";
 import firstloginchangepassword from "@/views/admission/FirstSigninChangePass.vue";
-import reviewScoreField from "@/views/reviewScoreField.vue";
+import reviewScoreField from "@/views/ReviewScoreField.vue";
 import resetpassword from "@/views/admission/ResetPassword.vue";
 import ResetPasswordEmailSent from "@/views/admission/ResetPasswordEmailSent.vue";
 import gradeDataList from "@/views/admission/manager/gradeDataList.vue";

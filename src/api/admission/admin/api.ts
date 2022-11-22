@@ -6,7 +6,6 @@ import type {
 } from "./types";
 import type { APIGenericResponse } from "@/api/types";
 import { GenericAPI } from "@/api/api";
-import { Interface } from "readline";
 
 export class AdmissionAdminAPI extends GenericAPI {
 	constructor(auth: AuthStore) {
