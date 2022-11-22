@@ -5,13 +5,37 @@ export interface Tags {
 	submitConfirm: string;
 }
 
+export interface RecruitmentApplicantGenericResponse {
+	success?: boolean;
+	message?: string | [];
+}
+
 export interface AttachmentData {
-	itemName?: string;
-	fileName?: string;
-	fileUrl?: string;
+	id: number;
+	category: string;
+	name: string;
+	filepath: {
+		url: string | any;
+	};
+	r_applicants_r_program_id: number;
+	created_at: string;
+	updated_at: string;
+}
+
+export interface AttachmentDetailData {
+	id?: number;
+	category?: string;
+	name?: string;
+	filepath?: {
+		url?: string | any;
+	};
+	r_applicants_r_program_id?: number;
+	created_at?: string;
+	updated_at?: string;
 	order?: number;
 	state?: number;
 }
+
 export interface RecruitmentApplicantSignInInput {
 	email: string;
 	password: string;
@@ -57,7 +81,9 @@ export interface RecruitmentApplicantFileListResponse {
 	id: number;
 	category: string;
 	name: string;
-	filepath: object;
+	filepath: {
+		url: string | any;
+	};
 	r_applicants_r_program_id: number;
 	created_at: string;
 	updated_at: string;

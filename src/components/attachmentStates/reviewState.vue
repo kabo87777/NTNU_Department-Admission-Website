@@ -1,5 +1,58 @@
 <template>
 	<div class="mt-16px flex">
+		<Dialog
+			v-model:visible="isModalVisible"
+			style="width: 500px"
+			:closable="false"
+			:draggable="false"
+			:modal="true"
+		>
+			<template #header>
+				<div class="font-bold text-[24px]">
+					{{ $t("刪除") }}
+				</div>
+			</template>
+			<template #default>
+				<div class="flex">
+					<div class="mt-2px">
+						<i
+							class="pi pi-exclamation-triangle"
+							style="font-size: 20px"
+						/>
+					</div>
+					<div class="ml-4px">
+						{{ $t("確認刪除") + $t("?") }}
+					</div>
+				</div>
+			</template>
+			<template #footer>
+				<Button
+					class="p-button-outlined p-button-secondary"
+					style="
+						border: 2px solid #a18b4a;
+						color: #736028;
+						height: 36px;
+					"
+					icon="pi pi-times"
+					iconClass="text-[#736028]"
+					:label="$t('取消')"
+					@click="isModalVisible = false"
+				/>
+				<Button
+					class="p-button-outlined p-button-secondary"
+					style="
+						color: #93282c;
+						border: 2px solid #93282c;
+						margin-left: 16px;
+						height: 36px;
+					"
+					icon="pi pi-check"
+					iconClass="text-[#93282C]"
+					:label="$t('確認')"
+					@click="handleDelete()"
+				/>
+			</template>
+		</Dialog>
 		<div class="text-20px text-[#53565A] pt-16px">
 			{{ $t(props.category) }}{{ " - " }}{{ props.order }}
 		</div>
@@ -18,6 +71,8 @@
 		<Button
 			class="p-button-outlined"
 			style="border: 2px solid #93282c; margin-left: 16px"
+			:loading="isDeleteLoading"
+			@click="isModalVisible = true"
 		>
 			<div>
 				<i class="pi pi-times" style="color: rgba(135, 75, 82, 1)"></i>
@@ -49,21 +104,31 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from "vue";
 import Button from "primevue/button";
+import Dialog from "primevue/dialog";
 import "primeicons/primeicons.css";
 
 const props = defineProps([
+	"itemId",
 	"category",
 	"identity",
 	"itemName",
 	"order",
 	"schoolName",
 	"score",
+	"isDeleteLoading",
 ]);
 
-const emit = defineEmits(["edit"]);
+const emit = defineEmits(["edit", "delete"]);
+
+const isModalVisible = ref(false);
 
 const handleEdit = () => {
 	emit("edit", props.order - 1, props.category);
+};
+
+const handleDelete = () => {
+	emit("delete", props.itemId);
 };
 </script>
