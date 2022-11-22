@@ -24,13 +24,12 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, toRaw, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useQuery } from "@tanstack/vue-query";
+import { InvalidSessionError } from "@/api/error";
 import { RecruitmentApplicantAPI } from "@/api/recruitment/applicant/api";
 import { useRecruitmentApplicantAuthStore } from "@/stores/universalAuth";
 import { useProjectIdStore } from "@/stores/RecruitmentApplicantStore";
-import type { RecruitmentApplicantProgramResponse } from "@/api/recruitment/applicant/types";
 import NavBar from "@/components/NavBar.vue";
 import SideBar from "@/components/sidebars/recruitmentApplicantSidebar.vue";
 
@@ -39,23 +38,34 @@ const applicantAuth = useRecruitmentApplicantAuthStore();
 const project = useProjectIdStore();
 const api = new RecruitmentApplicantAPI(applicantAuth);
 
-const { isLoading, isError, data, error } = useQuery(
+const { data } = useQuery(
 	["programList"],
-	async () => await api.getProgramList()
+	async () => {
+		try {
+			return await api.getProgramList();
+		} catch (e: any) {
+			if (e instanceof InvalidSessionError) {
+				console.error(
+					"Session has already expired while querying programList"
+				);
+				router.push("/");
+				return;
+			}
+		}
+	},
+	{
+		onSuccess: (data) => {
+			if (data && project.project.pid === 0)
+				project.switchProject({
+					pid: data[0].id,
+					category: data[0].category,
+					name: data[0].name,
+				});
+		},
+	}
 );
 
-onMounted(() => {
-	if (data.value) {
-		const programList: RecruitmentApplicantProgramResponse[] | undefined =
-			toRaw(data.value);
-		project.switchPid(programList[0].id);
-		router.push("/recruitment/applicant/switchProject");
-	}
-});
-
-if (!applicantAuth.credentials) {
-	router.push("/recruitment");
-}
+router.push("/recruitment/applicant/switchProject");
 </script>
 
 <style scoped></style>
