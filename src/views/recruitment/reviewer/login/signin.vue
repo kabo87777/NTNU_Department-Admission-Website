@@ -146,7 +146,7 @@
 							</div>
 							<div class="flex justify-center items-center py-4">
 								<router-link
-									to="/recruitment/reviewer/password/forget"
+									to="/recruitment/reviewer/forgetpassword"
 								>
 									<button
 										class="flex justify-center gap-2 px-1 py-1"
