@@ -40,7 +40,7 @@
 			</div>
 			<div class="space-y-2" v-if="selectStage === 2">
 				<div>{{ $t("口試審查總佔比") }}</div>
-				<InputNumber class="!w-300px" v-model="fieldData.docs_weight" />
+				<InputNumber class="!w-300px" v-model="fieldData.oral_weight" />
 			</div>
 		</div>
 		<!-- ScoreField -->
@@ -217,7 +217,7 @@
 				<div class="flex">
 					<Button
 						class="bg-white h-60px w-140px border-ntnuRed p-button-outlined"
-						@click="resetChange(selectStage)"
+						@click="resetChange()"
 					>
 						<i
 							class="ml-1 mr-2 box-border text-sm text-ntnuRed pi pi-times"
@@ -258,20 +258,18 @@ import { useGlobalStore } from "@/stores/globalStore";
 import type { AdmissionAdminScoreFieldResponse } from "@/api/admission/admin/types";
 import { InvalidSessionError } from "@/api/error";
 import { AdmissionApplicantAPI } from "@/api/admission/applicant/api";
-import { useMutation } from "@tanstack/vue-query";
+import { useMutation, useQuery } from "@tanstack/vue-query";
 import { boolean, number, string } from "yup";
 
 const selectStage = ref(1);
 const adminAuth = useAdmissionAdminAuthStore();
 const store = useGlobalStore();
 const api = new AdmissionAdminAPI(adminAuth);
-const fieldData: AdmissionAdminScoreFieldResponse = reactive({
-	docs_weight: 50,
-	oral_weight: 50,
-});
+const fieldData: AdmissionAdminScoreFieldResponse = reactive({});
 const { t } = useI18n();
 const translate = reactive({
 	save: t("儲存"),
+	changeSuccess: t("儲存成功"),
 	cancel: t("取消"),
 	scoreOption: t("評分項目"),
 	labelProp: t("佔比"),
@@ -284,8 +282,24 @@ const translate = reactive({
 	},
 });
 
-// API : patchScoreFeild
-const scoreField = useMutation(
+// API : getScoreField
+const getScoreField = useQuery(["scoreField"], async () => {
+	try {
+		if (store.program) {
+			return await api.getScoreField(store.program.id);
+		}
+	} catch (e: any) {
+		if (e instanceof InvalidSessionError) {
+			// TODO: getScoreFeild InvalidSessionError message
+			console.error("Invalid Session Error");
+		}
+		alert(e.message);
+	}
+});
+// FIXME: Get Data on Page is loaded.
+
+// API : patchScoreField
+const patchScoreField = useMutation(
 	async (newData: AdmissionAdminScoreFieldResponse) => {
 		try {
 			if (store.program) {
@@ -296,46 +310,50 @@ const scoreField = useMutation(
 				// TODO: patchScoreFeild InvalidSessionError message
 				console.error("Invalid Session Error");
 			}
+			alert(e.message);
 		}
 	}
 );
 
-function cleanData() {
-	fieldData.docs_grade_name_1 = undefined;
-	fieldData.docs_grade_name_2 = undefined;
-	fieldData.docs_grade_name_3 = undefined;
-	fieldData.docs_grade_name_4 = undefined;
-	fieldData.docs_grade_name_5 = undefined;
-	fieldData.oral_grade_name_1 = undefined;
-	fieldData.oral_grade_name_2 = undefined;
-	fieldData.oral_grade_name_3 = undefined;
-	fieldData.oral_grade_name_4 = undefined;
-	fieldData.oral_grade_name_5 = undefined;
-	fieldData.docs_grade_weight_1 = 0;
-	fieldData.docs_grade_weight_2 = 0;
-	fieldData.docs_grade_weight_3 = 0;
-	fieldData.docs_grade_weight_4 = 0;
-	fieldData.docs_grade_weight_5 = 0;
-	fieldData.oral_grade_weight_1 = 0;
-	fieldData.oral_grade_weight_2 = 0;
-	fieldData.oral_grade_weight_3 = 0;
-	fieldData.oral_grade_weight_4 = 0;
-	fieldData.oral_grade_weight_5 = 0;
+function saveChange(stage: number) {
+	if (stage === 1 && fieldData.docs_weight)
+		fieldData.oral_weight = 100 - fieldData.docs_weight;
+	if (stage === 2 && fieldData.oral_weight)
+		fieldData.docs_weight = 100 - fieldData.oral_weight;
+
+	// FIXME: Patch doesn't work every time?
+	patchScoreField.mutate(fieldData);
+	return;
+}
+
+function resetChange() {
+	const getData = getScoreField.data.value;
+	fieldData.docs_weight = getData?.docs_weight;
+	fieldData.oral_weight = getData?.oral_weight;
+	fieldData.docs_grade_name_1 = getData?.docs_grade_name_1;
+	fieldData.docs_grade_name_2 = getData?.docs_grade_name_2;
+	fieldData.docs_grade_name_3 = getData?.docs_grade_name_3;
+	fieldData.docs_grade_name_4 = getData?.docs_grade_name_4;
+	fieldData.docs_grade_name_5 = getData?.docs_grade_name_5;
+	fieldData.docs_grade_weight_1 = getData?.docs_grade_weight_1;
+	fieldData.docs_grade_weight_2 = getData?.docs_grade_weight_2;
+	fieldData.docs_grade_weight_3 = getData?.docs_grade_weight_3;
+	fieldData.docs_grade_weight_4 = getData?.docs_grade_weight_4;
+	fieldData.docs_grade_weight_5 = getData?.docs_grade_weight_5;
+	fieldData.oral_grade_name_1 = getData?.oral_grade_name_1;
+	fieldData.oral_grade_name_2 = getData?.oral_grade_name_2;
+	fieldData.oral_grade_name_3 = getData?.oral_grade_name_3;
+	fieldData.oral_grade_name_4 = getData?.oral_grade_name_4;
+	fieldData.oral_grade_name_5 = getData?.oral_grade_name_5;
+	fieldData.oral_grade_weight_1 = getData?.oral_grade_weight_1;
+	fieldData.oral_grade_weight_2 = getData?.oral_grade_weight_2;
+	fieldData.oral_grade_weight_3 = getData?.oral_grade_weight_3;
+	fieldData.oral_grade_weight_4 = getData?.oral_grade_weight_4;
+	fieldData.oral_grade_weight_5 = getData?.oral_grade_weight_5;
 }
 
 function changeStage(stage: number) {
 	selectStage.value = stage;
-	cleanData();
-}
-
-function saveChange(stage: number) {
-	if (stage === 1) fieldData.oral_weight = 100 - fieldData.docs_weight;
-	else fieldData.docs_weight = 100 - fieldData.oral_weight;
-
-	scoreField.mutate(fieldData);
-}
-
-function resetChange(stage: number) {
-	cleanData();
+	resetChange();
 }
 </script>

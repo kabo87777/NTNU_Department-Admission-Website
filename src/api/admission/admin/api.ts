@@ -6,6 +6,7 @@ import type {
 } from "./types";
 import type { APIGenericResponse } from "@/api/types";
 import { GenericAPI } from "@/api/api";
+import messages from "@intlify/vite-plugin-vue-i18n/messages";
 
 export class AdmissionAdminAPI extends GenericAPI {
 	constructor(auth: AuthStore) {
@@ -34,16 +35,25 @@ export class AdmissionAdminAPI extends GenericAPI {
 		return data.data.applicants;
 	}
 
+	async getScoreField(
+		programID: number
+	): Promise<AdmissionAdminScoreFieldResponse> {
+		const data: APIGenericResponse = await this.instance.get(
+			`admission/admin/program/${programID}/grading`
+		);
+		if (data.error === true) throw new Error(data.message);
+		return data.data;
+	}
+
 	async patchScoreField(
 		programID: number,
 		newData: AdmissionAdminScoreFieldResponse
 	): Promise<APIGenericResponse> {
 		const data: APIGenericResponse = await this.instance.patch(
-			`/admission/admin/program/grading/${programID}`,
+			`/admission/admin/program/${programID}/grading/`,
 			newData
 		);
-		if (data.error === true || typeof data.data.applicants === "undefined")
-			throw new Error("Failed to fetch applicant list");
+		if (data.error === true) throw new Error(data.message);
 		return data;
 	}
 }

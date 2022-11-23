@@ -59,8 +59,8 @@ export interface AdmissionAdminApplicantsListResponse {
 }
 
 export interface AdmissionAdminScoreFieldResponse {
-	docs_weight: number;
-	oral_weight: number;
+	docs_weight?: number;
+	oral_weight?: number;
 	docs_grade_name_1?: string;
 	docs_grade_name_2?: string;
 	docs_grade_name_3?: string;
