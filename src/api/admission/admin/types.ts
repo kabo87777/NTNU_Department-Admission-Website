@@ -32,6 +32,7 @@ export interface AdmissionAdminProgramListResponse {
 	applicant_required_file: null;
 	reviewer_required_info: null;
 	reviewer_required_file: null;
+	detail: string;
 }
 
 export interface AdmissionAdminApplicantsListResponse {

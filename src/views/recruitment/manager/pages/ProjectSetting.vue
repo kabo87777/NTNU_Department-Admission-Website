@@ -141,6 +141,7 @@ import { router } from "@/router";
 import { useToast } from "primevue/usetoast";
 
 const programName = ref<string>("");
+const oldProgramName = ref<string>("");
 const selected_type = ref({});
 const recruit_start_time = ref();
 const recruit_end_time = ref();
@@ -166,30 +167,42 @@ const programData = useMutation(async (newProgramData: any) => {
 const {
 	isLoading,
 	isError,
-	data: oldProgramName,
+	data: program,
 	error,
-} = useQuery(["programName"], async () => {
-	try {
-		const programName = (await api.getProgramList()).filter(
-			(program) => program.id === globalStore.program!.id
-		)[0].name;
-		programCreateDate.value = (await api.getProgramList())
-			.filter((program) => program.id === globalStore.program!.id)[0]
-			.created_at.slice(0, 10);
-		return programName;
-	} catch (e: any) {
-		if (e instanceof InvalidSessionError) {
-			// FIXME: show session expiry notification??
-			// Why are we even here in the first place?
-			// MainContainer should have checked already.
-			console.error(
-				"Session has already expired while querying programList"
-			);
-			router.push("/");
-			return;
+} = useQuery(
+	["program"],
+	async () => {
+		try {
+			return (await api.getProgramList()).filter(
+				(program) => program.id === globalStore.program!.id
+			)[0];
+		} catch (e: any) {
+			if (e instanceof InvalidSessionError) {
+				// FIXME: show session expiry notification??
+				// Why are we even here in the first place?
+				// MainContainer should have checked already.
+				console.error(
+					"Session has already expired while querying programList"
+				);
+				router.push("/");
+				return;
+			}
 		}
+	},
+	{
+		onSuccess: (data) => {
+			oldProgramName.value = data!.name;
+			programName.value = data!.name;
+			selected_type.value = data!.category;
+			programCreateDate.value = data!.created_at.slice(0, 10);
+			recruit_start_time.value = new Date(data!.recruit_start_date);
+			recruit_end_time.value = new Date(data!.recruit_end_date);
+			review_stage1_start_time.value = new Date(data!.review_start_date);
+			review_stage1_end_time.value = new Date(data!.review_end_date);
+			project_details.value = data!.detail;
+		},
 	}
-});
+);
 
 const toast = useToast();
 function update() {
