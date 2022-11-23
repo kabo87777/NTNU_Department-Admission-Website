@@ -156,7 +156,7 @@
 								</router-link>
 								<Divider layout="vertical" />
 								<router-link
-									to="/recruitment/applicant/password/forget"
+									to="/recruitment/applicant/forgetpassword"
 								>
 									<button
 										class="flex justify-center gap-2 px-1 py-1"
