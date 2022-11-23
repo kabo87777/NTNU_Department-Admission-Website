@@ -95,10 +95,10 @@
 			<InputText
 				type="text"
 				v-model="accessReason"
-				class="!w-549px !h-44px"
+				class="!w-549px !h-44px ml-5px"
 				:disabled="disable"
 			/>
-			<div class="text-xl ml-220px mt-5px">
+			<div class="text-xl ml-180px mt-5px">
 				{{ $t("書面分數合計： ") }} {{ total_score }} {{ $t("分") }}
 			</div>
 			<Button
@@ -149,6 +149,7 @@ const newApplicantGrade = useMutation(async (newProgramData: any) => {
 	try {
 		return await api.updateSingleApplicantGrade(ID.value, newProgramData);
 	} catch (error) {
+		toast.add({ severity: "error", summary: "無法保存", life: 3000 });
 		console.log(error);
 	}
 });
@@ -296,6 +297,34 @@ const load = computed(() => {
 const toast = useToast();
 function saveScore() {
 	const today = new Date();
+	if (
+		inputScore_1.value > 100 ||
+		inputScore_2.value > 100 ||
+		inputScore_3.value > 100
+	) {
+		toast.add({
+			severity: "error",
+			summary: "成績請輸入0~100",
+			life: 3000,
+		});
+		return;
+	}
+	if (
+		inputScore_1.value < 0 ||
+		inputScore_2.value < 0 ||
+		inputScore_3.value < 0
+	) {
+		toast.add({
+			severity: "error",
+			summary: "成績請輸入0~100",
+			life: 3000,
+		});
+		return;
+	}
+	if (accessChecked.value && !accessReason.value) {
+		toast.add({ severity: "error", summary: "請輸入理由", life: 3000 });
+		return;
+	}
 	try {
 		newApplicantGrade.mutate({
 			docs_grade_1: inputScore_1.value,
@@ -305,19 +334,9 @@ function saveScore() {
 			docs_grade_5: inputScore_5.value,
 			isImmediateEnroll: accessChecked.value,
 			immediate_enroll_comment: accessReason.value,
-			isDocsGraded: true,
-			updated_at: dateTransform(today) + "+08:00",
 		});
-		toast.add({ severity: "success", summary: "保存成功", life: 3000 });
 	} catch (error) {
-		toast.add({ severity: "error", summary: "資料錯誤", life: 3000 });
+		// console.log(error);
 	}
-}
-
-function dateTransform(date?: Date) {
-	const result = new Date(date!.setHours(date!.getHours() + 8))
-		.toJSON()
-		.replace("Z", "");
-	return result;
 }
 </script>

@@ -193,7 +193,6 @@ const {
 
 const toast = useToast();
 function update() {
-	const today = new Date();
 	try {
 		programData.mutate({
 			category: selected_type.value,
@@ -206,7 +205,7 @@ function update() {
 			review_end_date:
 				dateTransform(review_stage1_end_time.value) + "+08:00",
 			require_file: '["file1", "file2"]',
-			updated_at: dateTransform(today) + "+08:00",
+			detail: project_details.value,
 		});
 		toast.add({ severity: "success", summary: "更改成功", life: 3000 });
 	} catch (error) {

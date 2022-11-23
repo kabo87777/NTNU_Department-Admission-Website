@@ -108,3 +108,40 @@ export interface AdmissionReviewerProgramGradingResponse {
 	oral_grade_weight_4: number | null;
 	oral_grade_weight_5: number | null;
 }
+
+export interface AdmissionReviewerApplicantListResponse {
+	id: number;
+	provider: string;
+	uid: number;
+	allow_password_change: boolean;
+	isInit: boolean;
+	lang: string;
+	name: string;
+	nickname: string;
+	image: string;
+	email: string;
+	username: string;
+	docs_order: number;
+	oral_order: number;
+	file: string;
+	docs_stage: string;
+	oral_stage: string;
+	created_at: string;
+	updated_at: string;
+	s_program_id: number;
+	application_stage: string;
+	docs_grade_1: number;
+	docs_grade_2: number;
+	docs_grade_3: number;
+	docs_grade_4: number;
+	docs_grade_5: number;
+	oral_grade_1: number;
+	oral_grade_2: number;
+	oral_grade_3: number;
+	oral_grade_4: number;
+	oral_grade_5: number;
+	isDocsGraded: boolean;
+	isOralGraded: boolean;
+	isImmediateEnroll: boolean;
+	immediate_enroll_comment: string;
+}
