@@ -1,7 +1,7 @@
 <template>
 	<div class="mx-32 mt-16">
 		<h1 class="text-4xl text-bold tracking-widest">
-			{{ $t("審查評分欄位") }}
+			{{ translate.reviewScoreField.value }}
 		</h1>
 		<div class="bigRedDivider"></div>
 
@@ -14,9 +14,9 @@
 					border="rounded-lg"
 					v-if="selectStage === 1"
 				>
-					{{ $t("第一階段（書面審查）") }}
+					{{ translate.stage[1].value }}
 				</div>
-				<div v-else>{{ $t("第一階段（書面審查）") }}</div>
+				<div v-else>{{ translate.stage[1].value }}</div>
 			</button>
 			<button class="w-1/2 gap-2" @click="changeStage(2)">
 				<div
@@ -25,53 +25,55 @@
 					border="rounded-lg"
 					v-if="selectStage === 2"
 				>
-					{{ $t("第二階段（口試審查）") }}
+					{{ translate.stage[2].value }}
 				</div>
-				<div v-else>{{ $t("第二階段（口試審查）") }}</div>
+				<div v-else>{{ translate.stage[2].value }}</div>
 			</button>
 		</div>
 
 		<!-- StageScore -->
 		<div>
-			<h1 class="text-xl my-6">{{ $t("評分項目設定") }}</h1>
+			<h1 class="text-xl my-6">
+				{{ translate.scoreOptionSetting.value }}
+			</h1>
 			<div class="space-y-2" v-if="selectStage === 1">
-				<div>{{ $t("書面階段審查佔比") }}</div>
+				<div>{{ translate.stageWeight[1].value }}</div>
 				<InputNumber class="!w-300px" v-model="fieldData.docs_weight" />
 			</div>
 			<div class="space-y-2" v-if="selectStage === 2">
-				<div>{{ $t("口試審查總佔比") }}</div>
+				<div>{{ translate.stageWeight[2].value }}</div>
 				<InputNumber class="!w-300px" v-model="fieldData.oral_weight" />
 			</div>
 		</div>
 		<!-- ScoreField -->
 		<div class="my-6">
 			<div class="my-4 space-y-4">
-				<div>{{ translate.scoreOption }}</div>
+				<div>{{ translate.scoreOption.value }}</div>
 				<!-- ScoreField 1 -->
 				<div class="flex content-center gap-4">
 					<InputText
 						class="!w-300px"
 						v-model="fieldData.docs_grade_name_1"
 						v-if="selectStage === 1"
-						:placeholder="translate.labelName[1]"
+						:placeholder="translate.labelName[1].value"
 					/>
 					<InputNumber
 						class="!w-200px"
 						v-model="fieldData.docs_grade_weight_1"
 						v-if="selectStage === 1"
-						:placeholder="translate.labelProp"
+						:placeholder="translate.labelWeight.value"
 					/>
 					<InputText
 						class="!w-300px"
 						v-model="fieldData.oral_grade_name_1"
 						v-if="selectStage === 2"
-						:placeholder="translate.labelName[1]"
+						:placeholder="translate.labelName[1].value"
 					/>
 					<InputNumber
 						class="!w-200px"
 						v-model="fieldData.oral_grade_weight_1"
 						v-if="selectStage === 2"
-						:placeholder="translate.labelProp"
+						:placeholder="translate.labelWeight.value"
 					/>
 				</div>
 				<!-- ScoreField 2 -->
@@ -80,25 +82,25 @@
 						class="!w-300px"
 						v-model="fieldData.docs_grade_name_2"
 						v-if="selectStage === 1"
-						:placeholder="translate.labelName[2]"
+						:placeholder="translate.labelName[2].value"
 					/>
 					<InputNumber
 						class="!w-200px"
 						v-model="fieldData.docs_grade_weight_2"
 						v-if="selectStage === 1"
-						:placeholder="translate.labelProp"
+						:placeholder="translate.labelWeight.value"
 					/>
 					<InputText
 						class="!w-300px"
 						v-model="fieldData.oral_grade_name_2"
 						v-if="selectStage === 2"
-						:placeholder="translate.labelName[2]"
+						:placeholder="translate.labelName[2].value"
 					/>
 					<InputNumber
 						class="!w-200px"
 						v-model="fieldData.oral_grade_weight_2"
 						v-if="selectStage === 2"
-						:placeholder="translate.labelProp"
+						:placeholder="translate.labelWeight.value"
 					/>
 				</div>
 				<!-- ScoreField 3 -->
@@ -107,25 +109,25 @@
 						class="!w-300px"
 						v-model="fieldData.docs_grade_name_3"
 						v-if="selectStage === 1"
-						:placeholder="translate.labelName[3]"
+						:placeholder="translate.labelName[3].value"
 					/>
 					<InputNumber
 						class="!w-200px"
 						v-model="fieldData.docs_grade_weight_3"
 						v-if="selectStage === 1"
-						:placeholder="translate.labelProp"
+						:placeholder="translate.labelWeight.value"
 					/>
 					<InputText
 						class="!w-300px"
 						v-model="fieldData.oral_grade_name_3"
 						v-if="selectStage === 2"
-						:placeholder="translate.labelName[3]"
+						:placeholder="translate.labelName[3].value"
 					/>
 					<InputNumber
 						class="!w-200px"
 						v-model="fieldData.oral_grade_weight_3"
 						v-if="selectStage === 2"
-						:placeholder="translate.labelProp"
+						:placeholder="translate.labelWeight.value"
 					/>
 				</div>
 				<!-- ScoreField 4 -->
@@ -134,25 +136,25 @@
 						class="!w-300px"
 						v-model="fieldData.docs_grade_name_4"
 						v-if="selectStage === 1"
-						:placeholder="translate.labelName[4]"
+						:placeholder="translate.labelName[4].value"
 					/>
 					<InputNumber
 						class="!w-200px"
 						v-model="fieldData.docs_grade_weight_4"
 						v-if="selectStage === 1"
-						:placeholder="translate.labelProp"
+						:placeholder="translate.labelWeight.value"
 					/>
 					<InputText
 						class="!w-300px"
 						v-model="fieldData.oral_grade_name_4"
 						v-if="selectStage === 2"
-						:placeholder="translate.labelName[4]"
+						:placeholder="translate.labelName[4].value"
 					/>
 					<InputNumber
 						class="!w-200px"
 						v-model="fieldData.oral_grade_weight_4"
 						v-if="selectStage === 2"
-						:placeholder="translate.labelProp"
+						:placeholder="translate.labelWeight.value"
 					/>
 				</div>
 				<!-- ScoreField 5 -->
@@ -161,25 +163,25 @@
 						class="!w-300px"
 						v-model="fieldData.docs_grade_name_5"
 						v-if="selectStage === 1"
-						:placeholder="translate.labelName[5]"
+						:placeholder="translate.labelName[5].value"
 					/>
 					<InputNumber
 						class="!w-200px"
 						v-model="fieldData.docs_grade_weight_5"
 						v-if="selectStage === 1"
-						:placeholder="translate.labelProp"
+						:placeholder="translate.labelWeight.value"
 					/>
 					<InputText
 						class="!w-300px"
 						v-model="fieldData.oral_grade_name_5"
 						v-if="selectStage === 2"
-						:placeholder="translate.labelName[5]"
+						:placeholder="translate.labelName[5].value"
 					/>
 					<InputNumber
 						class="!w-200px"
 						v-model="fieldData.oral_grade_weight_5"
 						v-if="selectStage === 2"
-						:placeholder="translate.labelProp"
+						:placeholder="translate.labelWeight.value"
 					/>
 				</div>
 			</div>
@@ -223,7 +225,7 @@
 							class="ml-1 mr-2 box-border text-sm text-ntnuRed pi pi-times"
 						></i>
 						<div class="m-auto text-sm text-ntnuRed tracking-2">
-							<div>{{ translate.cancel }}</div>
+							<div>{{ translate.cancel.value }}</div>
 						</div>
 					</Button>
 					<div class="w-24px"></div>
@@ -235,7 +237,7 @@
 							class="ml-1 mr-2 box-border text-sm text-black pi pi-check"
 						></i>
 						<div class="m-auto text-sm text-black tracking-2">
-							<div>{{ translate.save }}</div>
+							<div>{{ translate.save.value }}</div>
 						</div>
 					</Button>
 				</div>
@@ -248,9 +250,10 @@
 import InputText from "primevue/inputtext";
 import InputNumber from "primevue/inputnumber";
 import Button from "primevue/button";
+import Toast from "primevue/toast";
 import Checkbox from "primevue/checkbox";
 import ParagraphDivider from "../styles/paragraphDivider.vue";
-import { reactive, ref } from "vue";
+import { reactive, ref, computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
 import { AdmissionAdminAPI } from "@/api/admission/admin/api";
@@ -259,7 +262,7 @@ import type { AdmissionAdminScoreFieldResponse } from "@/api/admission/admin/typ
 import { InvalidSessionError } from "@/api/error";
 import { AdmissionApplicantAPI } from "@/api/admission/applicant/api";
 import { useMutation, useQuery } from "@tanstack/vue-query";
-import { boolean, number, string } from "yup";
+import { createApp } from "vue";
 
 const selectStage = ref(1);
 const adminAuth = useAdmissionAdminAuthStore();
@@ -267,20 +270,30 @@ const store = useGlobalStore();
 const api = new AdmissionAdminAPI(adminAuth);
 const fieldData: AdmissionAdminScoreFieldResponse = reactive({});
 const { t } = useI18n();
-const translate = reactive({
-	save: t("儲存"),
-	changeSuccess: t("儲存成功"),
-	cancel: t("取消"),
-	scoreOption: t("評分項目"),
-	labelProp: t("佔比"),
-	labelName: {
-		"1": t("項目一名稱") + t("（未輸入）"),
-		"2": t("項目二名稱") + t("（未輸入）"),
-		"3": t("項目三名稱") + t("（未輸入）"),
-		"4": t("項目四名稱") + t("（未輸入）"),
-		"5": t("項目五名稱") + t("（未輸入）"),
+const translate = {
+	reviewScoreField: computed(() => t("審查評分欄位")),
+	save: computed(() => t("儲存")),
+	changeSuccess: computed(() => t("儲存成功")),
+	cancel: computed(() => t("取消")),
+	scoreOption: computed(() => t("評分項目")),
+	scoreOptionSetting: computed(() => t("評分項目設定")),
+	stage: {
+		"1": computed(() => t("第一階段") + t("（") + t("書面審查") + t("）")),
+		"2": computed(() => t("第二階段") + t("（") + t("口試審查") + t("）")),
 	},
-});
+	stageWeight: {
+		"1": computed(() => t("書面審查佔比")),
+		"2": computed(() => t("口試審查佔比")),
+	},
+	labelName: {
+		"1": computed(() => t("項目一")),
+		"2": computed(() => t("項目二")),
+		"3": computed(() => t("項目三")),
+		"4": computed(() => t("項目四")),
+		"5": computed(() => t("項目五")),
+	},
+	labelWeight: computed(() => t("佔比")),
+};
 
 // API : getScoreField
 const getScoreField = useQuery(["scoreField"], async () => {
@@ -316,13 +329,37 @@ const patchScoreField = useMutation(
 );
 
 function saveChange(stage: number) {
-	if (stage === 1 && fieldData.docs_weight)
-		fieldData.oral_weight = 100 - fieldData.docs_weight;
-	if (stage === 2 && fieldData.oral_weight)
-		fieldData.docs_weight = 100 - fieldData.oral_weight;
+	if (stage === 1) {
+		if (fieldData.docs_weight)
+			fieldData.oral_weight = 100 - fieldData.docs_weight;
+		if (fieldData.docs_grade_weight_1 && !fieldData.docs_grade_name_1)
+			fieldData.docs_grade_name_1 = translate.labelName[1].value;
+		if (fieldData.docs_grade_weight_2 && !fieldData.docs_grade_name_2)
+			fieldData.docs_grade_name_2 = translate.labelName[2].value;
+		if (fieldData.docs_grade_weight_3 && !fieldData.docs_grade_name_3)
+			fieldData.docs_grade_name_3 = translate.labelName[3].value;
+		if (fieldData.docs_grade_weight_4 && !fieldData.docs_grade_name_4)
+			fieldData.docs_grade_name_4 = translate.labelName[4].value;
+		if (fieldData.docs_grade_weight_5 && !fieldData.docs_grade_name_5)
+			fieldData.docs_grade_name_5 = translate.labelName[5].value;
+	} else if (stage === 2) {
+		if (fieldData.oral_weight)
+			fieldData.docs_weight = 100 - fieldData.oral_weight;
+		if (fieldData.oral_grade_weight_1 && !fieldData.oral_grade_name_1)
+			fieldData.oral_grade_name_1 = translate.labelName[1].value;
+		if (fieldData.oral_grade_weight_2 && !fieldData.oral_grade_name_2)
+			fieldData.oral_grade_name_2 = translate.labelName[2].value;
+		if (fieldData.oral_grade_weight_3 && !fieldData.oral_grade_name_3)
+			fieldData.oral_grade_name_3 = translate.labelName[3].value;
+		if (fieldData.oral_grade_weight_4 && !fieldData.oral_grade_name_4)
+			fieldData.oral_grade_name_4 = translate.labelName[4].value;
+		if (fieldData.oral_grade_weight_5 && !fieldData.oral_grade_name_5)
+			fieldData.oral_grade_name_5 = translate.labelName[5].value;
+	} else return;
 
 	// FIXME: Patch doesn't work every time?
 	patchScoreField.mutate(fieldData);
+	if (patchScoreField.isSuccess) alert(translate.changeSuccess.value);
 	return;
 }
 
