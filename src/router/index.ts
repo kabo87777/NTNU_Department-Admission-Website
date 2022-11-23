@@ -338,12 +338,12 @@ const routes: Array<RouteRecordRaw> = [
 				component: recruitmentApplicantPasswordReset,
 			},
 			{
-				path: "recruitment/applicant/password/forget",
+				path: "recruitment/applicant/forgetpassword",
 				name: "recruitmentApplicantPasswordForget",
 				component: recruitmentApplicantPasswordForget,
 			},
 			{
-				path: "recruitment/applicant/password/forget/emailSent",
+				path: "recruitment/applicant/forgetpassword/emailSent",
 				name: "recruitmentApplicantPasswordForgetEmailSent",
 				component: recruitmentApplicantPasswordForgetEmailSent,
 			},
@@ -399,12 +399,12 @@ const routes: Array<RouteRecordRaw> = [
 				component: recruitmentManagerPasswordReset,
 			},
 			{
-				path: "recruitment/manager/password/forget",
+				path: "recruitment/manager/forgetpassword",
 				name: "recruitmentManagerPasswordForget",
 				component: recruitmentManagerPasswordForget,
 			},
 			{
-				path: "recruitment/manager/password/forget/emailSent",
+				path: "recruitment/manager/forgetpassword/emailSent",
 				name: "recruitmentManagerPasswordForgetEmailSent",
 				component: recruitmentManagerPasswordForgetEmailSent,
 			},
@@ -471,12 +471,12 @@ const routes: Array<RouteRecordRaw> = [
 				component: recruitmentReviewerPasswordReset,
 			},
 			{
-				path: "recruitment/reviewer/password/forget",
+				path: "recruitment/reviewer/forgetpassword",
 				name: "recruitmentReviewerPasswordForget",
 				component: recruitmentReviewerPasswordForget,
 			},
 			{
-				path: "recruitment/reviewer/password/forget/emailSent",
+				path: "recruitment/reviewer/forgetpassword/emailSent",
 				name: "recruitmentReviewerPasswordForgetEmailSent",
 				component: recruitmentReviewerPasswordForgetEmailSent,
 			},
