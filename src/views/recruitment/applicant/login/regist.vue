@@ -75,7 +75,7 @@
 					<InputText
 						name="password"
 						type="password"
-						v-model="userRegistData.confirmPwd"
+						v-model="userRegistData.password_confirmation"
 						class="p-inputtext-sm w-full"
 						required
 					/>
@@ -83,16 +83,18 @@
 			</div>
 			<div class="flex-col-inline px-4 gap-y-8">
 				<div class="flex justify-center">
-					<button
-						class="py-2 w-80 applicantButtonStyle"
-						border="2  rounded-lg"
-						@click="buttonOnclick"
-					>
-						<div class="flex justify-center gap-2 mx-auto">
-							<div>註冊</div>
-							<div>Register</div>
-						</div>
-					</button>
+					<router-link to="/recruitment/applicant/regist/done">
+						<button
+							class="py-2 w-80 applicantButtonStyle"
+							border="2  rounded-lg"
+							@click="buttonOnclick"
+						>
+							<div class="flex justify-center gap-2 mx-auto">
+								<div>註冊</div>
+								<div>Register</div>
+							</div>
+						</button>
+					</router-link>
 				</div>
 				<div></div>
 			</div>
@@ -118,11 +120,11 @@ const authStore = useRecruitmentApplicantAuthStore();
 const api = new RecruitmentApplicantAPI(applicantAuth);
 
 const userRegistData: newPostEmailRegister = reactive({
-	email: "",
-	name: "",
-	confirm_success_url: "",
-	password: "",
-	confirmPwd: "",
+	email: "pacoxo3995@xegge.com",
+	name: "hihi",
+	confirm_success_url: "Abcd12345",
+	password: "Abcd12345",
+	password_confirmation: "Abcd12345",
 });
 function buttonOnclick() {
 	const errorMessage = mutation;
