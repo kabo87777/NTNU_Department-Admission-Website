@@ -270,6 +270,9 @@
   "相關作業、系統": "Beneficial Documents",
   "recruitmentApplicantSidebarTitle": "{ year } Recruitment",
   "admissionApplicantSidebarTitle": "{ category } { name }",
+  "sidebarTitleYear": "{ year }",
+  "sidebarTitleGroup": "Group { group }",
+  "教授甄聘": "Professor Recruitment",
   "資料確認送出": "Submit Confirmation",
   "切換專案": "Switch Project",
   "當前專案": "Current Project",
@@ -321,5 +324,7 @@
   "請上傳簽名檔": "Please upload",
   "applicant_table_items_count": "No applicants. | {n} applicant in total. | {n} applicants in total.",
   "補件文件系統": "Additional Documents",
-  "提交文字": " Submit Text"
+  "提交文字": " Submit Text",
+  "error": "Error",
+  "!": "!"
 }

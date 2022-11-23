@@ -9,8 +9,29 @@
 			:modal="true"
 		>
 			<template #header>
-				<div class="font-bold text-[24px]">
-					{{ $t("新增推薦人") }}
+				<div class="flex">
+					<div class="font-bold text-[24px]">
+						{{ $t("新增推薦人") }}
+					</div>
+					<div
+						v-if="modalShowErr"
+						style="
+							position: absolute;
+							right: 24px;
+							background-color: #ef9a9a;
+							width: auto;
+							height: 44px;
+							border-radius: 8px;
+							border: 2px solid #c62828;
+							margin-top: -12px;
+							padding: 8px 8px;
+							color: #c62828;
+							text-align: center;
+						"
+					>
+						{{ $t("error") + $t("!") + " "
+						}}{{ fetchResponse.message }}
+					</div>
 				</div>
 			</template>
 			<template #default>
@@ -156,7 +177,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="flex mt-32px">
+					<!-- <div class="flex mt-32px">
 						<div class="w-1/2">
 							<div>{{ $t("簽名檔") }}</div>
 							<div class="mt-8px">
@@ -218,7 +239,7 @@
 								{{ fetchResponse.message }}
 							</div>
 						</div>
-					</div>
+					</div> -->
 				</div>
 				<div class="bigYellowDivider" style="margin-top: 40px"></div>
 			</template>
@@ -234,7 +255,13 @@
 					icon="pi pi-times"
 					iconClass="text-[#736028]"
 					:label="$t('取消')"
-					@click="isModalVisible.fill = false"
+					@click="
+						() => {
+							isModalVisible.fill = false;
+							clearFetchResponse();
+							modalShowErr = false;
+						}
+					"
 				/>
 				<Button
 					class="p-button-outlined p-button-secondary"
@@ -790,8 +817,7 @@ const handleSave = async () => {
 		!isModalValueBlank.phone &&
 		!isModalValueBlank.email &&
 		!isModalValueBlank.organization &&
-		!isModalValueBlank.position &&
-		!isModalValueBlank.sign
+		!isModalValueBlank.position
 	) {
 		isActionLoading.fetch = true;
 		isActionLoading.save = true;
@@ -833,7 +859,7 @@ const handleSave = async () => {
 				modalShowErr.value = true;
 			}
 
-			clearFetchResponse();
+			if (fetchResponse.success) clearFetchResponse();
 		});
 	}
 };

@@ -7,6 +7,11 @@ export interface universalAuthData {
 	password: string;
 	"cf-turnstile-response": string;
 }
+export interface universalAuthSendResetPwdEmailData {
+	email: string;
+	redirect_url: string;
+	"cf-turnstile-response": string;
+}
 
 // type guard
 const buildAuthCredentialsFromHeaders = (
@@ -72,7 +77,7 @@ export async function doUniversalAuthSignOut(auth: AuthStore) {
 	// localStorage anyway before handling errors
 	auth.clearCredentials();
 
-	if (response.data?.success !== true) throw new Error("Sign out failed");
+	if (response.data?.error !== false) throw new Error("Sign out failed");
 }
 
 export async function doUniversalAuthSessionValidation(auth: AuthStore) {
@@ -91,4 +96,13 @@ export async function doUniversalAuthSessionValidation(auth: AuthStore) {
 	if (!response.data?.success) return false;
 
 	return true;
+}
+
+export async function doUniversalAuthSendForgotPwdEmail(
+	auth: AuthStore,
+	data: universalAuthSendResetPwdEmailData
+) {
+	const response = await axios.post(auth.apiEndpoint + "/password", data);
+	console.log("response: ", response);
+	return response.data;
 }
