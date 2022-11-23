@@ -1,4 +1,5 @@
 <template>
+	<Toast />
 	<div class="mx-32 mt-16">
 		<h1 class="text-4xl text-bold tracking-widest">
 			{{ translate.reviewScoreField.value }}
@@ -253,21 +254,22 @@ import Button from "primevue/button";
 import Toast from "primevue/toast";
 import Checkbox from "primevue/checkbox";
 import ParagraphDivider from "../styles/paragraphDivider.vue";
+import { defineComponent, onMounted } from "vue";
+import { useToast } from "primevue/usetoast";
 import { reactive, ref, computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
 import { AdmissionAdminAPI } from "@/api/admission/admin/api";
 import { useGlobalStore } from "@/stores/globalStore";
-import type { AdmissionAdminScoreFieldResponse } from "@/api/admission/admin/types";
 import { InvalidSessionError } from "@/api/error";
-import { AdmissionApplicantAPI } from "@/api/admission/applicant/api";
 import { useMutation, useQuery } from "@tanstack/vue-query";
-import { createApp } from "vue";
+import type { AdmissionAdminScoreFieldResponse } from "@/api/admission/admin/types";
 
 const selectStage = ref(1);
+const toast = useToast();
 const adminAuth = useAdmissionAdminAuthStore();
-const store = useGlobalStore();
 const api = new AdmissionAdminAPI(adminAuth);
+const store = useGlobalStore();
 const fieldData: AdmissionAdminScoreFieldResponse = reactive({});
 const { t } = useI18n();
 const translate = {
@@ -294,6 +296,13 @@ const translate = {
 	},
 	labelWeight: computed(() => t("佔比")),
 };
+const changeSuccess = () => {
+	toast.add({
+		severity: "success",
+		summary: translate.changeSuccess.value,
+		life: 3000,
+	});
+};
 
 // API : getScoreField
 const getScoreField = useQuery(["scoreField"], async () => {
@@ -309,7 +318,6 @@ const getScoreField = useQuery(["scoreField"], async () => {
 		alert(e.message);
 	}
 });
-// FIXME: Get Data on Page is loaded.
 
 // API : patchScoreField
 const patchScoreField = useMutation(
@@ -359,8 +367,10 @@ function saveChange(stage: number) {
 
 	// FIXME: Patch doesn't work every time?
 	patchScoreField.mutate(fieldData);
-	if (patchScoreField.isSuccess) alert(translate.changeSuccess.value);
-	return;
+	if (patchScoreField.isSuccess) {
+		console.log("PATCH SUCCESS!");
+		changeSuccess;
+	}
 }
 
 function resetChange() {
@@ -388,6 +398,8 @@ function resetChange() {
 	fieldData.oral_grade_weight_4 = getData?.oral_grade_weight_4;
 	fieldData.oral_grade_weight_5 = getData?.oral_grade_weight_5;
 }
+// Get Data at the begin
+resetChange();
 
 function changeStage(stage: number) {
 	selectStage.value = stage;
