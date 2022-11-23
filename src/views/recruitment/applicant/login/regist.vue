@@ -83,18 +83,16 @@
 			</div>
 			<div class="flex-col-inline px-4 gap-y-8">
 				<div class="flex justify-center">
-					<router-link to="/recruitment/applicant/regist/done">
-						<button
-							class="py-2 w-80 applicantButtonStyle"
-							border="2  rounded-lg"
-							@click="buttonOnclick"
-						>
-							<div class="flex justify-center gap-2 mx-auto">
-								<div>註冊</div>
-								<div>Register</div>
-							</div>
-						</button>
-					</router-link>
+					<button
+						class="py-2 w-80 applicantButtonStyle"
+						border="2  rounded-lg"
+						@click="buttonOnclick"
+					>
+						<div class="flex justify-center gap-2 mx-auto">
+							<div>註冊</div>
+							<div>Register</div>
+						</div>
+					</button>
 				</div>
 				<div></div>
 			</div>
@@ -120,11 +118,11 @@ const authStore = useRecruitmentApplicantAuthStore();
 const api = new RecruitmentApplicantAPI(applicantAuth);
 
 const userRegistData: newPostEmailRegister = reactive({
-	email: "pacoxo3995@xegge.com",
-	name: "hihi",
-	confirm_success_url: "Abcd12345",
-	password: "Abcd12345",
-	password_confirmation: "Abcd12345",
+	email: "",
+	name: "",
+	confirm_success_url: "",
+	password: "",
+	password_confirmation: "",
 });
 function buttonOnclick() {
 	const errorMessage = mutation;
@@ -133,7 +131,7 @@ function buttonOnclick() {
 
 const mutation = useMutation(["postEmailRegister"], async () => {
 	try {
-		return await api.postEmailRegister(userRegistData);
+		return await api.postEmailRegister(userRegistData); //important!!!
 		//return axios.post("/todos", newEmailRegister);
 	} catch (e: any) {
 		if (e instanceof InvalidSessionError) {
@@ -143,10 +141,68 @@ const mutation = useMutation(["postEmailRegister"], async () => {
 			console.error(
 				"Session has already expired while querying programList"
 			);
+			console.log(e);
 			return;
 		}
 	}
 });
+
+const password = reactive({
+	notMatch: false,
+	isCurrentPassBlank: false,
+});
+
+const resetPassValue = () => {
+	password.notMatch = false;
+};
+
+const handleSubmit = async () => {
+	if (userRegistData.password === "") {
+		password.isCurrentPassBlank = true;
+	} else {
+		password.isCurrentPassBlank = false;
+	}
+
+	if (userRegistData.password !== userRegistData.password_confirmation) {
+		password.notMatch = true;
+	} else {
+		password.notMatch = false;
+	}
+
+		const response = mutation.mutate();
+		const errorMsg = mutation.error;
+
+		await response.then((res) => {
+			if (res?.success !== undefined && res?.message !== undefined) {
+				changePassRes.success = toRaw(res.success);
+				changePassRes.message = toRaw(res.message);
+			}
+
+			isChangePassLoading.value = false;
+
+			if (changePassRes.success) {
+				resetPassValue();
+				toast.add({
+					severity: "success",
+					summary: "Success",
+					detail: changePassRes.message,
+					life: 3000,
+				});
+			} else {
+				toast.add({
+					severity: "error",
+					summary: "Error",
+					detail: changePassRes.message[
+						changePassRes.message.length - 1
+					],
+					life: 5000,
+				});
+			}
+		});
+	}
+};
+
+//<router-link to="/recruitment/applicant/regist/done">
 </script>
 
 <style setup lang="css">
