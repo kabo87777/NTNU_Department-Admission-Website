@@ -66,9 +66,7 @@
 				</div>
 			</div>
 			<div class="flex justify-center px-4">
-				<router-link
-					to="/recruitment/manager/password/forget/emailSent"
-				>
+				<router-link to="/recruitment/manager/forgetpassword/emailSent">
 					<button
 						class="py-2 w-80 managerButtonStyle"
 						border="2  rounded-lg"
