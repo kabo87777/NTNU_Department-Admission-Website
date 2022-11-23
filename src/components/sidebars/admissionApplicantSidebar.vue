@@ -340,7 +340,6 @@ const checkProgramAvailably = () => {
 	) {
 		isProgramAvailable.value = false;
 	} else isProgramAvailable.value = true;
-	console.log(isProgramAvailable.value);
 };
 
 onMounted(async () => {
@@ -350,7 +349,6 @@ onMounted(async () => {
 		applicantProgram.name = res.name;
 		applicantProgram.start_date = res.application_start_date;
 		applicantProgram.end_date = res.application_end_date;
-		console.log(res, applicantProgram);
 		checkProgramAvailably();
 	});
 });

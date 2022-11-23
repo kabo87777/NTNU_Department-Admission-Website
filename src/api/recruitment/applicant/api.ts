@@ -30,8 +30,7 @@ export class RecruitmentApplicantAPI extends GenericAPI {
 			`/recruitment/applicant/program/${pid}/file`
 		);
 
-		if (data.error === true || typeof data.data === "undefined")
-			throw new Error("Failed to fetch file list");
+		if (data.error === true) console.log("Failed to fetch file list");
 
 		return data.data;
 	}

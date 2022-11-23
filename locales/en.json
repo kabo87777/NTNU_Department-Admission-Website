@@ -305,7 +305,7 @@
   "單位": "Working Unit/Organization",
   "簽名檔": "Recommender Signature",
   "限制": "*Only .png or .pdf file is allowed",
-  "暫時無推薦人": "No Recommender Currently",
+  "暫無推薦人": "No Recommender Currently",
   "職稱": "Position",
   "暫存": "Save",
   "送出": "Send",
@@ -327,5 +327,10 @@
   "!": "!",
   "所屬學校": "School Name",
   "檔案名稱": "File Name",
-  "檔案": "File"
+  "檔案": "File",
+  "暫無資訊": "No Information Currently",
+  "startApply": "{year}/{month}/{day} {hour}00 (Taiwan Time Zone)",
+  "endApply": "{year}/{month}/{day} {hour}00 (Taiwan Time Zone)",
+  "申請開放時間": "Application Start Date",
+  "申請截止時間": "Application Due Date"
 }

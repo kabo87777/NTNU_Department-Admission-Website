@@ -459,11 +459,13 @@ const getFileList = async () => {
 onMounted(async () => {
 	const response = getFileList();
 	await response.then((res) => {
-		res.map((item) => {
-			if (item) {
-				attachmentList.push(item);
-			}
-		});
+		if (Object.keys(res).length) {
+			res.map((item) => {
+				if (item) {
+					attachmentList.push(item);
+				}
+			});
+		}
 	});
 
 	splitThreeList(toRaw(attachmentList));
@@ -477,11 +479,13 @@ watch(
 		clearAllList();
 
 		await response.then((res) => {
-			res.map((item) => {
-				if (item) {
-					attachmentList.push(item);
-				}
-			});
+			if (Object.keys(res).length) {
+				res.map((item) => {
+					if (item) {
+						attachmentList.push(item);
+					}
+				});
+			}
 		});
 
 		isLoading.fetch = false;
