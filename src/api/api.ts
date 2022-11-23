@@ -1,9 +1,16 @@
 import type { AxiosInstance } from "axios";
 import type { AuthStore } from "@/stores/universalAuth";
-import type { universalAuthData } from "@/api/universalAuth";
+import type {
+	universalAuthData,
+	universalAuthSendResetPwdEmailData,
+} from "@/api/universalAuth";
 
 import axios from "axios";
-import { doUniversalAuthSignIn, doUniversalAuthSignOut } from "./universalAuth";
+import {
+	doUniversalAuthSignIn,
+	doUniversalAuthSignOut,
+	doUniversalAuthSendForgotPwdEmail,
+} from "./universalAuth";
 import { InvalidSessionError } from "./error";
 
 export class GenericAPI {
@@ -47,7 +54,8 @@ export class GenericAPI {
 				return response.data;
 			},
 			async (error) => {
-				throw error;
+				return error.response.data;
+				// throw error;
 			}
 		);
 	}
@@ -60,5 +68,11 @@ export class GenericAPI {
 	// Sign out
 	async invalidateSession(): Promise<void> {
 		await doUniversalAuthSignOut(this.auth);
+	}
+
+	// Send Forgot Password
+
+	async sendForgotPasswordEmail(data: universalAuthSendResetPwdEmailData) {
+		return await doUniversalAuthSendForgotPwdEmail(this.auth, data);
 	}
 }

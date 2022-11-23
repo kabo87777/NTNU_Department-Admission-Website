@@ -145,16 +145,19 @@ import LoginForm from "@/components/LoginForm.vue";
 </template>
 
 <script setup lang="ts">
-import { ref, watch, computed } from "vue";
+import { ref, watch, computed, toRaw } from "vue";
 import { useRouter } from "vue-router";
 import { Field, useForm } from "vee-validate";
 import * as yup from "yup";
 
 import { AdmissionApplicantAPI } from "@/api/admission/applicant/api";
 import { useAdmissionApplicantAuthStore } from "@/stores/universalAuth";
+import { useUserInfoStore } from "@/stores/AdmissionApplicantStore";
 
 import type { TurnstileComponentExposes } from "@/components/Turnstile.vue";
 import Turnstile from "@/components/Turnstile.vue";
+
+import type { AdmissionApplicantAuthResponse } from "@/api/admission/applicant/types";
 
 import Checkbox from "primevue/checkbox";
 import Button from "primevue/button";
@@ -166,6 +169,7 @@ const redirectToMainContainer = () =>
 	router.replace({ name: "AdmissionApplicantMainContainer" });
 
 const authStore = useAdmissionApplicantAuthStore();
+const userInfo = useUserInfoStore();
 
 // Login Form
 const turnstileRef = ref<TurnstileComponentExposes>();
@@ -221,11 +225,24 @@ const onSubmit = handleSubmit(async function (values, actions) {
 
 		const api = new AdmissionApplicantAPI(authStore);
 
-		await api.requestNewSession({
-			username: values.username,
-			password: values.password,
-			"cf-turnstile-response": turnstileResponse,
-		});
+		const doLogin = async () => {
+			return await api.requestNewSession({
+				username: values.username,
+				password: values.password,
+				"cf-turnstile-response": turnstileResponse,
+			});
+		};
+
+		const handleDataType = async () => {
+			const applicantInfo: AdmissionApplicantAuthResponse =
+				await doLogin().then((res) => {
+					return res.data;
+				});
+
+			return applicantInfo;
+		};
+
+		userInfo.saveUserInfo(await handleDataType());
 
 		redirectToMainContainer();
 	} catch (e: any) {

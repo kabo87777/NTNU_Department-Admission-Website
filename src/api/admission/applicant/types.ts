@@ -1,3 +1,8 @@
+export interface AdmissionApplicantGenericResponse {
+	success?: boolean;
+	message?: string | [];
+}
+
 export interface AdmissionApplicantSignInInput {
 	email: string;
 	password: string;
@@ -11,18 +16,20 @@ export interface AdmissionApplicantAuthResponse {
 	provider: string;
 	uid: string;
 	allow_password_change: boolean;
-	isInit: any | null;
-	lang: any | null;
-	name: any | null;
-	nickname: any | null;
-	image: any | null;
-	docs_order: number | null;
-	oral_order: number | null;
-	file: any | null;
-	docs_stage: any | null;
-	oral_stage: any | null;
-	s_program_id: number | null;
-	application_stage: any | null;
+	isInit: boolean;
+	lang: string;
+	name: string;
+	nickname: string;
+	image: any;
+	docs_order: number;
+	oral_order: number;
+	file: any;
+	docs_stage: any;
+	oral_stage: any;
+	created_at: string;
+	updated_at: string;
+	s_program_id: number;
+	application_stage: any;
 }
 
 export interface UserInfo {
@@ -39,14 +46,31 @@ export interface Tags {
 }
 
 export interface AttachmentData {
-	itemName?: string;
-	fileName?: string;
-	fileUrl?: string;
+	id: number;
+	category: string;
+	name: string;
+	filepath: {
+		url: string | any;
+	};
+	r_applicants_r_program_id: number;
+	created_at: string;
+	updated_at: string;
+}
+
+export interface AttachmentDetailData {
+	id?: number;
+	category?: string;
+	name?: string;
+	filepath?: {
+		url?: string | any;
+	};
+	r_applicants_r_program_id?: number;
+	created_at?: string;
+	updated_at?: string;
 	order?: number;
 	state?: number;
 }
 
-// BELOW APIs not connected CURRENTLY
 export interface AdmissionApplicantGetProgramResponse {
 	id: number;
 	category: string;
@@ -55,7 +79,7 @@ export interface AdmissionApplicantGetProgramResponse {
 	application_end_date: string;
 	review_start_date: string;
 	review_end_date: string;
-	require_file: string; // Array or string ??
+	require_file: [];
 	stage: string;
 	created_at: string;
 	updated_at: string;
@@ -65,11 +89,33 @@ export interface AdmissionApplicantGetProgramResponse {
 	reviewer_required_file: null;
 }
 
+export interface AdmissionApplicantRecLetListRes {
+	id: number;
+	name: string;
+	email: string;
+	phone: string;
+	relation: string;
+	position: string;
+	institution: string;
+	status: string;
+	s_applicant_id: number;
+	created_at: string;
+	updated_at: string;
+	content: string;
+	token: string;
+	title: string;
+	filepath: {
+		url: string;
+	};
+}
+
 export interface AdmissionApplicantGetFileListResponse {
 	id: number;
 	category: string;
 	name: string;
-	filepath: object;
+	filepath: {
+		url: string | any;
+	};
 	r_applicants_r_program_id: number;
 	created_at: string;
 	updated_at: string;

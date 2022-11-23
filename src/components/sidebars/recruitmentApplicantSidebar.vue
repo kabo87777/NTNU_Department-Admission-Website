@@ -6,9 +6,13 @@
 			<div class="mt-32px ml-12px w-[100%]">
 				<div class="sidebarTitleBar">
 					{{
-						$t("recruitmentApplicantSidebarTitle", {
+						$t("sidebarTitleYear", {
 							year: currentYear,
 							roc: rocYear,
+						}) +
+						$t(project.project.category) +
+						$t("sidebarTitleGroup", {
+							group: project.project.name["0"],
 						})
 					}}
 				</div>
@@ -209,7 +213,7 @@
 					<div
 						class="text-[22px] font-[500] font-bold mt-[8px] tracking-wider"
 					>
-						{{ "我很帥" }}
+						{{ applicantName }}
 					</div>
 				</div>
 				<div class="absolute right-[0] mt-[-8px]">
@@ -249,7 +253,11 @@
 </template>
 
 <script setup lang="ts">
-import { reactive } from "vue";
+import { reactive, toRaw } from "vue";
+import { useRecruitmentApplicantAuthStore } from "@/stores/universalAuth";
+import { RecruitmentApplicantAPI } from "@/api/recruitment/applicant/api";
+import { useUserInfoStore } from "@/stores/RecruitmentApplicantStore";
+import { useProjectIdStore } from "@/stores/RecruitmentApplicantStore";
 import { Tags } from "@/api/recruitment/applicant/types";
 import "primeicons/primeicons.css";
 import "primevue/resources/primevue.min.css";
@@ -258,11 +266,12 @@ import UnableTag from "@/styles/tags/unableTag.vue";
 import CompletedTag from "@/styles/tags/completedTag.vue";
 import IncompleteTag from "@/styles/tags/incompleteTag.vue";
 import { useRouter } from "vue-router";
-import { useRecruitmentApplicantAuthStore } from "@/stores/universalAuth";
-import { RecruitmentApplicantAPI } from "@/api/recruitment/applicant/api";
 import "primeicons/primeicons.css";
 
 const router = useRouter();
+const applicantStore = useUserInfoStore();
+const project = useProjectIdStore();
+const applicantName = toRaw(applicantStore.userInfo.name);
 const currentYear = new Date().getFullYear();
 const rocYear = currentYear - 1911;
 

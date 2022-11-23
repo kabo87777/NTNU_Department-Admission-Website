@@ -29,7 +29,7 @@ import AdmissionApplicantRecommendationLetter from "@/views/admission/applicant/
 import AdmissionApplicantAdditionalDocs from "@/views/admission/applicant/pages/additionalDocs.vue";
 import AdmissionApplicantUserSetting from "@/views/admission/applicant/pages/userSetting.vue";
 
-import projectSetting from "@/views/admission/manager/project-setting.vue";
+import AdmissionManagerProjectSetting from "@/views/admission/manager/project-setting.vue";
 import firstloginchangepassword from "@/views/admission/FirstSigninChangePass.vue";
 import reviewScoreField from "@/views/ReviewScoreField.vue";
 import resetpassword from "@/views/admission/ResetPassword.vue";
@@ -263,7 +263,7 @@ const routes: Array<RouteRecordRaw> = [
 					{
 						path: "projectSetting",
 						name: "projectSetting",
-						component: projectSetting,
+						component: AdmissionManagerProjectSetting,
 					},
 					{
 						path: "reviewScoreField",
@@ -338,12 +338,12 @@ const routes: Array<RouteRecordRaw> = [
 				component: recruitmentApplicantPasswordReset,
 			},
 			{
-				path: "recruitment/applicant/password/forget",
+				path: "recruitment/applicant/forgetpassword",
 				name: "recruitmentApplicantPasswordForget",
 				component: recruitmentApplicantPasswordForget,
 			},
 			{
-				path: "recruitment/applicant/password/forget/emailSent",
+				path: "recruitment/applicant/forgetpassword/emailSent",
 				name: "recruitmentApplicantPasswordForgetEmailSent",
 				component: recruitmentApplicantPasswordForgetEmailSent,
 			},
@@ -399,19 +399,19 @@ const routes: Array<RouteRecordRaw> = [
 				component: recruitmentManagerPasswordReset,
 			},
 			{
-				path: "recruitment/manager/password/forget",
+				path: "recruitment/manager/forgetpassword",
 				name: "recruitmentManagerPasswordForget",
 				component: recruitmentManagerPasswordForget,
 			},
 			{
-				path: "recruitment/manager/password/forget/emailSent",
+				path: "recruitment/manager/forgetpassword/emailSent",
 				name: "recruitmentManagerPasswordForgetEmailSent",
 				component: recruitmentManagerPasswordForgetEmailSent,
 			},
 			// Recruitment - manager
 			{
 				path: "recruitment/manager",
-				name: "recruitmentManagerMainContainer",
+				name: "recruitmentAdminMainContainer",
 				component: recruitmentManagerMainContainer,
 				children: [
 					{
@@ -471,12 +471,12 @@ const routes: Array<RouteRecordRaw> = [
 				component: recruitmentReviewerPasswordReset,
 			},
 			{
-				path: "recruitment/reviewer/password/forget",
+				path: "recruitment/reviewer/forgetpassword",
 				name: "recruitmentReviewerPasswordForget",
 				component: recruitmentReviewerPasswordForget,
 			},
 			{
-				path: "recruitment/reviewer/password/forget/emailSent",
+				path: "recruitment/reviewer/forgetpassword/emailSent",
 				name: "recruitmentReviewerPasswordForgetEmailSent",
 				component: recruitmentReviewerPasswordForgetEmailSent,
 			},

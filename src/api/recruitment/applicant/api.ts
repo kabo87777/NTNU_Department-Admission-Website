@@ -1,6 +1,7 @@
 import type { AuthStore } from "@/stores/universalAuth";
 import { GenericAPI } from "@/api/api";
 import type {
+	RecruitmentApplicantGenericResponse,
 	RecruitmentApplicantProgramResponse,
 	RecruitmentApplicantFileListResponse,
 } from "./types";
@@ -33,5 +34,91 @@ export class RecruitmentApplicantAPI extends GenericAPI {
 			throw new Error("Failed to fetch file list");
 
 		return data.data;
+	}
+
+	async deleteFile(
+		pid: number,
+		fileId: number
+	): Promise<RecruitmentApplicantGenericResponse> {
+		const data: APIGenericResponse = await this.instance.delete(
+			`recruitment/applicant/program/${pid}/file/${fileId}`
+		);
+
+		if (data.error !== false && data.message !== undefined) {
+			return {
+				success: false,
+				message: data.message,
+			};
+		}
+
+		return {
+			success: true,
+			message: data.message,
+		};
+	}
+
+	async createFile(
+		pid: number,
+		body: object
+	): Promise<RecruitmentApplicantGenericResponse> {
+		const data: APIGenericResponse = await this.instance.post(
+			`recruitment/applicant/program/${pid}/file`,
+			body
+		);
+
+		if (data.error !== false && data.message !== undefined) {
+			return {
+				success: false,
+				message: data.message,
+			};
+		}
+
+		return {
+			success: true,
+			message: data.message,
+		};
+	}
+
+	async editFile(
+		body: object,
+		pid: number,
+		fileId: number
+	): Promise<RecruitmentApplicantGenericResponse> {
+		const data: APIGenericResponse = await this.instance.patch(
+			`recruitment/applicant/program/${pid}/file/${fileId}`,
+			body
+		);
+
+		if (data.error !== false && data.message !== undefined) {
+			return {
+				success: false,
+				message: data.message,
+			};
+		}
+
+		return {
+			success: true,
+			message: data.message,
+		};
+	}
+
+	async changePassword(
+		body: object
+	): Promise<RecruitmentApplicantGenericResponse> {
+		const data: APIGenericResponse = await this.instance.patch(
+			"recruitment/auth/applicant/password",
+			body
+		);
+
+		if (data.error !== false) {
+			return {
+				success: false,
+				message: data.message.full_messages,
+			};
+		}
+		return {
+			success: true,
+			message: data.message,
+		};
 	}
 }
