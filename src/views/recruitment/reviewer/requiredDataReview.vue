@@ -30,7 +30,17 @@
 			>
 				<Column field="id" :header="ID"></Column>
 				<Column field="name" :header="applicantName"></Column>
-				<Column field="isRecommend" :header="reviewerRating" />
+				<Column field="isRecommend" :header="reviewerRating">
+					<template #body="slotProps">
+						<p v-if="slotProps.data.isRecommend === null">
+							{{ noRating }}
+						</p>
+						<p v-else-if="slotProps.data.isRecommend">
+							{{ recommanded }}
+						</p>
+						<p v-else>{{ notRecommanded }}</p>
+					</template>
+				</Column>
 				<Column field="comment" :header="reason" />
 			</DataTable>
 			<div class="bigBlueDivider !mt-50px"></div>
@@ -92,11 +102,9 @@ const totalApplicant = ref(0);
 const applicantGraded = ref(0);
 const progressValue = ref(0);
 
-const translation = {
-	noRating: computed(() => t("未評比")),
-	notRecommanded: computed(() => t("不推薦")),
-	recommanded: computed(() => t("推薦")),
-};
+const noRating = computed(() => t("未評比"));
+const notRecommanded = computed(() => t("不推薦"));
+const recommanded = computed(() => t("推薦"));
 
 const {
 	isLoading,
