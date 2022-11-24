@@ -68,7 +68,7 @@
 						/>
 					</Row>
 				</ColumnGroup>
-				<Column field="uid"></Column>
+				<Column field="id"></Column>
 				<Column field="name"></Column>
 				<Column field="docs_grade_1" />
 				<Column field="docs_grade_2" />
