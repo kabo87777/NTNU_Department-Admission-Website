@@ -226,10 +226,10 @@ const {
 			review_stage1_start_time.value = new Date(data!.review_start_date);
 			review_stage1_end_time.value = new Date(data!.review_end_date);
 			project_details.value = data!.detail;
-			if (data!.stage === "review_stage_docs") {
+			if (data!.stage === "docs_stage") {
 				review_stage.value = translation.phase1;
 			}
-			if (data!.stage === "review_stage_oral") {
+			if (data!.stage === "oral_stage") {
 				review_stage.value = translation.phase2;
 			}
 		},
@@ -240,11 +240,11 @@ const toast = useToast();
 const stage = ref("");
 function update() {
 	if (review_stage.value === translation.phase1) {
-		stage.value = "review_stage_docs";
+		stage.value = "docs_stage";
 	} else if (review_stage.value === translation.phase2) {
-		stage.value = "review_stage_oral";
+		stage.value = "oral_stage";
 	} else {
-		stage.value = "application";
+		stage.value = "application_stage";
 	}
 	try {
 		programData.mutate({

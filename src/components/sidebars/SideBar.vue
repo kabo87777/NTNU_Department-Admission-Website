@@ -540,7 +540,7 @@ function addNewProject() {
 			application_end_date: dateTransform(today) + "+08:00",
 			review_start_date: dateTransform(today) + "+08:00",
 			review_end_date: dateTransform(today) + "+08:00",
-			stage: "application",
+			stage: "application_stage",
 			applicant_required_info: '["file1", "file2"]',
 			applicant_required_file: '["file3", "file4"]',
 			reviewer_required_info: '["file1", "file2"]',
