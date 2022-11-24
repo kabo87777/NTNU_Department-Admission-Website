@@ -277,10 +277,10 @@ const translate = {
 	changeSuccess: computed(() => t("儲存成功")),
 	cancel: computed(() => t("取消")),
 	scoreOption: computed(() => t("評分項目")),
-	scoreOptionSetting: computed(() => t("評分項目設定")),
+	scoreOptionSetting: computed(() => t("評分設定")),
 	stage: {
-		"1": computed(() => t("第一階段") + t("（") + t("書面審查") + t("）")),
-		"2": computed(() => t("第二階段") + t("（") + t("口試審查") + t("）")),
+		"1": computed(() => t("第一階段 (書面審查)")),
+		"2": computed(() => t("第二階段 (口試審查)")),
 	},
 	stageWeight: {
 		"1": computed(() => t("書面審查佔比")),
