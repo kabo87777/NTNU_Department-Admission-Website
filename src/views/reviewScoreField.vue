@@ -254,7 +254,6 @@ import Button from "primevue/button";
 import Toast from "primevue/toast";
 import Checkbox from "primevue/checkbox";
 import ParagraphDivider from "../styles/paragraphDivider.vue";
-import { defineComponent, onMounted } from "vue";
 import { useToast } from "primevue/usetoast";
 import { reactive, ref, computed } from "vue";
 import { useI18n } from "vue-i18n";
@@ -263,7 +262,7 @@ import { AdmissionAdminAPI } from "@/api/admission/admin/api";
 import { useGlobalStore } from "@/stores/globalStore";
 import { InvalidSessionError } from "@/api/error";
 import { useMutation, useQuery } from "@tanstack/vue-query";
-import type { AdmissionAdminScoreFieldResponse } from "@/api/admission/admin/types";
+import { AdmissionAdminScoreFieldResponse } from "@/api/admission/admin/types";
 
 const selectStage = ref(1);
 const toast = useToast();

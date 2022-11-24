@@ -3,21 +3,13 @@ import type {
 	AdmissionAdminProgramListResponse,
 	AdmAdminReviewerListResponse,
 	AdmissionAdminApplicantsListResponse,
-<<<<<<< HEAD
 	AdmissionAdminScoreFieldResponse,
-} from "./types";
-import type { APIGenericResponse } from "@/api/types";
-import { GenericAPI } from "@/api/api";
-import messages from "@intlify/vite-plugin-vue-i18n/messages";
-=======
 	AdmAdminReviewerRelatedProgramResponse,
 	AdmAdminEditApplicantRequest,
 } from "./types";
 import type { APIGenericResponse } from "@/api/types";
 import { GenericAPI } from "@/api/api";
 import { Ref } from "vue";
->>>>>>> develop
-
 export class AdmissionAdminAPI extends GenericAPI {
 	constructor(auth: AuthStore) {
 		super(auth);
@@ -67,16 +59,15 @@ export class AdmissionAdminAPI extends GenericAPI {
 			throw new Error("Failed to fetch applicant list");
 		return data.data.applicants;
 	}
-<<<<<<< HEAD
 
 	async getScoreField(
 		programID: number
 	): Promise<AdmissionAdminScoreFieldResponse> {
-		const data: APIGenericResponse = await this.instance.get(
+		const response: APIGenericResponse = await this.instance.get(
 			`admission/admin/program/${programID}/grading`
 		);
-		if (data.error === true) throw new Error(data.message);
-		return data.data;
+		if (response.error === true) throw new Error(response.message);
+		return response.data;
 	}
 
 	async patchScoreField(
@@ -87,9 +78,9 @@ export class AdmissionAdminAPI extends GenericAPI {
 			`/admission/admin/program/${programID}/grading/`,
 			newData
 		);
-		if (data.error === true) throw new Error(data.message);
+		if (data.error === true) throw new Error("Failed to patch score field");
 		return data;
-=======
+	}
 	async postApplicantsXlsx(programID: number, data: FormData) {
 		console.log("POST");
 		const response: APIGenericResponse = await this.instance.post(
@@ -168,6 +159,5 @@ export class AdmissionAdminAPI extends GenericAPI {
 		);
 		if (response.error === true)
 			throw new Error("Failed to update program");
->>>>>>> develop
 	}
 }
