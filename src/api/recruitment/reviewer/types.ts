@@ -32,18 +32,23 @@ export interface RecruitmentReviewerProgramListResponse {
 	reviewer_required_info: null;
 	reviewer_required_file: null;
 }
+export interface RecruitmentReviewerApplicantListResponse {
+	id: number;
+	provider: string;
+	uid: string;
+	allow_password_change: boolean;
+	isInit: any | null;
+	lang: any | null;
+	name: any | null;
+	nickname: any | null;
+	image: any | null;
+	email: string;
+	created_at: string;
+	updated_at: string;
+	comment: string | null;
+	isRecommend: boolean | null;
+}
 
-// TODO: disannotation while backend finished reviewer get program API
-// export interface RecruitmentReviewerApplicantListResponse {
-// 	id: number;
-// 	provider: string;
-// 	uid: string;
-// 	isInit: any | null;
-// 	lang: any | null;
-// 	name: any | null;
-// 	nickname: any | null;
-// 	image: any | null;
-// 	email: string;
-// 	created_at: string;
-// 	updated_at: string;
-// }
+export interface RecruitmentReviewerApplicantCommentResponse {
+	comment: string | null;
+}

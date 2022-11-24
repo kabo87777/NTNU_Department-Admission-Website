@@ -6,10 +6,9 @@
 			</h1>
 			<div class="w-134px h-25px bg-[#FCC89B] rounded-lg ml-24px mt-8px">
 				<div class="mt-4px text-xs text-center">
-					{{ $t("開放時段") }} | {{ $t("評分中") }}
+					{{ isBetweenDate }} | {{ $t("評分中") }}
 				</div>
 			</div>
-			<!-- FIXME: program opening time must be got by using API -->
 			<div class="mt-20px ml-600px">
 				{{ $t("開放時間") }} : {{ reviewStartTime }} -
 				{{ reviewEndTime }}
@@ -335,7 +334,6 @@ const docsGrade = useMutation(async () => {
 	}
 });
 const toast = useToast();
-const errorMessage = ref("");
 const showTemplate = () => {
 	toast.add({
 		severity: "warn",

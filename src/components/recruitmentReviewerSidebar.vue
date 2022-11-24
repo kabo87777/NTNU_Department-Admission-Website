@@ -128,7 +128,7 @@ import { useRecruitmentReviewerAuthStore } from "@/stores/universalAuth";
 import { RecruitmentReviewerAPI } from "@/api/recruitment/reviewer/api";
 import { useQuery } from "@tanstack/vue-query";
 import { InvalidSessionError } from "@/api/error";
-import { useGlobalStore } from "@/stores/globalStore";
+import { useGlobalStore } from "@/stores/RecruitmentReviewerStore";
 import { RecruitmentReviewerProgramListResponse } from "@/api/recruitment/reviewer/types";
 
 const reviewerAuth = useRecruitmentReviewerAuthStore();
@@ -174,7 +174,7 @@ watchEffect(() => {
 });
 
 watch(selectedProgram, (selection) => {
-	store.$patch({ program: selectedProgram.value });
+	store.$patch({ recruitmentReviewerProgram: selectedProgram.value });
 
 	console.debug("Selected program:\n" + JSON.stringify(selection, null, 2));
 });
