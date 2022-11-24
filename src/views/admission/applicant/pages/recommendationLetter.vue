@@ -505,7 +505,6 @@ import { useToast } from "primevue/usetoast";
 import Button from "primevue/button";
 import Dialog from "primevue/dialog";
 import InputText from "primevue/inputtext";
-import FileUpload from "primevue/fileupload";
 import "primeicons/primeicons.css";
 
 const { t } = useI18n();
@@ -556,14 +555,6 @@ const isModalValueBlank = reactive({
 const fetchResponse = reactive({
 	success: false,
 	message: "" as string | [],
-});
-
-const uploadFile = reactive({
-	fileUrl: "",
-	name: "",
-	size: 0,
-	type: "",
-	isUploaded: false,
 });
 
 const { data } = useQuery(
@@ -641,21 +632,7 @@ const clearFetchResponse = () => {
 	fetchResponse.message = "";
 };
 
-const onUpload = (e: any) => {
-	uploadFile.fileUrl = e.files[0].objectURL;
-	uploadFile.name = e.files[0].name;
-	uploadFile.size = e.files[0].size;
-	uploadFile.type = e.files[0].type;
-	uploadFile.isUploaded = true;
-	modalValue.sign = e.files[0].objectURL;
-	// 優化使用者體驗可能用到以下代碼
-	// const [file] = e.files;
-	// const objectURL = window.URL.createObjectURL(file);
-	// console.log(e, "upload clicked", uploadFile);
-};
-
 const openModal = () => {
-	uploadFile.isUploaded = false;
 	isModalVisible.fill = true;
 	resetIsModalValueBlank();
 	clearModalValue();

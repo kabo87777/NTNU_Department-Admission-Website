@@ -2,6 +2,7 @@ import type { AuthStore } from "@/stores/universalAuth";
 import { GenericAPI } from "@/api/api";
 import type {
 	RecruitmentApplicantGenericResponse,
+	RecruitmentApplicantUserInfoResponse,
 	RecruitmentApplicantProgramResponse,
 	RecruitmentApplicantFileListResponse,
 } from "./types";
@@ -21,6 +22,40 @@ export class RecruitmentApplicantAPI extends GenericAPI {
 			throw new Error("Failed to fetch program list");
 
 		return data.data;
+	}
+
+	async getBasicInfo(
+		pid: number
+	): Promise<RecruitmentApplicantUserInfoResponse> {
+		const data: APIGenericResponse = await this.instance.get(
+			`/recruitment/applicant/program/${pid}/info`
+		);
+
+		if (data.error === true) console.log("Failed to fetch user info");
+		console.log(data);
+		return data.data;
+	}
+
+	async editBasicInfo(
+		pid: number,
+		body: object
+	): Promise<RecruitmentApplicantGenericResponse> {
+		const data: APIGenericResponse = await this.instance.patch(
+			`/recruitment/applicant/program/${pid}/info`,
+			body
+		);
+
+		if (data.error !== false) {
+			return {
+				success: false,
+				message: data.message,
+			};
+		}
+
+		return {
+			success: true,
+			message: data.message,
+		};
 	}
 
 	async getFileList(
@@ -43,7 +78,7 @@ export class RecruitmentApplicantAPI extends GenericAPI {
 			`recruitment/applicant/program/${pid}/file/${fileId}`
 		);
 
-		if (data.error !== false && data.message !== undefined) {
+		if (data.error !== false) {
 			return {
 				success: false,
 				message: data.message,
@@ -65,7 +100,7 @@ export class RecruitmentApplicantAPI extends GenericAPI {
 			body
 		);
 
-		if (data.error !== false && data.message !== undefined) {
+		if (data.error !== false) {
 			return {
 				success: false,
 				message: data.message,
@@ -88,7 +123,7 @@ export class RecruitmentApplicantAPI extends GenericAPI {
 			body
 		);
 
-		if (data.error !== false && data.message !== undefined) {
+		if (data.error !== false) {
 			return {
 				success: false,
 				message: data.message,

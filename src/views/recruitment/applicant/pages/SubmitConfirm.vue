@@ -1,3 +1,8 @@
 <template>
-	<p class="text-xl">資料未成功送出</p>
+	<div>
+		<div class="font-[500] text-[32px] font-bold">
+			{{ $t("資料確認送出") }}
+		</div>
+		<div class="bigYellowDivider"></div>
+	</div>
 </template>
