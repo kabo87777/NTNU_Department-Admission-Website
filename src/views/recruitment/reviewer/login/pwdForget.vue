@@ -43,7 +43,7 @@
 					<InputText
 						name="email"
 						type="email"
-						v-model="forgetPwdVerify.email"
+						v-model="forgetPwdEmail"
 						class="p-inputtext-sm w-full"
 						required
 					/>
@@ -67,31 +67,62 @@
 			</div>
 			<div class="flex justify-center px-4">
 				<router-link
-					to="/recruitment/reviewer/password/forget/emailSent"
+					to="/recruitment/reviewer/forgetpassword/emailSent"
 				>
-					<button
+					<Button
 						class="py-2 w-80 reviewerButtonStyle"
-						border="2  rounded-lg"
+						@click="enterEmail"
 					>
 						<div class="flex justify-center gap-2 mx-auto">
 							<div>提交</div>
 							<div>Submit</div>
 						</div>
-					</button>
+					</Button>
 				</router-link>
 			</div>
-			<div></div>
+			<div class="ml-168px mt-40px">
+				<Turnstile ref="turnstileRef" />
+			</div>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { reactive } from "vue";
+import Button from "primevue/button";
+import { ref } from "vue";
 import InputText from "primevue/inputtext";
+import { useRecruitmentReviewerAuthStore } from "@/stores/universalAuth";
+import { RecruitmentReviewerAPI } from "@/api/recruitment/reviewer/api";
+import type { TurnstileComponentExposes } from "@/components/Turnstile.vue";
+import Turnstile from "@/components/Turnstile.vue";
 
-const forgetPwdVerify = reactive({
-	email: "",
-});
+const forgetPwdEmail = ref("");
+const authStore = useRecruitmentReviewerAuthStore();
+const turnstileRef = ref<TurnstileComponentExposes>();
+
+const consumeTurnstileToken = () => {
+	const token: string | undefined = turnstileRef.value?.turnstileToken;
+	window.turnstile?.reset();
+	return token;
+};
+// FIXME: this redirectUrl is hardcode. Need to FIX it before merge in main branch.
+const enterEmail = async () => {
+	try {
+		const redirectUrl =
+			"http://127.0.0.1:5173/recruitment/reviewer/password/reset";
+		const turnstileResponse = consumeTurnstileToken();
+		if (!turnstileResponse) throw new Error("Turnstile challenge failed");
+		const api = new RecruitmentReviewerAPI(authStore);
+		return await api.sendForgotPasswordEmail({
+			email: forgetPwdEmail.value,
+			redirect_url: redirectUrl,
+			"cf-turnstile-response": turnstileResponse,
+		});
+	} catch (error) {
+		// TODO: show error message
+		console.log(error);
+	}
+};
 </script>
 
 <style setup lang="css">

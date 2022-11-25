@@ -146,7 +146,7 @@
 							</div>
 							<div class="flex justify-center items-center py-4">
 								<router-link
-									to="/recruitment/manager/password/forget"
+									to="/recruitment/manager/forgetpassword"
 								>
 									<button
 										class="flex justify-center gap-2 px-1 py-1"
@@ -187,7 +187,7 @@ const router = useRouter();
 
 const redirectToMainContainer = () => {
 	// TODO: Change Tag - Manager to Admin
-	router.replace({ name: "recruitmentManagerMainContainer" });
+	router.replace({ name: "recruitmentAdminMainContainer" });
 };
 const authStore = useRecruitmentAdminAuthStore();
 
