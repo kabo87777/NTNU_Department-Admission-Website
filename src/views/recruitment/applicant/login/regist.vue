@@ -129,6 +129,14 @@ const consumeTurnstileToken = () => {
 	window.turnstile?.reset();
 	return token;
 };
+
+const userRegistData: newPostEmailRegister = reactive({
+	email: "",
+	name: "",
+	confirm_success_url: "",
+	password: "",
+	password_confirmation: "",
+});
 const postEmailRegister = async () => {
 	try {
 		const redirectUrl =
@@ -138,8 +146,10 @@ const postEmailRegister = async () => {
 		const api = new RecruitmentApplicantAPI(authStore);
 		return await api.sendPostEmailRegister({
 			email: userRegistData.email,
-			redirect_url: redirectUrl,
+			confirm_success_url: redirectUrl,
 			password: userRegistData.password,
+			password_confirmation: userRegistData.password_confirmation,
+			name: "name",
 			"cf-turnstile-response": turnstileResponse,
 		});
 	} catch (error) {
@@ -148,13 +158,6 @@ const postEmailRegister = async () => {
 	}
 };
 
-const userRegistData: newPostEmailRegister = reactive({
-	email: "",
-	name: "",
-	confirm_success_url: "",
-	password: "",
-	password_confirmation: "",
-});
 // function buttonOnclick() {
 // 	const errorMessage = mutation;
 // 	errorMessage.error;

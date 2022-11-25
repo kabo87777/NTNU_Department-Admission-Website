@@ -15,8 +15,10 @@ export interface universalAuthSendResetPwdEmailData {
 
 export interface universalAuthSendPostEmailRegister {
 	email: string;
-	redirect_url: string;
+	name: string;
+	confirm_success_url: string;
 	password: string;
+	password_confirmation: string;
 	"cf-turnstile-response": string;
 }
 
