@@ -83,16 +83,18 @@
 			</div>
 			<div class="flex-col-inline px-4 gap-y-8">
 				<div class="flex justify-center">
-					<button
-						class="py-2 w-80 applicantButtonStyle"
-						border="2  rounded-lg"
-						@click="postEmailRegister"
-					>
-						<div class="flex justify-center gap-2 mx-auto">
-							<div>註冊</div>
-							<div>Register</div>
-						</div>
-					</button>
+					<router-link to="/recruitment/applicant/regist/done">
+						<button
+							class="py-2 w-80 applicantButtonStyle"
+							border="2  rounded-lg"
+							@click="postEmailRegister"
+						>
+							<div class="flex justify-center gap-2 mx-auto">
+								<div>註冊</div>
+								<div>Register</div>
+							</div>
+						</button>
+					</router-link>
 				</div>
 				<div></div>
 			</div>

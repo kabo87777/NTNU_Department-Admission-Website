@@ -113,3 +113,11 @@ export async function doUniversalAuthSendForgotPwdEmail(
 	console.log("response: ", response);
 	return response.data;
 }
+export async function doUniversalAuthSendPostEmailRegister(
+	auth: AuthStore,
+	data: universalAuthSendPostEmailRegister
+) {
+	const response = await axios.post(auth.apiEndpoint, data);
+	console.log("response: ", response);
+	return response.data;
+}
