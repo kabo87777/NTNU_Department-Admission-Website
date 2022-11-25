@@ -1,56 +1,129 @@
 <template>
-	<div class="flex mt-16px">
-		<div class="mt-16px ml-16px">
-			<Button
-				class="p-button-sm p-button-success p-button-outlined !text-[16px]"
-				type="submit"
-				icon="pi pi-plus"
-				:label="$t('添加')"
-			/>
+	<div>
+		<div class="font-[500] text-[32px] font-bold">
+			{{ $t("補交文件系統") }}
 		</div>
-		<div class="mt-16px ml-16px">
-			<Button
-				class="p-button-sm p-button-secondary p-button-outlined !text-[16px]"
-				type="submit"
-				icon="pi pi-sort-alt"
-				:label="$t('調整排序')"
-			/>
-		</div>
-	</div>
-	<div class="flex mt-16px">
-		<div class="mt-16px ml-50px">
-			{{ $t("上傳時間") }}
-		</div>
-		<div class="mt-16px ml-150px">
-			{{ $t("補教文件姓名") }}
-		</div>
-		<div class="mt-16px ml-150px">
-			{{ $t("作業狀態") }}
-		</div>
-		<div class="mt-16px ml-100px">
-			{{ $t("操作") }}
-		</div>
-	</div>
-	<div class="flex mt-16px"></div>
+		<div class="bigYellowDivider"></div>
 
-	<p class="text-xl">畫面與功能維修中</p>
+		<!-- 畫面顯示(開放補件時) -->
+		<div v-if="isEnabled" class="px-12px py-24px">
+			<div class="text-[24px] font-[50] font-bold">
+				{{ $t("補交文件") }}
+			</div>
+			<div v-for="(item, index) in proceedList" :key="index">
+				<ReviewState
+					v-if="item.state === 1"
+					category="補交文件"
+					identity="admissionApplicant"
+					:itemId="item.id"
+					:itemName="item.name"
+					:fileUrl="item.filepath?.url"
+					:order="index + 1"
+					:isDeleteLoading="isLoading.delete"
+					@edit="reviewToEdit"
+				/>
+				<CorrectionState
+					v-else-if="item.state === 2"
+					category="補交文件"
+					identity="admissionApplicant"
+					:isEditLoading="isLoading.edit"
+					:itemId="item.id"
+					:itemName="item.name"
+					:order="index + 1"
+					@cancel="editToReview"
+				/>
+				<CreateState
+					v-else-if="item.state === 3"
+					category="補交文件"
+					identity="admissionApplicant"
+					:order="index + 1"
+					@edit="createToEdit"
+				/>
+				<EditState
+					v-else-if="item.state === 4"
+					category="補交文件"
+					identity="admissionApplicant"
+					:isCreateLoading="isLoading.create"
+					:order="index + 1"
+					@cancel="editToCreate"
+				/>
+			</div>
+		</div>
+
+		<!-- 畫面顯示(未開放補件時) -->
+		<div v-else class="relative h-150">
+			<div class="recruitmentAdditionNoData">
+				<img
+					src="/assets/admissionApplicant/Newsletter.png"
+					alt="NO DATA"
+					style="border-radius: 50%"
+				/>
+				<div class="text-center font-bold text-[24px] text-[#736028]">
+					{{ $t("暫未開放補件") }}
+				</div>
+			</div>
+		</div>
+	</div>
 </template>
 
 <script setup lang="ts">
-import { reactive, toRaw } from "vue";
-import { ref } from "vue";
-import { useRouter } from "vue-router";
+import { ref, reactive } from "vue";
+import { InvalidSessionError } from "@/api/error";
 import ReviewState from "@/components/attachmentStates/reviewState.vue";
 import EditState from "@/components/attachmentStates/editState.vue";
 import CreateState from "@/components/attachmentStates/createState.vue";
-import ParagraphDivider from "@/styles/paragraphDividerApplicant.vue";
-import { AttachmentData } from "@/api/recruitment/applicant/types";
+import CorrectionState from "@/components/attachmentStates/CorrectionState.vue";
+import {
+	AttachmentData,
+	AttachmentDetailData,
+} from "@/api/recruitment/applicant/types";
 import { useRecruitmentApplicantAuthStore } from "@/stores/universalAuth";
 import { RecruitmentApplicantAPI } from "@/api/recruitment/applicant/api";
 import { useProjectIdStore } from "@/stores/RecruitmentApplicantStore";
-import { useQuery } from "@tanstack/vue-query";
-import { InvalidSessionError } from "@/api/error";
-import AttachmentList from "@/mocks/attachmentList.json";
-import Button from "primevue/button";
-import "primeicons/primeicons.css";
+import { useToast } from "primevue/usetoast";
+
+const applicantAuth = useRecruitmentApplicantAuthStore();
+const api = new RecruitmentApplicantAPI(applicantAuth);
+const project = useProjectIdStore();
+
+const toast = useToast();
+
+const isEnabled = ref(true);
+
+const isLoading = reactive({
+	delete: false,
+	create: false,
+	edit: false,
+	fetch: false,
+});
+
+const additionalList: AttachmentData[] = reactive([]);
+const proceedList: AttachmentDetailData[] = reactive([]);
+
+const editToReview = (index: number) => {
+	proceedList[index].state = 1;
+};
+
+const reviewToEdit = (index: number) => {
+	proceedList[index].state = 2;
+};
+
+const editToCreate = (index: number, category: string) => {
+	proceedList[index].state = 3;
+};
+
+const createToEdit = (index: number, category: string) => {
+	proceedList[index].state = 4;
+};
 </script>
+
+<style setup lang="css">
+.recruitmentAdditionNoData {
+	position: absolute;
+	left: 50%;
+	top: 63%;
+	transform: translate(-50%, -50%);
+	height: 400px;
+	width: 500px;
+}
+</style>

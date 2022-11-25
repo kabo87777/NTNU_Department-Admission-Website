@@ -541,7 +541,6 @@
 <script setup lang="ts">
 import "@/styles/customize.css";
 import "primeicons/primeicons.css";
-import { ref, watch, onMounted } from "vue";
 
 import SelectButton from "primevue/selectbutton";
 import MultiSelect from "primevue/multiselect";
@@ -553,6 +552,35 @@ import Calendar from "primevue/calendar";
 import Dropdown from "primevue/dropdown";
 import ParagraphDivider from "@/styles/paragraphDivider.vue";
 import { useI18n } from "vue-i18n";
+
+import { ref,reactive, onMounted, toRaw, watch } from "vue";
+import { InvalidSessionError } from "@/api/error";
+import ReviewState from "@/components/attachmentStates/reviewState.vue";
+import EditState from "@/components/attachmentStates/editState.vue";
+import CreateState from "@/components/attachmentStates/createState.vue";
+import CorrectionState from "@/components/attachmentStates/CorrectionState.vue";
+import {
+	AdmissionApplicantGetUserInfoResponse
+} from "@/api/admission/applicant/types";
+import { useAdmissionApplicantAuthStore } from "@/stores/universalAuth";
+import { AdmissionApplicantAPI } from "@/api/admission/applicant/api";
+import { useToast } from "primevue/usetoast";
+
+const applicantAuth = useAdmissionApplicantAuthStore();
+const api = new AdmissionApplicantAPI(applicantAuth);
+//manager have six part to choose open or close
+const basicInfoList: AdmissionApplicantGetUserInfoResponse[] = reactive([]);
+const nameList: AdmissionApplicantGetUserInfoResponse[] = reactive([]);
+const schoolExpList: AdmissionApplicantGetUserInfoResponse[] = reactive([]);
+const registerResidenceList: AdmissionApplicantGetUserInfoResponse[] = reactive([]);
+const addressList: AdmissionApplicantGetUserInfoResponse[] = reactive([]);
+const identityList: AdmissionApplicantGetUserInfoResponse[] = reactive([]);
+const connectionList: AdmissionApplicantGetUserInfoResponse[] = reactive([]);
+
+const fetchResponse = reactive({
+	success: false,
+	message: "" as string | [],
+});
 
 const nameInfo = ref({
 	selected_title: "",
@@ -630,14 +658,156 @@ const cities = ref([
 	{ name: "Paris", code: "PRS" },
 ]);
 
+//copy phone number
 const phone = (prod: any) => {
 	if (textCheckedphone.value === false) {
 		contactInfo.value.mobilePhone = contactInfo.value.primaryPhone;
 	}
 };
+//copy address
 const address = (prod: any) => {
 	if (textCheckedAddress.value === false) {
 		Object.assign(currentAddress.value, residentAddress.value);
 	}
+};
+
+//get info API
+const clearAllList = () => {
+	const basicInfoList: AdmissionApplicantGetUserInfoResponse[] = reactive([]);
+	const nameList: AdmissionApplicantGetUserInfoResponse[] = reactive([]);
+	const schoolExpList: AdmissionApplicantGetUserInfoResponse[] = reactive([]);
+	const registerResidenceList: AdmissionApplicantGetUserInfoResponse[] = reactive([]);
+	const addressList: AdmissionApplicantGetUserInfoResponse[] = reactive([]);
+	const identityList: AdmissionApplicantGetUserInfoResponse[] = reactive([]);
+	const connectionList: AdmissionApplicantGetUserInfoResponse[] = reactive([]);
+	const otherList: AdmissionApplicantGetUserInfoResponse[] = reactive([]);
+};
+
+const getUserInfo = async () => {
+	return await api.getUserInfo();
+};
+
+onMounted(async () => {
+	const response = getUserInfo();
+	await response.then((res) => {
+		res.map((item) => {
+			if (item) {
+				basicInfoList.push(item);
+			}
+		});
+	});
+
+	splitSixList(toRaw(basicInfoList));
+});
+
+watch(
+	() => isLoading.fetch,
+	async () => {
+		const response = getUserInfo();
+
+		clearAllList();
+
+		await response.then((res) => {
+			res.map((item) => {
+				if (item) {
+					basicInfoList.push(item);
+				}
+			});
+		});
+
+		isLoading.fetch = false;
+
+		splitSixList(toRaw(basicInfoList));
+	}
+);
+
+const splitSixList = async (fullList: AdmissionApplicantGetUserInfoResponse[]) => {
+	fullList.map((item) => {
+		switch (item.category) {
+			case "姓名資訊": {
+				nameList.push({
+					...item,
+					order: nameList.length
+				});
+				break;
+			}
+			case "入學身分": {
+				schoolExpList.push({
+					...item,
+					order: schoolExpList.length
+				});
+				break;
+			}
+			case "戶籍資訊": {
+				registerResidenceList.push({
+					...item,
+					order: registerResidenceList.length
+				});
+				break;
+			}
+			case "現居地址": {
+				addressList.push({
+					...item,
+					order: addressList.length
+				});
+				break;
+			}
+			case "身份資料": {
+				identityList.push({
+					...item,
+					order: identityList.length
+				});
+				break;
+			}
+			case "聯絡資料": {
+				connectionList.push({
+					...item,
+					order: connectionList.length
+				});
+				break;
+			}
+			//need to fix whether have other list or not
+			default: {
+				otherList.push({
+					...item,
+					order: otherList.length
+				});
+			}
+		}
+	});
+
+	nameList.push({
+		order: nameList.length,
+	});
+
+	schoolExpList.push({
+		order: schoolExpList.length,
+		state: 3,
+	});
+
+	registerResidenceList.push({
+		order: registerResidenceList.length,
+		state: 3,
+	});
+
+	addressList.push({
+		order: addressList.length,
+		state: 3,
+	});
+
+	identityList.push({
+		order: identityList.length,
+		state: 3,
+	});
+
+	connectionList.push({
+		order: connectionList.length,
+		state: 3,
+	});
+
+	otherList.push({
+		order: otherList.length,
+		state: 3,
+	});
 };
 </script>
