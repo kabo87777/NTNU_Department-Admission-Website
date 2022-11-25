@@ -133,7 +133,7 @@ import Calendar from "primevue/calendar";
 import Textarea from "primevue/textarea";
 import Checkbox from "primevue/checkbox";
 import { useRecruitmentAdminAuthStore } from "@/stores/universalAuth";
-import { useGlobalStore } from "@/stores/globalStore";
+import { useGlobalStore } from "@/stores/RecruitmentAdminStore";
 import { RecruitmentAdminAPI } from "@/api/recruitment/admin/api";
 import { useMutation, useQuery } from "@tanstack/vue-query";
 import { InvalidSessionError } from "@/api/error";

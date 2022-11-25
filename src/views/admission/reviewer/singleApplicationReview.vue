@@ -29,9 +29,22 @@
 				{{ name }}
 			</div>
 		</div>
+		<div class="p-fluid">
+			<SelectButton
+				v-model="data"
+				:options="datas"
+				aria-labelledby="single"
+				disabled
+				class="!h-50px"
+			/>
+		</div>
 		<div class="bigBrownDivider"></div>
 		<div class="mt-10px h-670px">
-			<PDFView :pdfUrl="jsPdf" class="!h650px" />
+			<PDFView
+				:pdfUrl="jsPdf"
+				class="!h650px"
+				v-if="data != '基本資料'"
+			/>
 		</div>
 		<div class="bigBlueDivider"></div>
 		<div class="flex mt-16px">
@@ -133,6 +146,7 @@ import { useMutation, useQuery } from "@tanstack/vue-query";
 import { InvalidSessionError } from "@/api/error";
 import { useGlobalStore } from "@/stores/AdmissionReviewerStore";
 import { useToast } from "primevue/usetoast";
+import SelectButton from "primevue/selectbutton";
 
 const route = useRoute();
 const { t } = useI18n();
@@ -181,6 +195,8 @@ const total_score = computed(() => {
 		(inputScore_5!.value! * score5Proportion.value) / 100
 	);
 });
+const data = ref("基本資料");
+const datas = ref(["基本資料", "PDF"]);
 
 const {
 	isLoading,

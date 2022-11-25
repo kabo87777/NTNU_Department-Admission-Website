@@ -58,7 +58,10 @@
 					{{ applicantGraded }} / {{ totalApplicant }} {{ $t("位") }}
 				</div>
 
-				<Button class="w-140px h-44px !ml-480px p-button-success">
+				<Button
+					class="w-140px h-44px !ml-480px p-button-success"
+					disabled
+				>
 					<img
 						alt="logo"
 						src="/assets/reviewer-page/Add_round.png"
