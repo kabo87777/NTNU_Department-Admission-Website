@@ -43,6 +43,8 @@ build for pentest:
   stage: prebuild
   artifacts:
     untracked: true
+  only:
+    - pentest
   script:
     - VITE_IS_SKIP_CAPTCHA=true VITE_ADMISSIONS_API_ENDPOINT=https://admissions-backend-pentest.birkhoff.me pnpm build
 
@@ -52,8 +54,8 @@ build image for pentest:
   stage: build
   dependencies: 
     - build for pentest
-  # only:
-  #   - develop
+  only:
+    - pentest
   services:
     - name: docker:20.10.21-dind
       alias: docker
@@ -131,8 +133,8 @@ deploy to pentest:
   stage: deploy
   tags:
     - deploy
-  # only:
-  #   - develop
+  only:
+    - pentest
   variables:
     ANSIBLE_PYTHON_INTERPRETER: /usr/bin/python3
   before_script:
