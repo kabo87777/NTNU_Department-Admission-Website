@@ -1,6 +1,7 @@
 stages:
   - dependencies
   - test
+  - prebuild
   - build
   - deploy
 
@@ -39,7 +40,7 @@ test:
     - pnpm test
 
 build for pentest:
-  stage: build
+  stage: prebuild
   artifacts:
     untracked: true
   script:
