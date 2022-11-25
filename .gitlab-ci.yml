@@ -48,8 +48,8 @@ test:
 build image for pentest:
   image: docker:20.10.21-cli
   stage: build
-  only:
-    - develop
+  # only:
+  #   - develop
   services:
     - name: docker:20.10.21-dind
       alias: docker
