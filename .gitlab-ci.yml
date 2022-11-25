@@ -43,6 +43,36 @@ test:
     - npm install --location=global pnpm@7 vercel
     - pnpm config set store-dir .pnpm-store
 
+# mainly for pentest image
+build image for pentest:
+  image: docker:20.10.21-cli
+  stage: build
+  only:
+    - develop
+  services:
+    - name: docker:20.10.21-dind
+      alias: docker
+  before_script:
+    - docker info
+    - echo "$CI_REGISTRY_PASSWORD" | docker login $CI_REGISTRY --username
+      $CI_REGISTRY_USER --password-stdin
+    - docker run --privileged --rm tonistiigi/binfmt --install all
+  variables:
+    # This instructs Docker not to start over TLS.
+    DOCKER_TLS_CERTDIR: ""
+  script:
+    - VITE_IS_SKIP_CAPTCHA=true VITE_ADMISSIONS_API_ENDPOINT=https://admissions-backend-pentest.birkhoff.me pnpm build
+    - docker buildx create --use
+    - docker buildx build
+      --cache-from type=registry,ref=${CI_REGISTRY_IMAGE}:pentest-build-cache
+      --cache-to type=registry,ref=${CI_REGISTRY_IMAGE}:pentest-build-cache,mode=max
+      --platform linux/arm64/v8,linux/amd64
+      --file "${CI_PROJECT_DIR}/Dockerfile"
+      --tag "${CI_REGISTRY_IMAGE}:pentest"
+      --tag "${CI_REGISTRY_IMAGE}:pentest-${CI_COMMIT_SHORT_SHA}"
+      --push
+      "${CI_PROJECT_DIR}"
+
 deploy for review:
   extends: .vercel
   rules:
@@ -86,3 +116,21 @@ deploy to production:
   environment:
     name: Production
     url: https://admissions.birkhoff.me
+
+deploy to pentest:
+  stage: deploy
+  tags:
+    - deploy
+  # only:
+  #   - develop
+  variables:
+    ANSIBLE_PYTHON_INTERPRETER: /usr/bin/python3
+  before_script:
+    - export PATH=$PATH:/home/gitlab-runner/.local/bin
+  script:
+    - ansible-galaxy collection install community.docker
+    - DOCKER_IMAGE="${CI_REGISTRY_IMAGE}:pentest-${CI_COMMIT_SHORT_SHA}"
+      ansible-playbook --connection=local --inventory=127.0.0.1, playbook-pentest.yml
+  environment:
+    name: pentest
+    url: https://admissions-frontend-pentest.birkhoff.me
