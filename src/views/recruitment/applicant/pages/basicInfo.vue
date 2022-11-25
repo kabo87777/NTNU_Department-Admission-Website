@@ -6,8 +6,13 @@
 		<div class="bigYellowDivider"></div>
 
 		<div class="px-12px py-24px">
-			<div class="text-[24px] font-[50] font-bold">
-				{{ $t("姓名資訊") }}
+			<div class="flex">
+				<div class="text-[24px] font-[50] font-bold">
+					{{ $t("姓名資訊") }}
+				</div>
+				<div class="mt-6px ml-40px text-[#8D9093] text-[14px]">
+					{{ $t('" * " 為必填欄位') }}
+				</div>
 			</div>
 			<div class="flex pt-24px">
 				<div class="w-1/3">
@@ -36,7 +41,7 @@
 			<div class="flex pt-16px">
 				<div class="w-1/3">
 					<div>{{ $t("中文姓氏") }}</div>
-					<div class="mt-4px text-12px">
+					<div class="mt-4px text-12px text-[#8D9093]">
 						{{ "*" + $t("無則免填") }}
 					</div>
 					<div>
@@ -50,7 +55,7 @@
 				</div>
 				<div class="w-1/3">
 					<div>{{ $t("中文名字") }}</div>
-					<div class="mt-4px text-12px">
+					<div class="mt-4px text-12px text-[#8D9093]">
 						{{ "*" + $t("無則免填") }}
 					</div>
 					<div>
@@ -65,7 +70,7 @@
 			</div>
 			<div class="flex py-16px">
 				<div class="w-1/3">
-					<div>{{ $t("英文姓氏") }}</div>
+					<div>{{ "*" + $t("英文姓氏") }}</div>
 					<div>
 						<InputText
 							class="w-[70%] h-36px !mt-4px"
@@ -82,24 +87,7 @@
 					</div>
 				</div>
 				<div class="w-1/3">
-					<div>{{ $t("英文中間名") }}</div>
-					<div>
-						<InputText
-							class="w-[70%] h-36px !mt-4px"
-							style="border: 1px solid #736028"
-							id="enMidName"
-							type="text"
-							aria-describedby="enMidName-help"
-						/>
-					</div>
-					<div class="absolute mt-[-4px]">
-						<small id="enMidName-help" class="p-error">
-							{{ $t("此為必填欄位") }}
-						</small>
-					</div>
-				</div>
-				<div class="w-1/3">
-					<div>{{ $t("英文名字") }}</div>
+					<div>{{ "*" + $t("英文名字") }}</div>
 					<div>
 						<InputText
 							class="w-[70%] h-36px !mt-4px"
@@ -115,23 +103,39 @@
 						</small>
 					</div>
 				</div>
+				<div class="w-1/3">
+					<div>{{ $t("英文中間名") }}</div>
+					<div>
+						<InputText
+							class="w-[70%] h-36px !mt-4px"
+							style="border: 1px solid #736028"
+							id="enMidName"
+							type="text"
+						/>
+					</div>
+				</div>
 			</div>
 		</div>
 		<ParagraphDivider />
 		<div class="px-12px py-24px">
-			<div class="text-[24px] font-[50] font-bold">
-				{{ $t("入職身份") }}
+			<div class="flex">
+				<div class="text-[24px] font-[50] font-bold">
+					{{ $t("入職身份") }}
+				</div>
+				<div class="mt-6px ml-40px text-[#8D9093] text-[14px]">
+					{{ $t('" * " 為必填欄位') }}
+				</div>
 			</div>
 			<div class="flex pt-24px">
 				<div class="w-1/3">
-					<div>{{ $t("入職身份") }}</div>
+					<div>{{ "*" + $t("入職身份") }}</div>
 					<div>
 						<Dropdown
 							class="w-[70%] h-36px !mt-4px"
 							style="border: 1px solid #736028"
-							v-model="formValues.selectedIdentity"
+							v-model="identity.selectedIdentity"
 							placeholder="請選擇身份"
-							:options="identity"
+							:options="identityOptions"
 							optionLabel="name"
 							optionValue="name"
 						>
@@ -154,10 +158,10 @@
 			</div>
 			<div
 				class="flex py-16px"
-				v-if="formValues.selectedIdentity === '外籍人士'"
+				v-if="identity.selectedIdentity === '外籍人士'"
 			>
 				<div class="w-1/3">
-					<div>{{ $t("國籍") }}</div>
+					<div>{{ "*" + $t("國籍") }}</div>
 					<div>
 						<InputText
 							class="w-[70%] h-36px !mt-4px"
@@ -174,7 +178,7 @@
 					</div>
 				</div>
 				<div class="w-1/3">
-					<div>{{ $t("護照號碼") }}</div>
+					<div>{{ "*" + $t("護照號碼") }}</div>
 					<div>
 						<InputText
 							class="w-[70%] h-36px !mt-4px"
@@ -191,7 +195,7 @@
 					</div>
 				</div>
 				<div class="w-1/3">
-					<div>{{ $t("居留證統一證號") }}</div>
+					<div>{{ "*" + $t("居留證統一證號") }}</div>
 					<div>
 						<InputText
 							class="w-[70%] h-36px !mt-4px"
@@ -210,7 +214,7 @@
 			</div>
 			<div class="flex py-16px" v-else>
 				<div class="w-1/3">
-					<div>{{ $t("身份證字號") }}</div>
+					<div>{{ "*" + $t("身份證字號") }}</div>
 					<div>
 						<InputText
 							class="w-[70%] h-36px !mt-4px"
@@ -229,14 +233,19 @@
 			</div>
 		</div>
 		<ParagraphDivider />
-		<div v-if="formValues.selectedIdentity !== '外籍人士'">
+		<div v-if="identity.selectedIdentity !== '外籍人士'">
 			<div class="px-12px py-24px">
-				<div class="text-[24px] font-[50] font-bold">
-					{{ $t("戶籍地址") }}
+				<div class="flex">
+					<div class="text-[24px] font-[50] font-bold">
+						{{ $t("戶籍地址") }}
+					</div>
+					<div class="mt-6px ml-40px text-[#8D9093] text-[14px]">
+						{{ $t('" * " 為必填欄位') }}
+					</div>
 				</div>
 				<div class="flex py-16px">
 					<div class="w-1/3">
-						<div>{{ $t("縣市") }}</div>
+						<div>{{ "*" + $t("縣市") }}</div>
 						<div>
 							<InputText
 								class="w-[70%] h-36px !mt-4px"
@@ -253,7 +262,7 @@
 						</div>
 					</div>
 					<div class="w-1/3">
-						<div>{{ $t("郵遞區號") }}</div>
+						<div>{{ "*" + $t("郵遞區號") }}</div>
 						<div>
 							<InputText
 								class="w-[70%] h-36px !mt-4px"
@@ -270,7 +279,7 @@
 						</div>
 					</div>
 					<div class="w-1/3">
-						<div>{{ $t("街道地址") }}</div>
+						<div>{{ "*" + $t("街道地址") }}</div>
 						<div>
 							<InputText
 								class="w-[70%] h-36px !mt-4px"
@@ -291,16 +300,21 @@
 			<ParagraphDivider />
 		</div>
 		<div class="px-12px py-24px">
-			<div class="text-[24px] font-[50] font-bold">
-				{{ $t("現居地址") }}
+			<div class="flex">
+				<div class="text-[24px] font-[50] font-bold">
+					{{ $t("現居地址") }}
+				</div>
+				<div class="mt-6px ml-40px text-[#8D9093] text-[14px]">
+					{{ $t('" * " 為必填欄位') }}
+				</div>
 			</div>
 			<div class="mt-16px">
-				<Checkbox v-model="formValues.isAdrressSame" :binary="true" />
+				<Checkbox v-model="currentAddr.isAddrSame" :binary="true" />
 				<label class="ml-4px">{{ $t("住址相同") }}</label>
 			</div>
 			<div class="flex py-16px">
 				<div class="w-1/3">
-					<div>{{ $t("縣市") }}</div>
+					<div>{{ "*" + $t("縣市") }}</div>
 					<div>
 						<InputText
 							class="w-[70%] h-36px !mt-4px"
@@ -317,7 +331,7 @@
 					</div>
 				</div>
 				<div class="w-1/3">
-					<div>{{ $t("郵遞區號") }}</div>
+					<div>{{ "*" + $t("郵遞區號") }}</div>
 					<div>
 						<InputText
 							class="w-[70%] h-36px !mt-4px"
@@ -334,7 +348,7 @@
 					</div>
 				</div>
 				<div class="w-1/3">
-					<div>{{ $t("街道地址") }}</div>
+					<div>{{ "*" + $t("街道地址") }}</div>
 					<div>
 						<InputText
 							class="w-[70%] h-36px !mt-4px"
@@ -354,22 +368,30 @@
 		</div>
 		<ParagraphDivider />
 		<div class="px-12px py-24px">
-			<div class="text-[24px] font-[50] font-bold">
-				{{ $t("身份資料") }}
-			</div>
-			<div class="flex mt-16px">
-				<div>
-					<RadioButton v-model="formValues.sex" value="male" />
-					<label class="ml-4px">{{ $t("生理男性") }}</label>
+			<div class="flex">
+				<div class="text-[24px] font-[50] font-bold">
+					{{ $t("身份資料") }}
 				</div>
-				<div class="ml-160px">
-					<RadioButton v-model="formValues.sex" value="female" />
-					<label class="ml-4px">{{ $t("生理女性") }}</label>
+				<div class="mt-6px ml-40px text-[#8D9093] text-[14px]">
+					{{ $t('" * " 為必填欄位') }}
+				</div>
+			</div>
+			<div class="mt-24px">
+				<div>{{ "*" + $t("生理性別") }}</div>
+				<div class="mt-2px flex">
+					<div>
+						<RadioButton v-model="born.sex" value="male" />
+						<label class="ml-4px">{{ $t("生理男性") }}</label>
+					</div>
+					<div class="ml-160px">
+						<RadioButton v-model="born.sex" value="female" />
+						<label class="ml-4px">{{ $t("生理女性") }}</label>
+					</div>
 				</div>
 			</div>
 			<div class="flex py-16px">
 				<div class="w-1/3">
-					<div>{{ $t("出生國家") }}</div>
+					<div>{{ "*" + $t("出生國家") }}</div>
 					<div>
 						<InputText
 							class="w-[70%] h-36px !mt-4px"
@@ -386,10 +408,10 @@
 					</div>
 				</div>
 				<div class="w-1/3">
-					<div>{{ $t("出生日期") }}</div>
+					<div>{{ "*" + $t("出生日期") }}</div>
 					<div>
 						<Calendar
-							v-model="formValues.birth"
+							v-model="born.birth"
 							class="w-[70%] h-36px !mt-4px"
 							style="
 								border: 1px solid #736028;
@@ -408,12 +430,17 @@
 		</div>
 		<ParagraphDivider />
 		<div class="px-12px py-24px">
-			<div class="text-[24px] font-[50] font-bold">
-				{{ $t("聯絡方式") }}
+			<div class="flex">
+				<div class="text-[24px] font-[50] font-bold">
+					{{ $t("聯絡方式") }}
+				</div>
+				<div class="mt-6px ml-40px text-[#8D9093] text-[14px]">
+					{{ $t('" * " 為必填欄位') }}
+				</div>
 			</div>
 			<div class="flex py-16px">
 				<div class="w-1/3">
-					<div>{{ $t("電郵") }}</div>
+					<div>{{ "*" + $t("電郵") }}</div>
 					<div>
 						<InputText
 							class="w-[70%] h-36px !mt-4px"
@@ -430,7 +457,7 @@
 					</div>
 				</div>
 				<div class="w-1/3">
-					<div>{{ $t("行動電話") }}</div>
+					<div>{{ "*" + $t("行動電話") }}</div>
 					<div>
 						<InputText
 							class="w-[70%] h-36px !mt-4px"
@@ -487,14 +514,54 @@ const applicantAuth = useRecruitmentApplicantAuthStore();
 const api = new RecruitmentApplicantAPI(applicantAuth);
 const project = useProjectIdStore();
 
-const formValues = reactive({
+const loading = reactive({
+	fetch: false,
+	save: false,
+});
+
+const name = reactive({
+	appellation: "",
+	suffix: "",
+	zhFamName: "",
+	zhName: "",
+	enFamName: "",
+	enName: "",
+	enMidName: "",
+});
+
+const identity = reactive({
 	selectedIdentity: "",
-	isAdrressSame: false,
+	ic: "",
+	nationality: "",
+	passport: "",
+	ui: "",
+});
+
+const householdAddr = reactive({
+	state: "",
+	postcode: "",
+	street: "",
+});
+
+const currentAddr = reactive({
+	isAddrSame: false,
+	state: "",
+	postcode: "",
+	street: "",
+});
+
+const born = reactive({
 	sex: "",
+	country: "",
 	birth: undefined,
 });
 
-const identity = ref([{ name: "本地人士" }, { name: "外籍人士" }]);
+const contact = reactive({
+	email: "",
+	phone: "",
+});
+
+const identityOptions = ref([{ name: "本地人士" }, { name: "外籍人士" }]);
 
 const basicInfo: RecruitmentApplicantUserInfoResponse =
 	reactive<RecruitmentApplicantUserInfoResponse>(
@@ -525,7 +592,7 @@ const setBasicInfo = (res: RecruitmentApplicantUserInfoResponse) => {
 	basicInfo.created_at = res.created_at;
 	basicInfo.updated_at = res.updated_at;
 };
-console.log(basicInfo, formValues);
+console.log(basicInfo);
 
 const getBasicInfo = async () => {
 	return await api.getBasicInfo(project.project.pid);
@@ -538,4 +605,17 @@ onMounted(async () => {
 		if (Object.keys(res).length) setBasicInfo(res);
 	});
 });
+
+watch(
+	() => loading.fetch,
+	async () => {
+		const response = getBasicInfo();
+
+		await response.then((res) => {
+			if (Object.keys(res).length) setBasicInfo(res);
+		});
+
+		loading.fetch = false;
+	}
+);
 </script>
