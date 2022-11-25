@@ -217,6 +217,7 @@ store.$subscribe((mutation, state) => {
 	if (state.program) {
 		console.log(state.program.category + state.program.name);
 	}
+	refetch()
 });
 
 const modalVisible = ref(false);
