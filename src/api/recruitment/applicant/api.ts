@@ -4,12 +4,8 @@ import type {
 	RecruitmentApplicantGenericResponse,
 	RecruitmentApplicantProgramResponse,
 	RecruitmentApplicantFileListResponse,
-<<<<<<< HEAD
-	RecruitmentApplicantChangePassResponse,
 	RecruitmentRegisterEmailPostResponse,
 	newPostEmailRegister,
-=======
->>>>>>> origin/develop
 } from "./types";
 import type { APIGenericResponse } from "@/api/types";
 
@@ -138,7 +134,7 @@ export class RecruitmentApplicantAPI extends GenericAPI {
 		);
 
 		if (data.error === true || typeof data.data === "undefined")
-			throw new Error("Failed to fetch program list");
+			throw new Error(data.message);
 
 		return data.data;
 	}

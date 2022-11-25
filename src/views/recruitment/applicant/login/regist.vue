@@ -86,7 +86,7 @@
 					<button
 						class="py-2 w-80 applicantButtonStyle"
 						border="2  rounded-lg"
-						@click="buttonOnclick"
+						@click="postEmailRegister"
 					>
 						<div class="flex justify-center gap-2 mx-auto">
 							<div>註冊</div>
@@ -111,11 +111,40 @@ import ApplicantUploadedDocs from "@/views/admission/manager/applicantsUploadLis
 import { useRouter } from "vue-router";
 import { InvalidSessionError } from "@/api/error";
 import type { newPostEmailRegister } from "@/api/recruitment/applicant/types";
+import Button from "primevue/button";
+import { ref } from "vue";
+import type { TurnstileComponentExposes } from "@/components/Turnstile.vue";
+import Turnstile from "@/components/Turnstile.vue";
 
 const applicantAuth = useRecruitmentApplicantAuthStore();
 const router = useRouter();
 const authStore = useRecruitmentApplicantAuthStore();
 const api = new RecruitmentApplicantAPI(applicantAuth);
+const turnstileRef = ref<TurnstileComponentExposes>();
+
+const consumeTurnstileToken = () => {
+	const token: string | undefined = turnstileRef.value?.turnstileToken;
+	window.turnstile?.reset();
+	return token;
+};
+const postEmailRegister = async () => {
+	try {
+		const redirectUrl =
+			"http://127.0.0.1:5173/recruitment/applicant/regist";
+		const turnstileResponse = consumeTurnstileToken();
+		if (!turnstileResponse) throw new Error("Turnstile challenge failed");
+		const api = new RecruitmentApplicantAPI(authStore);
+		return await api.sendPostEmailRegister({
+			email: userRegistData.email,
+			redirect_url: redirectUrl,
+			password: userRegistData.password,
+			"cf-turnstile-response": turnstileResponse,
+		});
+	} catch (error) {
+		// TODO: show error message
+		console.log(error);
+	}
+};
 
 const userRegistData: newPostEmailRegister = reactive({
 	email: "",
@@ -124,83 +153,83 @@ const userRegistData: newPostEmailRegister = reactive({
 	password: "",
 	password_confirmation: "",
 });
-function buttonOnclick() {
-	const errorMessage = mutation;
-	errorMessage.error;
-}
+// function buttonOnclick() {
+// 	const errorMessage = mutation;
+// 	errorMessage.error;
+// }
 
-const mutation = useMutation(["postEmailRegister"], async () => {
-	try {
-		return await api.postEmailRegister(userRegistData); //important!!!
-		//return axios.post("/todos", newEmailRegister);
-	} catch (e: any) {
-		if (e instanceof InvalidSessionError) {
-			// FIXME: show session expiry notification??
-			// Why are we even here in the first place?
-			// MainContainer should have checked already.
-			console.error(
-				"Session has already expired while querying programList"
-			);
-			console.log(e);
-			return;
-		}
-	}
-});
+// const mutation = useMutation(["postEmailRegister"], async () => {
+// 	try {
+// 		return await api.postEmailRegister(userRegistData); //important!!!
+// 		//return axios.post("/todos", newEmailRegister);
+// 	} catch (e: any) {
+// 		if (e instanceof InvalidSessionError) {
+// 			// FIXME: show session expiry notification??
+// 			// Why are we even here in the first place?
+// 			// MainContainer should have checked already.
+// 			console.error(
+// 				"Session has already expired while querying programList"
+// 			);
+// 			console.log(e);
+// 			return;
+// 		}
+// 	}
+// });
 
-const password = reactive({
-	notMatch: false,
-	isCurrentPassBlank: false,
-});
+// const password = reactive({
+// 	notMatch: false,
+// 	isCurrentPassBlank: false,
+// });
 
-const resetPassValue = () => {
-	password.notMatch = false;
-};
+// const resetPassValue = () => {
+// 	password.notMatch = false;
+// };
 
-const handleSubmit = async () => {
-	if (userRegistData.password === "") {
-		password.isCurrentPassBlank = true;
-	} else {
-		password.isCurrentPassBlank = false;
-	}
+// const handleSubmit = async () => {
+// 	if (userRegistData.password === "") {
+// 		password.isCurrentPassBlank = true;
+// 	} else {
+// 		password.isCurrentPassBlank = false;
+// 	}
 
-	if (userRegistData.password !== userRegistData.password_confirmation) {
-		password.notMatch = true;
-	} else {
-		password.notMatch = false;
-	}
+// 	if (userRegistData.password !== userRegistData.password_confirmation) {
+// 		password.notMatch = true;
+// 	} else {
+// 		password.notMatch = false;
+// 	}
 
-		const response = mutation.mutate();
-		const errorMsg = mutation.error;
+// 		const response = mutation.mutate();
+// 		const errorMsg = mutation.error;
 
-		await response.then((res) => {
-			if (res?.success !== undefined && res?.message !== undefined) {
-				changePassRes.success = toRaw(res.success);
-				changePassRes.message = toRaw(res.message);
-			}
+// 		await response.then((res) => {
+// 			if (res?.success !== undefined && res?.message !== undefined) {
+// 				changePassRes.success = toRaw(res.success);
+// 				changePassRes.message = toRaw(res.message);
+// 			}
 
-			isChangePassLoading.value = false;
+// 			isChangePassLoading.value = false;
 
-			if (changePassRes.success) {
-				resetPassValue();
-				toast.add({
-					severity: "success",
-					summary: "Success",
-					detail: changePassRes.message,
-					life: 3000,
-				});
-			} else {
-				toast.add({
-					severity: "error",
-					summary: "Error",
-					detail: changePassRes.message[
-						changePassRes.message.length - 1
-					],
-					life: 5000,
-				});
-			}
-		});
-	}
-};
+// 			if (changePassRes.success) {
+// 				resetPassValue();
+// 				toast.add({
+// 					severity: "success",
+// 					summary: "Success",
+// 					detail: changePassRes.message,
+// 					life: 3000,
+// 				});
+// 			} else {
+// 				toast.add({
+// 					severity: "error",
+// 					summary: "Error",
+// 					detail: changePassRes.message[
+// 						changePassRes.message.length - 1
+// 					],
+// 					life: 5000,
+// 				});
+// 			}
+// 		});
+// 	}
+//};
 
 //<router-link to="/recruitment/applicant/regist/done">
 </script>

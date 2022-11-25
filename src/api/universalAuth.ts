@@ -13,6 +13,13 @@ export interface universalAuthSendResetPwdEmailData {
 	"cf-turnstile-response": string;
 }
 
+export interface universalAuthSendPostEmailRegister {
+	email: string;
+	redirect_url: string;
+	password: string;
+	"cf-turnstile-response": string;
+}
+
 // type guard
 const buildAuthCredentialsFromHeaders = (
 	headers: any

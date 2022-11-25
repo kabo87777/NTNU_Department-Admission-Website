@@ -3,6 +3,7 @@ import type { AuthStore } from "@/stores/universalAuth";
 import type {
 	universalAuthData,
 	universalAuthSendResetPwdEmailData,
+	universalAuthSendPostEmailRegister,
 } from "@/api/universalAuth";
 
 import axios from "axios";
@@ -73,6 +74,9 @@ export class GenericAPI {
 	// Send Forgot Password
 
 	async sendForgotPasswordEmail(data: universalAuthSendResetPwdEmailData) {
+		return await doUniversalAuthSendForgotPwdEmail(this.auth, data);
+	}
+	async sendPostEmailRegister(data: universalAuthSendPostEmailRegister) {
 		return await doUniversalAuthSendForgotPwdEmail(this.auth, data);
 	}
 }
