@@ -102,7 +102,7 @@ import { AdmissionReviewerAPI } from "@/api/admission/reviewer/api";
 import { InvalidSessionError } from "@/api/error";
 import { useAdmissionReviewerAuthStore } from "@/stores/universalAuth";
 import { AdmissionManagerAuthResponse } from "@/api/admission/reviewer/types";
-import { useUserInfoStore } from "@/stores/AdmissionApplicantStore";
+import { useUserInfoStore } from "@/stores/AdmissionReviewerStore";
 
 const route = useRoute();
 const toast = useToast();
