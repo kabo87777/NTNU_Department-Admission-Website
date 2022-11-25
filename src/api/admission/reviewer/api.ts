@@ -18,4 +18,25 @@ export class AdmissionReviewerAPI extends GenericAPI {
 
 		return data.data;
 	}
+
+	// async changePassword(
+	// 	body: object
+	// ): Promise<AdmissionApplicantChangePassResponse> {
+	// 	const data: APIGenericResponse = await this.instance.patch(
+	// 		"admission/auth/applicant/password",
+	// 		body
+	// 	);
+
+	// 	if (data.success === false && data.errors !== undefined) {
+	// 		return {
+	// 			success: data.success,
+	// 			message: data.errors.full_messages,
+	// 		};
+	// 	}
+
+	// 	return {
+	// 		success: data.success,
+	// 		message: data.message,
+	// 	};
+	// }
 }

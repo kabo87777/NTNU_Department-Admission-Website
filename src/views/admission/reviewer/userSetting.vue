@@ -6,13 +6,13 @@
 		<div class="bigYellowDivider"></div>
 		<div class="mt-8px px-12px py-24px">
 			<div class="text-[20px] font-[350]">
-				{{ $t("帳號名稱") }}{{ $t(":") }}{{ " " }}{{ userInfo.name }}
+				{{ $t("帳號名稱") }}{{ $t(":") }}{{ " " }}{{ reviewerInfo.name }}
 			</div>
 			<div class="mt-36px text-[20px] font-[350]">
-				{{ $t("聯絡信箱") }}{{ $t(":") }}{{ " " }}{{ userInfo.email }}
+				{{ $t("聯絡信箱") }}{{ $t(":") }}{{ " " }}{{ reviewerInfo.email }}
 			</div>
 			<div class="mt-36px text-[20px] font-[350]">
-				{{ $t("手機號碼") }}{{ $t(":") }}{{ " " }}{{ userInfo.phone }}
+				{{ $t("手機號碼") }}{{ $t(":") }}{{ " " }} 手機號碼缺失
 			</div>
 		</div>
 		<ParagraphDivider class="mt-12px" />
@@ -88,21 +88,27 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive } from "vue";
+import { onMounted, reactive, ref, toRaw } from "vue";
 import { useRoute } from "vue-router";
 import { UserInfo } from "@/api/admission/applicant/types";
 import ParagraphDivider from "@/styles/paragraphDividerApplicant.vue";
 import InputText from "primevue/inputtext";
 import Button from "primevue/button";
 import "primeicons/primeicons.css";
+import { AdmissionReviewerAPI } from "@/api/admission/reviewer/api";
+import { useAdmissionReviewerAuthStore } from "@/stores/universalAuth";
+import { AdmissionManagerAuthResponse } from "@/api/admission/reviewer/types";
+import { useUserInfoStore } from "@/stores/AdmissionApplicantStore";
+
+const reviewerAuth = useAdmissionReviewerAuthStore();
+const reviewerStore = useUserInfoStore();
+const api = new AdmissionReviewerAPI(reviewerAuth);
+
+const reviewerInfo: AdmissionManagerAuthResponse = toRaw(
+	reviewerStore.userInfo
+);
 
 const route = useRoute();
-
-const userInfo: UserInfo = {
-	name: "系辦主管",
-	email: "NeoCat@jw.com",
-	phone: "0912345678",
-};
 
 const initialPassValue = {
 	isCurrentPassBlank: false,
@@ -122,6 +128,21 @@ const password = reactive(initialPassValue);
 // 	password.currentPass = initialPassword.currentPass;
 // 	password.newPass = initialPassword.newPass;
 // 	password.confirmPass = initialPassword.confirmPass;
+// };
+
+const isChangePassLoading = ref(false);
+
+// const patchChangePassword = async (body: object) => {
+// 	try {
+// 		return await api.changePassword(body);
+// 	} catch (e: any) {
+// 		if (e instanceof InvalidSessionError) {
+// 			console.error(
+// 				"Session has already expired while changing password"
+// 			);
+// 			return;
+// 		}
+// 	}
 // };
 
 const handleSubmit = () => {
@@ -148,12 +169,23 @@ const handleSubmit = () => {
 		!password.isNewPassBlank &&
 		!password.notMatch
 	) {
-		// resetPassValue();
-		console.log(
-			password.currentPass,
-			password.newPass,
-			password.confirmPass
-		);
+		isChangePassLoading.value = true;
+
+		const body = {
+			current_password: password.currentPass,
+			password: password.newPass,
+			password_confirmation: password.confirmPass,
+		};
+
+		// const response = patchChangePassword(body);
+
+		
+		// // resetPassValue();
+		// console.log(
+		// 	password.currentPass,
+		// 	password.newPass,
+		// 	password.confirmPass
+		// );
 	}
 };
 
