@@ -38,16 +38,19 @@ test:
     - pnpm vue-tsc --noEmit
     - pnpm test
 
-.vercel:
-  stage: deploy
-  before_script:
-    - npm install --location=global pnpm@7 vercel
-    - pnpm config set store-dir .pnpm-store
+build for pentest:
+  stage: build
+  artifacts:
+    untracked: true
+  script:
+    - VITE_IS_SKIP_CAPTCHA=true VITE_ADMISSIONS_API_ENDPOINT=https://admissions-backend-pentest.birkhoff.me pnpm build
 
 # mainly for pentest image
 build image for pentest:
   image: docker:20.10.21-cli
   stage: build
+  dependencies: 
+    - build for pentest
   # only:
   #   - develop
   services:
@@ -62,7 +65,6 @@ build image for pentest:
     # This instructs Docker not to start over TLS.
     DOCKER_TLS_CERTDIR: ""
   script:
-    - VITE_IS_SKIP_CAPTCHA=true VITE_ADMISSIONS_API_ENDPOINT=https://admissions-backend-pentest.birkhoff.me pnpm build
     - docker buildx create --use
     - docker buildx build
       --cache-from type=registry,ref=${CI_REGISTRY_IMAGE}:pentest-build-cache
@@ -73,6 +75,12 @@ build image for pentest:
       --tag "${CI_REGISTRY_IMAGE}:pentest-${CI_COMMIT_SHORT_SHA}"
       --push
       "${CI_PROJECT_DIR}"
+
+.vercel:
+  stage: deploy
+  before_script:
+    - npm install --location=global pnpm@7 vercel
+    - pnpm config set store-dir .pnpm-store
 
 deploy for review:
   extends: .vercel
