@@ -282,7 +282,7 @@ import IncompleteTag from "@/styles/tags/incompleteTag.vue";
 const router = useRouter();
 const applicantAuth = useAdmissionApplicantAuthStore();
 const applicantStore = useUserInfoStore();
-const applicantName = toRaw(applicantStore.userInfo.name);
+const applicantName = window.localStorage.getItem("AdmissionApplicantUsername");
 
 const api = new AdmissionApplicantAPI(applicantAuth);
 
@@ -355,6 +355,7 @@ onMounted(async () => {
 
 async function signOut() {
 	await api.invalidateSession();
+	window.localStorage.removeItem("AdmissionApplicantUsername");
 	router.push("/admission/applicant/signin");
 }
 </script>

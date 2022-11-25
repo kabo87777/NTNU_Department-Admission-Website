@@ -253,7 +253,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, toRaw } from "vue";
+import { reactive } from "vue";
 import { useRecruitmentApplicantAuthStore } from "@/stores/universalAuth";
 import { RecruitmentApplicantAPI } from "@/api/recruitment/applicant/api";
 import {
@@ -273,7 +273,9 @@ import "primeicons/primeicons.css";
 const router = useRouter();
 const applicantStore = useUserInfoStore();
 const project = useProjectIdStore();
-const applicantName = toRaw(applicantStore.userInfo.name);
+const applicantName = window.localStorage.getItem(
+	"RecruitmentApplicantUsername"
+);
 const currentYear = new Date().getFullYear();
 const rocYear = currentYear - 1911;
 
@@ -289,6 +291,7 @@ const api = new RecruitmentApplicantAPI(applicantAuth);
 
 async function signOut() {
 	await api.invalidateSession();
+	window.localStorage.removeItem("RecruitmentApplicantUsername");
 	router.push("/recruitment/applicant/signin");
 }
 </script>
