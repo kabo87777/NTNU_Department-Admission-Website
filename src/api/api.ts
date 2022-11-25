@@ -11,6 +11,7 @@ import {
 	doUniversalAuthSignIn,
 	doUniversalAuthSignOut,
 	doUniversalAuthSendForgotPwdEmail,
+	doUniversalAuthSendPostEmailRegister,
 } from "./universalAuth";
 import { InvalidSessionError } from "./error";
 
@@ -77,6 +78,6 @@ export class GenericAPI {
 		return await doUniversalAuthSendForgotPwdEmail(this.auth, data);
 	}
 	async sendPostEmailRegister(data: universalAuthSendPostEmailRegister) {
-		return await doUniversalAuthSendForgotPwdEmail(this.auth, data);
+		return await doUniversalAuthSendPostEmailRegister(this.auth, data);
 	}
 }
