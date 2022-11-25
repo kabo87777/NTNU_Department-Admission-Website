@@ -1,6 +1,7 @@
 stages:
   - dependencies
   - test
+  - build
   - deploy
 
 image: node:16
