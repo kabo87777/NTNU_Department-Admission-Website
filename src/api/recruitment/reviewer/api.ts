@@ -5,6 +5,7 @@ import type {
 	RecruitmentReviewerProgramListResponse,
 	RecruitmentReviewerApplicantListResponse,
 	RecruitmentReviewerApplicantCommentResponse,
+	RecruitmentReviewerApplicantInfoResponse,
 } from "./types";
 import type { APIGenericResponse } from "@/api/types";
 
@@ -39,7 +40,7 @@ export class RecruitmentReviewerAPI extends GenericAPI {
 
 	async getApplicantComment(
 		programID: number,
-		applicantID: number
+		applicantID: string | string[]
 	): Promise<RecruitmentReviewerApplicantCommentResponse> {
 		const data: APIGenericResponse = await this.instance.get(
 			`/recruitment/reviewer/program/${programID}/applicant/${applicantID}/comment`
@@ -47,6 +48,20 @@ export class RecruitmentReviewerAPI extends GenericAPI {
 
 		if (data.error === true || typeof data.data === "undefined")
 			throw new Error("Failed to fetch applicant comment");
+
+		return data.data;
+	}
+
+	async getApplicantInfo(
+		programID: number,
+		applicantID: string | string[]
+	): Promise<RecruitmentReviewerApplicantInfoResponse> {
+		const data: APIGenericResponse = await this.instance.get(
+			`/recruitment/reviewer/program/${programID}/applicant/${applicantID}/info`
+		);
+
+		if (data.error === true || typeof data.data === "undefined")
+			throw new Error("Failed to fetch applicant info");
 
 		return data.data;
 	}
