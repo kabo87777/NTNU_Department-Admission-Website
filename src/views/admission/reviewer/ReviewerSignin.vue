@@ -217,8 +217,8 @@ const onSubmit = handleSubmit(async function (values, actions) {
 				password: values.password,
 				"cf-turnstile-response": turnstileResponse,
 			});
-		}
-		
+		};
+
 		const handleDataType = async () => {
 			const reviewerInfo: AdmissionManagerAuthResponse =
 				await doLogin().then((res) => {
@@ -226,7 +226,7 @@ const onSubmit = handleSubmit(async function (values, actions) {
 				});
 
 			return reviewerInfo;
-		}
+		};
 
 		userInfo.saveUserInfo(await handleDataType());
 

@@ -1,6 +1,9 @@
 import type { AuthStore } from "@/stores/universalAuth";
 import { GenericAPI } from "@/api/api";
-import type { AdmissionReviewerProgramListResponse } from "./types";
+import type {
+	AdmissionReviewerProgramListResponse,
+	AdmissionReviewerGenericResponse,
+} from "./types";
 import type { APIGenericResponse } from "@/api/types";
 
 export class AdmissionReviewerAPI extends GenericAPI {
@@ -19,24 +22,24 @@ export class AdmissionReviewerAPI extends GenericAPI {
 		return data.data;
 	}
 
-	// async changePassword(
-	// 	body: object
-	// ): Promise<AdmissionApplicantChangePassResponse> {
-	// 	const data: APIGenericResponse = await this.instance.patch(
-	// 		"admission/auth/applicant/password",
-	// 		body
-	// 	);
+	async changePassword(
+		body: object
+	): Promise<AdmissionReviewerGenericResponse> {
+		const data: APIGenericResponse = await this.instance.patch(
+			"admission/auth/reviewer/password",
+			body
+		);
 
-	// 	if (data.success === false && data.errors !== undefined) {
-	// 		return {
-	// 			success: data.success,
-	// 			message: data.errors.full_messages,
-	// 		};
-	// 	}
+		if (data.error !== false) {
+			return {
+				success: false,
+				message: data.message.full_messages,
+			};
+		}
 
-	// 	return {
-	// 		success: data.success,
-	// 		message: data.message,
-	// 	};
-	// }
+		return {
+			success: true,
+			message: data.message,
+		};
+	}
 }
