@@ -36,6 +36,28 @@ export class RecruitmentApplicantAPI extends GenericAPI {
 		return data.data;
 	}
 
+	async patchBasicInfo(
+		pid: number,
+		body: object
+	): Promise<RecruitmentApplicantGenericResponse> {
+		const data: APIGenericResponse = await this.instance.patch(
+			`/recruitment/applicant/program/${pid}/info`,
+			body
+		);
+
+		if (data.error !== false) {
+			return {
+				success: false,
+				message: data.message,
+			};
+		}
+
+		return {
+			success: true,
+			message: data.message,
+		};
+	}
+
 	async editBasicInfo(
 		pid: number,
 		body: object

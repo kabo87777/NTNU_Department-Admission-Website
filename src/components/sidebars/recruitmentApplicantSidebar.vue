@@ -256,8 +256,10 @@
 import { reactive, toRaw } from "vue";
 import { useRecruitmentApplicantAuthStore } from "@/stores/universalAuth";
 import { RecruitmentApplicantAPI } from "@/api/recruitment/applicant/api";
-import { useUserInfoStore } from "@/stores/RecruitmentApplicantStore";
-import { useProjectIdStore } from "@/stores/RecruitmentApplicantStore";
+import {
+	useProjectIdStore,
+	useUserInfoStore,
+} from "@/stores/RecruitmentApplicantStore";
 import { Tags } from "@/api/recruitment/applicant/types";
 import "primeicons/primeicons.css";
 import "primevue/resources/primevue.min.css";

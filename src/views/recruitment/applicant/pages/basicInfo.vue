@@ -138,6 +138,7 @@
 							:options="identityOptions"
 							optionLabel="name"
 							optionValue="name"
+							aria-describedby="dropdown-help"
 						>
 							<template #value="slotProps">
 								<div v-if="slotProps.value" class="mt-[-8px]">
@@ -153,6 +154,11 @@
 								</div>
 							</template>
 						</Dropdown>
+					</div>
+					<div class="absolute mt-[-4px]">
+						<small id="dropdown-help" class="p-error">
+							{{ $t("此為必填欄位") }}
+						</small>
 					</div>
 				</div>
 			</div>
@@ -379,7 +385,7 @@
 			<div class="mt-24px">
 				<div>{{ "*" + $t("生理性別") }}</div>
 				<div class="mt-2px flex">
-					<div>
+					<div aria-describedby="sex-help">
 						<RadioButton v-model="born.sex" value="male" />
 						<label class="ml-4px">{{ $t("生理男性") }}</label>
 					</div>
@@ -387,6 +393,11 @@
 						<RadioButton v-model="born.sex" value="female" />
 						<label class="ml-4px">{{ $t("生理女性") }}</label>
 					</div>
+				</div>
+				<div class="absolute mt-[-4px]">
+					<small id="sex-help" class="p-error">
+						{{ $t("此為必填欄位") }}
+					</small>
 				</div>
 			</div>
 			<div class="flex py-16px">
@@ -412,6 +423,7 @@
 					<div>
 						<Calendar
 							v-model="born.birth"
+							dateFormat="mm-dd-yy"
 							class="w-[70%] h-36px !mt-4px"
 							style="
 								border: 1px solid #736028;
@@ -448,6 +460,7 @@
 							id="email"
 							type="email"
 							aria-describedby="email-help"
+							v-model="contact.email"
 						/>
 					</div>
 					<div class="absolute mt-[-4px]">
@@ -465,6 +478,7 @@
 							id="phone"
 							type="text"
 							aria-describedby="phone-help"
+							v-model="contact.phone"
 						/>
 					</div>
 					<div class="absolute mt-[-4px]">
@@ -491,18 +505,21 @@
 				"
 				icon="pi pi-save"
 				:label="$t('儲存')"
+				@click="handleSave"
 			/>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted, watch } from "vue";
+import { ref, reactive, onMounted, watch, toRaw } from "vue";
 import { useRecruitmentApplicantAuthStore } from "@/stores/universalAuth";
 import { RecruitmentApplicantAPI } from "@/api/recruitment/applicant/api";
 import { useProjectIdStore } from "@/stores/RecruitmentApplicantStore";
 import { RecruitmentApplicantUserInfoResponse } from "@/api/recruitment/applicant/types";
+import { InvalidSessionError } from "@/api/error";
 import ParagraphDivider from "@/styles/paragraphDividerApplicant.vue";
+import { useToast } from "primevue/usetoast";
 import Dropdown from "primevue/dropdown";
 import InputText from "primevue/inputtext";
 import Checkbox from "primevue/checkbox";
@@ -513,6 +530,13 @@ import Button from "primevue/button";
 const applicantAuth = useRecruitmentApplicantAuthStore();
 const api = new RecruitmentApplicantAPI(applicantAuth);
 const project = useProjectIdStore();
+
+const toast = useToast();
+
+const fetchResponse = reactive({
+	success: false,
+	message: "" as string | [],
+});
 
 const loading = reactive({
 	fetch: false,
@@ -553,7 +577,7 @@ const currentAddr = reactive({
 const born = reactive({
 	sex: "",
 	country: "",
-	birth: undefined,
+	birth: new Date(),
 });
 
 const contact = reactive({
@@ -569,30 +593,88 @@ const basicInfo: RecruitmentApplicantUserInfoResponse =
 	);
 
 const setBasicInfo = (res: RecruitmentApplicantUserInfoResponse) => {
-	basicInfo.id = res.id;
-	basicInfo.name = res.name;
-	basicInfo.email = res.email;
-	basicInfo.national_id = res.national_id;
-	basicInfo.sex = res.sex;
-	basicInfo.birth = res.birth;
-	basicInfo.day_phone = res.day_phone;
-	basicInfo.night_phone = res.night_phone;
-	basicInfo.mobile_phone = res.mobile_phone;
-	basicInfo.household_address = res.household_address;
-	basicInfo.household_zipcode = res.household_zipcode;
-	basicInfo.communicate_address = res.communicate_address;
-	basicInfo.communicate_zipcode = res.communicate_zipcode;
-	basicInfo.GSAT_num = res.GSAT_num;
-	basicInfo.GSAT_registration = res.GSAT_registration;
-	basicInfo.graduated_school = res.graduated_school;
-	basicInfo.graduated_major = res.graduated_major;
-	basicInfo.isSameDept = res.isSameDept;
-	basicInfo.isDisabled = res.isDisabled;
-	basicInfo.r_applicant_id = res.r_applicant_id;
-	basicInfo.created_at = res.created_at;
-	basicInfo.updated_at = res.updated_at;
+	// basicInfo.id = res.id;
+	// basicInfo.name = res.name;
+	// basicInfo.email = res.email;
+	// basicInfo.national_id = res.national_id;
+	// basicInfo.sex = res.sex;
+	// basicInfo.birth = res.birth;
+	// basicInfo.day_phone = res.day_phone;
+	// basicInfo.night_phone = res.night_phone;
+	// basicInfo.mobile_phone = res.mobile_phone;
+	// basicInfo.household_address = res.household_address;
+	// basicInfo.household_zipcode = res.household_zipcode;
+	// basicInfo.communicate_address = res.communicate_address;
+	// basicInfo.communicate_zipcode = res.communicate_zipcode;
+	// basicInfo.GSAT_num = res.GSAT_num;
+	// basicInfo.GSAT_registration = res.GSAT_registration;
+	// basicInfo.graduated_school = res.graduated_school;
+	// basicInfo.graduated_major = res.graduated_major;
+	// basicInfo.isSameDept = res.isSameDept;
+	// basicInfo.isDisabled = res.isDisabled;
+	// basicInfo.r_applicant_id = res.r_applicant_id;
+	// basicInfo.created_at = res.created_at;
+	// basicInfo.updated_at = res.updated_at;
+
+	born.sex = res.sex as string;
+	born.birth = new Date(res.birth as string);
+
+	contact.phone = res.mobile_phone as string;
 };
-console.log(basicInfo);
+
+const saveInfo = async (body: object) => {
+	try {
+		return await api.patchBasicInfo(project.project.pid, body);
+	} catch (e: any) {
+		if (e instanceof InvalidSessionError) {
+			console.error(
+				"Session has already expired while changing password"
+			);
+			return;
+		}
+	}
+};
+
+const handleSave = async () => {
+	const body = {
+		name: name.zhName,
+		email: contact.email,
+		mobile_phone: contact.phone,
+		sex: born.sex,
+		birth: born.birth,
+	};
+
+	loading.save = true;
+
+	const response = saveInfo(body);
+
+	await response.then((res) => {
+		if (res?.success !== undefined && res?.message !== undefined) {
+			fetchResponse.success = toRaw(res.success);
+			fetchResponse.message = toRaw(res.message);
+		}
+
+		loading.save = false;
+
+		if (fetchResponse.success) {
+			toast.add({
+				severity: "success",
+				summary: "Success",
+				detail: fetchResponse.message,
+				life: 3000,
+			});
+		} else {
+			toast.add({
+				severity: "error",
+				summary: "Error",
+				detail: fetchResponse.message,
+				life: 5000,
+			});
+		}
+	});
+
+	loading.fetch = true;
+};
 
 const getBasicInfo = async () => {
 	return await api.getBasicInfo(project.project.pid);
@@ -610,7 +692,7 @@ watch(
 	() => loading.fetch,
 	async () => {
 		const response = getBasicInfo();
-
+		console.log("on watch");
 		await response.then((res) => {
 			if (Object.keys(res).length) setBasicInfo(res);
 		});
