@@ -1,3 +1,7 @@
+export interface RecruitmentReviewerGenericResponse {
+	success?: boolean;
+	message?: string | [];
+}
 export interface RecruitmentReviewerSignInInput {
 	email: string;
 	password: string;
@@ -35,15 +39,15 @@ export interface RecruitmentReviewerProgramResponse {
 
 // TODO: disannotation while backend finished reviewer get program API
 // export interface RecruitmentReviewerApplicantListResponse {
-// 	id: number;
-// 	provider: string;
-// 	uid: string;
-// 	isInit: any | null;
-// 	lang: any | null;
-// 	name: any | null;
-// 	nickname: any | null;
-// 	image: any | null;
-// 	email: string;
-// 	created_at: string;
-// 	updated_at: string;
+//  id: number;
+//  provider: string;
+//  uid: string;
+//  isInit: any | null;
+//  lang: any | null;
+//  name: any | null;
+//  nickname: any | null;
+//  image: any | null;
+//  email: string;
+//  created_at: string;
+//  updated_at: string;
 // }
