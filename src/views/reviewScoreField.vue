@@ -1,365 +1,288 @@
 <template>
 	<Toast />
 	<div class="mx-32 mt-16">
-		<h1 class="text-4xl text-bold tracking-widest">
+		<!-- Header - Title -->
+		<div class="tracking-widest" text="4xl bold">
 			{{ trans.reviewScoreField.value }}
-		</h1>
+		</div>
 		<div class="bigRedDivider"></div>
 
-		<!-- SelectButton -->
-		<div class="flex w-fluid my-6 gap-2" border="2 red-900 rounded-lg">
-			<button class="w-1/2 gap-2" @click="changePhase('docs')">
-				<div
-					class="p-2"
-					bg="red-200"
-					border="rounded-lg"
-					v-if="selectPhase === 'docs'"
-				>
-					{{ trans.stage[1].value }}
-				</div>
-				<div v-else>{{ trans.stage[1].value }}</div>
-			</button>
-			<button class="w-1/2 gap-2" @click="changePhase('oral')">
-				<div
-					class="p-2"
-					bg="red-200"
-					border="rounded-lg"
-					v-if="selectPhase === 'oral'"
-				>
-					{{ trans.stage[2].value }}
-				</div>
-				<div v-else>{{ trans.stage[2].value }}</div>
-			</button>
+		<!-- Body - Score Field: Phase 1 -->
+		<div class="my-6" text="2xl gray-900">
+			{{ trans.scoreOptionSetting.value }}
+			{{ trans.colon.value }}
+			{{ trans.phase[1].value }}
 		</div>
-
-		<!-- StageScore -->
-		<div>
-			<div class="text-xl my-6">
-				{{ trans.scoreOptionSetting.value }}
-			</div>
-			<div class="space-y-2" v-if="selectPhase === 'docs'">
-				<div>{{ trans.stageWeight[1].value }}</div>
-				<InputNumber class="!w-300px" v-model="docsScore[0].weight" />
-			</div>
-			<div class="space-y-2" v-if="selectPhase === 'oral'">
-				<div>{{ trans.stageWeight[2].value }}</div>
-				<InputNumber class="!w-300px" v-model="oralScore[0].weight" />
-			</div>
+		<div class="my-4 space-y-3" text="lg gray-700">
+			<div>{{ trans.phaseWeight[1].value }}</div>
+			<InputNumber class="!w-300px" v-model="docsScore[0].weight" />
 		</div>
-		<!-- ScoreField -->
-		<div class="my-6">
-			<div class="my-4 space-y-4">
-				<div>{{ trans.scoreOption.value }}</div>
-				<!-- ScoreField 1 -->
-				<div class="flex content-center gap-4">
-					<InputText
-						class="!w-300px"
-						v-model="docsScore[1].name"
-						v-if="selectPhase === 'docs'"
-						:placeholder="trans.labelName[1].value"
-					/>
-					<InputNumber
-						class="!w-200px"
-						v-model="docsScore[1].weight"
-						v-if="selectPhase === 'docs'"
-						:placeholder="trans.labelWeight.value"
-					/>
-					<InputText
-						class="!w-300px"
-						v-model="oralScore[1].name"
-						v-if="selectPhase === 'oral'"
-						:placeholder="trans.labelName[1].value"
-					/>
-					<InputNumber
-						class="!w-200px"
-						v-model="oralScore[1].weight"
-						v-if="selectPhase === 'oral'"
-						:placeholder="trans.labelWeight.value"
-					/>
-				</div>
-				<!-- ScoreField 2 -->
-				<div class="flex content-center gap-4">
-					<InputText
-						class="!w-300px"
-						v-model="docsScore[2].name"
-						v-if="selectPhase === 'docs'"
-						:placeholder="trans.labelName[2].value"
-					/>
-					<InputNumber
-						class="!w-200px"
-						v-model="docsScore[2].weight"
-						v-if="selectPhase === 'docs'"
-						:placeholder="trans.labelWeight.value"
-					/>
-					<InputText
-						class="!w-300px"
-						v-model="oralScore[2].name"
-						v-if="selectPhase === 'oral'"
-						:placeholder="trans.labelName[2].value"
-					/>
-					<InputNumber
-						class="!w-200px"
-						v-model="oralScore[2].weight"
-						v-if="selectPhase === 'oral'"
-						:placeholder="trans.labelWeight.value"
-					/>
-				</div>
-				<!-- ScoreField 3 -->
-				<div class="flex content-center gap-4">
-					<InputText
-						class="!w-300px"
-						v-model="docsScore[3].name"
-						v-if="selectPhase === 'docs'"
-						:placeholder="trans.labelName[3].value"
-					/>
-					<InputNumber
-						class="!w-200px"
-						v-model="docsScore[3].weight"
-						v-if="selectPhase === 'docs'"
-						:placeholder="trans.labelWeight.value"
-					/>
-					<InputText
-						class="!w-300px"
-						v-model="oralScore[3].name"
-						v-if="selectPhase === 'oral'"
-						:placeholder="trans.labelName[3].value"
-					/>
-					<InputNumber
-						class="!w-200px"
-						v-model="oralScore[3].weight"
-						v-if="selectPhase === 'oral'"
-						:placeholder="trans.labelWeight.value"
-					/>
-				</div>
-				<!-- ScoreField 4 -->
-				<div class="flex content-center gap-4">
-					<InputText
-						class="!w-300px"
-						v-model="docsScore[4].name"
-						v-if="selectPhase === 'docs'"
-						:placeholder="trans.labelName[4].value"
-					/>
-					<InputNumber
-						class="!w-200px"
-						v-model="docsScore[4].weight"
-						v-if="selectPhase === 'docs'"
-						:placeholder="trans.labelWeight.value"
-					/>
-					<InputText
-						class="!w-300px"
-						v-model="oralScore[4].name"
-						v-if="selectPhase === 'oral'"
-						:placeholder="trans.labelName[4].value"
-					/>
-					<InputNumber
-						class="!w-200px"
-						v-model="oralScore[4].weight"
-						v-if="selectPhase === 'oral'"
-						:placeholder="trans.labelWeight.value"
-					/>
-				</div>
-				<!-- ScoreField 5 -->
-				<div class="flex content-center gap-4">
-					<InputText
-						class="!w-300px"
-						v-model="docsScore[5].name"
-						v-if="selectPhase === 'docs'"
-						:placeholder="trans.labelName[5].value"
-					/>
-					<InputNumber
-						class="!w-200px"
-						v-model="docsScore[5].weight"
-						v-if="selectPhase === 'docs'"
-						:placeholder="trans.labelWeight.value"
-					/>
-					<InputText
-						class="!w-300px"
-						v-model="oralScore[5].name"
-						v-if="selectPhase === 'oral'"
-						:placeholder="trans.labelName[5].value"
-					/>
-					<InputNumber
-						class="!w-200px"
-						v-model="oralScore[5].weight"
-						v-if="selectPhase === 'oral'"
-						:placeholder="trans.labelWeight.value"
-					/>
-				</div>
+		<div class="my-4 space-y-3" text="lg gray-700">
+			<div>{{ trans.scoreOption.value }}</div>
+			<!-- Phase 1 - item 1 -->
+			<div class="flex content-center gap-6">
+				<InputText class="!w-300px" v-model="docsScore[1].name" />
+				<InputNumber class="!w-200px" v-model="docsScore[1].weight" />
+			</div>
+			<!-- Phase 1 - item 2 -->
+			<div class="flex content-center gap-6">
+				<InputText class="!w-300px" v-model="docsScore[2].name" />
+				<InputNumber class="!w-200px" v-model="docsScore[2].weight" />
+			</div>
+			<!-- Phase 1 - item 3 -->
+			<div class="flex content-center gap-6">
+				<InputText class="!w-300px" v-model="docsScore[3].name" />
+				<InputNumber class="!w-200px" v-model="docsScore[3].weight" />
+			</div>
+			<!-- Phase 1 - item 4 -->
+			<div class="flex content-center gap-6">
+				<InputText class="!w-300px" v-model="docsScore[4].name" />
+				<InputNumber class="!w-200px" v-model="docsScore[4].weight" />
+			</div>
+			<!-- Phase 1 - item 5 -->
+			<div class="flex content-center gap-6">
+				<InputText class="!w-300px" v-model="docsScore[5].name" />
+				<InputNumber class="!w-200px" v-model="docsScore[5].weight" />
 			</div>
 		</div>
 		<ParagraphDivider />
 
-		<!-- ShowInfo -->
-		<div>
-			<div class="text-xl my-6">{{ trans.showInfo.value }}</div>
-			<div class="flex gap-4 items-center">
-				<Checkbox
-					v-model="checkInfo[0]"
-					v-if="showInfo[0]"
-					:binary="true"
-				/>
-				<div class="text-lg my-4">{{ trans.nameInfo.value }}</div>
+		<!-- Body - Score Field: Phase 2 -->
+		<div class="my-6" text="2xl gray-900">
+			{{ trans.scoreOptionSetting.value }}
+			{{ trans.colon.value }}
+			{{ trans.phase[2].value }}
+		</div>
+		<div class="space-y-4" text="lg gray-700">
+			<div>{{ trans.phaseWeight[2].value }}</div>
+			<InputNumber class="!w-300px" v-model="oralScore[0].weight" />
+		</div>
+		<div class="my-4 space-y-3" text="lg gray-700">
+			<div>{{ trans.scoreOption.value }}</div>
+			<!-- Phase 2 - item 1 -->
+			<div class="flex content-center gap-6">
+				<InputText class="!w-300px" v-model="oralScore[1].name" />
+				<InputNumber class="!w-200px" v-model="oralScore[1].weight" />
 			</div>
-			<div class="flex px-8 gap-8 mb-4">
-				<div class="text-s">{{ trans.details.suffix.value }}</div>
-				<div class="text-s">{{ trans.details.chineseName.value }}</div>
-				<div class="text-s">{{ trans.details.englishName.value }}</div>
+			<!-- Phase 2 - item 2 -->
+			<div class="flex content-center gap-6">
+				<InputText class="!w-300px" v-model="oralScore[2].name" />
+				<InputNumber class="!w-200px" v-model="oralScore[2].weight" />
 			</div>
-			<div class="flex gap-4 items-center">
-				<Checkbox
-					v-model="checkInfo[1]"
-					v-if="showInfo[1]"
-					:binary="true"
-				/>
-				<div class="text-lg my-4">{{ trans.admissionId.value }}</div>
+			<!-- Phase 2 - item 3 -->
+			<div class="flex content-center gap-6">
+				<InputText class="!w-300px" v-model="oralScore[3].name" />
+				<InputNumber class="!w-200px" v-model="oralScore[3].weight" />
 			</div>
-			<div class="flex px-8 gap-8 mb-4">
-				<div class="text-s">{{ trans.details.master.value }}</div>
-				<div class="text-s">{{ trans.details.phD.value }}</div>
+			<!-- Phase 2 - item 4 -->
+			<div class="flex content-center gap-6">
+				<InputText class="!w-300px" v-model="oralScore[4].name" />
+				<InputNumber class="!w-200px" v-model="oralScore[4].weight" />
 			</div>
-			<div class="flex gap-4 items-center">
-				<Checkbox
-					v-model="checkInfo[2]"
-					v-if="showInfo[2]"
-					:binary="true"
-				/>
-				<div class="text-lg my-4">{{ trans.residentAddr.value }}</div>
-			</div>
-			<div class="flex px-8 gap-8 mb-4">
-				<div class="text-s">{{ trans.details.country.value }}</div>
-				<div class="text-s">{{ trans.details.city.value }}</div>
-				<div class="text-s">{{ trans.details.streetAddr.value }}</div>
-			</div>
-			<div class="flex gap-4 items-center">
-				<Checkbox
-					v-model="checkInfo[3]"
-					v-if="showInfo[3]"
-					:binary="true"
-				/>
-				<div class="text-lg my-4">{{ trans.currentAddr.value }}</div>
-			</div>
-			<div class="flex px-8 gap-8 mb-4">
-				<div class="text-s">{{ trans.details.country.value }}</div>
-				<div class="text-s">{{ trans.details.city.value }}</div>
-				<div class="text-s">{{ trans.details.streetAddr.value }}</div>
-			</div>
-			<div class="flex gap-4 items-center">
-				<Checkbox
-					v-model="checkInfo[4]"
-					v-if="showInfo[4]"
-					:binary="true"
-				/>
-				<div class="text-lg my-4">{{ trans.nationalId.value }}</div>
-			</div>
-			<div class="flex px-8 gap-8 mb-4">
-				<div class="text-s">{{ trans.details.gender.value }}</div>
-				<div class="text-s">{{ trans.details.bornCountry.value }}</div>
-				<div class="text-s">{{ trans.details.mainNation.value }}</div>
-				<div class="text-s">{{ trans.details.bornDate.value }}</div>
-				<div class="text-s">{{ trans.details.mainNation.value }}</div>
-			</div>
-			<div class="flex gap-4 items-center">
-				<Checkbox
-					v-model="checkInfo[5]"
-					v-if="showInfo[5]"
-					:binary="true"
-				/>
-				<div class="text-lg my-4">{{ trans.contactInfo.value }}</div>
-			</div>
-			<div class="flex px-8 gap-8 mb-4">
-				<div class="text-s">{{ trans.details.email.value }}</div>
-				<div class="text-s">{{ trans.details.primePhone.value }}</div>
-				<div class="text-s">{{ trans.details.secondPhone.value }}</div>
-				<div class="text-s">{{ trans.details.mobilePhone.value }}</div>
+			<!-- Phase 2 - item 5 -->
+			<div class="flex content-center gap-6">
+				<InputText class="!w-300px" v-model="oralScore[5].name" />
+				<InputNumber class="!w-200px" v-model="oralScore[5].weight" />
 			</div>
 		</div>
-
 		<ParagraphDivider />
 
-		<!-- ShowFile -->
-		<div>
-			<div class="text-xl my-6">{{ trans.showFile.value }}</div>
-			<div class="flex gap-4 items-center">
-				<Checkbox
-					v-model="checkFile[0]"
-					v-if="showFile[0]"
-					:binary="true"
-				/>
-				<div class="text-lg my-4">{{ trans.schoolExp.value }}</div>
-			</div>
-			<div class="flex px-8 gap-8 mb-4">
-				<div class="text-s">{{ trans.details.fileName.value }}</div>
-				<div class="text-s">{{ trans.details.fileUpload.value }}</div>
-			</div>
-			<div class="flex gap-4 items-center">
-				<Checkbox
-					v-model="checkFile[1]"
-					v-if="showFile[1]"
-					:binary="true"
-				/>
-				<div class="text-lg my-4">{{ trans.testScore.value }}</div>
-			</div>
-			<div class="flex px-8 gap-8 mb-4">
-				<div class="text-s">{{ trans.details.fileName.value }}</div>
-				<div class="text-s">{{ trans.details.fileUpload.value }}</div>
-			</div>
-			<div class="flex gap-4 items-center">
-				<Checkbox
-					v-model="checkFile[2]"
-					v-if="showFile[2]"
-					:binary="true"
-				/>
-				<div class="text-lg my-4">{{ trans.otherFile }}</div>
-			</div>
-			<div class="flex px-8 gap-8 mb-4">
-				<div class="text-s">{{ trans.details.fileName.value }}</div>
-				<div class="text-s">{{ trans.details.fileUpload.value }}</div>
-			</div>
-			<div class="flex gap-4 items-center">
-				<Checkbox
-					v-model="checkFile[3]"
-					v-if="showFile[3]"
-					:binary="true"
-				/>
-				<div class="text-lg my-4">{{ trans.nationalId.value }}</div>
-			</div>
-			<div class="flex px-8 gap-8 mb-4">
-				<div class="text-s">{{ trans.details.fileName.value }}</div>
-				<div class="text-s">{{ trans.details.fileUpload.value }}</div>
-			</div>
+		<!-- Body - Show Information Data -->
+		<div class="my-6" text="2xl gray-900">{{ trans.showInfo.value }}</div>
+		<!-- showInfo - checkbox 1 -->
+		<div class="flex mt-6 mb-2 gap-4 items-center">
+			<Checkbox
+				v-if="showInfo[0]"
+				v-model="checkInfo[0]"
+				input-id="info_0"
+				:binary="true"
+			/>
+			<label for="info_0" text="xl gray-700">
+				{{ trans.nameInfo.value }}
+			</label>
+		</div>
+		<div class="flex mx-10 gap-8 mb-4" text="gray-500">
+			<div>{{ trans.details.suffix.value }}</div>
+			<div>{{ trans.details.chineseName.value }}</div>
+			<div>{{ trans.details.englishName.value }}</div>
+		</div>
+		<!-- showInfo - checkbox 2 -->
+		<div class="flex mt-6 mb-2 gap-4 items-center">
+			<Checkbox
+				v-if="showInfo[1]"
+				v-model="checkInfo[1]"
+				input-id="info_1"
+				:binary="true"
+			/>
+			<label for="info_1" text="xl gray-700">
+				{{ trans.admissionId.value }}
+			</label>
+		</div>
+		<div class="flex mx-10 gap-8 mb-4" text="gray-500">
+			<div>{{ trans.details.master.value }}</div>
+			<div>{{ trans.details.phD.value }}</div>
+		</div>
+		<!-- showInfo - checkbox 3 -->
+		<div class="flex mt-6 mb-2 gap-4 items-center">
+			<Checkbox
+				v-if="showInfo[2]"
+				v-model="checkInfo[2]"
+				input-id="info_2"
+				:binary="true"
+			/>
+			<label for="info_2" text="xl gray-700">
+				{{ trans.residentAddr.value }}
+			</label>
+		</div>
+		<div class="flex mx-10 gap-8 mb-4" text="gray-500">
+			<div>{{ trans.details.country.value }}</div>
+			<div>{{ trans.details.city.value }}</div>
+			<div>{{ trans.details.streetAddr.value }}</div>
+		</div>
+		<!-- showInfo - checkbox 4 -->
+		<div class="flex mt-6 mb-2 gap-4 items-center">
+			<Checkbox
+				v-if="showInfo[3]"
+				v-model="checkInfo[3]"
+				input-id="info_3"
+				:binary="true"
+			/>
+			<label for="info_3" text="xl gray-700">
+				{{ trans.currentAddr.value }}
+			</label>
+		</div>
+		<div class="flex mx-10 gap-8 mb-4" text="gray-500">
+			<div>{{ trans.details.country.value }}</div>
+			<div>{{ trans.details.city.value }}</div>
+			<div>{{ trans.details.streetAddr.value }}</div>
+		</div>
+		<!-- showInfo - checkbox 5 -->
+		<div class="flex mt-6 mb-2 gap-4 items-center">
+			<Checkbox
+				v-if="showInfo[4]"
+				v-model="checkInfo[4]"
+				input-id="info_4"
+				:binary="true"
+			/>
+			<label for="info_4" text="xl gray-700">
+				{{ trans.nationalId.value }}
+			</label>
+		</div>
+		<div class="flex mx-10 gap-8 mb-4" text="gray-500">
+			<div>{{ trans.details.gender.value }}</div>
+			<div>{{ trans.details.bornCountry.value }}</div>
+			<div>{{ trans.details.mainNation.value }}</div>
+			<div>{{ trans.details.bornDate.value }}</div>
+			<div>{{ trans.details.mainNation.value }}</div>
+		</div>
+		<!-- showInfo - checkbox 6 -->
+		<div class="flex mt-6 mb-2 gap-4 items-center">
+			<Checkbox
+				v-if="showInfo[5]"
+				v-model="checkInfo[5]"
+				input-id="info_5"
+				:binary="true"
+			/>
+			<label for="info_5" text="xl gray-700">
+				{{ trans.contactInfo.value }}
+			</label>
+		</div>
+		<div class="flex mx-10 gap-8 mb-4" text="gray-500">
+			<div>{{ trans.details.email.value }}</div>
+			<div>{{ trans.details.primePhone.value }}</div>
+			<div>{{ trans.details.secondPhone.value }}</div>
+			<div>{{ trans.details.mobilePhone.value }}</div>
+		</div>
+		<ParagraphDivider />
+
+		<!-- Body - Show Uploaded File Data -->
+		<div class="my-6" text="2xl gray-900">{{ trans.showFile.value }}</div>
+		<!-- showFile - checkbox 1 -->
+		<div class="flex mt-6 mb-2 gap-4 items-center">
+			<Checkbox
+				v-if="showFile[0]"
+				v-model="checkFile[0]"
+				input-id="file_0"
+				:binary="true"
+			/>
+			<label for="file_0" text="xl gray-700">
+				{{ trans.schoolExp.value }}
+			</label>
+		</div>
+		<div class="flex mx-10 gap-8 mb-4" text="gray-500">
+			<div>{{ trans.details.fileName.value }}</div>
+			<div>{{ trans.details.fileUpload.value }}</div>
+		</div>
+		<!-- showFile - checkbox 2 -->
+		<div class="flex mt-6 mb-2 gap-4 items-center">
+			<Checkbox
+				v-if="showFile[1]"
+				v-model="checkFile[1]"
+				input-id="file_1"
+				:binary="true"
+			/>
+			<label for="file_1" text="xl gray-700">
+				{{ trans.testScore.value }}
+			</label>
+		</div>
+		<div class="flex mx-10 gap-8 mb-4" text="gray-500">
+			<div>{{ trans.details.fileName.value }}</div>
+			<div>{{ trans.details.fileUpload.value }}</div>
+		</div>
+		<!-- showFile - checkbox 3 -->
+		<div class="flex mt-6 mb-2 gap-4 items-center">
+			<Checkbox
+				v-if="showFile[2]"
+				v-model="checkFile[2]"
+				input-id="file_2"
+				:binary="true"
+			/>
+			<label for="file_2" text="xl gray-700">
+				{{ trans.otherFile.value }}
+			</label>
+		</div>
+		<div class="flex mx-10 gap-8 mb-4" text="gray-500">
+			<div>{{ trans.details.fileName.value }}</div>
+			<div>{{ trans.details.fileUpload.value }}</div>
+		</div>
+		<!-- showFile - checkbox 4 -->
+		<div class="flex mt-6 mb-2 gap-4 items-center">
+			<Checkbox
+				v-if="showFile[3]"
+				v-model="checkFile[3]"
+				input-id="file_3"
+				:binary="true"
+			/>
+			<label for="file_3" text="xl gray-700">
+				{{ trans.nationalId.value }}
+			</label>
+		</div>
+		<div class="flex mx-10 gap-8 mb-4" text="gray-500">
+			<div>{{ trans.details.fileName.value }}</div>
+			<div>{{ trans.details.fileUpload.value }}</div>
 		</div>
 
-		<div class="bigRedDivider mt-14"></div>
-
-		<!-- ControlButton -->
-		<div class="flex mt-24px">
-			<div class="m-auto">
-				<div class="flex">
-					<Button
-						class="bg-white h-60px w-140px border-ntnuRed p-button-outlined"
-						@click="refreshData(selectPhase)"
-					>
-						<i
-							class="ml-1 mr-2 box-border text-sm text-ntnuRed pi pi-times"
-						></i>
-						<div class="m-auto text-sm text-ntnuRed tracking-2">
-							<div>{{ trans.cancel.value }}</div>
-						</div>
-					</Button>
-					<div class="w-24px"></div>
-					<Button
-						class="bg-Green h-60px w-140px border-ntnuRed"
-						@click="saveChange(selectPhase)"
-					>
-						<i
-							class="ml-1 mr-2 box-border text-sm text-black pi pi-check"
-						></i>
-						<div class="m-auto text-sm text-black tracking-2">
-							<div>{{ trans.save.value }}</div>
-						</div>
-					</Button>
+		<!-- Footer - Control Buttons -->
+		<div class="bigRedDivider my-6 mt-10"></div>
+		<div class="flex justify-center w-full mb-8 gap-8">
+			<Button
+				class="bg-white h-14 w-36 border-ntnuRed p-button-outlined"
+				@click="refreshData()"
+			>
+				<i class="pi pi-times ml-1 mr-2 box-border text-ntnuRed" />
+				<div class="m-auto text-ntnuRed">
+					<div>{{ trans.cancel.value }}</div>
 				</div>
-			</div>
+			</Button>
+			<Button
+				class="bg-Green h-14 w-36 border-ntnuRed"
+				@click="saveChange()"
+			>
+				<i class="pi pi-check ml-1 mr-2 box-border text-black" />
+				<div class="m-auto text-black">
+					<div>{{ trans.save.value }}</div>
+				</div>
+			</Button>
 		</div>
 	</div>
 </template>
@@ -385,7 +308,6 @@ import { object, TypeOf } from "yup";
 
 const { t } = useI18n();
 const toast = useToast();
-const selectPhase = ref("docs");
 
 // I18n translation
 const trans = {
@@ -407,12 +329,12 @@ const trans = {
 	schoolExp: computed(() => t("就學經歷")),
 	testScore: computed(() => t("考試與檢定分數")),
 	otherFile: computed(() => t("其他有利於審查資料")),
-
-	stage: {
+	colon: computed(() => t("：")),
+	phase: {
 		1: computed(() => t("第一階段 (書面審查)")),
 		2: computed(() => t("第二階段 (口試審查)")),
 	},
-	stageWeight: {
+	phaseWeight: {
 		1: computed(() => t("書面審查佔比")),
 		2: computed(() => t("口試審查佔比")),
 	},
@@ -536,10 +458,7 @@ const patchScoreField = useMutation(
 );
 
 // ButtonFn: Save Changes and Patch Data
-function saveChange(phase: string) {
-	// Adjust Data to correct form
-	if (phase === "docs") oralScore[0].weight = 100 - docsScore[0].weight;
-	if (phase === "oral") docsScore[0].weight = 100 - oralScore[0].weight;
+function saveChange() {
 	docsScore.forEach((element) => {
 		if (element.name === "" && element.weight != 0) {
 			element.name =
@@ -585,40 +504,31 @@ function saveChange(phase: string) {
 }
 
 // ButtonFn: Discard Changes and Update Data
-function refreshData(phase: string) {
+function refreshData() {
 	const getData = getScoreField.data.value;
 	if (!getData) return;
 	docsScore[0].weight = getData.docs_weight;
 	oralScore[0].weight = getData.oral_weight;
-	if (phase === "docs") {
-		docsScore[1].name = getData.docs_grade_name_1;
-		docsScore[2].name = getData.docs_grade_name_2;
-		docsScore[3].name = getData.docs_grade_name_3;
-		docsScore[4].name = getData.docs_grade_name_4;
-		docsScore[5].name = getData.docs_grade_name_5;
-		docsScore[1].weight = getData.docs_grade_weight_1;
-		docsScore[2].weight = getData.docs_grade_weight_2;
-		docsScore[3].weight = getData.docs_grade_weight_3;
-		docsScore[4].weight = getData.docs_grade_weight_4;
-		docsScore[5].weight = getData.docs_grade_weight_5;
-	}
-	if (phase === "oral") {
-		oralScore[1].name = getData.oral_grade_name_1;
-		oralScore[2].name = getData.oral_grade_name_2;
-		oralScore[3].name = getData.oral_grade_name_3;
-		oralScore[4].name = getData.oral_grade_name_4;
-		oralScore[5].name = getData.oral_grade_name_5;
-		oralScore[1].weight = getData.oral_grade_weight_1;
-		oralScore[2].weight = getData.oral_grade_weight_2;
-		oralScore[3].weight = getData.oral_grade_weight_3;
-		oralScore[4].weight = getData.oral_grade_weight_4;
-		oralScore[5].weight = getData.oral_grade_weight_5;
-	}
-}
-
-// ButtonFn: Switch to Different Phases
-function changePhase(phase: string) {
-	selectPhase.value = phase;
+	docsScore[1].name = getData.docs_grade_name_1;
+	docsScore[2].name = getData.docs_grade_name_2;
+	docsScore[3].name = getData.docs_grade_name_3;
+	docsScore[4].name = getData.docs_grade_name_4;
+	docsScore[5].name = getData.docs_grade_name_5;
+	docsScore[1].weight = getData.docs_grade_weight_1;
+	docsScore[2].weight = getData.docs_grade_weight_2;
+	docsScore[3].weight = getData.docs_grade_weight_3;
+	docsScore[4].weight = getData.docs_grade_weight_4;
+	docsScore[5].weight = getData.docs_grade_weight_5;
+	oralScore[1].name = getData.oral_grade_name_1;
+	oralScore[2].name = getData.oral_grade_name_2;
+	oralScore[3].name = getData.oral_grade_name_3;
+	oralScore[4].name = getData.oral_grade_name_4;
+	oralScore[5].name = getData.oral_grade_name_5;
+	oralScore[1].weight = getData.oral_grade_weight_1;
+	oralScore[2].weight = getData.oral_grade_weight_2;
+	oralScore[3].weight = getData.oral_grade_weight_3;
+	oralScore[4].weight = getData.oral_grade_weight_4;
+	oralScore[5].weight = getData.oral_grade_weight_5;
 }
 
 // Lifecycle: Mounted
