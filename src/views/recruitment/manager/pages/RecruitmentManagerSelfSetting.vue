@@ -10,7 +10,7 @@
 			</Button>
 			<Dialog header="修改名稱" v-model:visible="displayUserId">
 				<div>{{ $t("輸入新名稱") }}</div>
-				<InputText type="text" v-model="newUserId"></InputText>
+				<InputText type="text" v-model="userId"></InputText>
 				<div class="mt-10px">
 					<Button @click="ensureUserId">{{ $t("確認修改") }}</Button>
 					<Button @click="cancelUserId">{{ $t("取消") }}</Button>
@@ -54,7 +54,10 @@
 		<div>
 			<div>
 				<div>{{ $t("請輸入舊密碼") }}：</div>
-				<InputText type="password" v-model="oldPassword"></InputText>
+				<InputText
+					type="password"
+					v-model="password.currentPass"
+				></InputText>
 			</div>
 			<div>
 				<div>
@@ -63,12 +66,18 @@
 						>{{ $t("確認密碼(再輸入一次驗證密碼)") }}：</label
 					>
 				</div>
-				<InputText type="password" v-model="newPassword"></InputText>
-				<InputText type="password" v-model="ensurePassword"></InputText>
+				<InputText
+					type="password"
+					v-model="password.newPass"
+				></InputText>
+				<InputText
+					type="password"
+					v-model="password.confirmPass"
+				></InputText>
 			</div>
 		</div>
 		<div>
-			<Button @click="editPassword" class="p-button-outlined">
+			<Button @click="handleSubmit" class="p-button-outlined" :loading="isChangePassLoading">
 				<img src="/assets/UserSetting/Edit.png" />
 				{{ $t("修改送出") }}
 			</Button>
@@ -78,10 +87,17 @@
 <script setup lang="ts">
 import Button from "primevue/button";
 import InputText from "primevue/inputtext";
-import { ref } from "vue";
+import { onMounted, reactive, ref, toRaw } from "vue";
 import Dialog from "primevue/dialog";
+import { InvalidSessionError } from "@/api/error";
+import { useAdminInfoStore } from "@/stores/RecruitmentAdminStore";
+import { useRecruitmentAdminAuthStore } from "@/stores/universalAuth";
+import { RecruitmentManagerAuthResponse } from "@/api/recruitment/reviewer/types";
+import { useToast } from "primevue/usetoast";
+import { RecruitmentAdminAPI } from "@/api/recruitment/admin/api";
+
+const toast = useToast();
 const userId = ref("系辦主管");
-const newUserId = ref();
 const displayUserId = ref();
 const editUserId = () => {
 	displayUserId.value = true;
@@ -117,8 +133,126 @@ const cancelPhone = () => {
 	displayPhone.value = false;
 };
 
-const oldPassword = ref();
-const newPassword = ref();
-const ensurePassword = ref();
-const editPassword = ref();
+const adminAuth = useRecruitmentAdminAuthStore();
+const adminStore = useAdminInfoStore();
+const api = new RecruitmentAdminAPI(adminAuth);
+
+const adminInfo: RecruitmentManagerAuthResponse = toRaw(
+	adminStore.userInfo
+);
+
+const initialPassValue = {
+	isCurrentPassBlank: false,
+	isNewPassBlank: false,
+	notMatch: false,
+	currentPass: "",
+	newPass: "",
+	confirmPass: "",
+};
+
+const isChangePassLoading = ref(false);
+
+const changePassRes = reactive({
+	success: false,
+	message: "" as string | [],
+});
+
+const password = reactive({
+	isCurrentPassBlank: false,
+	isNewPassBlank: false,
+	notMatch: false,
+	currentPass: "",
+	newPass: "",
+	confirmPass: "",
+});
+
+const resetPassValue = () => {
+	password.isCurrentPassBlank = initialPassValue.isCurrentPassBlank;
+	password.isNewPassBlank = initialPassValue.isNewPassBlank;
+	password.notMatch = initialPassValue.notMatch;
+	password.currentPass = initialPassValue.currentPass;
+	password.newPass = initialPassValue.newPass;
+	password.confirmPass = initialPassValue.confirmPass;
+};
+
+const patchChangePassword = async (body: object) => {
+	try {
+		return await api.changePassword(body);
+	} catch (e: any) {
+		if (e instanceof InvalidSessionError) {
+			console.error(
+				"Session has already expired while changing password"
+			);
+
+			return;
+		}
+	}
+};
+
+const handleSubmit = async () => {
+	if (password.currentPass === "") {
+		password.isCurrentPassBlank = true;
+	} else {
+		password.isCurrentPassBlank = false;
+	}
+
+	if (password.newPass === "") {
+		password.isNewPassBlank = true;
+	} else {
+		password.isNewPassBlank = false;
+	}
+
+	if (password.newPass !== password.confirmPass) {
+		password.notMatch = true;
+	} else {
+		password.notMatch = false;
+	}
+
+	if (
+		!password.isCurrentPassBlank &&
+		!password.isNewPassBlank &&
+		!password.notMatch
+	) {
+		isChangePassLoading.value = true;
+
+		const body = {
+			current_password: password.currentPass,
+			password: password.newPass,
+			password_confirmation: password.confirmPass,
+		};
+
+		const response = patchChangePassword(body);
+
+		await response.then((res) => {
+			if (res?.success !== undefined && res?.message !== undefined) {
+				changePassRes.success = toRaw(res.success);
+				changePassRes.message = toRaw(res.message);
+			}
+
+			isChangePassLoading.value = false;
+
+			if (changePassRes.success) {
+				resetPassValue();
+				toast.add({
+					severity: "success",
+					summary: "Success",
+					detail: changePassRes.message,
+					life: 3000,
+				});
+			} else {
+				toast.add({
+					severity: "error",
+					summary: "Error",
+					detail: changePassRes.message[
+						changePassRes.message.length - 1
+					],
+					life: 5000,
+				});
+			}
+		});
+	}
+};
+
+onMounted(() => {
+});
 </script>

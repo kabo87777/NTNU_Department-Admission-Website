@@ -2,6 +2,7 @@ import type { AuthStore } from "@/stores/universalAuth";
 import { GenericAPI } from "@/api/api";
 import type {
 	RecruitmentAdminApplicantListResponse,
+	RecruitmentAdminChangePassResponse,
 	RecruitmentAdminProgramListResponse,
 } from "./types";
 import type { APIGenericResponse } from "@/api/types";
@@ -33,5 +34,24 @@ export class RecruitmentAdminAPI extends GenericAPI {
 			throw new Error("Failed to fetch program list");
 
 		return data.data.programs;
+	}
+
+	async changePassword(
+		body: object
+	): Promise<RecruitmentAdminChangePassResponse> {
+		const data: APIGenericResponse = await this.instance.patch(
+			"/recruitment/auth/admin/password",
+			body
+		);
+		if(data.error !== false){
+			return {
+				success: false,
+				message: data.message.full_messages,
+			};
+		}
+		return {
+			success: true,
+			message: data.message,
+		};
 	}
 }
