@@ -34,9 +34,9 @@
 
 		<!-- StageScore -->
 		<div>
-			<h1 class="text-xl my-6">
+			<div class="text-xl my-6">
 				{{ trans.scoreOptionSetting.value }}
-			</h1>
+			</div>
 			<div class="space-y-2" v-if="selectPhase === 'docs'">
 				<div>{{ trans.stageWeight[1].value }}</div>
 				<InputNumber class="!w-300px" v-model="docsScore[0].weight" />
@@ -187,35 +187,150 @@
 				</div>
 			</div>
 		</div>
+		<ParagraphDivider />
 
-		<!-- TODO: 顯示欄位的資料 -->
-		<!-- <ParagraphDivider />
-		<div class="mt-20px">
-			<h1 class="text-3xl">
-				{{ $t("顯示欄位：基本資料") }}
-			</h1>
-		</div>
-		<div class="mt-24px">
-			<div class="flex mt-40px text-blackLight">
-				<div class="w-1/3 pl-16px">{{ $t("※ 國家/州") }}</div>
-				<div class="w-1/3 pl-16px">{{ $t("※ 城市/郵遞區號") }}</div>
-				<div class="w-1/3 pl-16px">{{ $t("※ 街道地址") }}</div>
+		<!-- ShowInfo -->
+		<div>
+			<div class="text-xl my-6">{{ $t("顯示欄位：基本資料") }}</div>
+			<div class="flex gap-4 items-center">
+				<Checkbox
+					v-model="checkInfo[0]"
+					v-if="showInfo[0]"
+					:binary="true"
+				/>
+				<div class="text-lg my-4">{{ $t("姓名資訊") }}</div>
+			</div>
+			<div class="flex px-8 gap-8 mb-4">
+				<div class="text-s">{{ $t("※ 稱謂/後綴") }}</div>
+				<div class="text-s">{{ $t("※ 中文姓氏/名字") }}</div>
+				<div class="text-s">{{ $t("※ 英文姓氏/中間名/名字") }}</div>
+			</div>
+			<div class="flex gap-4 items-center">
+				<Checkbox
+					v-model="checkInfo[1]"
+					v-if="showInfo[1]"
+					:binary="true"
+				/>
+				<div class="text-lg my-4">{{ $t("入學身份") }}</div>
+			</div>
+			<div class="flex px-8 gap-8 mb-4">
+				<div class="text-s">{{ $t("※ 碩士生") }}</div>
+				<div class="text-s">{{ $t("※ 博士生") }}</div>
+			</div>
+			<div class="flex gap-4 items-center">
+				<Checkbox
+					v-model="checkInfo[2]"
+					v-if="showInfo[2]"
+					:binary="true"
+				/>
+				<div class="text-lg my-4">{{ $t("戶籍資訊") }}</div>
+			</div>
+			<div class="flex px-8 gap-8 mb-4">
+				<div class="text-s">{{ $t("※ 碩士生") }}</div>
+				<div class="text-s">{{ $t("※ 博士生") }}</div>
+			</div>
+			<div class="flex gap-4 items-center">
+				<Checkbox
+					v-model="checkInfo[3]"
+					v-if="showInfo[3]"
+					:binary="true"
+				/>
+				<div class="text-lg my-4">{{ $t("現居地址") }}</div>
+			</div>
+			<div class="flex px-8 gap-8 mb-4">
+				<div class="text-s">{{ $t("※ 國家/州") }}</div>
+				<div class="text-s">{{ $t("※ 城市/郵遞區號") }}</div>
+				<div class="text-s">{{ $t("※ 街道地址") }}</div>
+			</div>
+			<div class="flex gap-4 items-center">
+				<Checkbox
+					v-model="checkInfo[4]"
+					v-if="showInfo[4]"
+					:binary="true"
+				/>
+				<div class="text-lg my-4">{{ $t("身份資料") }}</div>
+			</div>
+			<div class="flex px-8 gap-8 mb-4">
+				<div class="text-s">{{ $t("※ 法定性別/ 性別認同") }}</div>
+				<div class="text-s">{{ $t("※ 出生國") }}</div>
+				<div class="text-s">{{ $t("※ 主要國籍") }}</div>
+				<div class="text-s">{{ $t("※ 出生日期") }}</div>
+				<div class="text-s">{{ $t("※ 主要國籍") }}</div>
+			</div>
+			<div class="flex gap-4 items-center">
+				<Checkbox
+					v-model="checkInfo[5]"
+					v-if="showInfo[5]"
+					:binary="true"
+				/>
+				<div class="text-lg my-4">{{ $t("聯絡資料") }}</div>
+			</div>
+			<div class="flex px-8 gap-8 mb-4">
+				<div class="text-s">{{ $t("※ 電子郵件") }}</div>
+				<div class="text-s">{{ $t("※ 電話(主要)") }}</div>
+				<div class="text-s">{{ $t("※ 電話(次要)") }}</div>
+				<div class="text-s">{{ $t("※ 電話(行動電話)") }}</div>
 			</div>
 		</div>
+
 		<ParagraphDivider />
-		<div class="mt-20px">
-			<h1 class="text-3xl">
-				{{ $t("顯示欄位：檢附資料") }}
-			</h1>
+
+		<!-- ShowData -->
+		<div>
+			<div class="text-xl my-6">{{ $t("顯示欄位：檢附資料") }}</div>
+			<div class="flex gap-4 items-center">
+				<Checkbox
+					v-model="checkInfo[0]"
+					v-if="showInfo[0]"
+					:binary="true"
+				/>
+				<div class="text-lg my-4">{{ $t("就學經歷") }}</div>
+			</div>
+			<div class="flex px-8 gap-8 mb-4">
+				<div class="text-s">{{ $t("※ 資料名稱") }}</div>
+				<div class="text-s">{{ $t("※ 資料上傳") }}</div>
+			</div>
+			<div class="flex gap-4 items-center">
+				<Checkbox
+					v-model="checkInfo[1]"
+					v-if="showInfo[1]"
+					:binary="true"
+				/>
+				<div class="text-lg my-4">{{ $t("考試與檢定分數") }}</div>
+			</div>
+			<div class="flex px-8 gap-8 mb-4">
+				<div class="text-s">{{ $t("※ 資料名稱") }}</div>
+				<div class="text-s">{{ $t("※ 資料上傳") }}</div>
+			</div>
+			<div class="flex gap-4 items-center">
+				<Checkbox
+					v-model="checkInfo[2]"
+					v-if="showInfo[2]"
+					:binary="true"
+				/>
+				<div class="text-lg my-4">{{ $t("其他有利於審查資料") }}</div>
+			</div>
+			<div class="flex px-8 gap-8 mb-4">
+				<div class="text-s">{{ $t("※ 資料名稱") }}</div>
+				<div class="text-s">{{ $t("※ 資料上傳") }}</div>
+			</div>
+			<div class="flex gap-4 items-center">
+				<Checkbox
+					v-model="checkInfo[3]"
+					v-if="showInfo[3]"
+					:binary="true"
+				/>
+				<div class="text-lg my-4">{{ $t("身份資料") }}</div>
+			</div>
+			<div class="flex px-8 gap-8 mb-4">
+				<div class="text-s">{{ $t("※ 資料名稱") }}</div>
+				<div class="text-s">{{ $t("※ 資料上傳") }}</div>
+			</div>
 		</div>
-		<div class="mt-24px">
-			<Checkbox :binary="true" v-model="enrollProver"> </Checkbox>
-			<label for="enrollProver" class="ml-8px text-s text-blackLight">{{
-				$t("教學證明")
-			}}</label>
-		</div> -->
 
 		<div class="bigRedDivider mt-14"></div>
+
+		<!-- ControlButton -->
 		<div class="flex mt-24px">
 			<div class="m-auto">
 				<div class="flex">
@@ -345,6 +460,10 @@ const oralScore = reactive([
 	{ name: "", weight: 0, index: 4 },
 	{ name: "", weight: 0, index: 5 },
 ]);
+const showInfo = reactive([true, true, true, true, true, true]);
+const showFile = reactive([true, true, true, true]);
+const checkInfo = reactive([true, true, true, true, true, true]);
+const checkFile = reactive([true, true, true, true]);
 
 // Toast message: Success
 const toastSuccess = () => {
@@ -467,7 +586,6 @@ function refreshData(phase: string) {
 // ButtonFn: Switch to Different Phases
 function changePhase(phase: string) {
 	selectPhase.value = phase;
-	refreshData(selectPhase.value);
 }
 
 // Lifecycle: Mounted
