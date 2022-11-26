@@ -191,19 +191,19 @@
 
 		<!-- ShowInfo -->
 		<div>
-			<div class="text-xl my-6">{{ $t("顯示欄位：基本資料") }}</div>
+			<div class="text-xl my-6">{{ trans.showInfo.value }}</div>
 			<div class="flex gap-4 items-center">
 				<Checkbox
 					v-model="checkInfo[0]"
 					v-if="showInfo[0]"
 					:binary="true"
 				/>
-				<div class="text-lg my-4">{{ $t("姓名資訊") }}</div>
+				<div class="text-lg my-4">{{ trans.nameInfo.value }}</div>
 			</div>
 			<div class="flex px-8 gap-8 mb-4">
-				<div class="text-s">{{ $t("※ 稱謂/後綴") }}</div>
-				<div class="text-s">{{ $t("※ 中文姓氏/名字") }}</div>
-				<div class="text-s">{{ $t("※ 英文姓氏/中間名/名字") }}</div>
+				<div class="text-s">{{ trans.details.suffix.value }}</div>
+				<div class="text-s">{{ trans.details.chineseName.value }}</div>
+				<div class="text-s">{{ trans.details.englishName.value }}</div>
 			</div>
 			<div class="flex gap-4 items-center">
 				<Checkbox
@@ -211,11 +211,11 @@
 					v-if="showInfo[1]"
 					:binary="true"
 				/>
-				<div class="text-lg my-4">{{ $t("入學身份") }}</div>
+				<div class="text-lg my-4">{{ trans.admissionId.value }}</div>
 			</div>
 			<div class="flex px-8 gap-8 mb-4">
-				<div class="text-s">{{ $t("※ 碩士生") }}</div>
-				<div class="text-s">{{ $t("※ 博士生") }}</div>
+				<div class="text-s">{{ trans.details.master.value }}</div>
+				<div class="text-s">{{ trans.details.phD.value }}</div>
 			</div>
 			<div class="flex gap-4 items-center">
 				<Checkbox
@@ -223,11 +223,12 @@
 					v-if="showInfo[2]"
 					:binary="true"
 				/>
-				<div class="text-lg my-4">{{ $t("戶籍資訊") }}</div>
+				<div class="text-lg my-4">{{ trans.residentAddr.value }}</div>
 			</div>
 			<div class="flex px-8 gap-8 mb-4">
-				<div class="text-s">{{ $t("※ 碩士生") }}</div>
-				<div class="text-s">{{ $t("※ 博士生") }}</div>
+				<div class="text-s">{{ trans.details.country.value }}</div>
+				<div class="text-s">{{ trans.details.city.value }}</div>
+				<div class="text-s">{{ trans.details.streetAddr.value }}</div>
 			</div>
 			<div class="flex gap-4 items-center">
 				<Checkbox
@@ -235,12 +236,12 @@
 					v-if="showInfo[3]"
 					:binary="true"
 				/>
-				<div class="text-lg my-4">{{ $t("現居地址") }}</div>
+				<div class="text-lg my-4">{{ trans.currentAddr.value }}</div>
 			</div>
 			<div class="flex px-8 gap-8 mb-4">
-				<div class="text-s">{{ $t("※ 國家/州") }}</div>
-				<div class="text-s">{{ $t("※ 城市/郵遞區號") }}</div>
-				<div class="text-s">{{ $t("※ 街道地址") }}</div>
+				<div class="text-s">{{ trans.details.country.value }}</div>
+				<div class="text-s">{{ trans.details.city.value }}</div>
+				<div class="text-s">{{ trans.details.streetAddr.value }}</div>
 			</div>
 			<div class="flex gap-4 items-center">
 				<Checkbox
@@ -248,14 +249,14 @@
 					v-if="showInfo[4]"
 					:binary="true"
 				/>
-				<div class="text-lg my-4">{{ $t("身份資料") }}</div>
+				<div class="text-lg my-4">{{ trans.nationalId.value }}</div>
 			</div>
 			<div class="flex px-8 gap-8 mb-4">
-				<div class="text-s">{{ $t("※ 法定性別/ 性別認同") }}</div>
-				<div class="text-s">{{ $t("※ 出生國") }}</div>
-				<div class="text-s">{{ $t("※ 主要國籍") }}</div>
-				<div class="text-s">{{ $t("※ 出生日期") }}</div>
-				<div class="text-s">{{ $t("※ 主要國籍") }}</div>
+				<div class="text-s">{{ trans.details.gender.value }}</div>
+				<div class="text-s">{{ trans.details.bornCountry.value }}</div>
+				<div class="text-s">{{ trans.details.mainNation.value }}</div>
+				<div class="text-s">{{ trans.details.bornDate.value }}</div>
+				<div class="text-s">{{ trans.details.mainNation.value }}</div>
 			</div>
 			<div class="flex gap-4 items-center">
 				<Checkbox
@@ -263,68 +264,68 @@
 					v-if="showInfo[5]"
 					:binary="true"
 				/>
-				<div class="text-lg my-4">{{ $t("聯絡資料") }}</div>
+				<div class="text-lg my-4">{{ trans.contactInfo.value }}</div>
 			</div>
 			<div class="flex px-8 gap-8 mb-4">
-				<div class="text-s">{{ $t("※ 電子郵件") }}</div>
-				<div class="text-s">{{ $t("※ 電話(主要)") }}</div>
-				<div class="text-s">{{ $t("※ 電話(次要)") }}</div>
-				<div class="text-s">{{ $t("※ 電話(行動電話)") }}</div>
+				<div class="text-s">{{ trans.details.email.value }}</div>
+				<div class="text-s">{{ trans.details.primePhone.value }}</div>
+				<div class="text-s">{{ trans.details.secondPhone.value }}</div>
+				<div class="text-s">{{ trans.details.mobilePhone.value }}</div>
 			</div>
 		</div>
 
 		<ParagraphDivider />
 
-		<!-- ShowData -->
+		<!-- ShowFile -->
 		<div>
-			<div class="text-xl my-6">{{ $t("顯示欄位：檢附資料") }}</div>
+			<div class="text-xl my-6">{{ trans.showFile.value }}</div>
 			<div class="flex gap-4 items-center">
 				<Checkbox
-					v-model="checkInfo[0]"
-					v-if="showInfo[0]"
+					v-model="checkFile[0]"
+					v-if="showFile[0]"
 					:binary="true"
 				/>
-				<div class="text-lg my-4">{{ $t("就學經歷") }}</div>
+				<div class="text-lg my-4">{{ trans.schoolExp.value }}</div>
 			</div>
 			<div class="flex px-8 gap-8 mb-4">
-				<div class="text-s">{{ $t("※ 資料名稱") }}</div>
-				<div class="text-s">{{ $t("※ 資料上傳") }}</div>
-			</div>
-			<div class="flex gap-4 items-center">
-				<Checkbox
-					v-model="checkInfo[1]"
-					v-if="showInfo[1]"
-					:binary="true"
-				/>
-				<div class="text-lg my-4">{{ $t("考試與檢定分數") }}</div>
-			</div>
-			<div class="flex px-8 gap-8 mb-4">
-				<div class="text-s">{{ $t("※ 資料名稱") }}</div>
-				<div class="text-s">{{ $t("※ 資料上傳") }}</div>
+				<div class="text-s">{{ trans.details.fileName.value }}</div>
+				<div class="text-s">{{ trans.details.fileUpload.value }}</div>
 			</div>
 			<div class="flex gap-4 items-center">
 				<Checkbox
-					v-model="checkInfo[2]"
-					v-if="showInfo[2]"
+					v-model="checkFile[1]"
+					v-if="showFile[1]"
 					:binary="true"
 				/>
-				<div class="text-lg my-4">{{ $t("其他有利於審查資料") }}</div>
+				<div class="text-lg my-4">{{ trans.testScore.value }}</div>
 			</div>
 			<div class="flex px-8 gap-8 mb-4">
-				<div class="text-s">{{ $t("※ 資料名稱") }}</div>
-				<div class="text-s">{{ $t("※ 資料上傳") }}</div>
+				<div class="text-s">{{ trans.details.fileName.value }}</div>
+				<div class="text-s">{{ trans.details.fileUpload.value }}</div>
 			</div>
 			<div class="flex gap-4 items-center">
 				<Checkbox
-					v-model="checkInfo[3]"
-					v-if="showInfo[3]"
+					v-model="checkFile[2]"
+					v-if="showFile[2]"
 					:binary="true"
 				/>
-				<div class="text-lg my-4">{{ $t("身份資料") }}</div>
+				<div class="text-lg my-4">{{ trans.otherFile }}</div>
 			</div>
 			<div class="flex px-8 gap-8 mb-4">
-				<div class="text-s">{{ $t("※ 資料名稱") }}</div>
-				<div class="text-s">{{ $t("※ 資料上傳") }}</div>
+				<div class="text-s">{{ trans.details.fileName.value }}</div>
+				<div class="text-s">{{ trans.details.fileUpload.value }}</div>
+			</div>
+			<div class="flex gap-4 items-center">
+				<Checkbox
+					v-model="checkFile[3]"
+					v-if="showFile[3]"
+					:binary="true"
+				/>
+				<div class="text-lg my-4">{{ trans.nationalId.value }}</div>
+			</div>
+			<div class="flex px-8 gap-8 mb-4">
+				<div class="text-s">{{ trans.details.fileName.value }}</div>
+				<div class="text-s">{{ trans.details.fileUpload.value }}</div>
 			</div>
 		</div>
 
@@ -394,6 +395,19 @@ const trans = {
 	cancel: computed(() => t("取消")),
 	scoreOption: computed(() => t("評分項目")),
 	scoreOptionSetting: computed(() => t("評分設定")),
+	labelWeight: computed(() => t("佔比")),
+	showInfo: computed(() => t("顯示欄位：基本資料")),
+	showFile: computed(() => t("顯示欄位：檢附資料")),
+	nameInfo: computed(() => t("姓名資訊")),
+	admissionId: computed(() => t("入學身份")),
+	residentAddr: computed(() => t("戶籍資訊")),
+	currentAddr: computed(() => t("現居地址")),
+	nationalId: computed(() => t("身份資料")),
+	contactInfo: computed(() => t("聯絡資訊")),
+	schoolExp: computed(() => t("就學經歷")),
+	testScore: computed(() => t("考試與檢定分數")),
+	otherFile: computed(() => t("其他有利於審查資料")),
+
 	stage: {
 		1: computed(() => t("第一階段 (書面審查)")),
 		2: computed(() => t("第二階段 (口試審查)")),
@@ -409,7 +423,26 @@ const trans = {
 		4: computed(() => t("項目四")),
 		5: computed(() => t("項目五")),
 	},
-	labelWeight: computed(() => t("佔比")),
+	details: {
+		suffix: computed(() => t("※ 稱謂/後綴")),
+		chineseName: computed(() => t("※ 中文姓氏/名字")),
+		englishName: computed(() => t("※ 英文姓氏/中間名/名字")),
+		master: computed(() => t("※ 碩士生")),
+		phD: computed(() => t("※ 博士生")),
+		country: computed(() => t("※ 國家/州")),
+		city: computed(() => t("※ 城市/郵遞區號")),
+		streetAddr: computed(() => t("※ 街道地址")),
+		gender: computed(() => t("※ 法定性別/ 性別認同")),
+		bornCountry: computed(() => t("※ 出生國")),
+		mainNation: computed(() => t("※ 主要國籍")),
+		bornDate: computed(() => t("※ 出生日期")),
+		email: computed(() => t("※ 電子郵件")),
+		primePhone: computed(() => t("※ 電話(主要)")),
+		secondPhone: computed(() => t("※ 電話(次要)")),
+		mobilePhone: computed(() => t("※ 電話(行動電話)")),
+		fileName: computed(() => t("※ 資料名稱")),
+		fileUpload: computed(() => t("※ 資料上傳")),
+	},
 };
 
 // API Authorization
