@@ -123,19 +123,19 @@ export class RecruitmentApplicantAPI extends GenericAPI {
 			message: data.message,
 		};
 	}
-	async postEmailRegister(
-		newData: newPostEmailRegister
-	): Promise<RecruitmentRegisterEmailPostResponse[]> {
-		const data: APIGenericResponse = await this.instance.post(
-			"/recruitment/auth/applicant",
-			{
-				body: newData,
-			}
-		);
+	// async postEmailRegister(
+	// 	newData: newPostEmailRegister
+	// ): Promise<RecruitmentRegisterEmailPostResponse[]> {
+	// 	const data: APIGenericResponse = await this.instance.post(
+	// 		"/recruitment/auth/applicant",
+	// 		{
+	// 			body: newData,
+	// 		}
+	// 	);
 
-		if (data.error === true || typeof data.data === "undefined")
-			throw new Error(data.message);
+	// 	if (data.error === true || typeof data.data === "undefined")
+	// 		throw new Error(data.message);
 
-		return data.data;
-	}
+	// 	return data.data;
+	// }
 }
