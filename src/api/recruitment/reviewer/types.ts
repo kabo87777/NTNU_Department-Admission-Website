@@ -51,6 +51,7 @@ export interface RecruitmentReviewerApplicantListResponse {
 
 export interface RecruitmentReviewerApplicantCommentResponse {
 	comment: string | null;
+	isRecommend: boolean | null;
 }
 
 export interface RecruitmentReviewerApplicantInfoResponse {

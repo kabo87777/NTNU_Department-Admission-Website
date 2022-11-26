@@ -153,6 +153,13 @@ const {
 	{
 		onSuccess: (data) => {
 			comment.value = data!.comment!;
+			if (data!.isRecommend === null) {
+				selectedRating.value = translation.noRating.value;
+			} else if (data!.isRecommend === false) {
+				selectedRating.value = translation.notRecommanded.value;
+			} else {
+				selectedRating.value = translation.recommanded.value;
+			}
 		},
 	}
 );
