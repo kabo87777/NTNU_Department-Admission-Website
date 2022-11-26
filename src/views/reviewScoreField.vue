@@ -1,5 +1,4 @@
 <template>
-	<Toast />
 	<div class="mx-32 mt-16">
 		<!-- Header - Title -->
 		<div class="tracking-widest" text="4xl bold">
@@ -291,7 +290,6 @@
 import InputText from "primevue/inputtext";
 import InputNumber from "primevue/inputnumber";
 import Button from "primevue/button";
-import Toast from "primevue/toast";
 import Checkbox from "primevue/checkbox";
 import ParagraphDivider from "../styles/paragraphDivider.vue";
 import { useToast } from "primevue/usetoast";
@@ -401,11 +399,11 @@ const resIndex = [
 // Field content & data
 const docsScore = reactive([
 	{ name: "Total", weight: 0, index: 0 },
-	{ name: "", weight: 0, index: 1 },
-	{ name: "", weight: 0, index: 2 },
-	{ name: "", weight: 0, index: 3 },
-	{ name: "", weight: 0, index: 4 },
-	{ name: "", weight: 0, index: 5 },
+	{ name: trans.labelName[1].value, weight: 0, index: 1 },
+	{ name: trans.labelName[2].value, weight: 0, index: 2 },
+	{ name: trans.labelName[3].value, weight: 0, index: 3 },
+	{ name: trans.labelName[4].value, weight: 0, index: 4 },
+	{ name: trans.labelName[5].value, weight: 0, index: 5 },
 ]);
 const oralScore = reactive([
 	{ name: "Total", weight: 0, index: 0 },
@@ -419,15 +417,6 @@ const showInfo = reactive([true, true, true, true, true, true]);
 const showFile = reactive([true, true, true, true]);
 const checkInfo = reactive([true, true, true, true, true, true]);
 const checkFile = reactive([true, true, true, true]);
-
-// Toast message: Success
-const toastSuccess = () => {
-	toast.add({
-		severity: "success",
-		summary: trans.changeSuccess.value,
-		life: 3000,
-	});
-};
 
 // API: Get Score Data
 const getScoreField = useQuery(["scoreField"], async () => {
@@ -459,48 +448,61 @@ const patchScoreField = useMutation(
 
 // ButtonFn: Save Changes and Patch Data
 function saveChange() {
-	docsScore.forEach((element) => {
-		if (element.name === "" && element.weight != 0) {
-			element.name =
-				trans.labelName[
-					element.index as keyof typeof trans.labelName
-				].value;
-		}
-	});
-	oralScore.forEach((element) => {
-		if (element.name === "" && element.weight != 0) {
-			element.name =
-				trans.labelName[
-					element.index as keyof typeof trans.labelName
-				].value;
-		}
-	});
-	// Patch Data
-	patchScoreField.mutate({
-		// IMPROVE: Use Array to pass value instead of Hard-code.
-		docs_weight: docsScore[0].weight,
-		oral_weight: oralScore[0].weight,
-		docs_grade_name_1: docsScore[1].name,
-		docs_grade_name_2: docsScore[2].name,
-		docs_grade_name_3: docsScore[3].name,
-		docs_grade_name_4: docsScore[4].name,
-		docs_grade_name_5: docsScore[5].name,
-		docs_grade_weight_1: docsScore[1].weight,
-		docs_grade_weight_2: docsScore[2].weight,
-		docs_grade_weight_3: docsScore[3].weight,
-		docs_grade_weight_4: docsScore[4].weight,
-		docs_grade_weight_5: docsScore[5].weight,
-		oral_grade_name_1: oralScore[1].name,
-		oral_grade_name_2: oralScore[2].name,
-		oral_grade_name_3: oralScore[3].name,
-		oral_grade_name_4: oralScore[4].name,
-		oral_grade_name_5: oralScore[5].name,
-		oral_grade_weight_1: oralScore[1].weight,
-		oral_grade_weight_2: oralScore[2].weight,
-		oral_grade_weight_3: oralScore[3].weight,
-		oral_grade_weight_4: oralScore[4].weight,
-		oral_grade_weight_5: oralScore[5].weight,
-	});
+	try {
+		docsScore.forEach((element) => {
+			if (element.name === "" && element.weight) {
+				element.name =
+					trans.labelName[
+						element.index as keyof typeof trans.labelName
+					].value;
+			}
+		});
+		oralScore.forEach((element) => {
+			if (element.name === "" && element.weight) {
+				element.name =
+					trans.labelName[
+						element.index as keyof typeof trans.labelName
+					].value;
+			}
+		});
+		// Patch Data
+		patchScoreField.mutate({
+			// IMPROVE: Use Array to pass value instead of Hard-code.
+			docs_weight: docsScore[0].weight,
+			oral_weight: oralScore[0].weight,
+			docs_grade_name_1: docsScore[1].name,
+			docs_grade_name_2: docsScore[2].name,
+			docs_grade_name_3: docsScore[3].name,
+			docs_grade_name_4: docsScore[4].name,
+			docs_grade_name_5: docsScore[5].name,
+			docs_grade_weight_1: docsScore[1].weight,
+			docs_grade_weight_2: docsScore[2].weight,
+			docs_grade_weight_3: docsScore[3].weight,
+			docs_grade_weight_4: docsScore[4].weight,
+			docs_grade_weight_5: docsScore[5].weight,
+			oral_grade_name_1: oralScore[1].name,
+			oral_grade_name_2: oralScore[2].name,
+			oral_grade_name_3: oralScore[3].name,
+			oral_grade_name_4: oralScore[4].name,
+			oral_grade_name_5: oralScore[5].name,
+			oral_grade_weight_1: oralScore[1].weight,
+			oral_grade_weight_2: oralScore[2].weight,
+			oral_grade_weight_3: oralScore[3].weight,
+			oral_grade_weight_4: oralScore[4].weight,
+			oral_grade_weight_5: oralScore[5].weight,
+		});
+		toast.add({
+			severity: "success",
+			summary: trans.changeSuccess.value,
+			life: 3000,
+		});
+	} catch {
+		toast.add({
+			severity: "error",
+			summary: trans.changeSuccess.value,
+			life: 3000,
+		});
+	}
 }
 
 // ButtonFn: Discard Changes and Update Data
