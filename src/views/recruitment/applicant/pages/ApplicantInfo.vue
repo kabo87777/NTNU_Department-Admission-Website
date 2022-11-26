@@ -21,7 +21,6 @@
 						<InputText
 							class="w-[70%] h-36px !mt-4px"
 							style="border: 1px solid #736028"
-							id="apellation"
 							type="text"
 						/>
 					</div>
@@ -32,7 +31,6 @@
 						<InputText
 							class="w-[70%] h-36px !mt-4px"
 							style="border: 1px solid #736028"
-							id="suffix"
 							type="text"
 						/>
 					</div>
@@ -48,7 +46,6 @@
 						<InputText
 							class="w-[70%] h-36px !mt-4px"
 							style="border: 1px solid #736028"
-							id="zhFamName"
 							type="text"
 						/>
 					</div>
@@ -62,7 +59,6 @@
 						<InputText
 							class="w-[70%] h-36px !mt-4px"
 							style="border: 1px solid #736028"
-							id="zhName"
 							type="text"
 						/>
 					</div>
@@ -75,13 +71,11 @@
 						<InputText
 							class="w-[70%] h-36px !mt-4px"
 							style="border: 1px solid #736028"
-							id="enFamName"
 							type="text"
-							aria-describedby="enFamName-help"
 						/>
 					</div>
-					<div class="absolute mt-[-4px]">
-						<small id="enFamName-help" class="p-error">
+					<div v-show="required.enFamName" class="absolute mt-[-4px]">
+						<small class="p-error">
 							{{ $t("此為必填欄位") }}
 						</small>
 					</div>
@@ -92,13 +86,11 @@
 						<InputText
 							class="w-[70%] h-36px !mt-4px"
 							style="border: 1px solid #736028"
-							id="enName"
 							type="text"
-							aria-describedby="enName-help"
 						/>
 					</div>
-					<div class="absolute mt-[-4px]">
-						<small id="enName-help" class="p-error">
+					<div v-show="required.enName" class="absolute mt-[-4px]">
+						<small class="p-error">
 							{{ $t("此為必填欄位") }}
 						</small>
 					</div>
@@ -109,7 +101,6 @@
 						<InputText
 							class="w-[70%] h-36px !mt-4px"
 							style="border: 1px solid #736028"
-							id="enMidName"
 							type="text"
 						/>
 					</div>
@@ -138,7 +129,6 @@
 							:options="identityOptions"
 							optionLabel="name"
 							optionValue="name"
-							aria-describedby="dropdown-help"
 						>
 							<template #value="slotProps">
 								<div v-if="slotProps.value" class="mt-[-8px]">
@@ -155,8 +145,8 @@
 							</template>
 						</Dropdown>
 					</div>
-					<div class="absolute mt-[-4px]">
-						<small id="dropdown-help" class="p-error">
+					<div v-show="required.identity" class="absolute mt-[-4px]">
+						<small class="p-error">
 							{{ $t("此為必填欄位") }}
 						</small>
 					</div>
@@ -172,13 +162,11 @@
 						<InputText
 							class="w-[70%] h-36px !mt-4px"
 							style="border: 1px solid #736028"
-							id="nation"
 							type="text"
-							aria-describedby="nation-help"
 						/>
 					</div>
-					<div class="absolute mt-[-4px]">
-						<small id="nation-help" class="p-error">
+					<div v-show="required.country" class="absolute mt-[-4px]">
+						<small class="p-error">
 							{{ $t("此為必填欄位") }}
 						</small>
 					</div>
@@ -189,13 +177,11 @@
 						<InputText
 							class="w-[70%] h-36px !mt-4px"
 							style="border: 1px solid #736028"
-							id="passport"
 							type="text"
-							aria-describedby="passport-help"
 						/>
 					</div>
-					<div class="absolute mt-[-4px]">
-						<small id="passport-help" class="p-error">
+					<div v-show="required.passport" class="absolute mt-[-4px]">
+						<small class="p-error">
 							{{ $t("此為必填欄位") }}
 						</small>
 					</div>
@@ -206,13 +192,11 @@
 						<InputText
 							class="w-[70%] h-36px !mt-4px"
 							style="border: 1px solid #736028"
-							id="ui"
 							type="text"
-							aria-describedby="ui-help"
 						/>
 					</div>
-					<div class="absolute mt-[-4px]">
-						<small id="ui-help" class="p-error">
+					<div v-show="required.ui" class="absolute mt-[-4px]">
+						<small class="p-error">
 							{{ $t("此為必填欄位") }}
 						</small>
 					</div>
@@ -225,13 +209,11 @@
 						<InputText
 							class="w-[70%] h-36px !mt-4px"
 							style="border: 1px solid #736028"
-							id="icNum"
 							type="text"
-							aria-describedby="identity-help"
 						/>
 					</div>
-					<div class="absolute mt-[-4px]">
-						<small id="identity-help" class="p-error">
+					<div v-show="required.icNum" class="absolute mt-[-4px]">
+						<small class="p-error">
 							{{ $t("此為必填欄位") }}
 						</small>
 					</div>
@@ -256,14 +238,15 @@
 							<InputText
 								class="w-[80%] h-36px !mt-4px"
 								style="border: 1px solid #736028"
-								id="state"
 								type="text"
-								aria-describedby="state-help"
 								v-model="householdAddr.addr"
 							/>
 						</div>
-						<div class="absolute mt-[-4px]">
-							<small id="state-help" class="p-error">
+						<div
+							v-show="required.householdAddr"
+							class="absolute mt-[-4px]"
+						>
+							<small class="p-error">
 								{{ $t("此為必填欄位") }}
 							</small>
 						</div>
@@ -274,14 +257,15 @@
 							<InputText
 								class="w-[70%] h-36px !mt-4px"
 								style="border: 1px solid #736028"
-								id="postcode"
 								type="text"
-								aria-describedby="postcode-help"
 								v-model="householdAddr.postcode"
 							/>
 						</div>
-						<div class="absolute mt-[-4px]">
-							<small id="postcode-help" class="p-error">
+						<div
+							v-show="required.householdpostcode"
+							class="absolute mt-[-4px]"
+						>
+							<small class="p-error">
 								{{ $t("此為必填欄位") }}
 							</small>
 						</div>
@@ -310,14 +294,16 @@
 						<InputText
 							class="w-[80%] h-36px !mt-4px"
 							style="border: 1px solid #736028"
-							id="state"
 							type="text"
-							aria-describedby="state-help"
 							v-model="currentAddr.addr"
+							:disabled="currentAddr.isAddrSame"
 						/>
 					</div>
-					<div class="absolute mt-[-4px]">
-						<small id="state-help" class="p-error">
+					<div
+						v-show="required.currentAddr"
+						class="absolute mt-[-4px]"
+					>
+						<small class="p-error">
 							{{ $t("此為必填欄位") }}
 						</small>
 					</div>
@@ -328,14 +314,16 @@
 						<InputText
 							class="w-[70%] h-36px !mt-4px"
 							style="border: 1px solid #736028"
-							id="postcode"
 							type="text"
-							aria-describedby="postcode-help"
 							v-model="currentAddr.postcode"
+							:disabled="currentAddr.isAddrSame"
 						/>
 					</div>
-					<div class="absolute mt-[-4px]">
-						<small id="postcode-help" class="p-error">
+					<div
+						v-show="required.currentPostcode"
+						class="absolute mt-[-4px]"
+					>
+						<small class="p-error">
 							{{ $t("此為必填欄位") }}
 						</small>
 					</div>
@@ -355,7 +343,7 @@
 			<div class="mt-24px">
 				<div>{{ "*" + $t("生理性別") }}</div>
 				<div class="mt-2px flex">
-					<div aria-describedby="sex-help">
+					<div>
 						<RadioButton v-model="born.sex" value="male" />
 						<label class="ml-4px">{{ $t("生理男性") }}</label>
 					</div>
@@ -364,8 +352,8 @@
 						<label class="ml-4px">{{ $t("生理女性") }}</label>
 					</div>
 				</div>
-				<div class="absolute mt-[-4px]">
-					<small id="sex-help" class="p-error">
+				<div v-show="required.sex" class="absolute mt-[-4px]">
+					<small class="p-error">
 						{{ $t("此為必填欄位") }}
 					</small>
 				</div>
@@ -377,13 +365,11 @@
 						<InputText
 							class="w-[70%] h-36px !mt-4px"
 							style="border: 1px solid #736028"
-							id="bornCountry"
 							type="text"
-							aria-describedby="bornCountry-help"
 						/>
 					</div>
-					<div class="absolute mt-[-4px]">
-						<small id="bornCountry-help" class="p-error">
+					<div v-show="required.country" class="absolute mt-[-4px]">
+						<small class="p-error">
 							{{ $t("此為必填欄位") }}
 						</small>
 					</div>
@@ -399,11 +385,10 @@
 								border: 1px solid #736028;
 								border-radius: 6px;
 							"
-							aria-describedby="birth-help"
 						/>
 					</div>
-					<div class="absolute mt-[-4px]">
-						<small id="birth-help" class="p-error">
+					<div v-show="required.birth" class="absolute mt-[-4px]">
+						<small class="p-error">
 							{{ $t("此為必填欄位") }}
 						</small>
 					</div>
@@ -427,14 +412,12 @@
 						<InputText
 							class="w-[70%] h-36px !mt-4px"
 							style="border: 1px solid #736028"
-							id="email"
 							type="email"
-							aria-describedby="email-help"
 							v-model="contact.email"
 						/>
 					</div>
-					<div class="absolute mt-[-4px]">
-						<small id="email-help" class="p-error">
+					<div v-show="required.email" class="absolute mt-[-4px]">
+						<small class="p-error">
 							{{ $t("此為必填欄位") }}
 						</small>
 					</div>
@@ -445,14 +428,12 @@
 						<InputText
 							class="w-[70%] h-36px !mt-4px"
 							style="border: 1px solid #736028"
-							id="phone"
 							type="text"
-							aria-describedby="phone-help"
 							v-model="contact.phone"
 						/>
 					</div>
-					<div class="absolute mt-[-4px]">
-						<small id="phone-help" class="p-error">
+					<div v-show="required.phone" class="absolute mt-[-4px]">
+						<small class="p-error">
 							{{ $t("此為必填欄位") }}
 						</small>
 					</div>
@@ -553,6 +534,25 @@ const contact = reactive({
 	phone: "",
 });
 
+const required = reactive({
+	enFamName: false,
+	enName: false,
+	identity: false,
+	icNum: false,
+	nationality: false,
+	passport: false,
+	ui: false,
+	householdAddr: false,
+	householdpostcode: false,
+	currentAddr: false,
+	currentPostcode: false,
+	sex: false,
+	country: false,
+	birth: false,
+	email: false,
+	phone: false,
+});
+
 const identityOptions = ref([{ name: "本地人士" }, { name: "外籍人士" }]);
 
 const basicInfo: RecruitmentApplicantUserInfoResponse =
@@ -617,8 +617,12 @@ const handleSave = async () => {
 		name: name.zhName,
 		household_address: householdAddr.addr,
 		household_zipcode: householdAddr.postcode,
-		communicate_address: currentAddr.addr,
-		communicate_zipcode: currentAddr.postcode,
+		communicate_address: currentAddr.isAddrSame
+			? householdAddr.addr
+			: currentAddr.addr,
+		communicate_zipcode: currentAddr.isAddrSame
+			? householdAddr.postcode
+			: currentAddr.postcode,
 		sex: born.sex,
 		birth: born.birth,
 		email: contact.email,

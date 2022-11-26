@@ -11,41 +11,20 @@
 				{{ $t("補交文件") }}
 			</div>
 			<div v-for="(item, index) in proceedList" :key="index">
-				<ReviewState
-					v-if="item.state === 1"
-					category="補交文件"
-					identity="admissionApplicant"
-					:itemId="item.id"
-					:itemName="item.name"
-					:fileUrl="item.filepath?.url"
-					:order="index + 1"
-					:isDeleteLoading="isLoading.delete"
-					@edit="reviewToEdit"
-				/>
-				<CorrectionState
-					v-else-if="item.state === 2"
-					category="補交文件"
-					identity="admissionApplicant"
-					:isEditLoading="isLoading.edit"
-					:itemId="item.id"
-					:itemName="item.name"
-					:order="index + 1"
-					@cancel="editToReview"
-				/>
 				<CreateState
-					v-else-if="item.state === 3"
+					v-if="item.state === 3"
 					category="補交文件"
 					identity="admissionApplicant"
 					:order="index + 1"
 					@edit="createToEdit"
 				/>
-				<EditState
+				<RefillState
 					v-else-if="item.state === 4"
-					category="補交文件"
 					identity="admissionApplicant"
-					:isCreateLoading="isLoading.create"
+					:isUploadLoading="isLoading.upload"
 					:order="index + 1"
 					@cancel="editToCreate"
+					@upload="handleUpload"
 				/>
 			</div>
 		</div>
@@ -67,12 +46,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from "vue";
+import { ref, reactive, toRaw } from "vue";
 import { InvalidSessionError } from "@/api/error";
-import ReviewState from "@/components/attachmentStates/reviewState.vue";
-import EditState from "@/components/attachmentStates/editState.vue";
 import CreateState from "@/components/attachmentStates/createState.vue";
-import CorrectionState from "@/components/attachmentStates/CorrectionState.vue";
+import RefillState from "@/components/attachmentStates/RefillState.vue";
 import {
 	AttachmentData,
 	AttachmentDetailData,
@@ -91,22 +68,17 @@ const toast = useToast();
 const isEnabled = ref(false);
 
 const isLoading = reactive({
-	delete: false,
-	create: false,
-	edit: false,
+	upload: false,
 	fetch: false,
 });
 
-const additionalList: AttachmentData[] = reactive([]);
+const fetchResponse = reactive({
+	success: false,
+	message: "" as string | [],
+});
+
+const fileList: AttachmentData[] = reactive([]);
 const proceedList: AttachmentDetailData[] = reactive([]);
-
-const editToReview = (index: number) => {
-	proceedList[index].state = 1;
-};
-
-const reviewToEdit = (index: number) => {
-	proceedList[index].state = 2;
-};
 
 const editToCreate = (index: number, category: string) => {
 	proceedList[index].state = 3;
@@ -114,6 +86,53 @@ const editToCreate = (index: number, category: string) => {
 
 const createToEdit = (index: number, category: string) => {
 	proceedList[index].state = 4;
+};
+
+const uploadFile = async (body: object) => {
+	try {
+		return await api.uploadRefillFile(body, project.project.pid);
+	} catch (e: any) {
+		if (e instanceof InvalidSessionError) {
+			console.error(
+				"Session has already expired while changing password"
+			);
+			return;
+		}
+	}
+};
+
+const handleUpload = async (body: object) => {
+	isLoading.upload = true;
+
+	const response = uploadFile(body);
+
+	await response.then((res) => {
+		if (res?.success !== undefined && res?.message !== undefined) {
+			fetchResponse.success = toRaw(res.success);
+			fetchResponse.message = toRaw(res.message);
+		}
+
+		isLoading.upload = false;
+		isLoading.fetch = true;
+
+		if (fetchResponse.success) {
+			toast.add({
+				severity: "success",
+				summary: "Success",
+				detail: fetchResponse.message,
+				life: 3000,
+			});
+		} else {
+			toast.add({
+				severity: "error",
+				summary: "Error",
+				detail: fetchResponse.message,
+				life: 5000,
+			});
+		}
+
+		isLoading.fetch = true;
+	});
 };
 </script>
 

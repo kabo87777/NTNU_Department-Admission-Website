@@ -56,12 +56,11 @@ import recruitmentApplicantPasswordReset from "@/views/recruitment/applicant/log
 import recruitmentApplicantPasswordForget from "@/views/recruitment/applicant/login/pwdForget.vue";
 import recruitmentApplicantPasswordForgetEmailSent from "@/views/recruitment/applicant/login/pwdForgetEmailSent.vue";
 import recruitmentApplicantMainContainer from "@/views/recruitment/applicant/mainContainer.vue";
-import recruitmentApplicantBasicInfo from "@/views/recruitment/applicant/pages/ApplicantInfo.vue";
-import recruitmentApplicantAttachment from "@/views/recruitment/applicant/pages/AttachmentFile.vue";
-import recruitmentApplicantSubmitConfirm from "@/views/recruitment/applicant/pages/SubmitConfirm.vue";
-import recruitmentApplicantAdditionalDocs from "@/views/recruitment/applicant/pages/RefillFile.vue";
+import recruitmentApplicantUserInfo from "@/views/recruitment/applicant/pages/ApplicantInfo.vue";
+import recruitmentApplicantAttachmentFile from "@/views/recruitment/applicant/pages/AttachmentFile.vue";
+import recruitmentApplicantRefillFile from "@/views/recruitment/applicant/pages/RefillFile.vue";
 import recruitmentApplicantSwitchProject from "@/views/recruitment/applicant/pages/SwitchProject.vue";
-import recruitmentApplicantUserSetting from "@/views/recruitment/applicant/pages/UserManagement.vue";
+import recruitmentApplicantUserManagement from "@/views/recruitment/applicant/pages/UserManagement.vue";
 
 // Recruitment Reviewer siginin section
 import recruitmentReviewerSignin from "@/views/recruitment/reviewer/login/signin.vue";
@@ -354,24 +353,19 @@ const routes: Array<RouteRecordRaw> = [
 				children: [
 					//Recruitment - applicant info pages
 					{
-						path: "basicInfo",
-						name: "recruitmentApplicantBasicInfo",
-						component: recruitmentApplicantBasicInfo,
+						path: "applicantInfo",
+						name: "recruitmentApplicantUserInfo",
+						component: recruitmentApplicantUserInfo,
 					},
 					{
-						path: "attachment",
-						name: "recruitmentApplicantAttachment",
-						component: recruitmentApplicantAttachment,
+						path: "attachmentFile",
+						name: "recruitmentApplicantAttachmentFile",
+						component: recruitmentApplicantAttachmentFile,
 					},
 					{
-						path: "submitConfirm",
-						name: "recruitmentApplicantSubmitConfirm",
-						component: recruitmentApplicantSubmitConfirm,
-					},
-					{
-						path: "additionalDocs",
-						name: "recruitmentApplicantAdditionalDocs",
-						component: recruitmentApplicantAdditionalDocs,
+						path: "refillFile",
+						name: "recruitmentApplicantRefillFile",
+						component: recruitmentApplicantRefillFile,
 					},
 					{
 						path: "switchProject",
@@ -379,9 +373,9 @@ const routes: Array<RouteRecordRaw> = [
 						component: recruitmentApplicantSwitchProject,
 					},
 					{
-						path: "userSetting",
-						name: "recruitmentApplicantUserSetting",
-						component: recruitmentApplicantUserSetting,
+						path: "userManagement",
+						name: "recruitmentApplicantUserManagement",
+						component: recruitmentApplicantUserManagement,
 					},
 				],
 			},
