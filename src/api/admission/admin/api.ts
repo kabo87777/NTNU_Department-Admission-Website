@@ -139,10 +139,8 @@ export class AdmissionAdminAPI extends GenericAPI {
 		if (response.error === true)
 			throw new Error("Failed to update program");
 	}
-	
-	async changePassword(
-		body: object
-	): Promise<AdmissionAdminGenericResponse> {
+
+	async changePassword(body: object): Promise<AdmissionAdminGenericResponse> {
 		const data: APIGenericResponse = await this.instance.patch(
 			"admission/auth/applicant/password",
 			body

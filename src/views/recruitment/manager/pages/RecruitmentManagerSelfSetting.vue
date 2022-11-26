@@ -77,7 +77,11 @@
 			</div>
 		</div>
 		<div>
-			<Button @click="handleSubmit" class="p-button-outlined" :loading="isChangePassLoading">
+			<Button
+				@click="handleSubmit"
+				class="p-button-outlined"
+				:loading="isChangePassLoading"
+			>
 				<img src="/assets/UserSetting/Edit.png" />
 				{{ $t("修改送出") }}
 			</Button>
@@ -137,9 +141,7 @@ const adminAuth = useRecruitmentAdminAuthStore();
 const adminStore = useAdminInfoStore();
 const api = new RecruitmentAdminAPI(adminAuth);
 
-const adminInfo: RecruitmentManagerAuthResponse = toRaw(
-	adminStore.userInfo
-);
+// const adminInfo: RecruitmentManagerAuthResponse = toRaw(adminStore.userInfo);
 
 const initialPassValue = {
 	isCurrentPassBlank: false,
@@ -253,6 +255,5 @@ const handleSubmit = async () => {
 	}
 };
 
-onMounted(() => {
-});
+//onMounted(() => {});
 </script>

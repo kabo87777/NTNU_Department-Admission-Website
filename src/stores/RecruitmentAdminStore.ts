@@ -12,8 +12,8 @@ const info = {
 	name: "",
 	nickname: "",
 	image: null,
-	created_at:"",
-	updated_at:""
+	created_at: "",
+	updated_at: "",
 };
 
 export const useAdminInfoStore = defineStore({

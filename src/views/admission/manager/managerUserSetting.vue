@@ -142,9 +142,7 @@ const adminAuth = useAdmissionAdminAuthStore();
 const adminStore = useUserInfoStore();
 const api = new AdmissionAdminAPI(adminAuth);
 
-const adminInfo: AdmissionManagerAuthResponse = toRaw(
-	adminStore.userInfo
-);
+// const adminInfo: AdmissionManagerAuthResponse = toRaw(adminStore.userInfo);
 
 const initialPassValue = {
 	isCurrentPassBlank: false,
@@ -257,7 +255,5 @@ const handleSubmit = async () => {
 	}
 };
 
-onMounted(() => {
-	
-});
+//onMounted(() => {});
 </script>

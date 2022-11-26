@@ -15,7 +15,7 @@ export interface RecruitmentAdminAuthResponse {
 	name: any | null;
 	nickname: any | null;
 	image: any | null;
-	created_at: string ;
+	created_at: string;
 	updated_at: string;
 }
 

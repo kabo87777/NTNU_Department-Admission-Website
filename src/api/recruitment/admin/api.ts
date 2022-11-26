@@ -43,7 +43,7 @@ export class RecruitmentAdminAPI extends GenericAPI {
 			"/recruitment/auth/admin/password",
 			body
 		);
-		if(data.error !== false){
+		if (data.error !== false) {
 			return {
 				success: false,
 				message: data.message.full_messages,
