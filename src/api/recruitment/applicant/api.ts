@@ -158,6 +158,28 @@ export class RecruitmentApplicantAPI extends GenericAPI {
 		};
 	}
 
+	async uploadRefillFile(
+		body: object,
+		pid: number
+	): Promise<RecruitmentApplicantGenericResponse> {
+		const data: APIGenericResponse = await this.instance.post(
+			`recruitment/applicant/program/${pid}/refillFile`,
+			body
+		);
+
+		if (data.error !== false) {
+			return {
+				success: false,
+				message: data.message,
+			};
+		}
+
+		return {
+			success: true,
+			message: data.message,
+		};
+	}
+
 	async changePassword(
 		body: object
 	): Promise<RecruitmentApplicantGenericResponse> {

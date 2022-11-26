@@ -250,15 +250,16 @@
 					</div>
 				</div>
 				<div class="flex py-16px">
-					<div class="w-1/3">
-						<div>{{ "*" + $t("縣市") }}</div>
+					<div class="w-2/3">
+						<div>{{ "*" + $t("地址") }}</div>
 						<div>
 							<InputText
-								class="w-[70%] h-36px !mt-4px"
+								class="w-[80%] h-36px !mt-4px"
 								style="border: 1px solid #736028"
 								id="state"
 								type="text"
 								aria-describedby="state-help"
+								v-model="householdAddr.addr"
 							/>
 						</div>
 						<div class="absolute mt-[-4px]">
@@ -276,27 +277,11 @@
 								id="postcode"
 								type="text"
 								aria-describedby="postcode-help"
+								v-model="householdAddr.postcode"
 							/>
 						</div>
 						<div class="absolute mt-[-4px]">
 							<small id="postcode-help" class="p-error">
-								{{ $t("此為必填欄位") }}
-							</small>
-						</div>
-					</div>
-					<div class="w-1/3">
-						<div>{{ "*" + $t("街道地址") }}</div>
-						<div>
-							<InputText
-								class="w-[70%] h-36px !mt-4px"
-								style="border: 1px solid #736028"
-								id="street"
-								type="text"
-								aria-describedby="street-help"
-							/>
-						</div>
-						<div class="absolute mt-[-4px]">
-							<small id="street-help" class="p-error">
 								{{ $t("此為必填欄位") }}
 							</small>
 						</div>
@@ -319,15 +304,16 @@
 				<label class="ml-4px">{{ $t("住址相同") }}</label>
 			</div>
 			<div class="flex py-16px">
-				<div class="w-1/3">
-					<div>{{ "*" + $t("縣市") }}</div>
+				<div class="w-2/3">
+					<div>{{ "*" + $t("地址") }}</div>
 					<div>
 						<InputText
-							class="w-[70%] h-36px !mt-4px"
+							class="w-[80%] h-36px !mt-4px"
 							style="border: 1px solid #736028"
 							id="state"
 							type="text"
 							aria-describedby="state-help"
+							v-model="currentAddr.addr"
 						/>
 					</div>
 					<div class="absolute mt-[-4px]">
@@ -345,27 +331,11 @@
 							id="postcode"
 							type="text"
 							aria-describedby="postcode-help"
+							v-model="currentAddr.postcode"
 						/>
 					</div>
 					<div class="absolute mt-[-4px]">
 						<small id="postcode-help" class="p-error">
-							{{ $t("此為必填欄位") }}
-						</small>
-					</div>
-				</div>
-				<div class="w-1/3">
-					<div>{{ "*" + $t("街道地址") }}</div>
-					<div>
-						<InputText
-							class="w-[70%] h-36px !mt-4px"
-							style="border: 1px solid #736028"
-							id="street"
-							type="text"
-							aria-describedby="street-help"
-						/>
-					</div>
-					<div class="absolute mt-[-4px]">
-						<small id="street-help" class="p-error">
 							{{ $t("此為必填欄位") }}
 						</small>
 					</div>
@@ -562,16 +532,14 @@ const identity = reactive({
 });
 
 const householdAddr = reactive({
-	state: "",
+	addr: "",
 	postcode: "",
-	street: "",
 });
 
 const currentAddr = reactive({
 	isAddrSame: false,
-	state: "",
+	addr: "",
 	postcode: "",
-	street: "",
 });
 
 const born = reactive({
@@ -620,6 +588,15 @@ const setBasicInfo = (res: RecruitmentApplicantUserInfoResponse) => {
 	born.birth = new Date(res.birth as string);
 
 	contact.phone = res.mobile_phone as string;
+
+	householdAddr.addr = res.household_address as string;
+	householdAddr.postcode = res.household_zipcode as string;
+	currentAddr.addr = res.communicate_address as string;
+	currentAddr.postcode = res.communicate_zipcode as string;
+	currentAddr.isAddrSame =
+		householdAddr.addr === currentAddr.addr && householdAddr.addr !== ""
+			? true
+			: false;
 };
 
 const saveInfo = async (body: object) => {
@@ -638,10 +615,14 @@ const saveInfo = async (body: object) => {
 const handleSave = async () => {
 	const body = {
 		name: name.zhName,
-		email: contact.email,
-		mobile_phone: contact.phone,
+		household_address: householdAddr.addr,
+		household_zipcode: householdAddr.postcode,
+		communicate_address: currentAddr.addr,
+		communicate_zipcode: currentAddr.postcode,
 		sex: born.sex,
 		birth: born.birth,
+		email: contact.email,
+		mobile_phone: contact.phone,
 	};
 
 	loading.save = true;
