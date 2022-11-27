@@ -107,13 +107,10 @@ import {
 import { useAdmissionApplicantAuthStore } from "@/stores/universalAuth";
 import { AdmissionApplicantAPI } from "@/api/admission/applicant/api";
 import { useToast } from "primevue/usetoast";
-import { useProjectIdStore } from "@/stores/AdmissionApplicantStore";
 
 
 const applicantAuth = useAdmissionApplicantAuthStore();
 const api = new AdmissionApplicantAPI(applicantAuth);
-const project = useProjectIdStore();
-
 const toast = useToast();
 
 const isEnabled = ref(true);
