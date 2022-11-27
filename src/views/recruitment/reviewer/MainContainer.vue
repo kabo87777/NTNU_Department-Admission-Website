@@ -38,7 +38,7 @@ const reviewerAuth = useRecruitmentReviewerAuthStore();
 
 watch(router.currentRoute, async () => {
 	if (!(await doUniversalAuthSessionValidation(reviewerAuth))) {
-		router.replace({ name: "RecruitmentReviewerSignin" });
+		router.replace({ name: "recruitmentReviewerSignin" });
 		// TODO: show session expired notification
 	}
 });

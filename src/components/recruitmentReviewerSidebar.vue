@@ -13,8 +13,13 @@
 				>
 					<template #value="slotProps">
 						<div class="mt-6px tracking-2px text-20px font-medium">
-							{{ slotProps.value.category }}
+							{{ slotProps?.value?.category }}
+							{{ slotProps?.value?.name }}
 						</div>
+					</template>
+					<template #option="slotProps">
+						{{ slotProps?.option?.category }}
+						{{ slotProps?.option?.name }}
 					</template>
 				</Dropdown>
 			</div>
@@ -115,7 +120,7 @@
 
 <script setup lang="ts">
 import "primevue/resources/primevue.min.css";
-import { ref } from "vue";
+import { ref, watch, watchEffect, toRaw, computed } from "vue";
 import Dropdown from "primevue/dropdown";
 import Button from "primevue/button";
 import { useRouter } from "vue-router";
@@ -123,57 +128,60 @@ import { useRecruitmentReviewerAuthStore } from "@/stores/universalAuth";
 import { RecruitmentReviewerAPI } from "@/api/recruitment/reviewer/api";
 import { useQuery } from "@tanstack/vue-query";
 import { InvalidSessionError } from "@/api/error";
+import { useGlobalStore } from "@/stores/RecruitmentReviewerStore";
+import { RecruitmentReviewerProgramListResponse } from "@/api/recruitment/reviewer/types";
 
 const reviewerAuth = useRecruitmentReviewerAuthStore();
+const store = useGlobalStore();
 const api = new RecruitmentReviewerAPI(reviewerAuth);
 
-const programs = ref([]);
-// API isn't ready
-
-// const {
-// 	isLoading,
-// 	isError,
-// 	data: programs,
-// 	error,
-// } = useQuery(["programList"], async () => {
-// 	try {
-// 		return await api.getProgramList();
-// 	} catch (e: any) {
-// 		if (e instanceof InvalidSessionError) {
-// 			// FIXME: show session expiry notification??
-// 			// Why are we even here in the first place?
-// 			// MainContainer should have checked already.
-// 			console.error(
-// 				"Session has already expired while querying programList"
-// 			);
-// 			router.push("/");
-// 			return;
-// 		}
-// 	}
-// });
+const {
+	isLoading,
+	isError,
+	data: programs,
+	error,
+} = useQuery(["programList"], async () => {
+	try {
+		return await api.getProgramList();
+	} catch (e: any) {
+		if (e instanceof InvalidSessionError) {
+			// FIXME: show session expiry notification??
+			// Why are we even here in the first place?
+			// MainContainer should have checked already.
+			console.error(
+				"Session has already expired while querying programList"
+			);
+			router.push("/");
+			return;
+		}
+	}
+});
 
 const router = useRouter();
 
 // FIXME: this should NOT be hardcoded.
-const selectedProgram = ref({
-	id: 1,
-	category: "111年教師應徵",
-	name: "A組",
-	application_start_date: "2022-10-01T00:00:00.000+08:00",
-	application_end_date: "2022-10-31T00:00:00.000+08:00",
-	review_start_date: "2022-11-01T00:00:00.000+08:00",
-	review_end_date: "2022-11-30T00:00:00.000+08:00",
-	require_file: "['file1', 'file2']",
-	stage: "application",
-	created_at: "2022-10-18T07:00:10.671+08:00",
-	updated_at: "2022-10-18T07:00:10.671+08:00",
-	applicant_required_info: null,
-	applicant_required_file: null,
-	reviewer_required_info: null,
-	reviewer_required_file: null,
+const selectedProgram = ref<RecruitmentReviewerProgramListResponse>();
+
+watchEffect(() => {
+	if (programs.value && programs.value.length > 1) {
+		const temp = programs.value[0];
+		store.$patch((state) => {
+			// state.program = temp;
+		});
+		// selectedProgram.value=toRaw(programs.value[0])
+		selectedProgram.value = programs.value[0];
+	}
 });
 
-const generateOptions = (data: any) => data.category;
+watch(selectedProgram, (selection) => {
+	store.$patch({ recruitmentReviewerProgram: selectedProgram.value });
+
+	console.debug("Selected program:\n" + JSON.stringify(selection, null, 2));
+});
+
+const generateOptions = (data: RecruitmentReviewerProgramListResponse) => {
+	return data.category + data.name;
+};
 
 async function signOut() {
 	await api.invalidateSession();

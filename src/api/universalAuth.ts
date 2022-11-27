@@ -101,8 +101,7 @@ export async function doUniversalAuthSessionValidation(auth: AuthStore) {
 		},
 		data: {},
 	});
-
-	if (!response.data?.success) return false;
+	if (response.data?.status !== "success") return false;
 
 	return true;
 }

@@ -10,7 +10,7 @@
 			</Button>
 			<Dialog header="修改名稱" v-model:visible="displayUserId">
 				<div>{{ $t("輸入新名稱") }}</div>
-				<InputText type="text" v-model="newUserId"></InputText>
+				<InputText type="text" v-model="userId"></InputText>
 				<div class="mt-10px">
 					<Button @click="ensureUserId">{{ $t("確認修改") }}</Button>
 					<Button @click="cancelUserId">{{ $t("取消") }}</Button>
@@ -48,40 +48,89 @@
 			</Dialog>
 		</div>
 		<Divider />
-		<div>
-			{{ $t("修改密碼") }}<img src="/assets/UserSetting/Lock.png" />
+		<div class="mt-20px font-[500] font-bold text-[24px] flex">
+			<div>{{ $t("修改密碼") }}</div>
+			<i class="pi pi-lock ml-16px mt-4px text-[#C6BCD0]" />
 		</div>
-		<div>
-			<div>
-				<div>{{ $t("請輸入舊密碼") }}：</div>
-				<InputText type="password" v-model="oldPassword"></InputText>
-			</div>
-			<div>
+		<div class="mt-8px px-12px py-24px">
+			<div class="w-[50%]">
+				<div>{{ $t("舊密碼") }}{{ $t(":") }}</div>
 				<div>
-					<label>{{ $t("設定新密碼") }}：</label>
-					<label class="ml-110px"
-						>{{ $t("確認密碼(再輸入一次驗證密碼)") }}：</label
-					>
+					<InputText
+						class="w-[70%] h-40px !mt-4px"
+						id="currentPass"
+						type="password"
+						v-model="password.currentPass"
+						aria-describedby="currentPass-help"
+					/>
 				</div>
-				<InputText type="password" v-model="newPassword"></InputText>
-				<InputText type="password" v-model="ensurePassword"></InputText>
+				<div class="absolute" v-if="password.isCurrentPassBlank">
+					<small id="currentPass-help" class="p-error">
+						{{ $t("請輸入舊密碼") }}
+					</small>
+				</div>
 			</div>
-		</div>
-		<div>
-			<Button @click="editPassword" class="p-button-outlined">
-				<img src="/assets/UserSetting/Edit.png" />
-				{{ $t("修改送出") }}
-			</Button>
+			<div class="flex mt-40px">
+				<div class="w-[50%]">
+					<div>{{ $t("設定新密碼") }}{{ $t(":") }}</div>
+					<div>
+						<InputText
+							class="w-[70%] h-40px !mt-4px"
+							id="newPass"
+							type="password"
+							v-model="password.newPass"
+							aria-describedby="newPass-help"
+						/>
+					</div>
+					<div class="absolute" v-if="password.isNewPassBlank">
+						<small id="newPass-help" class="p-error">
+							{{ $t("請輸入新密碼") }}
+						</small>
+					</div>
+				</div>
+				<div class="w-[50%]">
+					<div>{{ $t("驗證新密碼") }}{{ $t(":") }}</div>
+					<div>
+						<InputText
+							class="w-[70%] h-40px !mt-4px"
+							id="confirmPass"
+							type="password"
+							v-model="password.confirmPass"
+							aria-describedby="confirmPass-help"
+						/>
+					</div>
+					<div class="absolute" v-if="password.notMatch">
+						<small id="confirmPass-help" class="p-error">
+							{{ $t("密碼不符") }}
+						</small>
+					</div>
+				</div>
+			</div>
+			<Button
+				class="p-button-sm p-button-secondary p-button-outlined !mt-60px !text-[16px]"
+				type="submit"
+				icon="pi pi-pencil"
+				:loading="isChangePassLoading"
+				@click="handleSubmit()"
+				:label="$t('修改送出')"
+			/>
 		</div>
 	</div>
 </template>
 <script setup lang="ts">
 import Button from "primevue/button";
 import InputText from "primevue/inputtext";
-import { ref } from "vue";
+import { onMounted, reactive, ref, toRaw } from "vue";
 import Dialog from "primevue/dialog";
+import { InvalidSessionError } from "@/api/error";
+import { useAdminInfoStore } from "@/stores/RecruitmentAdminStore";
+import { useRecruitmentAdminAuthStore } from "@/stores/universalAuth";
+import { RecruitmentManagerAuthResponse } from "@/api/recruitment/reviewer/types";
+import { useToast } from "primevue/usetoast";
+import { RecruitmentAdminAPI } from "@/api/recruitment/admin/api";
+
+const toast = useToast();
 const userId = ref("系辦主管");
-const newUserId = ref();
 const displayUserId = ref();
 const editUserId = () => {
 	displayUserId.value = true;
@@ -117,8 +166,123 @@ const cancelPhone = () => {
 	displayPhone.value = false;
 };
 
-const oldPassword = ref();
-const newPassword = ref();
-const ensurePassword = ref();
-const editPassword = ref();
+const adminAuth = useRecruitmentAdminAuthStore();
+const adminStore = useAdminInfoStore();
+const api = new RecruitmentAdminAPI(adminAuth);
+
+// const adminInfo: RecruitmentManagerAuthResponse = toRaw(adminStore.userInfo);
+
+const initialPassValue = {
+	isCurrentPassBlank: false,
+	isNewPassBlank: false,
+	notMatch: false,
+	currentPass: "",
+	newPass: "",
+	confirmPass: "",
+};
+
+const isChangePassLoading = ref(false);
+
+const changePassRes = reactive({
+	success: false,
+	message: "" as string | [],
+});
+
+const password = reactive({
+	isCurrentPassBlank: false,
+	isNewPassBlank: false,
+	notMatch: false,
+	currentPass: "",
+	newPass: "",
+	confirmPass: "",
+});
+
+const resetPassValue = () => {
+	password.isCurrentPassBlank = initialPassValue.isCurrentPassBlank;
+	password.isNewPassBlank = initialPassValue.isNewPassBlank;
+	password.notMatch = initialPassValue.notMatch;
+	password.currentPass = initialPassValue.currentPass;
+	password.newPass = initialPassValue.newPass;
+	password.confirmPass = initialPassValue.confirmPass;
+};
+
+const patchChangePassword = async (body: object) => {
+	try {
+		return await api.changePassword(body);
+	} catch (e: any) {
+		if (e instanceof InvalidSessionError) {
+			console.error(
+				"Session has already expired while changing password"
+			);
+
+			return;
+		}
+	}
+};
+
+const handleSubmit = async () => {
+	if (password.currentPass === "") {
+		password.isCurrentPassBlank = true;
+	} else {
+		password.isCurrentPassBlank = false;
+	}
+
+	if (password.newPass === "") {
+		password.isNewPassBlank = true;
+	} else {
+		password.isNewPassBlank = false;
+	}
+
+	if (password.newPass !== password.confirmPass) {
+		password.notMatch = true;
+	} else {
+		password.notMatch = false;
+	}
+
+	if (
+		!password.isCurrentPassBlank &&
+		!password.isNewPassBlank &&
+		!password.notMatch
+	) {
+		isChangePassLoading.value = true;
+
+		const body = {
+			current_password: password.currentPass,
+			password: password.newPass,
+			password_confirmation: password.confirmPass,
+		};
+
+		const response = patchChangePassword(body);
+
+		await response.then((res) => {
+			if (res?.success !== undefined && res?.message !== undefined) {
+				changePassRes.success = toRaw(res.success);
+				changePassRes.message = toRaw(res.message);
+			}
+
+			isChangePassLoading.value = false;
+
+			if (changePassRes.success) {
+				resetPassValue();
+				toast.add({
+					severity: "success",
+					summary: "Success",
+					detail: changePassRes.message,
+					life: 3000,
+				});
+			} else {
+				toast.add({
+					severity: "error",
+					summary: "Error",
+					detail: changePassRes.message[
+						changePassRes.message.length - 1
+					],
+					life: 5000,
+				});
+			}
+		});
+	}
+};
+
+//onMounted(() => {});
 </script>

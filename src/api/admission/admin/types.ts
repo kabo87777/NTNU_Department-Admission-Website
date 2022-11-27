@@ -6,6 +6,7 @@ export interface AdmissionManagerSignInInput {
 
 export interface AdmissionManagerAuthResponse {
 	email: string;
+	username: string;
 	provider: string;
 	uid: string;
 	id: number;
@@ -15,6 +16,8 @@ export interface AdmissionManagerAuthResponse {
 	name: any | null;
 	nickname: any | null;
 	image: any | null;
+	created_at: string;
+	updated_at: string;
 }
 
 export interface AdmissionAdminProgramListResponse {
@@ -25,7 +28,6 @@ export interface AdmissionAdminProgramListResponse {
 	application_end_date: string;
 	review_start_date: string;
 	review_end_date: string;
-	require_file: string; // Array or string ??
 	stage: string;
 	created_at: string;
 	updated_at: string;
@@ -33,6 +35,7 @@ export interface AdmissionAdminProgramListResponse {
 	applicant_required_file: null;
 	reviewer_required_info: null;
 	reviewer_required_file: null;
+	detail: string;
 }
 
 export interface AdmAdminReviewerListResponse {
@@ -131,4 +134,9 @@ export interface AdmAdminEditApplicantRequest {
 	name: string;
 	email: string;
 	password?: string;
+}
+
+export interface AdmissionAdminGenericResponse {
+	success?: boolean;
+	message?: string | [];
 }

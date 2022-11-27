@@ -5,6 +5,7 @@ import type {
 	AdmissionAdminApplicantsListResponse,
 	AdmAdminReviewerRelatedProgramResponse,
 	AdmAdminEditApplicantRequest,
+	AdmissionAdminGenericResponse,
 } from "./types";
 import type { APIGenericResponse } from "@/api/types";
 import { GenericAPI } from "@/api/api";
@@ -128,7 +129,7 @@ export class AdmissionAdminAPI extends GenericAPI {
 			data
 		);
 		if (response.error === true)
-			throw new Error("Failed to update program");
+			throw new Error("Failed to add new program");
 	}
 
 	async deleteProgram(programID: number): Promise<any> {
@@ -136,6 +137,25 @@ export class AdmissionAdminAPI extends GenericAPI {
 			`/admission/admin/program/${programID}`
 		);
 		if (response.error === true)
-			throw new Error("Failed to update program");
+			throw new Error("Failed to delete program");
+	}
+
+	async changePassword(body: object): Promise<AdmissionAdminGenericResponse> {
+		const data: APIGenericResponse = await this.instance.patch(
+			"admission/auth/admin/password",
+			body
+		);
+
+		if (data.error !== false) {
+			return {
+				success: false,
+				message: data.message.full_messages,
+			};
+		}
+
+		return {
+			success: true,
+			message: data.message,
+		};
 	}
 }
