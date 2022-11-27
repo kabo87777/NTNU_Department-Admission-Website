@@ -28,24 +28,24 @@ export class RecruitmentReviewerAPI extends GenericAPI {
 	}
 
 	async changePassword(
-        body: object
-    ): Promise<RecruitmentReviewerGenericResponse> {
-        const data: APIGenericResponse = await this.instance.patch(
-            "recruitment/auth/reviewer/password",
-            body
-        );
+		body: object
+	): Promise<RecruitmentReviewerGenericResponse> {
+		const data: APIGenericResponse = await this.instance.patch(
+			"recruitment/auth/reviewer/password",
+			body
+		);
 
-        if (data.error !== false) {
-            return {
-                success: false,
-                message: data.message.full_messages,
-            };
-        }
+		if (data.error !== false) {
+			return {
+				success: false,
+				message: data.message.full_messages,
+			};
+		}
 
-        return {
-            success: true,
-            message: data.message,
-        };
+		return {
+			success: true,
+			message: data.message,
+		};
 	}
 
 	async getApplicantList(

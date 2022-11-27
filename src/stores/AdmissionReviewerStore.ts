@@ -1,4 +1,7 @@
-import { AdmissionReviewerProgramListResponse, AdmissionManagerAuthResponse } from "@/api/admission/reviewer/types";
+import {
+	AdmissionReviewerProgramListResponse,
+	AdmissionManagerAuthResponse,
+} from "@/api/admission/reviewer/types";
 import { defineStore } from "pinia";
 import { ref } from "vue";
 

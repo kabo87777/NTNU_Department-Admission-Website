@@ -1,4 +1,7 @@
-import { RecruitmentReviewerProgramListResponse, RecruitmentManagerAuthResponse } from "@/api/recruitment/reviewer/types";
+import {
+	RecruitmentReviewerProgramListResponse,
+	RecruitmentManagerAuthResponse,
+} from "@/api/recruitment/reviewer/types";
 import { defineStore } from "pinia";
 import { ref } from "vue";
 
