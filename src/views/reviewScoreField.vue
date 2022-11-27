@@ -89,176 +89,186 @@
 		<!-- Body - Show Information Data -->
 		<div class="my-6" text="2xl gray-900">{{ trans.showInfo.value }}</div>
 		<!-- showInfo - checkbox 1 -->
-		<div class="flex mt-6 mb-2 gap-4 items-center">
-			<Checkbox
-				v-if="showInfo[0]"
-				v-model="checkInfo[0]"
-				input-id="info_0"
-				:binary="true"
-			/>
-			<label for="info_0" text="xl gray-700">
-				{{ trans.nameInfo.value }}
-			</label>
-		</div>
-		<div class="flex mx-10 gap-8 mb-4" text="gray-500">
-			<div>{{ trans.details.suffix.value }}</div>
-			<div>{{ trans.details.chineseName.value }}</div>
-			<div>{{ trans.details.englishName.value }}</div>
+		<div v-if="showedInfo[0].visible">
+			<div class="flex mt-6 mb-2 gap-4 items-center">
+				<Checkbox
+					v-model="showedInfo[0].checked"
+					:input-id="showedInfo[0].id"
+					:binary="true"
+				/>
+				<label for="showedInfo[0].id" text="xl gray-700">
+					{{ trans.nameInfo.value }}
+				</label>
+			</div>
+			<div class="flex mx-10 gap-8 mb-4" text="gray-500">
+				<div>{{ trans.details.suffix.value }}</div>
+				<div>{{ trans.details.chineseName.value }}</div>
+				<div>{{ trans.details.englishName.value }}</div>
+			</div>
 		</div>
 		<!-- showInfo - checkbox 2 -->
-		<div class="flex mt-6 mb-2 gap-4 items-center">
-			<Checkbox
-				v-if="showInfo[1]"
-				v-model="checkInfo[1]"
-				input-id="info_1"
-				:binary="true"
-			/>
-			<label for="info_1" text="xl gray-700">
-				{{ trans.admissionId.value }}
-			</label>
-		</div>
-		<div class="flex mx-10 gap-8 mb-4" text="gray-500">
-			<div>{{ trans.details.master.value }}</div>
-			<div>{{ trans.details.phD.value }}</div>
+		<div v-if="showedInfo[1].visible">
+			<div class="flex mt-6 mb-2 gap-4 items-center">
+				<Checkbox
+					v-model="showedInfo[1].checked"
+					:input-id="showedInfo[1].id"
+					:binary="true"
+				/>
+				<label :for="showedInfo[1].id" text="xl gray-700">
+					{{ trans.admissionId.value }}
+				</label>
+			</div>
+			<div class="flex mx-10 gap-8 mb-4" text="gray-500">
+				<div>{{ trans.details.master.value }}</div>
+				<div>{{ trans.details.phD.value }}</div>
+			</div>
 		</div>
 		<!-- showInfo - checkbox 3 -->
-		<div class="flex mt-6 mb-2 gap-4 items-center">
-			<Checkbox
-				v-if="showInfo[2]"
-				v-model="checkInfo[2]"
-				input-id="info_2"
-				:binary="true"
-			/>
-			<label for="info_2" text="xl gray-700">
-				{{ trans.residentAddr.value }}
-			</label>
-		</div>
-		<div class="flex mx-10 gap-8 mb-4" text="gray-500">
-			<div>{{ trans.details.country.value }}</div>
-			<div>{{ trans.details.city.value }}</div>
-			<div>{{ trans.details.streetAddr.value }}</div>
+		<div v-if="showedInfo[2].visible">
+			<div class="flex mt-6 mb-2 gap-4 items-center">
+				<Checkbox
+					v-model="showedInfo[2].checked"
+					:input-id="showedInfo[2].id"
+					:binary="true"
+				/>
+				<label :for="showedInfo[2].id" text="xl gray-700">
+					{{ trans.residentAddr.value }}
+				</label>
+			</div>
+			<div class="flex mx-10 gap-8 mb-4" text="gray-500">
+				<div>{{ trans.details.country.value }}</div>
+				<div>{{ trans.details.city.value }}</div>
+				<div>{{ trans.details.streetAddr.value }}</div>
+			</div>
 		</div>
 		<!-- showInfo - checkbox 4 -->
-		<div class="flex mt-6 mb-2 gap-4 items-center">
-			<Checkbox
-				v-if="showInfo[3]"
-				v-model="checkInfo[3]"
-				input-id="info_3"
-				:binary="true"
-			/>
-			<label for="info_3" text="xl gray-700">
-				{{ trans.currentAddr.value }}
-			</label>
-		</div>
-		<div class="flex mx-10 gap-8 mb-4" text="gray-500">
-			<div>{{ trans.details.country.value }}</div>
-			<div>{{ trans.details.city.value }}</div>
-			<div>{{ trans.details.streetAddr.value }}</div>
+		<div v-if="showedInfo[3].visible">
+			<div class="flex mt-6 mb-2 gap-4 items-center">
+				<Checkbox
+					v-model="showedInfo[3].checked"
+					:input-id="showedInfo[3].id"
+					:binary="true"
+				/>
+				<label :for="showedInfo[3].id" text="xl gray-700">
+					{{ trans.currentAddr.value }}
+				</label>
+			</div>
+			<div class="flex mx-10 gap-8 mb-4" text="gray-500">
+				<div>{{ trans.details.country.value }}</div>
+				<div>{{ trans.details.city.value }}</div>
+				<div>{{ trans.details.streetAddr.value }}</div>
+			</div>
 		</div>
 		<!-- showInfo - checkbox 5 -->
-		<div class="flex mt-6 mb-2 gap-4 items-center">
-			<Checkbox
-				v-if="showInfo[4]"
-				v-model="checkInfo[4]"
-				input-id="info_4"
-				:binary="true"
-			/>
-			<label for="info_4" text="xl gray-700">
-				{{ trans.nationalId.value }}
-			</label>
-		</div>
-		<div class="flex mx-10 gap-8 mb-4" text="gray-500">
-			<div>{{ trans.details.gender.value }}</div>
-			<div>{{ trans.details.bornCountry.value }}</div>
-			<div>{{ trans.details.mainNation.value }}</div>
-			<div>{{ trans.details.bornDate.value }}</div>
-			<div>{{ trans.details.mainNation.value }}</div>
+		<div v-if="showedInfo[4].visible">
+			<div class="flex mt-6 mb-2 gap-4 items-center">
+				<Checkbox
+					v-model="showedInfo[4].checked"
+					:input-id="showedInfo[4].id"
+					:binary="true"
+				/>
+				<label :for="showedInfo[4].id" text="xl gray-700">
+					{{ trans.nationalId.value }}
+				</label>
+			</div>
+			<div class="flex mx-10 gap-8 mb-4" text="gray-500">
+				<div>{{ trans.details.gender.value }}</div>
+				<div>{{ trans.details.bornCountry.value }}</div>
+				<div>{{ trans.details.mainNation.value }}</div>
+				<div>{{ trans.details.bornDate.value }}</div>
+				<div>{{ trans.details.mainNation.value }}</div>
+			</div>
 		</div>
 		<!-- showInfo - checkbox 6 -->
-		<div class="flex mt-6 mb-2 gap-4 items-center">
-			<Checkbox
-				v-if="showInfo[5]"
-				v-model="checkInfo[5]"
-				input-id="info_5"
-				:binary="true"
-			/>
-			<label for="info_5" text="xl gray-700">
-				{{ trans.contactInfo.value }}
-			</label>
-		</div>
-		<div class="flex mx-10 gap-8 mb-4" text="gray-500">
-			<div>{{ trans.details.email.value }}</div>
-			<div>{{ trans.details.primePhone.value }}</div>
-			<div>{{ trans.details.secondPhone.value }}</div>
-			<div>{{ trans.details.mobilePhone.value }}</div>
+		<div v-if="showedInfo[5].visible">
+			<div class="flex mt-6 mb-2 gap-4 items-center">
+				<Checkbox
+					v-model="showedInfo[5].checked"
+					:input-id="showedInfo[5].id"
+					:binary="true"
+				/>
+				<label :for="showedInfo[5].id" text="xl gray-700">
+					{{ trans.contactInfo.value }}
+				</label>
+			</div>
+			<div class="flex mx-10 gap-8 mb-4" text="gray-500">
+				<div>{{ trans.details.email.value }}</div>
+				<div>{{ trans.details.primePhone.value }}</div>
+				<div>{{ trans.details.secondPhone.value }}</div>
+				<div>{{ trans.details.mobilePhone.value }}</div>
+			</div>
 		</div>
 		<ParagraphDivider />
 
 		<!-- Body - Show Uploaded File Data -->
 		<div class="my-6" text="2xl gray-900">{{ trans.showFile.value }}</div>
 		<!-- showFile - checkbox 1 -->
-		<div class="flex mt-6 mb-2 gap-4 items-center">
-			<Checkbox
-				v-if="showFile[0]"
-				v-model="checkFile[0]"
-				input-id="file_0"
-				:binary="true"
-			/>
-			<label for="file_0" text="xl gray-700">
-				{{ trans.schoolExp.value }}
-			</label>
-		</div>
-		<div class="flex mx-10 gap-8 mb-4" text="gray-500">
-			<div>{{ trans.details.fileName.value }}</div>
-			<div>{{ trans.details.fileUpload.value }}</div>
+		<div v-if="showedFile[0].visible">
+			<div class="flex mt-6 mb-2 gap-4 items-center">
+				<Checkbox
+					v-model="showedFile[0].checked"
+					:input-id="showedFile[0].id"
+					:binary="true"
+				/>
+				<label :for="showedFile[0].id" text="xl gray-700">
+					{{ trans.schoolExp.value }}
+				</label>
+			</div>
+			<div class="flex mx-10 gap-8 mb-4" text="gray-500">
+				<div>{{ trans.details.fileName.value }}</div>
+				<div>{{ trans.details.fileUpload.value }}</div>
+			</div>
 		</div>
 		<!-- showFile - checkbox 2 -->
-		<div class="flex mt-6 mb-2 gap-4 items-center">
-			<Checkbox
-				v-if="showFile[1]"
-				v-model="checkFile[1]"
-				input-id="file_1"
-				:binary="true"
-			/>
-			<label for="file_1" text="xl gray-700">
-				{{ trans.testScore.value }}
-			</label>
-		</div>
-		<div class="flex mx-10 gap-8 mb-4" text="gray-500">
-			<div>{{ trans.details.fileName.value }}</div>
-			<div>{{ trans.details.fileUpload.value }}</div>
+		<div v-if="showedFile[1].visible">
+			<div class="flex mt-6 mb-2 gap-4 items-center">
+				<Checkbox
+					v-model="showedFile[1].checked"
+					:input-id="showedFile[1].id"
+					:binary="true"
+				/>
+				<label :for="showedFile[1].id" text="xl gray-700">
+					{{ trans.testScore.value }}
+				</label>
+			</div>
+			<div class="flex mx-10 gap-8 mb-4" text="gray-500">
+				<div>{{ trans.details.fileName.value }}</div>
+				<div>{{ trans.details.fileUpload.value }}</div>
+			</div>
 		</div>
 		<!-- showFile - checkbox 3 -->
-		<div class="flex mt-6 mb-2 gap-4 items-center">
-			<Checkbox
-				v-if="showFile[2]"
-				v-model="checkFile[2]"
-				input-id="file_2"
-				:binary="true"
-			/>
-			<label for="file_2" text="xl gray-700">
-				{{ trans.otherFile.value }}
-			</label>
-		</div>
-		<div class="flex mx-10 gap-8 mb-4" text="gray-500">
-			<div>{{ trans.details.fileName.value }}</div>
-			<div>{{ trans.details.fileUpload.value }}</div>
+		<div v-if="showedFile[2].visible">
+			<div class="flex mt-6 mb-2 gap-4 items-center">
+				<Checkbox
+					v-model="showedFile[2].checked"
+					:input-id="showedFile[2].id"
+					:binary="true"
+				/>
+				<label :for="showedFile[2].id" text="xl gray-700">
+					{{ trans.otherFile.value }}
+				</label>
+			</div>
+			<div class="flex mx-10 gap-8 mb-4" text="gray-500">
+				<div>{{ trans.details.fileName.value }}</div>
+				<div>{{ trans.details.fileUpload.value }}</div>
+			</div>
 		</div>
 		<!-- showFile - checkbox 4 -->
-		<div class="flex mt-6 mb-2 gap-4 items-center">
-			<Checkbox
-				v-if="showFile[3]"
-				v-model="checkFile[3]"
-				input-id="file_3"
-				:binary="true"
-			/>
-			<label for="file_3" text="xl gray-700">
-				{{ trans.nationalId.value }}
-			</label>
-		</div>
-		<div class="flex mx-10 gap-8 mb-4" text="gray-500">
-			<div>{{ trans.details.fileName.value }}</div>
-			<div>{{ trans.details.fileUpload.value }}</div>
+		<div v-if="showedFile[3].visible">
+			<div class="flex mt-6 mb-2 gap-4 items-center">
+				<Checkbox
+					v-model="showedFile[3].checked"
+					:input-id="showedFile[3].id"
+					:binary="true"
+				/>
+				<label :for="showedFile[3].id" text="xl gray-700">
+					{{ trans.nationalId.value }}
+				</label>
+			</div>
+			<div class="flex mx-10 gap-8 mb-4" text="gray-500">
+				<div>{{ trans.details.fileName.value }}</div>
+				<div>{{ trans.details.fileUpload.value }}</div>
+			</div>
 		</div>
 
 		<!-- Footer - Control Buttons -->
@@ -299,10 +309,15 @@ import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
 import { AdmissionAdminAPI } from "@/api/admission/admin/api";
 import { useGlobalStore } from "@/stores/globalStore";
 import { InvalidSessionError } from "@/api/error";
-import { useMutation, useQuery } from "@tanstack/vue-query";
-import { AdmissionAdminScoreFieldResponse } from "@/api/admission/admin/types";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
+import {
+	AdmissionAdminScoreFieldResponse,
+	AdmissionAdminProgramListResponse,
+} from "@/api/admission/admin/types";
 import { watch } from "fs";
 import { object, TypeOf } from "yup";
+import { addAbortSignal } from "stream";
+import { getIn } from "yup/lib/util/reach";
 
 const { t } = useI18n();
 const toast = useToast();
@@ -370,6 +385,8 @@ const adminAuth = useAdmissionAdminAuthStore();
 const api = new AdmissionAdminAPI(adminAuth);
 const store = useGlobalStore();
 
+const queryClient = useQueryClient();
+
 // API Index form: Score Field Response (Improvement)
 const resIndex = [
 	"docs_weight",
@@ -407,16 +424,26 @@ const docsScore = reactive([
 ]);
 const oralScore = reactive([
 	{ name: "Total", weight: 0, index: 0 },
-	{ name: "", weight: 0, index: 1 },
-	{ name: "", weight: 0, index: 2 },
-	{ name: "", weight: 0, index: 3 },
-	{ name: "", weight: 0, index: 4 },
-	{ name: "", weight: 0, index: 5 },
+	{ name: trans.labelName[1].value, weight: 0, index: 1 },
+	{ name: trans.labelName[2].value, weight: 0, index: 2 },
+	{ name: trans.labelName[3].value, weight: 0, index: 3 },
+	{ name: trans.labelName[4].value, weight: 0, index: 4 },
+	{ name: trans.labelName[5].value, weight: 0, index: 5 },
 ]);
-const showInfo = reactive([true, true, true, true, true, true]);
-const showFile = reactive([true, true, true, true]);
-const checkInfo = reactive([true, true, true, true, true, true]);
-const checkFile = reactive([true, true, true, true]);
+const showedInfo = reactive([
+	{ id: "file1", visible: true, checked: true },
+	{ id: "file2", visible: true, checked: true },
+	{ id: "file3", visible: true, checked: true },
+	{ id: "file4", visible: true, checked: true },
+	{ id: "file5", visible: true, checked: true },
+	{ id: "file6", visible: true, checked: true },
+]);
+const showedFile = reactive([
+	{ id: "file1", visible: true, checked: true },
+	{ id: "file2", visible: true, checked: true },
+	{ id: "file3", visible: true, checked: true },
+	{ id: "file4", visible: true, checked: true },
+]);
 
 // API: Get Score Data
 const getScoreField = useQuery(["scoreField"], async () => {
@@ -443,6 +470,45 @@ const patchScoreField = useMutation(
 				console.error("Invalid Session Error");
 			}
 		}
+	},
+	{
+		onSuccess: () => {
+			queryClient.invalidateQueries(["scoreField"]);
+		},
+	}
+);
+
+// API: Get Info/File Data
+const getInfoFileField = useQuery(["infoFileField"], async () => {
+	try {
+		if (store.program) {
+			const allData = await api.getProgramList();
+			return allData[store.program.id];
+		}
+	} catch (e: any) {
+		if (e instanceof InvalidSessionError) {
+			console.error("Invalid Session Error");
+		}
+	}
+});
+
+// API: Patch Info/File Data
+const patchInfoFileField = useMutation(
+	async (newData: AdmissionAdminProgramListResponse) => {
+		try {
+			if (store.program) {
+				return await api.updateProgramData(store.program.id, newData);
+			}
+		} catch (e: any) {
+			if (e instanceof InvalidSessionError) {
+				console.error("Invalid Session Error");
+			}
+		}
+	},
+	{
+		onSuccess: () => {
+			queryClient.invalidateQueries(["infoFileField"]);
+		},
 	}
 );
 
@@ -455,6 +521,8 @@ function saveChange() {
 					trans.labelName[
 						element.index as keyof typeof trans.labelName
 					].value;
+				// FIXME: Debug - Check Replace empty name work or not.
+				console.log("empty name has be auto filled ->" + element.name);
 			}
 		});
 		oralScore.forEach((element) => {
@@ -464,6 +532,13 @@ function saveChange() {
 						element.index as keyof typeof trans.labelName
 					].value;
 			}
+		});
+		// FIXME: DEBUG - Print sented Data before mutate
+		docsScore.forEach((element) => {
+			console.log(element.name + ": " + element.weight);
+		});
+		oralScore.forEach((element) => {
+			console.log(element.name + ": " + element.weight);
 		});
 		// Patch Data
 		patchScoreField.mutate({
@@ -507,34 +582,60 @@ function saveChange() {
 
 // ButtonFn: Discard Changes and Update Data
 function refreshData() {
-	const getData = getScoreField.data.value;
-	if (!getData) return;
-	docsScore[0].weight = getData.docs_weight;
-	oralScore[0].weight = getData.oral_weight;
-	docsScore[1].name = getData.docs_grade_name_1;
-	docsScore[2].name = getData.docs_grade_name_2;
-	docsScore[3].name = getData.docs_grade_name_3;
-	docsScore[4].name = getData.docs_grade_name_4;
-	docsScore[5].name = getData.docs_grade_name_5;
-	docsScore[1].weight = getData.docs_grade_weight_1;
-	docsScore[2].weight = getData.docs_grade_weight_2;
-	docsScore[3].weight = getData.docs_grade_weight_3;
-	docsScore[4].weight = getData.docs_grade_weight_4;
-	docsScore[5].weight = getData.docs_grade_weight_5;
-	oralScore[1].name = getData.oral_grade_name_1;
-	oralScore[2].name = getData.oral_grade_name_2;
-	oralScore[3].name = getData.oral_grade_name_3;
-	oralScore[4].name = getData.oral_grade_name_4;
-	oralScore[5].name = getData.oral_grade_name_5;
-	oralScore[1].weight = getData.oral_grade_weight_1;
-	oralScore[2].weight = getData.oral_grade_weight_2;
-	oralScore[3].weight = getData.oral_grade_weight_3;
-	oralScore[4].weight = getData.oral_grade_weight_4;
-	oralScore[5].weight = getData.oral_grade_weight_5;
+	// TODO: Do "try" "catch" function
+	const getScore = getScoreField.data.value;
+	if (!getScore) return "Failed to fetch Score Data";
+	docsScore[0].weight = getScore.docs_weight;
+	oralScore[0].weight = getScore.oral_weight;
+	docsScore[1].name = getScore.docs_grade_name_1;
+	docsScore[2].name = getScore.docs_grade_name_2;
+	docsScore[3].name = getScore.docs_grade_name_3;
+	docsScore[4].name = getScore.docs_grade_name_4;
+	docsScore[5].name = getScore.docs_grade_name_5;
+	docsScore[1].weight = getScore.docs_grade_weight_1;
+	docsScore[2].weight = getScore.docs_grade_weight_2;
+	docsScore[3].weight = getScore.docs_grade_weight_3;
+	docsScore[4].weight = getScore.docs_grade_weight_4;
+	docsScore[5].weight = getScore.docs_grade_weight_5;
+	oralScore[1].name = getScore.oral_grade_name_1;
+	oralScore[2].name = getScore.oral_grade_name_2;
+	oralScore[3].name = getScore.oral_grade_name_3;
+	oralScore[4].name = getScore.oral_grade_name_4;
+	oralScore[5].name = getScore.oral_grade_name_5;
+	oralScore[1].weight = getScore.oral_grade_weight_1;
+	oralScore[2].weight = getScore.oral_grade_weight_2;
+	oralScore[3].weight = getScore.oral_grade_weight_3;
+	oralScore[4].weight = getScore.oral_grade_weight_4;
+	oralScore[5].weight = getScore.oral_grade_weight_5;
+
+	const getInfoFile = getInfoFileField.data.value;
+	if (!getInfoFile) return "";
+	const infoList = {
+		visible: JSON.parse(getInfoFile.applicant_required_info!),
+		checked: JSON.parse(getInfoFile.reviewer_required_info!),
+	};
+	const fileList = {
+		visible: JSON.parse(getInfoFile.applicant_required_file!),
+		checked: JSON.parse(getInfoFile.reviewer_required_file!),
+	};
+	showedInfo.forEach((element) => {
+		if (infoList.visible.includes(element.id)) element.visible = true;
+		else element.visible = false;
+		if (infoList.checked.includes(element.id)) element.checked = true;
+		else element.checked = false;
+	});
+	showedFile.forEach((element) => {
+		if (fileList.visible.includes(element.id)) element.visible = true;
+		else element.visible = false;
+		if (fileList.checked.includes(element.id)) element.checked = true;
+		else element.checked = false;
+	});
 }
 
 // Lifecycle: Mounted
-onMounted(() => {});
+onMounted(() => {
+	refreshData();
+});
 
 // TODO Lifecycle: Watch
 </script>

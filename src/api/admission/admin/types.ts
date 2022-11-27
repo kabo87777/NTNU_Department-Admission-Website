@@ -25,14 +25,15 @@ export interface AdmissionAdminProgramListResponse {
 	application_end_date: string;
 	review_start_date: string;
 	review_end_date: string;
-	require_file: string; // Array or string ??
+	require_file: string; // FIXME: Does this type exist in ProgramList's API response?
 	stage: string;
 	created_at: string;
 	updated_at: string;
-	applicant_required_info: null; // ??
-	applicant_required_file: null;
-	reviewer_required_info: null;
-	reviewer_required_file: null;
+	// FIXME: Not very sure to reserve "null" type or not?
+	applicant_required_info: string;
+	applicant_required_file: string;
+	reviewer_required_info: string;
+	reviewer_required_file: string;
 }
 
 export interface AdmAdminReviewerListResponse {

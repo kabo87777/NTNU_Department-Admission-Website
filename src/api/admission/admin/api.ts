@@ -74,12 +74,13 @@ export class AdmissionAdminAPI extends GenericAPI {
 		programID: number,
 		newData: AdmissionAdminScoreFieldResponse
 	): Promise<APIGenericResponse> {
-		const data: APIGenericResponse = await this.instance.patch(
+		const response: APIGenericResponse = await this.instance.patch(
 			`/admission/admin/program/${programID}/grading/`,
 			newData
 		);
-		if (data.error === true) throw new Error("Failed to patch score field");
-		return data;
+		if (response.error === true)
+			throw new Error("Failed to patch score field");
+		return response;
 	}
 	async postApplicantsXlsx(programID: number, data: FormData) {
 		console.log("POST");
