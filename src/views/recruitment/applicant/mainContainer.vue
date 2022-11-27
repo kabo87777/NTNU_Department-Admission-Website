@@ -24,6 +24,7 @@
 </template>
 
 <script setup lang="ts">
+import { watch } from "vue";
 import { useRouter } from "vue-router";
 import { useQuery } from "@tanstack/vue-query";
 import { InvalidSessionError } from "@/api/error";
@@ -32,6 +33,7 @@ import { useRecruitmentApplicantAuthStore } from "@/stores/universalAuth";
 import { useProjectIdStore } from "@/stores/RecruitmentApplicantStore";
 import NavBar from "@/components/NavBar.vue";
 import SideBar from "@/components/sidebars/recruitmentApplicantSidebar.vue";
+import { doUniversalAuthSessionValidation } from "@/api/universalAuth";
 
 const router = useRouter();
 const applicantAuth = useRecruitmentApplicantAuthStore();
@@ -64,8 +66,13 @@ const { data } = useQuery(
 		},
 	}
 );
-
 router.push("/recruitment/applicant/switchProject");
+watch(router.currentRoute, async () => {
+	if (!(await doUniversalAuthSessionValidation(applicantAuth))) {
+		router.replace({ name: "RecruitmentApplicantSignin" });
+		// TODO: show session expired notification
+	}
+});
 </script>
 
 <style scoped></style>
