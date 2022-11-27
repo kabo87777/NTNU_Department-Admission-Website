@@ -301,7 +301,7 @@ import InputText from "primevue/inputtext";
 import InputNumber from "primevue/inputnumber";
 import Button from "primevue/button";
 import Checkbox from "primevue/checkbox";
-import ParagraphDivider from "../styles/paragraphDivider.vue";
+import ParagraphDivider from "@/styles/paragraphDivider.vue";
 import { useToast } from "primevue/usetoast";
 import { reactive, ref, computed, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
