@@ -48,43 +48,72 @@
 			</Dialog>
 		</div>
 		<Divider />
-		<div>
-			{{ $t("修改密碼") }}<img src="/assets/UserSetting/Lock.png" />
+		<div class="mt-20px font-[500] font-bold text-[24px] flex">
+			<div>{{ $t("修改密碼") }}</div>
+			<i class="pi pi-lock ml-16px mt-4px text-[#C6BCD0]" />
 		</div>
-		<div>
-			<div>
-				<div>{{ $t("請輸入舊密碼") }}：</div>
-				<InputText
-					type="password"
-					v-model="password.currentPass"
-				></InputText>
-			</div>
-			<div>
+		<div class="mt-8px px-12px py-24px">
+			<div class="w-[50%]">
+				<div>{{ $t("舊密碼") }}{{ $t(":") }}</div>
 				<div>
-					<label>{{ $t("設定新密碼") }}：</label>
-					<label class="ml-110px"
-						>{{ $t("確認密碼(再輸入一次驗證密碼)") }}：</label
-					>
+					<InputText
+						class="w-[70%] h-40px !mt-4px"
+						id="currentPass"
+						type="password"
+						v-model="password.currentPass"
+						aria-describedby="currentPass-help"
+					/>
 				</div>
-				<InputText
-					type="password"
-					v-model="password.newPass"
-				></InputText>
-				<InputText
-					type="password"
-					v-model="password.confirmPass"
-				></InputText>
+				<div class="absolute" v-if="password.isCurrentPassBlank">
+					<small id="currentPass-help" class="p-error">
+						{{ $t("請輸入舊密碼") }}
+					</small>
+				</div>
 			</div>
-		</div>
-		<div>
+			<div class="flex mt-40px">
+				<div class="w-[50%]">
+					<div>{{ $t("設定新密碼") }}{{ $t(":") }}</div>
+					<div>
+						<InputText
+							class="w-[70%] h-40px !mt-4px"
+							id="newPass"
+							type="password"
+							v-model="password.newPass"
+							aria-describedby="newPass-help"
+						/>
+					</div>
+					<div class="absolute" v-if="password.isNewPassBlank">
+						<small id="newPass-help" class="p-error">
+							{{ $t("請輸入新密碼") }}
+						</small>
+					</div>
+				</div>
+				<div class="w-[50%]">
+					<div>{{ $t("驗證新密碼") }}{{ $t(":") }}</div>
+					<div>
+						<InputText
+							class="w-[70%] h-40px !mt-4px"
+							id="confirmPass"
+							type="password"
+							v-model="password.confirmPass"
+							aria-describedby="confirmPass-help"
+						/>
+					</div>
+					<div class="absolute" v-if="password.notMatch">
+						<small id="confirmPass-help" class="p-error">
+							{{ $t("密碼不符") }}
+						</small>
+					</div>
+				</div>
+			</div>
 			<Button
-				@click="handleSubmit"
-				class="p-button-outlined"
+				class="p-button-sm p-button-secondary p-button-outlined !mt-60px !text-[16px]"
+				type="submit"
+				icon="pi pi-pencil"
 				:loading="isChangePassLoading"
-			>
-				<img src="/assets/UserSetting/Edit.png" />
-				{{ $t("修改送出") }}
-			</Button>
+				@click="handleSubmit()"
+				:label="$t('修改送出')"
+			/>
 		</div>
 	</div>
 </template>
