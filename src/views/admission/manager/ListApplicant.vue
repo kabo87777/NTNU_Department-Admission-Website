@@ -217,6 +217,7 @@ store.$subscribe((mutation, state) => {
 	if (state.program) {
 		console.log(state.program.category + state.program.name);
 	}
+	refetch();
 });
 
 const modalVisible = ref(false);
@@ -271,6 +272,12 @@ const { mutate: uploadApplicantImport } = useMutation({
 const { mutate: deleteApplicant } = useMutation({
 	mutationFn: (id: number) => {
 		return api.deleteApplicant(id);
+	},
+	onMutate: () => {
+		isImporting.value = true;
+	},
+	onSuccess: () => {
+		refetch().then(() => (isImporting.value = false));
 	},
 	onError: () => {
 		// TODO: Show error dialog

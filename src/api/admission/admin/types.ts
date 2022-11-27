@@ -25,7 +25,6 @@ export interface AdmissionAdminProgramListResponse {
 	application_end_date: string;
 	review_start_date: string;
 	review_end_date: string;
-	require_file: string; // FIXME: Does this type exist in ProgramList's API response?
 	stage: string;
 	created_at: string;
 	updated_at: string;
@@ -34,6 +33,7 @@ export interface AdmissionAdminProgramListResponse {
 	applicant_required_file: string;
 	reviewer_required_info: string;
 	reviewer_required_file: string;
+	detail: string;
 }
 
 export interface AdmAdminReviewerListResponse {
