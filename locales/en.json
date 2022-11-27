@@ -56,10 +56,9 @@
   "屬性": "Category",
   "申請端開放時間/日期": "Application Open Time/Date",
   "申請端關閉時間/日期": "Application Close Time/Date",
-  "審查端第一階段開放時間/日期": "Reviewer Phase 1 Open Time/Date",
-  "審查端第一階段關閉時間/日期": "Reviewer Phase 1 Close Time/Date",
-  "審查端第二階段開放時間/日期": "Reviewer Phase 2 Open Time/Date",
-  "審查端第二階段關閉時間/日期": "Reviewer Phase 2 Close Time/Date",
+  "審查端開放時間/日期": "Reviewer Open Time/Date",
+  "審查端關閉時間/日期": "Reviewer Close Time/Date",
+  "變更審查階段(若為申請階段可不選取)": "Change Review Stage (If it is the application stage, it can be ignored)",
   "專案詳細": "Project Detail",
   "申請上傳欄位": "Application Setting",
   "姓名資訊": "Name Information",
@@ -326,5 +325,10 @@
   "補件文件系統": "Additional Documents",
   "提交文字": " Submit Text",
   "error": "Error",
-  "!": "!"
+  "!": "!",
+  "入學身分(外籍生)": "Admission Status(Foreigner)",
+  "戶籍地址": "Residential Address",
+  "護照號碼": "Passport number",
+  "居留證統一證號": "Passport number"
+
 }

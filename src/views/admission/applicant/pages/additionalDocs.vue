@@ -42,7 +42,7 @@
 					:isDeleteLoading="isLoading.delete"
 					@edit="reviewToEdit"
 				/>
-				<CorrectionState
+				<!-- <CorrectionState
 					v-else-if="item.state === 2"
 					category="補交文件"
 					identity="admissionApplicant"
@@ -66,7 +66,7 @@
 					:isCreateLoading="isLoading.create"
 					:order="index + 1"
 					@cancel="editToCreate"
-				/>
+				/> -->
 			</div>
 		</div>
 

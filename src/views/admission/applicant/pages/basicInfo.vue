@@ -106,15 +106,6 @@
 		</div>
 		<div class="mt-24px flex">
 			<div class="w-1/3">
-				<div class="text-16px">{{ $t("國籍") }}：</div>
-				<InputText
-					type="text"
-					v-model="admissionStatusLocal.nationality"
-					placeholder="Text"
-					class="!border-gray-900 !w-300px !h-40px !mt-5px"
-				/>
-			</div>
-			<div class="w-1/3">
 				<div class="text-16px">{{ $t("身份證字號") }}：</div>
 				<InputText
 					type="text"
@@ -188,7 +179,7 @@
 			</label>
 		</div>
 
-		<div class="mt-24px flex">
+		<!-- <div class="mt-24px flex">
 			<div class="w-1/2">
 				<div class="text-16px">{{ $t("國家") }}：</div>
 				<InputText
@@ -227,10 +218,10 @@
 					class="!border-gray-900 !w-440px !h-40px !mt-5px"
 				/>
 			</div>
-		</div>
+		</div> -->
 		<div class="mt-24px">
-			<div class="w-2/3">
-				<div class="text-16px">{{ $t("街道地址") }}：</div>
+			<div class="w-3/4">
+				<div class="text-16px">{{ $t("地址") }}：</div>
 				<InputText
 					type="text"
 					v-model="residentAddress.streetAddress"
@@ -261,7 +252,7 @@
 			}}</label>
 		</div>
 
-		<div class="mt-24px flex">
+		<!-- <div class="mt-24px flex">
 			<div class="w-1/2">
 				<div class="text-16px">{{ $t("國家") }}：</div>
 				<InputText
@@ -300,10 +291,10 @@
 					class="!border-gray-900 !w-440px !h-40px !mt-5px"
 				/>
 			</div>
-		</div>
+		</div> -->
 		<div class="mt-24px">
-			<div class="w-2/3">
-				<div class="text-16px">{{ $t("街道地址") }}：</div>
+			<div class="w-3/4">
+				<div class="text-16px">{{ $t("地址") }}：</div>
 				<InputText
 					type="text"
 					v-model="currentAddress.streetAddress"
@@ -325,7 +316,7 @@
 
 		<div class="mt-24px flex">
 			<div class="w-1/3">
-				<div class="text-16px">{{ $t("法定性別") }}：</div>
+				<div class="text-16px">{{ $t("性別") }}：</div>
 			</div>
 		</div>
 
@@ -358,47 +349,6 @@
 
 		<div class="mt-24px flex">
 			<div class="w-1/3">
-				<div class="text-16px">{{ $t("性別認同") }}：</div>
-			</div>
-		</div>
-		<div class="mt-24px flex">
-			<div class="field-radiobutton w-1/5">
-				<RadioButton
-					inputId="city3"
-					name="sex"
-					value="male"
-					v-model="identityInfo.sex"
-				/>
-				<label for="city3" class="ml-8px font-medium">{{
-					$t("男性")
-				}}</label>
-			</div>
-			<div class="field-radiobutton w-1/5">
-				<RadioButton
-					inputId="city4"
-					name="sex"
-					value="female"
-					v-model="identityInfo.sex"
-				/>
-				<label for="city4" class="ml-8px font-medium">{{
-					$t("女性")
-				}}</label>
-			</div>
-			<div class="field-radiobutton w-1/5">
-				<RadioButton
-					inputId="city5"
-					name="sex"
-					value="nonBinary"
-					v-model="identityInfo.sex"
-				/>
-				<label for="city5" class="ml-8px font-medium">{{
-					$t("非二元性別")
-				}}</label>
-			</div>
-		</div>
-
-		<div class="mt-24px flex">
-			<div class="w-1/3">
 				<div class="text-16px">{{ $t("出生國家") }}：</div>
 				<Dropdown
 					v-model="identityInfo.country"
@@ -419,51 +369,7 @@
 				</Calendar>
 			</div>
 		</div>
-		<div class="flex mt-16px">
-			<div class="mt-16px ml-16px">
-				<Checkbox
-					inputId="file"
-					v-model="textCheckedSecondCountry"
-					:binary="true"
-				/>
-				<label for="file" class="ml-8px font-medium"
-					>{{ $t("是否有雙重國籍，第二國籍身分") }}:</label
-				>
-			</div>
-			<div class="ml-16px">
-				<span class="p-float-label">
-					<Dropdown
-						v-model="identityInfo.secondCountry"
-						:options="cities"
-						optionLabel="name"
-						class="!border-gray-900 !w-300px !h-40px mt-10px"
-					/>
-				</span>
-			</div>
-		</div>
-		<div class="flex mt-16px">
-			<div class="mt-16px ml-16px">
-				<Checkbox
-					inputId="file"
-					v-model="textCheckedVisa"
-					:binary="true"
-				/>
-				<label for="file" class="ml-8px font-medium"
-					>{{ $t("非台灣國籍，簽證類型") }}:</label
-				>
-			</div>
-			<div class="ml-16px">
-				<span class="p-float-label">
-					<Dropdown
-						id="dropdown"
-						v-model="identityInfo.visa"
-						:options="cities"
-						optionLabel="name"
-						class="h-10 w-40"
-					/>
-				</span>
-			</div>
-		</div>
+		
 		<ParagraphDivider />
 		<div class="w-600px">
 			<label class="text-24px font-medium">{{ $t("聯絡方式") }}</label>
@@ -484,7 +390,7 @@
 					class="!border-gray-900 !w-300px !h-40px !mt-5px"
 				/>
 			</div>
-			<div class="w-1/2">
+			<!-- <div class="w-1/2">
 				<div class="text-16px">{{ $t("次要聯絡電話") }}：</div>
 				<InputText
 					type="text"
@@ -492,7 +398,7 @@
 					placeholder="Text"
 					class="!border-gray-900 !w-300px !h-40px !mt-5px"
 				/>
-			</div>
+			</div> -->
 		</div>
 		<div class="mt-24px flex">
 			<div class="w-1/2">
@@ -527,14 +433,14 @@
 				/>
 			</div>
 		</div>
-		<div class="mt-24px flex">
+		<!-- <div class="mt-24px flex">
 			<div class="mt-16px ml-16px">
 				<Checkbox inputId="file" v-model="message" :binary="true" />
 				<label for="file" class="ml-8px font-medium"
 					>{{ $t("願意承擔手機簡訊費用") }}:</label
 				>
 			</div>
-		</div>
+		</div> -->
 	</div>
 </template>
 
@@ -671,143 +577,150 @@ const address = (prod: any) => {
 	}
 };
 
-//get info API
-const clearAllList = () => {
-	const basicInfoList: AdmissionApplicantGetUserInfoResponse[] = reactive([]);
-	const nameList: AdmissionApplicantGetUserInfoResponse[] = reactive([]);
-	const schoolExpList: AdmissionApplicantGetUserInfoResponse[] = reactive([]);
-	const registerResidenceList: AdmissionApplicantGetUserInfoResponse[] = reactive([]);
-	const addressList: AdmissionApplicantGetUserInfoResponse[] = reactive([]);
-	const identityList: AdmissionApplicantGetUserInfoResponse[] = reactive([]);
-	const connectionList: AdmissionApplicantGetUserInfoResponse[] = reactive([]);
-	const otherList: AdmissionApplicantGetUserInfoResponse[] = reactive([]);
-};
+// //get info API
+// const clearAllList = () => {
+// 	const basicInfoList: AdmissionApplicantGetUserInfoResponse[] = reactive([]);
+// 	const nameList: AdmissionApplicantGetUserInfoResponse[] = reactive([]);
+// 	const schoolExpList: AdmissionApplicantGetUserInfoResponse[] = reactive([]);
+// 	const registerResidenceList: AdmissionApplicantGetUserInfoResponse[] = reactive([]);
+// 	const addressList: AdmissionApplicantGetUserInfoResponse[] = reactive([]);
+// 	const identityList: AdmissionApplicantGetUserInfoResponse[] = reactive([]);
+// 	const connectionList: AdmissionApplicantGetUserInfoResponse[] = reactive([]);
+// 	const otherList: AdmissionApplicantGetUserInfoResponse[] = reactive([]);
+// };
 
-const getUserInfo = async () => {
-	return await api.getUserInfo();
-};
+// const isLoading = reactive({
+// 	delete: false,
+// 	create: false,
+// 	edit: false,
+// 	fetch: false,
+// });
 
-onMounted(async () => {
-	const response = getUserInfo();
-	await response.then((res) => {
-		res.map((item) => {
-			if (item) {
-				basicInfoList.push(item);
-			}
-		});
-	});
+// const getUserInfo = async () => {
+// 	return await api.getUserInfo();
+// };
 
-	splitSixList(toRaw(basicInfoList));
-});
+// onMounted(async () => {
+// 	const response = getUserInfo();
+// 	await response.then((res) => {
+// 		res.map((item) => {
+// 			if (item) {
+// 				basicInfoList.push(item);
+// 			}
+// 		});
+// 	});
 
-watch(
-	() => isLoading.fetch,
-	async () => {
-		const response = getUserInfo();
+// 	splitSixList(toRaw(basicInfoList));
+// });
 
-		clearAllList();
+// watch(
+// 	() => isLoading.fetch,
+// 	async () => {
+// 		const response = getUserInfo();
 
-		await response.then((res) => {
-			res.map((item) => {
-				if (item) {
-					basicInfoList.push(item);
-				}
-			});
-		});
+// 		clearAllList();
 
-		isLoading.fetch = false;
+// 		await response.then((res) => {
+// 			res.map((item) => {
+// 				if (item) {
+// 					basicInfoList.push(item);
+// 				}
+// 			});
+// 		});
 
-		splitSixList(toRaw(basicInfoList));
-	}
-);
+// 		isLoading.fetch = false;
 
-const splitSixList = async (fullList: AdmissionApplicantGetUserInfoResponse[]) => {
-	fullList.map((item) => {
-		switch (item.category) {
-			case "姓名資訊": {
-				nameList.push({
-					...item,
-					order: nameList.length
-				});
-				break;
-			}
-			case "入學身分": {
-				schoolExpList.push({
-					...item,
-					order: schoolExpList.length
-				});
-				break;
-			}
-			case "戶籍資訊": {
-				registerResidenceList.push({
-					...item,
-					order: registerResidenceList.length
-				});
-				break;
-			}
-			case "現居地址": {
-				addressList.push({
-					...item,
-					order: addressList.length
-				});
-				break;
-			}
-			case "身份資料": {
-				identityList.push({
-					...item,
-					order: identityList.length
-				});
-				break;
-			}
-			case "聯絡資料": {
-				connectionList.push({
-					...item,
-					order: connectionList.length
-				});
-				break;
-			}
-			//need to fix whether have other list or not
-			default: {
-				otherList.push({
-					...item,
-					order: otherList.length
-				});
-			}
-		}
-	});
+// 		splitSixList(toRaw(basicInfoList));
+// 	}
+// );
 
-	nameList.push({
-		order: nameList.length,
-	});
+// const splitSixList = async (fullList: AdmissionApplicantGetUserInfoResponse[]) => {
+// 	fullList.map((item) => {
+// 		switch (item.category) {
+// 			case "姓名資訊": {
+// 				nameList.push({
+// 					...item,
+// 					order: nameList.length
+// 				});
+// 				break;
+// 			}
+// 			case "入學身分": {
+// 				schoolExpList.push({
+// 					...item,
+// 					order: schoolExpList.length
+// 				});
+// 				break;
+// 			}
+// 			case "戶籍資訊": {
+// 				registerResidenceList.push({
+// 					...item,
+// 					order: registerResidenceList.length
+// 				});
+// 				break;
+// 			}
+// 			case "現居地址": {
+// 				addressList.push({
+// 					...item,
+// 					order: addressList.length
+// 				});
+// 				break;
+// 			}
+// 			case "身份資料": {
+// 				identityList.push({
+// 					...item,
+// 					order: identityList.length
+// 				});
+// 				break;
+// 			}
+// 			case "聯絡資料": {
+// 				connectionList.push({
+// 					...item,
+// 					order: connectionList.length
+// 				});
+// 				break;
+// 			}
+// 			//need to fix whether have other list or not
+// 			default: {
+// 				otherList.push({
+// 					...item,
+// 					order: otherList.length
+// 				});
+// 			}
+// 		}
+// 	});
 
-	schoolExpList.push({
-		order: schoolExpList.length,
-		state: 3,
-	});
+// 	nameList.push({
+// 		order: nameList.length,
+// 	});
 
-	registerResidenceList.push({
-		order: registerResidenceList.length,
-		state: 3,
-	});
+// 	schoolExpList.push({
+// 		order: schoolExpList.length,
+// 		state: 3,
+// 	});
 
-	addressList.push({
-		order: addressList.length,
-		state: 3,
-	});
+// 	registerResidenceList.push({
+// 		order: registerResidenceList.length,
+// 		state: 3,
+// 	});
 
-	identityList.push({
-		order: identityList.length,
-		state: 3,
-	});
+// 	addressList.push({
+// 		order: addressList.length,
+// 		state: 3,
+// 	});
 
-	connectionList.push({
-		order: connectionList.length,
-		state: 3,
-	});
+// 	identityList.push({
+// 		order: identityList.length,
+// 		state: 3,
+// 	});
 
-	otherList.push({
-		order: otherList.length,
-		state: 3,
-	});
-};
+// 	connectionList.push({
+// 		order: connectionList.length,
+// 		state: 3,
+// 	});
+
+// 	otherList.push({
+// 		order: otherList.length,
+// 		state: 3,
+// 	});
+// };
 </script>
