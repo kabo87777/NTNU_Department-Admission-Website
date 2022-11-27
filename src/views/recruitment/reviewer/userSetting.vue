@@ -78,21 +78,18 @@
 			</div>
 			<Button
 				class="p-button-sm p-button-secondary p-button-outlined !mt-60px"
-				@click="handleSubmit"
-			>
-				<i class="pi pi-pencil" />
-				<p class="ml-8px text-16px font-[500] font-bold">
-					{{ $t("修改送出") }}
-				</p>
-			</Button>
+				type="submit"
+				icon="pi pi-pencil"
+				:loading="isChangePassLoading"
+				@click="handleSubmit()"
+				:label="$t('修改送出')"
+			/>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
 import { onMounted, reactive, ref, toRaw } from "vue";
-import { useRoute } from "vue-router";
-import { UserInfo } from "@/api/admission/applicant/types";
 import ParagraphDivider from "@/styles/paragraphDividerApplicant.vue";
 import { useToast } from "primevue/usetoast";
 import InputText from "primevue/inputtext";
@@ -104,7 +101,6 @@ import { useRecruitmentReviewerAuthStore } from "@/stores/universalAuth";
 import { RecruitmentManagerAuthResponse } from "@/api/recruitment/reviewer/types";
 import { useUserInfoStore } from "@/stores/AdmissionReviewerStore";
 
-const route = useRoute();
 const toast = useToast();
 
 const reviewerAuth = useRecruitmentReviewerAuthStore();
