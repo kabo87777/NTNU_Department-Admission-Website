@@ -15,6 +15,8 @@ export interface RecruitmentAdminAuthResponse {
 	name: any | null;
 	nickname: any | null;
 	image: any | null;
+	created_at: string;
+	updated_at: string;
 }
 
 export interface RecruitmentAdminFileListResponse {
@@ -68,4 +70,8 @@ export interface RecruitmentAdminProgramListResponse {
 	reviewer_required_info: null;
 	reviewer_required_file: null;
 	detail: string;
+}
+export interface RecruitmentAdminChangePassResponse {
+	success?: boolean;
+	message?: string | [];
 }
