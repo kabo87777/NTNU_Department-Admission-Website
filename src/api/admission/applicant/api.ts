@@ -4,7 +4,7 @@ import type {
 	AdmissionApplicantGetFileListResponse,
 	AdmissionApplicantGenericResponse,
 	AdmissionApplicantRecLetListRes,
-	AdmissionApplicantGetUserInfoResponse
+	AdmissionApplicantGetUserInfoResponse,
 } from "./types";
 import type { APIGenericResponse } from "@/api/types";
 import { GenericAPI } from "@/api/api";

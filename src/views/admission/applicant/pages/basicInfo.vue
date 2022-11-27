@@ -369,7 +369,7 @@
 				</Calendar>
 			</div>
 		</div>
-		
+
 		<ParagraphDivider />
 		<div class="w-600px">
 			<label class="text-24px font-medium">{{ $t("聯絡方式") }}</label>
@@ -459,15 +459,13 @@ import Dropdown from "primevue/dropdown";
 import ParagraphDivider from "@/styles/paragraphDivider.vue";
 import { useI18n } from "vue-i18n";
 
-import { ref,reactive, onMounted, toRaw, watch } from "vue";
+import { ref, reactive, onMounted, toRaw, watch } from "vue";
 import { InvalidSessionError } from "@/api/error";
 import ReviewState from "@/components/attachmentStates/reviewState.vue";
 import EditState from "@/components/attachmentStates/editState.vue";
 import CreateState from "@/components/attachmentStates/createState.vue";
 import CorrectionState from "@/components/attachmentStates/CorrectionState.vue";
-import {
-	AdmissionApplicantGetUserInfoResponse
-} from "@/api/admission/applicant/types";
+import { AdmissionApplicantGetUserInfoResponse } from "@/api/admission/applicant/types";
 import { useAdmissionApplicantAuthStore } from "@/stores/universalAuth";
 import { AdmissionApplicantAPI } from "@/api/admission/applicant/api";
 import { useToast } from "primevue/usetoast";
@@ -478,7 +476,9 @@ const api = new AdmissionApplicantAPI(applicantAuth);
 const basicInfoList: AdmissionApplicantGetUserInfoResponse[] = reactive([]);
 const nameList: AdmissionApplicantGetUserInfoResponse[] = reactive([]);
 const schoolExpList: AdmissionApplicantGetUserInfoResponse[] = reactive([]);
-const registerResidenceList: AdmissionApplicantGetUserInfoResponse[] = reactive([]);
+const registerResidenceList: AdmissionApplicantGetUserInfoResponse[] = reactive(
+	[]
+);
 const addressList: AdmissionApplicantGetUserInfoResponse[] = reactive([]);
 const identityList: AdmissionApplicantGetUserInfoResponse[] = reactive([]);
 const connectionList: AdmissionApplicantGetUserInfoResponse[] = reactive([]);

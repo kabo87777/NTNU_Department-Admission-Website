@@ -7,7 +7,7 @@
 
 		<!-- 畫面顯示(開放補件時) -->
 		<div v-if="isEnabled" class="px-12px py-24px">
-						<div class="px-12px py-24px">
+			<div class="px-12px py-24px">
 				<div class="text-[24px] font-[50] font-bold">
 					{{ $t("補件需求") }}
 				</div>
@@ -84,8 +84,6 @@
 			</div>
 		</div>
 
-
-		
 		<div>
 			<div></div>
 		</div>
@@ -93,7 +91,7 @@
 </template>
 
 <script setup lang="ts">
-import {  ref,reactive, onMounted, toRaw, watch } from "vue";
+import { ref, reactive, onMounted, toRaw, watch } from "vue";
 import { InvalidSessionError } from "@/api/error";
 import ReviewState from "@/components/attachmentStates/reviewState.vue";
 import EditState from "@/components/attachmentStates/editState.vue";
@@ -107,7 +105,6 @@ import {
 import { useAdmissionApplicantAuthStore } from "@/stores/universalAuth";
 import { AdmissionApplicantAPI } from "@/api/admission/applicant/api";
 import { useToast } from "primevue/usetoast";
-
 
 const applicantAuth = useAdmissionApplicantAuthStore();
 const api = new AdmissionApplicantAPI(applicantAuth);
