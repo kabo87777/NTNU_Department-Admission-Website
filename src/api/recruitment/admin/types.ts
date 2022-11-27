@@ -57,8 +57,8 @@ export interface RecruitmentAdminProgramListResponse {
 	id: number;
 	category: string;
 	name: string;
-	application_start_date: string;
-	application_end_date: string;
+	recruit_start_date: string;
+	recruit_end_date: string;
 	review_start_date: string;
 	review_end_date: string;
 	require_file: string; // Array or string ??
@@ -69,6 +69,7 @@ export interface RecruitmentAdminProgramListResponse {
 	applicant_required_file: null;
 	reviewer_required_info: null;
 	reviewer_required_file: null;
+	detail: string;
 }
 export interface RecruitmentAdminChangePassResponse {
 	success?: boolean;

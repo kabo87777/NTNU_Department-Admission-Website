@@ -1,6 +1,7 @@
-import { RecruitmentAdminAuthResponse } from "@/api/recruitment/admin/types";
-import { defineStore } from "pinia";
 
+import { RecruitmentAdminAuthResponse, RecruitmentAdminProgramListResponse } from "@/api/recruitment/admin/types";
+import { defineStore } from "pinia";
+import { ref } from "vue";
 const info = {
 	email: "",
 	provider: "",
@@ -15,7 +16,6 @@ const info = {
 	created_at: "",
 	updated_at: "",
 };
-
 export const useAdminInfoStore = defineStore({
 	id: "userInfo",
 	state: () => ({
@@ -27,4 +27,19 @@ export const useAdminInfoStore = defineStore({
 			this.userInfo = userInfo;
 		},
 	},
+});
+export const useGlobalStore = defineStore("global", () => {
+	const program = ref<RecruitmentAdminProgramListResponse>();
+
+	const updateProgramData = (
+		newProgram: RecruitmentAdminProgramListResponse
+	) => {
+		program.value = newProgram;
+	};
+
+	return {
+		program,
+		updateProgramData,
+	};
+
 });

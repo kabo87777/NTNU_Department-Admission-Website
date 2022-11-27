@@ -28,7 +28,6 @@ export interface AdmissionAdminProgramListResponse {
 	application_end_date: string;
 	review_start_date: string;
 	review_end_date: string;
-	require_file: string; // Array or string ??
 	stage: string;
 	created_at: string;
 	updated_at: string;
@@ -36,6 +35,7 @@ export interface AdmissionAdminProgramListResponse {
 	applicant_required_file: null;
 	reviewer_required_info: null;
 	reviewer_required_file: null;
+	detail: string;
 }
 
 export interface AdmAdminReviewerListResponse {

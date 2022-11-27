@@ -26,7 +26,7 @@
 				v-model:selection="selectedData"
 				selectionMode="single"
 				@rowSelect="onRowSelect"
-				class="p-datatable-lg"
+				class="p-datatable-lg !h-700px"
 			>
 				<ColumnGroup type="header">
 					<Row>
