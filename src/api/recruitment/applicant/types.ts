@@ -88,7 +88,7 @@ export interface RecruitmentApplicantUserInfoResponse {
 	id: number;
 	name?: string;
 	email?: string;
-	national_id?: number;
+	national_id?: string;
 	sex?: string;
 	birth?: string;
 	day_phone?: string;

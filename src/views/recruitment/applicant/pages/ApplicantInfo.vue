@@ -172,21 +172,6 @@
 					</div>
 				</div>
 				<div class="w-1/3">
-					<div>{{ "*" + $t("護照號碼") }}</div>
-					<div>
-						<InputText
-							class="w-[70%] h-36px !mt-4px"
-							style="border: 1px solid #736028"
-							type="text"
-						/>
-					</div>
-					<div v-show="required.passport" class="absolute mt-[-4px]">
-						<small class="p-error">
-							{{ $t("此為必填欄位") }}
-						</small>
-					</div>
-				</div>
-				<div class="w-1/3">
 					<div>{{ "*" + $t("居留證統一證號") }}</div>
 					<div>
 						<InputText
@@ -210,6 +195,7 @@
 							class="w-[70%] h-36px !mt-4px"
 							style="border: 1px solid #736028"
 							type="text"
+							v-model="identity.ic"
 						/>
 					</div>
 					<div v-show="required.icNum" class="absolute mt-[-4px]">
@@ -508,7 +494,6 @@ const identity = reactive({
 	selectedIdentity: "",
 	ic: "",
 	nationality: "",
-	passport: "",
 	ui: "",
 });
 
@@ -584,10 +569,7 @@ const setBasicInfo = (res: RecruitmentApplicantUserInfoResponse) => {
 	// basicInfo.created_at = res.created_at;
 	// basicInfo.updated_at = res.updated_at;
 
-	born.sex = res.sex as string;
-	born.birth = new Date(res.birth as string);
-
-	contact.phone = res.mobile_phone as string;
+	identity.ic = res.national_id as string;
 
 	householdAddr.addr = res.household_address as string;
 	householdAddr.postcode = res.household_zipcode as string;
@@ -597,6 +579,11 @@ const setBasicInfo = (res: RecruitmentApplicantUserInfoResponse) => {
 		householdAddr.addr === currentAddr.addr && householdAddr.addr !== ""
 			? true
 			: false;
+
+	born.sex = res.sex as string;
+	born.birth = new Date(res.birth as string);
+
+	contact.phone = res.mobile_phone as string;
 };
 
 const saveInfo = async (body: object) => {
@@ -615,6 +602,7 @@ const saveInfo = async (body: object) => {
 const handleSave = async () => {
 	const body = {
 		name: name.zhName,
+		national_id: identity.ic,
 		household_address: householdAddr.addr,
 		household_zipcode: householdAddr.postcode,
 		communicate_address: currentAddr.isAddrSame
@@ -677,7 +665,7 @@ watch(
 	() => loading.fetch,
 	async () => {
 		const response = getBasicInfo();
-		console.log("on watch");
+
 		await response.then((res) => {
 			if (Object.keys(res).length) setBasicInfo(res);
 		});

@@ -32,7 +32,7 @@ export class RecruitmentApplicantAPI extends GenericAPI {
 		);
 
 		if (data.error === true) console.log("Failed to fetch user info");
-		console.log(data);
+
 		return data.data;
 	}
 
