@@ -65,4 +65,18 @@ export class RecruitmentReviewerAPI extends GenericAPI {
 
 		return data.data;
 	}
+
+	async updateApplicantComment(
+		programID: number,
+		applicantID: string | string[],
+		comment: any
+	): Promise<any> {
+		const data: APIGenericResponse = await this.instance.patch(
+			`/recruitment/reviewer/program/${programID}/applicant/${applicantID}/comment`,
+			comment
+		);
+
+		if (data.error === true || typeof data.data === "undefined")
+			throw new Error("Failed to fetch applicant comment");
+	}
 }
