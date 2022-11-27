@@ -120,7 +120,7 @@
 
 <script setup lang="ts">
 import "primevue/resources/primevue.min.css";
-import { ref, toRaw, computed } from "vue";
+import { ref, watch, watchEffect, toRaw, computed } from "vue";
 import Dropdown from "primevue/dropdown";
 import Button from "primevue/button";
 import { useRouter } from "vue-router";
@@ -128,10 +128,12 @@ import { useRecruitmentReviewerAuthStore } from "@/stores/universalAuth";
 import { RecruitmentReviewerAPI } from "@/api/recruitment/reviewer/api";
 import { useQuery } from "@tanstack/vue-query";
 import { InvalidSessionError } from "@/api/error";
+import { useGlobalStore } from "@/stores/RecruitmentReviewerStore";
+import { RecruitmentReviewerProgramListResponse } from "@/api/recruitment/reviewer/types";
 
 const reviewerAuth = useRecruitmentReviewerAuthStore();
+const store = useGlobalStore();
 const api = new RecruitmentReviewerAPI(reviewerAuth);
-// API isn't ready
 
 const {
 	isLoading,
@@ -155,46 +157,31 @@ const {
 	}
 });
 
-const dataPrograms = () => {
-	if (programs.value) {
-		const temp = toRaw(programs.value);
-		return temp[0];
-	}
-}; //convert proxy to array or object
-
-const selectedProgram = ref(dataPrograms());
-
-const updateProgram = computed({
-	get: () => {
-		return selectedProgram.value;
-	},
-	set: (val) => {
-		selectedProgram.value = toRaw(val);
-	},
-});
-
 const router = useRouter();
 
 // FIXME: this should NOT be hardcoded.
-// const selectedProgram = ref({
-// 	id: 1,
-// 	category: "111年教師應徵",
-// 	name: "A組",
-// 	application_start_date: "2022-10-01T00:00:00.000+08:00",
-// 	application_end_date: "2022-10-31T00:00:00.000+08:00",
-// 	review_start_date: "2022-11-01T00:00:00.000+08:00",
-// 	review_end_date: "2022-11-30T00:00:00.000+08:00",
-// 	require_file: "['file1', 'file2']",
-// 	stage: "application",
-// 	created_at: "2022-10-18T07:00:10.671+08:00",
-// 	updated_at: "2022-10-18T07:00:10.671+08:00",
-// 	applicant_required_info: null,
-// 	applicant_required_file: null,
-// 	reviewer_required_info: null,
-// 	reviewer_required_file: null,
-// });
+const selectedProgram = ref<RecruitmentReviewerProgramListResponse>();
 
-const generateOptions = (data: any) => data.category + data.name;
+watchEffect(() => {
+	if (programs.value && programs.value.length > 1) {
+		const temp = programs.value[0];
+		store.$patch((state) => {
+			// state.program = temp;
+		});
+		// selectedProgram.value=toRaw(programs.value[0])
+		selectedProgram.value = programs.value[0];
+	}
+});
+
+watch(selectedProgram, (selection) => {
+	store.$patch({ recruitmentReviewerProgram: selectedProgram.value });
+
+	console.debug("Selected program:\n" + JSON.stringify(selection, null, 2));
+});
+
+const generateOptions = (data: RecruitmentReviewerProgramListResponse) => {
+	return data.category + data.name;
+};
 
 async function signOut() {
 	await api.invalidateSession();

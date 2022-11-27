@@ -126,27 +126,29 @@
 
 <script setup lang="ts">
 import "primevue/resources/primevue.min.css";
-import { ref, toRaw, computed } from "vue";
+import { ref, watch, watchEffect, toRaw, computed } from "vue";
 import Dropdown from "primevue/dropdown";
 import Button from "primevue/button";
-import { useRouter } from "vue-router";
+import { RouterLink, useRouter } from "vue-router";
 import { useAdmissionReviewerAuthStore } from "@/stores/universalAuth";
 import { AdmissionReviewerAPI } from "@/api/admission/reviewer/api";
 import { useQuery } from "@tanstack/vue-query";
 import { InvalidSessionError } from "@/api/error";
+import { AdmissionReviewerProgramListResponse } from "@/api/admission/reviewer/types";
+import { useGlobalStore } from "@/stores/AdmissionReviewerStore";
 
 const router = useRouter();
 
-const adminAuth = useAdmissionReviewerAuthStore();
-
-const api = new AdmissionReviewerAPI(adminAuth);
+const reviewerAuth = useAdmissionReviewerAuthStore();
+const api = new AdmissionReviewerAPI(reviewerAuth);
+const store = useGlobalStore();
 
 const {
 	isLoading,
 	isError,
 	data: programs,
 	error,
-} = useQuery(["programList"], async () => {
+} = useQuery(["admissionReviewerProgramList"], async () => {
 	try {
 		return await api.getProgramList();
 	} catch (e: any) {
@@ -170,16 +172,23 @@ const dataPrograms = () => {
 	}
 }; //convert proxy to array or object
 
-const selectedProgram = ref(dataPrograms());
+// const selectedProgram = ref(dataPrograms());
 
 // FIXME: this should NOT be hardcoded.
-const updateProgram = computed({
-	get: () => {
-		return selectedProgram.value;
-	},
-	set: (val) => {
-		selectedProgram.value = toRaw(val);
-	},
+const selectedProgram = ref<AdmissionReviewerProgramListResponse>();
+watchEffect(() => {
+	if (programs.value && programs.value.length > 1) {
+		const temp = programs.value[0];
+		store.updateadmissionReviewerProgramData(temp);
+		// selectedProgram.value=toRaw(programs.value[0])
+		selectedProgram.value = programs.value[0];
+	}
+});
+
+watch(selectedProgram, (selection) => {
+	store.updateadmissionReviewerProgramData(selectedProgram!.value!);
+
+	console.debug("Selected program:\n" + JSON.stringify(selection, null, 2));
 });
 
 const generateOptions = (data: any) => data.category + data.name;

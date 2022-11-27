@@ -1,12 +1,12 @@
-import { AdmissionAdminProgramListResponse } from "@/api/admission/admin/types";
+import { RecruitmentAdminProgramListResponse } from "@/api/recruitment/admin/types";
 import { defineStore } from "pinia";
 import { ref } from "vue";
 
 export const useGlobalStore = defineStore("global", () => {
-	const program = ref<AdmissionAdminProgramListResponse>();
+	const program = ref<RecruitmentAdminProgramListResponse>();
 
 	const updateProgramData = (
-		newProgram: AdmissionAdminProgramListResponse
+		newProgram: RecruitmentAdminProgramListResponse
 	) => {
 		program.value = newProgram;
 	};

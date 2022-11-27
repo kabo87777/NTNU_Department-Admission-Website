@@ -123,7 +123,6 @@ import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import Tag from "primevue/tag";
 import "../../../../styles/customize.css";
-import applicantsList from "./uploadList.json";
 
 const adminAuth = useAdmissionAdminAuthStore();
 const store = useGlobalStore();
@@ -177,9 +176,6 @@ const items = [
 ];
 
 const applicantList = toRaw(applicants.value);
-
-const applicantsData = applicantsList.applicants;
-console.log(applicantsData, applicantList);
 </script>
 
 <style setup lang="css">
