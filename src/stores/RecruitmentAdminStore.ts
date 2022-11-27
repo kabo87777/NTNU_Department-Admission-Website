@@ -1,5 +1,7 @@
-
-import { RecruitmentAdminAuthResponse, RecruitmentAdminProgramListResponse } from "@/api/recruitment/admin/types";
+import {
+	RecruitmentAdminAuthResponse,
+	RecruitmentAdminProgramListResponse,
+} from "@/api/recruitment/admin/types";
 import { defineStore } from "pinia";
 import { ref } from "vue";
 const info = {
@@ -41,5 +43,4 @@ export const useGlobalStore = defineStore("global", () => {
 		program,
 		updateProgramData,
 	};
-
 });
