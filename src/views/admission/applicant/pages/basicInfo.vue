@@ -501,7 +501,6 @@ const nameInfo = ref({
 
 const admissionStatusLocal = ref({
 	admissionIdendity: "",
-	nationality: "",
 	ID: "",
 });
 
@@ -513,31 +512,18 @@ const admissionStatus = ref({
 });
 
 const residentAddress = ref({
-	country: "",
-	state: "",
-	city: "",
-	postalCode: "",
-	streetAddress: "",
+	Address: "",
 });
 const currentAddress = ref({
-	country: "",
-	state: "",
-	city: "",
-	postalCode: "",
-	streetAddress: "",
+	Address: "",
 });
 const identityInfo = ref({
 	sex: "",
-	gender: "",
 	country: "",
 	date: new Date(),
-	streetAddress: "",
-	secondCountry: "",
-	visa: "",
 });
 const contactInfo = ref({
 	primaryPhone: "",
-	secondPhone: "",
 	mobilePhone: "",
 	email: "",
 });
