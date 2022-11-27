@@ -6,13 +6,15 @@
 		<div class="bigYellowDivider"></div>
 		<div class="mt-8px px-12px py-24px">
 			<div class="text-[20px] font-[350]">
-				{{ $t("帳號名稱") }}{{ $t(":") }}{{ " " }}{{ userInfo.name }}
+				{{ $t("帳號名稱") }}{{ $t(":") }}{{ " "
+				}}{{ reviewerInfo.name }}
 			</div>
 			<div class="mt-36px text-[20px] font-[350]">
-				{{ $t("聯絡信箱") }}{{ $t(":") }}{{ " " }}{{ userInfo.email }}
+				{{ $t("聯絡信箱") }}{{ $t(":") }}{{ " "
+				}}{{ reviewerInfo.email }}
 			</div>
 			<div class="mt-36px text-[20px] font-[350]">
-				{{ $t("手機號碼") }}{{ $t(":") }}{{ " " }}{{ userInfo.phone }}
+				{{ $t("手機號碼") }}{{ $t(":") }}{{ " " }} 手機號碼缺失
 			</div>
 		</div>
 		<ParagraphDivider class="mt-12px" />
@@ -88,21 +90,30 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive } from "vue";
+import { onMounted, reactive, ref, toRaw } from "vue";
 import { useRoute } from "vue-router";
 import { UserInfo } from "@/api/admission/applicant/types";
 import ParagraphDivider from "@/styles/paragraphDividerApplicant.vue";
+import { useToast } from "primevue/usetoast";
 import InputText from "primevue/inputtext";
 import Button from "primevue/button";
 import "primeicons/primeicons.css";
+import { AdmissionReviewerAPI } from "@/api/admission/reviewer/api";
+import { InvalidSessionError } from "@/api/error";
+import { useAdmissionReviewerAuthStore } from "@/stores/universalAuth";
+import { AdmissionManagerAuthResponse } from "@/api/admission/reviewer/types";
+import { useUserInfoStore } from "@/stores/AdmissionReviewerStore";
 
 const route = useRoute();
+const toast = useToast();
 
-const userInfo: UserInfo = {
-	name: "系辦主管",
-	email: "NeoCat@jw.com",
-	phone: "0912345678",
-};
+const reviewerAuth = useAdmissionReviewerAuthStore();
+const reviewerStore = useUserInfoStore();
+const api = new AdmissionReviewerAPI(reviewerAuth);
+
+const reviewerInfo: AdmissionManagerAuthResponse = toRaw(
+	reviewerStore.userInfo
+);
 
 const initialPassValue = {
 	isCurrentPassBlank: false,
@@ -115,16 +126,36 @@ const initialPassValue = {
 
 const password = reactive(initialPassValue);
 
-// const resetPassValue = () => {
-// 	password.isCurrentPassBlank = initialPassword.isCurrentPassBlank;
-// 	password.isNewPassBlank = initialPassword.isNewPassBlank;
-// 	password.notMatch = initialPassword.notMatch;
-// 	password.currentPass = initialPassword.currentPass;
-// 	password.newPass = initialPassword.newPass;
-// 	password.confirmPass = initialPassword.confirmPass;
-// };
+const isChangePassLoading = ref(false);
 
-const handleSubmit = () => {
+const changePassRes = reactive({
+	success: false,
+	message: "" as string | [],
+});
+
+const resetPassValue = () => {
+	password.isCurrentPassBlank = initialPassValue.isCurrentPassBlank;
+	password.isNewPassBlank = initialPassValue.isNewPassBlank;
+	password.notMatch = initialPassValue.notMatch;
+	password.currentPass = initialPassValue.currentPass;
+	password.newPass = initialPassValue.newPass;
+	password.confirmPass = initialPassValue.confirmPass;
+};
+
+const patchChangePassword = async (body: object) => {
+	try {
+		return await api.changePassword(body);
+	} catch (e: any) {
+		if (e instanceof InvalidSessionError) {
+			console.error(
+				"Session has already expired while changing password"
+			);
+			return;
+		}
+	}
+};
+
+const handleSubmit = async () => {
 	if (password.currentPass === "") {
 		password.isCurrentPassBlank = true;
 	} else {
@@ -148,12 +179,43 @@ const handleSubmit = () => {
 		!password.isNewPassBlank &&
 		!password.notMatch
 	) {
-		// resetPassValue();
-		console.log(
-			password.currentPass,
-			password.newPass,
-			password.confirmPass
-		);
+		isChangePassLoading.value = true;
+
+		const body = {
+			current_password: password.currentPass,
+			password: password.newPass,
+			password_confirmation: password.confirmPass,
+		};
+
+		const response = patchChangePassword(body);
+
+		await response.then((res) => {
+			if (res?.success !== undefined && res?.message !== undefined) {
+				changePassRes.success = toRaw(res.success);
+				changePassRes.message = toRaw(res.message);
+			}
+
+			isChangePassLoading.value = false;
+
+			if (changePassRes.success) {
+				resetPassValue();
+				toast.add({
+					severity: "success",
+					summary: "Success",
+					detail: changePassRes.message,
+					life: 3000,
+				});
+			} else {
+				toast.add({
+					severity: "error",
+					summary: "Error",
+					detail: changePassRes.message[
+						changePassRes.message.length - 1
+					],
+					life: 5000,
+				});
+			}
+		});
 	}
 };
 
