@@ -7,9 +7,6 @@
 
 		<!-- 畫面顯示(開放補件時) -->
 		<div v-if="isEnabled" class="px-12px py-24px">
-			<!-- <div class="text-[24px] font-[50] font-bold">
-				{{ $t("補交文件") }}
-			</div> -->
 			<div class="px-12px py-24px">
 				<div class="text-[24px] font-[50] font-bold">
 					{{ $t("補件需求") }}
@@ -23,13 +20,6 @@
 				</div>
 			</div>
 			<div v-for="(item, index) in proceedList" :key="index">
-				<!-- <CreateState
-					v-if="item.state === 3"
-					category="補交文件"
-					identity="admissionApplicant"
-					:order="index + 1"
-					@edit="createToEdit"
-				/> -->
 				<CreateState
 					v-if="item.state === 3"
 					category="補交文件"
@@ -107,53 +97,6 @@ const editToCreate = (index: number, category: string) => {
 const createToEdit = (index: number, category: string) => {
 	proceedList[index].state = 4;
 };
-
-// const uploadFile = async (body: object) => {
-// 	try {
-// 		return await api.uploadRefillFile(body, project.project.pid);
-// 	} catch (e: any) {
-// 		if (e instanceof InvalidSessionError) {
-// 			console.error(
-// 				"Session has already expired while changing password"
-// 			);
-// 			return;
-// 		}
-// 	}
-// };
-
-// const handleUpload = async (body: object) => {
-// 	isLoading.upload = true;
-
-// 	const response = uploadFile(body);
-
-// 	await response.then((res) => {
-// 		if (res?.success !== undefined && res?.message !== undefined) {
-// 			fetchResponse.success = toRaw(res.success);
-// 			fetchResponse.message = toRaw(res.message);
-// 		}
-
-// 		isLoading.upload = false;
-// 		isLoading.fetch = true;
-
-// 		if (fetchResponse.success) {
-// 			toast.add({
-// 				severity: "success",
-// 				summary: "Success",
-// 				detail: fetchResponse.message,
-// 				life: 3000,
-// 			});
-// 		} else {
-// 			toast.add({
-// 				severity: "error",
-// 				summary: "Error",
-// 				detail: fetchResponse.message,
-// 				life: 5000,
-// 			});
-// 		}
-
-// 		isLoading.fetch = true;
-// 	});
-// };
 </script>
 
 <style setup lang="css">

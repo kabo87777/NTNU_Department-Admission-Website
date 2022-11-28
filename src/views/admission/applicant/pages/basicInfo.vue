@@ -178,47 +178,6 @@
 				"*"{{ $t("米字號表示該項目為必填欄位") }}
 			</label>
 		</div>
-
-		<!-- <div class="mt-24px flex">
-			<div class="w-1/2">
-				<div class="text-16px">{{ $t("國家") }}：</div>
-				<InputText
-					type="text"
-					v-model="residentAddress.country"
-					placeholder="Text"
-					class="!border-gray-900 !w-440px !h-40px !mt-5px"
-				/>
-			</div>
-			<div class="w-1/2">
-				<div class="text-16px">{{ $t("州") }}：</div>
-				<InputText
-					type="text"
-					v-model="residentAddress.state"
-					placeholder="Text"
-					class="!border-gray-900 !w-440px !h-40px !mt-5px"
-				/>
-			</div>
-		</div>
-		<div class="mt-24px flex">
-			<div class="w-1/2">
-				<div class="text-16px">{{ $t("城市") }}：</div>
-				<InputText
-					type="text"
-					v-model="residentAddress.city"
-					placeholder="Text"
-					class="!border-gray-900 !w-440px !h-40px !mt-5px"
-				/>
-			</div>
-			<div class="w-1/2">
-				<div class="text-16px">{{ $t("郵遞區號") }}：</div>
-				<InputText
-					type="text"
-					v-model="residentAddress.postalCode"
-					placeholder="Text"
-					class="!border-gray-900 !w-440px !h-40px !mt-5px"
-				/>
-			</div>
-		</div> -->
 		<div class="mt-24px">
 			<div class="w-3/4">
 				<div class="text-16px">{{ $t("地址") }}：</div>
@@ -251,47 +210,6 @@
 				$t("與戶籍地址資訊相同")
 			}}</label>
 		</div>
-
-		<!-- <div class="mt-24px flex">
-			<div class="w-1/2">
-				<div class="text-16px">{{ $t("國家") }}：</div>
-				<InputText
-					type="text"
-					v-model="currentAddress.country"
-					placeholder="Text"
-					class="!border-gray-900 !w-440px !h-40px !mt-5px"
-				/>
-			</div>
-			<div class="w-1/2">
-				<div class="text-16px">{{ $t("州") }}：</div>
-				<InputText
-					type="text"
-					v-model="currentAddress.state"
-					placeholder="Text"
-					class="!border-gray-900 !w-440px !h-40px !mt-5px"
-				/>
-			</div>
-		</div>
-		<div class="mt-24px flex">
-			<div class="w-1/2">
-				<div class="text-16px">{{ $t("城市") }}：</div>
-				<InputText
-					type="text"
-					v-model="currentAddress.city"
-					placeholder="Text"
-					class="!border-gray-900 !w-440px !h-40px !mt-5px"
-				/>
-			</div>
-			<div class="w-1/2">
-				<div class="text-16px">{{ $t("郵遞區號") }}：</div>
-				<InputText
-					type="text"
-					v-model="currentAddress.postalCode"
-					placeholder="Text"
-					class="!border-gray-900 !w-440px !h-40px !mt-5px"
-				/>
-			</div>
-		</div> -->
 		<div class="mt-24px">
 			<div class="w-3/4">
 				<div class="text-16px">{{ $t("地址") }}：</div>
@@ -390,15 +308,6 @@
 					class="!border-gray-900 !w-300px !h-40px !mt-5px"
 				/>
 			</div>
-			<!-- <div class="w-1/2">
-				<div class="text-16px">{{ $t("次要聯絡電話") }}：</div>
-				<InputText
-					type="text"
-					v-model="contactInfo.secondPhone"
-					placeholder="Text"
-					class="!border-gray-900 !w-300px !h-40px !mt-5px"
-				/>
-			</div> -->
 		</div>
 		<div class="mt-24px flex">
 			<div class="w-1/2">
@@ -433,14 +342,6 @@
 				/>
 			</div>
 		</div>
-		<!-- <div class="mt-24px flex">
-			<div class="mt-16px ml-16px">
-				<Checkbox inputId="file" v-model="message" :binary="true" />
-				<label for="file" class="ml-8px font-medium"
-					>{{ $t("願意承擔手機簡訊費用") }}:</label
-				>
-			</div>
-		</div> -->
 	</div>
 </template>
 
@@ -461,10 +362,6 @@ import { useI18n } from "vue-i18n";
 
 import { ref, reactive, onMounted, toRaw, watch } from "vue";
 import { InvalidSessionError } from "@/api/error";
-import ReviewState from "@/components/attachmentStates/reviewState.vue";
-import EditState from "@/components/attachmentStates/editState.vue";
-import CreateState from "@/components/attachmentStates/createState.vue";
-import CorrectionState from "@/components/attachmentStates/CorrectionState.vue";
 import { AdmissionApplicantGetUserInfoResponse } from "@/api/admission/applicant/types";
 import { useAdmissionApplicantAuthStore } from "@/stores/universalAuth";
 import { AdmissionApplicantAPI } from "@/api/admission/applicant/api";
@@ -562,151 +459,4 @@ const address = (prod: any) => {
 		Object.assign(currentAddress.value, residentAddress.value);
 	}
 };
-
-// //get info API
-// const clearAllList = () => {
-// 	const basicInfoList: AdmissionApplicantGetUserInfoResponse[] = reactive([]);
-// 	const nameList: AdmissionApplicantGetUserInfoResponse[] = reactive([]);
-// 	const schoolExpList: AdmissionApplicantGetUserInfoResponse[] = reactive([]);
-// 	const registerResidenceList: AdmissionApplicantGetUserInfoResponse[] = reactive([]);
-// 	const addressList: AdmissionApplicantGetUserInfoResponse[] = reactive([]);
-// 	const identityList: AdmissionApplicantGetUserInfoResponse[] = reactive([]);
-// 	const connectionList: AdmissionApplicantGetUserInfoResponse[] = reactive([]);
-// 	const otherList: AdmissionApplicantGetUserInfoResponse[] = reactive([]);
-// };
-
-// const isLoading = reactive({
-// 	delete: false,
-// 	create: false,
-// 	edit: false,
-// 	fetch: false,
-// });
-
-// const getUserInfo = async () => {
-// 	return await api.getUserInfo();
-// };
-
-// onMounted(async () => {
-// 	const response = getUserInfo();
-// 	await response.then((res) => {
-// 		res.map((item) => {
-// 			if (item) {
-// 				basicInfoList.push(item);
-// 			}
-// 		});
-// 	});
-
-// 	splitSixList(toRaw(basicInfoList));
-// });
-
-// watch(
-// 	() => isLoading.fetch,
-// 	async () => {
-// 		const response = getUserInfo();
-
-// 		clearAllList();
-
-// 		await response.then((res) => {
-// 			res.map((item) => {
-// 				if (item) {
-// 					basicInfoList.push(item);
-// 				}
-// 			});
-// 		});
-
-// 		isLoading.fetch = false;
-
-// 		splitSixList(toRaw(basicInfoList));
-// 	}
-// );
-
-// const splitSixList = async (fullList: AdmissionApplicantGetUserInfoResponse[]) => {
-// 	fullList.map((item) => {
-// 		switch (item.category) {
-// 			case "姓名資訊": {
-// 				nameList.push({
-// 					...item,
-// 					order: nameList.length
-// 				});
-// 				break;
-// 			}
-// 			case "入學身分": {
-// 				schoolExpList.push({
-// 					...item,
-// 					order: schoolExpList.length
-// 				});
-// 				break;
-// 			}
-// 			case "戶籍資訊": {
-// 				registerResidenceList.push({
-// 					...item,
-// 					order: registerResidenceList.length
-// 				});
-// 				break;
-// 			}
-// 			case "現居地址": {
-// 				addressList.push({
-// 					...item,
-// 					order: addressList.length
-// 				});
-// 				break;
-// 			}
-// 			case "身份資料": {
-// 				identityList.push({
-// 					...item,
-// 					order: identityList.length
-// 				});
-// 				break;
-// 			}
-// 			case "聯絡資料": {
-// 				connectionList.push({
-// 					...item,
-// 					order: connectionList.length
-// 				});
-// 				break;
-// 			}
-// 			//need to fix whether have other list or not
-// 			default: {
-// 				otherList.push({
-// 					...item,
-// 					order: otherList.length
-// 				});
-// 			}
-// 		}
-// 	});
-
-// 	nameList.push({
-// 		order: nameList.length,
-// 	});
-
-// 	schoolExpList.push({
-// 		order: schoolExpList.length,
-// 		state: 3,
-// 	});
-
-// 	registerResidenceList.push({
-// 		order: registerResidenceList.length,
-// 		state: 3,
-// 	});
-
-// 	addressList.push({
-// 		order: addressList.length,
-// 		state: 3,
-// 	});
-
-// 	identityList.push({
-// 		order: identityList.length,
-// 		state: 3,
-// 	});
-
-// 	connectionList.push({
-// 		order: connectionList.length,
-// 		state: 3,
-// 	});
-
-// 	otherList.push({
-// 		order: otherList.length,
-// 		state: 3,
-// 	});
-// };
 </script>
