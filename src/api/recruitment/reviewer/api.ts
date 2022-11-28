@@ -48,17 +48,36 @@ export class RecruitmentReviewerAPI extends GenericAPI {
 		};
 	}
 
-	async getApplicantList(
+	async getRequiredApplicantList(
 		programID: number
 	): Promise<RecruitmentReviewerApplicantListResponse[]> {
 		const data: APIGenericResponse = await this.instance.get(
 			`/recruitment/reviewer/program/${programID}/applicant?detail=true`
 		);
 
-		if (data.error === true || typeof data.data.applicants === "undefined")
+		if (
+			data.error === true ||
+			typeof data.data.applicants.required === "undefined"
+		)
 			throw new Error("Failed to fetch applicant list");
 
-		return data.data.applicants;
+		return data.data.applicants.required;
+	}
+
+	async getOptionalApplicantList(
+		programID: number
+	): Promise<RecruitmentReviewerApplicantListResponse[]> {
+		const data: APIGenericResponse = await this.instance.get(
+			`/recruitment/reviewer/program/${programID}/applicant?detail=true`
+		);
+
+		if (
+			data.error === true ||
+			typeof data.data.applicants.required === "undefined"
+		)
+			throw new Error("Failed to fetch applicant list");
+
+		return data.data.applicants.optional;
 	}
 
 	async getApplicantComment(

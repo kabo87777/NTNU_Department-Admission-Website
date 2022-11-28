@@ -14,7 +14,7 @@
 		</div>
 		<div v-if="currentTab === translation.phase1">
 			<DataTable
-				:value="applicantDocsGradeList"
+				:value="applicantDocsGradeList.data.value"
 				responsiveLayout="scroll"
 				dataKey="id"
 				:scrollable="true"
@@ -87,7 +87,7 @@
 				</div>
 				<DataTable
 					v-if="dialogCurrentTab === translation.phase1"
-					:value="scores"
+					:value="docsReviewerScore"
 					responsiveLayout="scroll"
 					dataKey="id"
 					class="text-base mt-24px !h-286px"
@@ -112,27 +112,27 @@
 				</DataTable>
 				<DataTable
 					v-if="dialogCurrentTab === translation.phase2"
-					:value="scores"
+					:value="oralReviewerScore"
 					responsiveLayout="scroll"
 					dataKey="id"
-					class="text-base mt-24px"
+					class="text-base mt-24px !h-286px"
 				>
 					<Column field="name" :header="reviewer"></Column>
-					<Column field="total_score" :header="totalScore"></Column>
+					<Column field="grades" :header="totalScore"></Column>
 				</DataTable>
 				<div
 					v-if="dialogCurrentTab === translation.phase1"
-					class="flex mt-20px ml-5px"
+					class="flex mt-20px ml-15px"
 				>
 					<div>{{ $t("平均分數") }}</div>
-					<div class="ml-340px">80</div>
+					<div class="ml-330px">{{ docsAverageGrade }}</div>
 				</div>
 				<div
 					v-if="dialogCurrentTab === translation.phase2"
-					class="flex mt-20px ml-5px"
+					class="flex mt-20px ml-15px"
 				>
 					<div>{{ $t("平均分數") }}</div>
-					<div class="ml-200px">80</div>
+					<div class="ml-188px">{{ oralAverageGrade }}</div>
 				</div>
 				<div class="flex mt-100px ml-53px" v-if="disable2">
 					<div>
@@ -221,17 +221,27 @@
 			</Dialog>
 			<div class="bigRedDivider !mt-30px"></div>
 			<div class="flex text-xl mt-20px">
-				<div>{{ $t("待審核") }} 3 {{ $t("位") }}</div>
-				<Divider layout="vertical" class="!ml-30px" />
-				<div class="!ml-30px">
-					{{ $t("進赴二階") }} 32 {{ $t("位") }}
+				<div>
+					{{ $t("待審核") }} {{ docsStage1Count }} {{ $t("位") }}
 				</div>
 				<Divider layout="vertical" class="!ml-30px" />
-				<div class="!ml-30px">{{ $t("逕取") }} 1 {{ $t("位") }}</div>
+				<div class="!ml-30px">
+					{{ $t("進赴二階") }} {{ docsStage2Count }} {{ $t("位") }}
+				</div>
 				<Divider layout="vertical" class="!ml-30px" />
-				<div class="!ml-30px">{{ $t("不錄取") }} 1 {{ $t("位") }}</div>
+				<div class="!ml-30px">
+					{{ $t("逕取") }} {{ docsStage3Count }} {{ $t("位") }}
+				</div>
+				<Divider layout="vertical" class="!ml-30px" />
+				<div class="!ml-30px">
+					{{ $t("不錄取") }} {{ docsStage4Count }} {{ $t("位") }}
+				</div>
+				<Divider layout="vertical" class="!ml-30px" />
+				<div class="!ml-30px">
+					{{ $t("未送審") }} {{ docsStage5Count }} {{ $t("位") }}
+				</div>
 				<Button
-					class="w-110px h-44px !ml-350px p-button-outlined p-button-success"
+					class="w-110px h-44px !ml-170px p-button-outlined p-button-success"
 				>
 					<img
 						alt="logo"
@@ -322,29 +332,21 @@
 				</div>
 				<div class="p-fluid">
 					<SelectButton
-						v-if="disable1"
 						class="h-39px mt-32px !w-664px"
-						v-model="dialogCurrentTab"
+						v-model="dialogCurrentTab2"
 						:options="dialogTabOptions"
-					/>
-					<SelectButton
-						v-else
-						class="h-39px mt-32px !w-664px"
-						v-model="dialogCurrentTab"
-						:options="dialogTabOptions"
-						disabled
 					/>
 				</div>
 				<DataTable
-					v-if="dialogCurrentTab === translation.phase1"
-					:value="scores"
+					v-if="dialogCurrentTab2 === translation.phase1"
+					:value="docsReviewerScore"
 					responsiveLayout="scroll"
 					dataKey="id"
-					class="text-base mt-24px"
+					class="text-base mt-24px !h-286px"
 				>
 					<Column field="name" :header="reviewer"></Column>
 					<Column
-						field="access"
+						field="isimmendiateenroll"
 						:header="directedAdmitted"
 						dataType="boolean"
 						bodyClass="text-center"
@@ -358,33 +360,33 @@
 							<p v-else>-</p>
 						</template>
 					</Column>
-					<Column field="total_score" :header="totalScore"></Column>
+					<Column field="grades" :header="totalScore"></Column>
 				</DataTable>
 				<DataTable
-					v-if="dialogCurrentTab === translation.phase2"
-					:value="scores"
+					v-if="dialogCurrentTab2 === translation.phase2"
+					:value="oralReviewerScore"
 					responsiveLayout="scroll"
 					dataKey="id"
-					class="text-base mt-24px"
+					class="text-base mt-24px !h-286px"
 				>
 					<Column field="name" :header="reviewer"></Column>
-					<Column field="total_score" :header="totalScore"></Column>
+					<Column field="grades" :header="totalScore"></Column>
 				</DataTable>
 				<div
-					v-if="dialogCurrentTab === translation.phase1"
-					class="flex mt-20px ml-5px"
+					v-if="dialogCurrentTab2 === translation.phase1"
+					class="flex mt-20px ml-15px"
 				>
 					<div>{{ $t("平均分數") }}</div>
-					<div class="!ml-340px">80</div>
+					<div class="!ml-330px">{{ docsAverageGrade }}</div>
 				</div>
 				<div
-					v-if="dialogCurrentTab === translation.phase2"
-					class="flex mt-20px ml-5px"
+					v-if="dialogCurrentTab2 === translation.phase2"
+					class="flex mt-20px ml-15px"
 				>
 					<div>{{ $t("平均分數") }}</div>
-					<div class="ml-200px">80</div>
+					<div class="ml-188px">{{ oralAverageGrade }}</div>
 				</div>
-				<div class="flex mt-100px ml-53px" v-if="disable2">
+				<div class="flex mt-100px ml-53px" v-if="disable3">
 					<div>
 						<div>{{ $t("一階審查結果") }}</div>
 						<Dropdown
@@ -471,17 +473,23 @@
 			</Dialog>
 			<div class="bigRedDivider !mt-30px"></div>
 			<div class="flex text-xl mt-20px">
-				<div>{{ $t("待審核") }} 3 {{ $t("位") }}</div>
-				<Divider layout="vertical" class="!ml-30px" />
-				<div class="!ml-30px">
-					{{ $t("進赴二階") }} 32 {{ $t("位") }}
+				<div>
+					{{ $t("待審核") }} {{ oralStage1Count }} {{ $t("位") }}
 				</div>
 				<Divider layout="vertical" class="!ml-30px" />
-				<div class="!ml-30px">{{ $t("逕取") }} 1 {{ $t("位") }}</div>
+				<div class="!ml-30px">
+					{{ $t("正取") }} {{ oralStage2Count }} {{ $t("位") }}
+				</div>
 				<Divider layout="vertical" class="!ml-30px" />
-				<div class="!ml-30px">{{ $t("不錄取") }} 1 {{ $t("位") }}</div>
+				<div class="!ml-30px">
+					{{ $t("備取") }} {{ oralStage3Count }} {{ $t("位") }}
+				</div>
+				<Divider layout="vertical" class="!ml-30px" />
+				<div class="!ml-30px">
+					{{ $t("不錄取") }} {{ oralStage4Count }} {{ $t("位") }}
+				</div>
 				<Button
-					class="w-110px h-44px !ml-350px p-button-outlined p-button-success"
+					class="w-110px h-44px !ml-390px p-button-outlined p-button-success"
 				>
 					<img
 						alt="logo"
@@ -599,27 +607,55 @@ const adminAuth = useAdmissionAdminAuthStore();
 const api = new AdmissionAdminAPI(adminAuth);
 const store = useGlobalStore();
 const router = useRouter();
-const {
-	isLoading,
-	isError,
-	data: applicantDocsGradeList,
-	error,
-} = useQuery(["admissionAdminDocsGradeList"], async () => {
-	try {
-		return await api.getDocsGradeList(store.program!.id!);
-	} catch (e: any) {
-		if (e instanceof InvalidSessionError) {
-			// FIXME: show session expiry notification??
-			// Why are we even here in the first place?
-			// MainContainer should have checked already.
-			console.error(
-				"Session has already expired while querying programList"
-			);
-			router.push("/");
-			return;
+
+const docsStage1Count = ref();
+const docsStage2Count = ref();
+const docsStage3Count = ref();
+const docsStage4Count = ref();
+const docsStage5Count = ref();
+const oralStage1Count = ref();
+const oralStage2Count = ref();
+const oralStage3Count = ref();
+const oralStage4Count = ref();
+const orderList = ref<number[]>();
+const applicantDocsGradeList = useQuery(
+	["admissionAdminDocsGradeList"],
+	async () => {
+		try {
+			return await api.getDocsGradeList(store.program!.id!);
+		} catch (e: any) {
+			if (e instanceof InvalidSessionError) {
+				// FIXME: show session expiry notification??
+				// Why are we even here in the first place?
+				// MainContainer should have checked already.
+				console.error(
+					"Session has already expired while querying programList"
+				);
+				router.push("/");
+				return;
+			}
 		}
+	},
+	{
+		onSuccess: (data) => {
+			docsStage1Count.value = data!.filter(
+				(item) => item.application_stage === null
+			).length;
+			docsStage2Count.value = data!.filter(
+				(item) => item.application_stage === "進赴二階"
+			).length;
+			docsStage3Count.value = data!.filter(
+				(item) => item.application_stage === "逕取"
+			).length;
+			docsStage4Count.value = data!.filter(
+				(item) => item.application_stage === "不錄取"
+			).length;
+			docsStage5Count.value = data!.filter(
+				(item) => item.application_stage === "未送審"
+			).length;
+		},
 	}
-});
+);
 const { data: applicantOralGradeList } = useQuery(
 	["admissionAdminOralGradeList"],
 	async () => {
@@ -637,6 +673,26 @@ const { data: applicantOralGradeList } = useQuery(
 				return;
 			}
 		}
+	},
+	{
+		onSuccess: (data) => {
+			oralStage1Count.value = data!.filter(
+				(item) => item.enroll_stage === null
+			).length;
+			oralStage2Count.value = data!.filter(
+				(item) => item.enroll_stage === "正取"
+			).length;
+			oralStage3Count.value = data!.filter(
+				(item) => item.enroll_stage === "備取"
+			).length;
+			oralStage4Count.value = data!.filter(
+				(item) => item.enroll_stage === "不錄取"
+			).length;
+			orderList.value = [];
+			for (let i = 1; i <= data!.length; i++) {
+				orderList.value.push(i);
+			}
+		},
 	}
 );
 const { t } = useI18n();
@@ -655,7 +711,8 @@ const translation = {
 	writtenReviewNotPass: t("書審未過"),
 };
 
-const scores = ref<AdmissionAdminReviewerGradeResponse[]>();
+const docsReviewerScore = ref<AdmissionAdminReviewerGradeResponse[]>();
+const oralReviewerScore = ref<AdmissionAdminReviewerGradeResponse[]>();
 const currentTab = ref(translation.phase1);
 const tabOptions = ref([
 	translation.phase1,
@@ -663,6 +720,7 @@ const tabOptions = ref([
 	translation.admissionList,
 ]);
 const dialogCurrentTab = ref(translation.phase1);
+const dialogCurrentTab2 = ref(translation.phase2);
 const dialogTabOptions = ref([translation.phase1, translation.phase2]);
 const productDialog = ref(false);
 const name = ref("");
@@ -689,6 +747,9 @@ const disable1 = computed(() => {
 const disable2 = computed(() => {
 	return dialogCurrentTab.value === translation.phase1;
 });
+const disable3 = computed(() => {
+	return dialogCurrentTab2.value === translation.phase1;
+});
 
 const ID = computed(() => t("帳號ID"));
 const applicantName = computed(() => t("申請人姓名"));
@@ -707,18 +768,46 @@ const docsScore = computed(() => t("書審分數"));
 const oralScore = computed(() => t("口試分數"));
 
 const onRowReorder2 = (event: any) => {
-	// const { from, to } = event.detail;
+	if (event.dropIndex > event.dragIndex) {
+		for (let i = event.dragIndex; i < event.dropIndex; i++) {
+			orderList.value![i] = i + 1;
+			orderList.value![i + 1] = i;
+		}
+	} else {
+		for (let i = event.dragIndex; i > event.dropIndex; i--) {
+			orderList.value![i] = i - 1;
+			orderList.value![i - 1] = i;
+		}
+	}
 	console.log(event.dragIndex, event.dropIndex);
 };
 
 const onRowReorder3 = (event: any) => {
+	if (event.dropIndex > event.dragIndex) {
+		for (let i = event.dragIndex; i < event.dropIndex; i++) {
+			orderList.value![i] = i + 1;
+			orderList.value![i + 1] = i;
+		}
+	} else {
+		for (let i = event.dragIndex; i > event.dropIndex; i--) {
+			orderList.value![i] = i - 1;
+			orderList.value![i - 1] = i;
+		}
+	}
 	console.log(event.dragIndex, event.dropIndex);
 };
-const { data: applicantDocsGrade } = useQuery(
-	["admissionAdminDocsGrade"],
+const applicantID = ref(1);
+const docsReviewerCount = ref(0);
+const oralReviewerCount = ref(0);
+const docsTotalGrade = ref(0);
+const oralTotalGrade = ref(0);
+const docsAverageGrade = ref(0);
+const oralAverageGrade = ref(0);
+const applicantDocsGrade = useQuery(
+	["admissionAdminDocsGrade", applicantID],
 	async () => {
 		try {
-			return await api.getSingleDocsGrade(1);
+			return await api.getSingleDocsGrade(applicantID);
 		} catch (e: any) {
 			if (e instanceof InvalidSessionError) {
 				// FIXME: show session expiry notification??
@@ -734,7 +823,47 @@ const { data: applicantDocsGrade } = useQuery(
 	},
 	{
 		onSuccess: (data) => {
-			scores.value = data?.reviewer;
+			docsReviewerCount.value = data!.reviewer.length;
+			docsTotalGrade.value = 0;
+			data!.reviewer.forEach((element) => {
+				docsTotalGrade.value += element.grades;
+			});
+			docsAverageGrade.value =
+				docsTotalGrade.value / docsReviewerCount.value;
+			docsReviewerScore.value = data!.reviewer;
+			p1_result.value = data!.stage;
+		},
+	}
+);
+const applicantOralGrade = useQuery(
+	["admissionAdminOralGrade", applicantID],
+	async () => {
+		try {
+			return await api.getSingleOralGrade(applicantID);
+		} catch (e: any) {
+			if (e instanceof InvalidSessionError) {
+				// FIXME: show session expiry notification??
+				// Why are we even here in the first place?
+				// MainContainer should have checked already.
+				console.error(
+					"Session has already expired while querying programList"
+				);
+				router.push("/");
+				return;
+			}
+		}
+	},
+	{
+		onSuccess: (data) => {
+			oralReviewerCount.value = data!.reviewer.length;
+			oralTotalGrade.value = 0;
+			data!.reviewer.forEach((element) => {
+				oralTotalGrade.value += element.grades;
+			});
+			oralAverageGrade.value =
+				oralTotalGrade.value / oralReviewerCount.value;
+			oralReviewerScore.value = data!.reviewer;
+			p2_result.value = data!.enroll_stage;
 		},
 	}
 );
@@ -742,14 +871,34 @@ const editProduct = (prod: any) => {
 	name.value = prod.data.name;
 	id.value = prod.data.id;
 	productDialog.value = true;
-	p1_result.value = prod.data.phase1_result;
+	applicantID.value = prod.data.id;
+	if (!applicantDocsGrade.isFetched.value) {
+		applicantDocsGrade.refetch({ throwOnError: true });
+	}
+	if (!applicantOralGrade.isFetched.value) {
+		applicantOralGrade.refetch({ throwOnError: true });
+	}
 	if (prod.data.final_result) {
 		p1_result.value = translation.passtophase2;
 		p2_result.value = prod.data.final_result;
 	}
 };
 
+const applicantStage = useMutation(async (newApplicantStage: any) => {
+	try {
+		return await api.updateApplicantStage(applicantID, newApplicantStage);
+	} catch (error) {
+		console.log(error);
+	}
+});
 function doneEdit() {
+	applicantStage.mutate({
+		docs_stage: p1_result.value,
+		docs_order: oral_order.value,
+		oral_stage: p2_result.value,
+		oral_order: admitted_order.value,
+	});
+	applicantDocsGradeList.refetch({ throwOnError: true });
 	productDialog.value = false;
 }
 </script>

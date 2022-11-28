@@ -175,3 +175,12 @@ export interface AdmissionAdminSingleDocsGradeResponse {
 	reviewer: AdmissionAdminReviewerGradeResponse[];
 	avg: number;
 }
+
+export interface AdmissionAdminSingleOralGradeResponse {
+	id: string;
+	name: string;
+	enroll_stage: string;
+	enroll_order: number;
+	reviewer: AdmissionAdminReviewerGradeResponse[];
+	avg: number;
+}

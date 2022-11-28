@@ -9,6 +9,7 @@ import type {
 	AdmissionAdminDocsGradeListResponse,
 	AdmissionAdminOralGradeListResponse,
 	AdmissionAdminSingleDocsGradeResponse,
+	AdmissionAdminSingleOralGradeResponse,
 } from "./types";
 import type { APIGenericResponse } from "@/api/types";
 import { GenericAPI } from "@/api/api";
@@ -189,15 +190,40 @@ export class AdmissionAdminAPI extends GenericAPI {
 	}
 
 	async getSingleDocsGrade(
-		applicantID: number
+		applicantID: Ref<number>
 	): Promise<AdmissionAdminSingleDocsGradeResponse> {
 		const data: APIGenericResponse = await this.instance.get(
-			`/admission/admin/applicant/${applicantID}/docs_grading`
+			`/admission/admin/applicant/${applicantID.value}/docs_grading`
 		);
 
 		if (data.error === true || typeof data.data === "undefined")
 			throw new Error("Failed to fetch docs grade");
 
 		return data.data;
+	}
+
+	async getSingleOralGrade(
+		applicantID: Ref<number>
+	): Promise<AdmissionAdminSingleOralGradeResponse> {
+		const data: APIGenericResponse = await this.instance.get(
+			`/admission/admin/applicant/${applicantID.value}/oral_grading`
+		);
+
+		if (data.error === true || typeof data.data === "undefined")
+			throw new Error("Failed to fetch docs grade");
+
+		return data.data;
+	}
+
+	async updateApplicantStage(
+		applicantID: Ref<number>,
+		data: any
+	): Promise<any> {
+		const response: APIGenericResponse = await this.instance.patch(
+			`/admission/admin/applicant/${applicantID.value}`,
+			data
+		);
+		if (response.error === true)
+			throw new Error("Failed to update program");
 	}
 }
