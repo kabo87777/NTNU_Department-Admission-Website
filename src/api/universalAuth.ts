@@ -13,6 +13,15 @@ export interface universalAuthSendResetPwdEmailData {
 	"cf-turnstile-response": string;
 }
 
+export interface universalAuthSendPostEmailRegister {
+	name: string;
+	email: string;
+	password: string;
+	password_confirmation: string;
+	confirm_success_url: string;
+	"cf-turnstile-response": string;
+}
+
 // type guard
 const buildAuthCredentialsFromHeaders = (
 	headers: any
@@ -102,6 +111,14 @@ export async function doUniversalAuthSendForgotPwdEmail(
 	data: universalAuthSendResetPwdEmailData
 ) {
 	const response = await axios.post(auth.apiEndpoint + "/password", data);
+	console.log("response: ", response);
+	return response.data;
+}
+export async function doUniversalAuthSendPostEmailRegister(
+	auth: AuthStore,
+	data: universalAuthSendPostEmailRegister
+) {
+	const response = await axios.post(auth.apiEndpoint, data);
 	console.log("response: ", response);
 	return response.data;
 }
