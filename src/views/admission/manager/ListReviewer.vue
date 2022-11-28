@@ -37,7 +37,6 @@
 				<Button
 					icon="pi pi-pencil"
 					class="p-button-outlined p-button-success"
-					@click=""
 				></Button>
 			</template>
 		</Column>
