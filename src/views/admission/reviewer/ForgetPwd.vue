@@ -4,7 +4,7 @@
 			<img src="/assets/login-page/Login-img.png" class="fill" />
 		</div>
 		<div class="flex-none w-150 px-6 pt-18 space-y-8">
-			<router-link to="/admission/manager/signin">
+			<router-link to="/admission/reviewer/signin">
 				<button
 					class="flex items-center gap-2 px-2 py-2"
 					bg="transparent hover:gray-100"
@@ -26,7 +26,7 @@
 				</div>
 			</div>
 			<div class="px-8 py-4 space-y-4">
-				<div class="flex items-center gap-2 managerTextColor">
+				<div class="flex items-center gap-2 reviewerTextColor">
 					<i class="pi pi-circle" style="font-size: 0.5rem" />
 					<div class="flex-none font-medium">忘記密碼</div>
 					<div class="flex-none font-medium">Forget Password</div>
@@ -66,10 +66,11 @@
 				</div>
 			</div>
 			<div class="flex justify-center px-4">
-				<router-link to="/admission/manager/forgetpassword/emailSent">
+				<router-link
+					to="/admission/reviewer/forgetpassword/emailSent"
+				>
 					<Button
-						class="py-2 w-80 managerButtonStyle"
-						border="2  rounded-lg"
+						class="py-2 w-80 reviewerButtonStyle"
 						@click="enterEmail"
 					>
 						<div class="flex justify-center gap-2 mx-auto">
@@ -87,30 +88,29 @@
 </template>
 
 <script setup lang="ts">
-import Button from "primevue/button"
-import { reactive, ref } from "vue";
+import Button from "primevue/button";
+import { ref } from "vue";
 import InputText from "primevue/inputtext";
-import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
-import { TurnstileComponentExposes } from "@/components/Turnstile.vue";
-import { AdmissionAdminAPI } from "@/api/admission/admin/api";
+import { useAdmissionReviewerAuthStore } from "@/stores/universalAuth";
+import type { TurnstileComponentExposes } from "@/components/Turnstile.vue";
 import Turnstile from "@/components/Turnstile.vue";
+import { AdmissionReviewerAPI } from "@/api/admission/reviewer/api";
 
 const forgetPwdEmail = ref("");
-const authStore = useAdmissionAdminAuthStore();
+const authStore = useAdmissionReviewerAuthStore();
 const turnstileRef = ref<TurnstileComponentExposes>();
-
 const consumeTurnstileToken = () => {
 	const token: string | undefined = turnstileRef.value?.turnstileToken;
 	window.turnstile?.reset();
 	return token;
 };
-const enterEmail = async () =>{
+const enterEmail = async() =>{
 	try {
 		const redirectUrl =
-			"http://127.0.0.1:5173/admission/admin/password/reset";
+			"http://127.0.0.1:5173/admission/reviewer/password/reset";
 		const turnstileResponse = consumeTurnstileToken();
 		if (!turnstileResponse) throw new Error("Turnstile challenge failed");
-		const api = new AdmissionAdminAPI(authStore);
+		const api = new AdmissionReviewerAPI(authStore);
 		return await api.sendForgotPasswordEmail({
 			email: forgetPwdEmail.value,
 			redirect_url: redirectUrl,
@@ -124,22 +124,23 @@ const enterEmail = async () =>{
 </script>
 
 <style setup lang="css">
-.managerTextColor {
-	color: #79363c;
+.reviewerTextColor {
+	color: #0b4873;
 }
-.managerButtonStyle {
-	background-color: #ffe4df;
-	border-color: #f3baae;
-	color: #4d3639;
+
+.reviewerButtonStyle {
+	background-color: #dfe7fd;
+	border-color: #a5b9ec;
+	color: #003a5c;
 }
-.managerButtonStyle:hover {
-	background-color: #94282c;
-	border-color: #94282c;
+.reviewerButtonStyle:hover {
+	background-color: #2459a4;
+	border-color: #2459a4;
 	color: white;
 }
-.managerButtonStyle:active {
-	background-color: #62373e;
-	border-color: #62373e;
+.reviewerButtonStyle:active {
+	background-color: #0b4873;
+	border-color: #0b4873;
 	color: white;
 }
 </style>
