@@ -2,7 +2,7 @@
 	<h1 class="text-4xl font-bold">{{ $t("管理審查者") }}</h1>
 	<Button @click="getRelatedPrograms">Button</Button>
 	<Divider></Divider>
-	<DataTable :value="tableData">
+	<DataTable :value="tableData" :loading="getLoadingStatus">
 		<template #empty>
 			<h2>{{ $t("尚無審查者帳號") }}</h2>
 		</template>
@@ -115,7 +115,7 @@
 import DataTable from "primevue/datatable";
 import Row from "primevue/row";
 import Column from "primevue/column";
-import { ref, toRaw, watch, watchEffect } from "vue";
+import { computed, ref, toRaw, watch, watchEffect } from "vue";
 import type { Ref } from "vue";
 import { useI18n } from "vue-i18n";
 import Divider from "primevue/divider";
@@ -141,9 +141,8 @@ const adminAuth = useAdmissionAdminAuthStore();
 
 const store = useGlobalStore();
 const api = new AdmissionAdminAPI(adminAuth);
-const tableData = ref<AdmAdminReviewerListResponse[]>();
+const tableData = ref<AdmAdminReviewerListResponse[]>([] as AdmAdminReviewerListResponse[]);
 
-const relatedProgram: Record<number, any> = {};
 const reviewerID = ref(1);
 const programQuery = useQuery(
 	["reviewerProgram", reviewerID],
@@ -184,6 +183,9 @@ const programQuery = useQuery(
 		},
 	}
 );
+const getLoadingStatus = computed(() => {
+	return isLoading.value || isProcessing.value;
+});
 
 const { data: reviewers } = useQuery(
 	["reviewerList"],
@@ -204,8 +206,15 @@ const { data: reviewers } = useQuery(
 		}
 	},
 	{
-		onSuccess: () => {
-			tableData.value = reviewers.value;
+		onSuccess: (data) => {
+			if(typeof data==='undefined'){
+				throw new Error("Received undefined reviewer response")
+			}
+			console.log("Loaded")
+			tableData.value = data;
+		},
+	}
+);
 
 			tableData.value?.map((x) => {
 				reviewerID.value = x.id;
@@ -225,4 +234,7 @@ const getRelatedPrograms = () => {
 	if (!programQuery.isFetched.value)
 		programQuery.refetch({ throwOnError: true });
 };
+
+const isProcessing = ref(false)
+
 </script>
