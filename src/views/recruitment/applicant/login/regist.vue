@@ -32,7 +32,28 @@
 					<div class="flex-none font-medium">Applicant Register</div>
 					<Divider />
 				</div>
-				<div class="flex-col px-4 py-8">
+				<div class="flex-col px-4 pt-4">
+					<div
+						class="flex items-center gap-2 pb-2"
+						text="sm gray-500"
+					>
+						<div>輸入使用者名稱</div>
+						<div>Enter Username</div>
+					</div>
+					<InputText
+						name="username"
+						type="username"
+						v-model="userRegistData.name"
+						class="p-inputtext-sm w-full"
+						required
+					/>
+					<div class="absolute" v-if="password.isNameBlank">
+						<small id="newPass-help" class="p-error">
+							{{ $t("必須輸入使用者名稱") }}
+						</small>
+					</div>
+				</div>
+				<div class="flex-col px-4 pt-4">
 					<div
 						class="flex items-center gap-2 pb-2"
 						text="sm gray-500"
@@ -47,8 +68,14 @@
 						class="p-inputtext-sm w-full"
 						required
 					/>
+					<div class="absolute" v-if="password.isEmailBlank">
+						<small id="newPass-help" class="p-error">
+							{{ $t("必須輸入輸入電郵") }}
+						</small>
+					</div>
 				</div>
-				<div class="flex-col px-4">
+
+				<div class="flex-col px-4 pt-4">
 					<div
 						class="flex items-center gap-2 pb-2"
 						text="sm gray-500"
@@ -63,8 +90,13 @@
 						class="p-inputtext-sm w-full"
 						required
 					/>
+					<div class="absolute" v-if="password.isCurrentPassBlank">
+						<small id="newPass-help" class="p-error">
+							{{ $t("請輸入新密碼") }}
+						</small>
+					</div>
 				</div>
-				<div class="flex-col px-4">
+				<div class="flex-col px-4 pt-4">
 					<div
 						class="flex items-center gap-2 pb-2"
 						text="sm gray-500"
@@ -79,50 +111,73 @@
 						class="p-inputtext-sm w-full"
 						required
 					/>
+					<div class="absolute" v-if="password.notMatch">
+						<small id="confirmPass-help" class="p-error">
+							{{ $t("密碼不符") }}
+						</small>
+					</div>
 				</div>
 			</div>
 			<div class="flex-col-inline px-4 gap-y-8">
 				<div class="flex justify-center">
-					<router-link to="/recruitment/applicant/regist/done">
-						<button
-							class="py-2 w-80 applicantButtonStyle"
-							border="2  rounded-lg"
-							@click="postEmailRegister"
-						>
-							<div class="flex justify-center gap-2 mx-auto">
-								<div>註冊</div>
-								<div>Register</div>
-							</div>
-						</button>
-					</router-link>
+					<Button
+						class="py-2 w-80 applicantButtonStyle"
+						border="2  rounded-lg"
+						:loading="isRegistLoading"
+						@click="handleSubmit"
+					>
+						<div class="flex justify-center gap-2 mx-auto">
+							<div>註冊</div>
+							<div>Register</div>
+						</div>
+					</Button>
 				</div>
-				<div></div>
+				<div class="ml-168px mt-40px">
+					<Turnstile ref="turnstileRef" />
+				</div>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { reactive } from "vue";
-import { useQuery, useMutation } from "@tanstack/vue-query";
+import Button from "primevue/button";
+import { reactive, toRaw } from "vue";
 import { RecruitmentApplicantAPI } from "@/api/recruitment/applicant/api";
 import { useRecruitmentApplicantAuthStore } from "@/stores/universalAuth";
 import InputText from "primevue/inputtext";
-import axios from "axios";
-import ApplicantUploadedDocs from "@/views/admission/manager/applicantsUploadList/applicantUploadedDocs.vue";
 import { useRouter } from "vue-router";
-import { InvalidSessionError } from "@/api/error";
-import type { newPostEmailRegister } from "@/api/recruitment/applicant/types";
-import Button from "primevue/button";
 import { ref } from "vue";
 import type { TurnstileComponentExposes } from "@/components/Turnstile.vue";
 import Turnstile from "@/components/Turnstile.vue";
 
 const applicantAuth = useRecruitmentApplicantAuthStore();
 const router = useRouter();
-const authStore = useRecruitmentApplicantAuthStore();
-const api = new RecruitmentApplicantAPI(applicantAuth);
 const turnstileRef = ref<TurnstileComponentExposes>();
+const isRegistLoading = ref(false);
+const userRegistData = reactive({
+	name: "",
+	email: "",
+	password: "",
+	password_confirmation: "",
+	confirm_success_url: "http://127.0.0.1:5173/recruitment/applicant/signin",
+});
+
+const password = reactive({
+	isCurrentPassBlank: false,
+	isNameBlank: false,
+	isEmailBlank: false,
+	isNewPassBlank: false,
+	notMatch: false,
+	currentPass: "",
+	newPass: "",
+	confirmPass: "",
+});
+
+const RegisterResponse = reactive({
+	success: false,
+	message: "" as string | [],
+});
 
 const consumeTurnstileToken = () => {
 	const token: string | undefined = turnstileRef.value?.turnstileToken;
@@ -130,26 +185,20 @@ const consumeTurnstileToken = () => {
 	return token;
 };
 
-const userRegistData: newPostEmailRegister = reactive({
-	email: "",
-	name: "",
-	confirm_success_url: "",
-	password: "",
-	password_confirmation: "",
-});
+const redirectToRegistDonePage = () => {
+	router.replace({ name: "recruitmentApplicantRegistDone" });
+};
 const postEmailRegister = async () => {
 	try {
-		const redirectUrl =
-			"http://127.0.0.1:5173/recruitment/applicant/regist";
 		const turnstileResponse = consumeTurnstileToken();
 		if (!turnstileResponse) throw new Error("Turnstile challenge failed");
-		const api = new RecruitmentApplicantAPI(authStore);
+		const api = new RecruitmentApplicantAPI(applicantAuth);
 		return await api.sendPostEmailRegister({
+			name: userRegistData.name,
 			email: userRegistData.email,
-			confirm_success_url: redirectUrl,
 			password: userRegistData.password,
 			password_confirmation: userRegistData.password_confirmation,
-			name: "name",
+			confirm_success_url: userRegistData.confirm_success_url,
 			"cf-turnstile-response": turnstileResponse,
 		});
 	} catch (error) {
@@ -158,85 +207,53 @@ const postEmailRegister = async () => {
 	}
 };
 
-// function buttonOnclick() {
-// 	const errorMessage = mutation;
-// 	errorMessage.error;
-// }
+const handleSubmit = async () => {
+	if (userRegistData.name === "") {
+		password.isNameBlank = true;
+	} else {
+		password.isNameBlank = false;
+	}
 
-// const mutation = useMutation(["postEmailRegister"], async () => {
-// 	try {
-// 		return await api.postEmailRegister(userRegistData); //important!!!
-// 		//return axios.post("/todos", newEmailRegister);
-// 	} catch (e: any) {
-// 		if (e instanceof InvalidSessionError) {
-// 			// FIXME: show session expiry notification??
-// 			// Why are we even here in the first place?
-// 			// MainContainer should have checked already.
-// 			console.error(
-// 				"Session has already expired while querying programList"
-// 			);
-// 			console.log(e);
-// 			return;
-// 		}
-// 	}
-// });
+	if (userRegistData.email === "") {
+		password.isEmailBlank = true;
+	} else {
+		password.isEmailBlank = false;
+	}
 
-// const password = reactive({
-// 	notMatch: false,
-// 	isCurrentPassBlank: false,
-// });
+	if (userRegistData.password === "") {
+		password.isCurrentPassBlank = true;
+	} else {
+		password.isCurrentPassBlank = false;
+	}
 
-// const resetPassValue = () => {
-// 	password.notMatch = false;
-// };
+	if (userRegistData.password !== userRegistData.password_confirmation) {
+		password.notMatch = true;
+	} else {
+		password.notMatch = false;
+	}
 
-// const handleSubmit = async () => {
-// 	if (userRegistData.password === "") {
-// 		password.isCurrentPassBlank = true;
-// 	} else {
-// 		password.isCurrentPassBlank = false;
-// 	}
-
-// 	if (userRegistData.password !== userRegistData.password_confirmation) {
-// 		password.notMatch = true;
-// 	} else {
-// 		password.notMatch = false;
-// 	}
-
-// 		const response = mutation.mutate();
-// 		const errorMsg = mutation.error;
-
-// 		await response.then((res) => {
-// 			if (res?.success !== undefined && res?.message !== undefined) {
-// 				changePassRes.success = toRaw(res.success);
-// 				changePassRes.message = toRaw(res.message);
-// 			}
-
-// 			isChangePassLoading.value = false;
-
-// 			if (changePassRes.success) {
-// 				resetPassValue();
-// 				toast.add({
-// 					severity: "success",
-// 					summary: "Success",
-// 					detail: changePassRes.message,
-// 					life: 3000,
-// 				});
-// 			} else {
-// 				toast.add({
-// 					severity: "error",
-// 					summary: "Error",
-// 					detail: changePassRes.message[
-// 						changePassRes.message.length - 1
-// 					],
-// 					life: 5000,
-// 				});
-// 			}
-// 		});
-// 	}
-//};
-
-//<router-link to="/recruitment/applicant/regist/done">
+	if (
+		!password.isCurrentPassBlank &&
+		!password.isNewPassBlank &&
+		!password.isNameBlank &&
+		!password.isEmailBlank &&
+		!password.notMatch
+	) {
+		isRegistLoading.value = true;
+		const response = postEmailRegister();
+		await response.then((res) => {
+			console.log(res);
+			if (res?.status !== undefined && res?.message !== undefined) {
+				RegisterResponse.success = toRaw(res.status);
+				RegisterResponse.message = toRaw(res.message);
+			}
+			isRegistLoading.value = false;
+			if (RegisterResponse.success) {
+				redirectToRegistDonePage();
+			}
+		});
+	}
+};
 </script>
 
 <style setup lang="css">

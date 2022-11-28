@@ -110,15 +110,3 @@ export interface RecruitmentApplicantGetUserInfoResponse {
 	created_at?: string;
 	updated_at?: string;
 }
-
-export interface newPostEmailRegister {
-	email: string;
-	name: string;
-	confirm_success_url: string;
-	password: string;
-	password_confirmation: string;
-}
-export interface RecruitmentRegisterEmailPostResponse {
-	status: string;
-	errorMessage: string;
-}

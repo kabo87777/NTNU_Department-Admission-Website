@@ -73,10 +73,11 @@ export class GenericAPI {
 	}
 
 	// Send Forgot Password
-
 	async sendForgotPasswordEmail(data: universalAuthSendResetPwdEmailData) {
 		return await doUniversalAuthSendForgotPwdEmail(this.auth, data);
 	}
+
+	//  Register
 	async sendPostEmailRegister(data: universalAuthSendPostEmailRegister) {
 		return await doUniversalAuthSendPostEmailRegister(this.auth, data);
 	}

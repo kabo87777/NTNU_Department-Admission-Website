@@ -14,11 +14,11 @@ export interface universalAuthSendResetPwdEmailData {
 }
 
 export interface universalAuthSendPostEmailRegister {
-	email: string;
 	name: string;
-	confirm_success_url: string;
+	email: string;
 	password: string;
 	password_confirmation: string;
+	confirm_success_url: string;
 	"cf-turnstile-response": string;
 }
 
