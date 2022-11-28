@@ -893,10 +893,10 @@ const applicantStage = useMutation(async (newApplicantStage: any) => {
 });
 function doneEdit() {
 	applicantStage.mutate({
-		docs_stage: p1_result.value,
-		docs_order: oral_order.value,
-		oral_stage: p2_result.value,
-		oral_order: admitted_order.value,
+		// docs_stage: p1_result.value,
+		// docs_order: oral_order.value,
+		// oral_stage: p2_result.value,
+		// oral_order: admitted_order.value,
 	});
 	applicantDocsGradeList.refetch({ throwOnError: true });
 	productDialog.value = false;
