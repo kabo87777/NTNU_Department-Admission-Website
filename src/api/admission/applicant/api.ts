@@ -25,16 +25,16 @@ export class AdmissionApplicantAPI extends GenericAPI {
 		return data.data;
 	}
 
-	async getUserInfo(): Promise<AdmissionApplicantGetUserInfoResponse> {
-		const data: APIGenericResponse = await this.instance.get(
-			"admission/applicant/info"
-		);
+	// async getUserInfo(): Promise<> {
+	// 	const data: APIGenericResponse = await this.instance.get(
+	// 		"admission/applicant/info"
+	// 	);
 
-		if (data.error === true || typeof data.data.programs === "undefined")
-			throw new Error("Failed to fetch user info");
-		console.log(data);
-		return data.data.programs;
-	}
+	// 	if (data.error === true || typeof data.data.programs === "undefined")
+	// 		throw new Error("Failed to fetch user info");
+	// 	console.log(data);
+	// 	return data.data.programs;
+	// }
 
 	async getFileList(): Promise<AdmissionApplicantGetFileListResponse[]> {
 		const data: APIGenericResponse = await this.instance.get(
