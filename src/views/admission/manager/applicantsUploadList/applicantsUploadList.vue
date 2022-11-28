@@ -48,7 +48,8 @@
 						<div class="m-auto text-center">
 							<Tag
 								v-if="
-									slotProps.data.application_stage === 'sent'
+									slotProps.data.application_stage ===
+									'已送審'
 								"
 								severity="success"
 							>
@@ -57,18 +58,13 @@
 							<Tag
 								v-else-if="
 									slotProps.data.application_stage ===
-									'unstart'
-								"
-								severity="danger"
-							>
-								{{ slotProps.data.application_stage }}
-							</Tag>
-							<Tag
-								v-else-if="
-									slotProps.data.application_stage === 'draft'
+									'未送審'
 								"
 								severity="warning"
 							>
+								{{ slotProps.data.application_stage }}
+							</Tag>
+							<Tag v-else severity="danger">
 								{{ slotProps.data.application_stage }}
 							</Tag>
 						</div>
@@ -76,17 +72,23 @@
 				</Column>
 				<Column field="oral_stage">
 					<template #header>
-						<div class="m-auto">{{ $t("補件狀態") }}</div>
+						<div class="m-auto">{{ $t("補件系統") }}</div>
 					</template>
 					<template #body="slotProps">
-						<div class="m-auto text-center">
-							{{ slotProps.data.oral_stage }}
+						<div
+							v-if="slotProps.data.isMoreDoc"
+							class="m-auto text-center"
+						>
+							{{ $t("已開放") }}
+						</div>
+						<div v-else class="m-auto text-center">
+							{{ $t("未開放") }}
 						</div>
 					</template>
 				</Column>
 				<Column field="email">
 					<template #header>
-						<div class="m-auto">{{ $t("補件系統") }}</div>
+						<div class="m-auto">{{ $t("補件狀態") }}</div>
 					</template>
 					<template #body="slotProps">
 						<div class="m-auto text-center">
@@ -95,6 +97,9 @@
 								severity="success"
 							>
 								{{ slotProps.data.email }}
+							</Tag>
+							<Tag v-else style="background-color: #d9dada">
+								{{ $t("無") }}
 							</Tag>
 						</div>
 					</template>
