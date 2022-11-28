@@ -301,18 +301,18 @@ const queryClient = useQueryClient();
 
 // Field Data
 const showedInfo = reactive([
-	{ id: "file1", checked: true },
-	{ id: "file2", checked: true },
-	{ id: "file3", checked: true },
-	{ id: "file4", checked: true },
-	{ id: "file5", checked: true },
-	{ id: "file6", checked: true },
+	{ id: "file1", checked: false },
+	{ id: "file2", checked: false },
+	{ id: "file3", checked: false },
+	{ id: "file4", checked: false },
+	{ id: "file5", checked: false },
+	{ id: "file6", checked: false },
 ]);
 const showedFile = reactive([
-	{ id: "file1", checked: true },
-	{ id: "file2", checked: true },
-	{ id: "file3", checked: true },
-	{ id: "file4", checked: true },
+	{ id: "file1", checked: false },
+	{ id: "file2", checked: false },
+	{ id: "file3", checked: false },
+	{ id: "file4", checked: false },
 ]);
 const programData: AdmissionAdminProgramListResponse = reactive({
 	id: 0,
