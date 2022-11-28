@@ -10,6 +10,7 @@ import type {
 	AdmissionAdminOralGradeListResponse,
 	AdmissionAdminSingleDocsGradeResponse,
 	AdmissionAdminSingleOralGradeResponse,
+	AdmissionAdminCreateReviewerRequest,
 } from "./types";
 import type { APIGenericResponse } from "@/api/types";
 import { GenericAPI } from "@/api/api";
@@ -225,5 +226,17 @@ export class AdmissionAdminAPI extends GenericAPI {
 		);
 		if (response.error === true)
 			throw new Error("Failed to update program");
+	}
+	async createReviewer(
+		data: AdmissionAdminCreateReviewerRequest
+	): Promise<AdmissionAdminGenericResponse> {
+		const response: APIGenericResponse = await this.instance.post(
+			"/admission/admin/reviewer",
+			data
+		);
+
+		if (response.error === true) throw new Error("Failed to add reviewer");
+
+		return response;
 	}
 }

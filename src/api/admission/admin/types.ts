@@ -184,3 +184,10 @@ export interface AdmissionAdminSingleOralGradeResponse {
 	reviewer: AdmissionAdminReviewerGradeResponse[];
 	avg: number;
 }
+
+export interface AdmissionAdminCreateReviewerRequest {
+	username: string;
+	password: string;
+	email: string;
+	name: string;
+}
