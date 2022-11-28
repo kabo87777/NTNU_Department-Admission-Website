@@ -132,3 +132,38 @@ export interface AdmAdminEditApplicantRequest {
 	email: string;
 	password?: string;
 }
+
+export interface AdmissionAdminDocsGradeListResponse {
+	id: string;
+	name: string;
+	application_stage: string;
+	isImmediateEnroll: boolean;
+	grades: number;
+}
+
+export interface AdmissionAdminOralGradeListResponse {
+	id: string;
+	name: string;
+	oral_order: number;
+	enroll_stage: string;
+	enroll_order: number;
+	isImmediateEnroll: boolean;
+	docs_grades: number;
+	oral_grades: number;
+	total_grades: number;
+}
+
+export interface AdmissionAdminReviewerGradeResponse {
+	name: string;
+	isimmendiateenroll: boolean;
+	grades: number;
+}
+
+export interface AdmissionAdminSingleDocsGradeResponse {
+	id: string;
+	name: string;
+	stage: string;
+	oral_order: number;
+	reviewer: AdmissionAdminReviewerGradeResponse[];
+	avg: number;
+}

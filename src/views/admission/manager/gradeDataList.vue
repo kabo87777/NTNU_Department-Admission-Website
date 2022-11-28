@@ -14,32 +14,33 @@
 		</div>
 		<div v-if="currentTab === translation.phase1">
 			<DataTable
-				:value="phase1_list"
+				:value="applicantDocsGradeList"
 				responsiveLayout="scroll"
 				dataKey="id"
 				:scrollable="true"
 				scrollHeight="700px"
-				class="p-datatable-lg"
+				class="p-datatable-lg !h-700px"
 			>
 				<Column field="id" :header="ID"></Column>
 				<Column field="name" :header="applicantName"></Column>
+				<Column field="grades" :header="reviewerGrade"></Column>
 				<Column
-					field="book_review_score"
-					:header="reviewerGrade"
-				></Column>
-				<Column
-					field="access"
+					field="isImmediateEnroll"
 					:header="directedAdmitted"
 					dataType="boolean"
 					bodyClass="text-center"
 					style="min-width: 8rem"
 				>
 					<template #body="slotProps">
-						<i v-if="slotProps.data.access" class="pi pi-check"></i>
+						<i
+							v-if="slotProps.data.isImmediateEnroll"
+							class="pi pi-check"
+						></i>
 						<p v-else>-</p>
 					</template>
 				</Column>
-				<Column field="phase1_result" :header="phaseResult"></Column>
+				<Column field="application_stage" :header="phaseResult">
+				</Column>
 				<Column :exportable="false" style="min-width: 8rem">
 					<template #body="slotProps">
 						<Button
@@ -89,11 +90,11 @@
 					:value="scores"
 					responsiveLayout="scroll"
 					dataKey="id"
-					class="text-base mt-24px"
+					class="text-base mt-24px !h-286px"
 				>
 					<Column field="name" :header="reviewer"></Column>
 					<Column
-						field="access"
+						field="isimmendiateenroll"
 						:header="directedAdmitted"
 						dataType="boolean"
 						bodyClass="text-center"
@@ -101,13 +102,13 @@
 					>
 						<template #body="slotProps">
 							<i
-								v-if="slotProps.data.access"
+								v-if="slotProps.data.isimmendiateenroll"
 								class="pi pi-check"
 							></i>
 							<p v-else>-</p>
 						</template>
 					</Column>
-					<Column field="total_score" :header="totalScore"></Column>
+					<Column field="grades" :header="totalScore"></Column>
 				</DataTable>
 				<DataTable
 					v-if="dialogCurrentTab === translation.phase2"
@@ -255,13 +256,13 @@
 		</div>
 		<div v-if="currentTab === translation.phase2">
 			<DataTable
-				:value="phase2_list"
+				:value="applicantOralGradeList"
 				responsiveLayout="scroll"
 				dataKey="id"
 				:scrollable="true"
 				scrollHeight="700px"
 				@rowReorder="onRowReorder2"
-				class="p-datatable-lg"
+				class="p-datatable-lg !h-700px"
 			>
 				<Column
 					:rowReorder="true"
@@ -275,13 +276,21 @@
 				></Column>
 				<Column field="id" :header="ID"></Column>
 				<Column field="name" :header="applicantName"></Column>
-				<Column field="score" :header="woScore"></Column>
+				<Column field="docs_grades" :header="docsScore"></Column>
+				<Column field="oral_grades" :header="oralScore"></Column>
 				<Column
-					field="final_score"
+					field="total_grades"
 					:header="final_score"
 					:sortable="true"
 				></Column>
-				<Column field="final_result" :header="finalResult"></Column>
+				<Column field="enroll_stage" :header="finalResult">
+					<template #body="slotProps">
+						<i v-if="slotProps.data.enroll_stage === null">{{
+							$t("待審核")
+						}}</i>
+						<p v-else>{{ slotProps.data.enroll_stage }}</p>
+					</template>
+				</Column>
 				<Column :exportable="false" style="min-width: 8rem">
 					<template #body="slotProps">
 						<Button
@@ -497,30 +506,38 @@
 		</div>
 		<div v-if="currentTab === translation.admissionList">
 			<DataTable
-				:value="final_list"
+				:value="applicantOralGradeList"
 				responsiveLayout="scroll"
 				dataKey="id"
 				:scrollable="true"
 				scrollHeight="700px"
 				@rowReorder="onRowReorder3"
-				class="p-datatable-lg"
+				class="p-datatable-lg !h-700px"
 			>
 				<Column
 					:rowReorder="true"
 					headerStyle="width: 3rem"
 					:reorderableColumn="false"
 				/>
-				<Column field="final_result" :header="reviewResult"></Column>
+				<Column field="enroll_stage" :header="reviewResult">
+					<template #body="slotProps">
+						<i v-if="slotProps.data.enroll_stage === null">{{
+							$t("待審核")
+						}}</i>
+						<p v-else>{{ slotProps.data.enroll_stage }}</p>
+					</template>
+				</Column>
 				<Column
-					field="admission_order"
+					field="enroll_order"
 					:header="admissionOrder"
 					:sortable="true"
 				></Column>
 				<Column field="id" :header="ID"></Column>
 				<Column field="name" :header="applicantName"></Column>
-				<Column field="score" :header="woScore"></Column>
+				<Column field="docs_grades" :header="docsScore"></Column>
+				<Column field="oral_grades" :header="oralScore"></Column>
 				<Column
-					field="final_score"
+					field="total_grades"
 					:header="final_score"
 					:sortable="true"
 				></Column>
@@ -567,7 +584,61 @@ import Divider from "primevue/divider";
 import Dropdown from "primevue/dropdown";
 import InputText from "primevue/inputtext";
 import { useI18n } from "vue-i18n";
+import { useRouter } from "vue-router";
+import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
+import { AdmissionAdminAPI } from "@/api/admission/admin/api";
+import { useMutation, useQuery } from "@tanstack/vue-query";
+import { InvalidSessionError } from "@/api/error";
+import { useGlobalStore } from "@/stores/globalStore";
+import { useToast } from "primevue/usetoast";
+import { AdmissionAdminReviewerGradeResponse } from "@/api/admission/admin/types";
+import { AdmissionAdminSingleDocsGradeResponse } from "@/api/admission/admin/types";
+import singleApplicantGradeVue from "@/components/singleApplicantGrade.vue";
 
+const adminAuth = useAdmissionAdminAuthStore();
+const api = new AdmissionAdminAPI(adminAuth);
+const store = useGlobalStore();
+const router = useRouter();
+const {
+	isLoading,
+	isError,
+	data: applicantDocsGradeList,
+	error,
+} = useQuery(["admissionAdminDocsGradeList"], async () => {
+	try {
+		return await api.getDocsGradeList(store.program!.id!);
+	} catch (e: any) {
+		if (e instanceof InvalidSessionError) {
+			// FIXME: show session expiry notification??
+			// Why are we even here in the first place?
+			// MainContainer should have checked already.
+			console.error(
+				"Session has already expired while querying programList"
+			);
+			router.push("/");
+			return;
+		}
+	}
+});
+const { data: applicantOralGradeList } = useQuery(
+	["admissionAdminOralGradeList"],
+	async () => {
+		try {
+			return await api.getOralGradeList(store.program!.id!);
+		} catch (e: any) {
+			if (e instanceof InvalidSessionError) {
+				// FIXME: show session expiry notification??
+				// Why are we even here in the first place?
+				// MainContainer should have checked already.
+				console.error(
+					"Session has already expired while querying programList"
+				);
+				router.push("/");
+				return;
+			}
+		}
+	}
+);
 const { t } = useI18n();
 const translation = {
 	phase1: t("第一階段 (書面審查)"),
@@ -584,97 +655,7 @@ const translation = {
 	writtenReviewNotPass: t("書審未過"),
 };
 
-const phase1_list = ref([
-	{
-		id: "1000",
-		name: "Aaa",
-		book_review_score: 80,
-		access: false,
-		phase1_result: translation.pending,
-	},
-	{
-		id: "1001",
-		name: "Bbb",
-		book_review_score: 70,
-		access: false,
-		phase1_result: translation.passtophase2,
-	},
-	{
-		id: "1002",
-		name: "Ccc",
-		book_review_score: 60,
-		access: true,
-		phase1_result: translation.derectlyAdmitted,
-	},
-	{
-		id: "1003",
-		name: "Ddd",
-		book_review_score: 50,
-		access: false,
-		phase1_result: translation.pending,
-	},
-	{
-		id: "1004",
-		name: "Eee",
-		book_review_score: 40,
-		access: false,
-		phase1_result: translation.notPass,
-	},
-	{
-		id: "1005",
-		name: "Fff",
-		book_review_score: 30,
-		access: false,
-		phase1_result: translation.passtophase2,
-	},
-	{
-		id: "1006",
-		name: "Ggg",
-		book_review_score: 20,
-		access: false,
-		phase1_result: translation.notPass,
-	},
-	{
-		id: "1007",
-		name: "Ggg",
-		book_review_score: 20,
-		access: false,
-		phase1_result: translation.notPass,
-	},
-	{
-		id: "1008",
-		name: "Ggg",
-		book_review_score: 20,
-		access: false,
-		phase1_result: translation.notPass,
-	},
-	{
-		id: "1009",
-		name: "Ggg",
-		book_review_score: 20,
-		access: false,
-		phase1_result: translation.notPass,
-	},
-]);
-
-const scores = ref([
-	{
-		name: "Mike",
-		access: false,
-		total_score: "70",
-	},
-	{
-		name: "Amber",
-		access: false,
-		total_score: "80",
-	},
-	{ name: "John", access: true, total_score: "-" },
-	{
-		name: "Peter",
-		access: false,
-		total_score: "90",
-	},
-]);
+const scores = ref<AdmissionAdminReviewerGradeResponse[]>();
 const currentTab = ref(translation.phase1);
 const tabOptions = ref([
 	translation.phase1,
@@ -708,211 +689,6 @@ const disable1 = computed(() => {
 const disable2 = computed(() => {
 	return dialogCurrentTab.value === translation.phase1;
 });
-const phase2_list = ref([
-	{
-		oral_order: "1",
-		id: "1000",
-		name: "Aaa",
-		score: "85/70",
-		final_score: "80",
-		final_result: translation.admitted,
-	},
-	{
-		oral_order: "2",
-		id: "1001",
-		name: "Bbb",
-		score: "73/90",
-		final_score: "70",
-		final_result: translation.alternate,
-	},
-	{
-		oral_order: "3",
-		id: "1002",
-		name: "Ccc",
-		score: "82/77",
-		final_score: "60",
-		final_result: translation.admitted,
-	},
-	{
-		oral_order: "4",
-		id: "1003",
-		name: "Ddd",
-		score: "77/60",
-		final_score: "50",
-		final_result: translation.pending,
-	},
-	{
-		oral_order: "X",
-		id: "1004",
-		name: "Eee",
-		score: translation.derectlyAdmittedPass,
-		final_score: "40",
-		final_result: translation.admitted,
-	},
-	{
-		oral_order: "X",
-		id: "1005",
-		name: "Fff",
-		score: "59/" + translation.writtenReviewNotPass,
-		final_score: "80",
-		final_result: translation.notAdmitted,
-	},
-	{
-		oral_order: "X",
-		id: "1006",
-		name: "Ggg",
-		score: "65/" + translation.writtenReviewNotPass,
-		final_score: "80",
-		final_result: translation.notAdmitted,
-	},
-	{
-		oral_order: "X",
-		id: "1007",
-		name: "Ggg",
-		score: "65/" + translation.writtenReviewNotPass,
-		final_score: "80",
-		final_result: translation.notAdmitted,
-	},
-	{
-		oral_order: "X",
-		id: "1008",
-		name: "Ggg",
-		score: "65/" + translation.writtenReviewNotPass,
-		final_score: "80",
-		final_result: translation.notAdmitted,
-	},
-	{
-		oral_order: "X",
-		id: "1009",
-		name: "Ggg",
-		score: "65/" + translation.writtenReviewNotPass,
-		final_score: "80",
-		final_result: translation.notAdmitted,
-	},
-]);
-
-const final_list = ref([
-	{
-		admission_order: "1",
-		id: "1000",
-		name: "Aaa",
-		score: "85/70",
-		final_score: "80",
-		final_result: translation.admitted,
-	},
-	{
-		admission_order: "2",
-		id: "1001",
-		name: "Bbb",
-		score: "73/90",
-		final_score: "80",
-		final_result: translation.alternate,
-	},
-	{
-		admission_order: "3",
-		id: "1002",
-		name: "Ccc",
-		score: "82/77",
-		final_score: "80",
-		final_result: translation.admitted,
-	},
-	{
-		admission_order: "4",
-		id: "1003",
-		name: "Ddd",
-		score: "77/60",
-		final_score: "80",
-		final_result: translation.pending,
-	},
-	{
-		admission_order: "X",
-		id: "1004",
-		name: "Eee",
-		score: translation.derectlyAdmittedPass,
-		final_score: "80",
-		final_result: translation.admitted,
-	},
-	{
-		admission_order: "X",
-		id: "1005",
-		name: "Fff",
-		score: "59/" + translation.writtenReviewNotPass,
-		final_score: "80",
-		final_result: translation.notAdmitted,
-	},
-	{
-		admission_order: "X",
-		id: "1006",
-		name: "Ggg",
-		score: "65/" + translation.writtenReviewNotPass,
-		final_score: "80",
-		final_result: translation.notAdmitted,
-	},
-	{
-		admission_order: "X",
-		id: "1007",
-		name: "Ggg",
-		score: "65/" + translation.writtenReviewNotPass,
-		final_score: "80",
-		final_result: translation.notAdmitted,
-	},
-	{
-		admission_order: "X",
-		id: "1008",
-		name: "Ggg",
-		score: "65/" + translation.writtenReviewNotPass,
-		final_score: "80",
-		final_result: translation.notAdmitted,
-	},
-	{
-		admission_order: "X",
-		id: "1009",
-		name: "Ggg",
-		score: "65/" + translation.writtenReviewNotPass,
-		final_score: "80",
-		final_result: translation.notAdmitted,
-	},
-	{
-		admission_order: "X",
-		id: "1009",
-		name: "Ggg",
-		score: "65/" + translation.writtenReviewNotPass,
-		final_score: "80",
-		final_result: translation.notAdmitted,
-	},
-	{
-		admission_order: "X",
-		id: "1009",
-		name: "Ggg",
-		score: "65/" + translation.writtenReviewNotPass,
-		final_score: "80",
-		final_result: translation.notAdmitted,
-	},
-	{
-		admission_order: "X",
-		id: "1009",
-		name: "Ggg",
-		score: "65/" + translation.writtenReviewNotPass,
-		final_score: "80",
-		final_result: translation.notAdmitted,
-	},
-	{
-		admission_order: "X",
-		id: "1009",
-		name: "Ggg",
-		score: "65/" + translation.writtenReviewNotPass,
-		final_score: "80",
-		final_result: translation.notAdmitted,
-	},
-	{
-		admission_order: "X",
-		id: "1009",
-		name: "Ggg",
-		score: "65/" + translation.writtenReviewNotPass,
-		final_score: "80",
-		final_result: translation.notAdmitted,
-	},
-]);
 
 const ID = computed(() => t("帳號ID"));
 const applicantName = computed(() => t("申請人姓名"));
@@ -921,28 +697,47 @@ const phaseResult = computed(() => t("階段審核結果"));
 const directedAdmitted = computed(() => t("逕取"));
 const gradeDataEdit = computed(() => t("評分資料編輯"));
 const reviewer = computed(() => t("審查委員"));
-const learningEx = computed(() => t("學習歷程"));
-const devPotential = computed(() => t("發展潛能"));
-const learnPotential = computed(() => t("學習潛力"));
-const gradeItem1 = computed(() => t("評分項目一"));
-const gradeItem2 = computed(() => t("評分項目二"));
-const gradeItem3 = computed(() => t("評分項目三"));
 const oralOrder = computed(() => t("口試順序"));
-const woScore = computed(() => t("書審/口試分數"));
 const finalResult = computed(() => t("最終審查結果"));
 const reviewResult = computed(() => t("審查結果"));
 const admissionOrder = computed(() => t("錄取順序"));
 const totalScore = computed(() => t("審查委員給定總分"));
 const final_score = computed(() => t("最後總分"));
+const docsScore = computed(() => t("書審分數"));
+const oralScore = computed(() => t("口試分數"));
 
 const onRowReorder2 = (event: any) => {
-	phase2_list.value = event.value;
+	// const { from, to } = event.detail;
+	console.log(event.dragIndex, event.dropIndex);
 };
 
 const onRowReorder3 = (event: any) => {
-	final_list.value = event.value;
+	console.log(event.dragIndex, event.dropIndex);
 };
-
+const { data: applicantDocsGrade } = useQuery(
+	["admissionAdminDocsGrade"],
+	async () => {
+		try {
+			return await api.getSingleDocsGrade(1);
+		} catch (e: any) {
+			if (e instanceof InvalidSessionError) {
+				// FIXME: show session expiry notification??
+				// Why are we even here in the first place?
+				// MainContainer should have checked already.
+				console.error(
+					"Session has already expired while querying programList"
+				);
+				router.push("/");
+				return;
+			}
+		}
+	},
+	{
+		onSuccess: (data) => {
+			scores.value = data?.reviewer;
+		},
+	}
+);
 const editProduct = (prod: any) => {
 	name.value = prod.data.name;
 	id.value = prod.data.id;
@@ -955,9 +750,6 @@ const editProduct = (prod: any) => {
 };
 
 function doneEdit() {
-	phase1_list.value[
-		phase1_list.value.findIndex((obj) => obj.id == id.value)
-	].phase1_result = p1_result.value;
 	productDialog.value = false;
 }
 </script>
