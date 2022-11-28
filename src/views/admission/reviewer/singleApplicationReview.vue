@@ -193,7 +193,7 @@ const total_score = computed(() => {
 		(inputScore_3!.value! * score3Proportion.value) / 100 +
 		(inputScore_4!.value! * score4Proportion.value) / 100 +
 		(inputScore_5!.value! * score5Proportion.value) / 100
-	);
+	).toFixed(2);
 });
 const data = ref("基本資料");
 const datas = ref(["基本資料", "PDF"]);
