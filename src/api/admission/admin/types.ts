@@ -140,3 +140,10 @@ export interface AdmissionAdminGenericResponse {
 	success?: boolean;
 	message?: string | [];
 }
+
+export interface AdmissionAdminCreateReviewerRequest {
+	username: string;
+	password: string;
+	email: string;
+	name: string;
+}
