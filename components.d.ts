@@ -21,6 +21,7 @@ declare module '@vue/runtime-core' {
     RecruitmentApplicantSidebar: typeof import('./src/components/sidebars/recruitmentApplicantSidebar.vue')['default']
     RecruitmentManagerSidebar: typeof import('./src/components/recruitmentManagerSidebar.vue')['default']
     RecruitmentReviewerSidebar: typeof import('./src/components/recruitmentReviewerSidebar.vue')['default']
+    RefillState: typeof import('./src/components/attachmentStates/RefillState.vue')['default']
     ResetPasswordForm: typeof import('./src/components/ResetPasswordForm.vue')['default']
     ReviewerSidebar: typeof import('./src/components/reviewerSidebar.vue')['default']
     ReviewState: typeof import('./src/components/attachmentStates/reviewState.vue')['default']

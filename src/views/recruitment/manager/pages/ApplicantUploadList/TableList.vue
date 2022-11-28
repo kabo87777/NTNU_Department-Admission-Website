@@ -115,6 +115,7 @@ import { toRaw } from "vue";
 import { router } from "@/router";
 import { useRecruitmentAdminAuthStore } from "@/stores/universalAuth";
 import { RecruitmentAdminAPI } from "@/api/recruitment/admin/api";
+import { useGlobalStore } from "@/stores/RecruitmentAdminStore";
 import { useQuery } from "@tanstack/vue-query";
 import { InvalidSessionError } from "@/api/error";
 import DataTable from "primevue/datatable";
@@ -124,6 +125,8 @@ import "@/styles/customize.css";
 
 const adminAuth = useRecruitmentAdminAuthStore();
 const api = new RecruitmentAdminAPI(adminAuth);
+const store = useGlobalStore();
+const programId = store.program?.id;
 
 const {
 	isLoading,
@@ -132,7 +135,7 @@ const {
 	error,
 } = useQuery(["applicantList"], async () => {
 	try {
-		return await api.getApplicantList();
+		return await api.getApplicantList(programId as number);
 	} catch (e: any) {
 		if (e instanceof InvalidSessionError) {
 			console.error(

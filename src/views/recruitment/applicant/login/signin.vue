@@ -277,6 +277,12 @@ const onSubmit = handleSubmit(async function (values, actions) {
 
 		userInfo.saveUserInfo(await handleDataType());
 
+		window.localStorage.removeItem("RecruitmentApplicantUsername");
+		window.localStorage.setItem(
+			"RecruitmentApplicantUsername",
+			userInfo.userInfo.name
+		);
+
 		redirectToMainContainer();
 	} catch (e: any) {
 		// TODO: show error message
