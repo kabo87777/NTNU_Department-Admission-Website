@@ -65,7 +65,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref,reactive, onMounted, toRaw, watch } from "vue";
+import { ref, reactive, onMounted, toRaw, watch } from "vue";
 import { InvalidSessionError } from "@/api/error";
 import CreateState from "@/components/attachmentStates/createState.vue";
 import ParagraphDivider from "@/styles/paragraphDividerApplicant.vue";

@@ -224,7 +224,7 @@
 				<div class="text-16px">{{ $t("地址") }}：</div>
 				<InputText
 					type="text"
-					v-model="residentAddress.streetAddress"
+					v-model="residentAddress.Address"
 					placeholder="Text"
 					class="!border-gray-900 !w-440px !h-40px !mt-5px"
 				/>
@@ -297,7 +297,7 @@
 				<div class="text-16px">{{ $t("地址") }}：</div>
 				<InputText
 					type="text"
-					v-model="currentAddress.streetAddress"
+					v-model="currentAddress.Address"
 					placeholder="Text"
 					class="!border-gray-900 !w-440px !h-40px !mt-5px"
 				/>
@@ -326,7 +326,7 @@
 					inputId="city1"
 					name="city"
 					value="male"
-					v-model="identityInfo.gender"
+					v-model="identityInfo.sex"
 				/>
 				<label
 					for="city1"
@@ -339,7 +339,7 @@
 					inputId="city2"
 					name="city"
 					value="female"
-					v-model="identityInfo.gender"
+					v-model="identityInfo.sex"
 				/>
 				<label for="city2" class="ml-8px font-medium">{{
 					$t("女性")
