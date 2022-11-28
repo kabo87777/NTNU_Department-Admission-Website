@@ -198,6 +198,7 @@ import { useMutation, useQuery } from "@tanstack/vue-query";
 import { InvalidSessionError } from "@/api/error";
 import { useGlobalStore } from "@/stores/AdmissionReviewerStore";
 import { useToast } from "primevue/usetoast";
+import { e } from "vitest/dist/index-40e0cb97";
 
 const reviewerAuth = useAdmissionReviewerAuthStore();
 const api = new AdmissionReviewerAPI(reviewerAuth);
@@ -446,7 +447,12 @@ const cancel = computed(() => t("取消"));
 const selectedData = ref();
 const router = useRouter();
 const onRowSelect = (event: any) => {
-	selectedData.value = "";
-	router.push("/admission/reviewer/singleOralReview/" + event.data.id);
+	if(event.data.oral_order){
+		selectedData.value = "";
+		router.push("/admission/reviewer/singleOralReview/" + event.data.id);
+	}
+	// else{
+	// 	toast.add("");
+	// }
 };
 </script>
