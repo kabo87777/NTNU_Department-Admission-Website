@@ -377,10 +377,10 @@ const getInfoFileField = useQuery(
 					data.reviewer_required_file;
 			}
 			fieldList.infoChecked = JSON.parse(
-				programData.reviewer_required_info
+				programData.applicant_required_info
 			);
 			fieldList.fileChecked = JSON.parse(
-				programData.reviewer_required_file
+				programData.applicant_required_file
 			);
 			showedInfo.forEach((element) => {
 				if (fieldList.infoChecked.includes(element.id))
@@ -430,10 +430,10 @@ function saveChange() {
 			if (!fieldList.fileChecked.includes(element.id))
 				if (element.checked) fieldList.fileChecked.push(element.id);
 		});
-		programData.reviewer_required_info = JSON.stringify(
+		programData.applicant_required_info = JSON.stringify(
 			fieldList.infoChecked
 		);
-		programData.reviewer_required_file = JSON.stringify(
+		programData.applicant_required_file = JSON.stringify(
 			fieldList.fileChecked
 		);
 		// Patch Info/File Data
