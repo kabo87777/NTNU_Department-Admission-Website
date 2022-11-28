@@ -303,7 +303,7 @@ import Button from "primevue/button";
 import Checkbox from "primevue/checkbox";
 import ParagraphDivider from "@/styles/paragraphDivider.vue";
 import { useToast } from "primevue/usetoast";
-import { reactive, ref, computed, onMounted } from "vue";
+import { reactive, ref, watch, computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
 import { AdmissionAdminAPI } from "@/api/admission/admin/api";
@@ -314,11 +314,6 @@ import {
 	AdmissionAdminScoreFieldResponse,
 	AdmissionAdminProgramListResponse,
 } from "@/api/admission/admin/types";
-import { watch } from "fs";
-import { object, TypeOf } from "yup";
-import { addAbortSignal } from "stream";
-import { getIn } from "yup/lib/util/reach";
-import { getRunningMode } from "vitest";
 
 const { t } = useI18n();
 const toast = useToast();
@@ -391,49 +386,6 @@ const api = new AdmissionAdminAPI(adminAuth);
 const store = useGlobalStore();
 // Tanstack Query
 const queryClient = useQueryClient();
-
-// API Index form: Score Field Response (Improvement)
-const scoreAPIIndex = [
-	"docs_weight",
-	"docs_grade_name_1",
-	"docs_grade_weight_1",
-	"docs_grade_name_2",
-	"docs_grade_weight_2",
-	"docs_grade_name_3",
-	"docs_grade_weight_3",
-	"docs_grade_name_4",
-	"docs_grade_weight_4",
-	"docs_grade_name_5",
-	"docs_grade_weight_5",
-	"oral_weight",
-	"oral_grade_name_1",
-	"oral_grade_weight_1",
-	"oral_grade_name_2",
-	"oral_grade_weight_2",
-	"oral_grade_name_3",
-	"oral_grade_weight_3",
-	"oral_grade_name_4",
-	"oral_grade_weight_4",
-	"oral_grade_name_5",
-	"oral_grade_weight_5",
-];
-const infoFileAPIIndex = [
-	"id",
-	"category",
-	"name",
-	"application_start_date",
-	"application_end_date",
-	"review_start_date",
-	"review_end_date",
-	"stage",
-	"created_at",
-	"updated_at",
-	"applicant_required_info",
-	"applicant_required_file",
-	"reviewer_required_info",
-	"reviewer_required_file",
-	"detail",
-];
 
 // Field content & data
 const docsScore = reactive([
@@ -599,6 +551,30 @@ const getInfoFileField = useQuery(
 				programData.reviewer_required_file =
 					data.reviewer_required_file;
 			}
+			fieldList.info = {
+				visible: JSON.parse(programData.applicant_required_info),
+				checked: JSON.parse(programData.reviewer_required_info),
+			};
+			fieldList.file = {
+				visible: JSON.parse(programData.applicant_required_file),
+				checked: JSON.parse(programData.reviewer_required_file),
+			};
+			showedInfo.forEach((element) => {
+				if (fieldList.info.visible.includes(element.id))
+					element.visible = true;
+				else element.visible = false;
+				if (fieldList.info.checked.includes(element.id))
+					element.checked = true;
+				else element.checked = false;
+			});
+			showedFile.forEach((element) => {
+				if (fieldList.file.visible.includes(element.id))
+					element.visible = true;
+				else element.visible = false;
+				if (fieldList.file.checked.includes(element.id))
+					element.checked = true;
+				else element.checked = false;
+			});
 			console.log("Get Info/File Successfully");
 		},
 	}
@@ -717,56 +693,21 @@ function saveChange() {
 
 // ButtonFn: Discard Changes and Update Data
 function refreshData() {
-	try {
-		// Using GET API
-		if (!getScoreField) throw "ScoreData Failed";
-		if (!getInfoFileField) throw "Info/File Data Failed";
-		// Parse Info/File JSON
-		fieldList.info = {
-			visible: JSON.parse(programData.applicant_required_info),
-			checked: JSON.parse(programData.reviewer_required_info),
-		};
-		fieldList.file = {
-			visible: JSON.parse(programData.applicant_required_file),
-			checked: JSON.parse(programData.reviewer_required_file),
-		};
-		showedInfo.forEach((element) => {
-			if (fieldList.info.visible.includes(element.id))
-				element.visible = true;
-			else element.visible = false;
-			if (fieldList.info.checked.includes(element.id))
-				element.checked = true;
-			else element.checked = false;
-		});
-		showedFile.forEach((element) => {
-			if (fieldList.file.visible.includes(element.id))
-				element.visible = true;
-			else element.visible = false;
-			if (fieldList.file.checked.includes(element.id))
-				element.checked = true;
-			else element.checked = false;
-		});
-	} catch (e: any) {
-		console.log(e);
-		if (e === "ScoreData Failed") {
-			toast.add({
-				severity: "error",
-				summary: trans.failed.getScore.value,
-				life: 3000,
-			});
-		}
-		if (e === "Info/File Data Failed") {
-			toast.add({
-				severity: "error",
-				summary: trans.failed.getInfoFile.value,
-				life: 3000,
-			});
-		}
-	}
+	if (!getScoreField) console.error("ScoreData Failed");
+	if (!getInfoFileField) console.error("Info/File Data Failed");
 }
-refreshData();
-// Lifecycle: Mounted
-onMounted(() => {
-	refreshData();
-});
+
+watch(
+	() => docsScore[0].weight,
+	(value) => {
+		oralScore[0].weight = 100 - value;
+	}
+);
+
+watch(
+	() => oralScore[0].weight,
+	(value) => {
+		docsScore[0].weight = 100 - value;
+	}
+);
 </script>
