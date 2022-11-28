@@ -28,13 +28,13 @@
 
 		<router-link
 			:to="{
-				name: 'recruitmentApplicantBasicInfo',
+				name: 'recruitmentApplicantUserInfo',
 			}"
 			custom
 			v-slot="{ navigate }"
 		>
 			<Button
-				class="p-button-secondary p-button-text !ml-24px !mt-16px !w-336px !h-48px !hover:bg-[#ECEDED] !rounded-[8px]"
+				class="p-button-secondary p-button-text !ml-24px !mt-16px !w-9/10 !h-48px !hover:bg-[#ECEDED] !rounded-[8px]"
 				@click="navigate"
 				role="link"
 			>
@@ -47,25 +47,25 @@
 				>
 					{{ $t("基本資料") }}
 				</span>
-				<div class="mb-28px">
+				<!-- <div class="mb-28px">
 					<CompletedTag v-if="tags.basicInfo === 'completed'" />
 					<IncompleteTag
 						v-else-if="tags.basicInfo === 'incompleted'"
 					/>
 					<UnableTag v-else-if="tags.basicInfo === 'unable'" />
-				</div>
+				</div> -->
 			</Button>
 		</router-link>
 
 		<router-link
 			:to="{
-				name: 'recruitmentApplicantAttachment',
+				name: 'recruitmentApplicantAttachmentFile',
 			}"
 			custom
 			v-slot="{ navigate }"
 		>
 			<Button
-				class="p-button-secondary p-button-text !ml-24px !mt-8px !w-336px !h-48px !hover:bg-[#ECEDED] !rounded-[8px]"
+				class="p-button-secondary p-button-text !ml-24px !mt-8px !w-9/10 !h-48px !hover:bg-[#ECEDED] !rounded-[8px]"
 				@click="navigate"
 				role="link"
 			>
@@ -78,44 +78,13 @@
 				>
 					{{ $t("附件資料") }}
 				</span>
-				<div class="mb-28px">
+				<!-- <div class="mb-28px">
 					<CompletedTag v-if="tags.attachment === 'completed'" />
 					<IncompleteTag
 						v-else-if="tags.attachment === 'incomplete'"
 					/>
 					<UnableTag v-else-if="tags.attachment === 'unable'" />
-				</div>
-			</Button>
-		</router-link>
-
-		<router-link
-			:to="{
-				name: 'recruitmentApplicantSubmitConfirm',
-			}"
-			custom
-			v-slot="{ navigate }"
-		>
-			<Button
-				class="p-button-secondary p-button-text !ml-24px !mt-8px !w-336px !h-48px !hover:bg-[#ECEDED] !rounded-[8px]"
-				@click="navigate"
-				role="link"
-			>
-				<i
-					class="pi pi-check-square"
-					style="font-size: 1.3rem; color: #101820"
-				/>
-				<span
-					class="text-left tracking-3px ml-4 font-bold text-xl text-[#2D2926]"
-				>
-					{{ $t("資料確認送出") }}
-				</span>
-				<div class="mb-28px">
-					<CompletedTag v-if="tags.submitConfirm === 'completed'" />
-					<IncompleteTag
-						v-else-if="tags.submitConfirm === 'incomplete'"
-					/>
-					<UnableTag v-else-if="tags.submitConfirm === 'unable'" />
-				</div>
+				</div> -->
 			</Button>
 		</router-link>
 
@@ -128,13 +97,13 @@
 
 		<router-link
 			:to="{
-				name: 'recruitmentApplicantAdditionalDocs',
+				name: 'recruitmentApplicantRefillFile',
 			}"
 			custom
 			v-slot="{ navigate }"
 		>
 			<Button
-				class="p-button-secondary p-button-text !ml-24px !mt-8px !w-336px !h-48px !hover:bg-[#ECEDED] !rounded-[8px]"
+				class="p-button-secondary p-button-text !ml-24px !mt-8px !w-9/10 !h-48px !hover:bg-[#ECEDED] !rounded-[8px]"
 				@click="navigate"
 				role="link"
 			>
@@ -147,13 +116,13 @@
 				>
 					{{ $t("補交文件系統") }}
 				</span>
-				<div class="mb-28px">
+				<!-- <div class="mb-28px">
 					<CompletedTag v-if="tags.additionalDocs === 'completed'" />
 					<IncompleteTag
 						v-else-if="tags.additionalDocs === 'incomplete'"
 					/>
 					<UnableTag v-else-if="tags.additionalDocs === 'unable'" />
-				</div>
+				</div> -->
 			</Button>
 		</router-link>
 
@@ -166,28 +135,101 @@
 				padding-right: 8px;
 			"
 		>
-			<div class="mt-24px">
-				<router-link
-					:to="{
-						name: 'recruitmentApplicantSwitchProject',
-					}"
-					custom
-					v-slot="{ navigate }"
+			<div class="flex mt-24px" style="margin-left: 24px">
+				<Dialog
+					v-model:visible="isModalVisible"
+					style="width: 500px"
+					:closable="false"
+					:draggable="false"
+					:modal="true"
 				>
+					<template #header>
+						<div class="font-bold text-[24px]">
+							{{ $t("確認送出") }}
+						</div>
+					</template>
+					<template #default>
+						<div class="flex">
+							<div class="mt-2px">
+								<i
+									class="pi pi-exclamation-triangle"
+									style="font-size: 20px"
+								/>
+							</div>
+							<div class="ml-4px">
+								{{ $t("確認送出後無法再更改資料") }}
+							</div>
+						</div>
+					</template>
+					<template #footer>
+						<Button
+							class="p-button-outlined p-button-secondary"
+							style="
+								border: 2px solid #a18b4a;
+								color: #736028;
+								height: 36px;
+							"
+							icon="pi pi-times"
+							iconClass="text-[#736028]"
+							:label="$t('取消')"
+							@click="isModalVisible = false"
+						/>
+						<Button
+							class="p-button-outlined p-button-secondary"
+							style="
+								color: #53565a;
+								border: 2px solid #bcd19b;
+								margin-left: 16px;
+								height: 36px;
+							"
+							icon="pi pi-check"
+							iconClass="text-[#53565A]"
+							:label="$t('確認')"
+							:loading="isLoading"
+						/>
+					</template>
+				</Dialog>
+				<div>
+					<router-link
+						:to="{
+							name: 'recruitmentApplicantSwitchProject',
+						}"
+						custom
+						v-slot="{ navigate }"
+					>
+						<Button
+							class="p-button-secondary p-button-outlined"
+							style="height: 40px; border: 2px solid #736028"
+							@click="navigate"
+							role="link"
+						>
+							<div>
+								<i class="pi pi-sort-alt text-[#736028]" />
+							</div>
+							<div class="ml-8px font-bold text-[#736028]">
+								{{ $t("切換專案") }}
+							</div>
+						</Button>
+					</router-link>
+				</div>
+				<div>
 					<Button
 						class="p-button-secondary p-button-outlined"
 						style="
 							height: 40px;
-							left: 50%;
-							transform: translateX(-50%);
+							border: 2px solid #736028;
+							margin-left: 16px;
 						"
-						@click="navigate"
-						role="link"
+						@click="isModalVisible = true"
 					>
-						<div><i class="pi pi-sort-alt"></i></div>
-						<div class="ml-8px font-bold">{{ $t("切換專案") }}</div>
+						<div>
+							<i class="pi pi-check-square text-[#736028]" />
+						</div>
+						<div class="ml-8px font-bold text-[#736028]">
+							{{ $t("資料確認送出") }}
+						</div>
 					</Button>
-				</router-link>
+				</div>
 			</div>
 			<div class="mt-40px flex relative">
 				<div
@@ -219,31 +261,33 @@
 				<div class="absolute right-[0] mt-[-8px]">
 					<router-link
 						:to="{
-							name: 'recruitmentApplicantUserSetting',
+							name: 'recruitmentApplicantUserManagement',
 						}"
 						custom
 						v-slot="{ navigate }"
 					>
 						<Button
 							class="p-button-secondary p-button-text"
+							v-tooltip.top="t('使用者管理')"
 							@click="navigate"
 							role="link"
 						>
 							<img
 								alt="logo"
 								src="/assets/sidebar/Setting_alt_line.png"
-								class="w-28px h-28px"
+								class="w-24px h-24px"
 							/>
 						</Button>
 					</router-link>
 					<Button
 						class="p-button-secondary p-button-text"
+						v-tooltip.top="t('登出')"
 						@click="signOut"
 					>
 						<img
 							alt="logo"
 							src="/assets/sidebar/Sign_out_circle.png"
-							class="w-28px h-28px"
+							class="w-24px h-24px"
 						/>
 					</Button>
 				</div>
@@ -253,11 +297,14 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, toRaw } from "vue";
+import { reactive, ref } from "vue";
 import { useRecruitmentApplicantAuthStore } from "@/stores/universalAuth";
 import { RecruitmentApplicantAPI } from "@/api/recruitment/applicant/api";
-import { useUserInfoStore } from "@/stores/RecruitmentApplicantStore";
-import { useProjectIdStore } from "@/stores/RecruitmentApplicantStore";
+import {
+	useProjectIdStore,
+	useUserInfoStore,
+} from "@/stores/RecruitmentApplicantStore";
+import { useI18n } from "vue-i18n";
 import { Tags } from "@/api/recruitment/applicant/types";
 import "primeicons/primeicons.css";
 import "primevue/resources/primevue.min.css";
@@ -266,12 +313,16 @@ import UnableTag from "@/styles/tags/unableTag.vue";
 import CompletedTag from "@/styles/tags/completedTag.vue";
 import IncompleteTag from "@/styles/tags/incompleteTag.vue";
 import { useRouter } from "vue-router";
+import Dialog from "primevue/dialog";
 import "primeicons/primeicons.css";
 
+const { t } = useI18n();
 const router = useRouter();
 const applicantStore = useUserInfoStore();
 const project = useProjectIdStore();
-const applicantName = toRaw(applicantStore.userInfo.name);
+const applicantName = window.localStorage.getItem(
+	"RecruitmentApplicantUsername"
+);
 const currentYear = new Date().getFullYear();
 const rocYear = currentYear - 1911;
 
@@ -285,8 +336,12 @@ const tags: Tags = reactive({
 const applicantAuth = useRecruitmentApplicantAuthStore();
 const api = new RecruitmentApplicantAPI(applicantAuth);
 
+const isModalVisible = ref(false);
+const isLoading = ref(false);
+
 async function signOut() {
 	await api.invalidateSession();
+	window.localStorage.removeItem("RecruitmentApplicantUsername");
 	router.push("/recruitment/applicant/signin");
 }
 </script>
