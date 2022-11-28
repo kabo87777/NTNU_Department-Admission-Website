@@ -28,7 +28,6 @@ export interface AdmissionAdminProgramListResponse {
 	stage: string;
 	created_at: string;
 	updated_at: string;
-	// FIXME: Not very sure to reserve "null" type or not?
 	applicant_required_info: string;
 	applicant_required_file: string;
 	reviewer_required_info: string;

@@ -318,6 +318,7 @@ import { watch } from "fs";
 import { object, TypeOf } from "yup";
 import { addAbortSignal } from "stream";
 import { getIn } from "yup/lib/util/reach";
+import { getRunningMode } from "vitest";
 
 const { t } = useI18n();
 const toast = useToast();
@@ -342,7 +343,7 @@ const trans = {
 	schoolExp: computed(() => t("就學經歷")),
 	testScore: computed(() => t("考試與檢定分數")),
 	otherFile: computed(() => t("其他有利於審查資料")),
-	colon: computed(() => t("：")),
+	colon: computed(() => t(":")),
 	phase: {
 		1: computed(() => t("第一階段 (書面審查)")),
 		2: computed(() => t("第二階段 (口試審查)")),
@@ -378,17 +379,21 @@ const trans = {
 		fileName: computed(() => t("※ 資料名稱")),
 		fileUpload: computed(() => t("※ 資料上傳")),
 	},
+	failed: {
+		getScore: computed(() => t("無法取得分數資料")),
+		getInfoFile: computed(() => t("無法取得顯示欄位資料")),
+	},
 };
 
 // API Authorization
 const adminAuth = useAdmissionAdminAuthStore();
 const api = new AdmissionAdminAPI(adminAuth);
 const store = useGlobalStore();
-
+// Tanstack Query
 const queryClient = useQueryClient();
 
 // API Index form: Score Field Response (Improvement)
-const resIndex = [
+const scoreAPIIndex = [
 	"docs_weight",
 	"docs_grade_name_1",
 	"docs_grade_weight_1",
@@ -411,6 +416,23 @@ const resIndex = [
 	"oral_grade_weight_4",
 	"oral_grade_name_5",
 	"oral_grade_weight_5",
+];
+const infoFileAPIIndex = [
+	"id",
+	"category",
+	"name",
+	"application_start_date",
+	"application_end_date",
+	"review_start_date",
+	"review_end_date",
+	"stage",
+	"created_at",
+	"updated_at",
+	"applicant_required_info",
+	"applicant_required_file",
+	"reviewer_required_info",
+	"reviewer_required_file",
+	"detail",
 ];
 
 // Field content & data
@@ -444,19 +466,79 @@ const showedFile = reactive([
 	{ id: "file3", visible: true, checked: true },
 	{ id: "file4", visible: true, checked: true },
 ]);
+const fieldList = {
+	info: {
+		visible: [""],
+		checked: [""],
+	},
+	file: {
+		visible: [""],
+		checked: [""],
+	},
+};
+const programData: AdmissionAdminProgramListResponse = reactive({
+	id: 0,
+	category: "",
+	name: "",
+	application_start_date: "",
+	application_end_date: "",
+	review_start_date: "",
+	review_end_date: "",
+	stage: "",
+	created_at: "",
+	updated_at: "",
+	applicant_required_info: "",
+	applicant_required_file: "",
+	reviewer_required_info: "",
+	reviewer_required_file: "",
+	detail: "",
+});
 
 // API: Get Score Data
-const getScoreField = useQuery(["scoreField"], async () => {
-	try {
-		if (store.program) {
-			return await api.getScoreField(store.program.id);
+const getScoreField = useQuery(
+	["scoreField"],
+	async () => {
+		try {
+			if (store.program) {
+				return await api.getScoreField(store.program.id);
+			}
+		} catch (e: any) {
+			if (e instanceof InvalidSessionError) {
+				console.error("Invalid Session Error");
+			}
 		}
-	} catch (e: any) {
-		if (e instanceof InvalidSessionError) {
-			console.error("Invalid Session Error");
-		}
+	},
+	{
+		onSuccess: (data) => {
+			// Pass Data one by one (There)
+			if (data) {
+				docsScore[0].weight = data.docs_weight;
+				oralScore[0].weight = data.oral_weight;
+				docsScore[1].name = data.docs_grade_name_1;
+				docsScore[2].name = data.docs_grade_name_2;
+				docsScore[3].name = data.docs_grade_name_3;
+				docsScore[4].name = data.docs_grade_name_4;
+				docsScore[5].name = data.docs_grade_name_5;
+				docsScore[1].weight = data.docs_grade_weight_1;
+				docsScore[2].weight = data.docs_grade_weight_2;
+				docsScore[3].weight = data.docs_grade_weight_3;
+				docsScore[4].weight = data.docs_grade_weight_4;
+				docsScore[5].weight = data.docs_grade_weight_5;
+				oralScore[1].name = data.oral_grade_name_1;
+				oralScore[2].name = data.oral_grade_name_2;
+				oralScore[3].name = data.oral_grade_name_3;
+				oralScore[4].name = data.oral_grade_name_4;
+				oralScore[5].name = data.oral_grade_name_5;
+				oralScore[1].weight = data.oral_grade_weight_1;
+				oralScore[2].weight = data.oral_grade_weight_2;
+				oralScore[3].weight = data.oral_grade_weight_3;
+				oralScore[4].weight = data.oral_grade_weight_4;
+				oralScore[5].weight = data.oral_grade_weight_5;
+			}
+			console.log("Get Score Data Successfully");
+		},
 	}
-});
+);
 
 // API: Patch Score Data
 const patchScoreField = useMutation(
@@ -479,18 +561,48 @@ const patchScoreField = useMutation(
 );
 
 // API: Get Info/File Data
-const getInfoFileField = useQuery(["infoFileField"], async () => {
-	try {
-		if (store.program) {
-			const allData = await api.getProgramList();
-			return allData[store.program.id];
+const getInfoFileField = useQuery(
+	["infoFileField"],
+	async () => {
+		try {
+			if (store.program) {
+				const allData = await api.getProgramList();
+				return allData[store.program.id - 1];
+			}
+		} catch (e: any) {
+			if (e instanceof InvalidSessionError) {
+				console.error("Invalid Session Error");
+			}
 		}
-	} catch (e: any) {
-		if (e instanceof InvalidSessionError) {
-			console.error("Invalid Session Error");
-		}
+	},
+	{
+		onSuccess: (data) => {
+			if (data) {
+				programData.id = data.id;
+				programData.category = data.category;
+				programData.name = data.name;
+				programData.application_start_date =
+					data.application_start_date;
+				programData.application_end_date = data.application_end_date;
+				programData.review_start_date = data.review_start_date;
+				programData.review_end_date = data.review_end_date;
+				programData.stage = data.stage;
+				programData.created_at = data.created_at;
+				programData.updated_at = data.updated_at;
+				programData.detail = data.detail;
+				programData.applicant_required_info =
+					data.applicant_required_info;
+				programData.applicant_required_file =
+					data.applicant_required_file;
+				programData.reviewer_required_info =
+					data.reviewer_required_info;
+				programData.reviewer_required_file =
+					data.reviewer_required_file;
+			}
+			console.log("Get Info/File Successfully");
+		},
 	}
-});
+);
 
 // API: Patch Info/File Data
 const patchInfoFileField = useMutation(
@@ -515,32 +627,34 @@ const patchInfoFileField = useMutation(
 // ButtonFn: Save Changes and Patch Data
 function saveChange() {
 	try {
+		// Adjust and Check correctness of Data
+		const docsSum = ref(0),
+			oralSum = ref(0);
 		docsScore.forEach((element) => {
-			if (element.name === "" && element.weight) {
+			if (element.name === null && element.weight > 0)
 				element.name =
 					trans.labelName[
 						element.index as keyof typeof trans.labelName
 					].value;
-				// FIXME: Debug - Check Replace empty name work or not.
-				console.log("empty name has be auto filled ->" + element.name);
-			}
+			if (element.weight < 0 || element.weight > 100)
+				throw { object: element, message: "Invalid Weight" };
+			if (element.index) docsSum.value += element.weight;
 		});
 		oralScore.forEach((element) => {
-			if (element.name === "" && element.weight) {
+			if (element.name === null && element.weight > 0)
 				element.name =
 					trans.labelName[
 						element.index as keyof typeof trans.labelName
 					].value;
-			}
+			if (element.weight < 0 || element.weight > 100)
+				throw { object: element, message: "Invalid Weight" };
+			if (element.index) oralSum.value += element.weight;
 		});
-		// FIXME: DEBUG - Print sented Data before mutate
-		docsScore.forEach((element) => {
-			console.log(element.name + ": " + element.weight);
-		});
-		oralScore.forEach((element) => {
-			console.log(element.name + ": " + element.weight);
-		});
-		// Patch Data
+		if (docsSum.value !== 100)
+			throw { object: docsScore, message: "Invalid Sum" };
+		if (docsSum.value !== 100)
+			throw { object: oralScore, message: "Invalid Sum" };
+		// Patch Score Data
 		patchScoreField.mutate({
 			// IMPROVE: Use Array to pass value instead of Hard-code.
 			docs_weight: docsScore[0].weight,
@@ -566,15 +680,36 @@ function saveChange() {
 			oral_grade_weight_4: oralScore[4].weight,
 			oral_grade_weight_5: oralScore[5].weight,
 		});
+
+		// Adjust Info/File Data
+		fieldList.info.checked.splice(0, fieldList.info.checked.length);
+		fieldList.file.checked.splice(0, fieldList.file.checked.length);
+		showedInfo.forEach((element) => {
+			if (!fieldList.info.checked.includes(element.id))
+				if (element.checked) fieldList.info.checked.push(element.id);
+		});
+		showedFile.forEach((element) => {
+			if (!fieldList.file.checked.includes(element.id))
+				if (element.checked) fieldList.file.checked.push(element.id);
+		});
+		programData.reviewer_required_info = JSON.stringify(
+			fieldList.info.checked
+		);
+		programData.reviewer_required_file = JSON.stringify(
+			fieldList.file.checked
+		);
+		// Patch Info/File Data
+		patchInfoFileField.mutate(programData);
 		toast.add({
 			severity: "success",
 			summary: trans.changeSuccess.value,
 			life: 3000,
 		});
-	} catch {
+	} catch (e: any) {
+		console.log(e);
 		toast.add({
 			severity: "error",
-			summary: trans.changeSuccess.value,
+			summary: "Fail to Save Change",
 			life: 3000,
 		});
 	}
@@ -582,60 +717,56 @@ function saveChange() {
 
 // ButtonFn: Discard Changes and Update Data
 function refreshData() {
-	// TODO: Do "try" "catch" function
-	const getScore = getScoreField.data.value;
-	if (!getScore) return "Failed to fetch Score Data";
-	docsScore[0].weight = getScore.docs_weight;
-	oralScore[0].weight = getScore.oral_weight;
-	docsScore[1].name = getScore.docs_grade_name_1;
-	docsScore[2].name = getScore.docs_grade_name_2;
-	docsScore[3].name = getScore.docs_grade_name_3;
-	docsScore[4].name = getScore.docs_grade_name_4;
-	docsScore[5].name = getScore.docs_grade_name_5;
-	docsScore[1].weight = getScore.docs_grade_weight_1;
-	docsScore[2].weight = getScore.docs_grade_weight_2;
-	docsScore[3].weight = getScore.docs_grade_weight_3;
-	docsScore[4].weight = getScore.docs_grade_weight_4;
-	docsScore[5].weight = getScore.docs_grade_weight_5;
-	oralScore[1].name = getScore.oral_grade_name_1;
-	oralScore[2].name = getScore.oral_grade_name_2;
-	oralScore[3].name = getScore.oral_grade_name_3;
-	oralScore[4].name = getScore.oral_grade_name_4;
-	oralScore[5].name = getScore.oral_grade_name_5;
-	oralScore[1].weight = getScore.oral_grade_weight_1;
-	oralScore[2].weight = getScore.oral_grade_weight_2;
-	oralScore[3].weight = getScore.oral_grade_weight_3;
-	oralScore[4].weight = getScore.oral_grade_weight_4;
-	oralScore[5].weight = getScore.oral_grade_weight_5;
-
-	const getInfoFile = getInfoFileField.data.value;
-	if (!getInfoFile) return "";
-	const infoList = {
-		visible: JSON.parse(getInfoFile.applicant_required_info!),
-		checked: JSON.parse(getInfoFile.reviewer_required_info!),
-	};
-	const fileList = {
-		visible: JSON.parse(getInfoFile.applicant_required_file!),
-		checked: JSON.parse(getInfoFile.reviewer_required_file!),
-	};
-	showedInfo.forEach((element) => {
-		if (infoList.visible.includes(element.id)) element.visible = true;
-		else element.visible = false;
-		if (infoList.checked.includes(element.id)) element.checked = true;
-		else element.checked = false;
-	});
-	showedFile.forEach((element) => {
-		if (fileList.visible.includes(element.id)) element.visible = true;
-		else element.visible = false;
-		if (fileList.checked.includes(element.id)) element.checked = true;
-		else element.checked = false;
-	});
+	try {
+		// Using GET API
+		if (!getScoreField) throw "ScoreData Failed";
+		if (!getInfoFileField) throw "Info/File Data Failed";
+		// Parse Info/File JSON
+		fieldList.info = {
+			visible: JSON.parse(programData.applicant_required_info),
+			checked: JSON.parse(programData.reviewer_required_info),
+		};
+		fieldList.file = {
+			visible: JSON.parse(programData.applicant_required_file),
+			checked: JSON.parse(programData.reviewer_required_file),
+		};
+		showedInfo.forEach((element) => {
+			if (fieldList.info.visible.includes(element.id))
+				element.visible = true;
+			else element.visible = false;
+			if (fieldList.info.checked.includes(element.id))
+				element.checked = true;
+			else element.checked = false;
+		});
+		showedFile.forEach((element) => {
+			if (fieldList.file.visible.includes(element.id))
+				element.visible = true;
+			else element.visible = false;
+			if (fieldList.file.checked.includes(element.id))
+				element.checked = true;
+			else element.checked = false;
+		});
+	} catch (e: any) {
+		console.log(e);
+		if (e === "ScoreData Failed") {
+			toast.add({
+				severity: "error",
+				summary: trans.failed.getScore.value,
+				life: 3000,
+			});
+		}
+		if (e === "Info/File Data Failed") {
+			toast.add({
+				severity: "error",
+				summary: trans.failed.getInfoFile.value,
+				life: 3000,
+			});
+		}
+	}
 }
-
+refreshData();
 // Lifecycle: Mounted
 onMounted(() => {
 	refreshData();
 });
-
-// TODO Lifecycle: Watch
 </script>
