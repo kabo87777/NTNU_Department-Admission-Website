@@ -87,7 +87,7 @@ import recruitmentManagerMainContainer from "@/views/recruitment/manager/MainCon
 import recruitmentManagerApplicantUploadList from "@/views/recruitment/manager/pages/ApplicantUploadList/TableList.vue";
 import recruitmentManagerReviewProgress from "@/views/recruitment/manager/pages/ReviewProgress.vue";
 import recruitmentManagerUserSetting from "@/views/recruitment/manager/pages/RecruitmentManagerSelfSetting.vue";
-import recruitmentApplicationUpload from "@/views/recruitment/manager/pages/RecruitmentApplicationSetting.vue";
+import recruitmentApplicationUpload from "@/views/recruitment/manager/pages/UploadFileSetting.vue";
 import recruitmentGradeDataList from "@/views/recruitment/manager/gradeDataList.vue";
 import recruitmentReviewScroreField from "@/views/recruitment/manager/reviewScoreField.vue";
 import recruitmentProjectSetting from "@/views/recruitment/manager/pages/ProjectSetting.vue";
