@@ -6,6 +6,7 @@ export interface AdmissionManagerSignInInput {
 
 export interface AdmissionManagerAuthResponse {
 	email: string;
+	username: string;
 	provider: string;
 	uid: string;
 	id: number;
@@ -15,6 +16,8 @@ export interface AdmissionManagerAuthResponse {
 	name: any | null;
 	nickname: any | null;
 	image: any | null;
+	created_at: string;
+	updated_at: string;
 }
 
 export interface AdmissionAdminProgramListResponse {
@@ -156,4 +159,8 @@ export interface AdmissionAdminScoreFieldResponse {
 	oral_grade_weight_3: number;
 	oral_grade_weight_4: number;
 	oral_grade_weight_5: number;
+}
+export interface AdmissionAdminGenericResponse {
+	success?: boolean;
+	message?: string | [];
 }

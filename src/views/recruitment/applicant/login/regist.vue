@@ -11,7 +11,7 @@
 					text="sm gray-400 hover:gray-600"
 					border="rounded"
 				>
-					<i class="pi pi-angle-left" />
+					<div class="pi pi-angle-left" />
 					<div>返回登入頁面</div>
 					<div>Back to Login</div>
 				</button>
@@ -32,7 +32,28 @@
 					<div class="flex-none font-medium">Applicant Register</div>
 					<Divider />
 				</div>
-				<div class="flex-col px-4 py-8">
+				<div class="flex-col px-4 pt-4">
+					<div
+						class="flex items-center gap-2 pb-2"
+						text="sm gray-500"
+					>
+						<div>輸入使用者名稱</div>
+						<div>Enter Username</div>
+					</div>
+					<InputText
+						name="username"
+						type="username"
+						v-model="userRegistData.name"
+						class="p-inputtext-sm w-full"
+						required
+					/>
+					<div class="absolute" v-if="password.isNameBlank">
+						<small id="newPass-help" class="p-error">
+							{{ $t("必須輸入使用者名稱") }}
+						</small>
+					</div>
+				</div>
+				<div class="flex-col px-4 pt-4">
 					<div
 						class="flex items-center gap-2 pb-2"
 						text="sm gray-500"
@@ -47,8 +68,14 @@
 						class="p-inputtext-sm w-full"
 						required
 					/>
+					<div class="absolute" v-if="password.isEmailBlank">
+						<small id="newPass-help" class="p-error">
+							{{ $t("必須輸入輸入電郵") }}
+						</small>
+					</div>
 				</div>
-				<div class="flex-col px-4">
+
+				<div class="flex-col px-4 pt-4">
 					<div
 						class="flex items-center gap-2 pb-2"
 						text="sm gray-500"
@@ -63,8 +90,13 @@
 						class="p-inputtext-sm w-full"
 						required
 					/>
+					<div class="absolute" v-if="password.isCurrentPassBlank">
+						<small id="newPass-help" class="p-error">
+							{{ $t("請輸入新密碼") }}
+						</small>
+					</div>
 				</div>
-				<div class="flex-col px-4">
+				<div class="flex-col px-4 pt-4">
 					<div
 						class="flex items-center gap-2 pb-2"
 						text="sm gray-500"
@@ -75,41 +107,153 @@
 					<InputText
 						name="password"
 						type="password"
-						v-model="userRegistData.confirmPwd"
+						v-model="userRegistData.password_confirmation"
 						class="p-inputtext-sm w-full"
 						required
 					/>
+					<div class="absolute" v-if="password.notMatch">
+						<small id="confirmPass-help" class="p-error">
+							{{ $t("密碼不符") }}
+						</small>
+					</div>
 				</div>
 			</div>
 			<div class="flex-col-inline px-4 gap-y-8">
 				<div class="flex justify-center">
-					<router-link to="/recruitment/applicant/regist/done">
-						<button
-							class="py-2 w-80 applicantButtonStyle"
-							border="2  rounded-lg"
-						>
-							<div class="flex justify-center gap-2 mx-auto">
-								<div>註冊</div>
-								<div>Register</div>
-							</div>
-						</button>
-					</router-link>
+					<Button
+						class="py-2 w-80 applicantButtonStyle"
+						border="2  rounded-lg"
+						:loading="isRegistLoading"
+						@click="handleSubmit"
+					>
+						<div class="flex justify-center gap-2 mx-auto">
+							<div>註冊</div>
+							<div>Register</div>
+						</div>
+					</Button>
 				</div>
-				<div></div>
+				<div class="ml-168px mt-40px">
+					<Turnstile ref="turnstileRef" />
+				</div>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { reactive } from "vue";
+import Button from "primevue/button";
+import { reactive, toRaw } from "vue";
+import { RecruitmentApplicantAPI } from "@/api/recruitment/applicant/api";
+import { useRecruitmentApplicantAuthStore } from "@/stores/universalAuth";
 import InputText from "primevue/inputtext";
+import { useRouter } from "vue-router";
+import { ref } from "vue";
+import type { TurnstileComponentExposes } from "@/components/Turnstile.vue";
+import Turnstile from "@/components/Turnstile.vue";
 
+const applicantAuth = useRecruitmentApplicantAuthStore();
+const router = useRouter();
+const turnstileRef = ref<TurnstileComponentExposes>();
+const isRegistLoading = ref(false);
 const userRegistData = reactive({
+	name: "",
 	email: "",
 	password: "",
-	confirmPwd: "",
+	password_confirmation: "",
+	confirm_success_url: "http://127.0.0.1:5173/recruitment/applicant/signin",
 });
+
+const password = reactive({
+	isCurrentPassBlank: false,
+	isNameBlank: false,
+	isEmailBlank: false,
+	isNewPassBlank: false,
+	notMatch: false,
+	currentPass: "",
+	newPass: "",
+	confirmPass: "",
+});
+
+const RegisterResponse = reactive({
+	success: false,
+	message: "" as string | [],
+});
+
+const consumeTurnstileToken = () => {
+	const token: string | undefined = turnstileRef.value?.turnstileToken;
+	window.turnstile?.reset();
+	return token;
+};
+
+const redirectToRegistDonePage = () => {
+	router.replace({ name: "recruitmentApplicantRegistDone" });
+};
+const postEmailRegister = async () => {
+	try {
+		const turnstileResponse = consumeTurnstileToken();
+		if (!turnstileResponse) throw new Error("Turnstile challenge failed");
+		const api = new RecruitmentApplicantAPI(applicantAuth);
+		return await api.sendPostEmailRegister({
+			name: userRegistData.name,
+			email: userRegistData.email,
+			password: userRegistData.password,
+			password_confirmation: userRegistData.password_confirmation,
+			confirm_success_url: userRegistData.confirm_success_url,
+			"cf-turnstile-response": turnstileResponse,
+		});
+	} catch (error) {
+		// TODO: show error message
+		console.log(error);
+	}
+};
+
+const handleSubmit = async () => {
+	if (userRegistData.name === "") {
+		password.isNameBlank = true;
+	} else {
+		password.isNameBlank = false;
+	}
+
+	if (userRegistData.email === "") {
+		password.isEmailBlank = true;
+	} else {
+		password.isEmailBlank = false;
+	}
+
+	if (userRegistData.password === "") {
+		password.isCurrentPassBlank = true;
+	} else {
+		password.isCurrentPassBlank = false;
+	}
+
+	if (userRegistData.password !== userRegistData.password_confirmation) {
+		password.notMatch = true;
+	} else {
+		password.notMatch = false;
+	}
+
+	if (
+		!password.isCurrentPassBlank &&
+		!password.isNewPassBlank &&
+		!password.isNameBlank &&
+		!password.isEmailBlank &&
+		!password.notMatch
+	) {
+		isRegistLoading.value = true;
+		const response = postEmailRegister();
+		await response.then((res) => {
+			console.log(res);
+			if (res?.status !== undefined && res?.message !== undefined) {
+				RegisterResponse.success = toRaw(res.status);
+				RegisterResponse.message = toRaw(res.message);
+			}
+			isRegistLoading.value = false;
+			if (RegisterResponse.success) {
+				redirectToRegistDonePage();
+			}
+		});
+	}
+};
 </script>
 
 <style setup lang="css">
