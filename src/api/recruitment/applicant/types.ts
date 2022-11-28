@@ -84,11 +84,11 @@ export interface RecruitmentApplicantFileListResponse {
 	updated_at: string;
 }
 
-export interface RecruitmentApplicantGetUserInfoResponse {
-	id?: number;
+export interface RecruitmentApplicantUserInfoResponse {
+	id: number;
 	name?: string;
 	email?: string;
-	national_id?: number;
+	national_id?: string;
 	sex?: string;
 	birth?: string;
 	day_phone?: string;
@@ -104,7 +104,7 @@ export interface RecruitmentApplicantGetUserInfoResponse {
 	graduated_major?: string;
 	isSameDept?: boolean;
 	isDisabled?: boolean;
-	r_applicant_id?: number;
-	created_at?: string;
-	updated_at?: string;
+	r_applicant_id: number;
+	created_at: string;
+	updated_at: string;
 }

@@ -102,6 +102,7 @@
 						color: black;
 						border: #bdbdbd;
 					"
+					:chooseLabel="$t('選擇檔案')"
 					mode="basic"
 					:customUpload="true"
 					@uploader="handleUpload"
