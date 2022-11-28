@@ -18,7 +18,7 @@
 		<div class="bigBlueDivider"></div>
 		<div>
 			<DataTable
-				:value="applicantList"
+				:value="ApplicantList"
 				responsiveLayout="scroll"
 				dataKey="id"
 				:scrollable="true"
@@ -208,11 +208,12 @@ const { t } = useI18n();
 const totalApplicant = ref(0);
 const applicantGraded = ref(0);
 const progressValue = ref(0);
+// const alist = ref([]);
 
 const {
 	isLoading,
 	isError,
-	data: applicantList,
+	data: ApplicantList,
 	error,
 } = useQuery(
 	["admissionReviewerApplicantList"],
@@ -288,7 +289,6 @@ const { data: programGrading } = useQuery(
 	},
 	{
 		onSuccess: (data) => {
-			console.log(data);
 			score1Title.value = data!.oral_grade_name_1;
 			score2Title.value = data!.oral_grade_name_2;
 			score3Title.value = data!.oral_grade_name_3;
@@ -332,13 +332,14 @@ const { data: programGrading } = useQuery(
 	}
 );
 
-const docsGrade = useMutation(async () => {
+const oralGrade = useMutation(async () => {
 	try {
-		return await api.submitDocsGrade(store.admissionReviewerProgram!.id);
+		return await api.submitOralGrade(store.admissionReviewerProgram!.id);
 	} catch (error) {
 		console.log(error);
 	}
 });
+
 const toast = useToast();
 const showTemplate = () => {
 	toast.add({
@@ -350,7 +351,7 @@ const showTemplate = () => {
 };
 const onConfirm = () => {
 	try {
-		docsGrade.mutate();
+		oralGrade.mutate();
 	} catch (error) {
 		console.log(error);
 	}
@@ -425,120 +426,6 @@ const { data: programs } = useQuery(
 		},
 	}
 );
-
-// TODO: 連接API
-const data_list = ref([
-	{
-		id: "1000",
-		name: "Aaa",
-		score_1: 25,
-		score_2: 25,
-		score_3: 30,
-		total_score: 80,
-		access: false,
-		access_reason: "",
-	},
-	{
-		id: "1001",
-		name: "Bbb",
-		score_1: 25,
-		score_2: 25,
-		score_3: 30,
-		total_score: 80,
-		access: false,
-		access_reason: "",
-	},
-	{
-		id: "1002",
-		name: "Ccc",
-		score_1: 25,
-		score_2: 25,
-		score_3: 30,
-		total_score: 80,
-		access: true,
-		access_reason: "great student",
-	},
-	{
-		id: "1003",
-		name: "Ddd",
-		score_1: 25,
-		score_2: 25,
-		score_3: 30,
-		total_score: 80,
-		access: false,
-		access_reason: "",
-	},
-	{
-		id: "1004",
-		name: "Eee",
-		score_1: 25,
-		score_2: 25,
-		score_3: 30,
-		total_score: 80,
-		access: true,
-		access_reason: "nice",
-	},
-	{
-		id: "1005",
-		name: "fff",
-		score_1: 25,
-		score_2: 25,
-		score_3: 30,
-		total_score: 80,
-		access: false,
-		access_reason: "",
-	},
-	{
-		id: "1006",
-		name: "Ggg",
-		score_1: 25,
-		score_2: 25,
-		score_3: 30,
-		total_score: 80,
-		access: false,
-		access_reason: "",
-	},
-	{
-		id: "1007",
-		name: "Hhh",
-		score_1: 25,
-		score_2: 25,
-		score_3: 30,
-		total_score: 80,
-		access: false,
-		access_reason: "",
-	},
-	{
-		id: "1008",
-		name: "Iii",
-		score_1: 25,
-		score_2: 25,
-		score_3: 30,
-		total_score: 80,
-		access: false,
-		access_reason: "",
-	},
-	{
-		id: "1009",
-		name: "Jjj",
-		score_1: 25,
-		score_2: 25,
-		score_3: 30,
-		total_score: 80,
-		access: false,
-		access_reason: "",
-	},
-	{
-		id: "1010",
-		name: "Kkk",
-		score_1: 25,
-		score_2: 25,
-		score_3: 30,
-		total_score: 80,
-		access: false,
-		access_reason: "",
-	},
-]);
 
 // FIXME: logic may refactor
 
