@@ -2,9 +2,7 @@
 	<h1 class="text-4xl font-bold">{{ $t("管理審查者") }}</h1>
 	<!-- <Button @click="getRelatedPrograms">Button</Button> -->
 	<Divider></Divider>
-	<Button @click="addReviewerModal.open">{{
-		$t("建立帳號")
-	}}</Button>
+	<Button @click="addReviewerModal.open">{{ $t("建立帳號") }}</Button>
 	<DataTable :value="tableData" :loading="getLoadingStatus">
 		<template #empty>
 			<h2>{{ $t("尚無審查者帳號") }}</h2>
@@ -122,24 +120,34 @@
 
 		<template #default>
 			<div class="w-lg grid gap-y-2">
-
 				<div>
 					<h3 font="font-black">{{ $t("審查者帳號") }}</h3>
-					<InputText type="text" class="w-full" v-model:model-value="addReviewerModal.data.username"/>
+					<InputText
+						type="text"
+						class="w-full"
+						v-model:model-value="addReviewerModal.data.username"
+					/>
 				</div>
 
 				<div class="font-black">
 					<label class="block">{{ $t("姓名") }}</label>
-					<InputText type="text" class="w-full" v-model:model-value="addReviewerModal.data.name"/>
+					<InputText
+						type="text"
+						class="w-full"
+						v-model:model-value="addReviewerModal.data.name"
+					/>
 				</div>
 				<div>
 					<label for="" class="block font-black">{{
 						$t("電子信箱")
 					}}</label>
-					<InputText type="email" class="w-full" v-model:model-value="addReviewerModal.data.email"/>
+					<InputText
+						type="email"
+						class="w-full"
+						v-model:model-value="addReviewerModal.data.email"
+					/>
 				</div>
-				
-	
+
 				<div>
 					<label for="" class="block font-black">
 						{{ $t("密碼") }}
@@ -160,7 +168,7 @@
 				<div class="space-x-2">
 					<Button
 						icon="pi pi-check"
-						:disabled="!(addReviewerModal.allowSave)"
+						:disabled="!addReviewerModal.allowSave"
 						:label="$t('送出')"
 						class="p-button-outlined p-button-success"
 						@click="addReviewerModal.submit"
@@ -213,7 +221,9 @@ store.$subscribe((mutation, state) => {
 	refetch();
 });
 const api = new AdmissionAdminAPI(adminAuth);
-const tableData = ref<AdmAdminReviewerListResponse[]>([] as AdmAdminReviewerListResponse[]);
+const tableData = ref<AdmAdminReviewerListResponse[]>(
+	[] as AdmAdminReviewerListResponse[]
+);
 
 const reviewerID = ref(1);
 const programQuery = useQuery(
@@ -283,10 +293,10 @@ const {
 	},
 	{
 		onSuccess: (data) => {
-			if(typeof data==='undefined'){
-				throw new Error("Received undefined reviewer response")
+			if (typeof data === "undefined") {
+				throw new Error("Received undefined reviewer response");
 			}
-			console.log("Loaded")
+			console.log("Loaded");
 			tableData.value = data;
 		},
 	}
@@ -297,20 +307,22 @@ const addReviewerModal = ref({
 		username: "",
 		name: "",
 		email: "",
-		password: ""
+		password: "",
 	},
 	visible: false,
-	open: ()=>addReviewerModal.value.visible=true,
-	close: ()=>addReviewerModal.value.visible=false,
-	allowSave: computed(()=>{
-		const ref:Ref=addReviewerModal
-		const {username, name, email, password}=ref.value.data
-		return username.length && name.length && email.length && password.length
+	open: () => (addReviewerModal.value.visible = true),
+	close: () => (addReviewerModal.value.visible = false),
+	allowSave: computed(() => {
+		const ref: Ref = addReviewerModal;
+		const { username, name, email, password } = ref.value.data;
+		const result =
+			username.length && name.length && email.length && password.length;
+		return result;
 	}),
-	submit: ()=>{
-		addReviewerModal.value.close()
-		createReviewer()
-	}
+	submit: () => {
+		addReviewerModal.value.close();
+		createReviewer();
+	},
 });
 
 const modalVisible = ref(false);
@@ -325,20 +337,20 @@ const getRelatedPrograms = () => {
 		programQuery.refetch({ throwOnError: true });
 };
 
-const isProcessing = ref(false)
+const isProcessing = ref(false);
 
 const { mutate: createReviewer } = useMutation({
-	mutationFn: ()=>{
-		return api.createReviewer(addReviewerModal.value.data)
+	mutationFn: () => {
+		return api.createReviewer(addReviewerModal.value.data);
 	},
-	onMutate: ()=>{
-		isProcessing.value=true
+	onMutate: () => {
+		isProcessing.value = true;
 	},
-	onSettled: ()=>{
-		isProcessing.value=false
+	onSettled: () => {
+		isProcessing.value = false;
 	},
-	onSuccess: ()=>{
-		refetch()
-	}
-})
+	onSuccess: () => {
+		refetch();
+	},
+});
 </script>
