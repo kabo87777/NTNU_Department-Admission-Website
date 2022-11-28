@@ -98,7 +98,10 @@
 							>
 								{{ slotProps.data.email }}
 							</Tag>
-							<Tag v-else style="background-color: #d9dada">
+							<Tag
+								v-else
+								style="background-color: #d9dada; color: black"
+							>
 								{{ $t("無") }}
 							</Tag>
 						</div>
