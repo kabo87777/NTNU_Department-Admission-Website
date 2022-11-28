@@ -73,13 +73,13 @@
 					>
 						{{ $t("基本資料") }}
 					</span>
-					<div class="mb-28px">
+					<!-- <div class="mb-28px">
 						<CompletedTag v-if="tags.basicInfo === 'completed'" />
 						<IncompleteTag
 							v-else-if="tags.basicInfo === 'incompleted'"
 						/>
 						<UnableTag v-else-if="tags.basicInfo === 'unable'" />
-					</div>
+					</div> -->
 				</Button>
 			</router-link>
 
@@ -104,13 +104,13 @@
 					>
 						{{ $t("附件資料") }}
 					</span>
-					<div class="mb-28px">
+					<!-- <div class="mb-28px">
 						<CompletedTag v-if="tags.attachment === 'completed'" />
 						<IncompleteTag
 							v-else-if="tags.attachment === 'incomplete'"
 						/>
 						<UnableTag v-else-if="tags.attachment === 'unable'" />
-					</div>
+					</div> -->
 				</Button>
 			</router-link>
 
@@ -144,7 +144,7 @@
 					>
 						{{ $t("推薦信作業") }}
 					</span>
-					<div class="mb-28px">
+					<!-- <div class="mb-28px">
 						<CompletedTag
 							v-if="tags.recommendLetter === 'completed'"
 						/>
@@ -154,7 +154,7 @@
 						<UnableTag
 							v-else-if="tags.recommendLetter === 'unable'"
 						/>
-					</div>
+					</div> -->
 				</Button>
 			</router-link>
 
@@ -179,7 +179,7 @@
 					>
 						{{ $t("補交文件系統") }}
 					</span>
-					<div class="mb-28px">
+					<!-- <div class="mb-28px">
 						<CompletedTag
 							v-if="tags.additionalDocs === 'completed'"
 						/>
@@ -189,7 +189,7 @@
 						<UnableTag
 							v-else-if="tags.additionalDocs === 'unable'"
 						/>
-					</div>
+					</div> -->
 				</Button>
 			</router-link>
 		</div>
