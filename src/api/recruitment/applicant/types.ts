@@ -1,5 +1,3 @@
-import { string } from "yup";
-
 export interface Tags {
 	basicInfo: string;
 	attachment: string;
