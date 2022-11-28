@@ -6,6 +6,8 @@ import type {
 	RecruitmentReviewerApplicantListResponse,
 	RecruitmentReviewerApplicantCommentResponse,
 	RecruitmentReviewerApplicantInfoResponse,
+	RecruitmentReviewerProgramResponse,
+	RecruitmentReviewerGenericResponse,
 } from "./types";
 import type { APIGenericResponse } from "@/api/types";
 
@@ -23,6 +25,27 @@ export class RecruitmentReviewerAPI extends GenericAPI {
 			throw new Error("Failed to fetch program list");
 
 		return data.data.programs;
+	}
+
+	async changePassword(
+		body: object
+	): Promise<RecruitmentReviewerGenericResponse> {
+		const data: APIGenericResponse = await this.instance.patch(
+			"recruitment/auth/reviewer/password",
+			body
+		);
+
+		if (data.error !== false) {
+			return {
+				success: false,
+				message: data.message.full_messages,
+			};
+		}
+
+		return {
+			success: true,
+			message: data.message,
+		};
 	}
 
 	async getApplicantList(

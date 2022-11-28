@@ -5,6 +5,7 @@ import type {
 	AdmissionAdminApplicantsListResponse,
 	AdmAdminReviewerRelatedProgramResponse,
 	AdmAdminEditApplicantRequest,
+	AdmissionAdminGenericResponse,
 	AdmissionAdminDocsGradeListResponse,
 	AdmissionAdminOralGradeListResponse,
 	AdmissionAdminSingleDocsGradeResponse,
@@ -140,6 +141,25 @@ export class AdmissionAdminAPI extends GenericAPI {
 		);
 		if (response.error === true)
 			throw new Error("Failed to delete program");
+	}
+
+	async changePassword(body: object): Promise<AdmissionAdminGenericResponse> {
+		const data: APIGenericResponse = await this.instance.patch(
+			"admission/auth/admin/password",
+			body
+		);
+
+		if (data.error !== false) {
+			return {
+				success: false,
+				message: data.message.full_messages,
+			};
+		}
+
+		return {
+			success: true,
+			message: data.message,
+		};
 	}
 
 	async getDocsGradeList(
