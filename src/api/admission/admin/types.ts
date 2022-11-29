@@ -136,11 +136,6 @@ export interface AdmAdminEditApplicantRequest {
 	password?: string;
 }
 
-export interface AdmissionAdminGenericResponse {
-	success?: boolean;
-	message?: string | [];
-}
-
 export interface AdmissionAdminScoreFieldResponse {
 	docs_weight: number;
 	oral_weight: number;
@@ -164,4 +159,59 @@ export interface AdmissionAdminScoreFieldResponse {
 	oral_grade_weight_3: number;
 	oral_grade_weight_4: number;
 	oral_grade_weight_5: number;
+}
+export interface AdmissionAdminGenericResponse {
+	success?: boolean;
+	message?: string | [];
+}
+
+export interface AdmissionAdminDocsGradeListResponse {
+	id: string;
+	name: string;
+	application_stage: string;
+	isImmediateEnroll: boolean;
+	grades: number;
+}
+
+export interface AdmissionAdminOralGradeListResponse {
+	id: string;
+	name: string;
+	oral_order: number;
+	enroll_stage: string;
+	enroll_order: number;
+	isImmediateEnroll: boolean;
+	docs_grades: number;
+	oral_grades: number;
+	total_grades: number;
+}
+
+export interface AdmissionAdminReviewerGradeResponse {
+	name: string;
+	isimmendiateenroll: boolean;
+	grades: number;
+}
+
+export interface AdmissionAdminSingleDocsGradeResponse {
+	id: string;
+	name: string;
+	stage: string;
+	oral_order: number;
+	reviewer: AdmissionAdminReviewerGradeResponse[];
+	avg: number;
+}
+
+export interface AdmissionAdminSingleOralGradeResponse {
+	id: string;
+	name: string;
+	enroll_stage: string;
+	enroll_order: number;
+	reviewer: AdmissionAdminReviewerGradeResponse[];
+	avg: number;
+}
+
+export interface AdmissionAdminCreateReviewerRequest {
+	username: string;
+	password: string;
+	email: string;
+	name: string;
 }

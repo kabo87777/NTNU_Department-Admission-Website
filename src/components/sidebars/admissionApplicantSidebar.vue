@@ -73,13 +73,13 @@
 					>
 						{{ $t("基本資料") }}
 					</span>
-					<div class="mb-28px">
+					<!-- <div class="mb-28px">
 						<CompletedTag v-if="tags.basicInfo === 'completed'" />
 						<IncompleteTag
 							v-else-if="tags.basicInfo === 'incompleted'"
 						/>
 						<UnableTag v-else-if="tags.basicInfo === 'unable'" />
-					</div>
+					</div> -->
 				</Button>
 			</router-link>
 
@@ -104,13 +104,13 @@
 					>
 						{{ $t("附件資料") }}
 					</span>
-					<div class="mb-28px">
+					<!-- <div class="mb-28px">
 						<CompletedTag v-if="tags.attachment === 'completed'" />
 						<IncompleteTag
 							v-else-if="tags.attachment === 'incomplete'"
 						/>
 						<UnableTag v-else-if="tags.attachment === 'unable'" />
-					</div>
+					</div> -->
 				</Button>
 			</router-link>
 
@@ -144,7 +144,7 @@
 					>
 						{{ $t("推薦信作業") }}
 					</span>
-					<div class="mb-28px">
+					<!-- <div class="mb-28px">
 						<CompletedTag
 							v-if="tags.recommendLetter === 'completed'"
 						/>
@@ -154,7 +154,7 @@
 						<UnableTag
 							v-else-if="tags.recommendLetter === 'unable'"
 						/>
-					</div>
+					</div> -->
 				</Button>
 			</router-link>
 
@@ -179,7 +179,7 @@
 					>
 						{{ $t("補交文件系統") }}
 					</span>
-					<div class="mb-28px">
+					<!-- <div class="mb-28px">
 						<CompletedTag
 							v-if="tags.additionalDocs === 'completed'"
 						/>
@@ -189,7 +189,7 @@
 						<UnableTag
 							v-else-if="tags.additionalDocs === 'unable'"
 						/>
-					</div>
+					</div> -->
 				</Button>
 			</router-link>
 		</div>
@@ -282,7 +282,7 @@ import IncompleteTag from "@/styles/tags/incompleteTag.vue";
 const router = useRouter();
 const applicantAuth = useAdmissionApplicantAuthStore();
 const applicantStore = useUserInfoStore();
-const applicantName = toRaw(applicantStore.userInfo.name);
+const applicantName = window.localStorage.getItem("AdmissionApplicantUsername");
 
 const api = new AdmissionApplicantAPI(applicantAuth);
 
@@ -340,7 +340,6 @@ const checkProgramAvailably = () => {
 	) {
 		isProgramAvailable.value = false;
 	} else isProgramAvailable.value = true;
-	console.log(isProgramAvailable.value);
 };
 
 onMounted(async () => {
@@ -350,13 +349,13 @@ onMounted(async () => {
 		applicantProgram.name = res.name;
 		applicantProgram.start_date = res.application_start_date;
 		applicantProgram.end_date = res.application_end_date;
-		console.log(res, applicantProgram);
 		checkProgramAvailably();
 	});
 });
 
 async function signOut() {
 	await api.invalidateSession();
+	window.localStorage.removeItem("AdmissionApplicantUsername");
 	router.push("/admission/applicant/signin");
 }
 </script>

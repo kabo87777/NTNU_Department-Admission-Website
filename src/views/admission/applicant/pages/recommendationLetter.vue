@@ -177,69 +177,6 @@
 							</div>
 						</div>
 					</div>
-					<!-- <div class="flex mt-32px">
-						<div class="w-1/2">
-							<div>{{ $t("簽名檔") }}</div>
-							<div class="mt-8px">
-								<div v-if="!uploadFile.isUploaded" class="flex">
-									<FileUpload
-										style="
-											background-color: #bdbdbd;
-											color: black;
-											border: #bdbdbd;
-										"
-										mode="basic"
-										:maxFileSize="1000000"
-										:customUpload="true"
-										:fileLimit="1"
-										:chooseLabel="t('選擇檔案')"
-										aria-describedby="upload-help"
-										@uploader="onUpload"
-									/>
-									<div
-										class="ml-8px mt-16px"
-										v-if="isModalValueBlank.sign"
-									>
-										<small id="upload-help" class="p-error">
-											{{ t("請上傳簽名檔") }}
-										</small>
-									</div>
-								</div>
-								<Button
-									v-else
-									style="
-										background-color: #bdbdbd;
-										color: black;
-										border: #bdbdbd;
-									"
-									disabled
-								>
-									{{ uploadFile.name }}
-								</Button>
-							</div>
-							<div class="mt-8px text-[15px]">
-								{{ $t("僅接受.pdf或.jpg檔") }}
-							</div>
-						</div>
-						<div class="w-1/2">
-							<div
-								v-if="modalShowErr"
-								style="
-									background-color: #ef9a9a;
-									width: 300px;
-									height: 80px;
-									border-radius: 8px;
-									border: 2px solid #c62828;
-									margin-top: 8px;
-									padding: 8px 8px;
-									color: #c62828;
-									text-align: center;
-								"
-							>
-								{{ fetchResponse.message }}
-							</div>
-						</div>
-					</div> -->
 				</div>
 				<div class="bigYellowDivider" style="margin-top: 40px"></div>
 			</template>
@@ -317,7 +254,7 @@
 					style="border-radius: 50%"
 				/>
 				<div class="text-center font-bold text-[24px] text-[#736028]">
-					{{ $t("暫時無推薦人") }}
+					{{ $t("暫無推薦人") }}
 				</div>
 			</div>
 		</div>
@@ -568,7 +505,6 @@ import { useToast } from "primevue/usetoast";
 import Button from "primevue/button";
 import Dialog from "primevue/dialog";
 import InputText from "primevue/inputtext";
-import FileUpload from "primevue/fileupload";
 import "primeicons/primeicons.css";
 
 const { t } = useI18n();
@@ -619,14 +555,6 @@ const isModalValueBlank = reactive({
 const fetchResponse = reactive({
 	success: false,
 	message: "" as string | [],
-});
-
-const uploadFile = reactive({
-	fileUrl: "",
-	name: "",
-	size: 0,
-	type: "",
-	isUploaded: false,
 });
 
 const { data } = useQuery(
@@ -704,21 +632,7 @@ const clearFetchResponse = () => {
 	fetchResponse.message = "";
 };
 
-const onUpload = (e: any) => {
-	uploadFile.fileUrl = e.files[0].objectURL;
-	uploadFile.name = e.files[0].name;
-	uploadFile.size = e.files[0].size;
-	uploadFile.type = e.files[0].type;
-	uploadFile.isUploaded = true;
-	modalValue.sign = e.files[0].objectURL;
-	// 優化使用者體驗可能用到以下代碼
-	// const [file] = e.files;
-	// const objectURL = window.URL.createObjectURL(file);
-	// console.log(e, "upload clicked", uploadFile);
-};
-
 const openModal = () => {
-	uploadFile.isUploaded = false;
 	isModalVisible.fill = true;
 	resetIsModalValueBlank();
 	clearModalValue();
