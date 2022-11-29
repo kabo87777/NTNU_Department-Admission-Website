@@ -6,6 +6,8 @@ import type {
 	RecruitmentReviewerApplicantListResponse,
 	RecruitmentReviewerApplicantCommentResponse,
 	RecruitmentReviewerApplicantInfoResponse,
+	RecruitmentReviewerProgramResponse,
+	RecruitmentReviewerGenericResponse,
 } from "./types";
 import type { APIGenericResponse } from "@/api/types";
 
@@ -25,17 +27,57 @@ export class RecruitmentReviewerAPI extends GenericAPI {
 		return data.data.programs;
 	}
 
-	async getApplicantList(
+	async changePassword(
+		body: object
+	): Promise<RecruitmentReviewerGenericResponse> {
+		const data: APIGenericResponse = await this.instance.patch(
+			"recruitment/auth/reviewer/password",
+			body
+		);
+
+		if (data.error !== false) {
+			return {
+				success: false,
+				message: data.message.full_messages,
+			};
+		}
+
+		return {
+			success: true,
+			message: data.message,
+		};
+	}
+
+	async getRequiredApplicantList(
 		programID: number
 	): Promise<RecruitmentReviewerApplicantListResponse[]> {
 		const data: APIGenericResponse = await this.instance.get(
 			`/recruitment/reviewer/program/${programID}/applicant?detail=true`
 		);
 
-		if (data.error === true || typeof data.data.applicants === "undefined")
+		if (
+			data.error === true ||
+			typeof data.data.applicants.required === "undefined"
+		)
 			throw new Error("Failed to fetch applicant list");
 
-		return data.data.applicants;
+		return data.data.applicants.required;
+	}
+
+	async getOptionalApplicantList(
+		programID: number
+	): Promise<RecruitmentReviewerApplicantListResponse[]> {
+		const data: APIGenericResponse = await this.instance.get(
+			`/recruitment/reviewer/program/${programID}/applicant?detail=true`
+		);
+
+		if (
+			data.error === true ||
+			typeof data.data.applicants.required === "undefined"
+		)
+			throw new Error("Failed to fetch applicant list");
+
+		return data.data.applicants.optional;
 	}
 
 	async getApplicantComment(
@@ -64,5 +106,19 @@ export class RecruitmentReviewerAPI extends GenericAPI {
 			throw new Error("Failed to fetch applicant info");
 
 		return data.data;
+	}
+
+	async updateApplicantComment(
+		programID: number,
+		applicantID: string | string[],
+		comment: any
+	): Promise<any> {
+		const data: APIGenericResponse = await this.instance.patch(
+			`/recruitment/reviewer/program/${programID}/applicant/${applicantID}/comment`,
+			comment
+		);
+
+		if (data.error === true || typeof data.data === "undefined")
+			throw new Error("Failed to fetch applicant comment");
 	}
 }

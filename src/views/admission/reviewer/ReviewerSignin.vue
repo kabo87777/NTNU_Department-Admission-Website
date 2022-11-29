@@ -137,9 +137,12 @@ import * as yup from "yup";
 
 import { AdmissionReviewerAPI } from "@/api/admission/reviewer/api";
 import { useAdmissionReviewerAuthStore } from "@/stores/universalAuth";
+import { useUserInfoStore } from "@/stores/AdmissionReviewerStore";
 
 import type { TurnstileComponentExposes } from "@/components/Turnstile.vue";
 import Turnstile from "@/components/Turnstile.vue";
+
+import type { AdmissionManagerAuthResponse } from "@/api/admission/reviewer/types";
 
 import Checkbox from "primevue/checkbox";
 import Button from "primevue/button";
@@ -151,6 +154,7 @@ const redirectToMainContainer = () =>
 	router.replace({ name: "AdmissionReviewerMainContainer" });
 
 const authStore = useAdmissionReviewerAuthStore();
+const userInfo = useUserInfoStore();
 
 // Login Form
 const turnstileRef = ref<TurnstileComponentExposes>();
@@ -207,11 +211,24 @@ const onSubmit = handleSubmit(async function (values, actions) {
 		// TODO: reviewer sign in at /admission/reviewer
 		const api = new AdmissionReviewerAPI(authStore);
 
-		await api.requestNewSession({
-			email: values.email,
-			password: values.password,
-			"cf-turnstile-response": turnstileResponse,
-		});
+		const doLogin = async () => {
+			return await api.requestNewSession({
+				email: values.email,
+				password: values.password,
+				"cf-turnstile-response": turnstileResponse,
+			});
+		};
+
+		const handleDataType = async () => {
+			const reviewerInfo: AdmissionManagerAuthResponse =
+				await doLogin().then((res) => {
+					return res.data;
+				});
+
+			return reviewerInfo;
+		};
+
+		userInfo.saveUserInfo(await handleDataType());
 
 		redirectToMainContainer();
 	} catch (e: any) {

@@ -91,7 +91,6 @@
 
 <script setup lang="ts">
 import { onMounted, reactive, ref, toRaw } from "vue";
-import { useQuery } from "@tanstack/vue-query";
 import { AdmissionApplicantAuthResponse } from "@/api/admission/applicant/types";
 import { useAdmissionApplicantAuthStore } from "@/stores/universalAuth";
 import { useUserInfoStore } from "@/stores/AdmissionApplicantStore";

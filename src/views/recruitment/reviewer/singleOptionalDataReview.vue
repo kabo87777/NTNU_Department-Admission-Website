@@ -28,9 +28,22 @@
 				{{ name }}
 			</div>
 		</div>
+		<div class="p-fluid">
+			<SelectButton
+				v-model="data"
+				:options="datas"
+				aria-labelledby="single"
+				disabled
+				class="!h-50px"
+			/>
+		</div>
 		<div class="bigBrownDivider"></div>
 		<div class="mt-10px h-670px">
-			<PDFView :pdfUrl="jsPdf" class="!h650px" />
+			<PDFView
+				:pdfUrl="jsPdf"
+				class="!h650px"
+				v-if="data != '基本資料'"
+			/>
 		</div>
 		<div class="bigBlueDivider"></div>
 		<div class="flex mt-32px">
@@ -47,7 +60,7 @@
 			</div>
 			<InputText
 				type="text"
-				v-model="reason"
+				v-model="comment"
 				class="!w-650px !h-44px !ml-34px"
 			/>
 		</div>
@@ -88,13 +101,29 @@ import InputText from "primevue/inputtext";
 import { useI18n } from "vue-i18n";
 import PDFView from "@/components/pdfPreview.vue";
 import jsPdf from "./test.pdf";
+import { useRouter } from "vue-router";
+import { useRecruitmentReviewerAuthStore } from "@/stores/universalAuth";
+import { RecruitmentReviewerAPI } from "@/api/recruitment/reviewer/api";
+import { useMutation, useQuery } from "@tanstack/vue-query";
+import { InvalidSessionError } from "@/api/error";
+import { useGlobalStore } from "@/stores/RecruitmentReviewerStore";
+import { useToast } from "primevue/usetoast";
+import SelectButton from "primevue/selectbutton";
 
+const reviewerAuth = useRecruitmentReviewerAuthStore();
+const api = new RecruitmentReviewerAPI(reviewerAuth);
+const store = useGlobalStore();
+
+const router = useRouter();
 const route = useRoute();
 const { t } = useI18n();
 
 const ID = computed(() => route.params.id);
+const name = ref("");
 const checked = ref();
-const reason = ref("");
+const comment = ref("");
+const data = ref("基本資料");
+const datas = ref(["基本資料", "PDF"]);
 
 // FIXME: logic may refactor
 
@@ -111,83 +140,110 @@ const ratings = [
 	translation.recommanded.value,
 ];
 
-// TODO: 連接API
-const data_list = ref([
-	{
-		id: "1000",
-		name: "Aaa",
-		rating: translation.recommanded,
-		reason: "good",
+const {
+	isLoading,
+	isError,
+	data: applicantComment,
+	error,
+} = useQuery(
+	["recruitmenReviewerComment"],
+	async () => {
+		try {
+			return await api.getApplicantComment(
+				store.recruitmentReviewerProgram!.id!,
+				ID.value
+			);
+		} catch (e: any) {
+			if (e instanceof InvalidSessionError) {
+				// FIXME: show session expiry notification??
+				// Why are we even here in the first place?
+				// MainContainer should have checked already.
+				console.error(
+					"Session has already expired while querying programList"
+				);
+				router.push("/");
+				return;
+			}
+		}
 	},
 	{
-		id: "1001",
-		name: "Aaa",
-		rating: translation.recommanded,
-		reason: "good",
-	},
-	{
-		id: "1002",
-		name: "Aaa",
-		rating: translation.notRecommanded,
-		reason: "not good",
-	},
-	{
-		id: "1003",
-		name: "Aaa",
-		rating: translation.noRating,
-		reason: "",
-	},
-	{
-		id: "1004",
-		name: "Aaa",
-		rating: translation.notRecommanded,
-		reason: "not good",
-	},
-	{
-		id: "1005",
-		name: "Aaa",
-		rating: translation.noRating,
-		reason: "",
-	},
-	{
-		id: "1006",
-		name: "Aaa",
-		rating: translation.recommanded,
-		reason: "good",
-	},
-	{
-		id: "1007",
-		name: "Aaa",
-		rating: translation.noRating,
-		reason: "",
-	},
-	{
-		id: "1008",
-		name: "Aaa",
-		rating: translation.notRecommanded,
-		reason: "not good",
-	},
-	{
-		id: "1009",
-		name: "Aaa",
-		rating: translation.notRecommanded,
-		reason: "not good",
-	},
-	{
-		id: "1010",
-		name: "Aaa",
-		rating: translation.noRating,
-		reason: "",
-	},
-]);
-
-const name = computed(
-	() =>
-		data_list.value[data_list.value.findIndex((obj) => obj.id == ID.value)]
-			.name
+		onSuccess: (data) => {
+			comment.value = data!.comment!;
+			if (data!.isRecommend === null) {
+				selectedRating.value = translation.noRating.value;
+			} else if (data!.isRecommend === false) {
+				selectedRating.value = translation.notRecommanded.value;
+				checked.value = true;
+			} else {
+				selectedRating.value = translation.recommanded.value;
+				checked.value = true;
+			}
+		},
+	}
 );
 
+const { data: applicantInfo } = useQuery(
+	["recruitmenReviewerInfo"],
+	async () => {
+		try {
+			return await api.getApplicantInfo(
+				store.recruitmentReviewerProgram!.id!,
+				ID.value
+			);
+		} catch (e: any) {
+			if (e instanceof InvalidSessionError) {
+				// FIXME: show session expiry notification??
+				// Why are we even here in the first place?
+				// MainContainer should have checked already.
+				console.error(
+					"Session has already expired while querying programList"
+				);
+				router.push("/");
+				return;
+			}
+		}
+	},
+	{
+		onSuccess: (data) => {
+			name.value = data!.name!;
+		},
+	}
+);
+
+const toast = useToast();
+const newApplicantComment = useMutation(async (newProgramData: any) => {
+	try {
+		return await api.updateApplicantComment(
+			store.recruitmentReviewerProgram!.id!,
+			ID.value,
+			newProgramData
+		);
+	} catch (error) {
+		toast.add({ severity: "error", summary: "無法保存", life: 3000 });
+		console.log(error);
+	}
+});
 function saveScore() {
-	console.log("save");
+	try {
+		if (selectedRating.value === translation.noRating.value) {
+			newApplicantComment.mutate({
+				comment: comment.value,
+				isRecommend: null,
+			});
+		} else if (selectedRating.value === translation.notRecommanded.value) {
+			newApplicantComment.mutate({
+				comment: comment.value,
+				isRecommend: false,
+			});
+		} else {
+			newApplicantComment.mutate({
+				comment: comment.value,
+				isRecommend: true,
+			});
+		}
+		toast.add({ severity: "success", summary: "保存成功", life: 3000 });
+	} catch (e) {
+		console.log(e);
+	}
 }
 </script>

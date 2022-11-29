@@ -1,3 +1,7 @@
+export interface AdmissionReviewerGenericResponse {
+	success?: boolean;
+	message?: string | [];
+}
 export interface AdmissionReviewerSignInInput {
 	email: string;
 	password: string;

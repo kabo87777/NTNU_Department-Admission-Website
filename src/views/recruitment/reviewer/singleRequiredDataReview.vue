@@ -28,9 +28,22 @@
 				{{ name }}
 			</div>
 		</div>
+		<div class="p-fluid">
+			<SelectButton
+				v-model="data"
+				:options="datas"
+				aria-labelledby="single"
+				disabled
+				class="!h-50px"
+			/>
+		</div>
 		<div class="bigBrownDivider"></div>
 		<div class="mt-10px h-670px">
-			<PDFView :pdfUrl="jsPdf" class="!h650px" />
+			<PDFView
+				:pdfUrl="jsPdf"
+				class="!h650px"
+				v-if="data != '基本資料'"
+			/>
 		</div>
 		<div class="bigBlueDivider"></div>
 		<div class="flex mt-32px">
@@ -91,10 +104,11 @@ import jsPdf from "./test.pdf";
 import { useRouter } from "vue-router";
 import { useRecruitmentReviewerAuthStore } from "@/stores/universalAuth";
 import { RecruitmentReviewerAPI } from "@/api/recruitment/reviewer/api";
-import { useQuery } from "@tanstack/vue-query";
+import { useMutation, useQuery } from "@tanstack/vue-query";
 import { InvalidSessionError } from "@/api/error";
 import { useGlobalStore } from "@/stores/RecruitmentReviewerStore";
 import { useToast } from "primevue/usetoast";
+import SelectButton from "primevue/selectbutton";
 
 const reviewerAuth = useRecruitmentReviewerAuthStore();
 const api = new RecruitmentReviewerAPI(reviewerAuth);
@@ -108,6 +122,8 @@ const ID = computed(() => route.params.id);
 const name = ref("");
 const checked = ref();
 const comment = ref("");
+const data = ref("基本資料");
+const datas = ref(["基本資料", "PDF"]);
 
 // FIXME: logic may refactor
 
@@ -157,8 +173,10 @@ const {
 				selectedRating.value = translation.noRating.value;
 			} else if (data!.isRecommend === false) {
 				selectedRating.value = translation.notRecommanded.value;
+				checked.value = true;
 			} else {
 				selectedRating.value = translation.recommanded.value;
+				checked.value = true;
 			}
 		},
 	}
@@ -192,7 +210,40 @@ const { data: applicantInfo } = useQuery(
 	}
 );
 
+const toast = useToast();
+const newApplicantComment = useMutation(async (newProgramData: any) => {
+	try {
+		return await api.updateApplicantComment(
+			store.recruitmentReviewerProgram!.id!,
+			ID.value,
+			newProgramData
+		);
+	} catch (error) {
+		toast.add({ severity: "error", summary: "無法保存", life: 3000 });
+		console.log(error);
+	}
+});
 function saveScore() {
-	console.log("save");
+	try {
+		if (selectedRating.value === translation.noRating.value) {
+			newApplicantComment.mutate({
+				comment: comment.value,
+				isRecommend: null,
+			});
+		} else if (selectedRating.value === translation.notRecommanded.value) {
+			newApplicantComment.mutate({
+				comment: comment.value,
+				isRecommend: false,
+			});
+		} else {
+			newApplicantComment.mutate({
+				comment: comment.value,
+				isRecommend: true,
+			});
+		}
+		toast.add({ severity: "success", summary: "保存成功", life: 3000 });
+	} catch (e) {
+		console.log(e);
+	}
 }
 </script>
