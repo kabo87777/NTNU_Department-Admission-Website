@@ -405,18 +405,18 @@ const oralScore = reactive([
 	{ name: trans.labelName[5].value, weight: 0, index: 5 },
 ]);
 const showedInfo = reactive([
-	{ id: "file1", visible: true, checked: true },
-	{ id: "file2", visible: true, checked: true },
-	{ id: "file3", visible: true, checked: true },
-	{ id: "file4", visible: true, checked: true },
-	{ id: "file5", visible: true, checked: true },
-	{ id: "file6", visible: true, checked: true },
+	{ id: "姓名資訊", visible: true, checked: true },
+	{ id: "入學身分", visible: true, checked: true },
+	{ id: "戶籍資訊", visible: true, checked: true },
+	{ id: "現居地址", visible: true, checked: true },
+	{ id: "身份資料", visible: true, checked: true },
+	{ id: "聯絡資料", visible: true, checked: true },
 ]);
 const showedFile = reactive([
-	{ id: "file1", visible: true, checked: true },
-	{ id: "file2", visible: true, checked: true },
-	{ id: "file3", visible: true, checked: true },
-	{ id: "file4", visible: true, checked: true },
+	{ id: "就學經歷", visible: true, checked: true },
+	{ id: "考試與檢定分數", visible: true, checked: true },
+	{ id: "其他有利於審查資料", visible: true, checked: true },
+	{ id: "身份資料", visible: true, checked: true },
 ]);
 const fieldList = {
 	info: {

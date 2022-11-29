@@ -232,15 +232,15 @@ const queryClient = useQueryClient();
 
 // Field Data
 const showedInfo = reactive([
-	{ id: "file1", checked: false },
-	{ id: "file2", checked: false },
-	{ id: "file3", checked: false },
-	{ id: "file4", checked: false },
+	{ id: "姓名資訊", checked: false },
+	{ id: "戶籍資訊", checked: false },
+	{ id: "現居地址", checked: false },
+	{ id: "身份資料", checked: false },
 ]);
 const showedFile = reactive([
-	{ id: "file1", checked: false },
-	{ id: "file2", checked: false },
-	{ id: "file3", checked: false },
+	{ id: "教學經歷", checked: false },
+	{ id: "考試與檢定分數", checked: false },
+	{ id: "其他有利於審查資料", checked: false },
 ]);
 const fieldList = {
 	infoChecked: [""],
