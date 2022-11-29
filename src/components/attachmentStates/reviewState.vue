@@ -98,8 +98,8 @@
 	>
 		{{ $t("考試與檢定分數") }}{{ $t(":") }}{{ props.score }}
 	</div>
-	<div class="mt-8px font-medium text-16px">【檔案名稱】</div>
-	<div>【檔案】</div>
+	<div class="mt-8px font-medium text-16px">【{{ $t("檔案名稱") }}】</div>
+	<div>【{{ $t("檔案") }}】{{ decodeURI(props.fileUrl) }}</div>
 	<div class="font-[350]">{{ $t("onlyPdf") }}</div>
 </template>
 
@@ -114,6 +114,7 @@ const props = defineProps([
 	"category",
 	"identity",
 	"itemName",
+	"fileUrl",
 	"order",
 	"schoolName",
 	"score",

@@ -19,6 +19,7 @@
 					:itemId="item.id"
 					:itemName="item.name"
 					:schoolName="item.name"
+					:fileUrl="item.filepath?.url"
 					:order="index + 1"
 					:isDeleteLoading="isLoading.delete"
 					@edit="reviewToEdit"
@@ -69,6 +70,7 @@
 					:itemId="item.id"
 					:itemName="item.name"
 					:score="item.name"
+					:fileUrl="item.filepath?.url"
 					:order="index + 1"
 					:isDeleteLoading="isLoading.delete"
 					@edit="reviewToEdit"
@@ -118,6 +120,7 @@
 					identity="admissionApplicant"
 					:itemId="item.id"
 					:itemName="item.name"
+					:fileUrl="item.filepath?.url"
 					:order="index + 1"
 					:isDeleteLoading="isLoading.delete"
 					@edit="reviewToEdit"
@@ -459,11 +462,13 @@ const getFileList = async () => {
 onMounted(async () => {
 	const response = getFileList();
 	await response.then((res) => {
-		res.map((item) => {
-			if (item) {
-				attachmentList.push(item);
-			}
-		});
+		if (Object.keys(res).length) {
+			res.map((item) => {
+				if (item) {
+					attachmentList.push(item);
+				}
+			});
+		}
 	});
 
 	splitThreeList(toRaw(attachmentList));
@@ -477,11 +482,13 @@ watch(
 		clearAllList();
 
 		await response.then((res) => {
-			res.map((item) => {
-				if (item) {
-					attachmentList.push(item);
-				}
-			});
+			if (Object.keys(res).length) {
+				res.map((item) => {
+					if (item) {
+						attachmentList.push(item);
+					}
+				});
+			}
 		});
 
 		isLoading.fetch = false;

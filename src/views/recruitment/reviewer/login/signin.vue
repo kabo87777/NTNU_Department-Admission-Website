@@ -1,8 +1,8 @@
 <template class="overflow-hidden">
 	<div class="flex">
 		<!-- <div class="flex-shrink-1">
-			<img src="/assets/login-page/Login-img.png" class="fill" />
-		</div> -->
+            <img src="/assets/login-page/Login-img.png" class="fill" />
+        </div> -->
 		<div>
 			<img src="/assets/login-page/Login-img.png" class="h-screen" />
 		</div>
@@ -42,8 +42,8 @@
 				</div>
 				<div class="px-8 space-y-2">
 					<!-- <div class="text-s text-gray-500">
-						國立台灣師範大學資訊工程學系 NTNU CSIE
-					</div> -->
+                        國立台灣師範大學資訊工程學系 NTNU CSIE
+                    </div> -->
 					<div class="flex items-end gap-2 font-medium text-gray-900">
 						<div class="text-4xl">教師聘請系統</div>
 						<div class="text-xl">Teacher Recruitment System</div>
@@ -175,9 +175,12 @@ import * as yup from "yup";
 
 import { RecruitmentReviewerAPI } from "@/api/recruitment/reviewer/api";
 import { useRecruitmentReviewerAuthStore } from "@/stores/universalAuth";
+import { useUserInfoStore } from "@/stores/RecruitmentReviewerStore";
 
 import type { TurnstileComponentExposes } from "@/components/Turnstile.vue";
 import Turnstile from "@/components/Turnstile.vue";
+
+import type { RecruitmentManagerAuthResponse } from "@/api/recruitment/reviewer/types";
 
 import Button from "primevue/button";
 import Checkbox from "primevue/checkbox";
@@ -189,6 +192,7 @@ const redirectToMainContainer = () =>
 	router.replace({ name: "recruitmentReviewerMainContainer" });
 
 const authStore = useRecruitmentReviewerAuthStore();
+const userInfo = useUserInfoStore();
 
 // Login Form
 const turnstileRef = ref<TurnstileComponentExposes>();
@@ -244,11 +248,24 @@ const onSubmit = handleSubmit(async function (values, actions) {
 
 		const api = new RecruitmentReviewerAPI(authStore);
 
-		await api.requestNewSession({
-			email: values.email,
-			password: values.password,
-			"cf-turnstile-response": turnstileResponse,
-		});
+		const doLogin = async () => {
+			return await api.requestNewSession({
+				email: values.email,
+				password: values.password,
+				"cf-turnstile-response": turnstileResponse,
+			});
+		};
+
+		const handleDataType = async () => {
+			const reviewerInfo: RecruitmentManagerAuthResponse =
+				await doLogin().then((res) => {
+					return res.data;
+				});
+
+			return reviewerInfo;
+		};
+
+		userInfo.saveUserInfo(await handleDataType());
 
 		redirectToMainContainer();
 	} catch (e: any) {

@@ -1,8 +1,8 @@
 <template>
 	<div class="mt-32px relative">
 		<div class="flex">
-			<div class="sidebarVerticalBigBlueDivider"></div>
-			<div class="sidebarVerticalSmallBlueDivider"></div>
+			<div class="sidebarVerticalBigRedDivider"></div>
+			<div class="sidebarVerticalSmallRedDivider"></div>
 			<div class="ml-12px w-[100%]">
 				<Dropdown
 					v-model="selectedProgram"
@@ -77,7 +77,6 @@
 				</span>
 			</Button>
 		</router-link>
-
 		<div
 			class="bg-gray-200 bg-opacity-50 h-104px w-[100%] !mt-475px"
 			style="transform: translateY(20%)"
@@ -127,7 +126,7 @@
 
 <script setup lang="ts">
 import "primevue/resources/primevue.min.css";
-import { ref, watch, watchEffect } from "vue";
+import { ref, watch, watchEffect, toRaw, computed } from "vue";
 import Dropdown from "primevue/dropdown";
 import Button from "primevue/button";
 import { RouterLink, useRouter } from "vue-router";
@@ -137,6 +136,8 @@ import { useQuery } from "@tanstack/vue-query";
 import { InvalidSessionError } from "@/api/error";
 import { AdmissionReviewerProgramListResponse } from "@/api/admission/reviewer/types";
 import { useGlobalStore } from "@/stores/AdmissionReviewerStore";
+
+const router = useRouter();
 
 const reviewerAuth = useAdmissionReviewerAuthStore();
 const api = new AdmissionReviewerAPI(reviewerAuth);
@@ -164,7 +165,14 @@ const {
 	}
 });
 
-const router = useRouter();
+const dataPrograms = () => {
+	if (programs.value) {
+		const temp = toRaw(programs.value);
+		return temp[0];
+	}
+}; //convert proxy to array or object
+
+// const selectedProgram = ref(dataPrograms());
 
 // FIXME: this should NOT be hardcoded.
 const selectedProgram = ref<AdmissionReviewerProgramListResponse>();
@@ -187,7 +195,7 @@ const generateOptions = (data: any) => data.category + data.name;
 
 async function signOut() {
 	await api.invalidateSession();
-	router.push("/admission/reviewer/signin");
+	router.push("/recruitment/reviewer/signin");
 }
 </script>
 

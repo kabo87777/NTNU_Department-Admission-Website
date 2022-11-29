@@ -1,8 +1,9 @@
 <template>
 	<h1 class="text-4xl font-bold">{{ $t("管理審查者") }}</h1>
-	<Button @click="getRelatedPrograms">Button</Button>
+	<!-- <Button @click="getRelatedPrograms">Button</Button> -->
 	<Divider></Divider>
-	<DataTable :value="tableData">
+	<Button @click="addReviewerModal.open">{{ $t("建立帳號") }}</Button>
+	<DataTable :value="tableData" :loading="getLoadingStatus">
 		<template #empty>
 			<h2>{{ $t("尚無審查者帳號") }}</h2>
 		</template>
@@ -36,12 +37,12 @@
 				<Button
 					icon="pi pi-pencil"
 					class="p-button-outlined p-button-success"
-					@click="openModal"
 				></Button>
 			</template>
 		</Column>
 	</DataTable>
 
+	<!-- Modal for editting reviewer profile -->
 	<Dialog v-model:visible="modalVisible" :modal="true">
 		<template #header>
 			<h3 class="font-extrabold text-lg">
@@ -109,13 +110,85 @@
 			</div>
 		</template>
 	</Dialog>
+
+	<!-- Modal for adding reviewer -->
+	<Dialog :modal="true" v-model:visible="addReviewerModal.visible">
+		<template #header>
+			<h3 class="font-black text-lg">{{ $t("建立審查者帳號") }}</h3>
+		</template>
+
+		<template #default>
+			<div class="w-lg grid gap-y-2">
+				<div>
+					<h3 font="font-black">{{ $t("審查者帳號") }}</h3>
+					<InputText
+						type="text"
+						class="w-full"
+						v-model:model-value="addReviewerModal.data.username"
+					/>
+				</div>
+
+				<div class="font-black">
+					<label class="block">{{ $t("姓名") }}</label>
+					<InputText
+						type="text"
+						class="w-full"
+						v-model:model-value="addReviewerModal.data.name"
+					/>
+				</div>
+				<div>
+					<label for="" class="block font-black">{{
+						$t("電子信箱")
+					}}</label>
+					<InputText
+						type="email"
+						class="w-full"
+						v-model:model-value="addReviewerModal.data.email"
+					/>
+				</div>
+
+				<div>
+					<label for="" class="block font-black">
+						{{ $t("密碼") }}
+					</label>
+					<Password
+						class="w-full"
+						input-class="w-full"
+						:feedback="false"
+						:toggle-mask="true"
+						v-model:model-value="addReviewerModal.data.password"
+					/>
+				</div>
+			</div>
+		</template>
+
+		<template #footer>
+			<div class="flex justify-center">
+				<div class="space-x-2">
+					<Button
+						icon="pi pi-check"
+						:disabled="!addReviewerModal.allowSave"
+						:label="$t('送出')"
+						class="p-button-outlined p-button-success"
+						@click="addReviewerModal.submit"
+					></Button>
+					<Button
+						icon="pi pi-times"
+						:label="$t('取消')"
+						class="p-button-outlined p-button-danger"
+						@click="addReviewerModal.visible = false"
+					></Button>
+				</div>
+			</div>
+		</template>
+	</Dialog>
 </template>
 
 <script setup lang="ts">
 import DataTable from "primevue/datatable";
 import Row from "primevue/row";
 import Column from "primevue/column";
-import { ref, toRaw, watch, watchEffect } from "vue";
+import { computed, ref, toRaw, watch, watchEffect } from "vue";
 import type { Ref } from "vue";
 import { useI18n } from "vue-i18n";
 import Divider from "primevue/divider";
@@ -124,7 +197,7 @@ import Button from "primevue/button";
 import Dialog from "primevue/dialog";
 import InputText from "primevue/inputtext";
 import Checkbox from "primevue/checkbox";
-import { useQuery } from "@tanstack/vue-query";
+import { useMutation, useQuery } from "@tanstack/vue-query";
 import { InvalidSessionError } from "@/api/error";
 import { useRouter } from "vue-router";
 import {
@@ -134,16 +207,23 @@ import {
 import { AdmissionAdminAPI } from "@/api/admission/admin/api";
 import { useGlobalStore } from "@/stores/globalStore";
 import { AdmAdminReviewerListResponse } from "@/api/admission/admin/types";
+import Password from "primevue/password";
 const { t } = useI18n();
 
 const router = useRouter();
 const adminAuth = useAdmissionAdminAuthStore();
 
 const store = useGlobalStore();
+store.$subscribe((mutation, state) => {
+	// Refetch table when selecting other program
+	console.log("Refetch reviewer list");
+	refetch();
+});
 const api = new AdmissionAdminAPI(adminAuth);
-const tableData = ref<AdmAdminReviewerListResponse[]>();
+const tableData = ref<AdmAdminReviewerListResponse[]>(
+	[] as AdmAdminReviewerListResponse[]
+);
 
-const relatedProgram: Record<number, any> = {};
 const reviewerID = ref(1);
 const programQuery = useQuery(
 	["reviewerProgram", reviewerID],
@@ -184,8 +264,15 @@ const programQuery = useQuery(
 		},
 	}
 );
+const getLoadingStatus = computed(() => {
+	return isLoading.value || isProcessing.value;
+});
 
-const { data: reviewers } = useQuery(
+const {
+	data: reviewers,
+	refetch,
+	isLoading,
+} = useQuery(
 	["reviewerList"],
 	async () => {
 		try {
@@ -204,25 +291,65 @@ const { data: reviewers } = useQuery(
 		}
 	},
 	{
-		onSuccess: () => {
-			tableData.value = reviewers.value;
-
-			tableData.value?.map((x) => {
-				reviewerID.value = x.id;
-				programQuery.refetch();
-			});
+		onSuccess: (data) => {
+			if (typeof data === "undefined") {
+				throw new Error("Received undefined reviewer response");
+			}
+			console.log("Loaded");
+			tableData.value = data;
 		},
 	}
 );
+
+const addReviewerModal = ref({
+	data: {
+		username: "",
+		name: "",
+		email: "",
+		password: "",
+	},
+	visible: false,
+	open: () => (addReviewerModal.value.visible = true),
+	close: () => (addReviewerModal.value.visible = false),
+	allowSave: computed(() => {
+		const ref: Ref = addReviewerModal;
+		const { username, name, email, password } = ref.value.data;
+		const result =
+			username.length && name.length && email.length && password.length;
+		return result;
+	}),
+	submit: () => {
+		addReviewerModal.value.close();
+		createReviewer();
+	},
+});
+
 const modalVisible = ref(false);
 const modalData = ref();
 
-const openModal = () => {
-	modalVisible.value = true;
+const openModal = (modal: Ref) => {
+	modal.value.visible = true;
 };
 
 const getRelatedPrograms = () => {
 	if (!programQuery.isFetched.value)
 		programQuery.refetch({ throwOnError: true });
 };
+
+const isProcessing = ref(false);
+
+const { mutate: createReviewer } = useMutation({
+	mutationFn: () => {
+		return api.createReviewer(addReviewerModal.value.data);
+	},
+	onMutate: () => {
+		isProcessing.value = true;
+	},
+	onSettled: () => {
+		isProcessing.value = false;
+	},
+	onSuccess: () => {
+		refetch();
+	},
+});
 </script>
