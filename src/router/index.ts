@@ -15,7 +15,7 @@ import AdmissionListApplicant from "@/views/admission/manager/ListApplicant.vue"
 import AdmissionManagerMainContainer from "@/views/admission/manager/MainContainer.vue";
 import AdmissionManagerSignin from "@/views/admission/manager/ManagerSignin.vue";
 import AdmissionManagerForgetPassword from "@/views/admission/manager/ForgetPassword.vue";
-import AdmissionManagerProjectSettings from "@/views/admission/manager/ProjectSettings.vue";
+import AdmissionManagerProjectSettings from "@/views/admission/manager/UploadFileSetting.vue";
 import AdmissionReviewScoreField from "@/views/admission/manager/ReviewScoreField.vue";
 // Applicant section
 import AdmissionApplicantMainContainer from "@/views/admission/applicant/MainContainer.vue";
@@ -86,7 +86,7 @@ import recruitmentManagerMainContainer from "@/views/recruitment/manager/MainCon
 import recruitmentManagerApplicantUploadList from "@/views/recruitment/manager/pages/ApplicantUploadList/TableList.vue";
 import recruitmentManagerReviewProgress from "@/views/recruitment/manager/pages/ReviewProgress.vue";
 import recruitmentManagerUserSetting from "@/views/recruitment/manager/pages/RecruitmentManagerSelfSetting.vue";
-import recruitmentApplicationUpload from "@/views/recruitment/manager/pages/RecruitmentApplicationSetting.vue";
+import recruitmentApplicationUpload from "@/views/recruitment/manager/pages/UploadFileSetting.vue";
 import recruitmentGradeDataList from "@/views/recruitment/manager/gradeDataList.vue";
 import recruitmentReviewScroreField from "@/views/recruitment/manager/reviewScoreField.vue";
 import recruitmentProjectSetting from "@/views/recruitment/manager/pages/ProjectSetting.vue";
