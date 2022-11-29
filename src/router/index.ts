@@ -15,8 +15,6 @@ import AdmissionListApplicant from "@/views/admission/manager/ListApplicant.vue"
 import AdmissionManagerMainContainer from "@/views/admission/manager/MainContainer.vue";
 import AdmissionManagerSignin from "@/views/admission/manager/ManagerSignin.vue";
 import AdmissionManagerForgetPassword from "@/views/admission/manager/ForgetPassword.vue";
-import AdmissionManagerProjectSettings from "@/views/admission/manager/ProjectSettings.vue";
-import AdmissionReviewScoreField from "@/views/admission/manager/ReviewScoreField.vue";
 import AdmissionManagerProjectSettings from "@/views/admission/manager/UploadFileSetting.vue";
 import AdmissionReviewScoreField from "@/views/admission/manager/ReviewScoreField.vue";
 // Applicant section
