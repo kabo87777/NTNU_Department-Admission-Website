@@ -365,7 +365,7 @@
 					<div>
 						<Calendar
 							v-model="born.birth"
-							dateFormat="mm-dd-yy"
+							dateFormat="yy-mm-dd"
 							class="w-[70%] h-36px !mt-4px"
 							style="
 								border: 1px solid #736028;
@@ -546,29 +546,6 @@ const basicInfo: RecruitmentApplicantUserInfoResponse =
 	);
 
 const setBasicInfo = (res: RecruitmentApplicantUserInfoResponse) => {
-	// basicInfo.id = res.id;
-	// basicInfo.name = res.name;
-	// basicInfo.email = res.email;
-	// basicInfo.national_id = res.national_id;
-	// basicInfo.sex = res.sex;
-	// basicInfo.birth = res.birth;
-	// basicInfo.day_phone = res.day_phone;
-	// basicInfo.night_phone = res.night_phone;
-	// basicInfo.mobile_phone = res.mobile_phone;
-	// basicInfo.household_address = res.household_address;
-	// basicInfo.household_zipcode = res.household_zipcode;
-	// basicInfo.communicate_address = res.communicate_address;
-	// basicInfo.communicate_zipcode = res.communicate_zipcode;
-	// basicInfo.GSAT_num = res.GSAT_num;
-	// basicInfo.GSAT_registration = res.GSAT_registration;
-	// basicInfo.graduated_school = res.graduated_school;
-	// basicInfo.graduated_major = res.graduated_major;
-	// basicInfo.isSameDept = res.isSameDept;
-	// basicInfo.isDisabled = res.isDisabled;
-	// basicInfo.r_applicant_id = res.r_applicant_id;
-	// basicInfo.created_at = res.created_at;
-	// basicInfo.updated_at = res.updated_at;
-
 	identity.ic = res.national_id as string;
 
 	householdAddr.addr = res.household_address as string;
@@ -581,7 +558,7 @@ const setBasicInfo = (res: RecruitmentApplicantUserInfoResponse) => {
 			: false;
 
 	born.sex = res.sex as string;
-	born.birth = new Date(res.birth as string);
+	born.birth = res.birth as Date;
 
 	contact.phone = res.mobile_phone as string;
 };
@@ -600,6 +577,14 @@ const saveInfo = async (body: object) => {
 };
 
 const handleSave = async () => {
+	const addHours = (numHrs: number, date = new Date()) => {
+		const dateCpy = new Date(date.getTime());
+
+		dateCpy.setTime(dateCpy.getTime() + numHrs * 60 * 60 * 1000);
+
+		return dateCpy;
+	};
+
 	const body = {
 		name: name.zhName,
 		national_id: identity.ic,
@@ -612,7 +597,7 @@ const handleSave = async () => {
 			? householdAddr.postcode
 			: currentAddr.postcode,
 		sex: born.sex,
-		birth: born.birth,
+		birth: addHours(8, born.birth),
 		email: contact.email,
 		mobile_phone: contact.phone,
 	};

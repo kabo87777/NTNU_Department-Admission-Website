@@ -18,6 +18,8 @@ export interface AttachmentData {
 		url: string | any;
 	};
 	r_applicants_r_program_id: number;
+	school?: string;
+	score?: number;
 	created_at: string;
 	updated_at: string;
 }
@@ -30,6 +32,8 @@ export interface AttachmentDetailData {
 		url?: string | any;
 	};
 	r_applicants_r_program_id?: number;
+	school?: string;
+	score?: number;
 	created_at?: string;
 	updated_at?: string;
 	order?: number;
@@ -80,6 +84,8 @@ export interface RecruitmentApplicantFileListResponse {
 		url: string | any;
 	};
 	r_applicants_r_program_id: number;
+	school?: string;
+	score?: number;
 	created_at: string;
 	updated_at: string;
 }
@@ -90,7 +96,7 @@ export interface RecruitmentApplicantUserInfoResponse {
 	email?: string;
 	national_id?: string;
 	sex?: string;
-	birth?: string;
+	birth?: Date;
 	day_phone?: string;
 	night_phone?: string;
 	mobile_phone?: string;
