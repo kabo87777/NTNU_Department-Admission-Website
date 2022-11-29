@@ -1,9 +1,9 @@
 <template>
-	<div class="mt-32px relative">
+	<div class="relative" style="height: 100%">
 		<div class="flex">
-			<div class="sidebarVerticalBigBlueDivider"></div>
-			<div class="sidebarVerticalSmallBlueDivider"></div>
-			<div class="ml-12px w-[100%]">
+			<div class="sidebarVerticalBigBlueDivider mt-32px"></div>
+			<div class="sidebarVerticalSmallBlueDivider mt-32px"></div>
+			<div class="mt-32px ml-12px w-[100%]">
 				<Dropdown
 					v-model="selectedProgram"
 					:options="programs"
@@ -31,7 +31,7 @@
 			v-slot="{ navigate }"
 		>
 			<Button
-				class="p-button-secondary p-button-text !ml-24px !mt-32px !w-336px !h-48px"
+				class="p-button-secondary p-button-text !ml-24px !mt-32px !w-[85%] !h-48px"
 				@click="navigate"
 				role="link"
 			>
@@ -54,7 +54,7 @@
 			v-slot="{ navigate }"
 		>
 			<Button
-				class="p-button-secondary p-button-text !ml-24px !mt-32px !w-336px !h-48px"
+				class="p-button-secondary p-button-text !ml-24px !mt-32px !w-[85%] !h-48px"
 				@click="navigate"
 				role="link"
 			>
@@ -72,8 +72,8 @@
 		</router-link>
 
 		<div
-			class="bg-gray-200 bg-opacity-50 h-104px w-[100%] !mt-530px"
-			style="transform: translateY(20%)"
+			class="absolute bg-gray-200 bg-opacity-50 h-160px w-[100%] !mt-530px"
+			style="bottom: 0px"
 		>
 			<div class="flex">
 				<img
@@ -102,7 +102,7 @@
 						<img
 							alt="logo"
 							src="/assets/sidebar/Setting_alt_line.png"
-							class="w-28px h-28px"
+							class="w-24px h-24px"
 						/>
 					</Button>
 				</router-link>
@@ -110,7 +110,7 @@
 					<img
 						alt="logo"
 						src="/assets/sidebar/Sign_out_circle.png"
-						class="w-28px h-28px"
+						class="w-24px h-24px"
 					/>
 				</Button>
 			</div>

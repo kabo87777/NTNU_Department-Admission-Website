@@ -1,6 +1,6 @@
 <template>
-	<div class="mt-32px relative">
-		<div class="flex">
+	<div class="relative" style="height: 100%">
+		<div class="flex mt-32px">
 			<div class="sidebarVerticalBigRedDivider"></div>
 			<div class="sidebarVerticalSmallRedDivider"></div>
 			<div class="ml-12px w-[100%]">
@@ -33,7 +33,7 @@
 				v-slot="{ navigate }"
 			>
 				<Button
-					class="p-button-secondary p-button-text !ml-24px !mt-32px !w-336px !h-48px"
+					class="p-button-secondary p-button-text !ml-24px !mt-32px !w-[85%] !h-48px"
 					@click="navigate"
 					role="link"
 				>
@@ -51,7 +51,7 @@
 			</router-link>
 
 			<Button
-				class="p-button-secondary p-button-text !ml-24px !mt-8px !w-336px !h-48px"
+				class="p-button-secondary p-button-text !ml-24px !mt-8px !w-[85%] !h-48px"
 			>
 				<img
 					alt="logo"
@@ -79,7 +79,7 @@
 				v-slot="{ navigate }"
 			>
 				<Button
-					class="p-button-secondary p-button-text !ml-24px !mt-18px !w-336px !h-48px"
+					class="p-button-secondary p-button-text !ml-24px !mt-18px !w-[85%] !h-48px"
 					@click="navigate"
 				>
 					<img
@@ -100,7 +100,7 @@
 				v-slot="{ navigate }"
 			>
 				<Button
-					class="p-button-secondary p-button-text !ml-24px !mt-8px !w-336px !h-48px"
+					class="p-button-secondary p-button-text !ml-24px !mt-8px !w-[85%] !h-48px"
 					@click="navigate"
 					role="link"
 				>
@@ -118,7 +118,7 @@
 			</router-link>
 			<router-link to="/admission/manager/applicantsUploadList">
 				<Button
-					class="p-button-secondary p-button-text !ml-24px !mt-8px !w-336px !h-48px"
+					class="p-button-secondary p-button-text !ml-24px !mt-8px !w-[85%] !h-48px"
 				>
 					<img
 						alt="logo"
@@ -146,7 +146,7 @@
 				v-slot="{ navigate }"
 			>
 				<Button
-					class="p-button-secondary p-button-text !ml-24px !mt-16px !w-336px !h-48px"
+					class="p-button-secondary p-button-text !ml-24px !mt-16px !w-[85%] !h-48px"
 					@click="navigate"
 					role="link"
 				>
@@ -168,7 +168,7 @@
 				v-slot="{ navigate }"
 			>
 				<Button
-					class="p-button-secondary p-button-text !ml-24px !mt-8px !w-336px !h-48px"
+					class="p-button-secondary p-button-text !ml-24px !mt-8px !w-[85%] !h-48px"
 					@click="navigate"
 					role="link"
 				>
@@ -187,10 +187,10 @@
 		</div>
 		<div
 			v-if="noProgram && !newProgram"
-			class="bg-gray-200 bg-opacity-50 h-250px w-[100%]"
-			style="transform: translateY(280%)"
+			class="absolute bg-gray-200 bg-opacity-50 h-250px w-[100%]"
+			style="bottom: 0px"
 		>
-			<div class="flex">
+			<div class="flex mt-24px">
 				<div class="m-auto">
 					<router-link
 						to="/admission/manager/reviewerSettings"
@@ -198,7 +198,7 @@
 						v-slot="{ navigate }"
 					>
 						<Button
-							class="w-168px h-44px p-button-outlined !mt-24px !bg-white"
+							class="w-168px h-44px p-button-outlined !bg-white"
 							@click="navigate"
 							role="link"
 						>
@@ -273,50 +273,52 @@
 					</Button>
 				</div>
 			</Dialog>
-			<div class="flex">
+			<div class="flex mt-24px">
 				<img
 					alt="logo"
 					src="/assets/sidebar/User_circle.png"
-					class="h-40px w-40px ml-24px mt-50px"
+					class="h-40px w-40px ml-24px"
 				/>
 				<div class="w-100px h-50px">
-					<div class="text-xs ml-16px mt-50px">
+					<div class="text-xs ml-16px">
 						{{ $t("管理端帳戶") }}
 					</div>
 					<div class="text-xl ml-16px tracking-wider">
 						{{ $t("系辦主管") }}
 					</div>
 				</div>
-				<router-link
-					to="/admission/manager/userSetting"
-					custom
-					v-slot="{ navigate }"
-				>
-					<Button
-						class="p-button-text !mt-46px !ml-50px"
-						@click="navigate"
-						role="link"
+				<div class="mt-[-8px]">
+					<router-link
+						to="/admission/manager/userSetting"
+						custom
+						v-slot="{ navigate }"
 					>
+						<Button
+							class="p-button-text !ml-50px"
+							@click="navigate"
+							role="link"
+						>
+							<img
+								alt="logo"
+								src="/assets/sidebar/Setting_alt_line.png"
+								class="w-28px h-28px"
+							/>
+						</Button>
+					</router-link>
+					<Button class="p-button-text" @click="signOut">
 						<img
 							alt="logo"
-							src="/assets/sidebar/Setting_alt_line.png"
+							src="/assets/sidebar/Sign_out_circle.png"
 							class="w-28px h-28px"
 						/>
 					</Button>
-				</router-link>
-				<Button class="p-button-text !mt-46px" @click="signOut">
-					<img
-						alt="logo"
-						src="/assets/sidebar/Sign_out_circle.png"
-						class="w-28px h-28px"
-					/>
-				</Button>
+				</div>
 			</div>
 		</div>
 		<div
 			v-else
-			class="bg-gray-200 bg-opacity-50 h-250px w-[100%]"
-			style="transform: translateY(70%)"
+			class="absolute bg-gray-200 bg-opacity-50 h-250px w-[100%]"
+			style="bottom: 0px"
 		>
 			<div class="flex">
 				<div class="m-auto">
@@ -401,44 +403,46 @@
 					</Button>
 				</div>
 			</Dialog>
-			<div class="flex">
+			<div class="flex mt-24px">
 				<img
 					alt="logo"
 					src="/assets/sidebar/User_circle.png"
-					class="h-40px w-40px ml-24px mt-50px"
+					class="h-40px w-40px ml-24px"
 				/>
 				<div class="w-100px h-50px">
-					<div class="text-xs ml-16px mt-50px">
+					<div class="text-xs ml-16px">
 						{{ $t("管理端帳戶") }}
 					</div>
 					<div class="text-xl ml-16px tracking-wider">
 						{{ $t("系辦主管") }}
 					</div>
 				</div>
-				<router-link
-					to="/admission/manager/userSetting"
-					custom
-					v-slot="{ navigate }"
-				>
-					<Button
-						class="p-button-text !mt-46px !ml-50px"
-						@click="navigate"
-						role="link"
+				<div class="mt-[-8px]">
+					<router-link
+						to="/admission/manager/userSetting"
+						custom
+						v-slot="{ navigate }"
 					>
+						<Button
+							class="p-button-text !ml-50px"
+							@click="navigate"
+							role="link"
+						>
+							<img
+								alt="logo"
+								src="/assets/sidebar/Setting_alt_line.png"
+								class="w-24px h-24px"
+							/>
+						</Button>
+					</router-link>
+					<Button class="p-button-text" @click="signOut">
 						<img
 							alt="logo"
-							src="/assets/sidebar/Setting_alt_line.png"
-							class="w-28px h-28px"
+							src="/assets/sidebar/Sign_out_circle.png"
+							class="w-24px h-24px"
 						/>
 					</Button>
-				</router-link>
-				<Button class="p-button-text !mt-46px" @click="signOut">
-					<img
-						alt="logo"
-						src="/assets/sidebar/Sign_out_circle.png"
-						class="w-28px h-28px"
-					/>
-				</Button>
+				</div>
 			</div>
 		</div>
 	</div>

@@ -34,7 +34,7 @@
 			v-slot="{ navigate }"
 		>
 			<Button
-				class="p-button-secondary p-button-text !ml-24px !mt-16px !w-9/10 !h-48px !hover:bg-[#ECEDED] !rounded-[8px]"
+				class="p-button-secondary p-button-text !ml-24px !mt-16px !w-[85%] !h-48px !hover:bg-[#ECEDED] !rounded-[8px]"
 				@click="navigate"
 				role="link"
 			>
@@ -65,7 +65,7 @@
 			v-slot="{ navigate }"
 		>
 			<Button
-				class="p-button-secondary p-button-text !ml-24px !mt-8px !w-9/10 !h-48px !hover:bg-[#ECEDED] !rounded-[8px]"
+				class="p-button-secondary p-button-text !ml-24px !mt-8px !w-[85%] !h-48px !hover:bg-[#ECEDED] !rounded-[8px]"
 				@click="navigate"
 				role="link"
 			>
@@ -103,7 +103,7 @@
 			v-slot="{ navigate }"
 		>
 			<Button
-				class="p-button-secondary p-button-text !ml-24px !mt-8px !w-9/10 !h-48px !hover:bg-[#ECEDED] !rounded-[8px]"
+				class="p-button-secondary p-button-text !ml-24px !mt-8px !w-[85%] !h-48px !hover:bg-[#ECEDED] !rounded-[8px]"
 				@click="navigate"
 				role="link"
 			>
@@ -135,7 +135,7 @@
 				padding-right: 8px;
 			"
 		>
-			<div class="flex mt-24px" style="margin-left: 24px">
+			<div class="flex mt-24px">
 				<Dialog
 					v-model:visible="isModalVisible"
 					style="width: 500px"
@@ -189,46 +189,48 @@
 						/>
 					</template>
 				</Dialog>
-				<div>
-					<router-link
-						:to="{
-							name: 'recruitmentApplicantSwitchProject',
-						}"
-						custom
-						v-slot="{ navigate }"
-					>
+				<div class="flex m-auto">
+					<div>
+						<router-link
+							:to="{
+								name: 'recruitmentApplicantSwitchProject',
+							}"
+							custom
+							v-slot="{ navigate }"
+						>
+							<Button
+								class="p-button-secondary p-button-outlined"
+								style="height: 40px; border: 2px solid #736028"
+								@click="navigate"
+								role="link"
+							>
+								<div>
+									<i class="pi pi-sort-alt text-[#736028]" />
+								</div>
+								<div class="ml-8px font-bold text-[#736028]">
+									{{ $t("切換專案") }}
+								</div>
+							</Button>
+						</router-link>
+					</div>
+					<div>
 						<Button
 							class="p-button-secondary p-button-outlined"
-							style="height: 40px; border: 2px solid #736028"
-							@click="navigate"
-							role="link"
+							style="
+								height: 40px;
+								border: 2px solid #736028;
+								margin-left: 16px;
+							"
+							@click="isModalVisible = true"
 						>
 							<div>
-								<i class="pi pi-sort-alt text-[#736028]" />
+								<i class="pi pi-check-square text-[#736028]" />
 							</div>
 							<div class="ml-8px font-bold text-[#736028]">
-								{{ $t("切換專案") }}
+								{{ $t("資料確認送出") }}
 							</div>
 						</Button>
-					</router-link>
-				</div>
-				<div>
-					<Button
-						class="p-button-secondary p-button-outlined"
-						style="
-							height: 40px;
-							border: 2px solid #736028;
-							margin-left: 16px;
-						"
-						@click="isModalVisible = true"
-					>
-						<div>
-							<i class="pi pi-check-square text-[#736028]" />
-						</div>
-						<div class="ml-8px font-bold text-[#736028]">
-							{{ $t("資料確認送出") }}
-						</div>
-					</Button>
+					</div>
 				</div>
 			</div>
 			<div class="mt-40px flex relative">

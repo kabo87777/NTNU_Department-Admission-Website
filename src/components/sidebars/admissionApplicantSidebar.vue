@@ -25,7 +25,7 @@
 			v-slot="{ navigate }"
 		>
 			<Button
-				class="p-button-secondary p-button-text !ml-24px !mt-24px !w-336px !h-48px !hover:bg-[#ECEDED] !rounded-[8px]"
+				class="p-button-secondary p-button-text !ml-24px !mt-24px !w-[85%] !h-48px !hover:bg-[#ECEDED] !rounded-[8px]"
 				style="{ active: border: 1px solid #736028 !important }"
 				@click="navigate"
 				role="link"
@@ -60,7 +60,7 @@
 				v-slot="{ navigate }"
 			>
 				<Button
-					class="p-button-secondary p-button-text !ml-24px !mt-16px !w-336px !h-48px !hover:bg-[#ECEDED] !rounded-[8px]"
+					class="p-button-secondary p-button-text !ml-24px !mt-16px !w-[85%] !h-48px !hover:bg-[#ECEDED] !rounded-[8px]"
 					@click="navigate"
 					role="link"
 				>
@@ -91,7 +91,7 @@
 				v-slot="{ navigate }"
 			>
 				<Button
-					class="p-button-secondary p-button-text !ml-24px !mt-8px !w-336px !h-48px !hover:bg-[#ECEDED] !rounded-[8px]"
+					class="p-button-secondary p-button-text !ml-24px !mt-8px !w-[85%] !h-48px !hover:bg-[#ECEDED] !rounded-[8px]"
 					@click="navigate"
 					role="link"
 				>
@@ -131,7 +131,7 @@
 				v-slot="{ navigate }"
 			>
 				<Button
-					class="p-button-secondary p-button-text !ml-24px !mt-16px !w-336px !h-48px !hover:bg-[#ECEDED] !rounded-[8px]"
+					class="p-button-secondary p-button-text !ml-24px !mt-16px !w-[85%] !h-48px !hover:bg-[#ECEDED] !rounded-[8px]"
 					@click="navigate"
 					role="link"
 				>
@@ -166,7 +166,7 @@
 				v-slot="{ navigate }"
 			>
 				<Button
-					class="p-button-secondary p-button-text !ml-24px !mt-8px !w-336px !h-48px !hover:bg-[#ECEDED] !rounded-[8px]"
+					class="p-button-secondary p-button-text !ml-24px !mt-8px !w-[85%] !h-48px !hover:bg-[#ECEDED] !rounded-[8px]"
 					@click="navigate"
 					role="link"
 				>
@@ -245,7 +245,7 @@
 							<img
 								alt="logo"
 								src="/assets/sidebar/Setting_alt_line.png"
-								class="w-28px h-28px"
+								class="w-24px h-24px"
 							/>
 						</Button>
 					</router-link>
@@ -256,7 +256,7 @@
 						<img
 							alt="logo"
 							src="/assets/sidebar/Sign_out_circle.png"
-							class="w-28px h-28px"
+							class="w-24px h-24px"
 						/>
 					</Button>
 				</div>
