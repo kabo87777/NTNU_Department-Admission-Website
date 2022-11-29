@@ -1,12 +1,13 @@
 <template>
-	<div class="ml-128px">
+	<div class="ml-128px mt-20 mb-20">
 		<h1 class="text-4xl text-bold tracking-widest">{{ $t("專案設定") }}</h1>
 		<Divider class="bg-ntnuRed" />
 		<h2 class="text-2xl text-bold tracking-widest inline-block">
-			{{ $t("111年研究生審查") }}
+			{{ oldProgramName }}
 		</h2>
 		<Button
-			class="w-100px h-40px !ml-20px p-button-outlined p-button-success"
+			class="w-110px h-40px !ml-20px p-button-outlined p-button-success"
+			@click="update"
 		>
 			<img
 				alt="logo"
@@ -17,7 +18,8 @@
 			<span class="tracking-1px">{{ $t("保存") }}</span>
 		</Button>
 		<Button
-			class="w-100px h-40px !ml-20px p-button-outlined p-button-danger"
+			class="w-110px h-40px !ml-20px p-button-outlined p-button-danger"
+			@click="deleteProject"
 		>
 			<img
 				alt="logo"
@@ -28,14 +30,14 @@
 			<span class="tracking-1px">{{ $t("刪除") }}</span>
 		</Button>
 		<h3 class="text-xs tracking-widest text-gray-500">
-			2022/09/15 · {{ $t("新增到專案") }}
+			{{ programCreateDate }} · {{ $t("新增到專案") }}
 		</h3>
 		<h5 class="text-base tracking-widest mt-30px">
 			{{ $t("專案名稱 (修改)") }} :
 		</h5>
 		<InputText
 			type="text"
-			v-model="profect_name"
+			v-model="programName"
 			class="w-960px h-44px mt-10px"
 		/>
 		<div>
@@ -77,7 +79,7 @@
 		<br />
 		<div class="inline-block">
 			<h5 class="text-base tracking-widest mt-30px">
-				{{ $t("審查端第一階段開放時間/日期") }} :
+				{{ $t("審查端開放時間/日期") }} :
 			</h5>
 			<Calendar
 				inputId="icon"
@@ -89,7 +91,7 @@
 		</div>
 		<div class="inline-block ml-100px">
 			<h5 class="text-base tracking-widest mt-30px">
-				{{ $t("審查端第一階段關閉時間/日期") }} :
+				{{ $t("審查端關閉時間/日期") }} :
 			</h5>
 			<Calendar
 				inputId="icon"
@@ -99,29 +101,14 @@
 				class="w-320px h-44px mt-10px"
 			/>
 		</div>
-		<br />
-		<div class="inline-block">
-			<h5 class="text-base tracking-widest mt-30px">
-				{{ $t("審查端第二階段開放時間/日期") }} :
-			</h5>
-			<Calendar
-				inputId="icon"
-				v-model="review_stage2_start_time"
-				:showIcon="true"
-				:showTime="true"
-				class="w-320px h-44px mt-10px"
-			/>
-		</div>
-		<div class="inline-block ml-100px">
-			<h5 class="text-base tracking-widest mt-30px">
-				{{ $t("審查端第二階段關閉時間/日期") }} :
-			</h5>
-			<Calendar
-				inputId="icon"
-				v-model="review_stage2_end_time"
-				:showIcon="true"
-				:showTime="true"
-				class="w-320px h-44px mt-10px"
+		<h5 class="text-base tracking-widest mt-30px">
+			{{ $t("變更審查階段(若為申請階段可不選取)") }} :
+		</h5>
+		<div class="p-fluid !w-740px">
+			<SelectButton
+				v-model="review_stage"
+				:options="review_stages"
+				aria-labelledby="single"
 			/>
 		</div>
 		<br />
@@ -156,20 +143,144 @@ import Dropdown from "primevue/dropdown";
 import Calendar from "primevue/calendar";
 import Textarea from "primevue/textarea";
 import Checkbox from "primevue/checkbox";
+import SelectButton from "primevue/selectbutton";
+import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
+import { useGlobalStore } from "@/stores/globalStore";
+import { AdmissionAdminAPI } from "@/api/admission/admin/api";
+import { useMutation, useQuery } from "@tanstack/vue-query";
+import { InvalidSessionError } from "@/api/error";
+import { router } from "@/router";
+import { useToast } from "primevue/usetoast";
+import { useI18n } from "vue-i18n";
 
-const profect_name = ref<string>("111年研究生審查");
-const selected_type = ref({});
+const programName = ref<string>("");
+const oldProgramName = ref<string>("");
+const selected_type = ref();
 const types = ref([
 	{ type_name: "特殊選才" },
 	{ type_name: "碩士班徵試入學" },
 	{ type_name: "博士班徵試入學" },
 ]);
-const application_start_time = ref();
+const application_start_time = ref<Date>();
 const application_end_time = ref();
 const review_stage1_start_time = ref();
 const review_stage1_end_time = ref();
-const review_stage2_start_time = ref();
-const review_stage2_end_time = ref();
 const project_details = ref("");
 const checked = ref(false);
+const programCreateDate = ref("");
+const review_stage = ref("");
+const { t } = useI18n();
+const translation = {
+	phase1: t("第一階段 (書面審查)"),
+	phase2: t("第二階段 (口試審查)"),
+};
+const review_stages = ref([translation.phase1, translation.phase2]);
+const globalStore = useGlobalStore();
+const adminAuth = useAdmissionAdminAuthStore();
+const api = new AdmissionAdminAPI(adminAuth);
+const programData = useMutation(async (newProgramData: any) => {
+	try {
+		return await api.updateProgramData(
+			globalStore.program!.id,
+			newProgramData
+		);
+	} catch (error) {
+		console.log(error);
+	}
+});
+const {
+	isLoading,
+	isError,
+	data: program,
+	error,
+} = useQuery(
+	["program"],
+	async () => {
+		try {
+			return (await api.getProgramList()).filter(
+				(program) => program.id === globalStore.program!.id
+			)[0];
+		} catch (e: any) {
+			if (e instanceof InvalidSessionError) {
+				// FIXME: show session expiry notification??
+				// Why are we even here in the first place?
+				// MainContainer should have checked already.
+				console.error(
+					"Session has already expired while querying programList"
+				);
+				router.push("/");
+				return;
+			}
+		}
+	},
+	{
+		onSuccess: (data) => {
+			oldProgramName.value = data!.name;
+			programName.value = data!.name;
+			selected_type.value = data!.category;
+			programCreateDate.value = data!.created_at.slice(0, 10);
+			application_start_time.value = new Date(
+				data!.application_start_date
+			);
+			application_end_time.value = new Date(data!.application_end_date);
+			review_stage1_start_time.value = new Date(data!.review_start_date);
+			review_stage1_end_time.value = new Date(data!.review_end_date);
+			project_details.value = data!.detail;
+			if (data!.stage === "docs_stage") {
+				review_stage.value = translation.phase1;
+			}
+			if (data!.stage === "oral_stage") {
+				review_stage.value = translation.phase2;
+			}
+		},
+	}
+);
+
+const toast = useToast();
+const stage = ref("");
+function update() {
+	if (review_stage.value === translation.phase1) {
+		stage.value = "docs_stage";
+	} else if (review_stage.value === translation.phase2) {
+		stage.value = "oral_stage";
+	} else {
+		stage.value = "application_stage";
+	}
+	try {
+		programData.mutate({
+			category: selected_type.value,
+			name: programName.value,
+			application_start_date:
+				dateTransform(application_start_time.value) + "+08:00",
+			application_end_date:
+				dateTransform(application_end_time.value) + "+08:00",
+			review_start_date:
+				dateTransform(review_stage1_start_time.value) + "+08:00",
+			review_end_date:
+				dateTransform(review_stage1_end_time.value) + "+08:00",
+			require_file: '["file1", "file2"]',
+			stage: stage.value,
+			detail: project_details.value,
+		});
+		toast.add({ severity: "success", summary: "更改成功", life: 3000 });
+	} catch (error) {
+		toast.add({ severity: "error", summary: "資料錯誤", life: 3000 });
+	}
+}
+
+function deleteProject() {
+	try {
+		api.deleteProgram(globalStore.program!.id);
+		toast.add({ severity: "success", summary: "刪除成功", life: 3000 });
+	} catch (error) {
+		toast.add({ severity: "error", summary: "刪除失敗", life: 3000 });
+	}
+}
+
+function dateTransform(date?: Date) {
+	const result = new Date(date!.setHours(date!.getHours() + 8))
+		.toJSON()
+		.replace("Z", "");
+	return result;
+}
 </script>

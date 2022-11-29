@@ -1,7 +1,9 @@
 <template>
 	<h1 class="text-4xl font-bold">{{ $t("管理審查者") }}</h1>
+	<!-- <Button @click="getRelatedPrograms">Button</Button> -->
 	<Divider></Divider>
-	<DataTable :value="tableData">
+	<Button @click="addReviewerModal.open">{{ $t("建立帳號") }}</Button>
+	<DataTable :value="tableData" :loading="getLoadingStatus">
 		<template #empty>
 			<h2>{{ $t("尚無審查者帳號") }}</h2>
 		</template>
@@ -20,27 +22,27 @@
 
 		<Column field="roles">
 			<template #header>{{ $t("身份組") }}</template>
-			<template #body="slotProps">
-				<Tag
-					v-for="role in truncateRoles(slotProps.data.roles)"
-					:key="role"
-					>{{ role }}</Tag
-				>
-			</template>
+			<!-- <template #body="slotProps">
+        <Tag
+          v-for="role in truncateRoles(slotProps.data)"
+          :key="role"
+          >{{ role }}
+          </Tag>
+      </template> -->
 		</Column>
 
 		<Column>
 			<template #header>{{ $t("動作") }}</template>
-			<template #body="slotProps">
+			<template #body>
 				<Button
 					icon="pi pi-pencil"
 					class="p-button-outlined p-button-success"
-					@click="openModal(slotProps.data)"
 				></Button>
 			</template>
 		</Column>
 	</DataTable>
 
+	<!-- Modal for editting reviewer profile -->
 	<Dialog v-model:visible="modalVisible" :modal="true">
 		<template #header>
 			<h3 class="font-extrabold text-lg">
@@ -97,7 +99,6 @@
 						icon="pi pi-check"
 						:label="$t('儲存')"
 						class="p-button-outlined p-button-success"
-						@click="saveChange"
 					></Button>
 					<Button
 						icon="pi pi-times"
@@ -109,14 +110,85 @@
 			</div>
 		</template>
 	</Dialog>
+
+	<!-- Modal for adding reviewer -->
+	<Dialog :modal="true" v-model:visible="addReviewerModal.visible">
+		<template #header>
+			<h3 class="font-black text-lg">{{ $t("建立審查者帳號") }}</h3>
+		</template>
+
+		<template #default>
+			<div class="w-lg grid gap-y-2">
+				<div>
+					<h3 font="font-black">{{ $t("審查者帳號") }}</h3>
+					<InputText
+						type="text"
+						class="w-full"
+						v-model:model-value="addReviewerModal.data.username"
+					/>
+				</div>
+
+				<div class="font-black">
+					<label class="block">{{ $t("姓名") }}</label>
+					<InputText
+						type="text"
+						class="w-full"
+						v-model:model-value="addReviewerModal.data.name"
+					/>
+				</div>
+				<div>
+					<label for="" class="block font-black">{{
+						$t("電子信箱")
+					}}</label>
+					<InputText
+						type="email"
+						class="w-full"
+						v-model:model-value="addReviewerModal.data.email"
+					/>
+				</div>
+
+				<div>
+					<label for="" class="block font-black">
+						{{ $t("密碼") }}
+					</label>
+					<Password
+						class="w-full"
+						input-class="w-full"
+						:feedback="false"
+						:toggle-mask="true"
+						v-model:model-value="addReviewerModal.data.password"
+					/>
+				</div>
+			</div>
+		</template>
+
+		<template #footer>
+			<div class="flex justify-center">
+				<div class="space-x-2">
+					<Button
+						icon="pi pi-check"
+						:disabled="!addReviewerModal.allowSave"
+						:label="$t('送出')"
+						class="p-button-outlined p-button-success"
+						@click="addReviewerModal.submit"
+					></Button>
+					<Button
+						icon="pi pi-times"
+						:label="$t('取消')"
+						class="p-button-outlined p-button-danger"
+						@click="addReviewerModal.visible = false"
+					></Button>
+				</div>
+			</div>
+		</template>
+	</Dialog>
 </template>
 
 <script setup lang="ts">
 import DataTable from "primevue/datatable";
 import Row from "primevue/row";
 import Column from "primevue/column";
-import ColumnGroup from "primevue/columngroup";
-import { ref } from "vue";
+import { computed, ref, toRaw, watch, watchEffect } from "vue";
 import type { Ref } from "vue";
 import { useI18n } from "vue-i18n";
 import Divider from "primevue/divider";
@@ -125,54 +197,159 @@ import Button from "primevue/button";
 import Dialog from "primevue/dialog";
 import InputText from "primevue/inputtext";
 import Checkbox from "primevue/checkbox";
-import mockData from "@/mocks/reviewers.json";
+import { useMutation, useQuery } from "@tanstack/vue-query";
+import { InvalidSessionError } from "@/api/error";
+import { useRouter } from "vue-router";
+import {
+	useAdmissionAdminAuthStore,
+	useAdmissionReviewerAuthStore,
+} from "@/stores/universalAuth";
+import { AdmissionAdminAPI } from "@/api/admission/admin/api";
+import { useGlobalStore } from "@/stores/globalStore";
+import { AdmAdminReviewerListResponse } from "@/api/admission/admin/types";
+import Password from "primevue/password";
 const { t } = useI18n();
 
-const response = mockData.reviewers;
+const router = useRouter();
+const adminAuth = useAdmissionAdminAuthStore();
 
-interface OwO {
-	id: string | number;
-	name: string;
-	email: string;
-	roles: {
-		id: string | number;
-		name: string;
-		checked?: boolean;
-	}[];
-}
+const store = useGlobalStore();
+store.$subscribe((mutation, state) => {
+	// Refetch table when selecting other program
+	console.log("Refetch reviewer list");
+	refetch();
+});
+const api = new AdmissionAdminAPI(adminAuth);
+const tableData = ref<AdmAdminReviewerListResponse[]>(
+	[] as AdmAdminReviewerListResponse[]
+);
 
-const tableData: Ref<OwO[]> = ref<OwO[]>(response);
+const reviewerID = ref(1);
+const programQuery = useQuery(
+	["reviewerProgram", reviewerID],
+	async () => {
+		try {
+			return await api.getReviewerPrograms(reviewerID);
+		} catch (e: any) {
+			if (e instanceof InvalidSessionError) {
+				// FIXME: show session expiry notification??
+				// Why are we even here in the first place?
+				// MainContainer should have checked already.
+				console.error(
+					"Session has already expired while querying reviewerProgram"
+				);
+				router.push("/");
+				return;
+			}
+		}
+	},
+	{
+		enabled: false,
+		select: (programData) => {
+			// Select the data fields we are interested in
+			if (!programData) return programData;
+			return programData.map((program) => {
+				return {
+					id: program.id,
+					category: program.category,
+					name: program.name,
+				};
+			});
+		},
+		onSuccess: (data) => {
+			// data is filtered by option select
+			console.log("Success");
+			console.log(data);
+			// TODO: save result after getting response
+		},
+	}
+);
+const getLoadingStatus = computed(() => {
+	return isLoading.value || isProcessing.value;
+});
+
+const {
+	data: reviewers,
+	refetch,
+	isLoading,
+} = useQuery(
+	["reviewerList"],
+	async () => {
+		try {
+			return await api.getReviewerList();
+		} catch (e: any) {
+			if (e instanceof InvalidSessionError) {
+				// FIXME: show session expiry notification??
+				// Why are we even here in the first place?
+				// MainContainer should have checked already.
+				console.error(
+					"Session has already expired while querying reviewerList"
+				);
+				router.push("/");
+				return;
+			}
+		}
+	},
+	{
+		onSuccess: (data) => {
+			if (typeof data === "undefined") {
+				throw new Error("Received undefined reviewer response");
+			}
+			console.log("Loaded");
+			tableData.value = data;
+		},
+	}
+);
+
+const addReviewerModal = ref({
+	data: {
+		username: "",
+		name: "",
+		email: "",
+		password: "",
+	},
+	visible: false,
+	open: () => (addReviewerModal.value.visible = true),
+	close: () => (addReviewerModal.value.visible = false),
+	allowSave: computed(() => {
+		const ref: Ref = addReviewerModal;
+		const { username, name, email, password } = ref.value.data;
+		const result =
+			username.length && name.length && email.length && password.length;
+		return result;
+	}),
+	submit: () => {
+		addReviewerModal.value.close();
+		createReviewer();
+	},
+});
 
 const modalVisible = ref(false);
-const modalData: Ref<OwO> = ref<OwO>({} as OwO);
+const modalData = ref();
 
-const openModal = (data: OwO) => {
-	// Make a copy of original data
-	modalData.value = { ...data };
-	modalVisible.value = true;
+const openModal = (modal: Ref) => {
+	modal.value.visible = true;
 };
 
-const saveChange = () => {
-	console.log(modalData.value);
-	let index = tableData.value.findIndex((x) => x.id === modalData.value.id);
-	console.log(index);
-	if (!isNaN(index)) {
-		tableData.value[index] = modalData.value;
-		console.log(tableData.value);
-	}
-	modalVisible.value = false;
+const getRelatedPrograms = () => {
+	if (!programQuery.isFetched.value)
+		programQuery.refetch({ throwOnError: true });
 };
 
-const truncateRoles = (rolesData: { id: number; name: string }[]) => {
-	let result: string[];
+const isProcessing = ref(false);
 
-	if (rolesData.length > 3) {
-		result = rolesData.slice(0, 3).map((x) => x.name);
-		result = result.concat(["..."]);
-	} else {
-		result = rolesData.map((x) => x.name);
-	}
-
-	return result;
-};
+const { mutate: createReviewer } = useMutation({
+	mutationFn: () => {
+		return api.createReviewer(addReviewerModal.value.data);
+	},
+	onMutate: () => {
+		isProcessing.value = true;
+	},
+	onSettled: () => {
+		isProcessing.value = false;
+	},
+	onSuccess: () => {
+		refetch();
+	},
+});
 </script>

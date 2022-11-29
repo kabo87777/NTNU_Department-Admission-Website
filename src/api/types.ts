@@ -1,6 +1,6 @@
 export interface APIGenericResponse {
 	error: boolean;
-	message: string;
+	message: any;
 	status: "success" | "error";
 	data: any;
 }

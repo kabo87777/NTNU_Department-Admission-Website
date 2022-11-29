@@ -1,9 +1,19 @@
 import type { AxiosInstance } from "axios";
 import type { AuthStore } from "@/stores/universalAuth";
-import type { universalAuthData } from "@/api/universalAuth";
+import type {
+	universalAuthData,
+	universalAuthSendResetPwdEmailData,
+	universalAuthSendPostEmailRegister,
+} from "@/api/universalAuth";
 
 import axios from "axios";
-import { doUniversalAuthSignIn, doUniversalAuthSignOut } from "./universalAuth";
+import {
+	doUniversalAuthSignIn,
+	doUniversalAuthSignOut,
+	doUniversalAuthSendForgotPwdEmail,
+	doUniversalAuthSendPostEmailRegister,
+} from "./universalAuth";
+import { InvalidSessionError } from "./error";
 
 export class GenericAPI {
 	auth: AuthStore;
@@ -21,8 +31,11 @@ export class GenericAPI {
 			(config) => {
 				config.headers = config.headers ?? {};
 
-				if (!this.auth.isValidSession)
-					throw new Error("Invalid auth session");
+				if (!this.auth.isValidCredentials) {
+					throw new InvalidSessionError(
+						"Local check failed: invalid auth session. An unhandled expired auth session was most likely used to perform this request."
+					);
+				}
 
 				config.headers["authorization"] =
 					this.auth.credentials!.authorization;
@@ -30,7 +43,7 @@ export class GenericAPI {
 				return config;
 			},
 			async (error) => {
-				throw new Error(error);
+				throw error;
 			}
 		);
 
@@ -43,7 +56,8 @@ export class GenericAPI {
 				return response.data;
 			},
 			async (error) => {
-				throw new Error(error);
+				return error.response.data;
+				// throw error;
 			}
 		);
 	}
@@ -53,14 +67,18 @@ export class GenericAPI {
 		return await doUniversalAuthSignIn(this.auth, data);
 	}
 
-	// Sign in
-	async invalidateSession() {
-		try {
-			await doUniversalAuthSignOut(this.auth);
-			return true;
-		} catch (e) {
-			// handle sign out error
-			return false;
-		}
+	// Sign out
+	async invalidateSession(): Promise<void> {
+		await doUniversalAuthSignOut(this.auth);
+	}
+
+	// Send Forgot Password
+	async sendForgotPasswordEmail(data: universalAuthSendResetPwdEmailData) {
+		return await doUniversalAuthSendForgotPwdEmail(this.auth, data);
+	}
+
+	//  Register
+	async sendPostEmailRegister(data: universalAuthSendPostEmailRegister) {
+		return await doUniversalAuthSendPostEmailRegister(this.auth, data);
 	}
 }

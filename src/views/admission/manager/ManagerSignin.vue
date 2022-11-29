@@ -23,6 +23,20 @@
 				</div>
 			</div>
 			<div>
+				<router-link to="/admission">
+					<button
+						class="flex items-center gap-2 px-2 py-2 mt-5 mb-3"
+						bg="transparent hover:gray-100"
+						text="sm gray-400 hover:gray-600"
+						border="rounded"
+					>
+						<i class="pi pi-angle-left" />
+						<div>切換登入身份</div>
+						<div>Change your identity</div>
+					</button>
+				</router-link>
+			</div>
+			<div>
 				<div class="mt-100px ml-164px text-4xl font-bold text-gray-500">
 					{{ $t("審查委員及行政人員管理系統") }}
 				</div>
@@ -138,9 +152,6 @@ const redirectToMainContainer = () =>
 
 const authStore = useAdmissionAdminAuthStore();
 
-// Go to AdmissionManagerMainContainer if signed in
-if (authStore.isValidSession) redirectToMainContainer();
-
 // Login Form
 const turnstileRef = ref<TurnstileComponentExposes>();
 const isRememberAccount = ref(false);
@@ -169,9 +180,6 @@ if (lastSigninEmail) {
 	isRememberAccount.value = true;
 	email.value = lastSigninEmail;
 }
-
-// remove legacy item (renamed)
-window.localStorage.removeItem("AdmissionManagerSigninLastSigninEmail");
 
 // Store email in localStorage if remember account
 watch(isRememberAccount, (isChecked) => {

@@ -16,7 +16,7 @@
 			>
 				<SideBar />
 			</div>
-			<div style="margin-left: 400px; position: absolute; width: 80%">
+			<div style="margin-left: 384px; width: 80%">
 				<router-view />
 			</div>
 		</div>
@@ -25,19 +25,20 @@
 
 <script setup lang="ts">
 import NavBar from "@/components/NavBar.vue";
-import SideBar from "@/components/SideBar.vue";
+import SideBar from "@/components/sidebars/SideBar.vue";
 
 import { watch } from "vue";
 import { useRouter } from "vue-router";
 
 import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
+import { doUniversalAuthSessionValidation } from "@/api/universalAuth";
 
 const router = useRouter();
 
 const adminAuth = useAdmissionAdminAuthStore();
 
-watch(router.currentRoute, () => {
-	if (!adminAuth.isValidSession) {
+watch(router.currentRoute, async () => {
+	if (!(await doUniversalAuthSessionValidation(adminAuth))) {
 		router.replace({ name: "AdmissionManagerSignin" });
 		return;
 		// TODO: show session expired notification

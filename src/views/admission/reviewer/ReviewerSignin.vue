@@ -23,6 +23,20 @@
 				</div>
 			</div>
 			<div>
+				<router-link to="/admission">
+					<button
+						class="flex items-center gap-2 px-2 py-2 mt-5 mb-3"
+						bg="transparent hover:gray-100"
+						text="sm gray-400 hover:gray-600"
+						border="rounded"
+					>
+						<i class="pi pi-angle-left" />
+						<div>切換登入身份</div>
+						<div>Change your identity</div>
+					</button>
+				</router-link>
+			</div>
+			<div>
 				<div class="mt-100px ml-164px text-4xl font-bold text-gray-500">
 					{{ $t("審查委員系統") }}
 				</div>
@@ -123,9 +137,12 @@ import * as yup from "yup";
 
 import { AdmissionReviewerAPI } from "@/api/admission/reviewer/api";
 import { useAdmissionReviewerAuthStore } from "@/stores/universalAuth";
+import { useUserInfoStore } from "@/stores/AdmissionReviewerStore";
 
 import type { TurnstileComponentExposes } from "@/components/Turnstile.vue";
 import Turnstile from "@/components/Turnstile.vue";
+
+import type { AdmissionManagerAuthResponse } from "@/api/admission/reviewer/types";
 
 import Checkbox from "primevue/checkbox";
 import Button from "primevue/button";
@@ -137,14 +154,12 @@ const redirectToMainContainer = () =>
 	router.replace({ name: "AdmissionReviewerMainContainer" });
 
 const authStore = useAdmissionReviewerAuthStore();
-
-// Go to AdmissionReviewerMainContainer if signed in
-if (authStore.isValidSession) redirectToMainContainer();
+const userInfo = useUserInfoStore();
 
 // Login Form
 const turnstileRef = ref<TurnstileComponentExposes>();
 const isRememberAccount = ref(false);
-const email = ref("example1@email.com");
+const email = ref("example@email.com");
 const password = ref("Example123");
 const isTurnstileRunning = computed(() => !turnstileRef.value?.turnstileToken);
 
@@ -196,11 +211,24 @@ const onSubmit = handleSubmit(async function (values, actions) {
 		// TODO: reviewer sign in at /admission/reviewer
 		const api = new AdmissionReviewerAPI(authStore);
 
-		await api.requestNewSession({
-			email: values.email,
-			password: values.password,
-			"cf-turnstile-response": turnstileResponse,
-		});
+		const doLogin = async () => {
+			return await api.requestNewSession({
+				email: values.email,
+				password: values.password,
+				"cf-turnstile-response": turnstileResponse,
+			});
+		};
+
+		const handleDataType = async () => {
+			const reviewerInfo: AdmissionManagerAuthResponse =
+				await doLogin().then((res) => {
+					return res.data;
+				});
+
+			return reviewerInfo;
+		};
+
+		userInfo.saveUserInfo(await handleDataType());
 
 		redirectToMainContainer();
 	} catch (e: any) {
