@@ -234,7 +234,7 @@
 				</div>
 				<Divider layout="vertical" class="!ml-30px" />
 				<div class="!ml-30px">
-					{{ $t("不錄取") }} {{ docsStage4Count }} {{ $t("位") }}
+					{{ $t("不通過") }} {{ docsStage4Count }} {{ $t("位") }}
 				</div>
 				<Divider layout="vertical" class="!ml-30px" />
 				<div class="!ml-30px">
@@ -486,7 +486,7 @@
 				</div>
 				<Divider layout="vertical" class="!ml-30px" />
 				<div class="!ml-30px">
-					{{ $t("不錄取") }} {{ oralStage4Count }} {{ $t("位") }}
+					{{ $t("不通過") }} {{ oralStage4Count }} {{ $t("位") }}
 				</div>
 				<Button
 					class="w-110px h-44px !ml-390px p-button-outlined p-button-success"
@@ -648,7 +648,7 @@ const applicantDocsGradeList = useQuery(
 				(item) => item.application_stage === "逕取"
 			).length;
 			docsStage4Count.value = data!.filter(
-				(item) => item.application_stage === "不錄取"
+				(item) => item.application_stage === "不通過"
 			).length;
 			docsStage5Count.value = data!.filter(
 				(item) => item.application_stage === "未送審"
@@ -686,7 +686,7 @@ const { data: applicantOralGradeList } = useQuery(
 				(item) => item.enroll_stage === "備取"
 			).length;
 			oralStage4Count.value = data!.filter(
-				(item) => item.enroll_stage === "不錄取"
+				(item) => item.enroll_stage === "不通過"
 			).length;
 			orderList.value = [];
 			for (let i = 1; i <= data!.length; i++) {
@@ -705,7 +705,6 @@ const translation = {
 	passtophase2: t("進赴二階"),
 	admitted: t("正取"),
 	alternate: t("備取"),
-	notAdmitted: t("不錄取"),
 	derectlyAdmitted: t("逕取"),
 	derectlyAdmittedPass: t("逕取通過"),
 	writtenReviewNotPass: t("書審未過"),
@@ -737,7 +736,7 @@ const p2_result_option = ref([
 	translation.pending,
 	translation.admitted,
 	translation.alternate,
-	translation.notAdmitted,
+	translation.notPass,
 ]);
 const oral_order = ref();
 const admitted_order = ref();
