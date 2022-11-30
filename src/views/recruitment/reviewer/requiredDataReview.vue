@@ -118,7 +118,7 @@ const {
 	["recruitmenReviewerApplicantList"],
 	async () => {
 		try {
-			return await api.getApplicantList(
+			return await api.getRequiredApplicantList(
 				store.recruitmentReviewerProgram!.id!
 			);
 		} catch (e: any) {

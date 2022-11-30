@@ -13,10 +13,12 @@ export class RecruitmentAdminAPI extends GenericAPI {
 		super(auth);
 	}
 
-	async getApplicantFile(): Promise<RecruitmentAdminApplicantListResponse[]> {
+	async getApplicantFile(
+		pid: number
+	): Promise<RecruitmentAdminApplicantListResponse[]> {
 		const data: APIGenericResponse = await this.instance.get(
 			// @PT FIXME: This should not be hardcode
-			"/recruitment/admin/program/1/applicant/1/file"
+			`/recruitment/admin/program/${pid}/file`
 		);
 
 		if (data.error === true || typeof data.data === "undefined")
