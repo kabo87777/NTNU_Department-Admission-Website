@@ -1,9 +1,6 @@
 <template>
-	<div class="mt-16px pt-16px text-20px text-[#53565A]">
-		{{ $t("補交文件") }}{{ " - " }}{{ props.order }}
-	</div>
-	<div :class="dynamicClass()">
-		<div class="p-[12px] w-9/10">
+	<div :class="dynamicClass()" style="margin-top: 36px">
+		<div class="p-[36px] w-9/10">
 			<Dialog
 				v-model:visible="isModalVisible"
 				style="width: 500px"
@@ -58,6 +55,7 @@
 					/>
 				</template>
 			</Dialog>
+			<div class="text-20px font-bold">{{ $t("請上傳補交文件") }}</div>
 			<div v-if="fileName === ''" class="mt-16px" style="width: 85%">
 				<FileUpload
 					style="

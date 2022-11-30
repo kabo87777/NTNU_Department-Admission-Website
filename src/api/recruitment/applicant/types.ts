@@ -63,6 +63,7 @@ export interface RecruitmentApplicantProgramResponse {
 	id: number;
 	category: string;
 	name: string;
+	isMoredoc?: boolean;
 	applicant_required_file?: {} | [];
 	applicant_required_info?: {} | [];
 	created_at?: string;
