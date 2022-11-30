@@ -3,11 +3,11 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter } from "vue-router";
+// import { useRouter } from "vue-router";
 
-const router = useRouter();
+// const router = useRouter();
 
-router.push("/mainpage");
+// router.push("/mainpage");
 </script>
 
 <style scoped></style>

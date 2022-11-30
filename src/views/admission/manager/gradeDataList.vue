@@ -138,8 +138,16 @@
 					<div>
 						<div>{{ $t("一階審查結果") }}</div>
 						<Dropdown
+							v-if="disable"
 							v-model="p1_result"
 							:options="p1_result_option"
+							class="w-228px h-44px mt-8px"
+						/>
+						<Dropdown
+							v-else
+							v-model="p1_result"
+							:options="p1_result_option"
+							disabled
 							class="w-228px h-44px mt-8px"
 						/>
 					</div>
@@ -208,7 +216,7 @@
 				</Button>
 				<Button
 					class="w-100px h-44px !mt-40px !ml-49px p-button-outlined p-button-danger"
-					@click="doneEdit"
+					@click="cancelEdit"
 				>
 					<img
 						alt="logo"
@@ -241,18 +249,7 @@
 					{{ $t("未送審") }} {{ docsStage5Count }} {{ $t("位") }}
 				</div>
 				<Button
-					class="w-110px h-44px !ml-170px p-button-outlined p-button-success"
-				>
-					<img
-						alt="logo"
-						src="/assets/project-setting/Check_fill.png"
-						style="width: 1.5rem"
-						class="fill-green-500"
-					/>
-					<span class="tracking-1px">{{ $t("保存") }}</span>
-				</Button>
-				<Button
-					class="w-140px h-44px !ml-20px p-button-outlined p-button-help"
+					class="w-140px h-44px !ml-299px p-button-outlined p-button-help"
 				>
 					<img
 						alt="logo"
@@ -266,13 +263,14 @@
 		</div>
 		<div v-if="currentTab === translation.phase2">
 			<DataTable
-				:value="applicantOralGradeList"
+				:value="oralGradeList"
 				responsiveLayout="scroll"
 				dataKey="id"
 				:scrollable="true"
 				scrollHeight="700px"
 				@rowReorder="onRowReorder2"
 				class="p-datatable-lg !h-700px"
+				removableSort
 			>
 				<Column
 					:rowReorder="true"
@@ -288,11 +286,7 @@
 				<Column field="name" :header="applicantName"></Column>
 				<Column field="docs_grades" :header="docsScore"></Column>
 				<Column field="oral_grades" :header="oralScore"></Column>
-				<Column
-					field="total_grades"
-					:header="final_score"
-					:sortable="true"
-				></Column>
+				<Column field="total_grades" :header="final_score"></Column>
 				<Column field="enroll_stage" :header="finalResult">
 					<template #body="slotProps">
 						<i v-if="slotProps.data.enroll_stage === null">{{
@@ -460,7 +454,7 @@
 				</Button>
 				<Button
 					class="w-100px h-44px !mt-40px !ml-49px p-button-outlined p-button-danger"
-					@click="doneEdit"
+					@click="cancelEdit"
 				>
 					<img
 						alt="logo"
@@ -489,7 +483,8 @@
 					{{ $t("不通過") }} {{ oralStage4Count }} {{ $t("位") }}
 				</div>
 				<Button
-					class="w-110px h-44px !ml-390px p-button-outlined p-button-success"
+					class="w-140px h-44px !ml-360px p-button-outlined p-button-success"
+					@click="saveOralOrder"
 				>
 					<img
 						alt="logo"
@@ -497,7 +492,7 @@
 						style="width: 1.5rem"
 						class="fill-green-500"
 					/>
-					<span class="tracking-1px">{{ $t("保存") }}</span>
+					<span class="tracking-1px">{{ $t("保存順序") }}</span>
 				</Button>
 				<Button
 					class="w-140px h-44px !ml-20px p-button-outlined p-button-help"
@@ -514,13 +509,14 @@
 		</div>
 		<div v-if="currentTab === translation.admissionList">
 			<DataTable
-				:value="applicantOralGradeList"
+				:value="oralGradeList"
 				responsiveLayout="scroll"
 				dataKey="id"
 				:scrollable="true"
 				scrollHeight="700px"
 				@rowReorder="onRowReorder3"
 				class="p-datatable-lg !h-700px"
+				removableSort
 			>
 				<Column
 					:rowReorder="true"
@@ -544,16 +540,13 @@
 				<Column field="name" :header="applicantName"></Column>
 				<Column field="docs_grades" :header="docsScore"></Column>
 				<Column field="oral_grades" :header="oralScore"></Column>
-				<Column
-					field="total_grades"
-					:header="final_score"
-					:sortable="true"
-				></Column>
+				<Column field="total_grades" :header="final_score"></Column>
 			</DataTable>
 			<div class="bigRedDivider !mt-30px"></div>
 			<div class="flex text-xl mt-20px">
 				<Button
-					class="w-110px h-44px !ml-500px p-button-outlined p-button-success"
+					class="w-140px h-44px !ml-470px p-button-outlined p-button-success"
+					@click="saveEnrollOrder"
 				>
 					<img
 						alt="logo"
@@ -561,7 +554,7 @@
 						style="width: 1.5rem"
 						class="fill-green-500"
 					/>
-					<span class="tracking-1px">{{ $t("保存") }}</span>
+					<span class="tracking-1px">{{ $t("保存順序") }}</span>
 				</Button>
 				<Button
 					class="w-140px h-44px !ml-30px p-button-outlined p-button-help"
@@ -600,7 +593,7 @@ import { InvalidSessionError } from "@/api/error";
 import { useGlobalStore } from "@/stores/globalStore";
 import { useToast } from "primevue/usetoast";
 import { AdmissionAdminReviewerGradeResponse } from "@/api/admission/admin/types";
-import { AdmissionAdminSingleDocsGradeResponse } from "@/api/admission/admin/types";
+import { AdmissionAdminOralGradeListResponse } from "@/api/admission/admin/types";
 import singleApplicantGradeVue from "@/components/singleApplicantGrade.vue";
 
 const adminAuth = useAdmissionAdminAuthStore();
@@ -608,16 +601,17 @@ const api = new AdmissionAdminAPI(adminAuth);
 const store = useGlobalStore();
 const router = useRouter();
 
-const docsStage1Count = ref();
-const docsStage2Count = ref();
-const docsStage3Count = ref();
-const docsStage4Count = ref();
-const docsStage5Count = ref();
-const oralStage1Count = ref();
-const oralStage2Count = ref();
-const oralStage3Count = ref();
-const oralStage4Count = ref();
+const docsStage1Count = ref(0);
+const docsStage2Count = ref(0);
+const docsStage3Count = ref(0);
+const docsStage4Count = ref(0);
+const docsStage5Count = ref(0);
+const oralStage1Count = ref(0);
+const oralStage2Count = ref(0);
+const oralStage3Count = ref(0);
+const oralStage4Count = ref(0);
 const orderList = ref<number[]>();
+const oralGradeList = ref<AdmissionAdminOralGradeListResponse[]>();
 const applicantDocsGradeList = useQuery(
 	["admissionAdminDocsGradeList"],
 	async () => {
@@ -656,7 +650,7 @@ const applicantDocsGradeList = useQuery(
 		},
 	}
 );
-const { data: applicantOralGradeList } = useQuery(
+const applicantOralGradeList = useQuery(
 	["admissionAdminOralGradeList"],
 	async () => {
 		try {
@@ -676,6 +670,7 @@ const { data: applicantOralGradeList } = useQuery(
 	},
 	{
 		onSuccess: (data) => {
+			oralGradeList.value = data;
 			oralStage1Count.value = data!.filter(
 				(item) => item.enroll_stage === null
 			).length;
@@ -740,8 +735,11 @@ const p2_result_option = ref([
 ]);
 const oral_order = ref();
 const admitted_order = ref();
+const disable = computed(() => {
+	return p1_result.value === "未送審";
+});
 const disable1 = computed(() => {
-	return p1_result.value === translation.passtophase2;
+	return p1_result.value === translation.passtophase2 || !disable.value;
 });
 const disable2 = computed(() => {
 	return dialogCurrentTab.value === translation.phase1;
@@ -767,33 +765,11 @@ const docsScore = computed(() => t("書審分數"));
 const oralScore = computed(() => t("口試分數"));
 
 const onRowReorder2 = (event: any) => {
-	if (event.dropIndex > event.dragIndex) {
-		for (let i = event.dragIndex; i < event.dropIndex; i++) {
-			orderList.value![i] = i + 1;
-			orderList.value![i + 1] = i;
-		}
-	} else {
-		for (let i = event.dragIndex; i > event.dropIndex; i--) {
-			orderList.value![i] = i - 1;
-			orderList.value![i - 1] = i;
-		}
-	}
-	console.log(event.dragIndex, event.dropIndex);
+	oralGradeList.value = event.value;
 };
 
 const onRowReorder3 = (event: any) => {
-	if (event.dropIndex > event.dragIndex) {
-		for (let i = event.dragIndex; i < event.dropIndex; i++) {
-			orderList.value![i] = i + 1;
-			orderList.value![i + 1] = i;
-		}
-	} else {
-		for (let i = event.dragIndex; i > event.dropIndex; i--) {
-			orderList.value![i] = i - 1;
-			orderList.value![i - 1] = i;
-		}
-	}
-	console.log(event.dragIndex, event.dropIndex);
+	oralGradeList.value = event.value;
 };
 const applicantID = ref(1);
 const docsReviewerCount = ref(0);
@@ -831,6 +807,7 @@ const applicantDocsGrade = useQuery(
 				docsTotalGrade.value / docsReviewerCount.value;
 			docsReviewerScore.value = data!.reviewer;
 			p1_result.value = data!.stage;
+			oral_order.value = data!.oral_order;
 		},
 	}
 );
@@ -863,6 +840,7 @@ const applicantOralGrade = useQuery(
 				oralTotalGrade.value / oralReviewerCount.value;
 			oralReviewerScore.value = data!.reviewer;
 			p2_result.value = data!.enroll_stage;
+			admitted_order.value = data!.enroll_order;
 		},
 	}
 );
@@ -883,21 +861,90 @@ const editProduct = (prod: any) => {
 	}
 };
 
-const applicantStage = useMutation(async (newApplicantStage: any) => {
+const applicantStage = useMutation(async (options: any) => {
 	try {
-		return await api.updateApplicantStage(applicantID, newApplicantStage);
+		return await api.updateApplicantStage(
+			options.applicantID,
+			options.stage
+		);
 	} catch (error) {
 		console.log(error);
 	}
 });
 function doneEdit() {
 	applicantStage.mutate({
-		// docs_stage: p1_result.value,
-		// docs_order: oral_order.value,
-		// oral_stage: p2_result.value,
-		// oral_order: admitted_order.value,
+		docs_stage: p1_result.value,
+		docs_order: oral_order.value,
+		oral_stage: p2_result.value,
+		oral_order: admitted_order.value,
 	});
 	applicantDocsGradeList.refetch({ throwOnError: true });
 	productDialog.value = false;
+}
+function cancelEdit() {
+	productDialog.value = false;
+}
+
+const batchUpdateApplicantStages = useMutation(async (applicants: any) => {
+	for (const applicant of applicants) {
+		try {
+			const result = await api.updateApplicantStage(
+				applicant.applicantID,
+				applicant.stages
+			);
+			if (result.status !== "success")
+				throw new Error(
+					`Failed to patch applicant (id = ${applicant.applicantID})`
+				);
+
+			// console.log(`Patched applicant (id = ${applicant.applicantID})`)
+			// update progress
+		} catch (error) {
+			console.log(error);
+			break;
+		}
+	}
+});
+
+function saveOralOrder() {
+	let list = [];
+
+	for (const [idx, entry] of oralGradeList!.value!.entries()) {
+		const applicantID = oralGradeList!.value![idx].id;
+
+		list.push({
+			applicantID,
+			stages: {
+				docs_order: orderList!.value![idx],
+			},
+		});
+	}
+
+	batchUpdateApplicantStages.mutate(list);
+	orderList.value = [];
+	for (let i = 1; i <= oralGradeList.value!.length; i++) {
+		orderList.value.push(i);
+	}
+}
+
+function saveEnrollOrder() {
+	let list = [];
+
+	for (const [idx, entry] of oralGradeList!.value!.entries()) {
+		const applicantID = oralGradeList!.value![idx].id;
+
+		list.push({
+			applicantID,
+			stages: {
+				oral_order: orderList!.value![idx],
+			},
+		});
+	}
+
+	batchUpdateApplicantStages.mutate(list);
+	orderList.value = [];
+	for (let i = 1; i <= oralGradeList.value!.length; i++) {
+		orderList.value.push(i);
+	}
 }
 </script>
