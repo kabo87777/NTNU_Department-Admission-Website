@@ -3,6 +3,7 @@ import type {
 	AdmissionAdminProgramListResponse,
 	AdmAdminReviewerListResponse,
 	AdmissionAdminApplicantsListResponse,
+	AdmissionAdminScoreFieldResponse,
 	AdmAdminReviewerRelatedProgramResponse,
 	AdmAdminEditApplicantRequest,
 	AdmissionAdminGenericResponse,
@@ -10,11 +11,11 @@ import type {
 	AdmissionAdminOralGradeListResponse,
 	AdmissionAdminSingleDocsGradeResponse,
 	AdmissionAdminSingleOralGradeResponse,
+	AdmissionAdminCreateReviewerRequest,
 } from "./types";
 import type { APIGenericResponse } from "@/api/types";
 import { GenericAPI } from "@/api/api";
 import { Ref } from "vue";
-
 export class AdmissionAdminAPI extends GenericAPI {
 	constructor(auth: AuthStore) {
 		super(auth);
@@ -63,6 +64,29 @@ export class AdmissionAdminAPI extends GenericAPI {
 		if (data.error === true || typeof data.data.applicants === "undefined")
 			throw new Error("Failed to fetch applicant list");
 		return data.data.applicants;
+	}
+
+	async getScoreField(
+		programID: number
+	): Promise<AdmissionAdminScoreFieldResponse> {
+		const response: APIGenericResponse = await this.instance.get(
+			`admission/admin/program/${programID}/grading`
+		);
+		if (response.error === true) throw new Error(response.message);
+		return response.data;
+	}
+
+	async patchScoreField(
+		programID: number,
+		newData: AdmissionAdminScoreFieldResponse
+	): Promise<APIGenericResponse> {
+		const response: APIGenericResponse = await this.instance.patch(
+			`/admission/admin/program/${programID}/grading/`,
+			newData
+		);
+		if (response.error === true)
+			throw new Error("Failed to patch score field");
+		return response;
 	}
 	async postApplicantsXlsx(programID: number, data: FormData) {
 		console.log("POST");
@@ -222,6 +246,18 @@ export class AdmissionAdminAPI extends GenericAPI {
 		);
 		if (response.error === true)
 			throw new Error("Failed to update program");
+
+		return response;
+	}
+	async createReviewer(
+		data: AdmissionAdminCreateReviewerRequest
+	): Promise<AdmissionAdminGenericResponse> {
+		const response: APIGenericResponse = await this.instance.post(
+			"/admission/admin/reviewer",
+			data
+		);
+
+		if (response.error === true) throw new Error("Failed to add reviewer");
 
 		return response;
 	}

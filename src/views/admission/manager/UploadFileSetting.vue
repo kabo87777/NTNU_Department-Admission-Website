@@ -17,7 +17,7 @@
 				<div>
 					<Checkbox
 						inputId="nameInfo"
-						v-model="nameInfo"
+						v-model="showedInfo[0].checked"
 						:binary="true"
 					/>
 					<label
@@ -39,7 +39,7 @@
 				<div>
 					<Checkbox
 						inputId="enrollment"
-						v-model="enrollment"
+						v-model="showedInfo[1].checked"
 						:binary="true"
 					/>
 					<label
@@ -58,7 +58,7 @@
 				<div>
 					<Checkbox
 						inputId="permanentAd"
-						v-model="permanentAd"
+						v-model="showedInfo[2].checked"
 						:binary="true"
 					/>
 					<label
@@ -78,7 +78,7 @@
 				<div>
 					<Checkbox
 						inputId="mailingAd"
-						v-model="mailingAd"
+						v-model="showedInfo[3].checked"
 						:binary="true"
 					/>
 					<label
@@ -98,7 +98,7 @@
 				<div>
 					<Checkbox
 						inputId="basicIdentityInfo"
-						v-model="basicIdentityInfo"
+						v-model="showedInfo[4].checked"
 						:binary="true"
 					/>
 					<label
@@ -121,7 +121,7 @@
 				<div>
 					<Checkbox
 						inputId="contactInfo"
-						v-model="contactInfo"
+						v-model="showedInfo[5].checked"
 						:binary="true"
 					/>
 					<label
@@ -146,7 +146,7 @@
 				<div>
 					<Checkbox
 						inputId="schoolExp"
-						v-model="schoolExpChecked"
+						v-model="showedFile[0].checked"
 						:binary="true"
 					/>
 					<label
@@ -168,7 +168,7 @@
 				<div>
 					<Checkbox
 						inputId="score"
-						v-model="scoreChecked"
+						v-model="showedFile[1].checked"
 						:binary="true"
 					/>
 					<label for="score" class="ml-8px text-24px font-medium">{{
@@ -186,7 +186,7 @@
 				<div>
 					<Checkbox
 						inputId="other"
-						v-model="otherChecked"
+						v-model="showedFile[2].checked"
 						:binary="true"
 					/>
 					<label for="other" class="ml-8px text-24px font-medium">{{
@@ -204,7 +204,7 @@
 				<div>
 					<Checkbox
 						inputId="identity"
-						v-model="identityChecked"
+						v-model="showedFile[3].checked"
 						:binary="true"
 					/>
 					<label
@@ -228,20 +228,28 @@
 		<div class="flex mt-24px">
 			<div class="m-auto">
 				<div class="flex">
-					<Button class="bg-white h-60px w-140px border-ntnuRed">
+					<Button
+						class="bg-white h-60px w-140px border-ntnuRed"
+						@click="refreshData"
+					>
 						<i
-							class="ml-1 mr-2 box-border text-sm text-ntnuRed pi pi-times"
+							class="pi pi-times ml-1 mr-2 box-border"
+							text="sm ntnuRed"
 						></i>
-						<div class="m-auto text-sm text-ntnuRed tracking-2">
+						<div class="m-auto tracking-2" text="sm ntnuRed">
 							<div>{{ $t("取消變更") }}</div>
 						</div>
 					</Button>
 					<div class="w-24px"></div>
-					<Button class="bg-Green h-60px w-140px border-ntnuRed">
+					<Button
+						class="bg-Green h-60px w-140px border-ntnuRed"
+						@click="saveChange"
+					>
 						<i
-							class="ml-1 mr-2 box-border text-sm text-black pi pi-check"
+							class="pi pi-check ml-1 mr-2 box-border"
+							text="sm black"
 						></i>
-						<div class="m-auto text-sm text-black tracking-2">
+						<div class="m-auto tracking-2" text="sm black">
 							<div>{{ $t("儲存設定") }}</div>
 						</div>
 					</Button>
@@ -252,34 +260,206 @@
 </template>
 
 <script setup lang="ts">
-import ParagraphDivider from "../../../styles/paragraphDivider.vue";
+import ParagraphDivider from "@/styles/paragraphDivider.vue";
 import "primeicons/primeicons.css";
 import SelectButton from "primevue/selectbutton";
 import Checkbox from "primevue/checkbox";
 import Button from "primevue/button";
-import { ref } from "vue";
+import { useToast } from "primevue/usetoast";
+import { reactive, ref, computed, watch } from "vue";
 import { useI18n } from "vue-i18n";
+import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
+import { AdmissionAdminAPI } from "@/api/admission/admin/api";
+import { useGlobalStore } from "@/stores/globalStore";
+import { InvalidSessionError } from "@/api/error";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
+import { AdmissionAdminProgramListResponse } from "@/api/admission/admin/types";
 
+const toast = useToast();
+
+// i18n Translation
 const { t } = useI18n();
 const translation = {
-	basicCol: t("基本資料欄位"),
-	attachmentCol: t("檢附資料欄位"),
+	basicCol: computed(() => t("基本資料欄位")),
+	attachmentCol: computed(() => t("檢附資料欄位")),
+	changeSuccess: computed(() => t("儲存成功")),
 };
+
+// SelectButton: Change Tab
 const activeTab = ref({ name: translation.basicCol, value: 1 });
 const tabOptions = ref([
 	{ name: translation.basicCol, value: 1 },
 	{ name: translation.attachmentCol, value: 2 },
 ]);
-const schoolExpChecked = ref(false);
-const scoreChecked = ref(false);
-const otherChecked = ref(false);
-const identityChecked = ref(false);
-const nameInfo = ref(false);
-const enrollment = ref(false);
-const permanentAd = ref(false);
-const mailingAd = ref(false);
-const basicIdentityInfo = ref(false);
-const contactInfo = ref(false);
+
+// API Authorization
+const adminAuth = useAdmissionAdminAuthStore();
+const api = new AdmissionAdminAPI(adminAuth);
+const store = useGlobalStore();
+// Tanstack Query
+const queryClient = useQueryClient();
+
+// Field Data
+const showedInfo = reactive([
+	{ id: "file1", checked: false },
+	{ id: "file2", checked: false },
+	{ id: "file3", checked: false },
+	{ id: "file4", checked: false },
+	{ id: "file5", checked: false },
+	{ id: "file6", checked: false },
+]);
+const showedFile = reactive([
+	{ id: "file1", checked: false },
+	{ id: "file2", checked: false },
+	{ id: "file3", checked: false },
+	{ id: "file4", checked: false },
+]);
+const programData: AdmissionAdminProgramListResponse = reactive({
+	id: 0,
+	category: "",
+	name: "",
+	application_start_date: "",
+	application_end_date: "",
+	review_start_date: "",
+	review_end_date: "",
+	stage: "",
+	created_at: "",
+	updated_at: "",
+	applicant_required_info: "",
+	applicant_required_file: "",
+	reviewer_required_info: "",
+	reviewer_required_file: "",
+	detail: "",
+});
+const fieldList = {
+	infoChecked: [""],
+	fileChecked: [""],
+};
+
+// API: Get Info/File Data
+const getInfoFileField = useQuery(
+	["infoFileField"],
+	async () => {
+		try {
+			if (store.program) {
+				const allData = await api.getProgramList();
+				return allData[store.program.id - 1];
+			}
+		} catch (e: any) {
+			if (e instanceof InvalidSessionError) {
+				console.error("Invalid Session Error");
+			}
+		}
+	},
+	{
+		refetchOnWindowFocus: false,
+		onSuccess: (data) => {
+			if (data) {
+				programData.id = data.id;
+				programData.category = data.category;
+				programData.name = data.name;
+				programData.application_start_date =
+					data.application_start_date;
+				programData.application_end_date = data.application_end_date;
+				programData.review_start_date = data.review_start_date;
+				programData.review_end_date = data.review_end_date;
+				programData.stage = data.stage;
+				programData.created_at = data.created_at;
+				programData.updated_at = data.updated_at;
+				programData.detail = data.detail;
+				programData.applicant_required_info =
+					data.applicant_required_info;
+				programData.applicant_required_file =
+					data.applicant_required_file;
+				programData.reviewer_required_info =
+					data.reviewer_required_info;
+				programData.reviewer_required_file =
+					data.reviewer_required_file;
+			}
+			fieldList.infoChecked = JSON.parse(
+				programData.applicant_required_info
+			);
+			fieldList.fileChecked = JSON.parse(
+				programData.applicant_required_file
+			);
+			showedInfo.forEach((element) => {
+				if (fieldList.infoChecked.includes(element.id))
+					element.checked = true;
+				else element.checked = false;
+			});
+			showedFile.forEach((element) => {
+				if (fieldList.fileChecked.includes(element.id))
+					element.checked = true;
+				else element.checked = false;
+			});
+			console.log("Get Info/File Successfully");
+		},
+	}
+);
+
+// API: Patch Info/File Data
+const patchInfoFileField = useMutation(
+	async (newData: AdmissionAdminProgramListResponse) => {
+		try {
+			if (store.program) {
+				return await api.updateProgramData(store.program.id, newData);
+			}
+		} catch (e: any) {
+			if (e instanceof InvalidSessionError) {
+				console.error("Invalid Session Error");
+			}
+		}
+	},
+	{
+		onSuccess: () => {
+			queryClient.invalidateQueries(["infoFileField"]);
+		},
+	}
+);
+
+function saveChange() {
+	try {
+		// Adjust Info/File Data
+		fieldList.infoChecked.splice(0, fieldList.infoChecked.length);
+		fieldList.fileChecked.splice(0, fieldList.fileChecked.length);
+		showedInfo.forEach((element) => {
+			if (!fieldList.infoChecked.includes(element.id))
+				if (element.checked) fieldList.infoChecked.push(element.id);
+		});
+		showedFile.forEach((element) => {
+			if (!fieldList.fileChecked.includes(element.id))
+				if (element.checked) fieldList.fileChecked.push(element.id);
+		});
+		programData.applicant_required_info = JSON.stringify(
+			fieldList.infoChecked
+		);
+		programData.applicant_required_file = JSON.stringify(
+			fieldList.fileChecked
+		);
+		// Patch Info/File Data
+		patchInfoFileField.mutate(programData);
+		toast.add({
+			severity: "success",
+			summary: translation.changeSuccess.value,
+			life: 3000,
+		});
+	} catch (e: any) {
+		console.log(e);
+		toast.add({
+			severity: "error",
+			summary: "Fail to Save Change",
+			life: 3000,
+		});
+	}
+}
+
+function refreshData() {
+	queryClient.invalidateQueries(["infoFileField"]);
+}
+
+watch(activeTab, () => {
+	refreshData();
+});
 </script>
 
 <style setup lang="css">
