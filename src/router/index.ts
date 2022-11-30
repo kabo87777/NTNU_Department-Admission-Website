@@ -92,6 +92,8 @@ import recruitmentGradeDataList from "@/views/recruitment/manager/gradeDataList.
 import recruitmentReviewScroreField from "@/views/recruitment/manager/reviewScoreField.vue";
 import recruitmentProjectSetting from "@/views/recruitment/manager/pages/ProjectSetting.vue";
 import recruitmentManagerApplicationAccountSetting from "@/views/recruitment/manager/pages/ApplicationAccountSetting.vue";
+import * as Recruitment from "./recruitment";
+const R = Recruitment.default;
 
 const routes: Array<RouteRecordRaw> = [
 	// Choose recruitment / admission
@@ -422,7 +424,7 @@ const routes: Array<RouteRecordRaw> = [
 					{
 						path: "applicationAccountSetting",
 						name: "recruitmentManagerApplicationAccountSetting",
-						component: recruitmentManagerApplicationAccountSetting,
+						component: R.ListApplicant,
 					},
 					{
 						path: "gradeDataList",
