@@ -21,7 +21,7 @@
 
 		<div class="flex mt-60px">
 			<div class="sidebarYellowDivider"></div>
-			<div class="mt-[-8px] ml-8px text-[#736028] text-20px font-bold">
+			<div class="mt-[-8px] ml-8px text-[#736028] text-18px font-bold">
 				{{ $t("資料填寫、上傳") }}
 			</div>
 		</div>
@@ -38,12 +38,9 @@
 				@click="navigate"
 				role="link"
 			>
-				<i
-					class="pi pi-user"
-					style="font-size: 1.3rem; color: #101820"
-				/>
+				<i class="pi pi-user" style="font-size: 1rem; color: #101820" />
 				<span
-					class="text-left tracking-3px ml-4 font-bold text-xl text-[#2D2926]"
+					class="text-left tracking-3px ml-4 font-bold text-18px text-[#2D2926]"
 				>
 					{{ $t("基本資料") }}
 				</span>
@@ -69,12 +66,9 @@
 				@click="navigate"
 				role="link"
 			>
-				<i
-					class="pi pi-book"
-					style="font-size: 1.3rem; color: #101820"
-				/>
+				<i class="pi pi-book" style="font-size: 1rem; color: #101820" />
 				<span
-					class="text-left tracking-3px ml-4 font-bold text-xl text-[#2D2926]"
+					class="text-left tracking-3px ml-4 font-bold text-18px text-[#2D2926]"
 				>
 					{{ $t("附件資料") }}
 				</span>
@@ -90,7 +84,7 @@
 
 		<div class="flex mt-32px">
 			<div class="sidebarYellowDivider"></div>
-			<div class="mt-[-8px] ml-8px text-[#736028] text-20px font-bold">
+			<div class="mt-[-8px] ml-8px text-[#736028] text-18px font-bold">
 				{{ $t("相關作業、系統") }}
 			</div>
 		</div>
@@ -107,12 +101,9 @@
 				@click="navigate"
 				role="link"
 			>
-				<i
-					class="pi pi-file"
-					style="font-size: 1.3rem; color: #101820"
-				/>
+				<i class="pi pi-file" style="font-size: 1rem; color: #101820" />
 				<span
-					class="text-left tracking-3px ml-4 font-bold text-xl text-[#2D2926]"
+					class="text-left tracking-3px ml-4 font-bold text-18px text-[#2D2926]"
 				>
 					{{ $t("補交文件系統") }}
 				</span>
@@ -135,7 +126,7 @@
 				padding-right: 8px;
 			"
 		>
-			<div class="flex mt-24px">
+			<div class="flex mt-16px">
 				<Dialog
 					v-model:visible="isModalVisible"
 					style="width: 500px"
@@ -189,8 +180,14 @@
 						/>
 					</template>
 				</Dialog>
-				<div class="flex m-auto">
-					<div>
+				<div class="m-auto">
+					<div
+						style="
+							margin-left: 50%;
+							transform: translateX(-50%);
+							width: max-content;
+						"
+					>
 						<router-link
 							:to="{
 								name: 'recruitmentApplicantSwitchProject',
@@ -200,62 +197,68 @@
 						>
 							<Button
 								class="p-button-secondary p-button-outlined"
-								style="height: 40px; border: 2px solid #736028"
+								style="height: 34px; border: 2px solid #736028"
 								@click="navigate"
 								role="link"
 							>
 								<div>
-									<i class="pi pi-sort-alt text-[#736028]" />
+									<i
+										class="pi pi-sort-alt text-[#736028]"
+										style="font-size: small"
+									/>
 								</div>
-								<div class="ml-8px font-bold text-[#736028]">
+								<div
+									class="ml-8px font-bold text-15px text-[#736028]"
+								>
 									{{ $t("切換專案") }}
 								</div>
 							</Button>
 						</router-link>
 					</div>
-					<div>
+					<div class="mt-12px">
 						<Button
 							class="p-button-secondary p-button-outlined"
-							style="
-								height: 40px;
-								border: 2px solid #736028;
-								margin-left: 16px;
-							"
+							style="height: 34px; border: 2px solid #736028"
 							@click="isModalVisible = true"
 						>
 							<div>
-								<i class="pi pi-check-square text-[#736028]" />
+								<i
+									class="pi pi-check-square text-[#736028]"
+									style="font-size: small"
+								/>
 							</div>
-							<div class="ml-8px font-bold text-[#736028]">
+							<div
+								class="ml-8px font-bold text-15px text-[#736028]"
+							>
 								{{ $t("資料確認送出") }}
 							</div>
 						</Button>
 					</div>
 				</div>
 			</div>
-			<div class="mt-40px flex relative">
+			<div class="mt-24px flex relative">
 				<div
 					style="
 						background-color: #8a7b27;
 						border-radius: 50%;
-						width: 40px;
-						height: 40px;
-						margin-left: 24px;
+						width: 32px;
+						height: 32px;
+						margin-left: 18px;
 					"
 				>
 					<i
 						class="pi pi-user ml-6.5px mt-8px"
-						style="font-size: 1.7rem"
+						style="font-size: 1.2rem"
 					/>
 				</div>
 				<div class="mt-[-4px] ml-16px">
 					<div
-						class="text-[15px] font-[500] font-bold text-[#736028]"
+						class="text-[14px] font-[500] font-bold text-[#736028]"
 					>
 						{{ $t("用戶名稱") }}
 					</div>
 					<div
-						class="text-[22px] font-[500] font-bold mt-[8px] tracking-wider"
+						class="text-[16px] font-[500] font-bold mt-[8px] tracking-wider"
 					>
 						{{ applicantName }}
 					</div>
@@ -269,7 +272,7 @@
 						v-slot="{ navigate }"
 					>
 						<Button
-							class="p-button-secondary p-button-text"
+							class="p-button-secondary p-button-text p-button-sm"
 							v-tooltip.top="t('使用者管理')"
 							@click="navigate"
 							role="link"
@@ -277,19 +280,19 @@
 							<img
 								alt="logo"
 								src="/assets/sidebar/Setting_alt_line.png"
-								class="w-24px h-24px"
+								class="w-18px h-18px"
 							/>
 						</Button>
 					</router-link>
 					<Button
-						class="p-button-secondary p-button-text"
+						class="p-button-secondary p-button-text p-button-sm"
 						v-tooltip.top="t('登出')"
 						@click="signOut"
 					>
 						<img
 							alt="logo"
 							src="/assets/sidebar/Sign_out_circle.png"
-							class="w-24px h-24px"
+							class="w-18px h-18px"
 						/>
 					</Button>
 				</div>
@@ -353,11 +356,11 @@ async function signOut() {
 	border: 1px solid #736028;
 	border-radius: 8px;
 	font-weight: bold;
-	font-size: 24px;
-	letter-spacing: 0.16em;
+	font-size: 20px;
+	letter-spacing: 0.1em;
 	height: 60px;
 	width: 93%;
-	padding-left: 20px;
-	padding-top: 10px;
+	padding-left: 10px;
+	padding-top: 14px;
 }
 </style>

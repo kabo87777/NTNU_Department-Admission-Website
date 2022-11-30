@@ -30,12 +30,9 @@
 				@click="navigate"
 				role="link"
 			>
-				<i
-					class="pi pi-bell"
-					style="font-size: 1.3rem; color: #101820"
-				/>
+				<i class="pi pi-bell" style="font-size: 1rem; color: #101820" />
 				<span
-					class="text-left tracking-3px ml-4 font-bold text-xl text-[#2D2926]"
+					class="text-left tracking-3px ml-4 font-bold text-18px text-[#2D2926]"
 				>
 					{{ $t("最新資訊") }}
 				</span>
@@ -46,7 +43,7 @@
 			<div class="flex mt-32px">
 				<div class="sidebarYellowDivider"></div>
 				<div
-					class="mt-[-8px] ml-8px text-[#736028] text-20px font-bold"
+					class="mt-[-8px] ml-8px text-[#736028] text-18px font-bold"
 				>
 					{{ $t("資料填寫、上傳") }}
 				</div>
@@ -66,10 +63,10 @@
 				>
 					<i
 						class="pi pi-user"
-						style="font-size: 1.3rem; color: #101820"
+						style="font-size: 1rem; color: #101820"
 					/>
 					<span
-						class="text-left tracking-3px ml-4 font-bold text-xl text-[#2D2926]"
+						class="text-left tracking-3px ml-4 font-bold text-18px text-[#2D2926]"
 					>
 						{{ $t("基本資料") }}
 					</span>
@@ -97,10 +94,10 @@
 				>
 					<i
 						class="pi pi-book"
-						style="font-size: 1.3rem; color: #101820"
+						style="font-size: 1rem; color: #101820"
 					/>
 					<span
-						class="text-left tracking-3px ml-4 font-bold text-xl text-[#2D2926]"
+						class="text-left tracking-3px ml-4 font-bold text-18px text-[#2D2926]"
 					>
 						{{ $t("附件資料") }}
 					</span>
@@ -117,7 +114,7 @@
 			<div class="flex mt-32px">
 				<div class="sidebarYellowDivider"></div>
 				<div
-					class="mt-[-8px] ml-8px text-[#736028] text-20px font-bold"
+					class="mt-[-8px] ml-8px text-[#736028] text-18px font-bold"
 				>
 					{{ $t("相關作業、系統") }}
 				</div>
@@ -137,10 +134,10 @@
 				>
 					<i
 						class="pi pi-envelope"
-						style="font-size: 1.3rem; color: #101820"
+						style="font-size: 1rem; color: #101820"
 					/>
 					<span
-						class="text-left tracking-3px ml-4 font-bold text-xl text-[#2D2926]"
+						class="text-left tracking-3px ml-4 font-bold text-18px text-[#2D2926]"
 					>
 						{{ $t("推薦信作業") }}
 					</span>
@@ -172,10 +169,10 @@
 				>
 					<i
 						class="pi pi-file"
-						style="font-size: 1.3rem; color: #101820"
+						style="font-size: 1rem; color: #101820"
 					/>
 					<span
-						class="text-left tracking-3px ml-4 font-bold text-xl text-[#2D2926]"
+						class="text-left tracking-3px ml-4 font-bold text-18px text-[#2D2926]"
 					>
 						{{ $t("補交文件系統") }}
 					</span>
@@ -194,7 +191,7 @@
 			</router-link>
 		</div>
 		<div
-			class="bg-gray-200 bg-opacity-50 h-160px w-[100%]"
+			class="bg-gray-200 bg-opacity-50 h-140px w-[100%]"
 			style="
 				position: absolute;
 				bottom: 0px;
@@ -202,29 +199,29 @@
 				padding-right: 8px;
 			"
 		>
-			<div class="mt-28px flex relative">
+			<div class="mt-24px flex relative">
 				<div
 					style="
 						background-color: #8a7b27;
 						border-radius: 50%;
-						width: 40px;
-						height: 40px;
-						margin-left: 24px;
+						width: 32px;
+						height: 32px;
+						margin-left: 18px;
 					"
 				>
 					<i
 						class="pi pi-user ml-6.5px mt-8px"
-						style="font-size: 1.7rem"
+						style="font-size: 1.2rem"
 					/>
 				</div>
 				<div class="mt-[-4px] ml-16px">
 					<div
-						class="text-[15px] font-[500] font-bold text-[#736028]"
+						class="text-[14px] font-[500] font-bold text-[#736028]"
 					>
 						{{ $t("用戶名稱") }}
 					</div>
 					<div
-						class="text-[22px] font-[500] font-bold mt-[8px] tracking-wider"
+						class="text-[16px] font-[500] font-bold mt-[8px] tracking-wider"
 					>
 						{{ applicantName }}
 					</div>
@@ -238,25 +235,27 @@
 						v-slot="{ navigate }"
 					>
 						<Button
-							class="p-button-secondary p-button-text"
+							class="p-button-secondary p-button-text p-button-sm"
+							v-tooltip.top="t('使用者管理')"
 							@click="navigate"
 							role="link"
 						>
 							<img
 								alt="logo"
 								src="/assets/sidebar/Setting_alt_line.png"
-								class="w-24px h-24px"
+								class="w-18px h-18px"
 							/>
 						</Button>
 					</router-link>
 					<Button
-						class="p-button-secondary p-button-text"
+						class="p-button-secondary p-button-text p-button-sm"
+						v-tooltip.top="t('登出')"
 						@click="signOut"
 					>
 						<img
 							alt="logo"
 							src="/assets/sidebar/Sign_out_circle.png"
-							class="w-24px h-24px"
+							class="w-18px h-18px"
 						/>
 					</Button>
 				</div>
@@ -272,6 +271,7 @@ import { useAdmissionApplicantAuthStore } from "@/stores/universalAuth";
 import { AdmissionApplicantAPI } from "@/api/admission/applicant/api";
 import { useUserInfoStore } from "@/stores/AdmissionApplicantStore";
 import { Tags } from "@/api/admission/applicant/types";
+import { useI18n } from "vue-i18n";
 import "primeicons/primeicons.css";
 import "primevue/resources/primevue.min.css";
 import Button from "primevue/button";
@@ -283,6 +283,8 @@ const router = useRouter();
 const applicantAuth = useAdmissionApplicantAuthStore();
 const applicantStore = useUserInfoStore();
 const applicantName = window.localStorage.getItem("AdmissionApplicantUsername");
+
+const { t } = useI18n();
 
 const api = new AdmissionApplicantAPI(applicantAuth);
 

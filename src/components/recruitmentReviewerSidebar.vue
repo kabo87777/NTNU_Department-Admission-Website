@@ -12,7 +12,7 @@
 					style="border-radius: 8px; border: 1px solid black"
 				>
 					<template #value="slotProps">
-						<div class="mt-6px tracking-2px text-20px font-medium">
+						<div class="mt-6px tracking-2px text-18px font-medium">
 							{{ slotProps?.value?.category }}
 							{{ slotProps?.value?.name }}
 						</div>
@@ -38,10 +38,10 @@
 				<img
 					alt="logo"
 					src="/assets/reviewer-page/Arhive.png"
-					style="width: 1.5rem"
+					style="width: 18px"
 				/>
 				<span
-					class="text-left tracking-3px ml-3 font-bold text-[20px] text-[#2D2926]"
+					class="text-left tracking-3px ml-3 font-bold text-[18px] text-[#2D2926]"
 				>
 					{{ $t("必看資料評閱") }}
 				</span>
@@ -61,10 +61,10 @@
 				<img
 					alt="logo"
 					src="/assets/reviewer-page/Arhive-1.png"
-					style="width: 1.5rem"
+					style="width: 18px"
 				/>
 				<span
-					class="text-left tracking-3px ml-3 font-bold text-[20px] text-[#2D2926]"
+					class="text-left tracking-3px ml-3 font-bold text-[18px] text-[#2D2926]"
 				>
 					{{ $t("選看資料評閱") }}
 				</span>
@@ -72,47 +72,54 @@
 		</router-link>
 
 		<div
-			class="absolute bg-gray-200 bg-opacity-50 h-160px w-[100%] !mt-530px"
+			class="absolute bg-gray-200 bg-opacity-50 h-140px w-[100%]"
 			style="bottom: 0px"
 		>
-			<div class="flex">
-				<img
-					alt="logo"
-					src="/assets/sidebar/User_circle.png"
-					class="h-40px w-40px ml-24px mt-35px"
-				/>
-				<div class="w-100px h-50px">
-					<div class="text-xs ml-16px mt-27px">
-						{{ $t("審查端帳戶") }}
-					</div>
-					<div class="text-xl ml-16px tracking-wider">
-						{{ $t("系辦主管") }}
+			<div class="flex relative">
+				<div class="flex mt-24px">
+					<img
+						alt="logo"
+						src="/assets/sidebar/User_circle.png"
+						class="h-32px w-32px ml-24px"
+					/>
+					<div class="ml-12px">
+						<div class="text-14px">
+							{{ $t("審查端帳戶") }}
+						</div>
+						<div class="mt-4px ml-[-2px] text-16px">
+							{{ $t("系辦主管") }}
+						</div>
 					</div>
 				</div>
-				<router-link
-					to="/recruitment/reviewer/userSetting"
-					custom
-					v-slot="{ navigate }"
-				>
+				<div class="flex absolute mt-18px mr-4px" style="right: 0px">
+					<router-link
+						to="/recruitment/reviewer/userSetting"
+						custom
+						v-slot="{ navigate }"
+					>
+						<Button
+							class="p-button-text p-button-secondary p-button-sm"
+							@click="navigate"
+							role="link"
+						>
+							<img
+								alt="logo"
+								src="/assets/sidebar/Setting_alt_line.png"
+								class="w-18px h-18px"
+							/>
+						</Button>
+					</router-link>
 					<Button
-						class="p-button-text !mt-25px !ml-50px"
-						@click="navigate"
-						role="link"
+						class="p-button-text p-button-secondary p-button-sm"
+						@click="signOut"
 					>
 						<img
 							alt="logo"
-							src="/assets/sidebar/Setting_alt_line.png"
-							class="w-24px h-24px"
+							src="/assets/sidebar/Sign_out_circle.png"
+							class="w-18px h-18px"
 						/>
 					</Button>
-				</router-link>
-				<Button class="p-button-text !mt-25px" @click="signOut">
-					<img
-						alt="logo"
-						src="/assets/sidebar/Sign_out_circle.png"
-						class="w-24px h-24px"
-					/>
-				</Button>
+				</div>
 			</div>
 		</div>
 	</div>
