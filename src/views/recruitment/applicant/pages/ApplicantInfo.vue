@@ -442,7 +442,7 @@
 				"
 				icon="pi pi-save"
 				:label="$t('儲存')"
-				@click="handleSave"
+				@click="handleSave()"
 			/>
 		</div>
 	</div>
@@ -576,15 +576,15 @@ const saveInfo = async (body: object) => {
 	}
 };
 
+const addHours = (numHrs: number, date = new Date()) => {
+	const dateCpy = new Date(date.getTime());
+
+	dateCpy.setTime(dateCpy.getTime() + numHrs * 60 * 60 * 1000);
+
+	return dateCpy;
+};
+
 const handleSave = async () => {
-	const addHours = (numHrs: number, date = new Date()) => {
-		const dateCpy = new Date(date.getTime());
-
-		dateCpy.setTime(dateCpy.getTime() + numHrs * 60 * 60 * 1000);
-
-		return dateCpy;
-	};
-
 	const body = {
 		name: name.zhName,
 		national_id: identity.ic,
@@ -597,7 +597,7 @@ const handleSave = async () => {
 			? householdAddr.postcode
 			: currentAddr.postcode,
 		sex: born.sex,
-		birth: addHours(8, born.birth),
+		birth: addHours(8, new Date(born.birth)),
 		email: contact.email,
 		mobile_phone: contact.phone,
 	};
