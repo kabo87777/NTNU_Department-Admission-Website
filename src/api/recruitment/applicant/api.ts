@@ -2,6 +2,7 @@ import type { AuthStore } from "@/stores/universalAuth";
 import { GenericAPI } from "@/api/api";
 import type {
 	RecruitmentApplicantGenericResponse,
+	RecruitmentApplicantUserInfoResponse,
 	RecruitmentApplicantProgramResponse,
 	RecruitmentApplicantFileListResponse,
 } from "./types";
@@ -23,6 +24,62 @@ export class RecruitmentApplicantAPI extends GenericAPI {
 		return data.data;
 	}
 
+	async getBasicInfo(
+		pid: number
+	): Promise<RecruitmentApplicantUserInfoResponse> {
+		const data: APIGenericResponse = await this.instance.get(
+			`/recruitment/applicant/program/${pid}/info`
+		);
+
+		if (data.error === true) console.log("Failed to fetch user info");
+
+		return data.data;
+	}
+
+	async patchBasicInfo(
+		pid: number,
+		body: object
+	): Promise<RecruitmentApplicantGenericResponse> {
+		const data: APIGenericResponse = await this.instance.patch(
+			`/recruitment/applicant/program/${pid}/info`,
+			body
+		);
+
+		if (data.error !== false) {
+			return {
+				success: false,
+				message: data.message,
+			};
+		}
+
+		return {
+			success: true,
+			message: data.message,
+		};
+	}
+
+	async editBasicInfo(
+		pid: number,
+		body: object
+	): Promise<RecruitmentApplicantGenericResponse> {
+		const data: APIGenericResponse = await this.instance.patch(
+			`/recruitment/applicant/program/${pid}/info`,
+			body
+		);
+
+		if (data.error !== false) {
+			return {
+				success: false,
+				message: data.message,
+			};
+		}
+
+		return {
+			success: true,
+			message: data.message,
+		};
+	}
+
 	async getFileList(
 		pid: number
 	): Promise<RecruitmentApplicantFileListResponse[]> {
@@ -30,8 +87,7 @@ export class RecruitmentApplicantAPI extends GenericAPI {
 			`/recruitment/applicant/program/${pid}/file`
 		);
 
-		if (data.error === true || typeof data.data === "undefined")
-			throw new Error("Failed to fetch file list");
+		if (data.error === true) console.log("Failed to fetch file list");
 
 		return data.data;
 	}
@@ -44,7 +100,7 @@ export class RecruitmentApplicantAPI extends GenericAPI {
 			`recruitment/applicant/program/${pid}/file/${fileId}`
 		);
 
-		if (data.error !== false && data.message !== undefined) {
+		if (data.error !== false) {
 			return {
 				success: false,
 				message: data.message,
@@ -66,7 +122,7 @@ export class RecruitmentApplicantAPI extends GenericAPI {
 			body
 		);
 
-		if (data.error !== false && data.message !== undefined) {
+		if (data.error !== false) {
 			return {
 				success: false,
 				message: data.message,
@@ -89,7 +145,29 @@ export class RecruitmentApplicantAPI extends GenericAPI {
 			body
 		);
 
-		if (data.error !== false && data.message !== undefined) {
+		if (data.error !== false) {
+			return {
+				success: false,
+				message: data.message,
+			};
+		}
+
+		return {
+			success: true,
+			message: data.message,
+		};
+	}
+
+	async uploadRefillFile(
+		body: object,
+		pid: number
+	): Promise<RecruitmentApplicantGenericResponse> {
+		const data: APIGenericResponse = await this.instance.post(
+			`recruitment/applicant/program/${pid}/refillFile`,
+			body
+		);
+
+		if (data.error !== false) {
 			return {
 				success: false,
 				message: data.message,

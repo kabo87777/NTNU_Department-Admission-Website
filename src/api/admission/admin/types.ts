@@ -31,10 +31,10 @@ export interface AdmissionAdminProgramListResponse {
 	stage: string;
 	created_at: string;
 	updated_at: string;
-	applicant_required_info: null; // ??
-	applicant_required_file: null;
-	reviewer_required_info: null;
-	reviewer_required_file: null;
+	applicant_required_info: string;
+	applicant_required_file: string;
+	reviewer_required_info: string;
+	reviewer_required_file: string;
 	detail: string;
 }
 
@@ -136,7 +136,82 @@ export interface AdmAdminEditApplicantRequest {
 	password?: string;
 }
 
+export interface AdmissionAdminScoreFieldResponse {
+	docs_weight: number;
+	oral_weight: number;
+	docs_grade_name_1: string;
+	docs_grade_name_2: string;
+	docs_grade_name_3: string;
+	docs_grade_name_4: string;
+	docs_grade_name_5: string;
+	docs_grade_weight_1: number;
+	docs_grade_weight_2: number;
+	docs_grade_weight_3: number;
+	docs_grade_weight_4: number;
+	docs_grade_weight_5: number;
+	oral_grade_name_1: string;
+	oral_grade_name_2: string;
+	oral_grade_name_3: string;
+	oral_grade_name_4: string;
+	oral_grade_name_5: string;
+	oral_grade_weight_1: number;
+	oral_grade_weight_2: number;
+	oral_grade_weight_3: number;
+	oral_grade_weight_4: number;
+	oral_grade_weight_5: number;
+}
 export interface AdmissionAdminGenericResponse {
 	success?: boolean;
 	message?: string | [];
+}
+
+export interface AdmissionAdminDocsGradeListResponse {
+	id: string;
+	name: string;
+	application_stage: string;
+	isImmediateEnroll: boolean;
+	grades: number;
+}
+
+export interface AdmissionAdminOralGradeListResponse {
+	id: string;
+	name: string;
+	oral_order: number;
+	enroll_stage: string;
+	enroll_order: number;
+	isImmediateEnroll: boolean;
+	docs_grades: number;
+	oral_grades: number;
+	total_grades: number;
+}
+
+export interface AdmissionAdminReviewerGradeResponse {
+	name: string;
+	isimmendiateenroll: boolean;
+	grades: number;
+}
+
+export interface AdmissionAdminSingleDocsGradeResponse {
+	id: string;
+	name: string;
+	stage: string;
+	oral_order: number;
+	reviewer: AdmissionAdminReviewerGradeResponse[];
+	avg: number;
+}
+
+export interface AdmissionAdminSingleOralGradeResponse {
+	id: string;
+	name: string;
+	enroll_stage: string;
+	enroll_order: number;
+	reviewer: AdmissionAdminReviewerGradeResponse[];
+	avg: number;
+}
+
+export interface AdmissionAdminCreateReviewerRequest {
+	username: string;
+	password: string;
+	email: string;
+	name: string;
 }

@@ -20,7 +20,7 @@ export class AdmissionApplicantAPI extends GenericAPI {
 		);
 
 		if (data.error === true || typeof data.data === "undefined")
-			throw new Error("Failed to fetch program list");
+			console.log("Failed to fetch program list");
 
 		return data.data;
 	}
