@@ -617,6 +617,6 @@ function dateTransform(date?: Date) {
 
 async function signOut() {
 	await api.invalidateSession();
-	router.push("/");
+	router.push("/admission/manager/signin");
 }
 </script>

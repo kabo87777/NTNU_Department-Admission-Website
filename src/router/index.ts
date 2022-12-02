@@ -100,6 +100,7 @@ const routes: Array<RouteRecordRaw> = [
 	{
 		path: "/",
 		name: "LandingView",
+		redirect: "mainpage",
 		component: LandingView,
 		children: [
 			// Admission - choose applicant / manager
