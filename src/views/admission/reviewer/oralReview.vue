@@ -31,12 +31,22 @@
 			>
 				<ColumnGroup type="header">
 					<Row>
-						<Column :header="oralOrder" :rowspan="2" :sortable="true" sortField="oral_order"></Column>
-						<Column :header="ID" :rowspan="2" :sortable="true" sortField="id"></Column>
+						<Column
+							:header="oralOrder"
+							:rowspan="2"
+							:sortable="true"
+							sortField="oral_order"
+						></Column>
+						<Column
+							:header="ID"
+							:rowspan="2"
+							:sortable="true"
+							sortField="id"
+						></Column>
 						<Column :header="applicantName" :rowspan="2"></Column>
-						<Column :header="docGrade" :rowspan="2" ></Column>
+						<Column :header="docGrade" :rowspan="2"></Column>
 						<Column :header="reviewerGrade" :colspan="scoreCount" />
-						<Column :header="totalscore" :rowspan="2" ></Column>
+						<Column :header="totalscore" :rowspan="2"></Column>
 					</Row>
 					<Row>
 						<Column :header="score1FieldName" :colspan="1" />
@@ -57,7 +67,7 @@
 				<Column field="oral_order" :sortable="true"></Column>
 				<Column field="id" :sortable="true"></Column>
 				<Column field="name"></Column>
-				<Column >
+				<Column>
 					<template #body="slotProps">
 						{{
 							(slotProps.data.docs_grade_1 * score1Proportion) /
@@ -79,20 +89,20 @@
 				<Column v-if="scoreCount > 3" field="oral_grade_4" />
 				<Column v-if="scoreCount > 4" field="oral_grade_5" />
 				<Column :sortable="true">
-						<template #body="slotProps">
-							{{
-								(slotProps.data.oral_grade_1 * score1Proportion) /
-									100 +
-								(slotProps.data.oral_grade_2 * score2Proportion) /
-									100 +
-								(slotProps.data.oral_grade_3 * score3Proportion) /
-									100 +
-								(slotProps.data.oral_grade_4 * score4Proportion) /
-									100 +
-								(slotProps.data.oral_grade_5 * score5Proportion) /
-									100
-							}}
-						</template>
+					<template #body="slotProps">
+						{{
+							(slotProps.data.oral_grade_1 * score1Proportion) /
+								100 +
+							(slotProps.data.oral_grade_2 * score2Proportion) /
+								100 +
+							(slotProps.data.oral_grade_3 * score3Proportion) /
+								100 +
+							(slotProps.data.oral_grade_4 * score4Proportion) /
+								100 +
+							(slotProps.data.oral_grade_5 * score5Proportion) /
+								100
+						}}
+					</template>
 				</Column>
 			</DataTable>
 			<div class="bigBlueDivider !mt-50px"></div>
@@ -228,14 +238,15 @@ const {
 			totalApplicant.value = data!.length;
 			oralApplicant.value = 0;
 			applicantGraded.value = 0;
-			while(alist.value.length !== 0){ //clean up all value in alist, otherwise will grow with duplicate data
+			while (alist.value.length !== 0) {
+				//clean up all value in alist, otherwise will grow with duplicate data
 				alist.value.pop();
 			}
 			data!.forEach((applicant) => {
 				if (applicant.isOralGraded) {
 					applicantGraded.value += 1;
 				}
-				if(applicant.oral_order !== null){
+				if (applicant.oral_order !== null) {
 					alist.value.push(applicant);
 					oralApplicant.value += 1;
 				}
@@ -442,7 +453,7 @@ const cancel = computed(() => t("取消"));
 const selectedData = ref();
 const router = useRouter();
 const onRowSelect = (event: any) => {
-	if(event.data.oral_order){
+	if (event.data.oral_order) {
 		selectedData.value = "";
 		router.push("/admission/reviewer/singleOralReview/" + event.data.id);
 	}

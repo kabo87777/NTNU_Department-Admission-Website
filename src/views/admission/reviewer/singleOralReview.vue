@@ -96,9 +96,7 @@
 			/>
 		</div>
 		<div class="flex mt-24px">
-			<div>
-				{{ $t("書面分數：")}} {{total_score}} {{ $t("分") }}
-			</div>
+			<div>{{ $t("書面分數：") }} {{ total_score }} {{ $t("分") }}</div>
 			<div class="text-xl ml-180px mt-5px">
 				{{ $t("口試分數合計： ") }} {{ oral_score }} {{ $t("分") }}
 			</div>
