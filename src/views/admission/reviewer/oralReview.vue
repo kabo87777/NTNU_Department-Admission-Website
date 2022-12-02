@@ -18,7 +18,7 @@
 		<div class="bigBlueDivider"></div>
 		<div>
 			<DataTable
-				:value="ApplicantList"
+				:value="alist"
 				responsiveLayout="scroll"
 				dataKey="id"
 				:scrollable="true"
@@ -214,7 +214,7 @@ import { useMutation, useQuery } from "@tanstack/vue-query";
 import { InvalidSessionError } from "@/api/error";
 import { useGlobalStore } from "@/stores/AdmissionReviewerStore";
 import { useToast } from "primevue/usetoast";
-import { e } from "vitest/dist/index-40e0cb97";
+import type { AdmissionReviewerApplicantListResponse } from "@/api/admission/reviewer/types";
 
 const reviewerAuth = useAdmissionReviewerAuthStore();
 const api = new AdmissionReviewerAPI(reviewerAuth);
@@ -225,7 +225,8 @@ const { t } = useI18n();
 const totalApplicant = ref(0);
 const applicantGraded = ref(0);
 const progressValue = ref(0);
-// const alist = ref([]);
+const flist: AdmissionReviewerApplicantListResponse[] = [];
+const alist = ref(flist);
 
 const {
 	isLoading,
@@ -256,9 +257,15 @@ const {
 		onSuccess: (data) => {
 			totalApplicant.value = data!.length;
 			applicantGraded.value = 0;
+			while(alist.value.length !== 0){ //clean up all value in alist, otherwise will grow with duplicate data
+				alist.value.pop();
+			}
 			data!.forEach((applicant) => {
 				if (applicant.isDocsGraded) {
 					applicantGraded.value += 1;
+				}
+				if(applicant.oral_order !== null){
+					alist.value.push(applicant);
 				}
 			});
 			progressValue.value =
