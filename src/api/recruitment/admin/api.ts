@@ -112,25 +112,42 @@ export class RecruitmentAdminAPI extends GenericAPI {
 		return response;
 	}
 
-	async getReviewerList(): Promise<RecruitmentAdminReviewersListResponse[]>{
+	async getReviewerList(): Promise<RecruitmentAdminReviewersListResponse[]> {
 		const response: APIGenericResponse = await this.instance.get(
-			`/recruitment/admin/reviewer`
-		)
-		if(response.error===true || typeof response.data==='undefined')
-			throw new Error("Failed to GET reviewer list")
+			"/recruitment/admin/reviewer"
+		);
+		if (response.error === true || typeof response.data === "undefined")
+			throw new Error("Failed to GET reviewer list");
 
-		return response.data.reviewers
+		return response.data.reviewers;
 	}
 
-	async createReviewerAccount(data: RecruitmentAdminCreateReviewerRequest){
+	async createReviewerAccount(data: RecruitmentAdminCreateReviewerRequest) {
 		const response: APIGenericResponse = await this.instance.post(
-			`/recruitment/admin/reviewer`,
+			"/recruitment/admin/reviewer",
 			data
-		)
+		);
 
-		if(response.error===true)
-			throw new Error(`${response.message}`)
-		
-		return
+		if (response.error === true) throw new Error(`${response.message}`);
+
+		return;
+	}
+
+	async changeReviewerAccountState(
+		id: number,
+		action: "activate" | "disable"
+	) {
+		const body = {
+			enable: action === "activate" ? true : false,
+		};
+
+		const response: APIGenericResponse = await this.instance.post(
+			`/recruitment/admin/reviewer/${id}/state`,
+			body
+		);
+
+		if (response.error === true) throw new Error(`${response.message}`);
+
+		return;
 	}
 }

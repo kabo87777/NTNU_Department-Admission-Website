@@ -40,20 +40,26 @@
 						class="p-button-outlined p-button-success"
 					/>
 
+					<!-- Activate user button -->
 					<Button
-					v-if="(slotProp.data.isDisabled===true)"
-					
+						v-if="slotProp.data.isDisabled === true"
 						icon="pi pi-chevron-circle-up"
 						class="p-button-outlined"
-						@click=""
+						@click="
+							changeAccountStateAPI({
+								id: slotProp.data.id,
+								action: 'activate',
+							})
+						"
 					/>
+
+					<!-- Disable user button -->
 					<Button
-					v-else
+						v-else
 						icon="pi pi-ban"
 						class="p-button-outlined p-button-warning"
-						@click="confirmDisableReviewer"
+						@click="confirmDisableReviewer(slotProp.data)"
 					/>
-					
 				</div>
 			</template>
 		</Column>
@@ -201,9 +207,7 @@
 		</template>
 	</Dialog>
 
-	<ConfirmDialog>
-
-	</ConfirmDialog>
+	<ConfirmDialog> </ConfirmDialog>
 </template>
 
 <script setup lang="ts">
@@ -222,17 +226,16 @@ import Checkbox from "primevue/checkbox";
 import { useMutation, useQuery } from "@tanstack/vue-query";
 import { InvalidSessionError } from "@/api/error";
 import { useRouter } from "vue-router";
-import {
-useRecruitmentAdminAuthStore,
-} from "@/stores/universalAuth";
+import { useRecruitmentAdminAuthStore } from "@/stores/universalAuth";
 import { RecruitmentAdminAPI } from "@/api/recruitment/admin/api";
 import { useGlobalStore } from "@/stores/globalStore";
 import { RecruitmentAdminReviewersListResponse } from "@/api/recruitment/admin/types";
 import Password from "primevue/password";
 import ConfirmDialog from "primevue/confirmdialog";
 import { useConfirm } from "primevue/useconfirm";
+import { useToast } from "primevue/usetoast";
 
-const { t:$t } = useI18n();
+const { t: $t } = useI18n();
 
 const router = useRouter();
 const adminAuth = useRecruitmentAdminAuthStore();
@@ -322,6 +325,7 @@ const {
 			console.log("Loaded");
 			tableData.value = data;
 		},
+		onSettled: () => (isProcessing.value = false),
 	}
 );
 
@@ -344,28 +348,30 @@ const addReviewerModal = ref({
 	}),
 	submit: () => {
 		addReviewerModal.value.close();
-		createReviewer();
+		createReviewerAPI();
 	},
 });
 
 const modalVisible = ref(false);
 const modalData = ref();
-const confirm = useConfirm()
-const confirmDisableReviewer = ()=>{
+const confirm = useConfirm();
+const confirmDisableReviewer = (
+	reviewerData: RecruitmentAdminReviewersListResponse
+) => {
+	const { id } = reviewerData;
+
 	confirm.require({
 		header: $t("是否要停用此審查者？"),
-		message: $t("別擔心，您可以隨時啟用此帳號"),
+		message: $t("別擔心，您可以隨時重新啟用此帳號"),
 		icon: "pi pi-question-circle",
 		acceptLabel: $t("確認"),
 		rejectLabel: $t("取消"),
-		accept: ()=>{
-
+		accept: () => {
+			changeAccountStateAPI({ id: id, action: "disable" });
 		},
-		reject: ()=>{
-
-		}
-	})
-}
+		reject: () => {},
+	});
+};
 
 // const getRelatedPrograms = () => {
 // 	if (!programQuery.isFetched.value)
@@ -374,7 +380,7 @@ const confirmDisableReviewer = ()=>{
 
 const isProcessing = ref(false);
 
-const { mutate: createReviewer } = useMutation({
+const { mutate: createReviewerAPI } = useMutation({
 	mutationFn: () => {
 		return api.createReviewerAccount(addReviewerModal.value.data);
 	},
@@ -386,6 +392,30 @@ const { mutate: createReviewer } = useMutation({
 	},
 	onSuccess: () => {
 		refetch();
+	},
+});
+
+const toast = useToast();
+const { mutate: changeAccountStateAPI } = useMutation({
+	mutationFn: (variables: { id: number; action: "activate" | "disable" }) => {
+		const { id, action } = variables;
+
+		return api.changeReviewerAccountState(id, action);
+	},
+	onSuccess: () => {},
+	onError: () => {
+		toast.add({
+			severity: "error",
+			life: 3000,
+			summary: $t("操作失敗"),
+			detail: $t("發生了未知的錯誤"),
+		});
+	},
+	onSettled: () => {
+		refetch();
+	},
+	onMutate: () => {
+		isProcessing.value = true;
 	},
 });
 </script>

@@ -94,24 +94,24 @@ export interface RecruitmentAdminApplicantsListResponse {
 }
 
 export interface RecruitmentAdminReviewersListResponse {
-	id: number,
-	provider: string,
-	uid: string,
-	allow_password_change: boolean,
-	isInit: boolean|null,
-	lang: string|null,
-	name: string,
-	nickname: string|null,
-	image: string|null,
-	email: string,
-	created_at: string,
-	updated_at: string,
-	isDisabled: boolean
+	id: number;
+	provider: string;
+	uid: string;
+	allow_password_change: boolean;
+	isInit: boolean | null;
+	lang: string | null;
+	name: string;
+	nickname: string | null;
+	image: string | null;
+	email: string;
+	created_at: string;
+	updated_at: string;
+	isDisabled: boolean;
 }
 
-export interface RecruitmentAdminCreateReviewerRequest{
-	username: string,
-	password: string,
-	email: string,
-	name: string
+export interface RecruitmentAdminCreateReviewerRequest {
+	username: string;
+	password: string;
+	email: string;
+	name: string;
 }

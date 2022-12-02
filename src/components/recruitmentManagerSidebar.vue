@@ -346,7 +346,11 @@
 		>
 			<div class="flex">
 				<div class="m-auto">
-					<router-link to="/recruitment/manager/reviewerSettings" custom v-slot="{ navigate }">
+					<router-link
+						to="/recruitment/manager/reviewerSettings"
+						custom
+						v-slot="{ navigate }"
+					>
 						<Button
 							class="w-168px h-44px p-button-outlined !mt-24px !bg-white"
 							@click="navigate"
