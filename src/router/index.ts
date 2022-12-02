@@ -94,6 +94,7 @@ import recruitmentManagerApplicationAccountSetting from "@/views/recruitment/man
 
 //Recommender section
 import recommenderAuthVerification from "@/views/admission/recommender/AuthVerification.vue";
+import recommendLetterFillIn from "@/views/admission/recommender/FillRecommendLetter.vue";
 
 const routes: Array<RouteRecordRaw> = [
 	// Choose recruitment / admission
@@ -311,6 +312,11 @@ const routes: Array<RouteRecordRaw> = [
 				path: "admission/recommenderAuthVerify",
 				name: "recommenderAuthVerify",
 				component: recommenderAuthVerification,
+			},
+			{
+				path: "admission/recommendLetterFillIn",
+				name: "recommendLetterFillIn",
+				component: recommendLetterFillIn,
 			},
 
 			// Recruitment

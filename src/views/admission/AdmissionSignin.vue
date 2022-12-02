@@ -73,11 +73,11 @@
 				</router-link>
 			</div>
 			<!-- 通往推薦信作業身份驗證的神秘按鈕 -->
-			<!-- <div>
+			<div>
 				<router-link to="/admission/recommenderAuthVerify">
 					<Button>借放一下</Button>
 				</router-link>
-			</div> -->
+			</div>
 		</div>
 	</div>
 </template>

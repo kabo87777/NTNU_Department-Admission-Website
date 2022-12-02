@@ -63,13 +63,17 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 import Divider from "primevue/divider";
 import InputText from "primevue/inputtext";
+
+const router = useRouter();
 
 const token = ref("");
 
 const handleVerify = () => {
 	console.log("button on clicked", token.value);
+	router.push("/admission/recommendLetterFillIn");
 };
 </script>
 
