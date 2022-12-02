@@ -1,5 +1,5 @@
 <template>
-	<div class="mx-32 mt-16">
+	<div>
 		<!-- Header - Title -->
 		<div class="tracking-widest" text="4xl bold">
 			{{ trans.reviewScoreField.value }}

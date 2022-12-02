@@ -1,5 +1,5 @@
 <template>
-	<div class="pt-62px pl-128px pr-128px">
+	<div>
 		<div class="text-32px font-medium">上傳資料列表</div>
 		<div class="bigRedDivider"></div>
 		<div class="mt-16px">

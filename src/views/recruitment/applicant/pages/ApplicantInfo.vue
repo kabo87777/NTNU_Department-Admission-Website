@@ -22,6 +22,7 @@
 							class="w-[70%] h-36px !mt-4px"
 							style="border: 1px solid #736028"
 							type="text"
+							v-model="name.appellation"
 						/>
 					</div>
 				</div>
@@ -32,6 +33,7 @@
 							class="w-[70%] h-36px !mt-4px"
 							style="border: 1px solid #736028"
 							type="text"
+							v-model="name.suffix"
 						/>
 					</div>
 				</div>
@@ -47,6 +49,7 @@
 							class="w-[70%] h-36px !mt-4px"
 							style="border: 1px solid #736028"
 							type="text"
+							v-model="name.zhFamName"
 						/>
 					</div>
 				</div>
@@ -60,6 +63,7 @@
 							class="w-[70%] h-36px !mt-4px"
 							style="border: 1px solid #736028"
 							type="text"
+							v-model="name.zhName"
 						/>
 					</div>
 				</div>
@@ -72,6 +76,7 @@
 							class="w-[70%] h-36px !mt-4px"
 							style="border: 1px solid #736028"
 							type="text"
+							v-model="name.enFamName"
 						/>
 					</div>
 					<div v-show="required.enFamName" class="absolute mt-[-4px]">
@@ -87,6 +92,7 @@
 							class="w-[70%] h-36px !mt-4px"
 							style="border: 1px solid #736028"
 							type="text"
+							v-model="name.enName"
 						/>
 					</div>
 					<div v-show="required.enName" class="absolute mt-[-4px]">
@@ -102,6 +108,7 @@
 							class="w-[70%] h-36px !mt-4px"
 							style="border: 1px solid #736028"
 							type="text"
+							v-model="name.enMidName"
 						/>
 					</div>
 				</div>
@@ -163,6 +170,7 @@
 							class="w-[70%] h-36px !mt-4px"
 							style="border: 1px solid #736028"
 							type="text"
+							v-model="identity.nationality"
 						/>
 					</div>
 					<div v-show="required.country" class="absolute mt-[-4px]">
@@ -178,6 +186,7 @@
 							class="w-[70%] h-36px !mt-4px"
 							style="border: 1px solid #736028"
 							type="text"
+							v-model="identity.ui"
 						/>
 					</div>
 					<div v-show="required.ui" class="absolute mt-[-4px]">
@@ -352,6 +361,7 @@
 							class="w-[70%] h-36px !mt-4px"
 							style="border: 1px solid #736028"
 							type="text"
+							v-model="born.country"
 						/>
 					</div>
 					<div v-show="required.country" class="absolute mt-[-4px]">
@@ -365,7 +375,7 @@
 					<div>
 						<Calendar
 							v-model="born.birth"
-							dateFormat="mm-dd-yy"
+							dateFormat="yy-mm-dd"
 							class="w-[70%] h-36px !mt-4px"
 							style="
 								border: 1px solid #736028;
@@ -392,7 +402,7 @@
 				</div>
 			</div>
 			<div class="flex py-16px">
-				<div class="w-1/3">
+				<!-- <div class="w-1/3">
 					<div>{{ "*" + $t("電郵") }}</div>
 					<div>
 						<InputText
@@ -407,7 +417,7 @@
 							{{ $t("此為必填欄位") }}
 						</small>
 					</div>
-				</div>
+				</div> -->
 				<div class="w-1/3">
 					<div>{{ "*" + $t("行動電話") }}</div>
 					<div>
@@ -442,7 +452,7 @@
 				"
 				icon="pi pi-save"
 				:label="$t('儲存')"
-				@click="handleSave"
+				@click="handleSave()"
 			/>
 		</div>
 	</div>
@@ -481,6 +491,7 @@ const loading = reactive({
 });
 
 const name = reactive({
+	id: 0,
 	appellation: "",
 	suffix: "",
 	zhFamName: "",
@@ -546,30 +557,22 @@ const basicInfo: RecruitmentApplicantUserInfoResponse =
 	);
 
 const setBasicInfo = (res: RecruitmentApplicantUserInfoResponse) => {
-	// basicInfo.id = res.id;
-	// basicInfo.name = res.name;
-	// basicInfo.email = res.email;
-	// basicInfo.national_id = res.national_id;
-	// basicInfo.sex = res.sex;
-	// basicInfo.birth = res.birth;
-	// basicInfo.day_phone = res.day_phone;
-	// basicInfo.night_phone = res.night_phone;
-	// basicInfo.mobile_phone = res.mobile_phone;
-	// basicInfo.household_address = res.household_address;
-	// basicInfo.household_zipcode = res.household_zipcode;
-	// basicInfo.communicate_address = res.communicate_address;
-	// basicInfo.communicate_zipcode = res.communicate_zipcode;
-	// basicInfo.GSAT_num = res.GSAT_num;
-	// basicInfo.GSAT_registration = res.GSAT_registration;
-	// basicInfo.graduated_school = res.graduated_school;
-	// basicInfo.graduated_major = res.graduated_major;
-	// basicInfo.isSameDept = res.isSameDept;
-	// basicInfo.isDisabled = res.isDisabled;
-	// basicInfo.r_applicant_id = res.r_applicant_id;
-	// basicInfo.created_at = res.created_at;
-	// basicInfo.updated_at = res.updated_at;
+	name.id = res.id as number;
+	name.appellation = res.title as string;
+	name.suffix = res.suffix as string;
+	name.zhFamName = res.cn_surname as string;
+	name.zhName = res.name as string;
+	name.enFamName = res.en_surname as string;
+	name.enMidName = res.en_midname as string;
+	name.enName = res.en_givenname as string;
 
-	identity.ic = res.national_id as string;
+	if (identity.nationality === "台灣") {
+		identity.ic = res.national_id as string;
+		identity.nationality = res.nationality as string;
+	} else if (identity.nationality !== null) {
+		identity.ui = res.national_id as string;
+		identity.nationality = res.nationality as string;
+	}
 
 	householdAddr.addr = res.household_address as string;
 	householdAddr.postcode = res.household_zipcode as string;
@@ -581,7 +584,8 @@ const setBasicInfo = (res: RecruitmentApplicantUserInfoResponse) => {
 			: false;
 
 	born.sex = res.sex as string;
-	born.birth = new Date(res.birth as string);
+	born.country = res.birthcountry as string;
+	born.birth = res.birth as Date;
 
 	contact.phone = res.mobile_phone as string;
 };
@@ -599,10 +603,32 @@ const saveInfo = async (body: object) => {
 	}
 };
 
+const addHours = (numHrs: number, date = new Date()) => {
+	const dateCpy = new Date(date.getTime());
+
+	dateCpy.setTime(dateCpy.getTime() + numHrs * 60 * 60 * 1000);
+
+	return dateCpy;
+};
+
 const handleSave = async () => {
 	const body = {
+		id: name.id,
+		title: name.appellation,
+		suffix: name.suffix,
+		cn_surname: name.zhFamName,
 		name: name.zhName,
-		national_id: identity.ic,
+		en_surname: name.enFamName,
+		en_midname: name.enMidName,
+		en_givenname: name.enName,
+		nationality:
+			identity.selectedIdentity === "本地人士"
+				? "台灣"
+				: identity.nationality,
+		national_id:
+			identity.selectedIdentity === "本地人士"
+				? identity.ic
+				: identity.ui,
 		household_address: householdAddr.addr,
 		household_zipcode: householdAddr.postcode,
 		communicate_address: currentAddr.isAddrSame
@@ -612,10 +638,21 @@ const handleSave = async () => {
 			? householdAddr.postcode
 			: currentAddr.postcode,
 		sex: born.sex,
-		birth: born.birth,
-		email: contact.email,
+		birthcountry: born.country,
+		birth: addHours(8, new Date(born.birth)),
 		mobile_phone: contact.phone,
 	};
+
+	const keys = Object.keys(body);
+	Object.values(body).map((value, index) => {
+		if (value === null || value === "") {
+			const keyName = keys[
+				index
+			] as keyof RecruitmentApplicantUserInfoResponse;
+
+			delete body[keyName];
+		}
+	});
 
 	loading.save = true;
 

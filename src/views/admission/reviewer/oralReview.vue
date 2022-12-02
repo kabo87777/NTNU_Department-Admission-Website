@@ -1,5 +1,5 @@
 <template>
-	<div class="ml-128px mr-128px mt-62px">
+	<div>
 		<div class="flex">
 			<h1 class="text-4xl text-bold tracking-widest">
 				{{ $t("口試資料評閱") }}
@@ -22,11 +22,10 @@
 				responsiveLayout="scroll"
 				dataKey="id"
 				:scrollable="true"
-				scrollHeight="700px"
 				v-model:selection="selectedData"
 				selectionMode="single"
 				@rowSelect="onRowSelect"
-				class="p-datatable-lg !h-700px"
+				class="p-datatable-lg"
 			>
 				<ColumnGroup type="header">
 					<Row>
