@@ -78,13 +78,12 @@
 			</div>
 			<Button
 				class="p-button-sm p-button-secondary p-button-outlined !mt-60px"
+				type="submit"
+				icon="pi pi-pencil"
+				:loading="isChangePassLoading"
 				@click="handleSubmit"
-			>
-				<i class="pi pi-pencil" />
-				<p class="ml-8px text-16px font-[500] font-bold">
-					{{ $t("修改送出") }}
-				</p>
-			</Button>
+				:label="$t('修改送出')"
+			/>
 		</div>
 	</div>
 </template>
