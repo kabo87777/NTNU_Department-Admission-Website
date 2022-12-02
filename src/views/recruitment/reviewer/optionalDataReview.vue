@@ -1,5 +1,5 @@
 <template>
-	<div class="ml-128px mr-128px mt-62px">
+	<div>
 		<div class="flex">
 			<h1 class="text-4xl text-bold tracking-widest">
 				{{ $t("選看資料評閱") }}

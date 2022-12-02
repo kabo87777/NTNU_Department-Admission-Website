@@ -1,5 +1,5 @@
 <template>
-	<div class="pt-62px pl-128px pr-128px">
+	<div>
 		<div class="font-medium text-32px">{{ $t("申請上傳欄位") }}</div>
 		<div class="bigRedDivider"></div>
 		<div class="p-fluid">
