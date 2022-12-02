@@ -18,7 +18,8 @@
 					identity="admissionApplicant"
 					:itemId="item.id"
 					:itemName="item.name"
-					:schoolName="item.name"
+					:schoolName="item.school"
+					:fileUrl="item.filepath?.url"
 					:order="index + 1"
 					:isDeleteLoading="isLoading.delete"
 					@edit="reviewToEdit"
@@ -30,7 +31,8 @@
 					identity="admissionApplicant"
 					:itemId="item.id"
 					:itemName="item.name"
-					:schoolName="item.name"
+					:schoolName="item.school"
+					:fileUrl="item.filepath?.url"
 					:order="index + 1"
 					:isEditLoading="isLoading.edit"
 					@cancel="editToReview"
@@ -68,7 +70,8 @@
 					identity="admissionApplicant"
 					:itemId="item.id"
 					:itemName="item.name"
-					:score="item.name"
+					:score="item.score"
+					:fileUrl="item.filepath?.url"
 					:order="index + 1"
 					:isDeleteLoading="isLoading.delete"
 					@edit="reviewToEdit"
@@ -80,7 +83,8 @@
 					identity="admissionApplicant"
 					:itemId="item.id"
 					:itemName="item.name"
-					:score="item.name"
+					:score="item.score"
+					:fileUrl="item.filepath?.url"
 					:order="index + 1"
 					:isEditLoading="isLoading.edit"
 					@cancel="editToReview"
@@ -118,6 +122,7 @@
 					identity="admissionApplicant"
 					:itemId="item.id"
 					:itemName="item.name"
+					:fileUrl="item.filepath?.url"
 					:order="index + 1"
 					:isDeleteLoading="isLoading.delete"
 					@edit="reviewToEdit"
@@ -130,6 +135,7 @@
 					:isEditLoading="isLoading.edit"
 					:itemId="item.id"
 					:itemName="item.name"
+					:fileUrl="item.filepath?.url"
 					:order="index + 1"
 					@cancel="editToReview"
 					@correction="handleEdit"
@@ -459,11 +465,13 @@ const getFileList = async () => {
 onMounted(async () => {
 	const response = getFileList();
 	await response.then((res) => {
-		res.map((item) => {
-			if (item) {
-				attachmentList.push(item);
-			}
-		});
+		if (Object.keys(res).length) {
+			res.map((item) => {
+				if (item) {
+					attachmentList.push(item);
+				}
+			});
+		}
 	});
 
 	splitThreeList(toRaw(attachmentList));
@@ -477,11 +485,13 @@ watch(
 		clearAllList();
 
 		await response.then((res) => {
-			res.map((item) => {
-				if (item) {
-					attachmentList.push(item);
-				}
-			});
+			if (Object.keys(res).length) {
+				res.map((item) => {
+					if (item) {
+						attachmentList.push(item);
+					}
+				});
+			}
 		});
 
 		isLoading.fetch = false;

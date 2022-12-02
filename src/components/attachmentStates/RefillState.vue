@@ -1,9 +1,6 @@
 <template>
-	<div class="mt-16px pt-16px text-20px text-[#53565A]">
-		{{ $t(props.category) }}{{ " - " }}{{ props.order }}
-	</div>
-	<div :class="dynamicClass()">
-		<div class="p-[12px] w-9/10">
+	<div :class="dynamicClass()" style="margin-top: 36px">
+		<div class="p-[36px] w-9/10">
 			<Dialog
 				v-model:visible="isModalVisible"
 				style="width: 500px"
@@ -53,53 +50,12 @@
 						icon="pi pi-check"
 						iconClass="text-[#53565A]"
 						:label="$t('確認')"
-						:loading="isCreateLoading"
-						@click="handleCreate"
+						:loading="isUploadLoading"
+						@click="handleUpload"
 					/>
 				</template>
 			</Dialog>
-			<div class="font-[350]">{{ $t("項目名稱") }}{{ $t(":") }}</div>
-			<InputText
-				style="margin-top: 8px; border: 1px solid; width: 30%"
-				v-model="name"
-			/>
-			<div
-				v-if="
-					props.category === '就學經歷' ||
-					props.category === '教學經歷'
-				"
-				class="font-[350] mt-16px"
-			>
-				{{ $t("所屬學校") }}{{ $t(":") }}
-			</div>
-			<InputText
-				v-if="
-					props.category === '就學經歷' ||
-					props.category === '教學經歷'
-				"
-				style="margin-top: 8px; border: 1px solid; width: 30%"
-				v-model="schoolName"
-			/>
-			<div
-				v-if="props.category === '考試與檢定分數'"
-				class="font-[350] mt-16px"
-			>
-				{{ $t("分數") }}{{ $t(":") }}
-			</div>
-			<InputNumber
-				v-if="props.category === '考試與檢定分數'"
-				style="
-					margin-top: 8px;
-					border: 1px solid;
-					width: 30%;
-					border-radius: 8px;
-				"
-				v-model="score"
-			/>
-			<div
-				class="normalDivider"
-				style="width: 85%; margin-top: 16px"
-			></div>
+			<div class="text-20px font-bold">{{ $t("請上傳補交文件") }}</div>
 			<div v-if="fileName === ''" class="mt-16px" style="width: 85%">
 				<FileUpload
 					style="
@@ -110,7 +66,7 @@
 					:chooseLabel="$t('選擇檔案')"
 					mode="basic"
 					:customUpload="true"
-					@uploader="handleUpload"
+					@uploader="onUpload"
 					:maxFileSize="5000000"
 					:fileLimit="1"
 					accept=".pdf"
@@ -171,34 +127,18 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from "vue";
+import { ref } from "vue";
 import Button from "primevue/button";
-import InputText from "primevue/inputtext";
-import InputNumber from "primevue/inputnumber";
 import FileUpload, { FileUploadUploaderEvent } from "primevue/fileupload";
 import Dialog from "primevue/dialog";
 import "primeicons/primeicons.css";
 
-const props = defineProps([
-	"category",
-	"identity",
-	"order",
-	"itemName",
-	"schoolName",
-	"score",
-	"isCreateLoading",
-]);
-
-const name = ref(props.itemName);
-const schoolName = ref(props.schoolName);
-const score = ref(props.score);
-const fileName = ref("");
+const props = defineProps(["identity", "order", "isUploadLoading"]);
+const emit = defineEmits(["cancel", "upload"]);
 
 const isModalVisible = ref(false);
-
 const formData = new FormData();
-
-const emit = defineEmits(["cancel", "create"]);
+const fileName = ref("");
 
 const dynamicClass = (): string => {
 	switch (props.identity) {
@@ -210,7 +150,7 @@ const dynamicClass = (): string => {
 	return "";
 };
 
-const handleUpload = (event: FileUploadUploaderEvent) => {
+const onUpload = (event: FileUploadUploaderEvent) => {
 	const uploadedFile = Array.isArray(event.files)
 		? event.files[0]
 		: event.files;
@@ -219,18 +159,11 @@ const handleUpload = (event: FileUploadUploaderEvent) => {
 };
 
 const handleCancel = () => {
-	emit("cancel", props.order - 1, props.category);
+	emit("cancel", props.order - 1);
 };
 
-const handleCreate = () => {
-	formData.append("name", name.value);
-	formData.append("category", props.category);
-	if (props.category === "就學經歷" || props.category === "教學經歷")
-		formData.append("school", schoolName.value);
-
-	if (props.category === "考試與檢定分數")
-		formData.append("score", score.value);
-	emit("create", formData);
+const handleUpload = () => {
+	emit("upload", formData);
 };
 </script>
 

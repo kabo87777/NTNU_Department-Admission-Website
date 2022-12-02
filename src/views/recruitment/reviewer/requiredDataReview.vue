@@ -1,5 +1,5 @@
 <template>
-	<div class="ml-128px mr-128px mt-62px">
+	<div>
 		<div class="flex">
 			<h1 class="text-4xl text-bold tracking-widest">
 				{{ $t("必看資料評閱") }}
@@ -118,7 +118,7 @@ const {
 	["recruitmenReviewerApplicantList"],
 	async () => {
 		try {
-			return await api.getApplicantList(
+			return await api.getRequiredApplicantList(
 				store.recruitmentReviewerProgram!.id!
 			);
 		} catch (e: any) {

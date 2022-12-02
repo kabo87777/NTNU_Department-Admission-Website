@@ -3,14 +3,19 @@ import type {
 	AdmissionAdminProgramListResponse,
 	AdmAdminReviewerListResponse,
 	AdmissionAdminApplicantsListResponse,
+	AdmissionAdminScoreFieldResponse,
 	AdmAdminReviewerRelatedProgramResponse,
 	AdmAdminEditApplicantRequest,
 	AdmissionAdminGenericResponse,
+	AdmissionAdminDocsGradeListResponse,
+	AdmissionAdminOralGradeListResponse,
+	AdmissionAdminSingleDocsGradeResponse,
+	AdmissionAdminSingleOralGradeResponse,
+	AdmissionAdminCreateReviewerRequest,
 } from "./types";
 import type { APIGenericResponse } from "@/api/types";
 import { GenericAPI } from "@/api/api";
 import { Ref } from "vue";
-
 export class AdmissionAdminAPI extends GenericAPI {
 	constructor(auth: AuthStore) {
 		super(auth);
@@ -59,6 +64,29 @@ export class AdmissionAdminAPI extends GenericAPI {
 		if (data.error === true || typeof data.data.applicants === "undefined")
 			throw new Error("Failed to fetch applicant list");
 		return data.data.applicants;
+	}
+
+	async getScoreField(
+		programID: number
+	): Promise<AdmissionAdminScoreFieldResponse> {
+		const response: APIGenericResponse = await this.instance.get(
+			`admission/admin/program/${programID}/grading`
+		);
+		if (response.error === true) throw new Error(response.message);
+		return response.data;
+	}
+
+	async patchScoreField(
+		programID: number,
+		newData: AdmissionAdminScoreFieldResponse
+	): Promise<APIGenericResponse> {
+		const response: APIGenericResponse = await this.instance.patch(
+			`/admission/admin/program/${programID}/grading/`,
+			newData
+		);
+		if (response.error === true)
+			throw new Error("Failed to patch score field");
+		return response;
 	}
 	async postApplicantsXlsx(programID: number, data: FormData) {
 		console.log("POST");
@@ -157,5 +185,81 @@ export class AdmissionAdminAPI extends GenericAPI {
 			success: true,
 			message: data.message,
 		};
+	}
+
+	async getDocsGradeList(
+		programID: number
+	): Promise<AdmissionAdminDocsGradeListResponse[]> {
+		const data: APIGenericResponse = await this.instance.get(
+			`/admission/admin/program/${programID}/docs_grading`
+		);
+
+		if (typeof data.data === "undefined")
+			throw new Error("Failed to fetch docs list");
+
+		return data.data;
+	}
+
+	async getOralGradeList(
+		programID: number
+	): Promise<AdmissionAdminOralGradeListResponse[]> {
+		const data: APIGenericResponse = await this.instance.get(
+			`/admission/admin/program/${programID}/oral_grading`
+		);
+
+		if (typeof data.data === "undefined")
+			throw new Error("Failed to fetch oral list");
+
+		return data.data;
+	}
+
+	async getSingleDocsGrade(
+		applicantID: Ref<number>
+	): Promise<AdmissionAdminSingleDocsGradeResponse> {
+		const data: APIGenericResponse = await this.instance.get(
+			`/admission/admin/applicant/${applicantID.value}/docs_grading`
+		);
+
+		if (data.error === true || typeof data.data === "undefined")
+			throw new Error("Failed to fetch docs grade");
+
+		return data.data;
+	}
+
+	async getSingleOralGrade(
+		applicantID: Ref<number>
+	): Promise<AdmissionAdminSingleOralGradeResponse> {
+		const data: APIGenericResponse = await this.instance.get(
+			`/admission/admin/applicant/${applicantID.value}/oral_grading`
+		);
+
+		if (data.error === true || typeof data.data === "undefined")
+			throw new Error("Failed to fetch docs grade");
+
+		return data.data;
+	}
+
+	async updateApplicantStage(
+		applicantID: Ref<number>,
+		data: any
+	): Promise<any> {
+		const response: APIGenericResponse = await this.instance.patch(
+			`/admission/admin/applicant/${applicantID.value}`,
+			data
+		);
+		if (response.error === true)
+			throw new Error("Failed to update program");
+	}
+	async createReviewer(
+		data: AdmissionAdminCreateReviewerRequest
+	): Promise<AdmissionAdminGenericResponse> {
+		const response: APIGenericResponse = await this.instance.post(
+			"/admission/admin/reviewer",
+			data
+		);
+
+		if (response.error === true) throw new Error("Failed to add reviewer");
+
+		return response;
 	}
 }
