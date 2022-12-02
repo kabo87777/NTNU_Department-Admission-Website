@@ -87,7 +87,7 @@
 </template>
 
 <script setup lang="ts">
-import Button from "primevue/button"
+import Button from "primevue/button";
 import { reactive, ref } from "vue";
 import InputText from "primevue/inputtext";
 import { useRecruitmentAdminAuthStore } from "@/stores/universalAuth";
@@ -102,9 +102,9 @@ const turnstileRef = ref<TurnstileComponentExposes>();
 const consumeTurnstileToken = () => {
 	const token: string | undefined = turnstileRef.value?.turnstileToken;
 	window.turnstile?.reset();
-return token;
+	return token;
 };
-const enterEmail = async() =>{
+const enterEmail = async () => {
 	try {
 		const redirectUrl =
 			"http://127.0.0.1:5173/recruitment/manager/password/reset";
@@ -120,7 +120,7 @@ const enterEmail = async() =>{
 		// TODO: show error message
 		console.log(error);
 	}
-}
+};
 </script>
 
 <style setup lang="css">

@@ -87,7 +87,7 @@
 </template>
 
 <script setup lang="ts">
-import Button from "primevue/button"
+import Button from "primevue/button";
 import { reactive, ref } from "vue";
 import InputText from "primevue/inputtext";
 import { useAdmissionApplicantAuthStore } from "@/stores/universalAuth";
@@ -104,9 +104,9 @@ const consumeTurnstileToken = () => {
 	window.turnstile?.reset();
 	return token;
 };
-const enterEmail = () =>{
+const enterEmail = () => {
 	console.log(forgetPwdEmail.value);
-}
+};
 </script>
 
 <style setup lang="css">

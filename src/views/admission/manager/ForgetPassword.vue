@@ -87,7 +87,7 @@
 </template>
 
 <script setup lang="ts">
-import Button from "primevue/button"
+import Button from "primevue/button";
 import { reactive, ref } from "vue";
 import InputText from "primevue/inputtext";
 import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
@@ -104,7 +104,7 @@ const consumeTurnstileToken = () => {
 	window.turnstile?.reset();
 	return token;
 };
-const enterEmail = async () =>{
+const enterEmail = async () => {
 	try {
 		const redirectUrl =
 			"http://127.0.0.1:5173/admission/admin/password/reset";
@@ -120,7 +120,7 @@ const enterEmail = async () =>{
 		// TODO: show error message
 		console.log(error);
 	}
-}
+};
 </script>
 
 <style setup lang="css">

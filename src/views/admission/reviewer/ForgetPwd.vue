@@ -66,9 +66,7 @@
 				</div>
 			</div>
 			<div class="flex justify-center px-4">
-				<router-link
-					to="/admission/reviewer/forgetpassword/emailSent"
-				>
+				<router-link to="/admission/reviewer/forgetpassword/emailSent">
 					<Button
 						class="py-2 w-80 reviewerButtonStyle"
 						@click="enterEmail"
@@ -104,7 +102,7 @@ const consumeTurnstileToken = () => {
 	window.turnstile?.reset();
 	return token;
 };
-const enterEmail = async() =>{
+const enterEmail = async () => {
 	try {
 		const redirectUrl =
 			"http://127.0.0.1:5173/admission/reviewer/password/reset";
@@ -120,7 +118,7 @@ const enterEmail = async() =>{
 		// TODO: show error message
 		console.log(error);
 	}
-}
+};
 </script>
 
 <style setup lang="css">
