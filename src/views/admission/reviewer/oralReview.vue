@@ -21,6 +21,7 @@
 				:value="alist"
 				responsiveLayout="scroll"
 				dataKey="id"
+				removableSort
 				:scrollable="true"
 				scrollHeight="700px"
 				v-model:selection="selectedData"
@@ -30,28 +31,12 @@
 			>
 				<ColumnGroup type="header">
 					<Row>
-						<Column :header="oralOrder" :rowspan="2" :sortable="true"></Column>
-						<Column :header="ID" :rowspan="2" :sortable="true"></Column>
+						<Column :header="oralOrder" :rowspan="2" :sortable="true" sortField="oral_order"></Column>
+						<Column :header="ID" :rowspan="2" :sortable="true" sortField="id"></Column>
 						<Column :header="applicantName" :rowspan="2"></Column>
-						<Column :header="docGrade" :rowspan="2" :sortable="true"></Column>
+						<Column :header="docGrade" :rowspan="2" ></Column>
 						<Column :header="reviewerGrade" :colspan="scoreCount" />
-						<Column :header="totalscore" :rowspan="2" :sortable="true"></Column>
-						<!-- <Column
-							:header="directAccess"
-							dataType="boolean"
-							bodyClass="text-center"
-							style="min-width: 8rem"
-							:rowspan="2"
-						>
-							<template #body="slotProps">
-								<i
-									v-if="slotProps.data.access"
-									class="pi pi-check"
-								></i>
-								<p v-else>-</p>
-							</template>
-						</Column>
-						<Column :header="reason" :rowspan="2"></Column> -->
+						<Column :header="totalscore" :rowspan="2" ></Column>
 					</Row>
 					<Row>
 						<Column :header="score1FieldName" :colspan="1" />
@@ -69,11 +54,10 @@
 						/>
 					</Row>
 				</ColumnGroup>
-				<div v-if="true">
-				<Column field="oral_order"></Column>
-				<Column field="id"></Column>
+				<Column field="oral_order" :sortable="true"></Column>
+				<Column field="id" :sortable="true"></Column>
 				<Column field="name"></Column>
-				<Column>
+				<Column >
 					<template #body="slotProps">
 						{{
 							(slotProps.data.docs_grade_1 * score1Proportion) /
@@ -94,7 +78,7 @@
 				<Column field="oral_grade_3" />
 				<Column v-if="scoreCount > 3" field="oral_grade_4" />
 				<Column v-if="scoreCount > 4" field="oral_grade_5" />
-				<Column>
+				<Column :sortable="true">
 						<template #body="slotProps">
 							{{
 								(slotProps.data.oral_grade_1 * score1Proportion) /
@@ -110,21 +94,6 @@
 							}}
 						</template>
 				</Column>
-				<!-- <Column
-					field="isImmediateEnroll"
-					dataType="boolean"
-					bodyClass="text-center"
-					style="min-width: 8rem"
-				>
-					<template #body="slotProps">
-						<i
-							v-if="slotProps.data.isImmediateEnroll"
-							class="pi pi-check"
-						></i>
-						<p v-else>-</p>
-					</template>
-				</Column> -->
-				</div>
 			</DataTable>
 			<div class="bigBlueDivider !mt-50px"></div>
 			<div class="flex text-xl mt-20px">
