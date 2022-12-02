@@ -53,7 +53,6 @@ import AdmissionReviewerResetpassword from "@/views/admission/reviewer/ResetPass
 import AdmissionReviewerForgetPassword from "@/views/admission/reviewer/ForgetPwd.vue";
 import AdmissionReviewerForgetPasswordEmailSent from "@/views/admission/reviewer/ForgetPwdEmailSent.vue";
 
-
 // Recruitment Applicant section
 import recruitmentApplicantSignin from "@/views/recruitment/applicant/login/signin.vue";
 import recruitmentApplicantRegist from "@/views/recruitment/applicant/login/regist.vue";
@@ -145,7 +144,6 @@ const routes: Array<RouteRecordRaw> = [
 				path: "/admission/reviewer/forgetpassword/emailSent",
 				name: "AdmissionReviewerForgetPasswordEmailSent",
 				component: AdmissionReviewerForgetPasswordEmailSent,
-			
 			},
 			{
 				path: "admission/reviewer",
@@ -551,4 +549,3 @@ export const router: Router = createRouter({
 	history: createWebHistory(),
 	routes,
 });
-
