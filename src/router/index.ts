@@ -417,6 +417,11 @@ const routes: Array<RouteRecordRaw> = [
 						component: recruitmentProjectSetting,
 					},
 					{
+						path: "reviewerSettings",
+						name: "recruitmentManagerManageReviewers",
+						component: R.ListReviewer,
+					},
+					{
 						path: "applicationAccountSetting",
 						name: "recruitmentManagerApplicationAccountSetting",
 						component: R.ListApplicant,
