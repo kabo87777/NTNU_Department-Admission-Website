@@ -118,7 +118,7 @@
 		</router-link>
 
 		<div
-			class="bg-gray-200 bg-opacity-50 h-240px w-[100%]"
+			class="bg-gray-200 bg-opacity-50 h-200px w-[100%]"
 			style="
 				position: absolute;
 				bottom: 0px;
@@ -180,14 +180,8 @@
 						/>
 					</template>
 				</Dialog>
-				<div class="m-auto">
-					<div
-						style="
-							margin-left: 50%;
-							transform: translateX(-50%);
-							width: max-content;
-						"
-					>
+				<div class="flex m-auto">
+					<div>
 						<router-link
 							:to="{
 								name: 'recruitmentApplicantSwitchProject',
@@ -197,7 +191,7 @@
 						>
 							<Button
 								class="p-button-secondary p-button-outlined"
-								style="height: 34px; border: 2px solid #736028"
+								style="height: 40px; border: 2px solid #736028"
 								@click="navigate"
 								role="link"
 							>
@@ -215,10 +209,10 @@
 							</Button>
 						</router-link>
 					</div>
-					<div class="mt-12px">
+					<div class="ml-12px">
 						<Button
 							class="p-button-secondary p-button-outlined"
-							style="height: 34px; border: 2px solid #736028"
+							style="height: 40px; border: 2px solid #736028"
 							@click="isModalVisible = true"
 						>
 							<div>
