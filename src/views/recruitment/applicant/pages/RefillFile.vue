@@ -41,7 +41,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, toRaw, onMounted } from "vue";
+import { ref, reactive, toRaw, onMounted, watch } from "vue";
 import { InvalidSessionError } from "@/api/error";
 import CreateState from "@/components/attachmentStates/createState.vue";
 import RefillState from "@/components/attachmentStates/RefillState.vue";
@@ -133,6 +133,18 @@ onMounted(async () => {
 		});
 	});
 });
+
+watch(
+	() => refillFile.loading,
+	async () => {
+		await api.getProgramList().then((res) => {
+			res.map((item) => {
+				if (item.id === project.project.pid && item.isMoredoc)
+					isEnabled.value = true;
+			});
+		});
+	}
+);
 </script>
 
 <style setup lang="css">

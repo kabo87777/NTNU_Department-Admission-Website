@@ -402,7 +402,7 @@
 				</div>
 			</div>
 			<div class="flex py-16px">
-				<div class="w-1/3">
+				<!-- <div class="w-1/3">
 					<div>{{ "*" + $t("電郵") }}</div>
 					<div>
 						<InputText
@@ -417,7 +417,7 @@
 							{{ $t("此為必填欄位") }}
 						</small>
 					</div>
-				</div>
+				</div> -->
 				<div class="w-1/3">
 					<div>{{ "*" + $t("行動電話") }}</div>
 					<div>
@@ -491,6 +491,7 @@ const loading = reactive({
 });
 
 const name = reactive({
+	id: 0,
 	appellation: "",
 	suffix: "",
 	zhFamName: "",
@@ -556,6 +557,7 @@ const basicInfo: RecruitmentApplicantUserInfoResponse =
 	);
 
 const setBasicInfo = (res: RecruitmentApplicantUserInfoResponse) => {
+	name.id = res.id as number;
 	name.appellation = res.title as string;
 	name.suffix = res.suffix as string;
 	name.zhFamName = res.cn_surname as string;
@@ -611,13 +613,14 @@ const addHours = (numHrs: number, date = new Date()) => {
 
 const handleSave = async () => {
 	const body = {
+		id: name.id,
 		title: name.appellation,
 		suffix: name.suffix,
 		cn_surname: name.zhFamName,
 		name: name.zhName,
 		en_surname: name.enFamName,
 		en_midname: name.enMidName,
-		en_givenname: name.enMidName,
+		en_givenname: name.enName,
 		nationality:
 			identity.selectedIdentity === "本地人士"
 				? "台灣"
@@ -637,9 +640,19 @@ const handleSave = async () => {
 		sex: born.sex,
 		birthcountry: born.country,
 		birth: addHours(8, new Date(born.birth)),
-		email: contact.email,
 		mobile_phone: contact.phone,
 	};
+
+	const keys = Object.keys(body);
+	Object.values(body).map((value, index) => {
+		if (value === null || value === "") {
+			const keyName = keys[
+				index
+			] as keyof RecruitmentApplicantUserInfoResponse;
+
+			delete body[keyName];
+		}
+	});
 
 	loading.save = true;
 
