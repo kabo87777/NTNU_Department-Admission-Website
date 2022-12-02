@@ -22,6 +22,7 @@
 							class="w-[70%] h-36px !mt-4px"
 							style="border: 1px solid #736028"
 							type="text"
+							v-model="name.appellation"
 						/>
 					</div>
 				</div>
@@ -32,6 +33,7 @@
 							class="w-[70%] h-36px !mt-4px"
 							style="border: 1px solid #736028"
 							type="text"
+							v-model="name.suffix"
 						/>
 					</div>
 				</div>
@@ -47,6 +49,7 @@
 							class="w-[70%] h-36px !mt-4px"
 							style="border: 1px solid #736028"
 							type="text"
+							v-model="name.zhFamName"
 						/>
 					</div>
 				</div>
@@ -60,6 +63,7 @@
 							class="w-[70%] h-36px !mt-4px"
 							style="border: 1px solid #736028"
 							type="text"
+							v-model="name.zhName"
 						/>
 					</div>
 				</div>
@@ -72,6 +76,7 @@
 							class="w-[70%] h-36px !mt-4px"
 							style="border: 1px solid #736028"
 							type="text"
+							v-model="name.enFamName"
 						/>
 					</div>
 					<div v-show="required.enFamName" class="absolute mt-[-4px]">
@@ -87,6 +92,7 @@
 							class="w-[70%] h-36px !mt-4px"
 							style="border: 1px solid #736028"
 							type="text"
+							v-model="name.enName"
 						/>
 					</div>
 					<div v-show="required.enName" class="absolute mt-[-4px]">
@@ -102,6 +108,7 @@
 							class="w-[70%] h-36px !mt-4px"
 							style="border: 1px solid #736028"
 							type="text"
+							v-model="name.enMidName"
 						/>
 					</div>
 				</div>
@@ -163,6 +170,7 @@
 							class="w-[70%] h-36px !mt-4px"
 							style="border: 1px solid #736028"
 							type="text"
+							v-model="identity.nationality"
 						/>
 					</div>
 					<div v-show="required.country" class="absolute mt-[-4px]">
@@ -178,6 +186,7 @@
 							class="w-[70%] h-36px !mt-4px"
 							style="border: 1px solid #736028"
 							type="text"
+							v-model="identity.ui"
 						/>
 					</div>
 					<div v-show="required.ui" class="absolute mt-[-4px]">
@@ -352,6 +361,7 @@
 							class="w-[70%] h-36px !mt-4px"
 							style="border: 1px solid #736028"
 							type="text"
+							v-model="born.country"
 						/>
 					</div>
 					<div v-show="required.country" class="absolute mt-[-4px]">
@@ -546,7 +556,21 @@ const basicInfo: RecruitmentApplicantUserInfoResponse =
 	);
 
 const setBasicInfo = (res: RecruitmentApplicantUserInfoResponse) => {
-	identity.ic = res.national_id as string;
+	name.appellation = res.title as string;
+	name.suffix = res.suffix as string;
+	name.zhFamName = res.cn_surname as string;
+	name.zhName = res.name as string;
+	name.enFamName = res.en_surname as string;
+	name.enMidName = res.en_midname as string;
+	name.enName = res.en_givenname as string;
+
+	if (identity.nationality === "台灣") {
+		identity.ic = res.national_id as string;
+		identity.nationality = res.nationality as string;
+	} else if (identity.nationality !== null) {
+		identity.ui = res.national_id as string;
+		identity.nationality = res.nationality as string;
+	}
 
 	householdAddr.addr = res.household_address as string;
 	householdAddr.postcode = res.household_zipcode as string;
@@ -558,6 +582,7 @@ const setBasicInfo = (res: RecruitmentApplicantUserInfoResponse) => {
 			: false;
 
 	born.sex = res.sex as string;
+	born.country = res.birthcountry as string;
 	born.birth = res.birth as Date;
 
 	contact.phone = res.mobile_phone as string;
@@ -586,8 +611,21 @@ const addHours = (numHrs: number, date = new Date()) => {
 
 const handleSave = async () => {
 	const body = {
+		title: name.appellation,
+		suffix: name.suffix,
+		cn_surname: name.zhFamName,
 		name: name.zhName,
-		national_id: identity.ic,
+		en_surname: name.enFamName,
+		en_midname: name.enMidName,
+		en_givenname: name.enMidName,
+		nationality:
+			identity.selectedIdentity === "本地人士"
+				? "台灣"
+				: identity.nationality,
+		national_id:
+			identity.selectedIdentity === "本地人士"
+				? identity.ic
+				: identity.ui,
 		household_address: householdAddr.addr,
 		household_zipcode: householdAddr.postcode,
 		communicate_address: currentAddr.isAddrSame
@@ -597,6 +635,7 @@ const handleSave = async () => {
 			? householdAddr.postcode
 			: currentAddr.postcode,
 		sex: born.sex,
+		birthcountry: born.country,
 		birth: addHours(8, new Date(born.birth)),
 		email: contact.email,
 		mobile_phone: contact.phone,

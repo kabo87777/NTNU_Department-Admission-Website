@@ -93,11 +93,19 @@ export interface RecruitmentApplicantFileListResponse {
 
 export interface RecruitmentApplicantUserInfoResponse {
 	id: number;
+	title?: string;
+	suffix?: string;
+	cn_surname?: string;
 	name?: string;
+	en_givenname?: string;
+	en_midname?: string;
+	en_surname?: string;
 	email?: string;
+	nationality?: string;
 	national_id?: string;
 	sex?: string;
 	birth?: Date;
+	birthcountry?: string;
 	day_phone?: string;
 	night_phone?: string;
 	mobile_phone?: string;
@@ -111,7 +119,8 @@ export interface RecruitmentApplicantUserInfoResponse {
 	graduated_major?: string;
 	isSameDept?: boolean;
 	isDisabled?: boolean;
-	r_applicant_id: number;
+	isConfirm?: boolean;
+	r_applicant_r_program_id: number;
 	created_at: string;
 	updated_at: string;
 }
