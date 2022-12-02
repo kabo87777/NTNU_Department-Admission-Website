@@ -139,7 +139,7 @@
 				/>
 				<!-- FIXME: program amount of people must be got by using API -->
 				<div class="ml-24px">
-					{{ applicantGraded }} / {{ totalApplicant }} {{ $t("位") }}
+					{{ applicantGraded }} / {{ oralApplicant }} {{ $t("位") }}
 				</div>
 
 				<Button
@@ -223,6 +223,7 @@ const store = useGlobalStore();
 const { t } = useI18n();
 
 const totalApplicant = ref(0);
+const oralApplicant = ref(0);
 const applicantGraded = ref(0);
 const progressValue = ref(0);
 const flist: AdmissionReviewerApplicantListResponse[] = [];
@@ -256,20 +257,22 @@ const {
 	{
 		onSuccess: (data) => {
 			totalApplicant.value = data!.length;
+			oralApplicant.value = 0;
 			applicantGraded.value = 0;
 			while(alist.value.length !== 0){ //clean up all value in alist, otherwise will grow with duplicate data
 				alist.value.pop();
 			}
 			data!.forEach((applicant) => {
-				if (applicant.isDocsGraded) {
+				if (applicant.isOralGraded) {
 					applicantGraded.value += 1;
 				}
 				if(applicant.oral_order !== null){
 					alist.value.push(applicant);
+					oralApplicant.value += 1;
 				}
 			});
 			progressValue.value =
-				(applicantGraded.value / totalApplicant.value) * 100;
+				(applicantGraded.value / oralApplicant.value) * 100;
 		},
 	}
 );
