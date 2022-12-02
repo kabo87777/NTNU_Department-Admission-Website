@@ -30,13 +30,13 @@
 			>
 				<ColumnGroup type="header">
 					<Row>
-						<Column :header="oralOrder" :rowspan="2"></Column>
-						<Column :header="ID" :rowspan="2"></Column>
+						<Column :header="oralOrder" :rowspan="2" :sortable="true"></Column>
+						<Column :header="ID" :rowspan="2" :sortable="true"></Column>
 						<Column :header="applicantName" :rowspan="2"></Column>
-						<Column :header="docGrade" :rowspan="2"></Column>
+						<Column :header="docGrade" :rowspan="2" :sortable="true"></Column>
 						<Column :header="reviewerGrade" :colspan="scoreCount" />
-						<!-- <Column :header="totalscore" :rowspan="2"></Column>
-						<Column
+						<Column :header="totalscore" :rowspan="2" :sortable="true"></Column>
+						<!-- <Column
 							:header="directAccess"
 							dataType="boolean"
 							bodyClass="text-center"
@@ -94,6 +94,22 @@
 				<Column field="oral_grade_3" />
 				<Column v-if="scoreCount > 3" field="oral_grade_4" />
 				<Column v-if="scoreCount > 4" field="oral_grade_5" />
+				<Column>
+						<template #body="slotProps">
+							{{
+								(slotProps.data.oral_grade_1 * score1Proportion) /
+									100 +
+								(slotProps.data.oral_grade_2 * score2Proportion) /
+									100 +
+								(slotProps.data.oral_grade_3 * score3Proportion) /
+									100 +
+								(slotProps.data.oral_grade_4 * score4Proportion) /
+									100 +
+								(slotProps.data.oral_grade_5 * score5Proportion) /
+									100
+							}}
+						</template>
+				</Column>
 				<!-- <Column
 					field="isImmediateEnroll"
 					dataType="boolean"
@@ -438,7 +454,7 @@ const reviewerGrade = computed(() => t("評分分數"));
 const learningExT = computed(() => t("學習歷程"));
 const devPotentialT = computed(() => t("發展潛能"));
 const learnPotentialT = computed(() => t("學習潛力"));
-// const totalscore = computed(() => t("分數合計"));
+const totalscore = computed(() => t("分數合計"));
 // const reason = computed(() => t("逕取理由"));
 const confirm = computed(() => t("確認"));
 const cancel = computed(() => t("取消"));
