@@ -29,22 +29,9 @@
 				{{ name }}
 			</div>
 		</div>
-		<div class="p-fluid">
-			<SelectButton
-				v-model="data"
-				:options="datas"
-				aria-labelledby="single"
-				disabled
-				class="!h-50px"
-			/>
-		</div>
 		<div class="bigBrownDivider"></div>
 		<div class="mt-10px h-670px">
-			<PDFView
-				:pdfUrl="jsPdf"
-				class="!h650px"
-				v-if="data != '基本資料'"
-			/>
+			<PDFView :pdfUrl="pdf" class="!h650px" />
 		</div>
 		<div class="bigBlueDivider"></div>
 		<div class="flex mt-16px">
@@ -147,6 +134,7 @@ import { InvalidSessionError } from "@/api/error";
 import { useGlobalStore } from "@/stores/AdmissionReviewerStore";
 import { useToast } from "primevue/usetoast";
 import SelectButton from "primevue/selectbutton";
+import axios from "axios";
 
 const route = useRoute();
 const { t } = useI18n();
@@ -299,6 +287,50 @@ const { data: programGrading } = useQuery(
 			if (data!.docs_grade_weight_5) {
 				score5Proportion.value = data!.docs_grade_weight_5;
 			}
+		},
+	}
+);
+
+const pdf = ref();
+const config = {
+	headers: { Authorization: adminAuth.credentials?.authorization },
+};
+const aFile = axios
+	.get(
+		"http://127.0.0.1:3000/api/v1/admission/reviewer/applicant/1/file/1/getfile",
+		config
+	)
+	.then((response) => {
+		const file = new Blob([response.data], {
+			type: "application/pdf",
+		});
+		pdf.value = URL.createObjectURL(file);
+	});
+const { data: applicantFile } = useQuery(
+	["applicantFile"],
+	async () => {
+		try {
+			return await api.getApplicantSingleFile();
+		} catch (e: any) {
+			if (e instanceof InvalidSessionError) {
+				// FIXME: show session expiry notification??
+				// Why are we even here in the first place?
+				// MainContainer should have checked already.
+				console.error(
+					"Session has already expired while querying applicantInfo"
+				);
+				router.push("/");
+				return;
+			}
+		}
+	},
+	{
+		onSuccess: (data) => {
+			const blob = new Blob([data]);
+			const objectUrl = URL.createObjectURL(blob);
+			// pdf.value = objectUrl;
+			// console.log(pdf.value)
+			// console.log(adminAuth.credentials?.authorization)
 		},
 	}
 );

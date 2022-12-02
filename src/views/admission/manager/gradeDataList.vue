@@ -509,7 +509,7 @@
 		</div>
 		<div v-if="currentTab === translation.admissionList">
 			<DataTable
-				:value="oralGradeList"
+				:value="admittedList"
 				responsiveLayout="scroll"
 				dataKey="id"
 				:scrollable="true"
@@ -547,6 +547,68 @@
 				<Button
 					class="w-140px h-44px !ml-470px p-button-outlined p-button-success"
 					@click="saveEnrollOrder"
+				>
+					<img
+						alt="logo"
+						src="/assets/project-setting/Check_fill.png"
+						style="width: 1.5rem"
+						class="fill-green-500"
+					/>
+					<span class="tracking-1px">{{ $t("保存順序") }}</span>
+				</Button>
+				<Button
+					class="w-140px h-44px !ml-30px p-button-outlined p-button-help"
+				>
+					<img
+						alt="logo"
+						src="/assets/gradeDataList/Paper.png"
+						style="width: 1.5rem"
+						class="fill-green-500"
+					/>
+					<span class="tracking-1px">{{ $t("報表列印") }}</span>
+				</Button>
+			</div>
+		</div>
+		<div v-if="currentTab === translation.reserveList">
+			<DataTable
+				:value="reserveList"
+				responsiveLayout="scroll"
+				dataKey="id"
+				:scrollable="true"
+				scrollHeight="700px"
+				@rowReorder="onRowReorder3"
+				class="p-datatable-lg !h-700px"
+				removableSort
+			>
+				<Column
+					:rowReorder="true"
+					headerStyle="width: 3rem"
+					:reorderableColumn="false"
+				/>
+				<Column field="enroll_stage" :header="reviewResult">
+					<template #body="slotProps">
+						<i v-if="slotProps.data.enroll_stage === null">{{
+							$t("待審核")
+						}}</i>
+						<p v-else>{{ slotProps.data.enroll_stage }}</p>
+					</template>
+				</Column>
+				<Column
+					field="enroll_order"
+					:header="admissionOrder"
+					:sortable="true"
+				></Column>
+				<Column field="id" :header="ID"></Column>
+				<Column field="name" :header="applicantName"></Column>
+				<Column field="docs_grades" :header="docsScore"></Column>
+				<Column field="oral_grades" :header="oralScore"></Column>
+				<Column field="total_grades" :header="final_score"></Column>
+			</DataTable>
+			<div class="bigRedDivider !mt-30px"></div>
+			<div class="flex text-xl mt-20px">
+				<Button
+					class="w-140px h-44px !ml-470px p-button-outlined p-button-success"
+					@click="saveReserveOrder"
 				>
 					<img
 						alt="logo"
@@ -610,8 +672,12 @@ const oralStage1Count = ref(0);
 const oralStage2Count = ref(0);
 const oralStage3Count = ref(0);
 const oralStage4Count = ref(0);
-const orderList = ref<number[]>();
+const oralOrderList = ref<number[]>();
+const admittedOrderList = ref<number[]>();
+const reserveOrderList = ref<number[]>();
 const oralGradeList = ref<AdmissionAdminOralGradeListResponse[]>();
+const admittedList = ref();
+const reserveList = ref();
 const applicantDocsGradeList = useQuery(
 	["admissionAdminDocsGradeList"],
 	async () => {
@@ -683,9 +749,23 @@ const applicantOralGradeList = useQuery(
 			oralStage4Count.value = data!.filter(
 				(item) => item.enroll_stage === "不通過"
 			).length;
-			orderList.value = [];
+			oralOrderList.value = [];
 			for (let i = 1; i <= data!.length; i++) {
-				orderList.value.push(i);
+				oralOrderList.value.push(i);
+			}
+			admittedList.value = data!.filter(
+				(item) => item.enroll_stage === "正取"
+			);
+			admittedOrderList.value = [];
+			for (let i = 1; i <= admittedList.value.length; i++) {
+				admittedOrderList.value.push(i);
+			}
+			reserveList.value = data!.filter(
+				(item) => item.enroll_stage === "備取"
+			);
+			reserveOrderList.value = [];
+			for (let i = 1; i <= reserveList.value.length; i++) {
+				reserveOrderList.value.push(i);
 			}
 		},
 	}
@@ -694,7 +774,8 @@ const { t } = useI18n();
 const translation = {
 	phase1: t("第一階段 (書面審查)"),
 	phase2: t("第二階段 (口試審查)"),
-	admissionList: t("錄取名單"),
+	admissionList: t("正取名單"),
+	reserveList: t("備取名單"),
 	pending: t("待審核"),
 	notPass: t("不通過"),
 	passtophase2: t("進赴二階"),
@@ -712,6 +793,7 @@ const tabOptions = ref([
 	translation.phase1,
 	translation.phase2,
 	translation.admissionList,
+	translation.reserveList,
 ]);
 const dialogCurrentTab = ref(translation.phase1);
 const dialogCurrentTab2 = ref(translation.phase2);
@@ -855,18 +937,11 @@ const editProduct = (prod: any) => {
 	if (!applicantOralGrade.isFetched.value) {
 		applicantOralGrade.refetch({ throwOnError: true });
 	}
-	if (prod.data.final_result) {
-		p1_result.value = translation.passtophase2;
-		p2_result.value = prod.data.final_result;
-	}
 };
 
-const applicantStage = useMutation(async (options: any) => {
+const applicantStage = useMutation(async (newStage: any) => {
 	try {
-		return await api.updateApplicantStage(
-			options.applicantID,
-			options.stage
-		);
+		return await api.updateApplicantStage(applicantID.value, newStage);
 	} catch (error) {
 		console.log(error);
 	}
@@ -915,36 +990,57 @@ function saveOralOrder() {
 		list.push({
 			applicantID,
 			stages: {
-				docs_order: orderList!.value![idx],
+				docs_order: oralOrderList!.value![idx],
 			},
 		});
 	}
 
 	batchUpdateApplicantStages.mutate(list);
-	orderList.value = [];
+	oralOrderList.value = [];
 	for (let i = 1; i <= oralGradeList.value!.length; i++) {
-		orderList.value.push(i);
+		oralOrderList.value.push(i);
 	}
 }
 
 function saveEnrollOrder() {
 	let list = [];
 
-	for (const [idx, entry] of oralGradeList!.value!.entries()) {
-		const applicantID = oralGradeList!.value![idx].id;
+	for (const [idx, entry] of admittedList!.value!.entries()) {
+		const applicantID = admittedList!.value![idx].id;
 
 		list.push({
 			applicantID,
 			stages: {
-				oral_order: orderList!.value![idx],
+				oral_order: admittedOrderList!.value![idx],
 			},
 		});
 	}
 
 	batchUpdateApplicantStages.mutate(list);
-	orderList.value = [];
-	for (let i = 1; i <= oralGradeList.value!.length; i++) {
-		orderList.value.push(i);
+	admittedOrderList.value = [];
+	for (let i = 1; i <= admittedList.value!.length; i++) {
+		admittedOrderList.value.push(i);
+	}
+}
+
+function saveReserveOrder() {
+	let list = [];
+
+	for (const [idx, entry] of reserveList!.value!.entries()) {
+		const applicantID = reserveList!.value![idx].id;
+
+		list.push({
+			applicantID,
+			stages: {
+				oral_order: reserveOrderList!.value![idx],
+			},
+		});
+	}
+
+	batchUpdateApplicantStages.mutate(list);
+	reserveOrderList.value = [];
+	for (let i = 1; i <= reserveList.value!.length; i++) {
+		reserveOrderList.value.push(i);
 	}
 }
 </script>

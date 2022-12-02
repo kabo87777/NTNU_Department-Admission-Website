@@ -120,4 +120,16 @@ export class AdmissionReviewerAPI extends GenericAPI {
 		if (response.error === true)
 			throw new Error("Failed to submit DocsGrade");
 	}
+
+	///FIX while backend is ready
+	async getApplicantSingleFile(): Promise<any> {
+		const data: APIGenericResponse = await this.instance.get(
+			"/admission/reviewer/applicant/1/file/1/getfile"
+		);
+
+		if (data.error === true || typeof data === "undefined")
+			throw new Error("Failed to fetch applicant file");
+
+		return data;
+	}
 }
