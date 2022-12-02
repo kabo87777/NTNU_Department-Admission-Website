@@ -239,16 +239,15 @@ export class AdmissionAdminAPI extends GenericAPI {
 		return data.data;
 	}
 
-	async updateApplicantStage(
-		applicantID: Ref<number>,
-		data: any
-	): Promise<any> {
+	async updateApplicantStage(applicantID: number, data: any): Promise<any> {
 		const response: APIGenericResponse = await this.instance.patch(
-			`/admission/admin/applicant/${applicantID.value}`,
+			`/admission/admin/applicant/${applicantID}`,
 			data
 		);
 		if (response.error === true)
 			throw new Error("Failed to update program");
+
+		return response;
 	}
 	async createReviewer(
 		data: AdmissionAdminCreateReviewerRequest
