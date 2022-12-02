@@ -187,18 +187,12 @@
 		</div>
 		<div
 			v-if="noProgram && !newProgram"
-			class="absolute bg-gray-200 bg-opacity-50 h-270px w-[100%]"
+			class="absolute bg-gray-200 bg-opacity-50 h-220px w-[100%]"
 			style="bottom: 0px"
 		>
 			<div class="relative flex mt-16px">
-				<div class="m-auto">
-					<div
-						style="
-							margin-left: 50%;
-							transform: translateX(-50%);
-							width: max-content;
-						"
-					>
+				<div class="flex m-auto">
+					<div>
 						<router-link
 							to="/admission/manager/reviewerSettings"
 							custom
@@ -214,22 +208,13 @@
 									src="/assets/sidebar/User_box.png"
 									style="width: 18px"
 								/>
-								<h1
-									class="ml-8px tracking-1px text-16px text-gray-900"
-								>
+								<h1 class="ml-8px text-16px text-gray-900">
 									{{ $t("管理審查者") }}
 								</h1>
 							</Button>
 						</router-link>
 					</div>
-					<div
-						style="
-							margin-top: 12px;
-							margin-left: 50%;
-							transform: translateX(-50%);
-							width: max-content;
-						"
-					>
+					<div class="ml-8px">
 						<Button
 							@click="newProject"
 							class="h-36px p-button-outlined p-button-success !bg-white"
@@ -239,9 +224,7 @@
 								src="/assets/sidebar/Add_round.png"
 								style="width: 18px"
 							/>
-							<h1
-								class="ml-8px tracking-1px text-16px text-gray-900"
-							>
+							<h1 class="ml-8px text-16px text-gray-900">
 								{{ $t("新增專案") }}
 							</h1>
 						</Button>
@@ -307,7 +290,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="absolute mt-[-4px]" style="right: 0px">
+				<div class="absolute mt-[-4px]" style="right: 8px">
 					<router-link
 						to="/admission/manager/userSetting"
 						custom
@@ -340,18 +323,12 @@
 		</div>
 		<div
 			v-else
-			class="absolute bg-gray-200 bg-opacity-50 h-270px w-[100%]"
+			class="absolute bg-gray-200 bg-opacity-50 h-220px w-[100%]"
 			style="bottom: 0px"
 		>
 			<div class="relative flex mt-16px">
-				<div class="m-auto">
-					<div
-						style="
-							margin-left: 50%;
-							transform: translateX(-50%);
-							width: max-content;
-						"
-					>
+				<div class="flex m-auto">
+					<div>
 						<router-link
 							to="/admission/manager/reviewerSettings"
 							custom
@@ -367,22 +344,13 @@
 									src="/assets/sidebar/User_box.png"
 									style="width: 18px"
 								/>
-								<h1
-									class="ml-8px tracking-1px text-16px text-gray-900"
-								>
+								<h1 class="ml-8px text-16px text-gray-900">
 									{{ $t("管理審查者") }}
 								</h1>
 							</Button>
 						</router-link>
 					</div>
-					<div
-						style="
-							margin-top: 12px;
-							margin-left: 50%;
-							transform: translateX(-50%);
-							width: max-content;
-						"
-					>
+					<div class="ml-8px">
 						<Button
 							@click="newProject"
 							class="h-36px p-button-outlined p-button-success !bg-white"
@@ -392,9 +360,7 @@
 								src="/assets/sidebar/Add_round.png"
 								style="width: 18px"
 							/>
-							<h1
-								class="ml-8px tracking-1px text-16px text-gray-900"
-							>
+							<h1 class="ml-8px text-16px text-gray-900">
 								{{ $t("新增專案") }}
 							</h1>
 						</Button>
@@ -460,7 +426,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="absolute mt-[-4px]" style="right: 0px">
+				<div class="absolute mt-[-4px]" style="right: 8px">
 					<router-link
 						to="/admission/manager/userSetting"
 						custom
