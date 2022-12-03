@@ -8,15 +8,14 @@
 				style="
 					position: fixed;
 					float: left;
-					width: 20%;
-					min-width: 384px;
+					width: 360px;
 					border-right: 1px solid gray;
 					height: 100%;
 				"
 			>
 				<SideBar />
 			</div>
-			<div style="margin-left: 384px; width: 80%; padding: 60px 6%">
+			<div style="margin-left: 360px; width: 100%; padding: 60px 6%">
 				<router-view />
 			</div>
 		</div>

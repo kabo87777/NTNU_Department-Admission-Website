@@ -6,23 +6,18 @@
 		<div class="bigYellowDivider"></div>
 
 		<!-- 畫面顯示(開放補件時) -->
-		<div v-if="isEnabled" class="px-12px py-24px">
-			<div class="text-[24px] font-[50] font-bold">
-				{{ $t("補交文件") }}
-			</div>
-			<div v-for="(item, index) in proceedList" :key="index">
+		<div v-if="isEnabled" class="px-12px">
+			<div>
 				<CreateState
-					v-if="item.state === 3"
+					v-if="refillFile.state === 3"
 					category="補交文件"
 					identity="admissionApplicant"
-					:order="index + 1"
 					@edit="createToEdit"
 				/>
 				<RefillState
-					v-else-if="item.state === 4"
+					v-else-if="refillFile.state === 4"
 					identity="admissionApplicant"
-					:isUploadLoading="isLoading.upload"
-					:order="index + 1"
+					:isUploadLoading="refillFile.loading"
 					@cancel="editToCreate"
 					@upload="handleUpload"
 				/>
@@ -46,7 +41,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, toRaw } from "vue";
+import { ref, reactive, toRaw, onMounted, watch } from "vue";
 import { InvalidSessionError } from "@/api/error";
 import CreateState from "@/components/attachmentStates/createState.vue";
 import RefillState from "@/components/attachmentStates/RefillState.vue";
@@ -67,9 +62,10 @@ const toast = useToast();
 
 const isEnabled = ref(false);
 
-const isLoading = reactive({
-	upload: false,
-	fetch: false,
+const refillFile = reactive({
+	state: 3,
+	loading: false,
+	order: 1,
 });
 
 const fetchResponse = reactive({
@@ -77,15 +73,12 @@ const fetchResponse = reactive({
 	message: "" as string | [],
 });
 
-const fileList: AttachmentData[] = reactive([]);
-const proceedList: AttachmentDetailData[] = reactive([]);
-
-const editToCreate = (index: number, category: string) => {
-	proceedList[index].state = 3;
+const editToCreate = () => {
+	refillFile.state = 3;
 };
 
-const createToEdit = (index: number, category: string) => {
-	proceedList[index].state = 4;
+const createToEdit = () => {
+	refillFile.state = 4;
 };
 
 const uploadFile = async (body: object) => {
@@ -102,7 +95,7 @@ const uploadFile = async (body: object) => {
 };
 
 const handleUpload = async (body: object) => {
-	isLoading.upload = true;
+	refillFile.loading = true;
 
 	const response = uploadFile(body);
 
@@ -112,8 +105,7 @@ const handleUpload = async (body: object) => {
 			fetchResponse.message = toRaw(res.message);
 		}
 
-		isLoading.upload = false;
-		isLoading.fetch = true;
+		refillFile.loading = false;
 
 		if (fetchResponse.success) {
 			toast.add({
@@ -130,10 +122,29 @@ const handleUpload = async (body: object) => {
 				life: 5000,
 			});
 		}
-
-		isLoading.fetch = true;
 	});
 };
+
+onMounted(async () => {
+	await api.getProgramList().then((res) => {
+		res.map((item) => {
+			if (item.id === project.project.pid && item.isMoredoc)
+				isEnabled.value = true;
+		});
+	});
+});
+
+watch(
+	() => refillFile.loading,
+	async () => {
+		await api.getProgramList().then((res) => {
+			res.map((item) => {
+				if (item.id === project.project.pid && item.isMoredoc)
+					isEnabled.value = true;
+			});
+		});
+	}
+);
 </script>
 
 <style setup lang="css">
