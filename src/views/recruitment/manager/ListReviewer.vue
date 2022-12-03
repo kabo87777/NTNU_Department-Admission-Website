@@ -388,7 +388,6 @@ const confirmDisableReviewer = (
 		accept: () => {
 			changeAccountStateAPI({ id: id, action: "disable" });
 		},
-		reject: () => {},
 	});
 };
 
@@ -421,7 +420,6 @@ const { mutate: changeAccountStateAPI } = useMutation({
 
 		return api.changeReviewerAccountState(id, action);
 	},
-	onSuccess: () => {},
 	onError: () => {
 		toast.add({
 			severity: "error",
