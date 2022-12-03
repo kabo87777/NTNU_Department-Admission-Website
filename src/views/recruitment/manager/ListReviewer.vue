@@ -40,9 +40,17 @@
 						class="p-button-outlined p-button-success"
 					/>
 
+					<!-- Disable user button -->
+					<Button
+						v-if="toRaw(slotProp.data).isDisabled === false"
+						icon="pi pi-ban"
+						class="p-button-outlined p-button-warning"
+						@click="confirmDisableReviewer(slotProp.data)"
+					/>
+
 					<!-- Activate user button -->
 					<Button
-						v-if="slotProp.data.isDisabled === true"
+						v-else
 						icon="pi pi-chevron-circle-up"
 						class="p-button-outlined"
 						@click="
@@ -51,14 +59,6 @@
 								action: 'activate',
 							})
 						"
-					/>
-
-					<!-- Disable user button -->
-					<Button
-						v-else
-						icon="pi pi-ban"
-						class="p-button-outlined p-button-warning"
-						@click="confirmDisableReviewer(slotProp.data)"
 					/>
 				</div>
 			</template>
@@ -165,7 +165,7 @@
 					}}</label>
 					<InputText
 						type="email"
-						class="w-full"
+						:class="`w-full ${addReviewerModal.getInputEmailClass()}`"
 						v-model:model-value="addReviewerModal.data.email"
 					/>
 					<small class="p-error">{{ $t("無效的電子信箱") }}</small>
@@ -350,6 +350,13 @@ const addReviewerModal = ref({
 		addReviewerModal.value.close();
 		createReviewerAPI();
 	},
+	validateEmail: () => {
+		// TODO: email validation
+		return false;
+	},
+	getInputEmailClass: () => {
+		return addReviewerModal.value.validateEmail ? "p-invalid" : "";
+	},
 });
 
 const modalVisible = ref(false);
@@ -358,6 +365,7 @@ const confirm = useConfirm();
 const confirmDisableReviewer = (
 	reviewerData: RecruitmentAdminReviewersListResponse
 ) => {
+	console.log(reviewerData);
 	const { id } = reviewerData;
 
 	confirm.require({

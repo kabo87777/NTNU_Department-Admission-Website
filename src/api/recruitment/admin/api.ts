@@ -138,10 +138,10 @@ export class RecruitmentAdminAPI extends GenericAPI {
 		action: "activate" | "disable"
 	) {
 		const body = {
-			enable: action === "activate" ? true : false,
+			isDisabled: action === "disable" ? true : false,
 		};
 
-		const response: APIGenericResponse = await this.instance.post(
+		const response: APIGenericResponse = await this.instance.patch(
 			`/recruitment/admin/reviewer/${id}/state`,
 			body
 		);
