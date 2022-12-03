@@ -681,7 +681,6 @@ import { useGlobalStore } from "@/stores/globalStore";
 import { useToast } from "primevue/usetoast";
 import { AdmissionAdminReviewerGradeResponse } from "@/api/admission/admin/types";
 import { AdmissionAdminOralGradeListResponse } from "@/api/admission/admin/types";
-import singleApplicantGradeVue from "@/components/singleApplicantGrade.vue";
 
 const adminAuth = useAdmissionAdminAuthStore();
 const api = new AdmissionAdminAPI(adminAuth);
