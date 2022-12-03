@@ -97,9 +97,6 @@ const R = Recruitment.default;
 //Recommender section
 import recommenderAuthVerification from "@/views/admission/recommender/AuthVerification.vue";
 
-//Recommender section
-import recommenderAuthVerification from "@/views/admission/recommender/AuthVerification.vue";
-
 const routes: Array<RouteRecordRaw> = [
 	// Choose recruitment / admission
 	{
