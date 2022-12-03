@@ -141,13 +141,13 @@
 							v-if="disable"
 							v-model="p1_result"
 							:options="p1_result_option"
+							disabled
 							class="w-228px h-44px mt-8px"
 						/>
 						<Dropdown
 							v-else
 							v-model="p1_result"
 							:options="p1_result_option"
-							disabled
 							class="w-228px h-44px mt-8px"
 						/>
 					</div>
@@ -507,6 +507,31 @@
 				</Button>
 			</div>
 		</div>
+		<div v-if="currentTab === translation.iEnrollList">
+			<DataTable
+				:value="iEnrollList"
+				responsiveLayout="scroll"
+				dataKey="id"
+				:scrollable="true"
+				scrollHeight="700px"
+				class="p-datatable-lg !h-700px"
+			>
+				<Column field="id" :header="ID"></Column>
+				<Column field="name" :header="applicantName"></Column>
+			</DataTable>
+			<div class="bigRedDivider !mt-30px"></div>
+			<Button
+				class="w-140px h-44px !ml-550px p-button-outlined p-button-help !mt-20px"
+			>
+				<img
+					alt="logo"
+					src="/assets/gradeDataList/Paper.png"
+					style="width: 1.5rem"
+					class="fill-green-500"
+				/>
+				<span class="tracking-1px">{{ $t("報表列印") }}</span>
+			</Button>
+		</div>
 		<div v-if="currentTab === translation.admissionList">
 			<DataTable
 				:value="admittedList"
@@ -678,6 +703,7 @@ const reserveOrderList = ref<number[]>();
 const oralGradeList = ref<AdmissionAdminOralGradeListResponse[]>();
 const admittedList = ref();
 const reserveList = ref();
+const iEnrollList = ref();
 const applicantDocsGradeList = useQuery(
 	["admissionAdminDocsGradeList"],
 	async () => {
@@ -713,6 +739,9 @@ const applicantDocsGradeList = useQuery(
 			docsStage5Count.value = data!.filter(
 				(item) => item.application_stage === "未送審"
 			).length;
+			iEnrollList.value = data!.filter(
+				(item) => item.application_stage === "逕取"
+			);
 		},
 	}
 );
@@ -776,6 +805,7 @@ const translation = {
 	phase2: t("第二階段 (口試審查)"),
 	admissionList: t("正取名單"),
 	reserveList: t("備取名單"),
+	iEnrollList: t("逕取名單"),
 	pending: t("待審核"),
 	notPass: t("不通過"),
 	passtophase2: t("進赴二階"),
@@ -792,6 +822,7 @@ const currentTab = ref(translation.phase1);
 const tabOptions = ref([
 	translation.phase1,
 	translation.phase2,
+	translation.iEnrollList,
 	translation.admissionList,
 	translation.reserveList,
 ]);
@@ -821,7 +852,7 @@ const disable = computed(() => {
 	return p1_result.value === "未送審";
 });
 const disable1 = computed(() => {
-	return p1_result.value === translation.passtophase2 || !disable.value;
+	return p1_result.value === translation.passtophase2;
 });
 const disable2 = computed(() => {
 	return dialogCurrentTab.value === translation.phase1;

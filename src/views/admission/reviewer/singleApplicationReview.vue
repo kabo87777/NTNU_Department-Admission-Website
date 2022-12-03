@@ -29,12 +29,12 @@
 				{{ name }}
 			</div>
 		</div>
-		<div class="bigBrownDivider"></div>
+		<div class="bigBlueDivider"></div>
 		<div class="mt-10px h-670px">
 			<PDFView :pdfUrl="pdf" class="!h650px" />
 		</div>
 		<div class="bigBlueDivider"></div>
-		<div class="flex mt-16px">
+		<div class="flex mt-10px">
 			<div class="text-xl mt-5px">
 				{{ score1Title }} ({{ score1Proportion }}%)
 			</div>
@@ -60,7 +60,7 @@
 				class="ml-34px !w-132px !h-44px"
 			/>
 		</div>
-		<div class="flex mt-16px" v-if="programGrading?.docs_grade_name_4">
+		<div class="flex mt-10px" v-if="programGrading?.docs_grade_name_4">
 			<div class="text-xl mt-5px">
 				{{ score4Title }} ({{ score4Proportion }}%)
 			</div>
@@ -82,7 +82,17 @@
 				v-if="programGrading?.docs_grade_name_5"
 			/>
 		</div>
-		<div class="flex mt-24px">
+		<div class="flex mt-10px">
+			<div class="text-xl mt-5px">
+				{{ $t("備註：") }}
+			</div>
+			<InputText
+				type="text"
+				v-model="remark"
+				class="!w-683px !h-44px ml-5px"
+			/>
+		</div>
+		<div class="flex mt-10px">
 			<Checkbox
 				inputId="binary"
 				v-model="accessChecked"
@@ -174,6 +184,7 @@ const inputScore_3 = ref(0);
 const inputScore_4 = ref(0);
 const inputScore_5 = ref(0);
 const name = ref("");
+const remark = ref("");
 const total_score = computed(() => {
 	return (
 		(inputScore_1!.value! * score1Proportion.value) / 100 +
@@ -295,17 +306,6 @@ const pdf = ref();
 const config = {
 	headers: { Authorization: adminAuth.credentials?.authorization },
 };
-const aFile = axios
-	.get(
-		"http://127.0.0.1:3000/api/v1/admission/reviewer/applicant/1/file/1/getfile",
-		config
-	)
-	.then((response) => {
-		const file = new Blob([response.data], {
-			type: "application/pdf",
-		});
-		pdf.value = URL.createObjectURL(file);
-	});
 const { data: applicantFile } = useQuery(
 	["applicantFile"],
 	async () => {
@@ -326,11 +326,8 @@ const { data: applicantFile } = useQuery(
 	},
 	{
 		onSuccess: (data) => {
-			const blob = new Blob([data]);
-			const objectUrl = URL.createObjectURL(blob);
-			// pdf.value = objectUrl;
-			// console.log(pdf.value)
-			// console.log(adminAuth.credentials?.authorization)
+			console.log(data);
+			pdf.value = "data:application/pdf;base64," + data;
 		},
 	}
 );

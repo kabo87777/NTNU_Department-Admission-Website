@@ -9,6 +9,7 @@ import type {
 	AdmissionReviewerGenericResponse,
 } from "./types";
 import type { APIGenericResponse } from "@/api/types";
+import { Blob } from "buffer";
 
 export class AdmissionReviewerAPI extends GenericAPI {
 	constructor(auth: AuthStore) {
@@ -122,14 +123,9 @@ export class AdmissionReviewerAPI extends GenericAPI {
 	}
 
 	///FIX while backend is ready
-	async getApplicantSingleFile(): Promise<any> {
-		const data: APIGenericResponse = await this.instance.get(
+	async getApplicantSingleFile(): Promise<Blob> {
+		return await this.instance.get(
 			"/admission/reviewer/applicant/1/file/1/getfile"
 		);
-
-		if (data.error === true || typeof data === "undefined")
-			throw new Error("Failed to fetch applicant file");
-
-		return data;
 	}
 }
