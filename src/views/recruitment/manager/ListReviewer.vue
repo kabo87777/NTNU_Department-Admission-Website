@@ -168,7 +168,11 @@
 						:class="`w-full ${addReviewerModal.getInputEmailClass()}`"
 						v-model:model-value="addReviewerModal.data.email"
 					/>
-					<small class="p-error">{{ $t("無效的電子信箱") }}</small>
+					<small
+						v-if="addReviewerModal.invalidEmailFlag()"
+						class="p-error"
+						>{{ $t("無效的電子信箱") }}</small
+					>
 				</div>
 
 				<div>
@@ -352,10 +356,17 @@ const addReviewerModal = ref({
 	},
 	validateEmail: () => {
 		// TODO: email validation
-		return false;
+		// RFC 2822 email regex
+		// https://regexr.com/2rhq7
+		const re =
+			/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
+		return re.test(addReviewerModal.value.data.email);
 	},
 	getInputEmailClass: () => {
-		return addReviewerModal.value.validateEmail ? "p-invalid" : "";
+		return addReviewerModal.value.validateEmail() ? "" : "p-invalid";
+	},
+	invalidEmailFlag: () => {
+		return addReviewerModal.value.validateEmail() === false;
 	},
 });
 
