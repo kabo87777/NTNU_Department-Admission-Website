@@ -201,7 +201,7 @@ import { reactive, ref, computed, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRecruitmentAdminAuthStore } from "@/stores/universalAuth";
 import { RecruitmentAdminAPI } from "@/api/recruitment/admin/api";
-import { useGlobalStore } from "@/stores/globalStore";
+import { useGlobalStore } from "@/stores/RecruitmentAdminStore";
 import { InvalidSessionError } from "@/api/error";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
 import { RecruitmentAdminProgramListResponse } from "@/api/recruitment/admin/types";
