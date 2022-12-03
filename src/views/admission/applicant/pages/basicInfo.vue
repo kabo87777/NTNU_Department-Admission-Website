@@ -1,462 +1,690 @@
 <template>
-	<div class="mt-16px pl-8px pr-8px">
-		<div class="w-1/2">
-			<label class="text-24px font-medium">{{ $t("姓名資訊") }}</label>
-			<label class="pl-8px">
-				<i class="text-green pi pi-check"></i>
-			</label>
-			<label class="pl-8px text-14px text-stone-500">
-				"*"{{ $t("米字號表示該項目為必填欄位") }}
-			</label>
+	<div>
+		<div class="font-[500] text-[32px] font-bold">
+			{{ $t("基本資料") }}
 		</div>
-		<div class="mt-24px flex">
-			<div class="w-1/3">
-				<div class="text-16px">{{ $t("稱謂") }}：</div>
-				<Dropdown
-					v-model="nameInfo.selected_title"
-					:options="titles"
-					optionLabel="type_name"
-					optionValue="type_name"
-					class="!border-gray-900 !w-300px !h-40px mt-10px"
-				/>
-			</div>
-			<div class="w-1/3">
-				<div class="text-16px">{{ $t("後綴") }}：</div>
-				<InputText
-					type="text"
-					v-model="nameInfo.suffix"
-					placeholder="Text"
-					class="!border-gray-900 !w-300px !h-40px !mt-5px"
-				/>
-			</div>
-		</div>
-		<div class="mt-24px flex">
-			<div class="w-1/2">
-				<div class="text-16px">{{ $t("中文姓氏") }}：</div>
-				<InputText
-					type="text"
-					v-model="nameInfo.chLastName"
-					placeholder="Text"
-					class="!border-gray-900 !w-440px !h-40px !mt-5px"
-				/>
-			</div>
-			<div class="w-1/2">
-				<div class="text-16px">{{ $t("中文名字") }}：</div>
-				<InputText
-					type="text"
-					v-model="nameInfo.chFirstName"
-					placeholder="Text"
-					class="!border-gray-900 !w-440px !h-40px !mt-5px"
-				/>
-			</div>
-		</div>
-		<div class="mt-24px flex">
-			<div class="w-1/3">
-				<div class="text-16px">{{ $t("英文姓氏") }}：</div>
-				<InputText
-					type="text"
-					v-model="nameInfo.lastName"
-					placeholder="Text"
-					class="!border-gray-900 !w-300px !h-40px !mt-5px"
-				/>
-			</div>
-			<div class="w-1/3">
-				<div class="text-16px">{{ $t("英文中間名字") }}：</div>
-				<InputText
-					type="text"
-					v-model="nameInfo.middleName"
-					placeholder="Text"
-					class="!border-gray-900 !w-300px !h-40px !mt-5px"
-				/>
-			</div>
-			<div class="w-1/3">
-				<div class="text-16px">{{ $t("英文名字") }}：</div>
-				<InputText
-					type="text"
-					v-model="nameInfo.firstName"
-					placeholder="Text"
-					class="!border-gray-900 !w-300px !h-40px !mt-5px"
-				/>
-			</div>
-		</div>
-		<ParagraphDivider />
-		<div class="w-600px">
-			<label class="text-24px font-medium">{{
-				$t("入學身分(本地人士)")
-			}}</label>
-			<label class="pl-8px">
-				<i class="text-green pi pi-pencil"></i>
-			</label>
-			<label class="pl-8px text-14px text-stone-500">
-				"*"{{ $t("米字號表示該項目為必填欄位") }}
-			</label>
-		</div>
+		<div class="bigYellowDivider"></div>
 
-		<div class="mt-24px flex">
-			<div class="w-1/3">
-				<div class="text-16px">{{ $t("入學身分") }}：</div>
-				<Dropdown
-					v-model="admissionStatusLocal.admissionIdendity"
-					:options="types"
-					optionLabel="type_name"
-					optionValue="type_name"
-					class="!border-gray-900 !w-300px !h-40px mt-10px"
-				/>
+		<div class="px-12px py-24px">
+			<div class="flex">
+				<div class="text-[24px] font-[50] font-bold">
+					{{ $t("姓名資訊") }}
+				</div>
+				<div class="mt-6px ml-40px text-[#8D9093] text-[14px]">
+					{{ $t('" * " 為必填欄位') }}
+				</div>
 			</div>
-		</div>
-		<div class="mt-24px flex">
-			<div class="w-1/3">
-				<div class="text-16px">{{ $t("身份證字號") }}：</div>
-				<InputText
-					type="text"
-					v-model="admissionStatusLocal.ID"
-					placeholder="Text"
-					class="!border-gray-900 !w-300px !h-40px !mt-5px"
-				/>
+			<div class="flex pt-24px">
+				<div class="w-1/3">
+					<div>{{ $t("稱謂") }}</div>
+					<div>
+						<InputText
+							class="w-[70%] h-36px !mt-4px"
+							style="border: 1px solid #736028"
+							type="text"
+						/>
+					</div>
+				</div>
+				<div class="w-1/3">
+					<div>{{ $t("後綴") }}</div>
+					<div>
+						<InputText
+							class="w-[70%] h-36px !mt-4px"
+							style="border: 1px solid #736028"
+							type="text"
+						/>
+					</div>
+				</div>
 			</div>
-		</div>
-		<ParagraphDivider />
-		<div class="w-600px">
-			<label class="text-24px font-medium">{{
-				$t("入學身分(外籍生)")
-			}}</label>
-			<label class="pl-8px">
-				<i class="text-green pi pi-pencil"></i>
-			</label>
-			<label class="pl-8px text-14px text-stone-500">
-				"*"{{ $t("米字號表示該項目為必填欄位") }}
-			</label>
-		</div>
-		<div class="mt-24px flex">
-			<div class="w-1/3">
-				<div class="text-16px">{{ $t("入學身分") }}：</div>
-				<Dropdown
-					v-model="admissionStatus.admissionIdendity"
-					:options="types"
-					optionLabel="type_name"
-					optionValue="type_name"
-					class="!border-gray-900 !w-300px !h-40px mt-10px"
-				/>
+			<div class="flex pt-16px">
+				<div class="w-1/3">
+					<div>{{ $t("中文姓氏") }}</div>
+					<div class="mt-4px text-12px text-[#8D9093]">
+						{{ "*" + $t("無則免填") }}
+					</div>
+					<div>
+						<InputText
+							class="w-[70%] h-36px !mt-4px"
+							style="border: 1px solid #736028"
+							type="text"
+						/>
+					</div>
+				</div>
+				<div class="w-1/3">
+					<div>{{ $t("中文名字") }}</div>
+					<div class="mt-4px text-12px text-[#8D9093]">
+						{{ "*" + $t("無則免填") }}
+					</div>
+					<div>
+						<InputText
+							class="w-[70%] h-36px !mt-4px"
+							style="border: 1px solid #736028"
+							type="text"
+						/>
+					</div>
+				</div>
 			</div>
-		</div>
-		<div class="mt-24px flex">
-			<div class="w-1/3">
-				<div class="text-16px">{{ $t("國籍") }}：</div>
-				<InputText
-					type="text"
-					v-model="admissionStatus.nationality"
-					placeholder="Text"
-					class="!border-gray-900 !w-300px !h-40px !mt-5px"
-				/>
-			</div>
-			<div class="w-1/3">
-				<div class="text-16px">{{ $t("護照號碼") }}：</div>
-				<InputText
-					type="text"
-					v-model="admissionStatus.passport"
-					placeholder="Text"
-					class="!border-gray-900 !w-300px !h-40px !mt-5px"
-				/>
-			</div>
-			<div class="w-1/3">
-				<div class="text-16px">{{ $t("居留證統一證號") }}：</div>
-				<InputText
-					type="text"
-					v-model="admissionStatus.ARC"
-					placeholder="Text"
-					class="!border-gray-900 !w-300px !h-40px !mt-5px"
-				/>
-			</div>
-		</div>
-		<ParagraphDivider />
-		<div class="w-600px">
-			<label class="text-24px font-medium">{{ $t("戶籍地址") }}</label>
-			<label class="pl-8px">
-				<i class="text-green pi pi-pencil"></i>
-			</label>
-			<label class="pl-8px text-14px text-stone-500">
-				"*"{{ $t("米字號表示該項目為必填欄位") }}
-			</label>
-		</div>
-		<div class="mt-24px">
-			<div class="w-3/4">
-				<div class="text-16px">{{ $t("地址") }}：</div>
-				<InputText
-					type="text"
-					v-model="residentAddress.Address"
-					placeholder="Text"
-					class="!border-gray-900 !w-440px !h-40px !mt-5px"
-				/>
-			</div>
-		</div>
-		<ParagraphDivider />
-		<div class="w-600px">
-			<label class="text-24px font-medium">{{ $t("現居地址") }}</label>
-			<label class="pl-8px">
-				<i class="text-green pi pi-pencil"></i>
-			</label>
-			<label class="pl-8px text-14px text-stone-500">
-				"*"{{ $t("米字號表示該項目為必填欄位") }}
-			</label>
-		</div>
-		<div class="mt-16px ml-16px">
-			<Checkbox
-				inputId="text"
-				v-model="textCheckedAddress"
-				:binary="true"
-				v-on:click="address"
-			/>
-			<label for="text" class="ml-8px font-medium">{{
-				$t("與戶籍地址資訊相同")
-			}}</label>
-		</div>
-		<div class="mt-24px">
-			<div class="w-3/4">
-				<div class="text-16px">{{ $t("地址") }}：</div>
-				<InputText
-					type="text"
-					v-model="currentAddress.Address"
-					placeholder="Text"
-					class="!border-gray-900 !w-440px !h-40px !mt-5px"
-				/>
+			<div class="flex py-16px">
+				<div class="w-1/3">
+					<div>{{ "*" + $t("英文姓氏") }}</div>
+					<div>
+						<InputText
+							class="w-[70%] h-36px !mt-4px"
+							style="border: 1px solid #736028"
+							type="text"
+						/>
+					</div>
+					<div v-show="required.enFamName" class="absolute mt-[-4px]">
+						<small class="p-error">
+							{{ $t("此為必填欄位") }}
+						</small>
+					</div>
+				</div>
+				<div class="w-1/3">
+					<div>{{ "*" + $t("英文名字") }}</div>
+					<div>
+						<InputText
+							class="w-[70%] h-36px !mt-4px"
+							style="border: 1px solid #736028"
+							type="text"
+						/>
+					</div>
+					<div v-show="required.enName" class="absolute mt-[-4px]">
+						<small class="p-error">
+							{{ $t("此為必填欄位") }}
+						</small>
+					</div>
+				</div>
+				<div class="w-1/3">
+					<div>{{ $t("英文中間名") }}</div>
+					<div>
+						<InputText
+							class="w-[70%] h-36px !mt-4px"
+							style="border: 1px solid #736028"
+							type="text"
+						/>
+					</div>
+				</div>
 			</div>
 		</div>
 		<ParagraphDivider />
-		<div class="w-600px">
-			<label class="text-24px font-medium">{{ $t("身份資料") }}</label>
-			<label class="pl-8px">
-				<i class="text-green pi pi-pencil"></i>
-			</label>
-			<label class="pl-8px text-14px text-stone-500">
-				"*"{{ $t("米字號表示該項目為必填欄位") }}
-			</label>
-		</div>
-
-		<div class="mt-24px flex">
-			<div class="w-1/3">
-				<div class="text-16px">{{ $t("性別") }}：</div>
+		<div class="px-12px py-24px">
+			<div class="flex">
+				<div class="text-[24px] font-[50] font-bold">
+					{{ $t("入職身份") }}
+				</div>
+				<div class="mt-6px ml-40px text-[#8D9093] text-[14px]">
+					{{ $t('" * " 為必填欄位') }}
+				</div>
+			</div>
+			<div class="flex pt-24px">
+				<div class="w-1/3">
+					<div>{{ "*" + $t("入職身份") }}</div>
+					<div>
+						<Dropdown
+							class="w-[70%] h-36px !mt-4px"
+							style="border: 1px solid #736028"
+							v-model="identity.selectedIdentity"
+							placeholder="請選擇身份"
+							:options="identityOptions"
+							optionLabel="name"
+							optionValue="name"
+						>
+							<template #value="slotProps">
+								<div v-if="slotProps.value" class="mt-[-8px]">
+									{{ slotProps.value }}
+								</div>
+								<div v-else class="mt-[-8px]">
+									{{ $t(slotProps.placeholder) }}
+								</div>
+							</template>
+							<template #option="slotProps">
+								<div class="mt-[-8px] h-12px">
+									{{ $t(slotProps.option.name) }}
+								</div>
+							</template>
+						</Dropdown>
+					</div>
+					<div v-show="required.identity" class="absolute mt-[-4px]">
+						<small class="p-error">
+							{{ $t("此為必填欄位") }}
+						</small>
+					</div>
+				</div>
+			</div>
+			<div
+				class="flex py-16px"
+				v-if="identity.selectedIdentity === '外籍人士'"
+			>
+				<div class="w-1/3">
+					<div>{{ "*" + $t("國籍") }}</div>
+					<div>
+						<InputText
+							class="w-[70%] h-36px !mt-4px"
+							style="border: 1px solid #736028"
+							type="text"
+						/>
+					</div>
+					<div v-show="required.country" class="absolute mt-[-4px]">
+						<small class="p-error">
+							{{ $t("此為必填欄位") }}
+						</small>
+					</div>
+				</div>
+				<div class="w-1/3">
+					<div>{{ "*" + $t("居留證統一證號") }}</div>
+					<div>
+						<InputText
+							class="w-[70%] h-36px !mt-4px"
+							style="border: 1px solid #736028"
+							type="text"
+						/>
+					</div>
+					<div v-show="required.ui" class="absolute mt-[-4px]">
+						<small class="p-error">
+							{{ $t("此為必填欄位") }}
+						</small>
+					</div>
+				</div>
+			</div>
+			<div class="flex py-16px" v-else>
+				<div class="w-1/3">
+					<div>{{ "*" + $t("身份證字號") }}</div>
+					<div>
+						<InputText
+							class="w-[70%] h-36px !mt-4px"
+							style="border: 1px solid #736028"
+							type="text"
+							v-model="identity.ic"
+						/>
+					</div>
+					<div v-show="required.icNum" class="absolute mt-[-4px]">
+						<small class="p-error">
+							{{ $t("此為必填欄位") }}
+						</small>
+					</div>
+				</div>
 			</div>
 		</div>
-
-		<div class="mt-24px flex">
-			<div class="field-radiobutton w-1/5">
-				<RadioButton
-					inputId="city1"
-					name="city"
-					value="male"
-					v-model="identityInfo.sex"
-				/>
-				<label
-					for="city1"
-					class="!border-gray-900 ml-8px font-medium"
-					>{{ $t("男性") }}</label
-				>
-			</div>
-			<div class="field-radiobutton w-1/5">
-				<RadioButton
-					inputId="city2"
-					name="city"
-					value="female"
-					v-model="identityInfo.sex"
-				/>
-				<label for="city2" class="ml-8px font-medium">{{
-					$t("女性")
-				}}</label>
-			</div>
-		</div>
-
-		<div class="mt-24px flex">
-			<div class="w-1/3">
-				<div class="text-16px">{{ $t("出生國家") }}：</div>
-				<Dropdown
-					v-model="identityInfo.country"
-					:options="cities"
-					optionLabel="name"
-					class="!border-gray-900 !w-300px !h-40px mt-10px"
-				/>
-			</div>
-			<div class="w-1/3">
-				<div class="text-16px">{{ $t("出生日期") }}：</div>
-				<Calendar
-					class="!border-gray-900 !w-300px !h-40px !mt-5px"
-					inputId="dateformat"
-					v-model="date1"
-					dateFormat="mm-dd-yy"
-					:showIcon="true"
-				>
-				</Calendar>
-			</div>
-		</div>
-
 		<ParagraphDivider />
-		<div class="w-600px">
-			<label class="text-24px font-medium">{{ $t("聯絡方式") }}</label>
-			<label class="pl-8px">
-				<i class="text-green pi pi-pencil"></i>
-			</label>
-			<label class="pl-8px text-14px text-stone-500">
-				"*"{{ $t("米字號表示該項目為必填欄位") }}
-			</label>
-		</div>
-		<div class="mt-24px flex">
-			<div class="w-1/2">
-				<div class="text-16px">{{ $t("主要聯絡電話") }}：</div>
-				<InputText
-					type="text"
-					v-model="contactInfo.primaryPhone"
-					placeholder="Text"
-					class="!border-gray-900 !w-300px !h-40px !mt-5px"
-				/>
+		<div v-if="identity.selectedIdentity !== '外籍人士'">
+			<div class="px-12px py-24px">
+				<div class="flex">
+					<div class="text-[24px] font-[50] font-bold">
+						{{ $t("戶籍地址") }}
+					</div>
+					<div class="mt-6px ml-40px text-[#8D9093] text-[14px]">
+						{{ $t('" * " 為必填欄位') }}
+					</div>
+				</div>
+				<div class="flex py-16px">
+					<div class="w-2/3">
+						<div>{{ "*" + $t("地址") }}</div>
+						<div>
+							<InputText
+								class="w-[80%] h-36px !mt-4px"
+								style="border: 1px solid #736028"
+								type="text"
+								v-model="householdAddr.addr"
+							/>
+						</div>
+						<div
+							v-show="required.householdAddr"
+							class="absolute mt-[-4px]"
+						>
+							<small class="p-error">
+								{{ $t("此為必填欄位") }}
+							</small>
+						</div>
+					</div>
+					<div class="w-1/3">
+						<div>{{ "*" + $t("郵遞區號") }}</div>
+						<div>
+							<InputText
+								class="w-[70%] h-36px !mt-4px"
+								style="border: 1px solid #736028"
+								type="text"
+								v-model="householdAddr.postcode"
+							/>
+						</div>
+						<div
+							v-show="required.householdpostcode"
+							class="absolute mt-[-4px]"
+						>
+							<small class="p-error">
+								{{ $t("此為必填欄位") }}
+							</small>
+						</div>
+					</div>
+				</div>
 			</div>
+			<ParagraphDivider />
 		</div>
-		<div class="mt-24px flex">
-			<div class="w-1/2">
-				<div class="text-16px">{{ $t("行動電話") }}：</div>
-				<InputText
-					type="text"
-					v-model="contactInfo.mobilePhone"
-					placeholder="Text"
-					class="!border-gray-900 !w-300px !h-40px !mt-5px"
-				/>
+		<div class="px-12px py-24px">
+			<div class="flex">
+				<div class="text-[24px] font-[50] font-bold">
+					{{ $t("現居地址") }}
+				</div>
+				<div class="mt-6px ml-40px text-[#8D9093] text-[14px]">
+					{{ $t('" * " 為必填欄位') }}
+				</div>
 			</div>
-			<div class="mt-16px ml-16px">
+			<div class="mt-16px">
 				<Checkbox
-					inputId="file"
-					v-model="textCheckedphone"
+					v-model="currentAddr.isAddrSame"
 					:binary="true"
-					v-on:click="phone"
+					v-on:click="address"
 				/>
-				<label for="file" class="ml-8px font-medium">{{
-					$t("行動電話與主要聯絡電話相同")
-				}}</label>
+				<label class="ml-4px">{{ $t("住址相同") }}</label>
+			</div>
+			<div class="flex py-16px">
+				<div class="w-2/3">
+					<div>{{ "*" + $t("地址") }}</div>
+					<div>
+						<InputText
+							class="w-[80%] h-36px !mt-4px"
+							style="border: 1px solid #736028"
+							type="text"
+							v-model="currentAddr.addr"
+							:disabled="currentAddr.isAddrSame"
+						/>
+					</div>
+					<div
+						v-show="required.currentAddr"
+						class="absolute mt-[-4px]"
+					>
+						<small class="p-error">
+							{{ $t("此為必填欄位") }}
+						</small>
+					</div>
+				</div>
+				<div class="w-1/3">
+					<div>{{ "*" + $t("郵遞區號") }}</div>
+					<div>
+						<InputText
+							class="w-[70%] h-36px !mt-4px"
+							style="border: 1px solid #736028"
+							type="text"
+							v-model="currentAddr.postcode"
+							:disabled="currentAddr.isAddrSame"
+						/>
+					</div>
+					<div
+						v-show="required.currentPostcode"
+						class="absolute mt-[-4px]"
+					>
+						<small class="p-error">
+							{{ $t("此為必填欄位") }}
+						</small>
+					</div>
+				</div>
 			</div>
 		</div>
-		<div class="mt-24px flex">
-			<div class="w-1/3">
-				<div class="text-16px">{{ $t("電子信箱") }}：</div>
-				<InputText
-					type="text"
-					v-model="contactInfo.email"
-					placeholder="Text"
-					class="!border-gray-900 !w-300px !h-40px !mt-5px"
-				/>
+		<ParagraphDivider />
+		<div class="px-12px py-24px">
+			<div class="flex">
+				<div class="text-[24px] font-[50] font-bold">
+					{{ $t("身份資料") }}
+				</div>
+				<div class="mt-6px ml-40px text-[#8D9093] text-[14px]">
+					{{ $t('" * " 為必填欄位') }}
+				</div>
 			</div>
+			<div class="mt-24px">
+				<div>{{ "*" + $t("生理性別") }}</div>
+				<div class="mt-2px flex">
+					<div>
+						<RadioButton v-model="born.sex" value="male" />
+						<label class="ml-4px">{{ $t("生理男性") }}</label>
+					</div>
+					<div class="ml-160px">
+						<RadioButton v-model="born.sex" value="female" />
+						<label class="ml-4px">{{ $t("生理女性") }}</label>
+					</div>
+				</div>
+				<div v-show="required.sex" class="absolute mt-[-4px]">
+					<small class="p-error">
+						{{ $t("此為必填欄位") }}
+					</small>
+				</div>
+			</div>
+			<div class="flex py-16px">
+				<div class="w-1/3">
+					<div>{{ "*" + $t("出生國家") }}</div>
+					<div>
+						<InputText
+							class="w-[70%] h-36px !mt-4px"
+							style="border: 1px solid #736028"
+							type="text"
+						/>
+					</div>
+					<div v-show="required.country" class="absolute mt-[-4px]">
+						<small class="p-error">
+							{{ $t("此為必填欄位") }}
+						</small>
+					</div>
+				</div>
+				<div class="w-1/3">
+					<div>{{ "*" + $t("出生日期") }}</div>
+					<div>
+						<Calendar
+							v-model="born.birth"
+							dateFormat="mm-dd-yy"
+							class="w-[70%] h-36px !mt-4px"
+							style="
+								border: 1px solid #736028;
+								border-radius: 6px;
+							"
+						/>
+					</div>
+					<div v-show="required.birth" class="absolute mt-[-4px]">
+						<small class="p-error">
+							{{ $t("此為必填欄位") }}
+						</small>
+					</div>
+				</div>
+			</div>
+		</div>
+		<ParagraphDivider />
+		<div class="px-12px py-24px">
+			<div class="flex">
+				<div class="text-[24px] font-[50] font-bold">
+					{{ $t("聯絡方式") }}
+				</div>
+				<div class="mt-6px ml-40px text-[#8D9093] text-[14px]">
+					{{ $t('" * " 為必填欄位') }}
+				</div>
+			</div>
+			<div class="flex py-16px">
+				<div class="w-1/3">
+					<div>{{ "*" + $t("電郵") }}</div>
+					<div>
+						<InputText
+							class="w-[70%] h-36px !mt-4px"
+							style="border: 1px solid #736028"
+							type="email"
+							v-model="contact.email"
+						/>
+					</div>
+					<div v-show="required.email" class="absolute mt-[-4px]">
+						<small class="p-error">
+							{{ $t("此為必填欄位") }}
+						</small>
+					</div>
+				</div>
+				<div class="w-1/3">
+					<div>{{ "*" + $t("行動電話") }}</div>
+					<div>
+						<InputText
+							class="w-[70%] h-36px !mt-4px"
+							style="border: 1px solid #736028"
+							type="text"
+							v-model="contact.phone"
+						/>
+					</div>
+					<div v-show="required.phone" class="absolute mt-[-4px]">
+						<small class="p-error">
+							{{ $t("此為必填欄位") }}
+						</small>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="bigYellowDivider"></div>
+		<div>
+			<Button
+				class="p-button-secondary"
+				style="
+					margin-top: 32px;
+					margin-left: 100%;
+					transform: translateX(-100%);
+					width: 100px;
+					height: 44px;
+					background-color: #f0dfad;
+					border: 2px solid #a18b4a;
+					color: #736028;
+				"
+				icon="pi pi-save"
+				:label="$t('儲存')"
+				@click="handleSave"
+			/>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import "@/styles/customize.css";
-import "primeicons/primeicons.css";
-
-import SelectButton from "primevue/selectbutton";
-import MultiSelect from "primevue/multiselect";
-import RadioButton from "primevue/radiobutton";
+import { ref, reactive, onMounted, watch, toRaw } from "vue";
+import { useRecruitmentApplicantAuthStore } from "@/stores/universalAuth";
+import { RecruitmentApplicantAPI } from "@/api/recruitment/applicant/api";
+import { useProjectIdStore } from "@/stores/RecruitmentApplicantStore";
+import { RecruitmentApplicantUserInfoResponse } from "@/api/recruitment/applicant/types";
+import { InvalidSessionError } from "@/api/error";
+import ParagraphDivider from "@/styles/paragraphDividerApplicant.vue";
+import { useToast } from "primevue/usetoast";
+import Dropdown from "primevue/dropdown";
 import InputText from "primevue/inputtext";
 import Checkbox from "primevue/checkbox";
-import Button from "primevue/button";
+import RadioButton from "primevue/radiobutton";
 import Calendar from "primevue/calendar";
-import Dropdown from "primevue/dropdown";
-import ParagraphDivider from "@/styles/paragraphDivider.vue";
-import { useI18n } from "vue-i18n";
+import Button from "primevue/button";
 
-import { ref, reactive, onMounted, toRaw, watch } from "vue";
-import { InvalidSessionError } from "@/api/error";
-import { AdmissionApplicantGetUserInfoResponse } from "@/api/admission/applicant/types";
 import { useAdmissionApplicantAuthStore } from "@/stores/universalAuth";
 import { AdmissionApplicantAPI } from "@/api/admission/applicant/api";
-import { useToast } from "primevue/usetoast";
-
+import { AdmissionApplicantGetUserInfoResponse } from "@/api/admission/applicant/types";
 const applicantAuth = useAdmissionApplicantAuthStore();
 const api = new AdmissionApplicantAPI(applicantAuth);
-//manager have six part to choose open or close
-const basicInfoList: AdmissionApplicantGetUserInfoResponse[] = reactive([]);
-const nameList: AdmissionApplicantGetUserInfoResponse[] = reactive([]);
-const schoolExpList: AdmissionApplicantGetUserInfoResponse[] = reactive([]);
-const registerResidenceList: AdmissionApplicantGetUserInfoResponse[] = reactive(
-	[]
-);
-const addressList: AdmissionApplicantGetUserInfoResponse[] = reactive([]);
-const identityList: AdmissionApplicantGetUserInfoResponse[] = reactive([]);
-const connectionList: AdmissionApplicantGetUserInfoResponse[] = reactive([]);
+// const project = useProjectIdStore();
+
+const toast = useToast();
 
 const fetchResponse = reactive({
 	success: false,
 	message: "" as string | [],
 });
 
-const nameInfo = ref({
-	selected_title: "",
+const loading = reactive({
+	fetch: false,
+	save: false,
+});
+
+const name = reactive({
+	appellation: "",
 	suffix: "",
-	title: "",
-	chLastName: "",
-	chFirstName: "",
-	lastName: "",
-	middleName: "",
-	firstName: "",
+	zhFamName: "",
+	zhName: "",
+	enFamName: "",
+	enName: "",
+	enMidName: "",
 });
 
-const admissionStatusLocal = ref({
-	admissionIdendity: "",
-	ID: "",
-});
-
-const admissionStatus = ref({
-	admissionIdendity: "",
+const identity = reactive({
+	selectedIdentity: "",
+	ic: "",
 	nationality: "",
-	passport: "",
-	ARC: "",
+	ui: "",
 });
 
-const residentAddress = ref({
-	Address: "",
+const householdAddr = reactive({
+	addr: "",
+	postcode: "",
 });
-const currentAddress = ref({
-	Address: "",
+
+const currentAddr = reactive({
+	isAddrSame: false,
+	addr: "",
+	postcode: "",
 });
-const identityInfo = ref({
+
+const born = reactive({
 	sex: "",
 	country: "",
-	date: new Date(),
+	birth: new Date(),
 });
-const contactInfo = ref({
-	primaryPhone: "",
-	mobilePhone: "",
-	email: "",
-});
-const props = defineProps(["userId"]);
-const city = ref();
-const textCheckedSecondCountry = ref();
-const textCheckedVisa = ref(false);
-const textCheckedAddress = ref(false);
-const textCheckedphone = ref(false);
-const message = ref(false);
-const date1 = ref();
-const types = ref([
-	{ type_name: "特殊選才" },
-	{ type_name: "碩士班徵試入學" },
-	{ type_name: "博士班徵試入學" },
-]);
-const selected_title = ref({});
-const titles = ref([{ type_name: "先生" }, { type_name: "小姐" }]);
-const cities = ref([
-	{ name: "New York", code: "NY" },
-	{ name: "Rome", code: "RM" },
-	{ name: "London", code: "LDN" },
-	{ name: "Istanbul", code: "IST" },
-	{ name: "Paris", code: "PRS" },
-]);
 
-//copy phone number
-const phone = (prod: any) => {
-	if (textCheckedphone.value === false) {
-		contactInfo.value.mobilePhone = contactInfo.value.primaryPhone;
+const contact = reactive({
+	email: "",
+	phone: "",
+});
+
+const required = reactive({
+	enFamName: false,
+	enName: false,
+	identity: false,
+	icNum: false,
+	nationality: false,
+	// passport: false,
+	ui: false,
+	householdAddr: false,
+	householdpostcode: false,
+	currentAddr: false,
+	currentPostcode: false,
+	sex: false,
+	country: false,
+	birth: false,
+	email: false,
+	phone: false,
+});
+
+const identityOptions = ref([{ name: "本地人士" }, { name: "外籍人士" }]);
+
+const basicInfo: AdmissionApplicantGetUserInfoResponse =
+	reactive<AdmissionApplicantGetUserInfoResponse>(
+		{} as AdmissionApplicantGetUserInfoResponse
+	);
+
+const setBasicInfo = (res: AdmissionApplicantGetUserInfoResponse) => {
+	// basicInfo.id = res.id;
+	// basicInfo.name = res.name;
+	// basicInfo.email = res.email;
+	// basicInfo.national_id = res.national_id;
+	// basicInfo.sex = res.sex;
+	// basicInfo.birth = res.birth;
+	// basicInfo.day_phone = res.day_phone;
+	// basicInfo.night_phone = res.night_phone;
+	// basicInfo.mobile_phone = res.mobile_phone;
+	// basicInfo.household_address = res.household_address;
+	// basicInfo.household_zipcode = res.household_zipcode;
+	// basicInfo.communicate_address = res.communicate_address;
+	// basicInfo.communicate_zipcode = res.communicate_zipcode;
+	// basicInfo.GSAT_num = res.GSAT_num;
+	// basicInfo.GSAT_registration = res.GSAT_registration;
+	// basicInfo.graduated_school = res.graduated_school;
+	// basicInfo.graduated_major = res.graduated_major;
+	// basicInfo.isSameDept = res.isSameDept;
+	// basicInfo.isDisabled = res.isDisabled;
+	// basicInfo.r_applicant_id = res.r_applicant_id;
+	// basicInfo.created_at = res.created_at;
+	// basicInfo.updated_at = res.updated_at;
+
+	identity.ic = res.national_id as string;
+
+	householdAddr.addr = res.household_address as string;
+	householdAddr.postcode = res.household_zipcode as string;
+	currentAddr.addr = res.communicate_address as string;
+	currentAddr.postcode = res.communicate_zipcode as string;
+	currentAddr.isAddrSame =
+		householdAddr.addr === currentAddr.addr && householdAddr.addr !== ""
+			? true
+			: false;
+
+	born.sex = res.sex as string;
+	born.birth = new Date(res.birth as string);
+
+	contact.phone = res.mobile_phone as string;
+};
+
+const saveInfo = async (body: object) => {
+	try {
+		return await api.patchBasicInfo(body);
+	} catch (e: any) {
+		if (e instanceof InvalidSessionError) {
+			console.error(
+				"Session has already expired while changing password"
+			);
+			return;
+		}
 	}
 };
-//copy address
+
 const address = (prod: any) => {
-	if (textCheckedAddress.value === false) {
-		Object.assign(currentAddress.value, residentAddress.value);
+	if (currentAddr.isAddrSame === false) {
+		currentAddr.addr = householdAddr.addr;
+		currentAddr.postcode = householdAddr.postcode;
 	}
 };
+
+const handleSave = async () => {
+	const body = {
+		name: name.zhName,
+		national_id: identity.ic,
+		household_address: householdAddr.addr,
+		household_zipcode: householdAddr.postcode,
+		communicate_address: currentAddr.isAddrSame
+			? householdAddr.addr
+			: currentAddr.addr,
+		communicate_zipcode: currentAddr.isAddrSame
+			? householdAddr.postcode
+			: currentAddr.postcode,
+		sex: born.sex,
+		birth: born.birth,
+		email: contact.email,
+		mobile_phone: contact.phone,
+	};
+
+	loading.save = true;
+
+	const response = saveInfo(body);
+
+	await response.then((res) => {
+		if (res?.success !== undefined && res?.message !== undefined) {
+			fetchResponse.success = toRaw(res.success);
+			fetchResponse.message = toRaw(res.message);
+		}
+
+		loading.save = false;
+
+		if (fetchResponse.success) {
+			toast.add({
+				severity: "success",
+				summary: "Success",
+				detail: fetchResponse.message,
+				life: 3000,
+			});
+		} else {
+			toast.add({
+				severity: "error",
+				summary: "Error",
+				detail: fetchResponse.message,
+				life: 5000,
+			});
+		}
+	});
+
+	loading.fetch = true;
+};
+
+const getUserInfo = async () => {
+	return await api.getUserInfo();
+};
+
+onMounted(async () => {
+	const response = getUserInfo();
+
+	await response.then((res) => {
+		if (Object.keys(res).length) setBasicInfo(res);
+	});
+});
+
+watch(
+	() => loading.fetch,
+	async () => {
+		const response = getUserInfo();
+
+		await response.then((res) => {
+			if (Object.keys(res).length) setBasicInfo(res);
+		});
+
+		loading.fetch = false;
+	}
+);
 </script>

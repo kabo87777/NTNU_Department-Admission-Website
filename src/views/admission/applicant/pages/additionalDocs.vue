@@ -1,12 +1,11 @@
 <template>
 	<div>
-		<div class="font-[500] text-[32px] font-bold">
-			{{ $t("補交文件系統") }}
-		</div>
-		<div class="bigYellowDivider"></div>
-
 		<!-- 畫面顯示(開放補件時) -->
 		<div v-if="isEnabled" class="px-12px py-24px">
+			<div class="font-[500] text-[32px] font-bold">
+				{{ $t("補交文件系統") }}
+			</div>
+			<div class="bigYellowDivider"></div>
 			<div class="px-12px py-24px">
 				<div class="text-[24px] font-[50] font-bold">
 					{{ $t("補件需求") }}
@@ -66,16 +65,15 @@ import {
 } from "@/api/admission/applicant/types";
 import { useAdmissionApplicantAuthStore } from "@/stores/universalAuth";
 import { AdmissionApplicantAPI } from "@/api/admission/applicant/api";
-import { useProjectIdStore } from "@/stores/RecruitmentApplicantStore";
 import { useToast } from "primevue/usetoast";
 
 const applicantAuth = useAdmissionApplicantAuthStore();
 const api = new AdmissionApplicantAPI(applicantAuth);
-const project = useProjectIdStore();
+// const project = useProjectIdStore();
 
 const toast = useToast();
 
-const isEnabled = ref(true);
+const isEnabled = ref(false);
 
 const isLoading = reactive({
 	upload: false,
@@ -96,6 +94,53 @@ const editToCreate = (index: number, category: string) => {
 
 const createToEdit = (index: number, category: string) => {
 	proceedList[index].state = 4;
+};
+
+const uploadFile = async (body: object) => {
+	try {
+		return await api.uploadRefillFile(body);
+	} catch (e: any) {
+		if (e instanceof InvalidSessionError) {
+			console.error(
+				"Session has already expired while changing password"
+			);
+			return;
+		}
+	}
+};
+
+const handleUpload = async (body: object) => {
+	isLoading.upload = true;
+
+	const response = uploadFile(body);
+
+	await response.then((res) => {
+		if (res?.success !== undefined && res?.message !== undefined) {
+			fetchResponse.success = toRaw(res.success);
+			fetchResponse.message = toRaw(res.message);
+		}
+
+		isLoading.upload = false;
+		isLoading.fetch = true;
+
+		if (fetchResponse.success) {
+			toast.add({
+				severity: "success",
+				summary: "Success",
+				detail: fetchResponse.message,
+				life: 3000,
+			});
+		} else {
+			toast.add({
+				severity: "error",
+				summary: "Error",
+				detail: fetchResponse.message,
+				life: 5000,
+			});
+		}
+
+		isLoading.fetch = true;
+	});
 };
 </script>
 

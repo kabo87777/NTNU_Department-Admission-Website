@@ -125,7 +125,8 @@ export interface AdmissionApplicantGetUserInfoResponse {
 	id?: number;
 	name?: string;
 	email?: string;
-	national_id?: number;
+	national_id?: string;
+	admission_id?: number;
 	sex?: string;
 	birth?: string;
 	day_phone?: string;
@@ -135,13 +136,19 @@ export interface AdmissionApplicantGetUserInfoResponse {
 	household_zipcode?: number | string;
 	communicate_address?: string;
 	communicate_zipcode?: number | string;
-	GSAT_num?: number | string;
-	GSAT_registration?: boolean;
 	graduated_school?: string;
 	graduated_major?: string;
 	isSameDept?: boolean;
-	isDisabled?: boolean;
-	r_applicant_id?: number;
+	s_applicant_id?: number;
 	created_at?: string;
 	updated_at?: string;
+	isDisabled?: boolean;
+	title?: string;
+	suffix?: string;
+	cn_surname?: string;
+	en_surname?: string;
+	en_midname?: string;
+	en_givenname?: string;
+	nationality?: string;
+	birthcountry?: string;
 }
