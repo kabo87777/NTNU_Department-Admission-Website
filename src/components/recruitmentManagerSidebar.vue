@@ -1,6 +1,6 @@
 <template>
-	<div class="mt-32px relative">
-		<div class="flex">
+	<div class="relative" style="height: 100%">
+		<div class="flex mt-32px">
 			<div class="sidebarVerticalBigRedDivider"></div>
 			<div class="sidebarVerticalSmallRedDivider"></div>
 			<div class="ml-12px w-[100%]">
@@ -12,7 +12,7 @@
 					style="border-radius: 8px; border: 1px solid black"
 				>
 					<template #value="slotProps">
-						<div class="mt-6px tracking-2px text-20px font-medium">
+						<div class="mt-6px tracking-1px text-18px font-medium">
 							{{ slotProps?.value?.category }}
 							{{ slotProps?.value?.name }}
 						</div>
@@ -32,17 +32,17 @@
 				v-slot="{ navigate }"
 			>
 				<Button
-					class="p-button-secondary p-button-text !ml-24px !mt-32px !w-336px !h-48px"
+					class="p-button-secondary p-button-text !ml-24px !mt-32px !w-[85%] !h-48px"
 					@click="navigate"
 					role="link"
 				>
 					<img
 						alt="logo"
 						src="/assets/sidebar/Setting_line.png"
-						style="width: 1.5rem"
+						style="width: 18px"
 					/>
 					<span
-						class="text-left tracking-3px ml-3 font-bold text-[20px] text-[#2D2926]"
+						class="text-left tracking-3px ml-3 font-bold text-[18px] text-[#2D2926]"
 					>
 						{{ $t("專案設定") }}
 					</span>
@@ -50,15 +50,15 @@
 			</router-link>
 
 			<Button
-				class="p-button-secondary p-button-text !ml-24px !mt-16px !w-336px !h-48px"
+				class="p-button-secondary p-button-text !ml-24px !mt-16px !w-[85%] !h-48px"
 			>
 				<img
 					alt="logo"
 					src="/assets/sidebar/Chart_light.png"
-					style="width: 1.5rem"
+					style="width: 18px"
 				/>
 				<span
-					class="text-left tracking-3px ml-3 font-bold text-xl text-[#2D2926]"
+					class="text-left tracking-3px ml-3 font-bold text-18px text-[#2D2926]"
 				>
 					{{ $t("專案狀態") }}
 				</span>
@@ -67,7 +67,7 @@
 			<div class="flex mt-32px">
 				<div class="sidebarRedDivider"></div>
 				<div
-					class="mt-[-8px] ml-8px text-[#874B52] text-20px font-bold"
+					class="mt-[-8px] ml-8px text-[#874B52] text-18px font-bold"
 				>
 					{{ $t("申請端設定") }}
 				</div>
@@ -78,17 +78,17 @@
 				v-slot="{ navigate }"
 			>
 				<Button
-					class="p-button-secondary p-button-text !ml-24px !mt-32px !w-336px !h-48px"
+					class="p-button-secondary p-button-text !ml-24px !mt-32px !w-[85%] !h-48px"
 					@click="navigate"
 					role="link"
 				>
 					<img
 						alt="logo"
 						src="/assets/sidebar/User_add_alt.png"
-						style="width: 1.5rem"
+						style="width: 18px"
 					/>
 					<span
-						class="text-left tracking-3px ml-3 font-bold text-xl text-[#2D2926]"
+						class="text-left tracking-3px ml-3 font-bold text-18px text-[#2D2926]"
 					>
 						{{ $t("申請帳號設置") }}
 					</span>
@@ -100,17 +100,17 @@
 				v-slot="{ navigate }"
 			>
 				<Button
-					class="p-button-secondary p-button-text !ml-24px !mt-16px !w-336px !h-48px"
+					class="p-button-secondary p-button-text !ml-24px !mt-16px !w-[85%] !h-48px"
 					@click="navigate"
 					role="link"
 				>
 					<img
 						alt="logo"
 						src="/assets/sidebar/Sort_alfa.png"
-						style="width: 1.5rem"
+						style="width: 18px"
 					/>
 					<span
-						class="text-left tracking-3px ml-3 font-bold text-xl text-[#2D2926]"
+						class="text-left tracking-3px ml-3 font-bold text-18px text-[#2D2926]"
 					>
 						{{ $t("上傳欄位設置") }}
 					</span>
@@ -124,17 +124,17 @@
 				v-slot="{ navigate }"
 			>
 				<Button
-					class="p-button-secondary p-button-text !ml-24px !mt-16px !w-336px !h-48px"
+					class="p-button-secondary p-button-text !ml-24px !mt-16px !w-[85%] !h-48px"
 					@click="navigate"
 					role="link"
 				>
 					<img
 						alt="logo"
 						src="/assets/recruit-manger-page/File_dock_search.svg"
-						style="width: 1.5rem"
+						style="width: 18px"
 					/>
 					<span
-						class="text-left tracking-3px ml-3 font-bold text-[20px] text-[#2D2926]"
+						class="text-left tracking-3px ml-3 font-bold text-[18px] text-[#2D2926]"
 					>
 						{{ $t("上傳資料列表") }}
 					</span>
@@ -143,7 +143,7 @@
 			<div class="flex mt-32px">
 				<div class="sidebarRedDivider"></div>
 				<div
-					class="mt-[-8px] ml-8px text-[#874B52] text-20px font-bold"
+					class="mt-[-8px] ml-8px text-[#874B52] text-18px font-bold"
 				>
 					{{ $t("審查端設定") }}
 				</div>
@@ -176,17 +176,17 @@
 				v-slot="{ navigate }"
 			>
 				<Button
-					class="p-button-secondary p-button-text !ml-24px !mt-32px !w-336px !h-48px"
+					class="p-button-secondary p-button-text !ml-24px !mt-32px !w-[85%] !h-48px"
 					@click="navigate"
 					role="link"
 				>
 					<img
 						alt="logo"
 						src="/assets/sidebar/Flag_finish.png"
-						style="width: 1.5rem"
+						style="width: 18px"
 					/>
 					<span
-						class="text-left tracking-3px ml-3 font-bold text-xl text-[#2D2926]"
+						class="text-left tracking-3px ml-3 font-bold text-18px text-[#2D2926]"
 					>
 						{{ $t("評分資料列表") }}
 					</span>
@@ -198,17 +198,17 @@
 				v-slot="{ navigate }"
 			>
 				<Button
-					class="p-button-secondary p-button-text !ml-24px !mt-16px !w-336px !h-48px"
+					class="p-button-secondary p-button-text !ml-24px !mt-16px !w-[85%] !h-48px"
 					@click="navigate"
 					role="link"
 				>
 					<img
 						alt="logo"
 						src="/assets/sidebar/User_light.png"
-						style="width: 1.5rem"
+						style="width: 18px"
 					/>
 					<span
-						class="text-left tracking-3px ml-3 font-bold text-xl text-[#2D2926]"
+						class="text-left tracking-3px ml-3 font-bold text-18px text-[#2D2926]"
 					>
 						{{ $t("審查人員與進度") }}
 					</span>
@@ -217,43 +217,44 @@
 		</div>
 		<div
 			v-if="noProgram && !newProgram"
-			class="bg-gray-200 bg-opacity-50 h-200px w-[100%]"
-			style="transform: translateY(280%)"
+			class="absolute bg-gray-200 bg-opacity-50 h-220px w-[100%]"
+			style="bottom: 0px"
 		>
-			<div class="flex">
-				<div class="m-auto">
-					<router-link to="" custom v-slot="{ navigate }">
+			<div class="relative flex mt-16px">
+				<div class="flex m-auto">
+					<div>
+						<router-link to="" custom v-slot="{ navigate }">
+							<Button
+								class="h-36px p-button-outlined !bg-white"
+								@click="navigate"
+								role="link"
+							>
+								<img
+									alt="logo"
+									src="/assets/sidebar/User_box.png"
+									style="width: 18px"
+								/>
+								<h1 class="ml-8px text-16px text-gray-900">
+									{{ $t("管理審查者") }}
+								</h1>
+							</Button>
+						</router-link>
+					</div>
+					<div class="ml-8px">
 						<Button
-							class="w-168px h-44px p-button-outlined !mt-24px !bg-white"
-							@click="navigate"
-							role="link"
+							@click="newProject"
+							class="h-36px p-button-outlined p-button-success !bg-white"
 						>
 							<img
 								alt="logo"
-								src="/assets/sidebar/User_box.png"
-								style="width: 1.25rem"
+								src="/assets/sidebar/Add_round.png"
+								style="width: 18px"
 							/>
-							<h1
-								class="ml-8px tracking-1px text-18px text-gray-900"
-							>
-								{{ $t("管理審查者") }}
+							<h1 class="ml-8px text-16px text-gray-900">
+								{{ $t("新增專案") }}
 							</h1>
 						</Button>
-					</router-link>
-					<Button
-						@click="newProject"
-						class="w-168px h-44px p-button-outlined p-button-success !ml-16px !bg-white"
-					>
-						<img
-							alt="logo"
-							src="/assets/sidebar/Add_round.png"
-							style="width: 1.25rem"
-							class="!ml-0px"
-						/>
-						<h1 class="ml-8px tracking-1px text-18px text-gray-900">
-							{{ $t("新增專案") }}
-						</h1>
-					</Button>
+					</div>
 				</div>
 			</div>
 			<Dialog
@@ -299,85 +300,94 @@
 					</Button>
 				</div>
 			</Dialog>
-			<div class="flex">
-				<img
-					alt="logo"
-					src="/assets/sidebar/User_circle.png"
-					class="h-40px w-40px ml-24px mt-50px"
-				/>
-				<div class="w-100px h-50px">
-					<div class="text-xs ml-16px mt-50px">
-						{{ $t("管理端帳戶") }}
-					</div>
-					<div class="text-xl ml-16px tracking-wider">
-						{{ $t("系辦主管") }}
+			<div class="relative flex mt-16px">
+				<div class="flex">
+					<img
+						alt="logo"
+						src="/assets/sidebar/User_circle.png"
+						class="h-32px w-32px ml-20px mt-4px"
+					/>
+					<div>
+						<div class="text-xs ml-8px">
+							{{ $t("管理端帳戶") }}
+						</div>
+						<div class="text-16px mt-4px ml-8px tracking-wider">
+							{{ $t("系辦主管") }}
+						</div>
 					</div>
 				</div>
-				<router-link
-					to="/recruitment/manager/userSetting"
-					custom
-					v-slot="{ navigate }"
-				>
+				<div class="absolute mt-[-4px]" style="right: 8px">
+					<router-link
+						to="/recruitment/manager/userSetting"
+						custom
+						v-slot="{ navigate }"
+					>
+						<Button
+							class="p-button-text p-button-text p-button-sm"
+							@click="navigate"
+							role="link"
+						>
+							<img
+								alt="logo"
+								src="/assets/sidebar/Setting_alt_line.png"
+								class="w-18px h-18px"
+							/>
+						</Button>
+					</router-link>
 					<Button
-						class="p-button-text !mt-46px !ml-50px"
-						@click="navigate"
-						role="link"
+						class="p-button-text p-button-text p-button-sm"
+						@click="signOut"
 					>
 						<img
 							alt="logo"
-							src="/assets/sidebar/Setting_alt_line.png"
-							class="w-28px h-28px"
+							src="/assets/sidebar/Sign_out_circle.png"
+							class="w-18px h-18px"
 						/>
 					</Button>
-				</router-link>
-				<Button class="p-button-text !mt-46px" @click="signOut">
-					<img
-						alt="logo"
-						src="/assets/sidebar/Sign_out_circle.png"
-						class="w-28px h-28px"
-					/>
-				</Button>
+				</div>
 			</div>
 		</div>
 		<div
 			v-else
-			class="bg-gray-200 bg-opacity-50 h-200px w-[100%]"
-			style="transform: translateY(70%)"
+			class="absolute bg-gray-200 bg-opacity-50 h-220px w-[100%]"
+			style="bottom: 0px"
 		>
-			<div class="flex">
-				<div class="m-auto">
-					<router-link to="" custom v-slot="{ navigate }">
+			<div class="relative flex mt-16px">
+				<div class="flex m-auto">
+					<div>
+						<router-link to="" custom v-slot="{ navigate }">
+							<Button
+								class="h-36px p-button-outlined !bg-white"
+								@click="navigate"
+								role="link"
+							>
+								<img
+									alt="logo"
+									src="/assets/sidebar/User_box.png"
+									style="width: 18px"
+								/>
+								<h1 class="ml-8px text-16px text-gray-900">
+									{{ $t("管理審查者") }}
+								</h1>
+							</Button>
+						</router-link>
+					</div>
+					<div class="ml-8px">
 						<Button
-							class="w-168px h-44px p-button-outlined !mt-24px !bg-white"
-							@click="navigate"
-							role="link"
+							@click="newProject"
+							class="h-36px p-button-outlined p-button-success !bg-white"
 						>
 							<img
 								alt="logo"
-								src="/assets/sidebar/User_box.png"
-								style="width: 1.25rem"
+								src="/assets/sidebar/Add_round.png"
+								style="width: 18px"
+								class="!ml-0px"
 							/>
-							<h1
-								class="ml-8px tracking-1px text-18px text-gray-900"
-							>
-								{{ $t("管理審查者") }}
+							<h1 class="ml-8px text-16px text-gray-900">
+								{{ $t("新增專案") }}
 							</h1>
 						</Button>
-					</router-link>
-					<Button
-						@click="newProject"
-						class="w-168px h-44px p-button-outlined p-button-success !ml-16px !bg-white"
-					>
-						<img
-							alt="logo"
-							src="/assets/sidebar/Add_round.png"
-							style="width: 1.25rem"
-							class="!ml-0px"
-						/>
-						<h1 class="ml-8px tracking-1px text-18px text-gray-900">
-							{{ $t("新增專案") }}
-						</h1>
-					</Button>
+					</div>
 				</div>
 			</div>
 			<Dialog
@@ -416,51 +426,58 @@
 						<img
 							alt="logo"
 							src="/assets/sidebar/Close_round.png"
-							style="width: 1.25rem"
+							style="width: 18px"
 							class="!ml-0px"
 						/>
 						<span class="text-left text-xl">{{ $t("取消") }}</span>
 					</Button>
 				</div>
 			</Dialog>
-			<div class="flex">
-				<img
-					alt="logo"
-					src="/assets/sidebar/User_circle.png"
-					class="h-40px w-40px ml-24px mt-50px"
-				/>
-				<div class="w-100px h-50px">
-					<div class="text-xs ml-16px mt-50px">
-						{{ $t("管理端帳戶") }}
-					</div>
-					<div class="text-xl ml-16px tracking-wider">
-						{{ $t("系辦主管") }}
+			<div class="relative flex mt-16px">
+				<div class="flex">
+					<img
+						alt="logo"
+						src="/assets/sidebar/User_circle.png"
+						class="h-32px w-32px ml-20px"
+					/>
+					<div>
+						<div class="text-xs ml-8px">
+							{{ $t("管理端帳戶") }}
+						</div>
+						<div class="text-16px mt-4px ml-8px tracking-wider">
+							{{ $t("系辦主管") }}
+						</div>
 					</div>
 				</div>
-				<router-link
-					to="/recruitment/manager/userSetting"
-					custom
-					v-slot="{ navigate }"
-				>
+				<div class="absolute mt-[-4px]" style="right: 8px">
+					<router-link
+						to="/recruitment/manager/userSetting"
+						custom
+						v-slot="{ navigate }"
+					>
+						<Button
+							class="p-button-text p-button-text p-button-sm"
+							@click="navigate"
+							role="link"
+						>
+							<img
+								alt="logo"
+								src="/assets/sidebar/Setting_alt_line.png"
+								class="w-18px h-18px"
+							/>
+						</Button>
+					</router-link>
 					<Button
-						class="p-button-text !mt-46px !ml-50px"
-						@click="navigate"
-						role="link"
+						class="p-button-text p-button-text p-button-sm"
+						@click="signOut"
 					>
 						<img
 							alt="logo"
-							src="/assets/sidebar/Setting_alt_line.png"
-							class="w-28px h-28px"
+							src="/assets/sidebar/Sign_out_circle.png"
+							class="w-18px h-18px"
 						/>
 					</Button>
-				</router-link>
-				<Button class="p-button-text !mt-46px" @click="signOut">
-					<img
-						alt="logo"
-						src="/assets/sidebar/Sign_out_circle.png"
-						class="w-28px h-28px"
-					/>
-				</Button>
+				</div>
 			</div>
 		</div>
 	</div>

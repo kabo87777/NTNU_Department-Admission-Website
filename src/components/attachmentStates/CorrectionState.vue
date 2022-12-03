@@ -86,16 +86,21 @@
 			>
 				{{ $t("分數") }}{{ $t(":") }}
 			</div>
-			<InputText
+			<InputNumber
 				v-if="props.category === '考試與檢定分數'"
-				style="margin-top: 8px; border: 1px solid; width: 30%"
+				style="
+					margin-top: 8px;
+					border: 1px solid;
+					width: 30%;
+					border-radius: 8px;
+				"
 				v-model="score"
 			/>
 			<div
 				class="normalDivider"
 				style="width: 85%; margin-top: 16px"
 			></div>
-			<div v-if="file.name === ''" class="mt-16px" style="width: 85%">
+			<!-- <div v-if="file.name === ''" class="mt-16px" style="width: 85%">
 				<FileUpload
 					style="
 						background-color: #bdbdbd;
@@ -111,9 +116,8 @@
 					accept=".pdf"
 				>
 				</FileUpload>
-			</div>
+			</div> -->
 			<Button
-				v-else
 				style="
 					background-color: #bdbdbd;
 					color: black;
@@ -122,7 +126,7 @@
 				"
 				disabled
 			>
-				{{ file.name }}
+				{{ sliceFile() }}
 			</Button>
 			<p class="mt-16px">{{ $t("onlyPdf") }}</p>
 		</div>
@@ -169,6 +173,7 @@
 import { ref, reactive } from "vue";
 import Button from "primevue/button";
 import InputText from "primevue/inputtext";
+import InputNumber from "primevue/inputnumber";
 import FileUpload from "primevue/fileupload";
 import Dialog from "primevue/dialog";
 import "primeicons/primeicons.css";
@@ -182,6 +187,7 @@ const props = defineProps([
 	"schoolName",
 	"score",
 	"isEditLoading",
+	"fileUrl",
 ]);
 
 const name = ref(props.itemName);
@@ -211,7 +217,6 @@ const dynamicClass = (): string => {
 
 const handleUpload = (event: any) => {
 	//event.files == files to upload
-	console.log("check here");
 	file.fileUrl = event.files[0].objectURL;
 	file.name = event.files[0].name;
 	file.size = event.files[0].size;
@@ -223,13 +228,27 @@ const handleCancel = () => {
 	emit("cancel", props.order - 1, props.category);
 };
 
+const sliceFile = () => {
+	if (props.fileUrl !== null) {
+		const str = decodeURI(props?.fileUrl);
+		const index = str.lastIndexOf("/");
+		const file = str.slice(index + 1);
+		return file;
+	}
+};
+
 const handleEdit = () => {
 	const body = {
 		name: name.value,
 		category: props.category,
 		filepath: file.fileUrl,
+		school:
+			props.category === "就學經歷" || props.category === "教學經歷"
+				? schoolName.value
+				: null,
+		score: props.category === "考試與檢定分數" ? score.value : null,
 	};
-	console.log(body);
+
 	emit("correction", body, props.itemId);
 };
 </script>

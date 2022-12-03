@@ -92,6 +92,9 @@ import recruitmentReviewScroreField from "@/views/recruitment/manager/reviewScor
 import recruitmentProjectSetting from "@/views/recruitment/manager/pages/ProjectSetting.vue";
 import recruitmentManagerApplicationAccountSetting from "@/views/recruitment/manager/pages/ApplicationAccountSetting.vue";
 
+//Recommender section
+import recommenderAuthVerification from "@/views/admission/recommender/AuthVerification.vue";
+
 const routes: Array<RouteRecordRaw> = [
 	// Choose recruitment / admission
 	{
@@ -302,6 +305,12 @@ const routes: Array<RouteRecordRaw> = [
 						component: AdmissionListApplicant,
 					},
 				],
+			},
+			// admission recommender
+			{
+				path: "admission/recommenderAuthVerify",
+				name: "recommenderAuthVerify",
+				component: recommenderAuthVerification,
 			},
 
 			// Recruitment

@@ -1,5 +1,5 @@
 <template>
-	<div class="ml-128px mr-128px mt-62px">
+	<div>
 		<h1 class="text-4xl text-bold tracking-widest">
 			{{ $t("評分資料列表") }}
 		</h1>

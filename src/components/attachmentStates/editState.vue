@@ -86,9 +86,14 @@
 			>
 				{{ $t("分數") }}{{ $t(":") }}
 			</div>
-			<InputText
+			<InputNumber
 				v-if="props.category === '考試與檢定分數'"
-				style="margin-top: 8px; border: 1px solid; width: 30%"
+				style="
+					margin-top: 8px;
+					border: 1px solid;
+					width: 30%;
+					border-radius: 8px;
+				"
 				v-model="score"
 			/>
 			<div
@@ -169,6 +174,7 @@
 import { ref, reactive } from "vue";
 import Button from "primevue/button";
 import InputText from "primevue/inputtext";
+import InputNumber from "primevue/inputnumber";
 import FileUpload, { FileUploadUploaderEvent } from "primevue/fileupload";
 import Dialog from "primevue/dialog";
 import "primeicons/primeicons.css";
@@ -219,6 +225,11 @@ const handleCancel = () => {
 const handleCreate = () => {
 	formData.append("name", name.value);
 	formData.append("category", props.category);
+	if (props.category === "就學經歷" || props.category === "教學經歷")
+		formData.append("school", schoolName.value);
+
+	if (props.category === "考試與檢定分數")
+		formData.append("score", score.value);
 	emit("create", formData);
 };
 </script>

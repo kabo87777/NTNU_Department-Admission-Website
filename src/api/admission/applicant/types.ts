@@ -52,7 +52,9 @@ export interface AttachmentData {
 	filepath: {
 		url: string | any;
 	};
-	r_applicants_r_program_id: number;
+	school?: string;
+	score?: number;
+	s_applicant_id: number;
 	created_at: string;
 	updated_at: string;
 }
@@ -64,7 +66,9 @@ export interface AttachmentDetailData {
 	filepath?: {
 		url?: string | any;
 	};
-	r_applicants_r_program_id?: number;
+	school?: string;
+	score?: number;
+	s_applicant_id?: number;
 	created_at?: string;
 	updated_at?: string;
 	order?: number;
@@ -116,7 +120,9 @@ export interface AdmissionApplicantGetFileListResponse {
 	filepath: {
 		url: string | any;
 	};
-	r_applicants_r_program_id: number;
+	school?: string;
+	score?: number;
+	s_applicant_id: number;
 	created_at: string;
 	updated_at: string;
 }
