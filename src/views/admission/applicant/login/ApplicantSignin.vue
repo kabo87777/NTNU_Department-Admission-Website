@@ -51,11 +51,16 @@ import LoginForm from "@/components/LoginForm.vue";
 					</button>
 				</router-link>
 			</div>
-			<div>
-				<div class="mt-100px ml-164px text-4xl font-bold text-gray-500">
-					{{ $t("資訊工程學系報名系統") }}
-				</div>
+			<div class="flex items-end gap-2 font-medium text-gray-900">
+				<div class="text-4xl">資訊工程學系報名系統</div>
+				<div class="text-xl">NTNU CSIE Admissions</div>
 			</div>
+			<Divider align="center" class="applicantTextColor">
+				<div class="flex px-2 gap-2">
+					<div>申請端登入</div>
+					<div>Applicant Login</div>
+				</div>
+			</Divider>
 			<form @submit="onSubmit" ref="form">
 				<Field
 					name="username"
@@ -64,7 +69,9 @@ import LoginForm from "@/components/LoginForm.vue";
 				>
 					<div class="block mt-50px ml-168px">
 						<div class="text-base text-gray-600">
-							<label for="username">{{ $t("准考證號碼") }}</label>
+							<label for="username">{{
+								$t("准考證號碼 Admission Ticket Number")
+							}}</label>
 						</div>
 						<div class="mt-4px">
 							<InputText
@@ -89,7 +96,9 @@ import LoginForm from "@/components/LoginForm.vue";
 				>
 					<div class="block mt-24px ml-168px">
 						<div class="text-base text-gray-600">
-							<label for="password">{{ $t("密碼") }}</label>
+							<label for="password">{{
+								$t("密碼 Password")
+							}}</label>
 						</div>
 						<div class="mt-4px">
 							<InputText
@@ -116,7 +125,8 @@ import LoginForm from "@/components/LoginForm.vue";
 							/>
 						</div>
 						<label class="text-xs text-gray-500 ml-4px">
-							<div>{{ $t("下次登入記住帳號") }}</div>
+							<div>下次登入時記住帳號</div>
+							<div>Remember Account at next Login</div>
 						</label>
 					</div>
 					<div class="absolute ml-320px text-xs">
@@ -136,7 +146,7 @@ import LoginForm from "@/components/LoginForm.vue";
 						class="bg-darkBlue h-60px w-420px"
 						type="submit"
 						:loading="isTurnstileRunning || isSubmitting"
-						:label="$t('登入')"
+						:label="$t('登入 Login')"
 					/>
 				</div>
 			</form>

@@ -50,6 +50,96 @@
 					</button>
 				</router-link>
 			</div>
+			<div class="ml-8px">
+				<router-link to="/recruitment">
+					<button
+						class="h-40px w-130px p-button-outlined p-button-success adminSmallButtonStyle"
+						border="2  rounded-lg"
+					>
+						<img
+							alt="logo"
+							src="/assets/admissionApplicant\Close_round.svg"
+							style="width: 18px"
+						/>
+						<h1 class="ml-8px text-16px">
+							{{ $t("取消變更") }}
+						</h1>
+					</button>
+				</router-link>
+			</div>
+			<div>..</div>
+			<div class="ml-8px">
+				<router-link to="/recruitment">
+					<button
+						class="h-40px w-130px p-button-outlined p-button-success adminDeleteSmallButtonStyle"
+						border="2  rounded-lg"
+					>
+						<img
+							alt="logo"
+							src="/assets/reviewer-page/Arhive.png"
+							style="width: 18px"
+						/>
+						<h1 class="ml-8px text-16px">
+							{{ $t("切換專案") }}
+						</h1>
+					</button>
+				</router-link>
+			</div>
+			<div>..</div>
+			<div class="ml-8px">
+				<router-link to="/recruitment">
+					<button
+						class="h-40px w-130px p-button-outlined p-button-success saveButtonStyle"
+						border="2  rounded-lg"
+					>
+						<img
+							alt="logo"
+							src="/assets/admissionApplicant\Done_round.svg"
+							style="width: 18px"
+						/>
+						<h1 class="ml-8px text-16px">
+							{{ $t("設定儲存") }}
+						</h1>
+					</button>
+				</router-link>
+			</div>
+			<div>..</div>
+			<div class="ml-8px">
+				<router-link to="/recruitment">
+					<button
+						class="h-40px w-130px p-button-outlined p-button-success reviewSmallButtonStyle"
+						border="2  rounded-lg"
+					>
+						<img
+							alt="logo"
+							src="/assets/reviewer-page/Arhive.png"
+							style="width: 18px"
+						/>
+						<h1 class="ml-8px text-16px">
+							{{ $t("切換專案") }}
+						</h1>
+					</button>
+				</router-link>
+			</div>
+			<div>..</div>
+			<div class="ml-8px">
+				<router-link to="/recruitment">
+					<button
+						class="h-40px w-130px p-button-outlined p-button-success admissionSmallButtonStyle"
+						border="2  rounded-lg"
+					>
+						<img
+							alt="logo"
+							src="/assets/reviewer-page/Arhive.png"
+							style="width: 18px"
+						/>
+						<h1 class="ml-8px text-16px">
+							{{ $t("切換專案") }}
+						</h1>
+					</button>
+				</router-link>
+			</div>
+			<div>..</div>
 		</div>
 	</div>
 </template>
@@ -89,5 +179,131 @@ import Divider from "primevue/divider";
 	background-color: #0b4873;
 	border-color: #0b4873;
 	color: white;
+}
+
+.admissionSmallButtonStyle {
+	background-color: #ffffff;
+	border-color: #62373e;
+	color: #62373e;
+	box-sizing: border-box;
+
+	/* Auto layout */
+
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	padding: 16px 12px;
+	gap: 6px;
+}
+.admissionSmallButtonStyle:hover {
+	background-color: #dbd379;
+	border-color: #dbd379;
+	color: #292a2b;
+}
+.admissionSmallButtonStyle:active {
+	background-color: #8a7b27;
+	border-color: #8a7b27;
+	color: #fafac7;
+}
+
+.reviewSmallButtonStyle {
+	background-color: #ffffff;
+	border-color: #18528c;
+	color: #18528c;
+	box-sizing: border-box;
+
+	/* Auto layout */
+
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	padding: 16px 12px;
+	gap: 6px;
+}
+.reviewSmallButtonStyle:hover {
+	background-color: #a5b9ec;
+	border-color: #292a2b;
+	color: #292a2b;
+}
+.reviewSmallButtonStyle:active {
+	background-color: #2459a4;
+	border-color: #2459a4;
+	color: #dfe7fd;
+}
+
+.adminSmallButtonStyle {
+	background-color: #ffffff;
+	border-color: #62373e;
+	color: #62373e;
+	box-sizing: border-box;
+
+	/* Auto layout */
+
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	padding: 16px 12px;
+	gap: 6px;
+}
+.adminSmallButtonStyle:hover {
+	background-color: #f3baae;
+	border-color: #f3baae;
+	color: #292a2b;
+}
+.adminSmallButtonStyle:active {
+	background-color: #79363c;
+	border-color: #79363c;
+	color: #ffe4df;
+}
+
+.adminDeleteSmallButtonStyle {
+	background-color: #ffffff;
+	border-color: #616366;
+	color: #616366;
+	box-sizing: border-box;
+	/* Auto layout */
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	padding: 16px 12px;
+	gap: 6px;
+}
+.adminDeleteSmallButtonStyle:hover {
+	background-color: #d9dada;
+	border-color: #292a2b;
+	color: #292a2b;
+}
+.adminDeleteSmallButtonStyle:active {
+	background-color: #616366;
+	border-color: #616366;
+	color: #f5f6f6;
+}
+
+.saveButtonStyle {
+	background-color: #bcd19b;
+	border-color: #bcd19b;
+	color: #101820;
+	box-sizing: border-box;
+	/* Auto layout */
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	padding: 16px 12px;
+	gap: 6px;
+}
+.saveButtonStyle:hover {
+	background-color: #bcd19b;
+	border-color: #bcd19b;
+	color: #101820;
+}
+.saveButtonStyle:active {
+	background-color: #bcd19b;
+	border-color: #bcd19b;
+	color: #101820;
 }
 </style>
