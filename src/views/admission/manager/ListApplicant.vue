@@ -269,6 +269,12 @@ const { mutate: uploadApplicantImport } = useMutation({
 	onSuccess: () => {
 		// Refetch applicnt list on successful import
 		refetch().then(() => (isImporting.value = false));
+		toast.add({
+			severity: 'success',
+			life: 3000,
+			summary: $t("操作成功"),
+			detail: $t("成功匯入申請者")
+		})
 	},
 	onError: ()=>{
 		toast.add({
