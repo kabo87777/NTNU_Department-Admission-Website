@@ -205,6 +205,11 @@ const {
 		onSettled: ()=>{
 			isImporting.value=false
 		},
+		// No auto fetch by default. 
+		// Wait SideBar getting program id, and then pinia subscription will trigger refetch
+		enabled: false
+	},
+	
 );
 
 const isImporting = ref(false);
