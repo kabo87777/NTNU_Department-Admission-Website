@@ -89,8 +89,7 @@ export interface RecruitmentApplicantFileListResponse {
 	score?: number;
 	created_at: string;
 	updated_at: string;
-}
-
+} 
 export interface RecruitmentApplicantUserInfoResponse {
 	id: number;
 	title?: string;
