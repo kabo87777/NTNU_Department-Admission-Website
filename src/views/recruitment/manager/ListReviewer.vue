@@ -54,10 +54,7 @@
 						icon="pi pi-chevron-circle-up"
 						class="p-button-outlined"
 						@click="
-							changeAccountStateAPI({
-								id: slotProp.data.id,
-								action: 'activate',
-							})
+							confirmActivateReviewer(slotProp.data)
 						"
 					/>
 				</div>
@@ -381,7 +378,7 @@ const confirmDisableReviewer = (
 
 	confirm.require({
 		header: $t("是否要停用此審查者？"),
-		message: $t("別擔心，您可以隨時重新啟用此帳號"),
+		message: $t("別擔心，您可以隨時重新啟用該帳號"),
 		icon: "pi pi-question-circle",
 		acceptLabel: $t("確認"),
 		rejectLabel: $t("取消"),
@@ -391,10 +388,20 @@ const confirmDisableReviewer = (
 	});
 };
 
-// const getRelatedPrograms = () => {
-// 	if (!programQuery.isFetched.value)
-// 		programQuery.refetch({ throwOnError: true });
-// };
+const confirmActivateReviewer=(reviewerData: RecruitmentAdminReviewersListResponse)=>{
+	const {id}=reviewerData
+
+	confirm.require({
+		header: $t("是否要啟用此審查者？"),
+		message: $t("您仍然可以再次停用該帳號"),
+		icon: "pi pi-question-circle",
+		acceptLabel: $t("確認"),
+		rejectLabel: $t("取消"),
+		accept: () => {
+			changeAccountStateAPI({id:id, action:'activate'})
+		}
+	})
+}
 
 const isProcessing = ref(false);
 
