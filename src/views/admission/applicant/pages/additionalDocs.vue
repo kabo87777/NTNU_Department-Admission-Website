@@ -6,34 +6,22 @@
 				{{ $t("補交文件系統") }}
 			</div>
 			<div class="bigYellowDivider"></div>
-			<div class="px-12px py-24px">
-				<div class="text-[24px] font-[50] font-bold">
-					{{ $t("補件需求") }}
+			<div v-if="isEnabled" class="px-12px">
+				<div>
+					<CreateState
+						v-if="refillFile.state === 3"
+						category="補交文件"
+						identity="admissionApplicant"
+						@edit="createToEdit"
+					/>
+					<RefillState
+						v-else-if="refillFile.state === 4"
+						identity="admissionApplicant"
+						:isUploadLoading="refillFile.loading"
+						@cancel="editToCreate"
+						@upload="handleUpload"
+					/>
 				</div>
-				<div class="mt-16px mb-32px pt-16px text-20px text-[#53565A]">
-					{{ $t("需求需求需求需求") }}
-				</div>
-				<ParagraphDivider />
-				<div class="mt-16px text-[24px] font-[50] font-bold">
-					{{ $t("補交文件") }}
-				</div>
-			</div>
-			<div v-for="(item, index) in proceedList" :key="index">
-				<CreateState
-					v-if="item.state === 3"
-					category="補交文件"
-					identity="admissionApplicant"
-					:order="index + 1"
-					@edit="createToEdit"
-				/>
-				<!-- <RefillState
-					v-else-if="item.state === 4"
-					identity="admissionApplicant"
-					:isUploadLoading="isLoading.upload"
-					:order="index + 1"
-					@cancel="editToCreate"
-					@upload="handleUpload"
-				/> -->
 			</div>
 		</div>
 
@@ -73,11 +61,12 @@ const api = new AdmissionApplicantAPI(applicantAuth);
 
 const toast = useToast();
 
-const isEnabled = ref(false);
+const isEnabled = ref(true);
 
-const isLoading = reactive({
-	upload: false,
-	fetch: false,
+const refillFile = reactive({
+	state: 3,
+	loading: false,
+	order: 1,
 });
 
 const fetchResponse = reactive({
@@ -85,15 +74,12 @@ const fetchResponse = reactive({
 	message: "" as string | [],
 });
 
-const fileList: AttachmentData[] = reactive([]);
-const proceedList: AttachmentDetailData[] = reactive([]);
-
-const editToCreate = (index: number, category: string) => {
-	proceedList[index].state = 3;
+const editToCreate = () => {
+	refillFile.state = 3;
 };
 
-const createToEdit = (index: number, category: string) => {
-	proceedList[index].state = 4;
+const createToEdit = () => {
+	refillFile.state = 4;
 };
 
 const uploadFile = async (body: object) => {
@@ -110,7 +96,7 @@ const uploadFile = async (body: object) => {
 };
 
 const handleUpload = async (body: object) => {
-	isLoading.upload = true;
+	refillFile.loading = true;
 
 	const response = uploadFile(body);
 
@@ -120,8 +106,7 @@ const handleUpload = async (body: object) => {
 			fetchResponse.message = toRaw(res.message);
 		}
 
-		isLoading.upload = false;
-		isLoading.fetch = true;
+		refillFile.loading = false;
 
 		if (fetchResponse.success) {
 			toast.add({
@@ -138,8 +123,6 @@ const handleUpload = async (body: object) => {
 				life: 5000,
 			});
 		}
-
-		isLoading.fetch = true;
 	});
 };
 </script>

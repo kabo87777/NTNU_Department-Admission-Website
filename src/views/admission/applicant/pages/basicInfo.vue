@@ -159,9 +159,7 @@
 					</div>
 				</div>
 			</div>
-			<div
-				v-if="identity.selectedIdentity === '外籍人士'"
-			>
+			<div v-if="identity.selectedIdentity === '外籍人士'">
 				<div class="px-12px py-24px">
 					<div class="flex">
 						<div class="w-1/3">
@@ -174,7 +172,10 @@
 									v-model="identity.nationality"
 								/>
 							</div>
-							<div v-show="required.country" class="absolute mt-[-4px]">
+							<div
+								v-show="required.country"
+								class="absolute mt-[-4px]"
+							>
 								<small class="p-error">
 									{{ $t("此為必填欄位") }}
 								</small>
@@ -189,70 +190,73 @@
 									type="text"
 									v-model="identity.ui"
 								/>
-						</div>
-						<div v-show="required.ui" class="absolute mt-[-4px]">
-							<small class="p-error">
-								{{ $t("此為必填欄位") }}
-							</small>
+							</div>
+							<div
+								v-show="required.ui"
+								class="absolute mt-[-4px]"
+							>
+								<small class="p-error">
+									{{ $t("此為必填欄位") }}
+								</small>
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>	
-			<ParagraphDivider />
-			<div class="px-12px py-24px">
-				<div class="flex">
-					<div class="text-[24px] font-[50] font-bold">
-						{{ $t("現居地址") }}
-					</div>
-					<div class="mt-6px ml-40px text-[#8D9093] text-[14px]">
-						{{ $t('" * " 為必填欄位') }}
-					</div>
-				</div>
-				<div class="flex py-16px">
-					<div class="w-2/3">
-						<div>{{ "*" + $t("地址") }}</div>
-						<div>
-							<InputText
-								class="w-[80%] h-36px !mt-4px"
-								style="border: 1px solid #736028"
-								type="text"
-								v-model="currentAddr.addr"
-								:disabled="currentAddr.isAddrSame"
-							/>
+				<ParagraphDivider />
+				<div class="px-12px py-24px">
+					<div class="flex">
+						<div class="text-[24px] font-[50] font-bold">
+							{{ $t("現居地址") }}
 						</div>
-						<div
-							v-show="required.currentAddr"
-							class="absolute mt-[-4px]"
-						>
-							<small class="p-error">
-								{{ $t("此為必填欄位") }}
-							</small>
+						<div class="mt-6px ml-40px text-[#8D9093] text-[14px]">
+							{{ $t('" * " 為必填欄位') }}
 						</div>
 					</div>
-					<div class="w-1/3">
-						<div>{{ "*" + $t("郵遞區號") }}</div>
-						<div>
-							<InputText
-								class="w-[70%] h-36px !mt-4px"
-								style="border: 1px solid #736028"
-								type="text"
-								v-model="currentAddr.postcode"
-								:disabled="currentAddr.isAddrSame"
-							/>
+					<div class="flex py-16px">
+						<div class="w-2/3">
+							<div>{{ "*" + $t("地址") }}</div>
+							<div>
+								<InputText
+									class="w-[80%] h-36px !mt-4px"
+									style="border: 1px solid #736028"
+									type="text"
+									v-model="currentAddr.addr"
+									:disabled="currentAddr.isAddrSame"
+								/>
+							</div>
+							<div
+								v-show="required.currentAddr"
+								class="absolute mt-[-4px]"
+							>
+								<small class="p-error">
+									{{ $t("此為必填欄位") }}
+								</small>
+							</div>
 						</div>
-						<div
-							v-show="required.currentPostcode"
-							class="absolute mt-[-4px]"
-						>
-							<small class="p-error">
-								{{ $t("此為必填欄位") }}
-							</small>
+						<div class="w-1/3">
+							<div>{{ "*" + $t("郵遞區號") }}</div>
+							<div>
+								<InputText
+									class="w-[70%] h-36px !mt-4px"
+									style="border: 1px solid #736028"
+									type="text"
+									v-model="currentAddr.postcode"
+									:disabled="currentAddr.isAddrSame"
+								/>
+							</div>
+							<div
+								v-show="required.currentPostcode"
+								class="absolute mt-[-4px]"
+							>
+								<small class="p-error">
+									{{ $t("此為必填欄位") }}
+								</small>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-			<div  v-else>
+			<div v-else>
 				<div class="flex py-16px">
 					<div class="w-1/3">
 						<div>{{ "*" + $t("身份證字號") }}</div>
@@ -271,11 +275,10 @@
 						</div>
 					</div>
 				</div>
-			<ParagraphDivider />
+				<ParagraphDivider />
 			</div>
-		
 		</div>
-	
+
 		<div v-if="identity.selectedIdentity !== '外籍人士'">
 			<div class="px-12px py-24px">
 				<div class="flex">
@@ -339,7 +342,11 @@
 					</div>
 				</div>
 				<div class="mt-16px">
-					<Checkbox v-model="currentAddr.isAddrSame" :binary="true" v-on:click="address" />
+					<Checkbox
+						v-model="currentAddr.isAddrSame"
+						:binary="true"
+						v-on:click="address"
+					/>
 					<label class="ml-4px">{{ $t("住址相同") }}</label>
 				</div>
 				<div class="flex py-16px">
@@ -352,7 +359,6 @@
 								type="text"
 								v-model="currentAddr.addr"
 								:disabled="currentAddr.isAddrSame"
-								
 							/>
 						</div>
 						<div
@@ -387,7 +393,7 @@
 				</div>
 			</div>
 		</div>
-		
+
 		<ParagraphDivider />
 		<div class="px-12px py-24px">
 			<div class="flex">
@@ -605,7 +611,7 @@ const basicInfo: AdmissionApplicantGetUserInfoResponse =
 
 const setBasicInfo = (res: AdmissionApplicantGetUserInfoResponse) => {
 	name.id = res.id as number;
-	name.admission_id = res.admission_id as number; 
+	name.admission_id = res.admission_id as number;
 	name.appellation = res.title as string;
 	name.suffix = res.suffix as string;
 	name.zhFamName = res.cn_surname as string;
