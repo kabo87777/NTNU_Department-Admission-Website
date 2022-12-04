@@ -291,7 +291,12 @@ const { mutate: deleteApplicant } = useMutation({
 		refetch().then(() => (isImporting.value = false));
 	},
 	onError: () => {
-		// TODO: Show error dialog
+		toast.add({
+			severity: 'error',
+			life: 3000,
+			summary: $t("操作失敗"),
+			detail: $t("刪除使用者時發生錯誤")
+		})
 	},
 });
 
