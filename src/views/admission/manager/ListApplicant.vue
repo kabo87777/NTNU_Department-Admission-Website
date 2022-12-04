@@ -202,7 +202,9 @@ const {
 			tableData.value = data;
 			isImporting.value = false;
 		},
-	}
+		onSettled: ()=>{
+			isImporting.value=false
+		},
 );
 
 const isImporting = ref(false);
