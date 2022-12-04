@@ -45,7 +45,7 @@
 					<Button
 						icon="pi pi-times"
 						class="p-button-outlined p-button-danger"
-						@click="deleteApplicant(slotProps.data.id)"
+						@click="confirmDeleteAccount(slotProps.data.id)"
 					/>
 				</span>
 			</template>
@@ -131,6 +131,7 @@
 			</div>
 		</template>
 	</Dialog>
+	<ConfirmDialog />
 </template>
 
 <script setup lang="ts">
@@ -158,15 +159,18 @@ import { FileUploadUploaderEvent } from "primevue/fileupload";
 import ProgressBar from "primevue/progressbar";
 import { useToast } from "primevue/usetoast";
 import { useI18n } from "vue-i18n";
+import ConfirmDialog from "primevue/confirmdialog";
+import { useConfirm } from "primevue/useconfirm";
 
+const confirm = useConfirm();
 const store = useGlobalStore();
 const adminAuth = useAdmissionAdminAuthStore();
 const api = new AdmissionAdminAPI(adminAuth);
 const tableData = ref<AdmissionAdminApplicantsListResponse[]>(
 	[] as AdmissionAdminApplicantsListResponse[]
 );
-const {t: $t} = useI18n()
-const toast = useToast()
+const { t: $t } = useI18n();
+const toast = useToast();
 // NOTE: Copy and modified from SideBar.vue
 const {
 	isLoading,
@@ -202,14 +206,13 @@ const {
 			tableData.value = data;
 			isImporting.value = false;
 		},
-		onSettled: ()=>{
-			isImporting.value=false
+		onSettled: () => {
+			isImporting.value = false;
 		},
-		// No auto fetch by default. 
+		// No auto fetch by default.
 		// Wait SideBar getting program id, and then pinia subscription will trigger refetch
-		enabled: false
-	},
-	
+		enabled: false,
+	}
 );
 
 const isImporting = ref(false);
@@ -277,20 +280,20 @@ const { mutate: uploadApplicantImport } = useMutation({
 		// Refetch applicnt list on successful import
 		refetch().then(() => (isImporting.value = false));
 		toast.add({
-			severity: 'success',
+			severity: "success",
 			life: 3000,
 			summary: $t("操作成功"),
-			detail: $t("成功匯入申請者")
-		})
+			detail: $t("成功匯入申請者"),
+		});
 	},
-	onError: ()=>{
+	onError: () => {
 		toast.add({
-			severity: 'error',
+			severity: "error",
 			life: 3000,
 			summary: $t("操作失敗"),
-			detail: $t("上傳 XLSX 檔時發生錯誤")
-		})
-	}
+			detail: $t("上傳 XLSX 檔時發生錯誤"),
+		});
+	},
 });
 
 const { mutate: deleteApplicant } = useMutation({
@@ -305,11 +308,11 @@ const { mutate: deleteApplicant } = useMutation({
 	},
 	onError: () => {
 		toast.add({
-			severity: 'error',
+			severity: "error",
 			life: 3000,
 			summary: $t("操作失敗"),
-			detail: $t("刪除使用者時發生錯誤")
-		})
+			detail: $t("刪除使用者時發生錯誤"),
+		});
 	},
 });
 
@@ -319,5 +322,18 @@ const importApplicantCallback = (event: FileUploadUploaderEvent) => {
 	const formdata = new FormData();
 	formdata.append("file", file);
 	uploadApplicantImport(formdata);
+};
+
+const confirmDeleteAccount = (id: number) => {
+	confirm.require({
+		header: $t("是否要刪除此帳號？"),
+		message: $t("此動作不可回復，請謹慎操作"),
+		icon: "pi pi-exclamation-triangle",
+		accept: () => {
+			deleteApplicant(id);
+		},
+		acceptLabel: $t("確認"),
+		rejectLabel: $t("取消"),
+	});
 };
 </script>
