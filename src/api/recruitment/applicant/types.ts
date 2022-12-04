@@ -90,6 +90,7 @@ export interface RecruitmentApplicantFileListResponse {
 	created_at: string;
 	updated_at: string;
 } 
+
 export interface RecruitmentApplicantUserInfoResponse {
 	id: number;
 	title?: string;
