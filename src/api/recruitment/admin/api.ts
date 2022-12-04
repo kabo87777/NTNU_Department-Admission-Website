@@ -2,6 +2,7 @@ import type { AuthStore } from "@/stores/universalAuth";
 import { GenericAPI } from "@/api/api";
 import type {
 	RecruitmentAdminApplicantListResponse,
+	RecruitmentAdminApplicantsListResponse,
 	RecruitmentAdminChangePassResponse,
 	RecruitmentAdminProgramListResponse,
 } from "./types";
@@ -12,7 +13,7 @@ export class RecruitmentAdminAPI extends GenericAPI {
 		super(auth);
 	}
 
-	async getApplicantList(
+	async getApplicantFile(
 		pid: number
 	): Promise<RecruitmentAdminApplicantListResponse[]> {
 		const data: APIGenericResponse = await this.instance.get(
@@ -86,5 +87,26 @@ export class RecruitmentAdminAPI extends GenericAPI {
 			success: true,
 			message: data.message,
 		};
+	}
+
+	async getApplicantList(
+		programID: number
+	): Promise<RecruitmentAdminApplicantsListResponse[]> {
+		const data: APIGenericResponse = await this.instance.get(
+			`/recruitment/admin/program/${programID}/applicant`
+		);
+		if (data.error === true || typeof data.data.applicants === "undefined")
+			throw new Error("Failed to fetch applicant list");
+		return data.data.applicants;
+	}
+
+	async deleteApplicant(id: number) {
+		const response: APIGenericResponse = await this.instance.delete(
+			`/recruitment/admin/applicant/${id}`
+		);
+		if (response.error === true)
+			throw new Error("Failed to send DEL request at deleteApplicant");
+
+		return response;
 	}
 }
