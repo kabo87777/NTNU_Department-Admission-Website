@@ -31,8 +31,7 @@ export class AdmissionApplicantAPI extends GenericAPI {
 			"admission/applicant/info"
 		);
 
-		if (data.error === true || typeof data.data.programs === "undefined")
-			throw new Error("Failed to fetch user info");
+		if (data.error === true) throw new Error("Failed to fetch user info");
 		console.log(data);
 		return data.data.programs;
 	}

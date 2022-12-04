@@ -128,33 +128,22 @@ export interface AdmissionApplicantGetFileListResponse {
 }
 
 export interface AdmissionApplicantGetUserInfoResponse {
-	id?: number;
+	id: number;
+	title?: string;
+	suffix?: string;
+	cn_surname?: string;
 	name?: string;
-	email?: string;
+	en_givenname?: string;
+	en_midname?: string;
+	en_surname?: string;
+	nationality?: string;
 	national_id?: string;
-	admission_id?: number;
 	sex?: string;
-	birth?: string;
-	day_phone?: string;
-	night_phone?: string;
+	birth?: Date;
+	birthcountry?: string;
 	mobile_phone?: string;
 	household_address?: string;
 	household_zipcode?: number | string;
 	communicate_address?: string;
 	communicate_zipcode?: number | string;
-	graduated_school?: string;
-	graduated_major?: string;
-	isSameDept?: boolean;
-	s_applicant_id?: number;
-	created_at?: string;
-	updated_at?: string;
-	isDisabled?: boolean;
-	title?: string;
-	suffix?: string;
-	cn_surname?: string;
-	en_surname?: string;
-	en_midname?: string;
-	en_givenname?: string;
-	nationality?: string;
-	birthcountry?: string;
 }
