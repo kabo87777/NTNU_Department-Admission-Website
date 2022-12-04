@@ -53,9 +53,7 @@
 						v-else
 						icon="pi pi-chevron-circle-up"
 						class="p-button-outlined"
-						@click="
-							confirmActivateReviewer(slotProp.data)
-						"
+						@click="confirmActivateReviewer(slotProp.data)"
 					/>
 				</div>
 			</template>
@@ -388,8 +386,10 @@ const confirmDisableReviewer = (
 	});
 };
 
-const confirmActivateReviewer=(reviewerData: RecruitmentAdminReviewersListResponse)=>{
-	const {id}=reviewerData
+const confirmActivateReviewer = (
+	reviewerData: RecruitmentAdminReviewersListResponse
+) => {
+	const { id } = reviewerData;
 
 	confirm.require({
 		header: $t("是否要啟用此審查者？"),
@@ -398,10 +398,10 @@ const confirmActivateReviewer=(reviewerData: RecruitmentAdminReviewersListRespon
 		acceptLabel: $t("確認"),
 		rejectLabel: $t("取消"),
 		accept: () => {
-			changeAccountStateAPI({id:id, action:'activate'})
-		}
-	})
-}
+			changeAccountStateAPI({ id: id, action: "activate" });
+		},
+	});
+};
 
 const isProcessing = ref(false);
 
@@ -426,6 +426,13 @@ const { mutate: changeAccountStateAPI } = useMutation({
 		const { id, action } = variables;
 
 		return api.changeReviewerAccountState(id, action);
+	},
+	onSuccess: () => {
+		toast.add({
+			severity: "true",
+			life: 3000,
+			summary: $t("操作成功"),
+		});
 	},
 	onError: () => {
 		toast.add({
