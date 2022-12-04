@@ -156,6 +156,8 @@ import { useGlobalStore } from "@/stores/globalStore";
 import FileUpload, { FileUploadBeforeUploadEvent } from "primevue/fileupload";
 import { FileUploadUploaderEvent } from "primevue/fileupload";
 import ProgressBar from "primevue/progressbar";
+import { useToast } from "primevue/usetoast";
+import { useI18n } from "vue-i18n";
 
 const store = useGlobalStore();
 const adminAuth = useAdmissionAdminAuthStore();
@@ -163,7 +165,8 @@ const api = new AdmissionAdminAPI(adminAuth);
 const tableData = ref<AdmissionAdminApplicantsListResponse[]>(
 	[] as AdmissionAdminApplicantsListResponse[]
 );
-
+const {t: $t} = useI18n()
+const toast = useToast()
 // NOTE: Copy and modified from SideBar.vue
 const {
 	isLoading,
@@ -267,6 +270,14 @@ const { mutate: uploadApplicantImport } = useMutation({
 		// Refetch applicnt list on successful import
 		refetch().then(() => (isImporting.value = false));
 	},
+	onError: ()=>{
+		toast.add({
+			severity: 'error',
+			life: 3000,
+			summary: $t("操作失敗"),
+			detail: $t("上傳 XLSX 檔時發生錯誤")
+		})
+	}
 });
 
 const { mutate: deleteApplicant } = useMutation({
