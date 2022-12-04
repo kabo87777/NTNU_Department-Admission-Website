@@ -75,3 +75,20 @@ export interface RecruitmentAdminChangePassResponse {
 	success?: boolean;
 	message?: string | [];
 }
+
+export interface RecruitmentAdminApplicantsListResponse {
+	// Target API: /recruitment/admin/program/1/applicant
+	// TODO: check exact type of each fields
+	id: number;
+	provider: string;
+	uid: string;
+	allow_password_change: boolean;
+	isInit: boolean | null;
+	lang: string | null;
+	name: string;
+	nickname: string | null;
+	image: string | null;
+	email: string;
+	created_at: string;
+	updated_at: string;
+}

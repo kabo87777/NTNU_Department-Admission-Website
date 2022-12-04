@@ -1,5 +1,5 @@
 <template>
-	<div class="pt-62px pl-128px pr-128px">
+	<div>
 		<div class="font-medium text-32px">{{ $t("申請上傳欄位") }}</div>
 		<div class="bigRedDivider"></div>
 		<div class="p-fluid">
@@ -201,7 +201,7 @@ import { reactive, ref, computed, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRecruitmentAdminAuthStore } from "@/stores/universalAuth";
 import { RecruitmentAdminAPI } from "@/api/recruitment/admin/api";
-import { useGlobalStore } from "@/stores/globalStore";
+import { useGlobalStore } from "@/stores/RecruitmentAdminStore";
 import { InvalidSessionError } from "@/api/error";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
 import { RecruitmentAdminProgramListResponse } from "@/api/recruitment/admin/types";
