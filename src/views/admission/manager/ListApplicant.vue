@@ -304,7 +304,15 @@ const { mutate: deleteApplicant } = useMutation({
 		isImporting.value = true;
 	},
 	onSuccess: () => {
-		refetch().then(() => (isImporting.value = false));
+		refetch().then(() => {
+			isImporting.value = false;
+			toast.add({
+				severity: "success",
+				life: 3000,
+				summary: $t("操作成功"),
+				detail: $t("成功刪除帳號"),
+			});
+		});
 	},
 	onError: () => {
 		toast.add({
