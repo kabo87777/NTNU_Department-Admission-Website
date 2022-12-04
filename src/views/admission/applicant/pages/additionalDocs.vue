@@ -39,7 +39,7 @@
 
 		<!-- 畫面顯示(未開放補件時) -->
 		<div v-else class="relative h-150">
-			<div class="recruitmentAdditionNoData">
+			<div class="admissionAdditionNoData">
 				<img
 					src="/assets/admissionApplicant/Newsletter.png"
 					alt="NO DATA"
@@ -145,7 +145,7 @@ const handleUpload = async (body: object) => {
 </script>
 
 <style setup lang="css">
-.recruitmentAdditionNoData {
+.admissionAdditionNoData {
 	position: absolute;
 	left: 50%;
 	top: 63%;
