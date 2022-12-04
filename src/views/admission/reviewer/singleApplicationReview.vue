@@ -150,7 +150,6 @@ import { useToast } from "primevue/usetoast";
 import SelectButton from "primevue/selectbutton";
 import axios from "axios";
 import VuePdfEmbed from "vue-pdf-embed";
-import { Base64 } from "js-base64";
 
 const route = useRoute();
 const { t } = useI18n();
