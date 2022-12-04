@@ -62,6 +62,7 @@
 				:showIcon="true"
 				:showTime="true"
 				class="w-320px h-44px mt-10px"
+				:baseZIndex="zIndex"
 			/>
 		</div>
 		<div class="inline-block ml-100px">
@@ -74,6 +75,7 @@
 				:showIcon="true"
 				:showTime="true"
 				class="w-320px h-44px mt-10px"
+				:baseZIndex="zIndex"
 			/>
 		</div>
 		<br />
@@ -87,6 +89,7 @@
 				:showIcon="true"
 				:showTime="true"
 				class="w-320px h-44px mt-10px"
+				:baseZIndex="zIndex"
 			/>
 		</div>
 		<div class="inline-block ml-100px">
@@ -99,6 +102,7 @@
 				:showIcon="true"
 				:showTime="true"
 				class="w-320px h-44px mt-10px"
+				:baseZIndex="zIndex"
 			/>
 		</div>
 		<h5 class="text-base tracking-widest mt-30px">
@@ -174,6 +178,7 @@ const translation = {
 	phase1: t("第一階段 (書面審查)"),
 	phase2: t("第二階段 (口試審查)"),
 };
+const zIndex = ref(3000);
 const review_stages = ref([translation.phase1, translation.phase2]);
 const globalStore = useGlobalStore();
 const adminAuth = useAdmissionAdminAuthStore();

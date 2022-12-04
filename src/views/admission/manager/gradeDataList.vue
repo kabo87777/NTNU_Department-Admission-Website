@@ -40,6 +40,12 @@
 					</template>
 				</Column>
 				<Column field="application_stage" :header="phaseResult">
+					<template #body="slotProps">
+						<i v-if="slotProps.data.application_stage === null">{{
+							$t("待審核")
+						}}</i>
+						<p v-else>{{ slotProps.data.application_stage }}</p>
+					</template>
 				</Column>
 				<Column :exportable="false" style="min-width: 8rem">
 					<template #body="slotProps">
@@ -703,6 +709,7 @@ const oralGradeList = ref<AdmissionAdminOralGradeListResponse[]>();
 const admittedList = ref();
 const reserveList = ref();
 const iEnrollList = ref();
+const applicantID = ref();
 const applicantDocsGradeList = useQuery(
 	["admissionAdminDocsGradeList"],
 	async () => {
@@ -723,9 +730,10 @@ const applicantDocsGradeList = useQuery(
 	},
 	{
 		onSuccess: (data) => {
-			docsStage1Count.value = data!.filter(
-				(item) => item.application_stage === null
-			).length;
+			docsStage1Count.value =
+				data!.filter((item) => item.application_stage === null).length +
+				data!.filter((item) => item.application_stage === "待審核")
+					.length;
 			docsStage2Count.value = data!.filter(
 				(item) => item.application_stage === "進赴二階"
 			).length;
@@ -741,6 +749,7 @@ const applicantDocsGradeList = useQuery(
 			iEnrollList.value = data!.filter(
 				(item) => item.application_stage === "逕取"
 			);
+			applicantID.value = data![0].id;
 		},
 	}
 );
@@ -765,9 +774,9 @@ const applicantOralGradeList = useQuery(
 	{
 		onSuccess: (data) => {
 			oralGradeList.value = data;
-			oralStage1Count.value = data!.filter(
-				(item) => item.enroll_stage === null
-			).length;
+			oralStage1Count.value =
+				data!.filter((item) => item.enroll_stage === null).length +
+				data!.filter((item) => item.enroll_stage === "待審核").length;
 			oralStage2Count.value = data!.filter(
 				(item) => item.enroll_stage === "正取"
 			).length;
@@ -883,7 +892,7 @@ const onRowReorder2 = (event: any) => {
 const onRowReorder3 = (event: any) => {
 	oralGradeList.value = event.value;
 };
-const applicantID = ref(1);
+
 const docsReviewerCount = ref(0);
 const oralReviewerCount = ref(0);
 const docsTotalGrade = ref(0);
@@ -894,7 +903,10 @@ const applicantDocsGrade = useQuery(
 	["admissionAdminDocsGrade", applicantID],
 	async () => {
 		try {
-			return await api.getSingleDocsGrade(applicantID);
+			if (applicantID.value !== undefined) {
+				return await api.getSingleDocsGrade(applicantID);
+			}
+			return null;
 		} catch (e: any) {
 			if (e instanceof InvalidSessionError) {
 				// FIXME: show session expiry notification??
@@ -927,7 +939,10 @@ const applicantOralGrade = useQuery(
 	["admissionAdminOralGrade", applicantID],
 	async () => {
 		try {
-			return await api.getSingleOralGrade(applicantID);
+			if (applicantID.value !== undefined) {
+				return await api.getSingleOralGrade(applicantID);
+			}
+			return null;
 		} catch (e: any) {
 			if (e instanceof InvalidSessionError) {
 				// FIXME: show session expiry notification??

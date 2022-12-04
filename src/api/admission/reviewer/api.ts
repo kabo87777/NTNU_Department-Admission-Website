@@ -123,9 +123,9 @@ export class AdmissionReviewerAPI extends GenericAPI {
 	}
 
 	///FIX while backend is ready
-	async getApplicantSingleFile(): Promise<Blob> {
+	async getApplicantSingleFile(): Promise<string> {
 		return await this.instance.get(
-			"/admission/reviewer/applicant/1/file/1/getfile"
+			"/admission/reviewer/program/1/get_docs_report"
 		);
 	}
 }
