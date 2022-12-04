@@ -129,6 +129,7 @@ export interface AdmissionApplicantGetFileListResponse {
 
 export interface AdmissionApplicantGetUserInfoResponse {
 	id: number;
+	admission_id?:number;
 	title?: string;
 	suffix?: string;
 	cn_surname?: string;
