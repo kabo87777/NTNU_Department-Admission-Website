@@ -46,6 +46,7 @@
 						icon="pi pi-ban"
 						class="p-button-outlined p-button-warning"
 						@click="confirmDisableReviewer(slotProp.data)"
+						v-tooltip="$t('停用帳號')"
 					/>
 
 					<!-- Activate user button -->
@@ -54,6 +55,7 @@
 						icon="pi pi-chevron-circle-up"
 						class="p-button-outlined"
 						@click="confirmActivateReviewer(slotProp.data)"
+						v-tooltip="$t('啟用帳號')"
 					/>
 				</div>
 			</template>
@@ -233,6 +235,7 @@ import Password from "primevue/password";
 import ConfirmDialog from "primevue/confirmdialog";
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
+import Tooltip from "primevue/tooltip";
 
 const { t: $t } = useI18n();
 
