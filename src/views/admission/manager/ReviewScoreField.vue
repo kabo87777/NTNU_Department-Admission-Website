@@ -253,23 +253,6 @@
 				<div>{{ trans.details.fileUpload.value }}</div>
 			</div>
 		</div>
-		<!-- showFile - checkbox 4 -->
-		<div v-if="showedFile[3].visible">
-			<div class="flex mt-6 mb-2 gap-4 items-center">
-				<Checkbox
-					v-model="showedFile[3].checked"
-					:input-id="showedFile[3].id"
-					:binary="true"
-				/>
-				<label :for="showedFile[3].id" text="xl gray-700">
-					{{ trans.nationalId.value }}
-				</label>
-			</div>
-			<div class="flex mx-10 gap-8 mb-4" text="gray-500">
-				<div>{{ trans.details.fileName.value }}</div>
-				<div>{{ trans.details.fileUpload.value }}</div>
-			</div>
-		</div>
 
 		<!-- Footer - Control Buttons -->
 		<div class="bigRedDivider my-6 mt-10"></div>
