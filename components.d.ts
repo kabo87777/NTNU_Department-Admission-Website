@@ -17,7 +17,6 @@ declare module '@vue/runtime-core' {
     NavBar: typeof import('./src/components/NavBar.vue')['default']
     PasswordRecoveryEmailSent: typeof import('./src/components/PasswordRecoveryEmailSent.vue')['default']
     PdfPreview: typeof import('./src/components/pdfPreview.vue')['default']
-    RecruitmentAdminSidebar: typeof import('./src/components/RecruitmentAdminSidebar.vue')['default']
     RecruitmentApplicantSidebar: typeof import('./src/components/sidebars/recruitmentApplicantSidebar.vue')['default']
     RecruitmentManagerSidebar: typeof import('./src/components/recruitmentManagerSidebar.vue')['default']
     RecruitmentReviewerSidebar: typeof import('./src/components/recruitmentReviewerSidebar.vue')['default']
