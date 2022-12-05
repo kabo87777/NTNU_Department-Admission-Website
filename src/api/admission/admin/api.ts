@@ -172,7 +172,7 @@ export class AdmissionAdminAPI extends GenericAPI {
 
 	async changePassword(body: object): Promise<AdmissionAdminGenericResponse> {
 		const data: APIGenericResponse = await this.instance.patch(
-			"admission/auth/admin/password",
+			"/admission/auth/admin/password",
 			body
 		);
 

@@ -4,7 +4,9 @@ import type {
 	RecruitmentAdminApplicantListResponse,
 	RecruitmentAdminApplicantsListResponse,
 	RecruitmentAdminChangePassResponse,
+	RecruitmentAdminCreateReviewerRequest,
 	RecruitmentAdminProgramListResponse,
+	RecruitmentAdminReviewersListResponse,
 } from "./types";
 import type { APIGenericResponse } from "@/api/types";
 
@@ -108,5 +110,44 @@ export class RecruitmentAdminAPI extends GenericAPI {
 			throw new Error("Failed to send DEL request at deleteApplicant");
 
 		return response;
+	}
+
+	async getReviewerList(): Promise<RecruitmentAdminReviewersListResponse[]> {
+		const response: APIGenericResponse = await this.instance.get(
+			"/recruitment/admin/reviewer"
+		);
+		if (response.error === true || typeof response.data === "undefined")
+			throw new Error("Failed to GET reviewer list");
+
+		return response.data.reviewers;
+	}
+
+	async createReviewerAccount(data: RecruitmentAdminCreateReviewerRequest) {
+		const response: APIGenericResponse = await this.instance.post(
+			"/recruitment/admin/reviewer",
+			data
+		);
+
+		if (response.error === true) throw new Error(`${response.message}`);
+
+		return;
+	}
+
+	async changeReviewerAccountState(
+		id: number,
+		action: "activate" | "disable"
+	) {
+		const body = {
+			isDisabled: action === "disable" ? true : false,
+		};
+
+		const response: APIGenericResponse = await this.instance.patch(
+			`/recruitment/admin/reviewer/${id}/state`,
+			body
+		);
+
+		if (response.error === true) throw new Error(`${response.message}`);
+
+		return;
 	}
 }
