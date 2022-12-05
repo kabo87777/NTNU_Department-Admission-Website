@@ -433,7 +433,7 @@ const { mutate: changeAccountStateAPI } = useMutation({
 	},
 	onSuccess: () => {
 		toast.add({
-			severity: "true",
+			severity: "success",
 			life: 3000,
 			summary: $t("操作成功"),
 		});
