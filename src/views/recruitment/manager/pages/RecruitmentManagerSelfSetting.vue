@@ -2,15 +2,9 @@
 	<div class="ml-50px mt-50px">
 		<div>{{ $t("使用者管理") }}</div>
 		<div class="bigRedDivider"></div>
-		<div class="mt-20px">
-			{{ $t("帳號名稱") }}：{{ userId }}
-		</div>
-		<div class="mt-20px">
-			{{ $t("聯絡信箱") }}：{{ email }}
-		</div>
-		<div class="mt-20px">
-			{{ $t("手機號碼") }}：{{ phone }}
-		</div>
+		<div class="mt-20px">{{ $t("帳號名稱") }}：{{ userId }}</div>
+		<div class="mt-20px">{{ $t("聯絡信箱") }}：{{ email }}</div>
+		<div class="mt-20px">{{ $t("手機號碼") }}：{{ phone }}</div>
 		<Divider />
 		<div class="mt-20px font-[500] font-bold text-[24px] flex">
 			<div>{{ $t("修改密碼") }}</div>
