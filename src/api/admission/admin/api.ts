@@ -44,10 +44,10 @@ export class AdmissionAdminAPI extends GenericAPI {
 	}
 
 	async getReviewerPrograms(
-		reviewerID: Ref<number>
+		reviewerID: number
 	): Promise<AdmAdminReviewerRelatedProgramResponse[]> {
 		const data: APIGenericResponse = await this.instance.get(
-			`/admission/admin/reviewer/${reviewerID.value}/relation`
+			`/admission/admin/reviewer/${reviewerID}/relation`
 		);
 		if (data.error === true || typeof data.data === "undefined")
 			throw new Error("Failed to fetch reviewer-related program list");
@@ -273,7 +273,36 @@ export class AdmissionAdminAPI extends GenericAPI {
 				isDisabled: state,
 			}
 		);
+		if (response.error === true)
+			throw new Error(
+				`Failed to ${action} reviewer's account state: ${response.message}`
+			);
 
+		return response;
+	}
+	async assignReviewertoProgram(reviewerID: number, programID: number) {
+		const response: APIGenericResponse = await this.instance.post(
+			`/admission/admin/program/${programID}/addreviewer`,
+			{
+				reviewer_id: reviewerID,
+			}
+		);
+
+		if (response.error === true) throw new Error(`${response.message}`);
+		return response;
+	}
+
+	async removeReviewerFromProgram(reviewerID: number, programID: number) {
+		const response: APIGenericResponse = await this.instance.delete(
+			`/admission/admin/program/${programID}/deletereviewer`,
+			{
+				data: {
+					reviewer_id: reviewerID,
+				},
+			}
+		);
+
+		if (response.error === true) throw new Error(`${response.message}`);
 		return response;
 	}
 }
