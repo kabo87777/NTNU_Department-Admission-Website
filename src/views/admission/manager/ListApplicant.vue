@@ -186,8 +186,10 @@ const {
 	["applicantList"],
 	async () => {
 		try {
-			if (store.program)
-				return await api.getApplicantList(store.program.id);
+			if (store.program === undefined)
+				throw new Error("undefined program");
+
+			return await api.getApplicantList(store.program.id);
 		} catch (e: any) {
 			if (e instanceof InvalidSessionError) {
 				// FIXME: show session expiry notification??
@@ -214,9 +216,6 @@ const {
 		onSettled: () => {
 			isImporting.value = false;
 		},
-		// No auto fetch by default.
-		// Wait SideBar getting program id, and then pinia subscription will trigger refetch
-		enabled: false,
 	}
 );
 
