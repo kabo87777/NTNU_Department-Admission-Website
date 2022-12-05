@@ -18,6 +18,8 @@ export interface AttachmentData {
 		url: string | any;
 	};
 	r_applicants_r_program_id: number;
+	school?: string;
+	score?: number;
 	created_at: string;
 	updated_at: string;
 }
@@ -30,6 +32,8 @@ export interface AttachmentDetailData {
 		url?: string | any;
 	};
 	r_applicants_r_program_id?: number;
+	school?: string;
+	score?: number;
 	created_at?: string;
 	updated_at?: string;
 	order?: number;
@@ -59,6 +63,7 @@ export interface RecruitmentApplicantProgramResponse {
 	id: number;
 	category: string;
 	name: string;
+	isMoredoc?: boolean;
 	applicant_required_file?: {} | [];
 	applicant_required_info?: {} | [];
 	created_at?: string;
@@ -80,31 +85,29 @@ export interface RecruitmentApplicantFileListResponse {
 		url: string | any;
 	};
 	r_applicants_r_program_id: number;
+	school?: string;
+	score?: number;
 	created_at: string;
 	updated_at: string;
 }
 
 export interface RecruitmentApplicantUserInfoResponse {
 	id: number;
+	title?: string;
+	suffix?: string;
+	cn_surname?: string;
 	name?: string;
-	email?: string;
+	en_givenname?: string;
+	en_midname?: string;
+	en_surname?: string;
+	nationality?: string;
 	national_id?: string;
 	sex?: string;
-	birth?: string;
-	day_phone?: string;
-	night_phone?: string;
+	birth?: Date;
+	birthcountry?: string;
 	mobile_phone?: string;
 	household_address?: string;
 	household_zipcode?: number | string;
 	communicate_address?: string;
 	communicate_zipcode?: number | string;
-	GSAT_num?: number | string;
-	GSAT_registration?: boolean;
-	graduated_school?: string;
-	graduated_major?: string;
-	isSameDept?: boolean;
-	isDisabled?: boolean;
-	r_applicant_id: number;
-	created_at: string;
-	updated_at: string;
 }

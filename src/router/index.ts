@@ -91,12 +91,18 @@ import recruitmentGradeDataList from "@/views/recruitment/manager/gradeDataList.
 import recruitmentReviewScroreField from "@/views/recruitment/manager/reviewScoreField.vue";
 import recruitmentProjectSetting from "@/views/recruitment/manager/pages/ProjectSetting.vue";
 import recruitmentManagerApplicationAccountSetting from "@/views/recruitment/manager/pages/ApplicationAccountSetting.vue";
+import * as Recruitment from "./recruitment";
+const R = Recruitment.default;
+
+//Recommender section
+import recommenderAuthVerification from "@/views/admission/recommender/AuthVerification.vue";
 
 const routes: Array<RouteRecordRaw> = [
 	// Choose recruitment / admission
 	{
 		path: "/",
 		name: "LandingView",
+		redirect: "mainpage",
 		component: LandingView,
 		children: [
 			// Admission - choose applicant / manager
@@ -302,6 +308,12 @@ const routes: Array<RouteRecordRaw> = [
 					},
 				],
 			},
+			// admission recommender
+			{
+				path: "admission/recommenderAuthVerify",
+				name: "recommenderAuthVerify",
+				component: recommenderAuthVerification,
+			},
 
 			// Recruitment
 			{
@@ -416,7 +428,7 @@ const routes: Array<RouteRecordRaw> = [
 					{
 						path: "applicationAccountSetting",
 						name: "recruitmentManagerApplicationAccountSetting",
-						component: recruitmentManagerApplicationAccountSetting,
+						component: R.ListApplicant,
 					},
 					{
 						path: "gradeDataList",

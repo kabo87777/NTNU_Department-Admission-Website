@@ -1,5 +1,5 @@
 <template>
-	<div class="ml-128px mr-128px mt-62px">
+	<div>
 		<h1 class="text-4xl text-bold tracking-widest">
 			{{ $t("評分資料列表") }}
 		</h1>
@@ -601,7 +601,7 @@ import { useGlobalStore } from "@/stores/globalStore";
 import { useToast } from "primevue/usetoast";
 import { AdmissionAdminReviewerGradeResponse } from "@/api/admission/admin/types";
 import { AdmissionAdminSingleDocsGradeResponse } from "@/api/admission/admin/types";
-import singleApplicantGradeVue from "@/components/singleApplicantGrade.vue";
+// import singleApplicantGradeVue from "@/components/singleApplicantGrade.vue";
 
 const adminAuth = useAdmissionAdminAuthStore();
 const api = new AdmissionAdminAPI(adminAuth);
