@@ -20,24 +20,36 @@
 			<template #header>{{ $t("電子信箱") }}</template>
 		</Column>
 
-		<Column field="roles">
+		<!-- <Column field="roles">
 			<template #header>{{ $t("身份組") }}</template>
-			<!-- <template #body="slotProps">
-        <Tag
-          v-for="role in truncateRoles(slotProps.data)"
-          :key="role"
-          >{{ role }}
-          </Tag>
-      </template> -->
-		</Column>
+		</Column> -->
 
 		<Column>
 			<template #header>{{ $t("動作") }}</template>
-			<template #body>
-				<Button
-					icon="pi pi-pencil"
-					class="p-button-outlined p-button-success"
-				></Button>
+			<template #body="slotProp">
+				<div class="flex gap-x-1">
+					<Button
+						icon="pi pi-pencil"
+						class="p-button-outlined p-button-success"
+					/>
+
+					<!-- Disable user button -->
+					<Button
+						v-if="slotProp.data.isDisabled === false"
+						icon="pi pi-ban"
+						class="p-button-outlined p-button-warning"
+						@click="confirmDisableReviewer(slotProp.data)"
+						v-tooltip="$t('停用帳號')"
+					/>
+
+					<!-- Activate user button -->
+					<Button
+						v-else
+						icon="pi pi-chevron-circle-up"
+						class="p-button-outlined"
+						@click="confirmActivateReviewer(slotProp.data)"
+						v-tooltip="$t('啟用帳號')"
+					/>
 			</template>
 		</Column>
 	</DataTable>
@@ -182,6 +194,7 @@
 			</div>
 		</template>
 	</Dialog>
+	<ConfirmDialog />
 </template>
 
 <script setup lang="ts">
@@ -208,7 +221,10 @@ import { AdmissionAdminAPI } from "@/api/admission/admin/api";
 import { useGlobalStore } from "@/stores/globalStore";
 import { AdmAdminReviewerListResponse } from "@/api/admission/admin/types";
 import Password from "primevue/password";
-const { t } = useI18n();
+import { useConfirm } from "primevue/useconfirm";
+import { useToast } from "primevue/usetoast";
+import ConfirmDialog from "primevue/confirmdialog";
+const { t: $t } = useI18n();
 
 const router = useRouter();
 const adminAuth = useAdmissionAdminAuthStore();
@@ -298,6 +314,9 @@ const {
 			console.log("Loaded");
 			tableData.value = data;
 		},
+		onSettled: () => {
+			isProcessing.value = false;
+		},
 	}
 );
 
@@ -327,10 +346,6 @@ const addReviewerModal = ref({
 const modalVisible = ref(false);
 const modalData = ref();
 
-const openModal = (modal: Ref) => {
-	modal.value.visible = true;
-};
-
 const getRelatedPrograms = () => {
 	if (!programQuery.isFetched.value)
 		programQuery.refetch({ throwOnError: true });
@@ -350,6 +365,75 @@ const { mutate: createReviewer } = useMutation({
 	},
 	onSuccess: () => {
 		refetch();
+	},
+});
+
+const confirm = useConfirm();
+const toast = useToast();
+
+const confirmDisableReviewer = (reviewerData: AdmAdminReviewerListResponse) => {
+	console.log(reviewerData);
+	const { id } = reviewerData;
+
+	confirm.require({
+		header: $t("是否要停用此審查者？"),
+		message: $t("別擔心，您可以隨時重新啟用該帳號"),
+		icon: "pi pi-question-circle",
+		acceptLabel: $t("確認"),
+		rejectLabel: $t("取消"),
+		accept: () => {
+			changeAccountStateAPI({ id: id, action: "disable" });
+		},
+	});
+};
+
+const confirmActivateReviewer = (reviewer: AdmAdminReviewerListResponse) => {
+	const { id } = reviewer;
+
+	confirm.require({
+		header: $t("是否要啟用此審查者？"),
+		message: $t("您仍然可以再次停用該帳號"),
+		icon: "pi pi-question-circle",
+		acceptLabel: $t("確認"),
+		rejectLabel: $t("取消"),
+		accept: () => {
+			changeAccountStateAPI({ id: id, action: "activate" });
+		},
+	});
+};
+
+const { mutate: changeAccountStateAPI } = useMutation({
+	mutationFn: (variables: { id: number; action: "activate" | "disable" }) => {
+		const { id, action } = variables;
+
+		return api.changeReviewerAccountState(id, action);
+	},
+	onSuccess: (_, variables) => {
+		const msg =
+			variables.action === "activate"
+				? $t("成功啟用帳號")
+				: $t("成功停用帳號");
+		toast.add({
+			severity: "success",
+			life: 3000,
+			summary: msg,
+		});
+	},
+	onError: (_, variables) => {
+		const msg =
+			variables.action === "activate"
+				? $t("啟用帳號時發生錯誤")
+				: $t("停用帳號時發生錯誤");
+		toast.add({
+			severity: "error",
+			summary: msg,
+		});
+	},
+	onSettled: () => {
+		refetch();
+	},
+	onMutate: () => {
+		isProcessing.value = true;
 	},
 });
 </script>

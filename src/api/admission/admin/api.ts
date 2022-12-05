@@ -262,4 +262,18 @@ export class AdmissionAdminAPI extends GenericAPI {
 
 		return response;
 	}
+	async changeReviewerAccountState(
+		id: number,
+		action: "activate" | "disable"
+	) {
+		const state = action === "activate" ? false : true;
+		const response: APIGenericResponse = await this.instance.patch(
+			`/admission/admin/reviewer/${id}/state`,
+			{
+				isDisabled: state,
+			}
+		);
+
+		return response;
+	}
 }
