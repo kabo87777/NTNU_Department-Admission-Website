@@ -104,8 +104,23 @@ const consumeTurnstileToken = () => {
 	window.turnstile?.reset();
 	return token;
 };
-const enterEmail = () => {
-	console.log(forgetPwdEmail.value);
+const enterEmail = async () => {
+	try {
+		const redirectUrl =
+			"http://127.0.0.1:5173/admission/applicant/password/reset";
+		const turnstileResponse = consumeTurnstileToken();
+		if (!turnstileResponse) throw new Error("Turnstile challenge failed");
+		const api = new AdmissionApplicantAPI(authStore);
+		console.log(forgetPwdEmail.value);
+		return await api.sendForgotPasswordEmail({
+			email: forgetPwdEmail.value,
+			redirect_url: redirectUrl,
+			"cf-turnstile-response": turnstileResponse,
+		});
+	} catch (error) {
+		// TODO: show error message
+		console.log(error);
+	}
 };
 </script>
 

@@ -136,7 +136,7 @@ const routes: Array<RouteRecordRaw> = [
 				component: AdmissionReviewerForgetPassword,
 			},
 			{
-				path: "/admission/reviewer/resetpassword",
+				path: "/admission/reviewer/password/reset",
 				name: "AdmissionReviewerResetPassword",
 				component: AdmissionReviewerResetpassword,
 			},
@@ -191,7 +191,7 @@ const routes: Array<RouteRecordRaw> = [
 			},
 			// Admission - manager reset password
 			{
-				path: "admission/manager/resetpassword",
+				path: "admission/manager/password/reset",
 				name: "AdmissionManagerResetPassword",
 				component: AdmissionManagerResetPassword,
 			},
@@ -207,7 +207,7 @@ const routes: Array<RouteRecordRaw> = [
 			// },
 			// Admission - applicant reset password
 			{
-				path: "admission/applicant/resetPassword",
+				path: "admission/applicant/password/reset",
 				name: "AdmissionApplicantResetPassword",
 				component: AdmissionApplicantResetPassword,
 			},
