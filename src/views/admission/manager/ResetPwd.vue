@@ -14,11 +14,11 @@
 				</div>
 			</div>
 			<div class="px-8 pb-8 space-y-4">
-				<div class="flex items-end gap-2 applicantTextColor">
+				<div class="flex items-end gap-2 managerTextColor">
 					<div>歡迎</div>
 					<div class="text-4xl" v-text="userName" />
 				</div>
-				<div class="flex items-center gap-2 applicantTextColor">
+				<div class="flex items-center gap-2 managerTextColor">
 					<i class="pi pi-circle" style="font-size: 0.5rem" />
 					<div class="flex-none font-medium">重設密碼</div>
 					<div class="flex-none font-medium">Reset Password</div>
@@ -59,9 +59,9 @@
 			</div>
 			<div class="flex-col-inline px-4 gap-y-8">
 				<div class="flex justify-center">
-					<router-link to="/admission/applicant/signin">
+					<router-link to="/admission/manager/signin">
 						<button
-							class="py-2 w-80 applicantButtonStyle"
+							class="py-2 w-80 managerButtonStyle"
 							border="2  rounded-lg"
 						>
 							<div class="flex justify-center gap-2 mx-auto">
@@ -82,7 +82,7 @@ import { ref } from "vue";
 import { reactive } from "vue";
 import InputText from "primevue/inputtext";
 
-const userName = ref("Chu-Ting");
+const userName = ref("小明");
 const userNewPwd = reactive({
 	password: "",
 	confirmPwd: "",
@@ -90,22 +90,22 @@ const userNewPwd = reactive({
 </script>
 
 <style setup lang="css">
-.applicantTextColor {
-	color: #736028;
+.managerTextColor {
+	color: #79363c;
 }
-.applicantButtonStyle {
-	background-color: #fafac7;
-	border-color: #dbd379;
-	color: #544830;
+.managerButtonStyle {
+	background-color: #ffe4df;
+	border-color: #f3baae;
+	color: #4d3639;
 }
-.applicantButtonStyle:hover {
-	background-color: #8a7b27;
-	border-color: #8a7b27;
+.managerButtonStyle:hover {
+	background-color: #94282c;
+	border-color: #94282c;
 	color: white;
 }
-.applicantButtonStyle:active {
-	background-color: #624f2a;
-	border-color: #624f2a;
+.managerButtonStyle:active {
+	background-color: #62373e;
+	border-color: #62373e;
 	color: white;
 }
 </style>
