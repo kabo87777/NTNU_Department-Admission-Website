@@ -30,12 +30,17 @@
 			</div>
 		</div>
 		<div class="bigBlueDivider"></div>
-		<div class="mt-10px !h-1670px">
+		<div class="p-fluid !mt-5px">
+			<SelectButton v-model="data" :options="datas" aria-labelledby="single" />
+		</div>
+		<div class="mt-10px !h-1800px">
 			<vue-pdf-embed
 				:source="'data:application/pdf;base64,' + pdfData"
 				class="!h-1600px"
-				:page="1"
+				:page="page"
 			/>
+			<Button label="上一頁" icon="pi pi-chevron-left" iconPos="left" @click="page--" :disabled="page===1" class="!mt-120px"/>
+			<Button label="下一頁" icon="pi pi-chevron-right" iconPos="right" @click="page++" :disabled="page===4" class="!ml-1050px"/>
 		</div>
 		<div class="bigBlueDivider"></div>
 		<div class="flex mt-10px">
@@ -139,8 +144,6 @@ import InputNumber from "primevue/inputnumber";
 import Checkbox from "primevue/checkbox";
 import InputText from "primevue/inputtext";
 import { useI18n } from "vue-i18n";
-import PDFView from "@/components/pdfPreview.vue";
-import jsPdf from "./test.pdf";
 import { useAdmissionReviewerAuthStore } from "@/stores/universalAuth";
 import { AdmissionReviewerAPI } from "@/api/admission/reviewer/api";
 import { useMutation, useQuery } from "@tanstack/vue-query";
@@ -148,7 +151,6 @@ import { InvalidSessionError } from "@/api/error";
 import { useGlobalStore } from "@/stores/AdmissionReviewerStore";
 import { useToast } from "primevue/usetoast";
 import SelectButton from "primevue/selectbutton";
-import axios from "axios";
 import VuePdfEmbed from "vue-pdf-embed";
 
 const route = useRoute();
@@ -161,6 +163,7 @@ const api = new AdmissionReviewerAPI(adminAuth);
 
 // FIXME: logic may refactor
 
+const page=ref(1);
 const ID = computed(() => route.params.id);
 const newApplicantGrade = useMutation(async (newProgramData: any) => {
 	try {
@@ -200,7 +203,7 @@ const total_score = computed(() => {
 	).toFixed(2);
 });
 const data = ref("基本資料");
-const datas = ref(["基本資料", "PDF"]);
+const datas = ref(["基本資料", "檢附資料","推薦信","整合pdf"]);
 
 const {
 	isLoading,
@@ -215,7 +218,7 @@ const {
 		} catch (e: any) {
 			if (e instanceof InvalidSessionError) {
 				// FIXME: show session expiry notification??
-				// Why are we even here in the first place?
+				// Why are we even in the first place?
 				// MainContainer should have checked already.
 				console.error(
 					"Session has already expired while querying programList"
@@ -315,7 +318,7 @@ const { data: pdfBase64 } = useQuery(
 	["pdfBase64"],
 	async () => {
 		try {
-			return await api.getApplicantSingleFile();
+			return await api.getApplicantSingleFile(ID.value,1);
 		} catch (e: any) {
 			if (e instanceof InvalidSessionError) {
 				// FIXME: show session expiry notification??
