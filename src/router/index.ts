@@ -17,6 +17,7 @@ import AdmissionManagerSignin from "@/views/admission/manager/ManagerSignin.vue"
 import AdmissionManagerForgetPassword from "@/views/admission/manager/ForgetPassword.vue";
 import AdmissionManagerProjectSettings from "@/views/admission/manager/UploadFileSetting.vue";
 import AdmissionReviewScoreField from "@/views/admission/manager/ReviewScoreField.vue";
+import AdmissionManagerProgramStatus from "@/views/admission/manager/ProgramStatus.vue";
 // Applicant section
 import AdmissionApplicantMainContainer from "@/views/admission/applicant/MainContainer.vue";
 import AdmissionApplicantSignin from "@/views/admission/applicant/login/ApplicantSignin.vue";
@@ -269,6 +270,11 @@ const routes: Array<RouteRecordRaw> = [
 						path: "projectSetting",
 						name: "projectSetting",
 						component: AdmissionManagerProjectSetting,
+					},
+					{
+						path: "programstatus",
+						name: "AdmissionManagerProgramStatus",
+						component: AdmissionManagerProgramStatus,
 					},
 					{
 						path: "reviewScoreField",
