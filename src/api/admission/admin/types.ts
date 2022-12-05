@@ -213,5 +213,4 @@ export interface AdmissionAdminCreateReviewerRequest {
 	password: string;
 	email: string;
 	name: string;
-	redirect_url: string;
 }
