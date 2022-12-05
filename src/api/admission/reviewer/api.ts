@@ -146,4 +146,13 @@ export class AdmissionReviewerAPI extends GenericAPI {
 			`/admission/reviewer/applicant/${applicantID}/file/${fileID}/getfile`
 		);
 	}
+
+	async submitOralGrade(programID: number): Promise<any> {
+		const response: APIGenericResponse = await this.instance.patch(
+			`/admission/reviewer/program/${programID}/confirm_oral`
+		);
+
+		if (response.error === true)
+			throw new Error("Failed to submit OralGrade");
+	}
 }
