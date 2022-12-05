@@ -22,9 +22,8 @@
 			<div class="w-1/3 pl-16px">{{ $t("截止時間") }}</div>
 		</div>
 		<div class="flex mt-16px">
-			<div p-fluid grid formgrid>
+			<div class="w-1/3 pl-16px">
 				<Calendar
-					class="pl-16px"
 					inputId="time24"
 					v-model="date1"
 					:showTime="true"
@@ -33,9 +32,8 @@
 				>
 				</Calendar>
 			</div>
-			<div p-fluid grid formgrid>
+			<div class="w-1/3 pl-16px">
 				<Calendar
-					class="pl-50px"
 					inputId="time24"
 					v-model="date2"
 					:showTime="true"
@@ -62,48 +60,8 @@
 				<span :style="{ marginLeft: '.5em' }">{{ inputvalue }}</span>
 			</div>
 		</div>
-		<div class="mt-16px ml-16px">
-			<Checkbox inputId="text" v-model="textChecked" :binary="true" />
-			<label for="text" class="ml-8px font-medium">{{
-				$t("文字輸入框")
-			}}</label>
-		</div>
-		<div class="flex mt-16px">
-			<div class="mt-16px ml-16px">
-				<Checkbox inputId="file" v-model="fileChecked" :binary="true" />
-				<label for="file" class="ml-8px font-medium"
-					>{{ $t("上傳檔案，檔案類型") }}:</label
-				>
-			</div>
-			<div class="ml-16px">
-				<span class="p-float-label">
-					<Dropdown
-						id="dropdown"
-						v-model="value8"
-						:options="cities"
-						optionLabel="name"
-						class="h-10 w-40"
-					/>
-				</span>
-			</div>
 
-			<div class="flex relative mt-40px">
-				<div class="smallRedDivider"></div>
-				<div class="smallRedDivider absolute right-0"></div>
-			</div>
-		</div>
-
-		<ParagraphDivider />
-
-		<div class="mt-16px">
-			<div>
-				<label class="ml-8px text-24px font-medium">{{
-					$t("提交內容")
-				}}</label>
-			</div>
-		</div>
-		<div class="mt-16px">{{ $t("尚未提交任何文字，檔案") }}</div>
-		<div class="bigRedDivider"></div>
+		<div class="bigRedDivider" style="margin-top: 32px"></div>
 		<div class="mt-16px ml-20px grid justify-center">
 			<Button
 				@click="displayEmail"

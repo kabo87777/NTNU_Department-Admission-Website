@@ -111,22 +111,27 @@ export interface AdmissionAdminApplicantsListResponse {
 	provider: string;
 	uid: string;
 	allow_password_change: boolean;
-	isInit: null;
-	lang: null;
+	isInit: any | null;
+	lang: string | null;
 	name: string;
-	nickname: null;
-	image: null;
+	nickname: string | null;
+	image: any | null;
 	email: string;
 	username: string;
-	docs_order: null;
-	oral_order: null;
-	file: null;
-	docs_stage: null;
-	oral_stage: null;
+	docs_order: number | null;
+	oral_order: number;
+	file: any | null;
+	docs_stage: string | null;
+	oral_stage: string | null;
 	created_at: string;
 	updated_at: string;
 	s_program_id: number;
 	application_stage: null;
+	isMoredoc: boolean;
+	moredoc_category: string;
+	moredoc_end_date: string;
+	moredoc_name: string;
+	moredoc_start_date: string;
 }
 
 export interface AdmAdminEditApplicantRequest {

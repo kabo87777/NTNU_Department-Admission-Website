@@ -1,5 +1,5 @@
 <template>
-	<div class="ml-128px">
+	<div>
 		<div class="flex">
 			<div class="mt-8px text-20px">
 				<router-link to="/admission/manager/applicantsUploadList"

@@ -1,5 +1,5 @@
 <template>
-	<div class="mt-16px pl-8px pr-8px">
+	<div class="mt-16px">
 		<div class="text-24px font-medium">{{ $t("姓名資訊") }}</div>
 		<div class="mt-24px flex">
 			<div class="w-1/3">

@@ -109,25 +109,19 @@
 				</Column>
 			</DataTable>
 		</div>
-		<!-- <TableList
-			role="admin"
-			header="上傳資料列表"
-			:data="applicantList"
-			:items="items"
-		/> -->
 	</div>
 </template>
 
 <script setup lang="ts">
-import { toRaw } from "vue";
+import { reactive, toRaw } from "vue";
 import { router } from "@/router";
 import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
 import { AdmissionAdminAPI } from "@/api/admission/admin/api";
 import { useGlobalStore } from "@/stores/globalStore";
 import { useQuery } from "@tanstack/vue-query";
 import { InvalidSessionError } from "@/api/error";
+import { AdmissionAdminApplicantsListResponse } from "@/api/admission/admin/types";
 import DataTable from "primevue/datatable";
-// import TableList from "@/components/dataTable/AdmissionAdminApplicantListTable.vue";
 import Column from "primevue/column";
 import Tag from "primevue/tag";
 import "../../../../styles/customize.css";
@@ -136,54 +130,33 @@ const adminAuth = useAdmissionAdminAuthStore();
 const store = useGlobalStore();
 const api = new AdmissionAdminAPI(adminAuth);
 
-const {
-	isLoading,
-	isError,
-	data: applicants,
-	error,
-} = useQuery(["applicantList"], async () => {
-	try {
-		if (store.program) return await api.getApplicantList(store.program.id);
-	} catch (e: any) {
-		if (e instanceof InvalidSessionError) {
-			console.error(
-				"Session has already expired while quering appliacntList"
-			);
-			router.push("/");
-			return;
+const applicantList: AdmissionAdminApplicantsListResponse[] = reactive<
+	AdmissionAdminApplicantsListResponse[]
+>([] as AdmissionAdminApplicantsListResponse[]);
+
+const { data } = useQuery(
+	["applicantListUpload"],
+	async () => {
+		try {
+			return await api.getApplicantList(store.program!.id as number);
+		} catch (e: any) {
+			if (e instanceof InvalidSessionError) {
+				console.error(
+					"Session has already expired while quering appliacntList"
+				);
+				router.push("/");
+				return;
+			}
 		}
+	},
+	{
+		onSuccess: (data) => {
+			data!.map((item, index) => {
+				applicantList[index] = item;
+			});
+		},
 	}
-});
-
-const items = [
-	{
-		name: "帳號",
-		dataIndex: "uid",
-		width: "20%",
-	},
-	{
-		name: "姓名",
-		dataIndex: "name",
-		width: "20%",
-	},
-	{
-		name: "上傳狀態",
-		dataIndex: "applicantion_stage",
-		width: "20%",
-	},
-	{
-		name: "補件狀態",
-		// dataIndex: "",
-		width: "20%",
-	},
-	{
-		name: "補件狀態",
-		// dataIndex: "",
-		width: "20%",
-	},
-];
-
-const applicantList = toRaw(applicants.value);
+);
 </script>
 
 <style setup lang="css">
