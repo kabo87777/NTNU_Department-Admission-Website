@@ -4,7 +4,7 @@
 			<img src="/assets/login-page/Login-img.png" class="fill" />
 		</div>
 		<div class="flex-none w-150 px-6 pt-18 space-y-8">
-			<router-link to="/admission/applicant/signin">
+			<router-link to="/admission/reviewer/signin">
 				<button
 					class="flex items-center gap-2 px-2 py-2"
 					bg="transparent hover:gray-100"
@@ -26,7 +26,7 @@
 				</div>
 			</div>
 			<div class="px-8 py-4 space-y-4">
-				<div class="flex items-center gap-2 applicantTextColor">
+				<div class="flex items-center gap-2 reviewerTextColor">
 					<i class="pi pi-circle" style="font-size: 0.5rem" />
 					<div class="flex-none font-medium">忘記密碼</div>
 					<div class="flex-none font-medium">Forget Password</div>
@@ -76,7 +76,7 @@
 .successColor {
 	color: #62ae01;
 }
-.applicantTextColor {
-	color: #736028;
+.reviewerTextColor {
+	color: #0b4873;
 }
 </style>

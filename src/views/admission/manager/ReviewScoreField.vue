@@ -1,5 +1,5 @@
 <template>
-	<div class="mx-32 mt-16">
+	<div>
 		<!-- Header - Title -->
 		<div class="tracking-widest" text="4xl bold">
 			{{ trans.reviewScoreField.value }}
@@ -253,23 +253,6 @@
 				<div>{{ trans.details.fileUpload.value }}</div>
 			</div>
 		</div>
-		<!-- showFile - checkbox 4 -->
-		<div v-if="showedFile[3].visible">
-			<div class="flex mt-6 mb-2 gap-4 items-center">
-				<Checkbox
-					v-model="showedFile[3].checked"
-					:input-id="showedFile[3].id"
-					:binary="true"
-				/>
-				<label :for="showedFile[3].id" text="xl gray-700">
-					{{ trans.nationalId.value }}
-				</label>
-			</div>
-			<div class="flex mx-10 gap-8 mb-4" text="gray-500">
-				<div>{{ trans.details.fileName.value }}</div>
-				<div>{{ trans.details.fileUpload.value }}</div>
-			</div>
-		</div>
 
 		<!-- Footer - Control Buttons -->
 		<div class="bigRedDivider my-6 mt-10"></div>
@@ -405,18 +388,18 @@ const oralScore = reactive([
 	{ name: trans.labelName[5].value, weight: 0, index: 5 },
 ]);
 const showedInfo = reactive([
-	{ id: "file1", visible: true, checked: true },
-	{ id: "file2", visible: true, checked: true },
-	{ id: "file3", visible: true, checked: true },
-	{ id: "file4", visible: true, checked: true },
-	{ id: "file5", visible: true, checked: true },
-	{ id: "file6", visible: true, checked: true },
+	{ id: "姓名資訊", visible: true, checked: true },
+	{ id: "入學身分", visible: true, checked: true },
+	{ id: "戶籍資訊", visible: true, checked: true },
+	{ id: "現居地址", visible: true, checked: true },
+	{ id: "身份資料", visible: true, checked: true },
+	{ id: "聯絡資料", visible: true, checked: true },
 ]);
 const showedFile = reactive([
-	{ id: "file1", visible: true, checked: true },
-	{ id: "file2", visible: true, checked: true },
-	{ id: "file3", visible: true, checked: true },
-	{ id: "file4", visible: true, checked: true },
+	{ id: "就學經歷", visible: true, checked: true },
+	{ id: "考試與檢定分數", visible: true, checked: true },
+	{ id: "其他有利於審查資料", visible: true, checked: true },
+	{ id: "身份資料", visible: true, checked: true },
 ]);
 const fieldList = {
 	info: {
