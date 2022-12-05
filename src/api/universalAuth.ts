@@ -22,6 +22,11 @@ export interface universalAuthSendPostEmailRegister {
 	"cf-turnstile-response": string;
 }
 
+export interface universalAuthResetPwdData {
+	password: string;
+	password_confirmation: string;
+}
+
 // type guard
 const buildAuthCredentialsFromHeaders = (
 	headers: any
@@ -120,5 +125,21 @@ export async function doUniversalAuthSendPostEmailRegister(
 ) {
 	const response = await axios.post(auth.apiEndpoint, data);
 	console.log("response: ", response);
+	return response.data;
+}
+
+export async function doUniversalAuthResetPassword(
+	auth: AuthStore,
+	data: universalAuthResetPwdData
+) {
+	const response = await axios.post(auth.apiEndpoint + "/password/reset", data);
+
+	// const credentials = buildAuthCredentialsFromHeaders(response.headers);
+
+	// if (!credentials)
+	// 	throw new Error("Server returned invalid authorization response");
+
+	// auth.setCredentials(credentials);
+
 	return response.data;
 }
