@@ -334,6 +334,7 @@ const addReviewerModal = ref({
 		name: "",
 		email: "",
 		password: "",
+		redirect_url: "http://127.0.0.1:5173/recruitment/reviewer/signin",
 	},
 	visible: false,
 	open: () => (addReviewerModal.value.visible = true),
