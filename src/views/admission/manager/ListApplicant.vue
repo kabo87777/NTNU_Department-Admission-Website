@@ -13,6 +13,11 @@
 		>
 		</FileUpload>
 	</div>
+	<TransitionGroup name="p-message" tag="div">
+		<Message :closable="false" severity="warn" v-if="isImporting">{{
+			$t("正在處理中，請勿離開此頁面")
+		}}</Message>
+	</TransitionGroup>
 
 	<DataTable :value="tableData" :loading="isTableLoading">
 		<template #empty>
@@ -161,7 +166,7 @@ import { useToast } from "primevue/usetoast";
 import { useI18n } from "vue-i18n";
 import ConfirmDialog from "primevue/confirmdialog";
 import { useConfirm } from "primevue/useconfirm";
-
+import Message from "primevue/message";
 const confirm = useConfirm();
 const store = useGlobalStore();
 const adminAuth = useAdmissionAdminAuthStore();
