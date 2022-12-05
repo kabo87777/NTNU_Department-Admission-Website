@@ -256,6 +256,7 @@
 				</div>
 				<Button
 					class="w-140px h-44px !ml-299px p-button-outlined p-button-help"
+					@click="downloadFuckingFile(docPdfData)"
 				>
 					<img
 						alt="logo"
@@ -1088,4 +1089,59 @@ function saveReserveOrder() {
 		reserveOrderList.value.push(i);
 	}
 }
+
+function downloadFuckingFile(pdf: string) {
+    const linkSource = `data:application/pdf;base64,${pdf}`;
+    const downloadLink = document.createElement("a");
+	const ID = store.program!.id!;
+	const fileName = ref("");
+	if(dialogCurrentTab.value === translation.phase1){
+	    fileName.value = "docs_report_" + ID + ".pdf";
+	}
+	else if(dialogCurrentTab.value === translation.phase2){
+		fileName.value = "gen_report_" + ID + ".pdf";
+	}
+	else{
+		fileName.value = "enroll_report_" + ID + ".pdf";
+	}
+	// else if(dialogCurrentTab.value === translation.iEnrollList){
+	// 	fileName.value = "enroll_report_" + ID + ".pdf";
+	// }	
+	// else if(dialogCurrentTab.value === translation.iEnrollList){
+	// 	fileName.value = "enroll_report_" + ID + ".pdf";
+	// }
+	// else if(dialogCurrentTab.value === translation.iEnrollList){
+	// 	fileName.value = "enroll_report_" + ID + ".pdf";
+	// }
+
+    downloadLink.href = linkSource;
+    downloadLink.download = fileName.value;
+    downloadLink.click();
+}
+
+const docPdfData = ref("");
+const { data } = useQuery(
+	["docPdfBase64"],
+	async () => {
+		try {
+			return await api.getDocsReport(store.program!.id!);
+		} catch (e: any) {
+			if (e instanceof InvalidSessionError) {
+				// FIXME: show session expiry notification??
+				// Why are we even here in the first place?
+				// MainContainer should have checked already.
+				console.error(
+					"Session has already expired while querying applicantInfo"
+				);
+				router.push("/");
+				return;
+			}
+		}
+	},
+	{
+		onSuccess: (data) => {
+			docPdfData.value = data!;
+		},
+	}
+)
 </script>

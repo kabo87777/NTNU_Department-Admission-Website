@@ -261,4 +261,28 @@ export class AdmissionAdminAPI extends GenericAPI {
 
 		return response;
 	}
+
+	async getDocsReport(
+		programID: number
+	): Promise<string> {
+		return await this.instance.get(
+			`/admission/admin/program/${programID}/get_docs_report`
+		);
+	}
+
+	async getGenReport(
+		programID: number
+	): Promise<string> {
+		return await this.instance.get(
+			`/admission/admin/program/${programID}/get_gen_report`
+		);
+	}
+
+	async getEnrollReport(
+		programID: number
+	): Promise<string> {
+		return await this.instance.get(
+			`/admission/admin/program/${programID}/get_enroll_report`
+		);
+	}
 }
