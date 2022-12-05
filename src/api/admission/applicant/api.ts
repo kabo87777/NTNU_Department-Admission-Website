@@ -24,7 +24,6 @@ export class AdmissionApplicantAPI extends GenericAPI {
 
 		return data.data;
 	}
-	//get info
 
 	async getUserInfo(): Promise<AdmissionApplicantGetUserInfoResponse> {
 		const data: APIGenericResponse = await this.instance.get(

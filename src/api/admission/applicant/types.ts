@@ -26,6 +26,9 @@ export interface AdmissionApplicantAuthResponse {
 	file: any;
 	docs_stage: any;
 	oral_stage: any;
+	isMoredoc: boolean;
+	moredoc_category: string;
+	moredoc_name: string;
 	created_at: string;
 	updated_at: string;
 	s_program_id: number;

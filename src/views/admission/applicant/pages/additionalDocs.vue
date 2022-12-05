@@ -44,6 +44,8 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted, toRaw, watch } from "vue";
 import { InvalidSessionError } from "@/api/error";
+import { AdmissionApplicantAuthResponse } from "@/api/admission/applicant/types";
+import { useUserInfoStore } from "@/stores/AdmissionApplicantStore";
 import CreateState from "@/components/attachmentStates/createState.vue";
 import ParagraphDivider from "@/styles/paragraphDividerApplicant.vue";
 import RefillState from "@/components/attachmentStates/RefillState.vue";
@@ -56,12 +58,17 @@ import { AdmissionApplicantAPI } from "@/api/admission/applicant/api";
 import { useToast } from "primevue/usetoast";
 
 const applicantAuth = useAdmissionApplicantAuthStore();
+const applicantStore = useUserInfoStore();
 const api = new AdmissionApplicantAPI(applicantAuth);
 // const project = useProjectIdStore();
 
+const applicantInfo: AdmissionApplicantAuthResponse = toRaw(
+	applicantStore.userInfo
+);
+
 const toast = useToast();
 
-const isEnabled = ref(true);
+const isEnabled = applicantInfo.isMoredoc;
 
 const refillFile = reactive({
 	state: 3,
