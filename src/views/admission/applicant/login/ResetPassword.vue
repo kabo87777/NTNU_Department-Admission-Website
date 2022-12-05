@@ -59,7 +59,7 @@
 			</div>
 			<div class="flex-col-inline px-4 gap-y-8">
 				<div class="flex justify-center">
-					<router-link to="/recruitment/applicant/signin">
+					<router-link to="/admission/applicant/signin">
 						<button
 							class="py-2 w-80 applicantButtonStyle"
 							border="2  rounded-lg"
