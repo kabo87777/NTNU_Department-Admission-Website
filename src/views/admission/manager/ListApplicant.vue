@@ -294,6 +294,9 @@ const { mutate: uploadApplicantImport } = useMutation({
 			detail: $t("上傳 XLSX 檔時發生錯誤"),
 		});
 	},
+	onSettled: () => {
+		isImporting.value = false;
+	},
 });
 
 const { mutate: deleteApplicant } = useMutation({
