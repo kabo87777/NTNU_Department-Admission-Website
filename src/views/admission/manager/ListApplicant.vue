@@ -325,7 +325,6 @@ const { mutate: deleteApplicant } = useMutation({
 	onError: () => {
 		toast.add({
 			severity: "error",
-			life: 3000,
 			summary: $t("操作失敗"),
 			detail: $t("刪除使用者時發生錯誤"),
 		});
