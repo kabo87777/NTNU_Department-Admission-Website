@@ -31,7 +31,11 @@
 		</div>
 		<div class="bigBlueDivider"></div>
 		<div class="p-fluid !mt-5px">
-			<SelectButton v-model="data" :options="datas" aria-labelledby="single" />
+			<SelectButton
+				v-model="data"
+				:options="datas"
+				aria-labelledby="single"
+			/>
 		</div>
 		<div class="mt-10px !h-1800px">
 			<vue-pdf-embed
@@ -39,8 +43,22 @@
 				class="!h-1600px"
 				:page="page"
 			/>
-			<Button label="上一頁" icon="pi pi-chevron-left" iconPos="left" @click="page--" :disabled="page===1" class="!mt-120px"/>
-			<Button label="下一頁" icon="pi pi-chevron-right" iconPos="right" @click="page++" :disabled="page===4" class="!ml-1050px"/>
+			<Button
+				label="上一頁"
+				icon="pi pi-chevron-left"
+				iconPos="left"
+				@click="page--"
+				:disabled="page === 1"
+				class="!mt-120px"
+			/>
+			<Button
+				label="下一頁"
+				icon="pi pi-chevron-right"
+				iconPos="right"
+				@click="page++"
+				:disabled="page === 4"
+				class="!ml-1050px"
+			/>
 		</div>
 		<div class="bigBlueDivider"></div>
 		<div class="flex mt-10px">
@@ -163,7 +181,7 @@ const api = new AdmissionReviewerAPI(adminAuth);
 
 // FIXME: logic may refactor
 
-const page=ref(1);
+const page = ref(1);
 const ID = computed(() => route.params.id);
 const newApplicantGrade = useMutation(async (newProgramData: any) => {
 	try {
@@ -203,7 +221,7 @@ const total_score = computed(() => {
 	).toFixed(2);
 });
 const data = ref("基本資料");
-const datas = ref(["基本資料", "檢附資料","推薦信","整合pdf"]);
+const datas = ref(["基本資料", "檢附資料", "推薦信", "整合pdf"]);
 
 const {
 	isLoading,
@@ -318,7 +336,7 @@ const { data: pdfBase64 } = useQuery(
 	["pdfBase64"],
 	async () => {
 		try {
-			return await api.getApplicantSingleFile(ID.value,1);
+			return await api.getApplicantSingleFile("1", 1);
 		} catch (e: any) {
 			if (e instanceof InvalidSessionError) {
 				// FIXME: show session expiry notification??

@@ -29,21 +29,35 @@
 				{{ name }}
 			</div>
 		</div>
-		<div class="p-fluid">
+		<div class="bigBlueDivider"></div>
+		<div class="p-fluid !mt-5px">
 			<SelectButton
 				v-model="data"
 				:options="datas"
 				aria-labelledby="single"
-				disabled
-				class="!h-50px"
 			/>
 		</div>
-		<div class="bigBrownDivider"></div>
-		<div class="mt-10px h-670px">
-			<PDFView
-				:pdfUrl="jsPdf"
-				class="!h650px"
-				v-if="data != '基本資料'"
+		<div class="mt-10px !h-1800px">
+			<vue-pdf-embed
+				:source="'data:application/pdf;base64,' + pdfData"
+				class="!h-1600px"
+				:page="page"
+			/>
+			<Button
+				label="上一頁"
+				icon="pi pi-chevron-left"
+				iconPos="left"
+				@click="page--"
+				:disabled="page === 1"
+				class="!mt-120px"
+			/>
+			<Button
+				label="下一頁"
+				icon="pi pi-chevron-right"
+				iconPos="right"
+				@click="page++"
+				:disabled="page === 4"
+				class="!ml-1050px"
 			/>
 		</div>
 		<div class="bigBlueDivider"></div>
@@ -96,9 +110,7 @@
 			/>
 		</div>
 		<div class="flex mt-24px">
-			<div>
-				{{ $t("書面分數：")}} {{total_score}} {{ $t("分") }}
-			</div>
+			<div>{{ $t("書面分數：") }} {{ total_score }} {{ $t("分") }}</div>
 			<div class="text-xl ml-180px mt-5px">
 				{{ $t("口試分數合計： ") }} {{ oral_score }} {{ $t("分") }}
 			</div>
@@ -135,6 +147,7 @@ import { InvalidSessionError } from "@/api/error";
 import { useGlobalStore } from "@/stores/AdmissionReviewerStore";
 import { useToast } from "primevue/usetoast";
 import SelectButton from "primevue/selectbutton";
+import VuePdfEmbed from "vue-pdf-embed";
 
 const route = useRoute();
 const { t } = useI18n();
@@ -143,6 +156,10 @@ const router = useRouter();
 const adminAuth = useAdmissionReviewerAuthStore();
 const store = useGlobalStore();
 const api = new AdmissionReviewerAPI(adminAuth);
+
+const page = ref(1);
+const data = ref("基本資料");
+const datas = ref(["基本資料", "檢附資料", "推薦信", "整合pdf"]);
 
 // FIXME: logic may refactor
 
@@ -207,8 +224,6 @@ const oral_score = computed(() => {
 		(oinputScore_5!.value! * score5Proportion.value) / 100
 	);
 });
-const data = ref("基本資料");
-const datas = ref(["基本資料", "PDF"]);
 
 const {
 	isLoading,
@@ -337,6 +352,32 @@ const { data: programGrading } = useQuery(
 			if (data!.oral_grade_weight_5) {
 				oscore5Proportion.value = data!.oral_grade_weight_5;
 			}
+		},
+	}
+);
+
+const pdfData = ref("JVBERi0xLjMKJcTl8uXrp/");
+const { data: pdfBase64 } = useQuery(
+	["pdfBase64"],
+	async () => {
+		try {
+			return await api.getApplicantSingleFile("1", 1);
+		} catch (e: any) {
+			if (e instanceof InvalidSessionError) {
+				// FIXME: show session expiry notification??
+				// Why are we even here in the first place?
+				// MainContainer should have checked already.
+				console.error(
+					"Session has already expired while querying applicantInfo"
+				);
+				router.push("/");
+				return;
+			}
+		}
+	},
+	{
+		onSuccess: (data) => {
+			pdfData.value = data!;
 		},
 	}
 );

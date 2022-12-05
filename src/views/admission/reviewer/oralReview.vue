@@ -70,31 +70,36 @@
 					</Row>
 				</ColumnGroup>
 				<div v-if="true">
-				<Column field="oral_order"></Column>
-				<Column field="id"></Column>
-				<Column field="name"></Column>
-				<Column>
-					<template #body="slotProps">
-						{{
-							(slotProps.data.docs_grade_1 * score1Proportion) /
-								100 +
-							(slotProps.data.docs_grade_2 * score2Proportion) /
-								100 +
-							(slotProps.data.docs_grade_3 * score3Proportion) /
-								100 +
-							(slotProps.data.docs_grade_4 * score4Proportion) /
-								100 +
-							(slotProps.data.docs_grade_5 * score5Proportion) /
-								100
-						}}
-					</template>
-				</Column>
-				<Column field="oral_grade_1" />
-				<Column field="oral_grade_2" />
-				<Column field="oral_grade_3" />
-				<Column v-if="scoreCount > 3" field="oral_grade_4" />
-				<Column v-if="scoreCount > 4" field="oral_grade_5" />
-				<!-- <Column
+					<Column field="oral_order"></Column>
+					<Column field="id"></Column>
+					<Column field="name"></Column>
+					<Column>
+						<template #body="slotProps">
+							{{
+								(slotProps.data.docs_grade_1 *
+									score1Proportion) /
+									100 +
+								(slotProps.data.docs_grade_2 *
+									score2Proportion) /
+									100 +
+								(slotProps.data.docs_grade_3 *
+									score3Proportion) /
+									100 +
+								(slotProps.data.docs_grade_4 *
+									score4Proportion) /
+									100 +
+								(slotProps.data.docs_grade_5 *
+									score5Proportion) /
+									100
+							}}
+						</template>
+					</Column>
+					<Column field="oral_grade_1" />
+					<Column field="oral_grade_2" />
+					<Column field="oral_grade_3" />
+					<Column v-if="scoreCount > 3" field="oral_grade_4" />
+					<Column v-if="scoreCount > 4" field="oral_grade_5" />
+					<!-- <Column
 					field="isImmediateEnroll"
 					dataType="boolean"
 					bodyClass="text-center"
@@ -447,7 +452,7 @@ const cancel = computed(() => t("取消"));
 const selectedData = ref();
 const router = useRouter();
 const onRowSelect = (event: any) => {
-	if(event.data.oral_order){
+	if (event.data.oral_order) {
 		selectedData.value = "";
 		router.push("/admission/reviewer/singleOralReview/" + event.data.id);
 	}
