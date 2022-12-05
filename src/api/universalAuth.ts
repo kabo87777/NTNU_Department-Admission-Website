@@ -130,16 +130,22 @@ export async function doUniversalAuthSendPostEmailRegister(
 
 export async function doUniversalAuthResetPassword(
 	auth: AuthStore,
-	data: universalAuthResetPwdData
+	data: universalAuthResetPwdData,
+	access_token: string,
+	client: string,
+	uid: string
 ) {
-	const response = await axios.post(auth.apiEndpoint + "/password/reset", data);
-
-	// const credentials = buildAuthCredentialsFromHeaders(response.headers);
-
-	// if (!credentials)
-	// 	throw new Error("Server returned invalid authorization response");
-
-	// auth.setCredentials(credentials);
-
+	const response = await axios({
+		method: "PUT",
+		url: auth.apiEndpoint + "/password",
+		headers: {
+			"Content-Type": "application/json",
+			"access-token": access_token,
+			client: client,
+			uid: uid,
+		},
+		data: data,
+	});
+	console.log("response", response);
 	return response.data;
 }
