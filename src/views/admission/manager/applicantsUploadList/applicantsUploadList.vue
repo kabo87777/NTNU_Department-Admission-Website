@@ -14,7 +14,7 @@
 						>
 							<router-link
 								:to="{
-									path: `/admission/manager/applicantsUploadList/${slotProps.data.uid}`,
+									path: `/admission/manager/applicantsUploadList/${slotProps.data.id}`,
 								}"
 							>
 								{{ slotProps.data.uid }}
@@ -32,7 +32,7 @@
 						>
 							<router-link
 								:to="{
-									path: `/admission/manager/applicantsUploadList/${slotProps.data.uid}`,
+									path: `/admission/manager/applicantsUploadList/${slotProps.data.id}`,
 								}"
 							>
 								{{ slotProps.data.name }}

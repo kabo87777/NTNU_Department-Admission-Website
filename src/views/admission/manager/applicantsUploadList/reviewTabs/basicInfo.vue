@@ -370,8 +370,12 @@
 <script setup lang="ts">
 import "@/styles/customize.css";
 import "primeicons/primeicons.css";
-import { onMounted } from "vue";
-
+import { onMounted, reactive } from "vue";
+import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
+import { AdmissionAdminAPI } from "@/api/admission/admin/api";
+import { useQuery } from "@tanstack/vue-query";
+import { InvalidSessionError } from "@/api/error";
+import { AdmAdminGetApplicantInfo } from "@/api/admission/admin/types";
 import SelectButton from "primevue/selectbutton";
 import MultiSelect from "primevue/multiselect";
 import InputText from "primevue/inputtext";
@@ -382,7 +386,14 @@ import Dropdown from "primevue/dropdown";
 import ParagraphDivider from "../../../../../styles/paragraphDivider.vue";
 import { ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
+
+const adminAuth = useAdmissionAdminAuthStore();
+const api = new AdmissionAdminAPI(adminAuth);
+
 const props = defineProps(["userId"]);
+
+const userInfo = ref<AdmAdminGetApplicantInfo>();
+
 const title = ref("");
 const suffix = ref("");
 const selected_visa = ref();
@@ -414,5 +425,33 @@ const cities = ref([
 	{ name: "Istanbul", code: "IST" },
 	{ name: "Paris", code: "PRS" },
 ]);
-console.log(props.userId, "basic info tab");
+
+const { data } = useQuery(
+	["adminApplicantBasicInfo"],
+	async () => {
+		try {
+			return await api.getApplicantBasicInfo(props.userId);
+		} catch (e: any) {
+			if (e instanceof InvalidSessionError) {
+				console.error(
+					"Session has already expired while quering appliacntList"
+				);
+				return;
+			}
+		}
+	},
+	{
+		onSuccess: (data) => {
+			userInfo.value = data;
+		},
+	}
+);
 </script>
+
+<style setup lang="css">
+.admApplicantBasicInfoCard {
+	border: 3px dashed rgb(174, 174, 174);
+	border-radius: 16px;
+	background-color: rgb(244, 244, 244);
+}
+</style>

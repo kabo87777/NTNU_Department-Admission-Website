@@ -3,6 +3,7 @@ import type {
 	AdmissionAdminProgramListResponse,
 	AdmAdminReviewerListResponse,
 	AdmissionAdminApplicantsListResponse,
+	AdmAdminGetApplicantInfo,
 	AdmissionAdminScoreFieldResponse,
 	AdmAdminReviewerRelatedProgramResponse,
 	AdmAdminEditApplicantRequest,
@@ -64,6 +65,19 @@ export class AdmissionAdminAPI extends GenericAPI {
 		if (data.error === true || typeof data.data.applicants === "undefined")
 			throw new Error("Failed to fetch applicant list");
 		return data.data.applicants;
+	}
+
+	async getApplicantBasicInfo(
+		userId: number
+	): Promise<AdmAdminGetApplicantInfo> {
+		const data: APIGenericResponse = await this.instance.get(
+			`/admission/admin/applicant/${userId}/info`
+		);
+
+		if (data.error === true)
+			throw new Error("Failed to fetch applicant basic info");
+
+		return data.data[0];
 	}
 
 	async getScoreField(

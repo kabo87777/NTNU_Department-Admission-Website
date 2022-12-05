@@ -134,6 +134,44 @@ export interface AdmissionAdminApplicantsListResponse {
 	moredoc_start_date: string;
 }
 
+export interface AdmAdminGetApplicantInfo {
+	admission_id: string;
+	birth?: Date;
+	birthcountry?: string;
+	cn_surname?: string;
+	communicate_address?: string;
+	communicate_zipcode?: number | string;
+	created_at: string;
+	day_phone?: string;
+	en_givenname?: string;
+	en_midname?: string;
+	en_surname?: string;
+	graduated_school?: string;
+	graduated_major?: string;
+	household_address?: string;
+	household_zipcode?: number | string;
+	id: number;
+	isDisabled?: boolean;
+	isForeigner?: boolean;
+	isSameDept?: boolean;
+	mobile_phone?: string;
+	title?: string;
+	name?: string;
+	nationality?: string;
+	national_id?: string;
+	night_phone?: string;
+	s_applicant_id: number;
+	suffix?: string;
+	sex?: string;
+	updated_at: string;
+}
+
+export interface AdmAdminGetApplicantInfoHeader {
+	id: number;
+	name: string;
+	admission_id: string;
+}
+
 export interface AdmAdminEditApplicantRequest {
 	id: number;
 	name: string;
