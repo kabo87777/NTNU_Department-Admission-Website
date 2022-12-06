@@ -26,6 +26,9 @@ export interface AdmissionApplicantAuthResponse {
 	file: any;
 	docs_stage: any;
 	oral_stage: any;
+	isMoredoc: boolean;
+	moredoc_category: string;
+	moredoc_name: string;
 	created_at: string;
 	updated_at: string;
 	s_program_id: number;
@@ -128,26 +131,23 @@ export interface AdmissionApplicantGetFileListResponse {
 }
 
 export interface AdmissionApplicantGetUserInfoResponse {
-	id?: number;
+	id: number;
+	admission_id?: number;
+	title?: string;
+	suffix?: string;
+	cn_surname?: string;
 	name?: string;
-	email?: string;
-	national_id?: number;
+	en_givenname?: string;
+	en_midname?: string;
+	en_surname?: string;
+	nationality?: string;
+	national_id?: string;
 	sex?: string;
-	birth?: string;
-	day_phone?: string;
-	night_phone?: string;
+	birth?: Date;
+	birthcountry?: string;
 	mobile_phone?: string;
 	household_address?: string;
 	household_zipcode?: number | string;
 	communicate_address?: string;
 	communicate_zipcode?: number | string;
-	GSAT_num?: number | string;
-	GSAT_registration?: boolean;
-	graduated_school?: string;
-	graduated_major?: string;
-	isSameDept?: boolean;
-	isDisabled?: boolean;
-	r_applicant_id?: number;
-	created_at?: string;
-	updated_at?: string;
 }

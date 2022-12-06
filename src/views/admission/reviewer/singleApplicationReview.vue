@@ -37,7 +37,7 @@
 				aria-labelledby="single"
 			/>
 		</div>
-		<div class="mt-10px !h-1830px !ml-40px">
+		<div class="mt-10px !h-1800px">
 			<vue-pdf-embed
 				:source="'data:application/pdf;base64,' + pdfData"
 				class="!h-1600px"
@@ -57,7 +57,7 @@
 				iconPos="right"
 				@click="page++"
 				:disabled="page === 4"
-				class="!ml-1030px"
+				class="!ml-1050px"
 			/>
 		</div>
 		<div class="bigBlueDivider"></div>
