@@ -335,6 +335,10 @@ const importApplicantCallback = (event: FileUploadUploaderEvent) => {
 	const file = Array.isArray(event.files) ? event.files[0] : event.files;
 	const formdata = new FormData();
 	formdata.append("file", file);
+	formdata.append(
+		"redirect_url",
+		"http://127.0.0.1:4000/admission/applicant/signin"
+	);
 	uploadApplicantImport(formdata);
 };
 
