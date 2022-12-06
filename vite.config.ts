@@ -11,30 +11,40 @@ import vueI18n from "@intlify/vite-plugin-vue-i18n";
 import branch from "git-branch";
 
 if (!process.env.VITE_ADMISSIONS_API_ENDPOINT) {
-  // Branch name is exposed on a env var in Render builds
-  // On Render there's apparently no .git directory. So
-  // branch.sync() does not give correct result.
-  switch (process.env.RENDER_GIT_BRANCH || branch.sync()) {
-    // production
-    case "master":
-    case "main":
+  if (process.env.VERCEL_ENV) {
+    // project being built on Vercel
+    if (process.env.VERCEL_ENV === "production")
       process.env.VITE_ADMISSIONS_API_ENDPOINT =
-        "https://api.admissions.birkhoff.me";
-      break;
-  
-    // staging
-    case "develop":
+        "https://admissions-backend-prd.birkhoff.me";
+    else
       process.env.VITE_ADMISSIONS_API_ENDPOINT =
-        "https://admissions-backend-staging.onrender.com";
-      break;
-  
-    // mr preview
-    default:
+        "https://admissions-backend-stg.birkhoff.me";
+  } else {
+    // project being built locally
+    const gitBranch = branch.sync() || "";
+
+    // use respective endpoints for prod & staging branch.
+    // for other branches, use localhost.
+    if (gitBranch === "main")
       process.env.VITE_ADMISSIONS_API_ENDPOINT =
-        "https://9f88298d-a5f9-4017-ac13-88e38a638293.mock.pstmn.io";
-      break;
+        "https://admissions-backend-prd.birkhoff.me";
+    else if (gitBranch === "develop")
+      process.env.VITE_ADMISSIONS_API_ENDPOINT =
+        "https://admissions-backend-stg.birkhoff.me";
+    else process.env.VITE_ADMISSIONS_API_ENDPOINT = "http://127.0.0.1:3000";
   }
 }
+
+if (!process.env.VITE_IS_SKIP_CAPTCHA) {
+  // by default, we only enable CAPTCHA for Vercel production environment
+  process.env.VITE_IS_SKIP_CAPTCHA =
+    process.env.VERCEL_ENV === "production" ? "false" : "true";
+}
+
+console.log(
+  "VITE_ADMISSIONS_API_ENDPOINT =",
+  process.env.VITE_ADMISSIONS_API_ENDPOINT
+);
 
 // https://vitejs.dev/config/
 export default defineConfig({

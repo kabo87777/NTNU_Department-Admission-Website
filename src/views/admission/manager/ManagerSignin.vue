@@ -23,6 +23,20 @@
 				</div>
 			</div>
 			<div>
+				<router-link to="/admission">
+					<button
+						class="flex items-center gap-2 px-2 py-2 mt-5 mb-3"
+						bg="transparent hover:gray-100"
+						text="sm gray-400 hover:gray-600"
+						border="rounded"
+					>
+						<i class="pi pi-angle-left" />
+						<div>切換登入身份</div>
+						<div>Change your identity</div>
+					</button>
+				</router-link>
+			</div>
+			<div>
 				<div class="mt-100px ml-164px text-4xl font-bold text-gray-500">
 					{{ $t("審查委員及行政人員管理系統") }}
 				</div>
@@ -121,7 +135,7 @@ import { useRouter } from "vue-router";
 import { Field, useForm } from "vee-validate";
 import * as yup from "yup";
 
-import * as api from "@/api/admission/admin/api";
+import { AdmissionAdminAPI } from "@/api/admission/admin/api";
 import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
 
 import type { TurnstileComponentExposes } from "@/components/Turnstile.vue";
@@ -138,13 +152,10 @@ const redirectToMainContainer = () =>
 
 const authStore = useAdmissionAdminAuthStore();
 
-// Go to AdmissionManagerMainContainer if signed in
-if (authStore.isValidSession) redirectToMainContainer();
-
 // Login Form
 const turnstileRef = ref<TurnstileComponentExposes>();
 const isRememberAccount = ref(false);
-const email = ref("example1@email.com");
+const email = ref("example@email.com");
 const password = ref("Example123");
 const isTurnstileRunning = computed(() => !turnstileRef.value?.turnstileToken);
 
@@ -170,9 +181,6 @@ if (lastSigninEmail) {
 	email.value = lastSigninEmail;
 }
 
-// remove legacy item (renamed)
-window.localStorage.removeItem("AdmissionManagerSigninLastSigninEmail");
-
 // Store email in localStorage if remember account
 watch(isRememberAccount, (isChecked) => {
 	if (!isChecked)
@@ -193,8 +201,9 @@ const onSubmit = handleSubmit(async function (values, actions) {
 
 		if (!turnstileResponse) throw new Error("Turnstile challenge failed");
 
-		// TODO: admin, reviewer
-		await api.sign_in(authStore, {
+		const api = new AdmissionAdminAPI(authStore);
+
+		await api.requestNewSession({
 			email: values.email,
 			password: values.password,
 			"cf-turnstile-response": turnstileResponse,

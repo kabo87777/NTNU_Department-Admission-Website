@@ -1,0 +1,116 @@
+{
+  "reviewers": [
+    {
+      "id": 1,
+      "accountID": "neokent",
+      "name": "L寄",
+      "optionalDataViewed": 1,
+      "optionalDataAll": 3,
+      "optionalDataStatus": "inProgress",
+      "requiredDataViewed": 1,
+      "requiredDataAll": 3,
+      "requiredDataStatus": "complete"
+    },
+    {
+      "id": 2,
+      "accountID": "wangchao",
+      "name": "王朝",
+      "optionalDataViewed": 3,
+      "optionalDataAll": 3,
+      "optionalDataStatus": "complete",
+      "requiredDataViewed": 1,
+      "requiredDataAll": 3,
+      "requiredDataStatus": "inProgress"
+    },
+    {
+      "id": 3,
+      "accountID": "kjling",
+      "name": "科加零",
+      "optionalDataViewed": 2,
+      "optionalDataAll": 3,
+      "optionalDataStatus": "complete",
+      "requiredDataViewed": 0,
+      "requiredDataAll": 3,
+      "requiredDataStatus": "inProgress"
+    },
+    {
+      "id": 4,
+      "accountID": "linearhero",
+      "name": "官正杰",
+      "optionalDataViewed": 0,
+      "optionalDataAll": 3,
+      "optionalDataStatus": "notStarted",
+      "requiredDataViewed": 0,
+      "requiredDataAll": 3,
+      "requiredDataStatus": "notStarted"
+    }
+  ],
+  "applicants": [
+    {
+      "id": 1,
+      "accId": 113001,
+      "name": "小華",
+      "requiredReviewer": ["neokent", "wangchao"],
+      "requiredViewed": [false, true],
+      "requiredRecommand": ["recommand", "notRecommand"],
+      "optionalReviewer": ["kjling", "linearhero"],
+      "optionalViewed": [false, true],
+      "optionalRecommand": ["unJudge", "unJudge"]
+    },
+    {
+      "id": 2,
+      "accId": 113002,
+      "name": "小安",
+      "requiredReviewer": ["neokent", "wangchao"],
+      "requiredViewed": [false, true],
+      "requiredRecommand": ["recommand", "notRecommand"],
+      "optionalReviewer": ["kjling", "linearhero"],
+      "optionalViewed": [false, true],
+      "optionalRecommand": ["unJudge", "unJudge"]
+    },
+    {
+      "id": 3,
+      "accId": 113003,
+      "name": "小野",
+      "requiredReviewer": ["neokent", "wangchao"],
+      "requiredViewed": [false, true],
+      "requiredRecommand": ["recommand", "notRecommand"],
+      "optionalReviewer": ["kjling", "linearhero"],
+      "optionalViewed": [false, true],
+      "optionalRecommand": ["unJudge", "unJudge"]
+    },
+    {
+      "id": 4,
+      "accId": 113004,
+      "name": "大大升",
+      "requiredReviewer": ["kjling", "linearhero"],
+      "requiredViewed": [true, false],
+      "requiredRecommand": ["recommand", "notRecommand"],
+      "optionalReviewer": ["neokent", "wangchao"],
+      "optionalViewed": [false, true],
+      "optionalRecommand": ["unJudge", "unJudge"]
+    },
+    {
+      "id": 5,
+      "accId": 113005,
+      "name": "大大王",
+      "requiredReviewer": ["kjling", "linearhero"],
+      "requiredViewed": [true, false],
+      "requiredRecommand": ["recommand", "notRecommand"],
+      "optionalReviewer": ["neokent", "wangchao"],
+      "optionalViewed": [false, true],
+      "optionalRecommand": ["unJudge", "unJudge"]
+    },
+    {
+      "id": 6,
+      "accId": 113006,
+      "name": "大大理",
+      "requiredReviewer": ["kjling", "linearhero"],
+      "requiredViewed": [true, false],
+      "requiredRecommand": ["recommand", "notRecommand"],
+      "optionalReviewer": ["neokent", "wangchao"],
+      "optionalViewed": [false, true],
+      "optionalRecommand": ["unJudge", "unJudge"]
+    }
+  ]
+}

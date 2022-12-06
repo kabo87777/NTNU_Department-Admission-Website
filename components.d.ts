@@ -7,15 +7,26 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    AdmissionApplicantSidebar: typeof import('./src/components/sidebars/admissionApplicantSidebar.vue')['default']
+    CorrectionState: typeof import('./src/components/attachmentStates/CorrectionState.vue')['default']
+    CreateState: typeof import('./src/components/attachmentStates/createState.vue')['default']
+    EditState: typeof import('./src/components/attachmentStates/editState.vue')['default']
     ForgetPasswordForm: typeof import('./src/components/ForgetPasswordForm.vue')['default']
     LandingViewLayout: typeof import('./src/components/LandingViewLayout.vue')['default']
     LoginForm: typeof import('./src/components/LoginForm.vue')['default']
     NavBar: typeof import('./src/components/NavBar.vue')['default']
     PasswordRecoveryEmailSent: typeof import('./src/components/PasswordRecoveryEmailSent.vue')['default']
+    PdfPreview: typeof import('./src/components/pdfPreview.vue')['default']
+    RecruitmentApplicantSidebar: typeof import('./src/components/sidebars/recruitmentApplicantSidebar.vue')['default']
+    RecruitmentManagerSidebar: typeof import('./src/components/recruitmentManagerSidebar.vue')['default']
+    RecruitmentReviewerSidebar: typeof import('./src/components/recruitmentReviewerSidebar.vue')['default']
+    RefillState: typeof import('./src/components/attachmentStates/RefillState.vue')['default']
     ResetPasswordForm: typeof import('./src/components/ResetPasswordForm.vue')['default']
+    ReviewerSidebar: typeof import('./src/components/reviewerSidebar.vue')['default']
+    ReviewState: typeof import('./src/components/attachmentStates/reviewState.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    SideBar: typeof import('./src/components/SideBar.vue')['default']
+    SideBar: typeof import('./src/components/sidebars/SideBar.vue')['default']
     Turnstile: typeof import('./src/components/Turnstile.vue')['default']
   }
 }
