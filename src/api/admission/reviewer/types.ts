@@ -149,3 +149,17 @@ export interface AdmissionReviewerApplicantListResponse {
 	isImmediateEnroll: boolean;
 	immediate_enroll_comment: string;
 }
+
+export interface AdmissionReviewerApplicantFileListResponse {
+	id: number;
+	category: string;
+	name: string;
+	filepath: {
+		url: string;
+	};
+	s_applicant_id: number;
+	created_at: string;
+	updated_at: string;
+	school: null;
+	score: number;
+}
