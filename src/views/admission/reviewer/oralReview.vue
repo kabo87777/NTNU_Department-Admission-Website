@@ -63,7 +63,6 @@
 						/>
 					</Row>
 				</ColumnGroup>
-				<div v-if="true">
 					<Column field="oral_order"></Column>
 					<Column field="id"></Column>
 					<Column field="name"></Column>
@@ -93,7 +92,7 @@
 					<Column field="oral_grade_3" />
 					<Column v-if="scoreCount > 3" field="oral_grade_4" />
 					<Column v-if="scoreCount > 4" field="oral_grade_5" />
-					<!-- <Column
+					<Column
 					field="isImmediateEnroll"
 					dataType="boolean"
 					bodyClass="text-center"
@@ -463,12 +462,7 @@ const cancel = computed(() => t("取消"));
 const selectedData = ref();
 const router = useRouter();
 const onRowSelect = (event: any) => {
-	if (event.data.oral_order) {
 		selectedData.value = "";
 		router.push("/admission/reviewer/singleOralReview/" + event.data.id);
-	}
-	// else{
-	// 	toast.add("");
-	// }
 };
 </script>
