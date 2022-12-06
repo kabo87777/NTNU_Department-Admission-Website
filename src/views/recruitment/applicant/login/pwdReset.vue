@@ -1,4 +1,5 @@
 <template class="overflow-hidden">
+	<Toast position="top-right" />
 	<div class="flex">
 		<div class="flex-shrink-1">
 			<img src="/assets/login-page/Login-img.png" class="fill" />
@@ -16,7 +17,6 @@
 			<div class="px-8 pb-8 space-y-4">
 				<div class="flex items-end gap-2 applicantTextColor">
 					<div>歡迎</div>
-					<div class="text-4xl" v-text="userName" />
 				</div>
 				<div class="flex items-center gap-2 applicantTextColor">
 					<i class="pi pi-circle" style="font-size: 0.5rem" />
@@ -46,7 +46,7 @@
 						</small>
 					</div>
 				</div>
-				<div class="flex-col px-4">
+				<div class="flex-col px-4 pt-4">
 					<div
 						class="flex items-center gap-2 pb-2"
 						text="sm gray-500"
@@ -71,19 +71,17 @@
 			</div>
 			<div class="flex-col-inline px-4 gap-y-8">
 				<div class="flex justify-center">
-					<router-link to="/recruitment/applicant/signin">
-						<Button
-							class="p-button-sm p-button-secondary p-button-outlined !mt-60px !text-[16px]"
-							type="submit"
-							:loading="isChangePassLoading"
-							@click="onSubmit()"
-						>
-							<div class="flex justify-center gap-2 mx-auto">
-								<div>提交</div>
-								<div>Submit</div>
-							</div>
-						</Button>
-					</router-link>
+					<Button
+						class="p-button-sm p-button-secondary p-button-outlined !mt-60px !text-[16px]"
+						type="submit"
+						:loading="isChangePassLoading"
+						@click="onSubmit()"
+					>
+						<div class="flex justify-center gap-2 mx-auto">
+							<div>提交</div>
+							<div>Submit</div>
+						</div>
+					</Button>
 				</div>
 				<div></div>
 			</div>
@@ -92,20 +90,19 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-import { reactive } from "vue";
+import { ref, toRaw, reactive } from "vue";
 import InputText from "primevue/inputtext";
 import { useToast } from "primevue/usetoast";
 import { useRecruitmentApplicantAuthStore } from "@/stores/universalAuth";
 import { RecruitmentApplicantAPI } from "@/api/recruitment/applicant/api";
 import { universalAuthResetPwdData } from "@/api/universalAuth";
 import Button from "primevue/button";
-import { accessSync } from "fs";
+import { useRouter } from "vue-router";
+const router = useRouter();
 
 const toast = useToast();
 const applicantAuth = useRecruitmentApplicantAuthStore();
 const api = new RecruitmentApplicantAPI(applicantAuth);
-const userName = ref("Chu-Ting");
 const isChangePassLoading = ref(false);
 const changePassRes = reactive({
 	success: false,
@@ -127,6 +124,10 @@ const password = reactive({
 	newPass: "",
 	confirmPass: "",
 });
+
+function delay(ms: number) {
+	return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
 const putResetPassword = async (data: universalAuthResetPwdData) => {
 	try {
@@ -165,7 +166,40 @@ const onSubmit = async () => {
 		};
 
 		const response = putResetPassword(body);
-		console.log(response);
+
+		await response.then((res) => {
+			if (res?.error === false && res?.message !== undefined) {
+				changePassRes.success = toRaw(!res.error);
+				changePassRes.message = toRaw(res.message);
+			}
+
+			isChangePassLoading.value = false;
+
+			if (changePassRes.success) {
+				toast.add({
+					severity: "success",
+					summary: "Success",
+					detail: "變更密碼成功 ! (3 秒後為您導向登入畫面)。",
+					life: 3000,
+				});
+				setTimeout(() => {
+					router.replace({ name: "recruitmentApplicantSignin" });
+				}, 3000);
+			} else if (
+				!changePassRes.success &&
+				password.newPass !== "" &&
+				password.confirmPass !== ""
+			) {
+				toast.add({
+					severity: "error",
+					summary: "Error",
+					detail: changePassRes.message[
+						changePassRes.message.length - 1
+					],
+					life: 5000,
+				});
+			}
+		});
 	}
 };
 </script>
