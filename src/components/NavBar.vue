@@ -22,27 +22,37 @@
 			class="items-end px-2 gap-7px w-438px h-20px"
 		/>
 		<div class="w-full block">
-			<Button
-				class="p-button-sm p-button-outlined"
-				style="
-					background-color: white;
-					border-color: white;
-					float: right;
-					margin-right: 24px;
-					height: 36px;
-					color: #94282c;
-					font-weight: 500;
-				"
-				@click="toggle"
-				aria-haspopup="true"
-				aria-controls="overlay_menu"
-			>
-				<div class="mt-[-4px] ml-4px">{{ $t("語言") }}</div>
-				<div class="ml-8px">
-					<i class="pi pi-code" style="transform: rotate(90deg)" />
-				</div>
-			</Button>
-			<Menu id="overlay_menu" ref="menu" :model="items" :popup="true" />
+			<div v-show="props.showSwitchLang !== false">
+				<Button
+					class="p-button-sm p-button-outlined"
+					style="
+						background-color: white;
+						border-color: white;
+						float: right;
+						margin-right: 24px;
+						height: 36px;
+						color: #94282c;
+						font-weight: 500;
+					"
+					@click="toggle"
+					aria-haspopup="true"
+					aria-controls="overlay_menu"
+				>
+					<div class="mt-[-4px] ml-4px">{{ $t("語言") }}</div>
+					<div class="ml-8px">
+						<i
+							class="pi pi-code"
+							style="transform: rotate(90deg)"
+						/>
+					</div>
+				</Button>
+				<Menu
+					id="overlay_menu"
+					ref="menu"
+					:model="items"
+					:popup="true"
+				/>
+			</div>
 		</div>
 	</nav>
 </template>
@@ -55,6 +65,8 @@ import { ref } from "vue";
 
 import { useI18n } from "vue-i18n";
 const { t, locale, availableLocales } = useI18n();
+
+const props = defineProps(["showSwitchLang"]);
 
 const menu = ref();
 
