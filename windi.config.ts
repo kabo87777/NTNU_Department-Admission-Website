@@ -22,6 +22,10 @@ export default defineConfig({
 		},
 		extend: {
 			colors: {
+				// FIXME: "ntnuRed" & "blackLight" 是舊的屬性，但仍被用於此系統某些角落，
+				//		  待頁面全面整理確認無引用之後，再進行移除
+				ntnuRed: "#94282c",
+				blackLight: "#2D2926",
 				mPrimary: "#93282C",
 				jPrimary: "#2459A4",
 				aPrimary: "#8A7B27",

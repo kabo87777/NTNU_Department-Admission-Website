@@ -11,8 +11,8 @@
 			>
 				<SideBar />
 			</div>
-			<div class="px-1/20 py-8 ml-1/4 w-full <lg:ml-60">
-				<div class="m-auto max-w-800 relative">
+			<div class="ml-1/4 w-full <lg:ml-60">
+				<div class="relative w-9/10 m-auto max-w-800">
 					<router-view />
 				</div>
 			</div>
