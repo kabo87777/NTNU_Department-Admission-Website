@@ -1,22 +1,20 @@
 <template>
 	<div>
-		<div style="position: fixed; top: 0; width: 100%; z-index: 1000">
+		<div class="fixed w-full top-0 z-100">
 			<NavBar />
 		</div>
-		<div style="display: flex; margin-top: 60px; position: relative">
+		<div class="flex mt-15 relative">
 			<div
-				style="
-					position: fixed;
-					float: left;
-					width: 360px;
-					border-right: 1px solid gray;
-					height: 100%;
-				"
+				class="fixed w-1/4 h-full float-left <lg:w-60"
+				border="r-1 solid gray-200"
+				bg="white"
 			>
 				<SideBar />
 			</div>
-			<div style="margin-left: 360px; width: 100%; padding: 60px 6%">
-				<router-view />
+			<div class="px-1/20 py-8 ml-1/4 w-full <lg:ml-60">
+				<div class="m-auto max-w-800 relative">
+					<router-view />
+				</div>
 			</div>
 		</div>
 	</div>

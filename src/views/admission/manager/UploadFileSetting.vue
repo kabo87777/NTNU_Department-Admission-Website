@@ -1,6 +1,8 @@
 <template>
-	<div class="pt-62px pl-128px pr-128px">
-		<div class="font-medium text-32px">{{ trans.uploadField.value }}</div>
+	<div class="">
+		<div class="font-medium text-32px">
+			{{ trans.uploadField.value }}
+		</div>
 		<div class="bigRedDivider"></div>
 		<div class="p-fluid">
 			<SelectButton
@@ -12,6 +14,8 @@
 			>
 			</SelectButton>
 		</div>
+	</div>
+	<div>
 		<div v-if="activeTab.value === 1">
 			<div class="mt-16px">
 				<div>
