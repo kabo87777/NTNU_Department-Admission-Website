@@ -139,7 +139,6 @@ export async function doUniversalAuthResetPassword(
 		method: "PUT",
 		url: auth.apiEndpoint + "/password",
 		headers: {
-			"Content-Type": "application/json",
 			"access-token": access_token,
 			client: client,
 			uid: uid,
