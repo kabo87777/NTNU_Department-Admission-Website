@@ -6,7 +6,7 @@
 		<div class="bigRedDivider"></div>
 		<div class="p-fluid">
 			<SelectButton
-				class="mt-20px h-45px !w-1280px"
+				class="mt-10px h-45px"
 				v-model="currentTab"
 				:options="tabOptions"
 				aria-labelledby="single"
