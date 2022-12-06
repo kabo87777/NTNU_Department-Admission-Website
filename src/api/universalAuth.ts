@@ -13,6 +13,12 @@ export interface universalAuthSendResetPwdEmailData {
 	"cf-turnstile-response": string;
 }
 
+export interface AdmissionApplicantAuthSendResetPwdEmailData {
+	username: string;
+	redirect_url: string;
+	"cf-turnstile-response": string;
+}
+
 export interface universalAuthSendPostEmailRegister {
 	name: string;
 	email: string;
@@ -124,6 +130,15 @@ export async function doUniversalAuthSendPostEmailRegister(
 	data: universalAuthSendPostEmailRegister
 ) {
 	const response = await axios.post(auth.apiEndpoint, data);
+	console.log("response: ", response);
+	return response.data;
+}
+
+export async function doAdmisssionApplicantAuthSendForgotPwdEmail(
+	auth: AuthStore,
+	data: AdmissionApplicantAuthSendResetPwdEmailData
+) {
+	const response = await axios.post(auth.apiEndpoint + "/password", data);
 	console.log("response: ", response);
 	return response.data;
 }
