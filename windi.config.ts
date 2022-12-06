@@ -11,12 +11,14 @@ export default defineConfig({
 	plugins: [AspectRatio, Filters, Forms, LineClamp, SrollSnap],
 	theme: {
 		textColor: {
-			// secondary: '',
 			success: "#62AE01",
 			warning: "#BE9505",
 			danger: "#BB0F17",
 			info: "#6B23B4",
-			body: "#0C0C0D",
+			title: "#0C0C0D",
+			body: "#444547",
+			secondary: "#757A80",
+			disabled: "#BABDBF",
 		},
 		extend: {
 			colors: {
