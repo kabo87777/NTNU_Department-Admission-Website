@@ -165,11 +165,13 @@ export class AdmissionAdminAPI extends GenericAPI {
 				headers: {
 					"Content-Type": "multipart/form-data",
 				},
+				timeout: 61000,
+				timeoutErrorMessage: "[TIMEOUT] Importing applicants",
 			}
 		);
 		if (
 			response.error === true ||
-			typeof response.data.totalImport === "undefined"
+			typeof response.data?.totalImport === "undefined"
 		)
 			throw new Error("Failed to import applicant accounts.");
 
