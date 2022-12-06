@@ -197,7 +197,7 @@ const userInfo = useUserInfoStore();
 // Login Form
 const turnstileRef = ref<TurnstileComponentExposes>();
 const isRememberAccount = ref(false);
-const email = ref("example@email.com");
+const email = ref("ntnurreviewer1@yopmail.com");
 const password = ref("Example123");
 const isTurnstileRunning = computed(() => !turnstileRef.value?.turnstileToken);
 
