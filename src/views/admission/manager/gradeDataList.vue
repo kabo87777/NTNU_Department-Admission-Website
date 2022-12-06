@@ -504,7 +504,6 @@
 				<Column field="name" :header="applicantName"></Column>
 			</DataTable>
 			<div class="bigRedDivider !mt-30px"></div>
-			｀
 		</div>
 		<div v-if="currentTab === translation.admissionList">
 			<DataTable
@@ -978,17 +977,8 @@ const applicantDocsGrade = useQuery(
 				return await api.getSingleDocsGrade(applicantID);
 			}
 			return null;
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				// FIXME: show session expiry notification??
-				// Why are we even here in the first place?
-				// MainContainer should have checked already.
-				console.error(
-					"Session has already expired while querying programList"
-				);
-				router.push("/");
-				return;
-			}
+		} catch (error) {
+			console.log(error);
 		}
 	},
 	{
@@ -1014,17 +1004,8 @@ const applicantOralGrade = useQuery(
 				return await api.getSingleOralGrade(applicantID);
 			}
 			return null;
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				// FIXME: show session expiry notification??
-				// Why are we even here in the first place?
-				// MainContainer should have checked already.
-				console.error(
-					"Session has already expired while querying programList"
-				);
-				router.push("/");
-				return;
-			}
+		} catch (error) {
+			console.log(error);
 		}
 	},
 	{
@@ -1168,17 +1149,8 @@ const callGenerateAnonyDocReport = () => {
 				return await api.getDocsAnonyReportGenerated(
 					store.program!.id!
 				);
-			} catch (e: any) {
-				if (e instanceof InvalidSessionError) {
-					// FIXME: show session expiry notification??
-					// Why are we even here in the first place?
-					// MainContainer should have checked already.
-					console.error(
-						"Session has already expired while querying applicantInfo"
-					);
-					router.push("/");
-					return;
-				}
+			} catch (error) {
+				console.log(error);
 			}
 		}
 	);
@@ -1198,17 +1170,8 @@ const callGenerateGenReport = () => {
 	const { data: generateGen } = useQuery(["generateGen"], async () => {
 		try {
 			return await api.getGenReportGenerated(store.program!.id!);
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				// FIXME: show session expiry notification??
-				// Why are we even here in the first place?
-				// MainContainer should have checked already.
-				console.error(
-					"Session has already expired while querying applicantInfo"
-				);
-				router.push("/");
-				return;
-			}
+		} catch (error) {
+			console.log(error);
 		}
 	});
 };
@@ -1219,17 +1182,8 @@ const callGenerateAnonyGenReport = () => {
 		async () => {
 			try {
 				return await api.getGenAnonyReportGenerated(store.program!.id!);
-			} catch (e: any) {
-				if (e instanceof InvalidSessionError) {
-					// FIXME: show session expiry notification??
-					// Why are we even here in the first place?
-					// MainContainer should have checked already.
-					console.error(
-						"Session has already expired while querying applicantInfo"
-					);
-					router.push("/");
-					return;
-				}
+			} catch (error) {
+				console.log(error);
 			}
 		}
 	);
@@ -1239,17 +1193,8 @@ const callGenerateEnrollReport = () => {
 	const { data: generateEnroll } = useQuery(["generateEnroll"], async () => {
 		try {
 			return await api.getEnrollReportGenerated(store.program!.id!);
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				// FIXME: show session expiry notification??
-				// Why are we even here in the first place?
-				// MainContainer should have checked already.
-				console.error(
-					"Session has already expired while querying applicantInfo"
-				);
-				router.push("/");
-				return;
-			}
+		} catch (error) {
+			console.log(error);
 		}
 	});
 };
@@ -1278,17 +1223,8 @@ const { data: docpdfdata } = useQuery(
 		try {
 			callGenerateDocReport();
 			return await api.getDocsReport(store.program!.id!);
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				// FIXME: show session expiry notification??
-				// Why are we even here in the first place?
-				// MainContainer should have checked already.
-				console.error(
-					"Session has already expired while querying applicantInfo"
-				);
-				router.push("/");
-				return;
-			}
+		} catch (error) {
+			console.log(error);
 		}
 	},
 	{
@@ -1305,17 +1241,8 @@ const { data: docanonypdfdata } = useQuery(
 		try {
 			callGenerateAnonyDocReport();
 			return await api.getDocsAnonyReport(store.program!.id!);
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				// FIXME: show session expiry notification??
-				// Why are we even here in the first place?
-				// MainContainer should have checked already.
-				console.error(
-					"Session has already expired while querying applicantInfo"
-				);
-				router.push("/");
-				return;
-			}
+		} catch (error) {
+			console.log(error);
 		}
 	},
 	{
@@ -1332,17 +1259,8 @@ const { data: genpdfdata } = useQuery(
 		try {
 			callGenerateGenReport();
 			return await api.getGenReport(store.program!.id!);
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				// FIXME: show session expiry notification??
-				// Why are we even here in the first place?
-				// MainContainer should have checked already.
-				console.error(
-					"Session has already expired while querying applicantInfo"
-				);
-				router.push("/");
-				return;
-			}
+		} catch (error) {
+			console.log(error);
 		}
 	},
 	{
@@ -1359,17 +1277,8 @@ const { data: genanonypdfdata } = useQuery(
 		try {
 			callGenerateAnonyGenReport();
 			return await api.getGenAnonyReport(store.program!.id!);
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				// FIXME: show session expiry notification??
-				// Why are we even here in the first place?
-				// MainContainer should have checked already.
-				console.error(
-					"Session has already expired while querying applicantInfo"
-				);
-				router.push("/");
-				return;
-			}
+		} catch (error) {
+			console.log(error);
 		}
 	},
 	{
@@ -1386,17 +1295,8 @@ const { data: enrollpdfdata } = useQuery(
 		try {
 			callGenerateEnrollReport();
 			return await api.getEnrollReport(store.program!.id!);
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				// FIXME: show session expiry notification??
-				// Why are we even here in the first place?
-				// MainContainer should have checked already.
-				console.error(
-					"Session has already expired while querying applicantInfo"
-				);
-				router.push("/");
-				return;
-			}
+		} catch (error) {
+			console.log(error);
 		}
 	},
 	{
