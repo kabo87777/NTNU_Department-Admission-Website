@@ -4,7 +4,7 @@
 			<img src="/assets/login-page/Login-img.png" class="fill" />
 		</div>
 		<div class="flex-none w-150 px-6 pt-18 space-y-8">
-			<router-link to="/admission/applicant/signin">
+			<router-link to="/admission/reviewer/signin">
 				<button
 					class="flex items-center gap-2 px-2 py-2"
 					bg="transparent hover:gray-100"
@@ -26,7 +26,7 @@
 				</div>
 			</div>
 			<div class="px-8 py-4 space-y-4">
-				<div class="flex items-center gap-2 applicantTextColor">
+				<div class="flex items-center gap-2 reviewerTextColor">
 					<i class="pi pi-circle" style="font-size: 0.5rem" />
 					<div class="flex-none font-medium">忘記密碼</div>
 					<div class="flex-none font-medium">Forget Password</div>
@@ -37,13 +37,13 @@
 						class="flex items-center gap-2 pb-2"
 						text="sm gray-500"
 					>
-						<div>使用者名稱</div>
-						<div>Username</div>
+						<div>電郵地址</div>
+						<div>E-mail</div>
 					</div>
 					<InputText
-						name="username"
-						type="username"
-						v-model="forgetPwdUsername"
+						name="email"
+						type="email"
+						v-model="forgetPwdEmail"
 						class="p-inputtext-sm w-full"
 						required
 					/>
@@ -66,10 +66,9 @@
 				</div>
 			</div>
 			<div class="flex justify-center px-4">
-				<router-link to="/admission/applicant/forgetpassword/emailSent">
+				<router-link to="/admission/reviewer/forgetpassword/emailSent">
 					<Button
-						class="py-2 w-80 applicantButtonStyle"
-						border="2  rounded-lg"
+						class="py-2 w-80 reviewerButtonStyle"
 						@click="enterEmail"
 					>
 						<div class="flex justify-center gap-2 mx-auto">
@@ -88,17 +87,16 @@
 
 <script setup lang="ts">
 import Button from "primevue/button";
-import { reactive, ref } from "vue";
+import { ref } from "vue";
 import InputText from "primevue/inputtext";
-import { useAdmissionApplicantAuthStore } from "@/stores/universalAuth";
-import { TurnstileComponentExposes } from "@/components/Turnstile.vue";
-import { AdmissionApplicantAPI } from "@/api/admission/applicant/api";
+import { useAdmissionReviewerAuthStore } from "@/stores/universalAuth";
+import type { TurnstileComponentExposes } from "@/components/Turnstile.vue";
 import Turnstile from "@/components/Turnstile.vue";
+import { AdmissionReviewerAPI } from "@/api/admission/reviewer/api";
 
-const forgetPwdUsername = ref("");
-const authStore = useAdmissionApplicantAuthStore();
+const forgetPwdEmail = ref("");
+const authStore = useAdmissionReviewerAuthStore();
 const turnstileRef = ref<TurnstileComponentExposes>();
-
 const consumeTurnstileToken = () => {
 	const token: string | undefined = turnstileRef.value?.turnstileToken;
 	window.turnstile?.reset();
@@ -107,13 +105,12 @@ const consumeTurnstileToken = () => {
 const enterEmail = async () => {
 	try {
 		const redirectUrl =
-			"http://127.0.0.1:5173/admission/applicant/password/reset";
+			"http://127.0.0.1:5173/admission/reviewer/password/reset";
 		const turnstileResponse = consumeTurnstileToken();
 		if (!turnstileResponse) throw new Error("Turnstile challenge failed");
-		const api = new AdmissionApplicantAPI(authStore);
-		console.log(forgetPwdUsername.value);
-		return await api.sendAdmissionApplicantForgotPasswordEmail({
-			username: forgetPwdUsername.value,
+		const api = new AdmissionReviewerAPI(authStore);
+		return await api.sendForgotPasswordEmail({
+			email: forgetPwdEmail.value,
 			redirect_url: redirectUrl,
 			"cf-turnstile-response": turnstileResponse,
 		});
@@ -125,22 +122,23 @@ const enterEmail = async () => {
 </script>
 
 <style setup lang="css">
-.applicantTextColor {
-	color: #736028;
+.reviewerTextColor {
+	color: #0b4873;
 }
-.applicantButtonStyle {
-	background-color: #fafac7;
-	border-color: #dbd379;
-	color: #544830;
+
+.reviewerButtonStyle {
+	background-color: #dfe7fd;
+	border-color: #a5b9ec;
+	color: #003a5c;
 }
-.applicantButtonStyle:hover {
-	background-color: #8a7b27;
-	border-color: #8a7b27;
+.reviewerButtonStyle:hover {
+	background-color: #2459a4;
+	border-color: #2459a4;
 	color: white;
 }
-.applicantButtonStyle:active {
-	background-color: #624f2a;
-	border-color: #624f2a;
+.reviewerButtonStyle:active {
+	background-color: #0b4873;
+	border-color: #0b4873;
 	color: white;
 }
 </style>

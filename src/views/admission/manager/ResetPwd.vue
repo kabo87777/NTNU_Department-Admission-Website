@@ -10,15 +10,15 @@
 					國立台灣師範大學資訊工程學系 NTNU CSIE
 				</div>
 				<div class="flex items-end gap-2 font-medium text-gray-900">
-					<div class="text-4xl">教師聘請系統</div>
-					<div class="text-xl">Teacher Recruitment System</div>
+					<div class="text-4xl">招生系統</div>
+					<div class="text-xl">Admission System</div>
 				</div>
 			</div>
 			<div class="px-8 pb-8 space-y-4">
-				<div class="flex items-end gap-2 reviewerTextColor">
+				<div class="flex items-end gap-2 managerTextColor">
 					<div>歡迎</div>
 				</div>
-				<div class="flex items-center gap-2 reviewerTextColor">
+				<div class="flex items-center gap-2 managerTextColor">
 					<i class="pi pi-circle" style="font-size: 0.5rem" />
 					<div class="flex-none font-medium">重設密碼</div>
 					<div class="flex-none font-medium">Reset Password</div>
@@ -93,16 +93,16 @@
 import { ref, toRaw, reactive } from "vue";
 import InputText from "primevue/inputtext";
 import { useToast } from "primevue/usetoast";
-import { useRecruitmentReviewerAuthStore } from "@/stores/universalAuth";
-import { RecruitmentReviewerAPI } from "@/api/recruitment/reviewer/api";
+import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
+import { AdmissionAdminAPI } from "@/api/admission/admin/api";
 import { universalAuthResetPwdData } from "@/api/universalAuth";
 import Button from "primevue/button";
 import { useRouter } from "vue-router";
 const router = useRouter();
 
 const toast = useToast();
-const reviewerAuth = useRecruitmentReviewerAuthStore();
-const api = new RecruitmentReviewerAPI(reviewerAuth);
+const adminAuth = useAdmissionAdminAuthStore();
+const api = new AdmissionAdminAPI(adminAuth);
 const isChangePassLoading = ref(false);
 const changePassRes = reactive({
 	success: false,
@@ -179,7 +179,7 @@ const onSubmit = async () => {
 					life: 3000,
 				});
 				setTimeout(() => {
-					router.replace({ name: "recruitmentReviewerSignin" });
+					router.replace({ name: "AdmissionAdminSignin" });
 				}, 3000);
 			} else if (
 				!changePassRes.success &&
@@ -201,23 +201,22 @@ const onSubmit = async () => {
 </script>
 
 <style setup lang="css">
-.reviewerTextColor {
-	color: #0b4873;
+.managerTextColor {
+	color: #79363c;
 }
-
-.reviewerButtonStyle {
-	background-color: #dfe7fd;
-	border-color: #a5b9ec;
-	color: #003a5c;
+.managerButtonStyle {
+	background-color: #ffe4df;
+	border-color: #f3baae;
+	color: #4d3639;
 }
-.reviewerButtonStyle:hover {
-	background-color: #2459a4;
-	border-color: #2459a4;
+.managerButtonStyle:hover {
+	background-color: #94282c;
+	border-color: #94282c;
 	color: white;
 }
-.reviewerButtonStyle:active {
-	background-color: #0b4873;
-	border-color: #0b4873;
+.managerButtonStyle:active {
+	background-color: #62373e;
+	border-color: #62373e;
 	color: white;
 }
 </style>

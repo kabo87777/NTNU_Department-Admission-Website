@@ -1,5 +1,5 @@
 <template>
-	<div class="ml-128px mr-128px mt-62px">
+	<div>
 		<div class="flex">
 			<div class="text-4xl text-bold tracking-widest">
 				{{ translate.reviewProgress }}
@@ -8,13 +8,12 @@
 		<div class="bigRedDivider" />
 
 		<!-- DataTable : Review Data List -->
-		<div class="h-700px">
+		<div>
 			<DataTable
 				class="p-datatable-lg"
 				:value="reviewDataList"
 				dataKey="id"
 				:scrollable="true"
-				scrollHeight="700px"
 			>
 				<template #empty>
 					<div>{{ translate.thereisnoReviewer }}</div>
