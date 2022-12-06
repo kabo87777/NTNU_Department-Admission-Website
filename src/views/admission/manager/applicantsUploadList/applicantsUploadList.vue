@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<div class="text-32px font-medium">上傳資料列表</div>
+		<div class="text-32px font-bold">上傳資料列表</div>
 		<div class="bigRedDivider"></div>
 		<div class="mt-16px">
 			<DataTable :value="applicantList">

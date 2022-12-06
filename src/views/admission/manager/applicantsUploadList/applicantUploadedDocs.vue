@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div class="flex">
-			<div class="mt-12px text-18px">
+			<div class="prevPage">
 				<router-link to="/admission/manager/applicantsUploadList"
 					><i class="pi pi-chevron-left"></i
 					>{{ $t("上傳資料列表") }}</router-link
@@ -14,7 +14,7 @@
 		<div class="bigRedDivider" style="margin-top: 12px"></div>
 		<div class="p-fluid">
 			<SelectButton
-				class="mt-8px"
+				class="mt-16px"
 				v-model="activeTab"
 				:options="tabs"
 				optionLabel="name"
@@ -98,3 +98,16 @@ onMounted(() => {
 	console.log(route.params);
 });
 </script>
+
+<style setup lang="css">
+.prevPage {
+	color: #94282c;
+	margin-top: 12px;
+	font-size: 18px;
+	font-weight: bold;
+}
+
+.prevPage :hover {
+	opacity: 0.6;
+}
+</style>
