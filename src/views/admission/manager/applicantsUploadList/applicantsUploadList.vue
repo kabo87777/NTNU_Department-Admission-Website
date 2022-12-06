@@ -4,7 +4,7 @@
 		<div class="bigRedDivider"></div>
 		<div class="mt-16px">
 			<DataTable :value="applicantList">
-				<Column field="uid">
+				<Column field="id">
 					<template #header>
 						<div class="m-auto">{{ $t("帳號") }}</div>
 					</template>

@@ -88,13 +88,14 @@ import recruitmentManagerPasswordForget from "@/views/recruitment/manager/login/
 import recruitmentManagerPasswordForgetEmailSent from "@/views/recruitment/manager/login/pwdForgetEmailSent.vue";
 // Recruitment Manager section
 import recruitmentManagerMainContainer from "@/views/recruitment/manager/MainContainer.vue";
-import recruitmentManagerApplicantUploadList from "@/views/recruitment/manager/pages/ApplicantUploadList/TableList.vue";
+import recruitmentManagerApplicantUploadList from "@/views/recruitment/manager/pages/ApplicantUploadList/ApplicantList.vue";
 import recruitmentManagerReviewProgress from "@/views/recruitment/manager/pages/ReviewProgress.vue";
 import recruitmentManagerUserSetting from "@/views/recruitment/manager/pages/RecruitmentManagerSelfSetting.vue";
 import recruitmentApplicationUpload from "@/views/recruitment/manager/pages/UploadFileSetting.vue";
 import recruitmentGradeDataList from "@/views/recruitment/manager/gradeDataList.vue";
 import recruitmentReviewScroreField from "@/views/recruitment/manager/reviewScoreField.vue";
 import recruitmentProjectSetting from "@/views/recruitment/manager/pages/ProjectSetting.vue";
+import recruitmentManagerApplicant from "@/views/recruitment/manager/pages/ApplicantUploadList/Applicant.vue";
 import recruitmentManagerApplicationAccountSetting from "@/views/recruitment/manager/pages/ApplicationAccountSetting.vue";
 import * as Recruitment from "./recruitment";
 const R = Recruitment.default;
@@ -474,6 +475,11 @@ const routes: Array<RouteRecordRaw> = [
 						path: "attachmentList",
 						name: "recruitmentManagerApplicantUploadList",
 						component: recruitmentManagerApplicantUploadList,
+					},
+					{
+						path: "applicant/:userId",
+						name: "recruitmentManagerApplicant",
+						component: recruitmentManagerApplicant,
 					},
 					{
 						path: "userSetting",

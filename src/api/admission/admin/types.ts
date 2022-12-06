@@ -207,6 +207,8 @@ export interface AdmAdminGetApplicantAttachmentDataDetail {
 }
 
 export interface AdmAdminGetApplicantMoredocResponses {
+	name: string;
+	program_id: number;
 	isMoredoc: boolean;
 	moredoc_start_date: Date;
 	moredoc_end_date: Date;
