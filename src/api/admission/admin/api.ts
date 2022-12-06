@@ -262,49 +262,37 @@ export class AdmissionAdminAPI extends GenericAPI {
 		return response;
 	}
 
-	async getDocsReport(
-		programID: number
-	): Promise<string> {
+	async getDocsReport(programID: number): Promise<string> {
 		return await this.instance.get(
 			`/admission/admin/program/${programID}/get_docs_report`
 		);
 	}
 
-	async getDocsAnonyReport(
-		programID: number
-	): Promise<string> {
+	async getDocsAnonyReport(programID: number): Promise<string> {
 		return await this.instance.get(
-			`/admission/admin/program/${programID}/generate_docs?hide=true`
+			`/admission/admin/program/${programID}/get_docs_report?hide=true`
 		);
 	}
 
-	async getGenReport(
-		programID: number
-	): Promise<string> {
+	async getGenReport(programID: number): Promise<string> {
 		return await this.instance.get(
 			`/admission/admin/program/${programID}/get_gen_report`
 		);
 	}
 
-	async getGenAnonyReport(
-		programID: number
-	): Promise<string> {
+	async getGenAnonyReport(programID: number): Promise<string> {
 		return await this.instance.get(
 			`admission/admin/program/${programID}/get_gen_report?hide=true`
 		);
 	}
 
-	async getEnrollReport(
-		programID: number
-	): Promise<string> {
+	async getEnrollReport(programID: number): Promise<string> {
 		return await this.instance.get(
 			`/admission/admin/program/${programID}/get_enroll_report`
 		);
 	}
 
-	async getDocsReportGenerated(
-		programID: number
-	): Promise<GenericAPI> {
+	async getDocsReportGenerated(programID: number): Promise<GenericAPI> {
 		const data: APIGenericResponse = await this.instance.get(
 			`/admission/admin/program/${programID}/generate_docs`
 		);
@@ -315,9 +303,7 @@ export class AdmissionAdminAPI extends GenericAPI {
 		return data.data;
 	}
 
-	async getDocsAnonyReportGenerated(
-		programID: number
-	): Promise<GenericAPI> {
+	async getDocsAnonyReportGenerated(programID: number): Promise<GenericAPI> {
 		const data: APIGenericResponse = await this.instance.get(
 			`/admission/admin/program/${programID}/generate_docs?hide=true`
 		);
@@ -328,9 +314,7 @@ export class AdmissionAdminAPI extends GenericAPI {
 		return data.data;
 	}
 
-	async getGenReportGenerated(
-		programID: number
-	): Promise<GenericAPI> {
+	async getGenReportGenerated(programID: number): Promise<GenericAPI> {
 		const data: APIGenericResponse = await this.instance.get(
 			`/admission/admin/program/${programID}/generate_general`
 		);
@@ -341,9 +325,7 @@ export class AdmissionAdminAPI extends GenericAPI {
 		return data.data;
 	}
 
-	async getGenAnonyReportGenerated(
-		programID: number
-	): Promise<GenericAPI> {
+	async getGenAnonyReportGenerated(programID: number): Promise<GenericAPI> {
 		const data: APIGenericResponse = await this.instance.get(
 			`/admission/admin/program/${programID}/generate_general?hide=true`
 		);
@@ -354,11 +336,9 @@ export class AdmissionAdminAPI extends GenericAPI {
 		return data.data;
 	}
 
-	async getEnrollReportGenerated(
-		programID: number
-	): Promise<GenericAPI> {
+	async getEnrollReportGenerated(programID: number): Promise<GenericAPI> {
 		const data: APIGenericResponse = await this.instance.get(
-			`/admission/admin/program/${programID}/admission/admin/program/1/generate_enroll`
+			`/admission/admin/program/${programID}/generate_enroll`
 		);
 
 		if (data.error === true || typeof data.data === "undefined")

@@ -254,18 +254,6 @@
 				<div class="!ml-30px">
 					{{ $t("未送審") }} {{ docsStage5Count }} {{ $t("位") }}
 				</div>
-				<Button
-					class="w-140px h-44px !ml-299px p-button-outlined p-button-help"
-					@click="downloadFuckingFile(docPdfData)"
-				>
-					<img
-						alt="logo"
-						src="/assets/gradeDataList/Paper.png"
-						style="width: 1.5rem"
-						class="fill-green-500"
-					/>
-					<span class="tracking-1px">{{ $t("報表列印") }}</span>
-				</Button>
 			</div>
 		</div>
 		<div v-if="currentTab === translation.phase2">
@@ -501,17 +489,6 @@
 					/>
 					<span class="tracking-1px">{{ $t("保存順序") }}</span>
 				</Button>
-				<Button
-					class="w-140px h-44px !ml-20px p-button-outlined p-button-help"
-				>
-					<img
-						alt="logo"
-						src="/assets/gradeDataList/Paper.png"
-						style="width: 1.5rem"
-						class="fill-green-500"
-					/>
-					<span class="tracking-1px">{{ $t("報表列印") }}</span>
-				</Button>
 			</div>
 		</div>
 		<div v-if="currentTab === translation.iEnrollList">
@@ -527,17 +504,7 @@
 				<Column field="name" :header="applicantName"></Column>
 			</DataTable>
 			<div class="bigRedDivider !mt-30px"></div>
-			<Button
-				class="w-140px h-44px !ml-550px p-button-outlined p-button-help !mt-20px"
-			>
-				<img
-					alt="logo"
-					src="/assets/gradeDataList/Paper.png"
-					style="width: 1.5rem"
-					class="fill-green-500"
-				/>
-				<span class="tracking-1px">{{ $t("報表列印") }}</span>
-			</Button>
+			｀
 		</div>
 		<div v-if="currentTab === translation.admissionList">
 			<DataTable
@@ -587,17 +554,6 @@
 						class="fill-green-500"
 					/>
 					<span class="tracking-1px">{{ $t("保存順序") }}</span>
-				</Button>
-				<Button
-					class="w-140px h-44px !ml-30px p-button-outlined p-button-help"
-				>
-					<img
-						alt="logo"
-						src="/assets/gradeDataList/Paper.png"
-						style="width: 1.5rem"
-						class="fill-green-500"
-					/>
-					<span class="tracking-1px">{{ $t("報表列印") }}</span>
 				</Button>
 			</div>
 		</div>
@@ -650,8 +606,22 @@
 					/>
 					<span class="tracking-1px">{{ $t("保存順序") }}</span>
 				</Button>
+			</div>
+		</div>
+		<div v-if="currentTab === translation.printReport">
+			<div
+				class="flex items-center mx-auto h-144px w-[100%] justify-around bg-gray-500/10 rounded-md my-4"
+			>
+				<div
+					class="flex w-[50%] h-[80%] m-4px justify-around items-center"
+				>
+					<div class="text-2xl">
+						{{ $t("審查書面評分") }}
+					</div>
+				</div>
 				<Button
-					class="w-140px h-44px !ml-30px p-button-outlined p-button-help"
+					class="w-[20%] h-[60%] !bg-purple-500/10 m-4px p-button-outlined p-button-help"
+					@click="downloadPDFFile(docPdfData, 'doc_report', false)"
 				>
 					<img
 						alt="logo"
@@ -659,9 +629,105 @@
 						style="width: 1.5rem"
 						class="fill-green-500"
 					/>
-					<span class="tracking-1px">{{ $t("報表列印") }}</span>
+					<span class="tracking-1px text-lg">{{
+						$t("報表列印")
+					}}</span>
+				</Button>
+				<Button
+					class="w-[20%] h-[60%] !bg-blue-500/10 m-4px p-button-outlined"
+					@click="
+						downloadPDFFile(docAnonyPdfData, 'doc_report', true)
+					"
+				>
+					<img
+						alt="logo"
+						src="/assets/gradeDataList/Paper.png"
+						style="width: 1.5rem"
+						class="fill-green-500"
+					/>
+					<span class="tracking-1px text-lg">{{
+						$t("匿名報表列印")
+					}}</span>
 				</Button>
 			</div>
+			<div
+				class="flex items-center mx-auto h-144px w-[100%] justify-around bg-gray-500/10 rounded-md my-4"
+			>
+				<div
+					class="flex w-[50%] h-[80%] m-4px justify-around items-center"
+				>
+					<div class="text-2xl">
+						{{ $t("審查總評分") }}
+					</div>
+				</div>
+				<Button
+					class="w-[20%] h-[60%] !bg-purple-500/10 m-4px p-button-outlined p-button-help"
+					@click="
+						downloadPDFFile(genPdfData, 'general_report', false)
+					"
+				>
+					<img
+						alt="logo"
+						src="/assets/gradeDataList/Paper.png"
+						style="width: 1.5rem"
+						class="fill-green-500"
+					/>
+					<span class="tracking-1px text-lg">{{
+						$t("報表列印")
+					}}</span>
+				</Button>
+				<Button
+					class="w-[20%] h-[60%] !bg-blue-500/10 m-4px p-button-outlined"
+					@click="
+						downloadPDFFile(genAnonyPdfData, 'general_report', true)
+					"
+				>
+					<img
+						alt="logo"
+						src="/assets/gradeDataList/Paper.png"
+						style="width: 1.5rem"
+						class="fill-green-500"
+					/>
+					<span class="tracking-1px text-lg">{{
+						$t("匿名報表列印")
+					}}</span>
+				</Button>
+			</div>
+			<div
+				class="flex items-center mx-auto h-144px w-[100%] justify-around bg-gray-500/10 rounded-md my-4"
+			>
+				<div
+					class="flex w-[50%] h-[80%] m-4px justify-around items-center"
+				>
+					<div class="text-2xl">
+						{{ $t("錄取名單") }}
+					</div>
+				</div>
+				<Button
+					class="w-[20%] h-[60%] !bg-purple-500/10 m-4px p-button-outlined p-button-help"
+					@click="
+						downloadPDFFile(enrollPdfData, 'enroll_report', false)
+					"
+				>
+					<img
+						alt="logo"
+						src="/assets/gradeDataList/Paper.png"
+						style="width: 1.5rem"
+						class="fill-green-500"
+					/>
+					<span class="tracking-1px text-lg">{{
+						$t("報表列印")
+					}}</span>
+				</Button>
+			</div>
+			<!-- 
+			<div class="flex items-center justify-around bg-teal-100 rounded-md py-[40%] w-[80%] mx-auto">
+				<div class="w-[10%] h-12 bg-red-400 rounded-md m-4px"></div>
+				<div class="w-[10%] h-12 bg-green-400 rounded-md m-4px"></div>
+				<div class="w-[10%] h-12 bg-blue-400 rounded-md m-4px"></div>
+				<div class="w-[10%] h-12 bg-yellow-400 rounded-md m-4px"></div>
+				<div class="w-[10%] h-12 bg-pink-400 rounded-md m-4px"></div>
+			</div> -->
 		</div>
 	</div>
 </template>
@@ -688,11 +754,13 @@ import { useGlobalStore } from "@/stores/globalStore";
 import { useToast } from "primevue/usetoast";
 import { AdmissionAdminReviewerGradeResponse } from "@/api/admission/admin/types";
 import { AdmissionAdminOralGradeListResponse } from "@/api/admission/admin/types";
+import Toast from "primevue/toast";
 
 const adminAuth = useAdmissionAdminAuthStore();
 const api = new AdmissionAdminAPI(adminAuth);
 const store = useGlobalStore();
 const router = useRouter();
+const toast = useToast();
 
 const docsStage1Count = ref(0);
 const docsStage2Count = ref(0);
@@ -823,6 +891,7 @@ const translation = {
 	derectlyAdmitted: t("逕取"),
 	derectlyAdmittedPass: t("逕取通過"),
 	writtenReviewNotPass: t("書審未過"),
+	printReport: t("報表列印"),
 };
 
 const docsReviewerScore = ref<AdmissionAdminReviewerGradeResponse[]>();
@@ -834,6 +903,7 @@ const tabOptions = ref([
 	translation.iEnrollList,
 	translation.admissionList,
 	translation.reserveList,
+	translation.printReport,
 ]);
 const dialogCurrentTab = ref(translation.phase1);
 const dialogCurrentTab2 = ref(translation.phase2);
@@ -1090,40 +1160,123 @@ function saveReserveOrder() {
 	}
 }
 
-function downloadFuckingFile(pdf: string) {
-    const linkSource = `data:application/pdf;base64,${pdf}`;
-    const downloadLink = document.createElement("a");
+const callGenerateAnonyDocReport = () => {
+	const { data: generateAnonyDoc } = useQuery(
+		["generateAnonyDoc"],
+		async () => {
+			try {
+				return await api.getDocsAnonyReportGenerated(
+					store.program!.id!
+				);
+			} catch (e: any) {
+				if (e instanceof InvalidSessionError) {
+					// FIXME: show session expiry notification??
+					// Why are we even here in the first place?
+					// MainContainer should have checked already.
+					console.error(
+						"Session has already expired while querying applicantInfo"
+					);
+					router.push("/");
+					return;
+				}
+			}
+		}
+	);
+};
+
+const callGenerateDocReport = () => {
+	const { data: generateDoc } = useQuery(["generateDoc"], async () => {
+		try {
+			return await api.getDocsReportGenerated(store.program!.id!);
+		} catch (error) {
+			console.log(error);
+		}
+	});
+};
+
+const callGenerateGenReport = () => {
+	const { data: generateGen } = useQuery(["generateGen"], async () => {
+		try {
+			return await api.getGenReportGenerated(store.program!.id!);
+		} catch (e: any) {
+			if (e instanceof InvalidSessionError) {
+				// FIXME: show session expiry notification??
+				// Why are we even here in the first place?
+				// MainContainer should have checked already.
+				console.error(
+					"Session has already expired while querying applicantInfo"
+				);
+				router.push("/");
+				return;
+			}
+		}
+	});
+};
+
+const callGenerateAnonyGenReport = () => {
+	const { data: generateAnonyGen } = useQuery(
+		["generateAnonyGen"],
+		async () => {
+			try {
+				return await api.getGenAnonyReportGenerated(store.program!.id!);
+			} catch (e: any) {
+				if (e instanceof InvalidSessionError) {
+					// FIXME: show session expiry notification??
+					// Why are we even here in the first place?
+					// MainContainer should have checked already.
+					console.error(
+						"Session has already expired while querying applicantInfo"
+					);
+					router.push("/");
+					return;
+				}
+			}
+		}
+	);
+};
+
+const callGenerateEnrollReport = () => {
+	const { data: generateEnroll } = useQuery(["generateEnroll"], async () => {
+		try {
+			return await api.getEnrollReportGenerated(store.program!.id!);
+		} catch (e: any) {
+			if (e instanceof InvalidSessionError) {
+				// FIXME: show session expiry notification??
+				// Why are we even here in the first place?
+				// MainContainer should have checked already.
+				console.error(
+					"Session has already expired while querying applicantInfo"
+				);
+				router.push("/");
+				return;
+			}
+		}
+	});
+};
+
+function downloadPDFFile(pdf: string, reportType: string, anonymous: boolean) {
+	const linkSource = `data:application/pdf;base64,${pdf}`;
+	const downloadLink = document.createElement("a");
 	const ID = store.program!.id!;
 	const fileName = ref("");
-	if(dialogCurrentTab.value === translation.phase1){
-	    fileName.value = "docs_report_" + ID + ".pdf";
-	}
-	else if(dialogCurrentTab.value === translation.phase2){
-		fileName.value = "gen_report_" + ID + ".pdf";
-	}
-	else{
-		fileName.value = "enroll_report_" + ID + ".pdf";
-	}
-	// else if(dialogCurrentTab.value === translation.iEnrollList){
-	// 	fileName.value = "enroll_report_" + ID + ".pdf";
-	// }	
-	// else if(dialogCurrentTab.value === translation.iEnrollList){
-	// 	fileName.value = "enroll_report_" + ID + ".pdf";
-	// }
-	// else if(dialogCurrentTab.value === translation.iEnrollList){
-	// 	fileName.value = "enroll_report_" + ID + ".pdf";
-	// }
 
-    downloadLink.href = linkSource;
-    downloadLink.download = fileName.value;
-    downloadLink.click();
+	if (anonymous) {
+		fileName.value = "anonymous_" + reportType + "_" + ID + ".pdf";
+	} else {
+		fileName.value = reportType + "_" + ID + ".pdf";
+	}
+
+	downloadLink.href = linkSource;
+	downloadLink.download = fileName.value;
+	downloadLink.click();
 }
 
 const docPdfData = ref("");
-const { data } = useQuery(
+const { data: docpdfdata } = useQuery(
 	["docPdfBase64"],
 	async () => {
 		try {
+			callGenerateDocReport();
 			return await api.getDocsReport(store.program!.id!);
 		} catch (e: any) {
 			if (e instanceof InvalidSessionError) {
@@ -1143,5 +1296,113 @@ const { data } = useQuery(
 			docPdfData.value = data!;
 		},
 	}
-)
+);
+
+const docAnonyPdfData = ref("");
+const { data: docanonypdfdata } = useQuery(
+	["docAnonyPdfBase64"],
+	async () => {
+		try {
+			callGenerateAnonyDocReport();
+			return await api.getDocsAnonyReport(store.program!.id!);
+		} catch (e: any) {
+			if (e instanceof InvalidSessionError) {
+				// FIXME: show session expiry notification??
+				// Why are we even here in the first place?
+				// MainContainer should have checked already.
+				console.error(
+					"Session has already expired while querying applicantInfo"
+				);
+				router.push("/");
+				return;
+			}
+		}
+	},
+	{
+		onSuccess: (data) => {
+			docAnonyPdfData.value = data!;
+		},
+	}
+);
+
+const genPdfData = ref("");
+const { data: genpdfdata } = useQuery(
+	["genPdfBase64"],
+	async () => {
+		try {
+			callGenerateGenReport();
+			return await api.getGenReport(store.program!.id!);
+		} catch (e: any) {
+			if (e instanceof InvalidSessionError) {
+				// FIXME: show session expiry notification??
+				// Why are we even here in the first place?
+				// MainContainer should have checked already.
+				console.error(
+					"Session has already expired while querying applicantInfo"
+				);
+				router.push("/");
+				return;
+			}
+		}
+	},
+	{
+		onSuccess: (data) => {
+			genPdfData.value = data!;
+		},
+	}
+);
+
+const genAnonyPdfData = ref("");
+const { data: genanonypdfdata } = useQuery(
+	["genAnonyPdfBase64"],
+	async () => {
+		try {
+			callGenerateAnonyGenReport();
+			return await api.getGenAnonyReport(store.program!.id!);
+		} catch (e: any) {
+			if (e instanceof InvalidSessionError) {
+				// FIXME: show session expiry notification??
+				// Why are we even here in the first place?
+				// MainContainer should have checked already.
+				console.error(
+					"Session has already expired while querying applicantInfo"
+				);
+				router.push("/");
+				return;
+			}
+		}
+	},
+	{
+		onSuccess: (data) => {
+			genAnonyPdfData.value = data!;
+		},
+	}
+);
+
+const enrollPdfData = ref("");
+const { data: enrollpdfdata } = useQuery(
+	["enrollPdfBase64"],
+	async () => {
+		try {
+			callGenerateEnrollReport();
+			return await api.getEnrollReport(store.program!.id!);
+		} catch (e: any) {
+			if (e instanceof InvalidSessionError) {
+				// FIXME: show session expiry notification??
+				// Why are we even here in the first place?
+				// MainContainer should have checked already.
+				console.error(
+					"Session has already expired while querying applicantInfo"
+				);
+				router.push("/");
+				return;
+			}
+		}
+	},
+	{
+		onSuccess: (data) => {
+			enrollPdfData.value = data!;
+		},
+	}
+);
 </script>
