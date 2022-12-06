@@ -245,7 +245,7 @@ const {
 			totalApplicant.value = data!.length;
 			applicantGraded.value = 0;
 			data!.forEach((applicant) => {
-				if (applicant.isDocsGraded) {
+				if (applicant.isOralGraded) {
 					applicantGraded.value += 1;
 				}
 			});
