@@ -4,6 +4,7 @@ import type {
 	AdmAdminReviewerListResponse,
 	AdmissionAdminApplicantsListResponse,
 	AdmAdminGetApplicantInfo,
+	AdmAdminGetApplicantAttachmentData,
 	AdmissionAdminScoreFieldResponse,
 	AdmAdminReviewerRelatedProgramResponse,
 	AdmAdminEditApplicantRequest,
@@ -78,6 +79,19 @@ export class AdmissionAdminAPI extends GenericAPI {
 			throw new Error("Failed to fetch applicant basic info");
 
 		return data.data[0];
+	}
+
+	async getApplicantFile(
+		userId: number
+	): Promise<AdmAdminGetApplicantAttachmentData[]> {
+		const data: APIGenericResponse = await this.instance.get(
+			`/admission/admin/applicant/${userId}/file`
+		);
+
+		if (data.error === true)
+			throw new Error("Failed to fetch applicant attachment");
+
+		return data.data;
 	}
 
 	async getScoreField(

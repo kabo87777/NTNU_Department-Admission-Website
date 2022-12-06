@@ -27,13 +27,13 @@
 				</template>
 			</SelectButton>
 		</div>
-		<div class="mt-8px" v-show="activeTab.value === 1">
+		<div class="mt-8px" v-if="activeTab.value === 1">
 			<BasicInfo :userId="userInfo.id" />
 		</div>
-		<div class="mt-8px" v-show="activeTab.value === 2">
+		<div class="mt-8px" v-if="activeTab.value === 2">
 			<AttachmentInfo :userId="userInfo.id" />
 		</div>
-		<div class="mt-8px" v-show="activeTab.value === 3">
+		<div class="mt-8px" v-if="activeTab.value === 3">
 			<AdditionalInfo :userId="userInfo.id" />
 		</div>
 	</div>

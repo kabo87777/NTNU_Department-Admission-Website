@@ -171,6 +171,36 @@ export interface AdmAdminGetApplicantInfoHeader {
 	admission_id: string;
 }
 
+export interface AdmAdminGetApplicantAttachmentData {
+	id: number;
+	category: string;
+	name: string;
+	filepath: {
+		url: string | any;
+	};
+	school?: string;
+	score?: number;
+	s_applicant_id: number;
+	created_at: string;
+	updated_at: string;
+}
+
+export interface AdmAdminGetApplicantAttachmentDataDetail {
+	id?: number;
+	category?: string;
+	name?: string;
+	filepath?: {
+		url?: string | any;
+	};
+	school?: string;
+	score?: number;
+	s_applicant_id?: number;
+	created_at?: string;
+	updated_at?: string;
+	order: number;
+	state: number;
+}
+
 export interface AdmAdminEditApplicantRequest {
 	id: number;
 	name: string;

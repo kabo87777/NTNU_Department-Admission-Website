@@ -56,7 +56,11 @@
 		<div class="text-20px text-[#53565A] pt-16px">
 			{{ $t(props.category) }}{{ " - " }}{{ props.order }}
 		</div>
-		<div class="absolute" style="right: 0px">
+		<div
+			v-show="props.showActionButtons !== false"
+			class="absolute"
+			style="right: 0px"
+		>
 			<Button
 				class="p-button-outlined !h-40px"
 				style="border: 2px solid #a4bcc2"
@@ -131,6 +135,7 @@ const props = defineProps([
 	"schoolName",
 	"score",
 	"isDeleteLoading",
+	"showActionButtons",
 ]);
 
 const emit = defineEmits(["edit", "delete"]);
