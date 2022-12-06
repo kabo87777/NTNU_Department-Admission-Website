@@ -4,9 +4,14 @@ import type {
 	RecruitmentAdminApplicantListResponse,
 	RecruitmentAdminApplicantsListResponse,
 	RecruitmentAdminChangePassResponse,
+	RecruitmentAdminCreateReviewerRequest,
 	RecruitmentAdminProgramListResponse,
+	RecruitmentAdminReviewersListResponse,
+	RecruitmentAdminApplicantListWithDetailResponse,
+	RecruitmentAdminSingleApplicantWithDetailResponse,
 } from "./types";
 import type { APIGenericResponse } from "@/api/types";
+import { Ref } from "vue";
 
 export class RecruitmentAdminAPI extends GenericAPI {
 	constructor(auth: AuthStore) {
@@ -108,5 +113,96 @@ export class RecruitmentAdminAPI extends GenericAPI {
 			throw new Error("Failed to send DEL request at deleteApplicant");
 
 		return response;
+	}
+
+	async getReviewerList(): Promise<RecruitmentAdminReviewersListResponse[]> {
+		const response: APIGenericResponse = await this.instance.get(
+			"/recruitment/admin/reviewer"
+		);
+		if (response.error === true || typeof response.data === "undefined")
+			throw new Error("Failed to GET reviewer list");
+
+		return response.data.reviewers;
+	}
+
+	async createReviewerAccount(data: RecruitmentAdminCreateReviewerRequest) {
+		const response: APIGenericResponse = await this.instance.post(
+			"/recruitment/admin/reviewer",
+			data
+		);
+
+		if (response.error === true) throw new Error(`${response.message}`);
+
+		return;
+	}
+
+	async changeReviewerAccountState(
+		id: number,
+		action: "activate" | "disable"
+	) {
+		const body = {
+			isDisabled: action === "disable" ? true : false,
+		};
+
+		const response: APIGenericResponse = await this.instance.patch(
+			`/recruitment/admin/reviewer/${id}/state`,
+			body
+		);
+
+		if (response.error === true) throw new Error(`${response.message}`);
+
+		return;
+	}
+
+	async getApplicantListWithDetail(
+		programID: number
+	): Promise<RecruitmentAdminApplicantListWithDetailResponse[]> {
+		const data: APIGenericResponse = await this.instance.get(
+			`/recruitment/admin/program/${programID}/applicant`
+		);
+
+		if (data.error === true || typeof data.data.applicants === "undefined")
+			throw new Error("Failed to fetch applicant upload list");
+
+		return data.data.applicants;
+	}
+
+	async getSingleApplicantWithDetail(
+		programID: number,
+		applicantID: Ref<number>
+	): Promise<RecruitmentAdminSingleApplicantWithDetailResponse> {
+		const data: APIGenericResponse = await this.instance.get(
+			`/recruitment/admin/program/${programID}/applicant/${applicantID.value}/reviewstate`
+		);
+
+		if (data.error === true || typeof data.data === "undefined")
+			throw new Error("Failed to fetch applicant reviewstate");
+
+		return data.data;
+	}
+
+	async updateSingleApplicantWithDetail(
+		programID: number,
+		applicantID: number,
+		newStage: any
+	): Promise<any> {
+		const data: APIGenericResponse = await this.instance.patch(
+			`/recruitment/admin/program/${programID}/applicant/${applicantID}`,
+			newStage
+		);
+
+		if (data.error === true || typeof data.data === "undefined")
+			throw new Error("Failed to update applicant reviewstate");
+
+		if (data.error !== false) {
+			return {
+				success: false,
+				message: data.message.full_messages,
+			};
+		}
+		return {
+			success: true,
+			message: data.message,
+		};
 	}
 }

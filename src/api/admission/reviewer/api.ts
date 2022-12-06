@@ -7,8 +7,11 @@ import type {
 	AdmissionReviewerProgramGradingResponse,
 	AdmissionReviewerApplicantListResponse,
 	AdmissionReviewerGenericResponse,
+	AdmissionReviewerApplicantFileListResponse,
 } from "./types";
 import type { APIGenericResponse } from "@/api/types";
+import { Blob } from "buffer";
+import { Ref } from "vue";
 
 export class AdmissionReviewerAPI extends GenericAPI {
 	constructor(auth: AuthStore) {
@@ -119,5 +122,37 @@ export class AdmissionReviewerAPI extends GenericAPI {
 
 		if (response.error === true)
 			throw new Error("Failed to submit DocsGrade");
+	}
+
+	async getApplicantFileList(
+		applicantID: string | string[]
+	): Promise<AdmissionReviewerApplicantFileListResponse[]> {
+		const data: APIGenericResponse = await this.instance.get(
+			`/admission/reviewer/applicant/${applicantID}/file`
+		);
+
+		if (data.error === true || typeof data.data === "undefined")
+			throw new Error("Failed to fetch applicant file list");
+
+		return data.data;
+	}
+
+	///FIX while backend is ready
+	async getApplicantSingleFile(
+		applicantID: string | string[],
+		fileID: number
+	): Promise<string> {
+		return await this.instance.get(
+			`/admission/reviewer/applicant/${applicantID}/file/${fileID}/getfile`
+		);
+	}
+
+	async submitOralGrade(programID: number): Promise<any> {
+		const response: APIGenericResponse = await this.instance.patch(
+			`/admission/reviewer/program/${programID}/confirm_oral`
+		);
+
+		if (response.error === true)
+			throw new Error("Failed to submit OralGrade");
 	}
 }

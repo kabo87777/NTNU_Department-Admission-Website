@@ -95,15 +95,14 @@ export interface AdmAdminReviewerRelatedProgramResponse {
 	application_end_date: string;
 	review_start_date: string;
 	review_end_date: string;
-	require_file: string[];
 	stage: string;
 	created_at: string;
 	updated_at: string;
-	applicant_required_info: null;
-	applicant_required_file: null;
-	reviewer_required_info: null;
-	reviewer_required_file: null;
-	relation?: AdmAdminReviewerRelatedProgramResponse[];
+	applicant_required_info: string[];
+	applicant_required_file: string[];
+	reviewer_required_info: string[];
+	reviewer_required_file: string[];
+	detail: null | unknown;
 }
 export interface AdmissionAdminApplicantsListResponse {
 	// TODO: Wait backend to give exact data type
@@ -257,4 +256,5 @@ export interface AdmissionAdminCreateReviewerRequest {
 	password: string;
 	email: string;
 	name: string;
+	redirect_url: string;
 }
