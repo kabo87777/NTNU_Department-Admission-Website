@@ -21,13 +21,37 @@ export default defineConfig({
 		extend: {
 			colors: {
 				mPrimary: "#93282C",
-				jPrimary: "#003A5C",
+				jPrimary: "#2459A4",
 				aPrimary: "#8A7B27",
 				// secondary: '',
-				success: "#92E826",
-				warning: "#F2C831",
-				danger: "#F23740",
-				info: "#9F6AD4",
+				success: {
+					DEFAULT: "#92E826",
+					50: "#F3FFE4",
+					100: "#E3FFBF",
+					500: "#92E826",
+					700: "#62AE01",
+				},
+				warning: {
+					DEFAULT: "#F2C831",
+					50: "#FFF9E4",
+					100: "#FFF1C0",
+					500: "#F2C831",
+					700: "#BE9505",
+				},
+				danger: {
+					DEFAULT: "#F23740",
+					50: "#FFEBEC",
+					100: "#FFBEC1",
+					500: "#F23740",
+					700: "#BB0F17",
+				},
+				info: {
+					DEFAULT: "#9F6AD4",
+					50: "#F8F1FF",
+					100: "#EBD7FF",
+					500: "#9F6AD4",
+					700: "#6B23B4",
+				},
 				nRed: {
 					DEFAULT: "#93282C",
 					50: "#FFF5F3",
@@ -42,7 +66,7 @@ export default defineConfig({
 					900: "#332426",
 				},
 				nBlue: {
-					DEFAULT: "#003A5C",
+					DEFAULT: "#2459A4",
 					50: "#F4F7FF",
 					100: "#DFE7FD",
 					200: "#A5B9EC",
@@ -68,6 +92,7 @@ export default defineConfig({
 					900: "#363229",
 				},
 				nGrey: {
+					DEFAULT: "#757A80",
 					50: "#F5F6F6",
 					100: "#ECEDED",
 					200: "#D9DADA",
