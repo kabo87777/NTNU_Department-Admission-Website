@@ -92,3 +92,62 @@ export interface RecruitmentAdminApplicantsListResponse {
 	created_at: string;
 	updated_at: string;
 }
+
+export interface RecruitmentAdminReviewersListResponse {
+	id: number;
+	provider: string;
+	uid: string;
+	allow_password_change: boolean;
+	isInit: boolean | null;
+	lang: string | null;
+	name: string;
+	nickname: string | null;
+	image: string | null;
+	email: string;
+	created_at: string;
+	updated_at: string;
+	isDisabled: boolean;
+}
+
+export interface RecruitmentAdminCreateReviewerRequest {
+	username: string;
+	password: string;
+	email: string;
+	name: string;
+	redirect_url: string;
+}
+
+export interface RecruitmentAdminApplicantListWithDetailResponse {
+	id: number;
+	provider: string;
+	uid: string;
+	allow_password_change: boolean;
+	isInit: boolean;
+	lang: string;
+	name: string;
+	nickname: string;
+	image: string;
+	email: string;
+	created_at: string;
+	updated_at: string;
+	isForeigner: boolean;
+	isRecommend: number;
+	allReviewerNum: number;
+	revieweResult: string;
+	interviewDate: string;
+}
+
+export interface RecruitmentAdminSingleReviewerRecommendResponse {
+	name: string;
+	isRecommend: boolean;
+	comment: string;
+}
+export interface RecruitmentAdminSingleApplicantWithDetailResponse {
+	r_applicant_id: number;
+	name: string;
+	reviewers: RecruitmentAdminSingleReviewerRecommendResponse[];
+	isRecommendNum: number;
+	allReviewerNum: number;
+	revieweResult: string;
+	interviewDate: string;
+}

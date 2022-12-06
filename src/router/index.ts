@@ -17,6 +17,9 @@ import AdmissionManagerSignin from "@/views/admission/manager/ManagerSignin.vue"
 import AdmissionManagerForgetPassword from "@/views/admission/manager/ForgetPassword.vue";
 import AdmissionManagerProjectSettings from "@/views/admission/manager/UploadFileSetting.vue";
 import AdmissionReviewScoreField from "@/views/admission/manager/ReviewScoreField.vue";
+import AdmissionManagerForgetPasswordEmailSent from "@/views/admission/manager/ForgetPwdEmailSent.vue";
+import AdmissionManagerResetPassword from "@/views/admission/manager/ResetPwd.vue";
+
 // Applicant section
 import AdmissionApplicantMainContainer from "@/views/admission/applicant/MainContainer.vue";
 import AdmissionApplicantSignin from "@/views/admission/applicant/login/ApplicantSignin.vue";
@@ -46,7 +49,9 @@ import oralReview from "@/views/admission/reviewer/oralReview.vue";
 import singleApplicationReview from "@/views/admission/reviewer/singleApplicationReview.vue";
 import singleOralReview from "@/views/admission/reviewer/singleOralReview.vue";
 import AdmissionReviewerUserSetting from "@/views/admission/reviewer/userSetting.vue";
-import AdmissionReviewerForgetpassword from "@/views/admission/reviewer/ResetPassword.vue";
+import AdmissionReviewerResetpassword from "@/views/admission/reviewer/ResetPassword.vue";
+import AdmissionReviewerForgetPassword from "@/views/admission/reviewer/ForgetPwd.vue";
+import AdmissionReviewerForgetPasswordEmailSent from "@/views/admission/reviewer/ForgetPwdEmailSent.vue";
 
 // Recruitment Applicant section
 import recruitmentApplicantSignin from "@/views/recruitment/applicant/login/signin.vue";
@@ -130,9 +135,18 @@ const routes: Array<RouteRecordRaw> = [
 			{
 				path: "/admission/reviewer/forgetpassword",
 				name: "AdmissionReviewerForgetpassword",
-				component: AdmissionReviewerForgetpassword,
+				component: AdmissionReviewerForgetPassword,
 			},
-
+			{
+				path: "/admission/reviewer/password/reset",
+				name: "AdmissionReviewerResetPassword",
+				component: AdmissionReviewerResetpassword,
+			},
+			{
+				path: "/admission/reviewer/forgetpassword/emailSent",
+				name: "AdmissionReviewerForgetPasswordEmailSent",
+				component: AdmissionReviewerForgetPasswordEmailSent,
+			},
 			{
 				path: "admission/reviewer",
 				name: "AdmissionReviewerMainContainer",
@@ -179,14 +193,14 @@ const routes: Array<RouteRecordRaw> = [
 			},
 			// Admission - manager reset password
 			{
-				path: "admission/manager/resetpassword",
-				name: "resetpassword",
-				component: resetpassword,
+				path: "admission/manager/password/reset",
+				name: "AdmissionManagerResetPassword",
+				component: AdmissionManagerResetPassword,
 			},
 			{
-				path: "admission/manager/resetpassword/emailsent",
-				name: "ResetPasswordEmailSent",
-				component: ResetPasswordEmailSent,
+				path: "admission/manager/forgetpassword/emailSent",
+				name: "AdmissionManagerForgetPasswordEmailSent",
+				component: AdmissionManagerForgetPasswordEmailSent,
 			},
 			// {
 			// 	path: "firstloginchangepassword",
@@ -195,7 +209,7 @@ const routes: Array<RouteRecordRaw> = [
 			// },
 			// Admission - applicant reset password
 			{
-				path: "admission/applicant/resetPassword",
+				path: "admission/applicant/password/reset",
 				name: "AdmissionApplicantResetPassword",
 				component: AdmissionApplicantResetPassword,
 			},
@@ -424,6 +438,11 @@ const routes: Array<RouteRecordRaw> = [
 						path: "projectSetting",
 						name: "recruitmentProjectSetting",
 						component: recruitmentProjectSetting,
+					},
+					{
+						path: "reviewerSettings",
+						name: "recruitmentManagerManageReviewers",
+						component: R.ListReviewer,
 					},
 					{
 						path: "applicationAccountSetting",
