@@ -4,6 +4,8 @@ import type {
 	universalAuthData,
 	universalAuthSendResetPwdEmailData,
 	universalAuthSendPostEmailRegister,
+	universalAuthResetPwdData,
+	AdmissionApplicantAuthSendResetPwdEmailData,
 } from "@/api/universalAuth";
 
 import axios from "axios";
@@ -12,6 +14,8 @@ import {
 	doUniversalAuthSignOut,
 	doUniversalAuthSendForgotPwdEmail,
 	doUniversalAuthSendPostEmailRegister,
+	doUniversalAuthResetPassword,
+	doAdmisssionApplicantAuthSendForgotPwdEmail,
 } from "./universalAuth";
 import { InvalidSessionError } from "./error";
 
@@ -77,8 +81,34 @@ export class GenericAPI {
 		return await doUniversalAuthSendForgotPwdEmail(this.auth, data);
 	}
 
+	// Send Forgot Password (only for Admission Applicant)
+	async sendAdmissionApplicantForgotPasswordEmail(
+		data: AdmissionApplicantAuthSendResetPwdEmailData
+	) {
+		return await doAdmisssionApplicantAuthSendForgotPwdEmail(
+			this.auth,
+			data
+		);
+	}
+
 	//  Register
 	async sendPostEmailRegister(data: universalAuthSendPostEmailRegister) {
 		return await doUniversalAuthSendPostEmailRegister(this.auth, data);
+	}
+
+	// Reset Password
+	async requestResetPasswordSession(
+		data: universalAuthResetPwdData,
+		access_token: string,
+		client: string,
+		uid: string
+	) {
+		return await doUniversalAuthResetPassword(
+			this.auth,
+			data,
+			access_token,
+			client,
+			uid
+		);
 	}
 }

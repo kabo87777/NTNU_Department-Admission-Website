@@ -7,8 +7,11 @@ import type {
 	RecruitmentAdminCreateReviewerRequest,
 	RecruitmentAdminProgramListResponse,
 	RecruitmentAdminReviewersListResponse,
+	RecruitmentAdminApplicantListWithDetailResponse,
+	RecruitmentAdminSingleApplicantWithDetailResponse,
 } from "./types";
 import type { APIGenericResponse } from "@/api/types";
+import { Ref } from "vue";
 
 export class RecruitmentAdminAPI extends GenericAPI {
 	constructor(auth: AuthStore) {
@@ -149,5 +152,57 @@ export class RecruitmentAdminAPI extends GenericAPI {
 		if (response.error === true) throw new Error(`${response.message}`);
 
 		return;
+	}
+
+	async getApplicantListWithDetail(
+		programID: number
+	): Promise<RecruitmentAdminApplicantListWithDetailResponse[]> {
+		const data: APIGenericResponse = await this.instance.get(
+			`/recruitment/admin/program/${programID}/applicant`
+		);
+
+		if (data.error === true || typeof data.data.applicants === "undefined")
+			throw new Error("Failed to fetch applicant upload list");
+
+		return data.data.applicants;
+	}
+
+	async getSingleApplicantWithDetail(
+		programID: number,
+		applicantID: Ref<number>
+	): Promise<RecruitmentAdminSingleApplicantWithDetailResponse> {
+		const data: APIGenericResponse = await this.instance.get(
+			`/recruitment/admin/program/${programID}/applicant/${applicantID.value}/reviewstate`
+		);
+
+		if (data.error === true || typeof data.data === "undefined")
+			throw new Error("Failed to fetch applicant reviewstate");
+
+		return data.data;
+	}
+
+	async updateSingleApplicantWithDetail(
+		programID: number,
+		applicantID: number,
+		newStage: any
+	): Promise<any> {
+		const data: APIGenericResponse = await this.instance.patch(
+			`/recruitment/admin/program/${programID}/applicant/${applicantID}`,
+			newStage
+		);
+
+		if (data.error === true || typeof data.data === "undefined")
+			throw new Error("Failed to update applicant reviewstate");
+
+		if (data.error !== false) {
+			return {
+				success: false,
+				message: data.message.full_messages,
+			};
+		}
+		return {
+			success: true,
+			message: data.message,
+		};
 	}
 }
