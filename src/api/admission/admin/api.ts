@@ -14,6 +14,7 @@ import type {
 	AdmissionAdminSingleDocsGradeResponse,
 	AdmissionAdminSingleOralGradeResponse,
 	AdmissionAdminCreateReviewerRequest,
+	AdmAdminGetApplicantMoredocResponses,
 } from "./types";
 import type { APIGenericResponse } from "@/api/types";
 import { GenericAPI } from "@/api/api";
@@ -92,6 +93,41 @@ export class AdmissionAdminAPI extends GenericAPI {
 			throw new Error("Failed to fetch applicant attachment");
 
 		return data.data;
+	}
+
+	async getApplicantMoreDocRes(
+		userId: number
+	): Promise<AdmAdminGetApplicantMoredocResponses> {
+		const data: APIGenericResponse = await this.instance.get(
+			`admission/admin/applicant/${userId}/moredoc`
+		);
+
+		if (data.error === true)
+			throw new Error("Failed to fetch applicant more doc state");
+
+		return data.data;
+	}
+
+	async updateApplicantMoreDocState(
+		userId: number,
+		body: object
+	): Promise<AdmissionAdminGenericResponse> {
+		const data: APIGenericResponse = await this.instance.patch(
+			`admission/admin/applicant/${userId}/moredoc`,
+			body
+		);
+
+		if (data.error !== false) {
+			return {
+				success: false,
+				message: data.message,
+			};
+		}
+
+		return {
+			success: true,
+			message: data.message,
+		};
 	}
 
 	async getScoreField(

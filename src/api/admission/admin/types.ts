@@ -20,6 +20,11 @@ export interface AdmissionManagerAuthResponse {
 	updated_at: string;
 }
 
+export interface AdmissionAdminGenericStatusResponse {
+	success?: boolean;
+	message?: string | [];
+}
+
 export interface AdmissionAdminProgramListResponse {
 	id: number;
 	category: string;
@@ -199,6 +204,14 @@ export interface AdmAdminGetApplicantAttachmentDataDetail {
 	updated_at?: string;
 	order: number;
 	state: number;
+}
+
+export interface AdmAdminGetApplicantMoredocResponses {
+	isMoredoc: boolean;
+	moredoc_start_date: Date;
+	moredoc_end_date: Date;
+	moredoc_category: string;
+	moredoc_name: string;
 }
 
 export interface AdmAdminEditApplicantRequest {

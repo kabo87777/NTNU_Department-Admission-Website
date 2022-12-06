@@ -1,7 +1,7 @@
 <template>
-	<div class="mt-16px pl-8px pr-8px">
+	<div>
 		<!-- TITLE -->
-		<div class="mt-32px text-24px font-bold">{{ $t("就學經歷") }}</div>
+		<div class="mt-24px text-24px font-bold">{{ $t("就學經歷") }}</div>
 
 		<!-- SCHOOL EXPERIENCE -->
 		<div
@@ -17,6 +17,9 @@
 				:order="index + 1"
 				:showActionButtons="false"
 			/>
+		</div>
+		<div v-show="examCertificateList.length === 0" class="emptyContainer">
+			{{ $t("暫無資訊") }}
 		</div>
 
 		<!-- DIVIDER -->
@@ -68,6 +71,9 @@
 				:order="index + 1"
 				:showActionButtons="false"
 			/>
+		</div>
+		<div v-show="otherList.length === 0" class="emptyContainer">
+			{{ $t("暫無資訊") }}
 		</div>
 
 		<!-- DIVIDER -->

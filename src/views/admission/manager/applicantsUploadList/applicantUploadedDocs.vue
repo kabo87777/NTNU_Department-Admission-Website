@@ -93,10 +93,6 @@ const { data } = useQuery(
 		},
 	}
 );
-
-onMounted(() => {
-	console.log(route.params);
-});
 </script>
 
 <style setup lang="css">

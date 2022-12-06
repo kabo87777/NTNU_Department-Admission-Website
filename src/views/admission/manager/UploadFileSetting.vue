@@ -1,6 +1,6 @@
 <template>
-	<div class="pt-62px pl-128px pr-128px">
-		<div class="font-medium text-32px">{{ trans.uploadField.value }}</div>
+	<div>
+		<div class="font-bold text-32px">{{ trans.uploadField.value }}</div>
 		<div class="bigRedDivider"></div>
 		<div class="p-fluid">
 			<SelectButton
