@@ -1,6 +1,6 @@
 <template>
 	<div v-if="load"></div>
-	<div class="ml-128px mr-128px mt-62px" v-else>
+	<div v-else>
 		<div class="flex">
 			<router-link
 				to="/admission/reviewer/applicationReview"
@@ -29,12 +29,39 @@
 				{{ name }}
 			</div>
 		</div>
-		<div class="bigBrownDivider"></div>
-		<div class="mt-10px h-670px">
-			<PDFView :pdfUrl="pdf" class="!h650px" />
+		<div class="bigBlueDivider"></div>
+		<div class="p-fluid !mt-5px">
+			<SelectButton
+				v-model="data"
+				:options="datas"
+				aria-labelledby="single"
+			/>
+		</div>
+		<div class="mt-10px !h-1830px !ml-40px">
+			<vue-pdf-embed
+				:source="'data:application/pdf;base64,' + pdfData"
+				class="!h-1600px"
+				:page="page"
+			/>
+			<Button
+				label="上一頁"
+				icon="pi pi-chevron-left"
+				iconPos="left"
+				@click="page--"
+				:disabled="page === 1"
+				class="!mt-120px"
+			/>
+			<Button
+				label="下一頁"
+				icon="pi pi-chevron-right"
+				iconPos="right"
+				@click="page++"
+				:disabled="page === 4"
+				class="!ml-1030px"
+			/>
 		</div>
 		<div class="bigBlueDivider"></div>
-		<div class="flex mt-16px">
+		<div class="flex mt-10px">
 			<div class="text-xl mt-5px">
 				{{ score1Title }} ({{ score1Proportion }}%)
 			</div>
@@ -60,7 +87,7 @@
 				class="ml-34px !w-132px !h-44px"
 			/>
 		</div>
-		<div class="flex mt-16px" v-if="programGrading?.docs_grade_name_4">
+		<div class="flex mt-10px" v-if="programGrading?.docs_grade_name_4">
 			<div class="text-xl mt-5px">
 				{{ score4Title }} ({{ score4Proportion }}%)
 			</div>
@@ -82,7 +109,17 @@
 				v-if="programGrading?.docs_grade_name_5"
 			/>
 		</div>
-		<div class="flex mt-24px">
+		<div class="flex mt-10px">
+			<div class="text-xl mt-5px">
+				{{ $t("備註：") }}
+			</div>
+			<InputText
+				type="text"
+				v-model="remark"
+				class="!w-683px !h-44px ml-5px"
+			/>
+		</div>
+		<div class="flex mt-10px">
 			<Checkbox
 				inputId="binary"
 				v-model="accessChecked"
@@ -125,8 +162,6 @@ import InputNumber from "primevue/inputnumber";
 import Checkbox from "primevue/checkbox";
 import InputText from "primevue/inputtext";
 import { useI18n } from "vue-i18n";
-import PDFView from "@/components/pdfPreview.vue";
-import jsPdf from "./test.pdf";
 import { useAdmissionReviewerAuthStore } from "@/stores/universalAuth";
 import { AdmissionReviewerAPI } from "@/api/admission/reviewer/api";
 import { useMutation, useQuery } from "@tanstack/vue-query";
@@ -134,7 +169,7 @@ import { InvalidSessionError } from "@/api/error";
 import { useGlobalStore } from "@/stores/AdmissionReviewerStore";
 import { useToast } from "primevue/usetoast";
 import SelectButton from "primevue/selectbutton";
-import axios from "axios";
+import VuePdfEmbed from "vue-pdf-embed";
 
 const route = useRoute();
 const { t } = useI18n();
@@ -146,6 +181,7 @@ const api = new AdmissionReviewerAPI(adminAuth);
 
 // FIXME: logic may refactor
 
+const page = ref(1);
 const ID = computed(() => route.params.id);
 const newApplicantGrade = useMutation(async (newProgramData: any) => {
 	try {
@@ -174,6 +210,7 @@ const inputScore_3 = ref(0);
 const inputScore_4 = ref(0);
 const inputScore_5 = ref(0);
 const name = ref("");
+const remark = ref("");
 const total_score = computed(() => {
 	return (
 		(inputScore_1!.value! * score1Proportion.value) / 100 +
@@ -184,7 +221,7 @@ const total_score = computed(() => {
 	).toFixed(2);
 });
 const data = ref("基本資料");
-const datas = ref(["基本資料", "PDF"]);
+const datas = ref(["基本資料", "檢附資料", "推薦信", "整合pdf"]);
 
 const {
 	isLoading,
@@ -199,7 +236,7 @@ const {
 		} catch (e: any) {
 			if (e instanceof InvalidSessionError) {
 				// FIXME: show session expiry notification??
-				// Why are we even here in the first place?
+				// Why are we even in the first place?
 				// MainContainer should have checked already.
 				console.error(
 					"Session has already expired while querying programList"
@@ -291,26 +328,15 @@ const { data: programGrading } = useQuery(
 	}
 );
 
-const pdf = ref();
 const config = {
 	headers: { Authorization: adminAuth.credentials?.authorization },
 };
-const aFile = axios
-	.get(
-		"http://127.0.0.1:3000/api/v1/admission/reviewer/applicant/1/file/1/getfile",
-		config
-	)
-	.then((response) => {
-		const file = new Blob([response.data], {
-			type: "application/pdf",
-		});
-		pdf.value = URL.createObjectURL(file);
-	});
-const { data: applicantFile } = useQuery(
-	["applicantFile"],
+const pdfData = ref("JVBERi0xLjMKJcTl8uXrp/");
+const { data: pdfBase64 } = useQuery(
+	["pdfBase64"],
 	async () => {
 		try {
-			return await api.getApplicantSingleFile();
+			return await api.getApplicantSingleFile("1", 1);
 		} catch (e: any) {
 			if (e instanceof InvalidSessionError) {
 				// FIXME: show session expiry notification??
@@ -326,11 +352,7 @@ const { data: applicantFile } = useQuery(
 	},
 	{
 		onSuccess: (data) => {
-			const blob = new Blob([data]);
-			const objectUrl = URL.createObjectURL(blob);
-			// pdf.value = objectUrl;
-			// console.log(pdf.value)
-			// console.log(adminAuth.credentials?.authorization)
+			pdfData.value = data!;
 		},
 	}
 );

@@ -6,7 +6,7 @@
 		<div class="bigRedDivider"></div>
 		<div class="p-fluid">
 			<SelectButton
-				class="mt-20px h-45px !w-1280px"
+				class="mt-10px h-45px"
 				v-model="currentTab"
 				:options="tabOptions"
 				aria-labelledby="single"
@@ -40,6 +40,12 @@
 					</template>
 				</Column>
 				<Column field="application_stage" :header="phaseResult">
+					<template #body="slotProps">
+						<i v-if="slotProps.data.application_stage === null">{{
+							$t("待審核")
+						}}</i>
+						<p v-else>{{ slotProps.data.application_stage }}</p>
+					</template>
 				</Column>
 				<Column :exportable="false" style="min-width: 8rem">
 					<template #body="slotProps">
@@ -141,13 +147,13 @@
 							v-if="disable"
 							v-model="p1_result"
 							:options="p1_result_option"
+							disabled
 							class="w-228px h-44px mt-8px"
 						/>
 						<Dropdown
 							v-else
 							v-model="p1_result"
 							:options="p1_result_option"
-							disabled
 							class="w-228px h-44px mt-8px"
 						/>
 					</div>
@@ -507,6 +513,31 @@
 				</Button>
 			</div>
 		</div>
+		<div v-if="currentTab === translation.iEnrollList">
+			<DataTable
+				:value="iEnrollList"
+				responsiveLayout="scroll"
+				dataKey="id"
+				:scrollable="true"
+				scrollHeight="700px"
+				class="p-datatable-lg !h-700px"
+			>
+				<Column field="id" :header="ID"></Column>
+				<Column field="name" :header="applicantName"></Column>
+			</DataTable>
+			<div class="bigRedDivider !mt-30px"></div>
+			<Button
+				class="w-140px h-44px !ml-550px p-button-outlined p-button-help !mt-20px"
+			>
+				<img
+					alt="logo"
+					src="/assets/gradeDataList/Paper.png"
+					style="width: 1.5rem"
+					class="fill-green-500"
+				/>
+				<span class="tracking-1px">{{ $t("報表列印") }}</span>
+			</Button>
+		</div>
 		<div v-if="currentTab === translation.admissionList">
 			<DataTable
 				:value="admittedList"
@@ -656,7 +687,6 @@ import { useGlobalStore } from "@/stores/globalStore";
 import { useToast } from "primevue/usetoast";
 import { AdmissionAdminReviewerGradeResponse } from "@/api/admission/admin/types";
 import { AdmissionAdminOralGradeListResponse } from "@/api/admission/admin/types";
-// import singleApplicantGradeVue from "@/components/singleApplicantGrade.vue";
 
 const adminAuth = useAdmissionAdminAuthStore();
 const api = new AdmissionAdminAPI(adminAuth);
@@ -678,6 +708,8 @@ const reserveOrderList = ref<number[]>();
 const oralGradeList = ref<AdmissionAdminOralGradeListResponse[]>();
 const admittedList = ref();
 const reserveList = ref();
+const iEnrollList = ref();
+const applicantID = ref();
 const applicantDocsGradeList = useQuery(
 	["admissionAdminDocsGradeList"],
 	async () => {
@@ -698,9 +730,10 @@ const applicantDocsGradeList = useQuery(
 	},
 	{
 		onSuccess: (data) => {
-			docsStage1Count.value = data!.filter(
-				(item) => item.application_stage === null
-			).length;
+			docsStage1Count.value =
+				data!.filter((item) => item.application_stage === null).length +
+				data!.filter((item) => item.application_stage === "待審核")
+					.length;
 			docsStage2Count.value = data!.filter(
 				(item) => item.application_stage === "進赴二階"
 			).length;
@@ -713,6 +746,10 @@ const applicantDocsGradeList = useQuery(
 			docsStage5Count.value = data!.filter(
 				(item) => item.application_stage === "未送審"
 			).length;
+			iEnrollList.value = data!.filter(
+				(item) => item.application_stage === "逕取"
+			);
+			applicantID.value = data![0].id;
 		},
 	}
 );
@@ -737,9 +774,9 @@ const applicantOralGradeList = useQuery(
 	{
 		onSuccess: (data) => {
 			oralGradeList.value = data;
-			oralStage1Count.value = data!.filter(
-				(item) => item.enroll_stage === null
-			).length;
+			oralStage1Count.value =
+				data!.filter((item) => item.enroll_stage === null).length +
+				data!.filter((item) => item.enroll_stage === "待審核").length;
 			oralStage2Count.value = data!.filter(
 				(item) => item.enroll_stage === "正取"
 			).length;
@@ -776,6 +813,7 @@ const translation = {
 	phase2: t("第二階段 (口試審查)"),
 	admissionList: t("正取名單"),
 	reserveList: t("備取名單"),
+	iEnrollList: t("逕取名單"),
 	pending: t("待審核"),
 	notPass: t("不通過"),
 	passtophase2: t("進赴二階"),
@@ -792,6 +830,7 @@ const currentTab = ref(translation.phase1);
 const tabOptions = ref([
 	translation.phase1,
 	translation.phase2,
+	translation.iEnrollList,
 	translation.admissionList,
 	translation.reserveList,
 ]);
@@ -821,7 +860,7 @@ const disable = computed(() => {
 	return p1_result.value === "未送審";
 });
 const disable1 = computed(() => {
-	return p1_result.value === translation.passtophase2 || !disable.value;
+	return p1_result.value === translation.passtophase2;
 });
 const disable2 = computed(() => {
 	return dialogCurrentTab.value === translation.phase1;
@@ -853,7 +892,7 @@ const onRowReorder2 = (event: any) => {
 const onRowReorder3 = (event: any) => {
 	oralGradeList.value = event.value;
 };
-const applicantID = ref(1);
+
 const docsReviewerCount = ref(0);
 const oralReviewerCount = ref(0);
 const docsTotalGrade = ref(0);
@@ -864,7 +903,10 @@ const applicantDocsGrade = useQuery(
 	["admissionAdminDocsGrade", applicantID],
 	async () => {
 		try {
-			return await api.getSingleDocsGrade(applicantID);
+			if (applicantID.value !== undefined) {
+				return await api.getSingleDocsGrade(applicantID);
+			}
+			return null;
 		} catch (e: any) {
 			if (e instanceof InvalidSessionError) {
 				// FIXME: show session expiry notification??
@@ -897,7 +939,10 @@ const applicantOralGrade = useQuery(
 	["admissionAdminOralGrade", applicantID],
 	async () => {
 		try {
-			return await api.getSingleOralGrade(applicantID);
+			if (applicantID.value !== undefined) {
+				return await api.getSingleOralGrade(applicantID);
+			}
+			return null;
 		} catch (e: any) {
 			if (e instanceof InvalidSessionError) {
 				// FIXME: show session expiry notification??

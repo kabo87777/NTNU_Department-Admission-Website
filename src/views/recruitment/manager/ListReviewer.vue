@@ -20,9 +20,16 @@
 			<template #header>{{ $t("電子信箱") }}</template>
 		</Column>
 
-		<!-- <Column field="roles">
+		<Column field="roles">
 			<template #header>{{ $t("身份組") }}</template>
-		</Column> -->
+			<!-- <template #body="slotProps">
+        <Tag
+          v-for="role in truncateRoles(slotProps.data)"
+          :key="role"
+          >{{ role }}
+          </Tag>
+      </template> -->
+		</Column>
 
 		<Column>
 			<template #header>{{ $t("動作") }}</template>
@@ -35,7 +42,7 @@
 
 					<!-- Disable user button -->
 					<Button
-						v-if="slotProp.data.isDisabled === false"
+						v-if="toRaw(slotProp.data).isDisabled === false"
 						icon="pi pi-ban"
 						class="p-button-outlined p-button-warning"
 						@click="confirmDisableReviewer(slotProp.data)"
@@ -49,15 +56,6 @@
 						class="p-button-outlined"
 						@click="confirmActivateReviewer(slotProp.data)"
 						v-tooltip="$t('啟用帳號')"
-					/>
-
-					<!-- Assign to program -->
-					<Button
-						icon="pi pi-user-plus"
-						class="p-button-outlined"
-						@click="assignProgramModal.open(slotProp.data)"
-						v-tooltip="$t('指派至專案')"
-						:disabled="slotProp.data.isDisabled"
 					/>
 				</div>
 			</template>
@@ -164,9 +162,14 @@
 					}}</label>
 					<InputText
 						type="email"
-						class="w-full"
+						:class="`w-full ${addReviewerModal.getInputEmailClass()}`"
 						v-model:model-value="addReviewerModal.data.email"
 					/>
+					<small
+						v-if="addReviewerModal.invalidEmailFlag()"
+						class="p-error"
+						>{{ $t("無效的電子信箱") }}</small
+					>
 				</div>
 
 				<div>
@@ -205,29 +208,7 @@
 		</template>
 	</Dialog>
 
-	<Dialog :modal="true" v-model:visible="assignProgramModal.visible">
-		<template #header>
-			<h3 class="font-black text-lg">{{ $t("指派審查者至專案") }}</h3>
-		</template>
-
-		<template #default>
-			<div class="font-bold">{{ $t("選擇的專案") }}</div>
-			<MultiSelect
-				:placeholder="$t('選擇專案')"
-				:show-toggle-all="false"
-				v-model:model-value="assignProgramModal.data.selected"
-				:options="assignProgramModal.data.programs"
-				option-label="fullname"
-				:loading="isLoadingRelatedPrograms || isLoadingAllPrograms"
-				class="w-md"
-			/>
-		</template>
-
-		<template #footer>
-			<Button :label="$t('完成')" @click="assignProgramModal.submit()" />
-		</template>
-	</Dialog>
-	<ConfirmDialog />
+	<ConfirmDialog> </ConfirmDialog>
 </template>
 
 <script setup lang="ts">
@@ -246,37 +227,72 @@ import Checkbox from "primevue/checkbox";
 import { useMutation, useQuery } from "@tanstack/vue-query";
 import { InvalidSessionError } from "@/api/error";
 import { useRouter } from "vue-router";
-import {
-	useAdmissionAdminAuthStore,
-	useAdmissionReviewerAuthStore,
-} from "@/stores/universalAuth";
-import { AdmissionAdminAPI } from "@/api/admission/admin/api";
+import { useRecruitmentAdminAuthStore } from "@/stores/universalAuth";
+import { RecruitmentAdminAPI } from "@/api/recruitment/admin/api";
 import { useGlobalStore } from "@/stores/globalStore";
-import {
-	AdmAdminReviewerListResponse,
-	AdmAdminReviewerRelatedProgramResponse,
-} from "@/api/admission/admin/types";
+import { RecruitmentAdminReviewersListResponse } from "@/api/recruitment/admin/types";
 import Password from "primevue/password";
+import ConfirmDialog from "primevue/confirmdialog";
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
-import ConfirmDialog from "primevue/confirmdialog";
-import MultiSelect from "primevue/multiselect";
+import Tooltip from "primevue/tooltip";
+
 const { t: $t } = useI18n();
 
 const router = useRouter();
-const adminAuth = useAdmissionAdminAuthStore();
+const adminAuth = useRecruitmentAdminAuthStore();
 
 const store = useGlobalStore();
 store.$subscribe((mutation, state) => {
 	// Refetch table when selecting other program
-	console.log("Refetch reviewer list");
-	refetch();
+	// console.log("Refetch reviewer list");
+	// refetch();
 });
-const api = new AdmissionAdminAPI(adminAuth);
-const tableData = ref<AdmAdminReviewerListResponse[]>(
-	[] as AdmAdminReviewerListResponse[]
+const api = new RecruitmentAdminAPI(adminAuth);
+const tableData = ref<RecruitmentAdminReviewersListResponse[]>(
+	[] as RecruitmentAdminReviewersListResponse[]
 );
 
+const reviewerID = ref(1);
+// const programQuery = useQuery(
+// 	["reviewerProgram", reviewerID],
+// 	async () => {
+// 		try {
+// 			return await api.getReviewerPrograms(reviewerID);
+// 		} catch (e: any) {
+// 			if (e instanceof InvalidSessionError) {
+// 				// FIXME: show session expiry notification??
+// 				// Why are we even here in the first place?
+// 				// MainContainer should have checked already.
+// 				console.error(
+// 					"Session has already expired while querying reviewerProgram"
+// 				);
+// 				router.push("/");
+// 				return;
+// 			}
+// 		}
+// 	},
+// 	{
+// 		enabled: false,
+// 		select: (programData) => {
+// 			// Select the data fields we are interested in
+// 			if (!programData) return programData;
+// 			return programData.map((program) => {
+// 				return {
+// 					id: program.id,
+// 					category: program.category,
+// 					name: program.name,
+// 				};
+// 			});
+// 		},
+// 		onSuccess: (data) => {
+// 			// data is filtered by option select
+// 			console.log("Success");
+// 			console.log(data);
+// 			// TODO: save result after getting response
+// 		},
+// 	}
+// );
 const getLoadingStatus = computed(() => {
 	return isLoading.value || isProcessing.value;
 });
@@ -311,58 +327,9 @@ const {
 			console.log("Loaded");
 			tableData.value = data;
 		},
-		onSettled: () => {
-			isProcessing.value = false;
-		},
+		onSettled: () => (isProcessing.value = false),
 	}
 );
-
-const { isLoading: isLoadingAllPrograms, refetch: getAllPrograms } = useQuery(
-	["programList"],
-	{
-		queryFn: async (ctx) => {
-			return await api.getProgramList();
-		},
-		select: (data) => {
-			return data.map((x) => {
-				return {
-					id: x.id,
-					category: x.category,
-					name: x.name,
-					fullname: x.category + x.name,
-				};
-			});
-		},
-		onSuccess: (data) => {
-			assignProgramModal.value.data.programs = data;
-		},
-	}
-);
-
-const { isLoading: isLoadingRelatedPrograms, refetch: getRelatedPrograms } =
-	useQuery(["reviewer-related programs"], {
-		queryFn: async (ctx) => {
-			console.log(assignProgramModal.value.data.id);
-			return await api.getReviewerPrograms(
-				assignProgramModal.value.data.id
-			);
-		},
-		select: (data) => {
-			return data.map((x) => {
-				return {
-					id: x.id,
-					category: x.category,
-					name: x.name,
-					fullname: x.category + x.name,
-				};
-			});
-		},
-		onSuccess: (data) => {
-			assignProgramModal.value.data.selected = data;
-			assignProgramModal.value.data.oldSelected = data;
-		},
-		enabled: false,
-	});
 
 const addReviewerModal = ref({
 	data: {
@@ -370,7 +337,7 @@ const addReviewerModal = ref({
 		name: "",
 		email: "",
 		password: "",
-		redirect_url: "http://127.0.0.1:5173/admission/reviewer/signin",
+		redirect_url: "http://127.0.0.1:5173/recruitment/reviewer/signin",
 	},
 	visible: false,
 	open: () => (addReviewerModal.value.visible = true),
@@ -384,91 +351,30 @@ const addReviewerModal = ref({
 	}),
 	submit: () => {
 		addReviewerModal.value.close();
-		createReviewer();
+		createReviewerAPI();
+	},
+	validateEmail: () => {
+		// TODO: email validation
+		// RFC 2822 email regex
+		// https://regexr.com/2rhq7
+		const re =
+			/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
+		return re.test(addReviewerModal.value.data.email);
+	},
+	getInputEmailClass: () => {
+		return addReviewerModal.value.validateEmail() ? "" : "p-invalid";
+	},
+	invalidEmailFlag: () => {
+		return addReviewerModal.value.validateEmail() === false;
 	},
 });
-
-class assignProgramModalType {
-	data: {
-		id: number;
-		programs: Record<"id" | "category" | "name" | "fullname", any>[];
-		selected: Record<"id" | "category" | "name" | "fullname", any>[];
-		oldSelected: Record<"id" | "category" | "name" | "fullname", any>[];
-	};
-	visible: boolean;
-	constructor() {
-		this.data = {
-			id: 0,
-			programs: [],
-			selected: [],
-			oldSelected: [],
-		};
-		this.visible = false;
-	}
-
-	open(reviewer: AdmAdminReviewerRelatedProgramResponse) {
-		this.data.id = reviewer.id;
-		this.visible = true;
-		getRelatedPrograms();
-	}
-	submit() {
-		// TODO: close the modal after the result is certain
-
-		// Find out which programs are to be removed
-		const toRemove: number[] = this.data.oldSelected
-			.filter((program) => !this.data.selected.includes(program))
-			.map((program) => program.id);
-
-		const toAssign: number[] = this.data.selected
-			.filter((program) => !this.data.oldSelected.includes(program))
-			.map((program) => program.id);
-
-		toRemove.map((programID) => {
-			removeReviewerFromProgram({
-				reviewerID: this.data.id,
-				programID: programID,
-			});
-		});
-
-		toAssign.map((programID) => {
-			assignReviewertoProgram({
-				reviewerID: this.data.id,
-				programID: programID,
-			});
-		});
-		this.close();
-	}
-	close() {
-		this.visible = false;
-	}
-}
-
-const assignProgramModal = ref(new assignProgramModalType());
 
 const modalVisible = ref(false);
 const modalData = ref();
-
-const isProcessing = ref(false);
-
-const { mutate: createReviewer } = useMutation({
-	mutationFn: () => {
-		return api.createReviewer(addReviewerModal.value.data);
-	},
-	onMutate: () => {
-		isProcessing.value = true;
-	},
-	onSettled: () => {
-		isProcessing.value = false;
-	},
-	onSuccess: () => {
-		refetch();
-	},
-});
-
 const confirm = useConfirm();
-const toast = useToast();
-
-const confirmDisableReviewer = (reviewerData: AdmAdminReviewerListResponse) => {
+const confirmDisableReviewer = (
+	reviewerData: RecruitmentAdminReviewersListResponse
+) => {
 	console.log(reviewerData);
 	const { id } = reviewerData;
 
@@ -484,8 +390,10 @@ const confirmDisableReviewer = (reviewerData: AdmAdminReviewerListResponse) => {
 	});
 };
 
-const confirmActivateReviewer = (reviewer: AdmAdminReviewerListResponse) => {
-	const { id } = reviewer;
+const confirmActivateReviewer = (
+	reviewerData: RecruitmentAdminReviewersListResponse
+) => {
+	const { id } = reviewerData;
 
 	confirm.require({
 		header: $t("是否要啟用此審查者？"),
@@ -499,31 +407,43 @@ const confirmActivateReviewer = (reviewer: AdmAdminReviewerListResponse) => {
 	});
 };
 
+const isProcessing = ref(false);
+
+const { mutate: createReviewerAPI } = useMutation({
+	mutationFn: () => {
+		return api.createReviewerAccount(addReviewerModal.value.data);
+	},
+	onMutate: () => {
+		isProcessing.value = true;
+	},
+	onSettled: () => {
+		isProcessing.value = false;
+	},
+	onSuccess: () => {
+		refetch();
+	},
+});
+
+const toast = useToast();
 const { mutate: changeAccountStateAPI } = useMutation({
 	mutationFn: (variables: { id: number; action: "activate" | "disable" }) => {
 		const { id, action } = variables;
 
 		return api.changeReviewerAccountState(id, action);
 	},
-	onSuccess: (_, variables) => {
-		const msg =
-			variables.action === "activate"
-				? $t("成功啟用帳號")
-				: $t("成功停用帳號");
+	onSuccess: () => {
 		toast.add({
 			severity: "success",
 			life: 3000,
-			summary: msg,
+			summary: $t("操作成功"),
 		});
 	},
-	onError: (_, variables) => {
-		const msg =
-			variables.action === "activate"
-				? $t("啟用帳號時發生錯誤")
-				: $t("停用帳號時發生錯誤");
+	onError: () => {
 		toast.add({
 			severity: "error",
-			summary: msg,
+			life: 3000,
+			summary: $t("操作失敗"),
+			detail: $t("發生了未知的錯誤"),
 		});
 	},
 	onSettled: () => {
@@ -531,26 +451,6 @@ const { mutate: changeAccountStateAPI } = useMutation({
 	},
 	onMutate: () => {
 		isProcessing.value = true;
-	},
-});
-
-const { mutate: assignReviewertoProgram } = useMutation({
-	mutationFn: async (variables: {
-		reviewerID: number;
-		programID: number;
-	}) => {
-		const { reviewerID, programID } = variables;
-		return api.assignReviewertoProgram(reviewerID, programID);
-	},
-});
-
-const { mutate: removeReviewerFromProgram } = useMutation({
-	mutationFn: async (variables: {
-		reviewerID: number;
-		programID: number;
-	}) => {
-		const { reviewerID, programID } = variables;
-		return api.removeReviewerFromProgram(reviewerID, programID);
 	},
 });
 </script>
