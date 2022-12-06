@@ -346,5 +346,15 @@
 	"項目三": "Item 3",
 	"項目四": "Item 4",
 	"項目五": "Item 5",
-	"佔比": "Weight"
+	"佔比": "Weight",
+	"英文中間名": "English Middle Name",
+	"無則免填": "Optional Field",
+	"入職身份": "Identity",
+	"戶籍地址": "Permanent Address",
+	"地址": "Address",
+	"住址相同": "Same with Permanent Address",
+	"生理性別": "Sex",
+	"生理男性": "Male",
+	"生理女性": "Femal",
+	"請選擇身份": "Please choose your identity"
 }

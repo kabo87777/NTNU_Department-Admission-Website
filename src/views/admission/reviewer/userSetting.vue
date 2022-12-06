@@ -90,6 +90,8 @@
 
 <script setup lang="ts">
 import { onMounted, reactive, ref, toRaw } from "vue";
+import { useRoute } from "vue-router";
+import { UserInfo } from "@/api/admission/applicant/types";
 import ParagraphDivider from "@/styles/paragraphDividerApplicant.vue";
 import { useToast } from "primevue/usetoast";
 import InputText from "primevue/inputtext";
@@ -101,6 +103,7 @@ import { useAdmissionReviewerAuthStore } from "@/stores/universalAuth";
 import { AdmissionManagerAuthResponse } from "@/api/admission/reviewer/types";
 import { useUserInfoStore } from "@/stores/AdmissionReviewerStore";
 
+const route = useRoute();
 const toast = useToast();
 
 const reviewerAuth = useAdmissionReviewerAuthStore();
