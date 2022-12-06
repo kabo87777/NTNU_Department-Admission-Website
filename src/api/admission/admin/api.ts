@@ -3,6 +3,8 @@ import type {
 	AdmissionAdminProgramListResponse,
 	AdmAdminReviewerListResponse,
 	AdmissionAdminApplicantsListResponse,
+	AdmAdminGetApplicantInfo,
+	AdmAdminGetApplicantAttachmentData,
 	AdmissionAdminScoreFieldResponse,
 	AdmAdminReviewerRelatedProgramResponse,
 	AdmAdminEditApplicantRequest,
@@ -12,6 +14,7 @@ import type {
 	AdmissionAdminSingleDocsGradeResponse,
 	AdmissionAdminSingleOralGradeResponse,
 	AdmissionAdminCreateReviewerRequest,
+	AdmAdminGetApplicantMoredocResponses,
 } from "./types";
 import type { APIGenericResponse } from "@/api/types";
 import { GenericAPI } from "@/api/api";
@@ -64,6 +67,67 @@ export class AdmissionAdminAPI extends GenericAPI {
 		if (data.error === true || typeof data.data.applicants === "undefined")
 			throw new Error("Failed to fetch applicant list");
 		return data.data.applicants;
+	}
+
+	async getApplicantBasicInfo(
+		userId: number
+	): Promise<AdmAdminGetApplicantInfo> {
+		const data: APIGenericResponse = await this.instance.get(
+			`/admission/admin/applicant/${userId}/info`
+		);
+
+		if (data.error === true)
+			throw new Error("Failed to fetch applicant basic info");
+
+		return data.data[0];
+	}
+
+	async getApplicantFile(
+		userId: number
+	): Promise<AdmAdminGetApplicantAttachmentData[]> {
+		const data: APIGenericResponse = await this.instance.get(
+			`/admission/admin/applicant/${userId}/file`
+		);
+
+		if (data.error === true)
+			throw new Error("Failed to fetch applicant attachment");
+
+		return data.data;
+	}
+
+	async getApplicantMoreDocRes(
+		userId: number
+	): Promise<AdmAdminGetApplicantMoredocResponses> {
+		const data: APIGenericResponse = await this.instance.get(
+			`admission/admin/applicant/${userId}/moredoc`
+		);
+
+		if (data.error === true)
+			throw new Error("Failed to fetch applicant more doc state");
+
+		return data.data;
+	}
+
+	async updateApplicantMoreDocState(
+		userId: number,
+		body: object
+	): Promise<AdmissionAdminGenericResponse> {
+		const data: APIGenericResponse = await this.instance.patch(
+			`admission/admin/applicant/${userId}/moredoc`,
+			body
+		);
+
+		if (data.error !== false) {
+			return {
+				success: false,
+				message: data.message,
+			};
+		}
+
+		return {
+			success: true,
+			message: data.message,
+		};
 	}
 
 	async getScoreField(
