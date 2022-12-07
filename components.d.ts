@@ -8,7 +8,7 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     AdmissionApplicantSidebar: typeof import('./src/components/sidebars/admissionApplicantSidebar.vue')['default']
-    AdmissionManagerSideBar: typeof import('./src/components/sidebars/AdmissionManagerSideBar.vue')['default']
+    AdmissionManagerSideBar: typeof import('./src/components/sidebars/admissionManagerSideBar.vue')['default']
     CorrectionState: typeof import('./src/components/attachmentStates/CorrectionState.vue')['default']
     CreateState: typeof import('./src/components/attachmentStates/createState.vue')['default']
     EditState: typeof import('./src/components/attachmentStates/editState.vue')['default']
