@@ -41,7 +41,7 @@ const authorizationStatusQuery = useQuery(
 	async () => {
 		const status = await doUniversalAuthSessionValidation(adminAuth);
 
-		if (status) return;
+		if (status) return true;
 
 		console.log("MainContainer: We are unauthorized!");
 
@@ -52,6 +52,8 @@ const authorizationStatusQuery = useQuery(
 			detail: "您的登入階段已經失效，請重新登入",
 			life: 100000,
 		});
+
+		return false;
 
 		// TODO: return to sign in page
 
