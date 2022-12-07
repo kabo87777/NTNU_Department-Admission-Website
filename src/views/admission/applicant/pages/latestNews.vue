@@ -51,7 +51,9 @@
 
 <script setup lang="ts">
 import { ref, onMounted, reactive } from "vue";
+
 import { useAdmissionApplicantAuthStore } from "@/stores/universalAuth";
+
 import { AdmissionApplicantAPI } from "@/api/admission/applicant/api";
 
 const applicantAuth = useAdmissionApplicantAuthStore();
@@ -74,22 +76,24 @@ const program = reactive({
 });
 
 onMounted(async () => {
-	await api.getProgram().then((res) => {
-		if (Object.keys(res).length) {
-			hasNews.value = true;
-			program.id = res.id;
-			program.category = res.category;
-			program.name = res.name;
-			program.start_year = res.application_start_date.slice(0, 4);
-			program.start_month = res.application_start_date.slice(5, 7);
-			program.start_day = res.application_start_date.slice(8, 10);
-			program.start_hour = res.application_start_date.slice(11, 13);
-			program.end_year = res.application_end_date.slice(0, 4);
-			program.end_month = res.application_end_date.slice(5, 7);
-			program.end_day = res.application_end_date.slice(8, 10);
-			program.end_hour = res.application_end_date.slice(11, 13);
-		}
-	});
+	const res = await api.getProgram();
+
+	if (!res) return;
+
+	hasNews.value = true;
+	program.id = res.id;
+	program.category = res.category;
+	program.name = res.name;
+
+	// TODO: this is not good practice
+	program.start_year = res.application_start_date.slice(0, 4);
+	program.start_month = res.application_start_date.slice(5, 7);
+	program.start_day = res.application_start_date.slice(8, 10);
+	program.start_hour = res.application_start_date.slice(11, 13);
+	program.end_year = res.application_end_date.slice(0, 4);
+	program.end_month = res.application_end_date.slice(5, 7);
+	program.end_day = res.application_end_date.slice(8, 10);
+	program.end_hour = res.application_end_date.slice(11, 13);
 });
 </script>
 
