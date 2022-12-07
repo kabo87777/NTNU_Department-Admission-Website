@@ -15,20 +15,24 @@ export default defineConfig({
 			warning: "#BE9505",
 			danger: "#BB0F17",
 			info: "#6B23B4",
-			title: "#0C0C0D",
-			body: "#444547",
-			secondary: "#757A80",
-			disabled: "#BABDBF",
+			// Grayscale Color
+			title: "#0C0C0D", // Gray-900
+			body: "#444547", // Gray-700
+			secondary: "#757A80", // Gray-500
+			disabled: "#BABDBF", // Gray-300
 		},
 		extend: {
+			textColor: {
+				pAdmin: "#62373E", // nRed-700 避免與 danger 撞色，使用較深的顏色
+				pReviewer: "#18528C", // nBlue-600
+				pApplicant: "#736028", // nGold-600
+				white: "#FFFFFF", // white
+			},
 			colors: {
 				// FIXME: "ntnuRed" & "blackLight" 是舊的屬性，但仍被用於此系統某些角落，
 				//		  待頁面全面整理確認無引用之後，再進行移除
 				ntnuRed: "#94282c",
 				blackLight: "#2D2926",
-				mPrimary: "#93282C",
-				jPrimary: "#2459A4",
-				aPrimary: "#8A7B27",
 				// secondary: '',
 				success: {
 					DEFAULT: "#92E826",

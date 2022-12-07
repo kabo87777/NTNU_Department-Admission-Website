@@ -1,54 +1,63 @@
 <template>
-	<div class="grid grid-cols-2 gap-15px">
-		<div>
-			<img src="/assets/login-page/Login-img.png" class="h-screen" />
-		</div>
-		<div class="m-auto">
-			<div class="flex m-auto h-15">
-				<div>
+	<div class="fixed inset-y-0 left-0">
+		<img
+			src="/assets/login-page/Login-img.png"
+			class="h-full object-cover"
+		/>
+	</div>
+	<div class="fixed inset-y-0 right-0 z-50 bg-white w-125 <sm:w-full">
+		<div class="flex flex-col justify-center gap-8 mx-8 h-full">
+			<!-- 標題內容 -->
+			<div space="y-8">
+				<div class="sm:invisible">
 					<img
 						src="/assets/login-page/NTNU-logo-B1.png"
-						class="h-15"
+						width="300"
 					/>
 				</div>
-				<Divider layout="vertical" />
-				<div class="mt-1.5">
-					<div class="text-4xl font-bold text-gray-500">
-						資訊工程學系
+				<div class="mx-8" space="y-2">
+					<div class="<sm:hidden" text="lg secondary" font="light">
+						國立台灣師範大學資訊工程學系 NTNU CSIE
 					</div>
-					<div class="text-xs text-gray-400">
-						Department of Computer Science and Information
-						Enginering
+					<div text="4xl title" font="medium">
+						資訊工程學系報名系統
+					</div>
+					<div text="2xl title" font="medium">
+						NTNU CSIE Admissions
 					</div>
 				</div>
 			</div>
-			<div>
-				<div class="mt-100px ml-204px text-4xl font-bold text-gray-500">
-					{{ $t("資訊工程學系報名系統") }}
+
+			<Divider align="center">
+				<div class="px-4 text-body font-light">請選擇系統</div>
+			</Divider>
+
+			<!-- 按鈕選項 -->
+			<div class="w-4/5 mx-auto" space="y-8" text="xl">
+				<div class="flex-auto justify-center">
+					<router-link to="/admission">
+						<button
+							class="p-4 w-full max-w-90"
+							bg="hover:nGold-300 active:nGold-500"
+							border="2 nGold-600 rounded-lg hover:nGold-300"
+							text="pApplicant hover:title active:white"
+						>
+							<div>招生系統 Admission System</div>
+						</button>
+					</router-link>
 				</div>
-				<div class="ml-204px text-xs text-gray-500">
-					NTNU CSIE Admissions
+				<div class="flex-auto justify-center">
+					<router-link to="/recruitment">
+						<button
+							class="p-4 w-full max-w-90"
+							bg="hover:nRed-300 active:nRed-500"
+							border="2 nRed-600 rounded-lg hover:white"
+							text="pAdmin hover:title active:white"
+						>
+							<div>教師聘請系統 Recruitment System</div>
+						</button>
+					</router-link>
 				</div>
-			</div>
-			<div class="mt-50px ml-184px userLogin">
-				<router-link to="/admission">
-					<button
-						class="text-xl h-90px w-420px md:mx-auto w-full py-4 admissionButtonStyle"
-						border="2  rounded-lg"
-					>
-						<div>招生系統 Admission System</div>
-					</button>
-				</router-link>
-			</div>
-			<div class="mt-50px ml-184px">
-				<router-link to="/recruitment">
-					<button
-						class="text-xl h-90px w-420px md:mx-auto w-full py-4 recruitmentButtonStyle"
-						border="2  rounded-lg"
-					>
-						<div>教師聘請系統 Recruitment System</div>
-					</button>
-				</router-link>
 			</div>
 		</div>
 	</div>
@@ -58,36 +67,3 @@
 import Button from "primevue/button";
 import Divider from "primevue/divider";
 </script>
-
-<style setup lang="css">
-.admissionButtonStyle {
-	background-color: #fafac7;
-	border-color: #dbd379;
-	color: #544830;
-}
-.admissionButtonStyle:hover {
-	background-color: #8a7b27;
-	border-color: #8a7b27;
-	color: white;
-}
-.admissionButtonStyle:active {
-	background-color: #624f2a;
-	border-color: #624f2a;
-	color: white;
-}
-.recruitmentButtonStyle {
-	background-color: #dfe7fd;
-	border-color: #a5b9ec;
-	color: #003a5c;
-}
-.recruitmentButtonStyle:hover {
-	background-color: #2459a4;
-	border-color: #2459a4;
-	color: white;
-}
-.recruitmentButtonStyle:active {
-	background-color: #0b4873;
-	border-color: #0b4873;
-	color: white;
-}
-</style>
