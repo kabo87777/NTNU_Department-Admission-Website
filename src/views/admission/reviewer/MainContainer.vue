@@ -24,7 +24,7 @@
 
 <script setup lang="ts">
 import NavBar from "@/components/NavBar.vue";
-import ReviewerSideBar from "@/components/sidebars/adissionReviewerSidebar.vue";
+import ReviewerSideBar from "@/components/sidebars/admissionReviewerSidebar.vue";
 
 import { watch } from "vue";
 import { useRouter } from "vue-router";
