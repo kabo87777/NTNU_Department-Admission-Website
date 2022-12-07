@@ -135,10 +135,13 @@ import Checkbox from "primevue/checkbox";
 import { useRecruitmentAdminAuthStore } from "@/stores/universalAuth";
 import { useGlobalStore } from "@/stores/RecruitmentAdminStore";
 import { RecruitmentAdminAPI } from "@/api/recruitment/admin/api";
-import { useMutation, useQuery } from "@tanstack/vue-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
 import { InvalidSessionError } from "@/api/error";
 import { router } from "@/router";
 import { useToast } from "primevue/usetoast";
+
+// Get QueryClient from the context
+const queryClient = useQueryClient();
 
 const programName = ref<string>("");
 const oldProgramName = ref<string>("");
@@ -226,13 +229,15 @@ function update() {
 	}
 }
 
-function deleteProject() {
+async function deleteProject() {
 	try {
-		api.deleteProgram(globalStore.program!.id);
+		await api.deleteProgram(globalStore.program!.id);
 		toast.add({ severity: "success", summary: "刪除成功", life: 3000 });
 	} catch (error) {
 		toast.add({ severity: "error", summary: "刪除失敗", life: 3000 });
 	}
+
+	await queryClient.invalidateQueries({ queryKey: ["programList"] });
 }
 
 function dateTransform(date?: Date) {

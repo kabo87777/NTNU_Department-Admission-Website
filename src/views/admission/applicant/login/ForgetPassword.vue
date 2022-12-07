@@ -107,7 +107,7 @@ const consumeTurnstileToken = () => {
 const enterEmail = async () => {
 	try {
 		const redirectUrl =
-			"http://127.0.0.1:5173/admission/applicant/password/reset";
+			"https://admissions-frontend-staging.birkhoff.me/admission/applicant/password/reset";
 		const turnstileResponse = consumeTurnstileToken();
 		if (!turnstileResponse) throw new Error("Turnstile challenge failed");
 		const api = new AdmissionApplicantAPI(authStore);

@@ -13,7 +13,7 @@
 					style="border-radius: 8px; border: 1px solid black"
 				>
 					<template #value="slotProps">
-						<div class="mt-6px tracking-1px text-18px font-medium">
+						<div class="mt-6px tracking-2px text-18px font-medium">
 							{{ slotProps?.value?.category }}
 							{{ slotProps?.value?.name }}
 						</div>
@@ -479,7 +479,7 @@ import { AdmissionAdminProgramListResponse } from "@/api/admission/admin/types";
 const router = useRouter();
 
 const adminAuth = useAdmissionAdminAuthStore();
-const store = useGlobalStore();
+const globalStore = useGlobalStore();
 const api = new AdmissionAdminAPI(adminAuth);
 const programData = useMutation(async (newProgramData: any) => {
 	try {
@@ -495,20 +495,7 @@ const {
 	data: programs,
 	error,
 } = useQuery(["programList"], async () => {
-	try {
-		return await api.getProgramList();
-	} catch (e: any) {
-		if (e instanceof InvalidSessionError) {
-			// FIXME: show session expiry notification??
-			// Why are we even here in the first place?
-			// MainContainer should have checked already.
-			console.error(
-				"Session has already expired while querying programList"
-			);
-			router.push("/");
-			return;
-		}
-	}
+	return await api.getProgramList();
 });
 
 const noProgram = computed(() => {
@@ -518,18 +505,19 @@ const noProgram = computed(() => {
 const selectedProgram = ref<AdmissionAdminProgramListResponse>();
 
 watchEffect(() => {
-	if (programs.value && programs.value.length > 1) {
-		const temp = programs.value[0];
-		store.$patch((state) => {
-			state.program = temp;
-		});
-		// selectedProgram.value=toRaw(programs.value[0])
-		selectedProgram.value = programs.value[0];
-	}
+	if (!programs.value) return;
+
+	if (programs.value.length == 0) throw new Error("No programs available!");
+
+	globalStore.$patch((state) => {
+		state.program = programs.value[0];
+	});
+
+	selectedProgram.value = programs.value[0];
 });
 
 watch(selectedProgram, (selection) => {
-	store.$patch({ program: selectedProgram.value });
+	globalStore.$patch({ program: selectedProgram.value });
 
 	console.debug("Selected program:\n" + JSON.stringify(selection, null, 2));
 });
