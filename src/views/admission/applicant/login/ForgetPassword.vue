@@ -37,13 +37,13 @@
 						class="flex items-center gap-2 pb-2"
 						text="sm gray-500"
 					>
-						<div>電郵地址</div>
-						<div>E-mail</div>
+						<div>使用者名稱</div>
+						<div>Username</div>
 					</div>
 					<InputText
-						name="email"
-						type="email"
-						v-model="forgetPwdEmail"
+						name="username"
+						type="username"
+						v-model="forgetPwdUsername"
 						class="p-inputtext-sm w-full"
 						required
 					/>
@@ -95,7 +95,7 @@ import { TurnstileComponentExposes } from "@/components/Turnstile.vue";
 import { AdmissionApplicantAPI } from "@/api/admission/applicant/api";
 import Turnstile from "@/components/Turnstile.vue";
 
-const forgetPwdEmail = ref("");
+const forgetPwdUsername = ref("");
 const authStore = useAdmissionApplicantAuthStore();
 const turnstileRef = ref<TurnstileComponentExposes>();
 
@@ -107,13 +107,13 @@ const consumeTurnstileToken = () => {
 const enterEmail = async () => {
 	try {
 		const redirectUrl =
-			"http://127.0.0.1:5173/admission/applicant/password/reset";
+			"https://admissions-frontend-staging.birkhoff.me/admission/applicant/password/reset";
 		const turnstileResponse = consumeTurnstileToken();
 		if (!turnstileResponse) throw new Error("Turnstile challenge failed");
 		const api = new AdmissionApplicantAPI(authStore);
-		console.log(forgetPwdEmail.value);
-		return await api.sendForgotPasswordEmail({
-			email: forgetPwdEmail.value,
+		console.log(forgetPwdUsername.value);
+		return await api.sendAdmissionApplicantForgotPasswordEmail({
+			username: forgetPwdUsername.value,
 			redirect_url: redirectUrl,
 			"cf-turnstile-response": turnstileResponse,
 		});

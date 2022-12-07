@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="mt-80px ml-50px">
 		<div class="font-[500] text-[32px] font-bold">
 			{{ $t("使用者管理") }}
 		</div>
@@ -13,10 +13,10 @@
 				{{ $t("聯絡信箱") }}{{ $t(":") }}{{ " "
 				}}{{ applicantInfo.email }}
 			</div>
-			<div class="mt-36px text-[20px] font-[350]">
+			<!-- <div class="mt-36px text-[20px] font-[350]">
 				{{ $t("手機號碼") }}{{ $t(":") }}{{ " "
 				}}{{ applicantInfo.uid }}
-			</div>
+			</div> -->
 		</div>
 		<ParagraphDivider class="mt-12px" />
 		<div class="mt-20px font-[500] font-bold text-[24px] flex">

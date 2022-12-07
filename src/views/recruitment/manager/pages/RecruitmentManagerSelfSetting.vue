@@ -1,11 +1,20 @@
 <template>
-	<div class="ml-50px mt-50px">
-		<div>{{ $t("使用者管理") }}</div>
+	<div class="mt-80px ml-50px">
+		<div class="font-[500] text-[32px] font-bold">
+			{{ $t("使用者管理") }}
+		</div>
 		<div class="bigRedDivider"></div>
-		<div class="mt-20px">{{ $t("帳號名稱") }}：{{ userId }}</div>
-		<div class="mt-20px">{{ $t("聯絡信箱") }}：{{ email }}</div>
-		<div class="mt-20px">{{ $t("手機號碼") }}：{{ phone }}</div>
-		<Divider />
+		<div class="mt-8px px-12px py-24px">
+			<div class="text-[20px] font-[350]">
+				{{ $t("帳號名稱") }}：{{ adminInfo.name }}
+			</div>
+			<div class="mt-36px text-[20px] font-[350]">
+				{{ $t("聯絡信箱") }}：{{ adminInfo.email }}
+			</div>
+		</div>
+		<ParagraphDivider class="mt-12px" />
+		<!-- <div class="mt-36px text-[20px] font-[350]">{{ $t("手機號碼") }}：{{ phone }}</div> -->
+		<!-- <Divider /> -->
 		<div class="mt-20px font-[500] font-bold text-[24px] flex">
 			<div>{{ $t("修改密碼") }}</div>
 			<i class="pi pi-lock ml-16px mt-4px text-[#C6BCD0]" />
@@ -83,13 +92,16 @@ import { InvalidSessionError } from "@/api/error";
 import { useRecruitmentAdminAuthStore } from "@/stores/universalAuth";
 import { useToast } from "primevue/usetoast";
 import { RecruitmentAdminAPI } from "@/api/recruitment/admin/api";
+import ParagraphDivider from "@/styles/paragraphDividerApplicant.vue";
+import { useAdminInfoStore } from "@/stores/RecruitmentAdminStore";
+import type { RecruitmentAdminAuthResponse } from "@/api/recruitment/admin/types";
 
 const toast = useToast();
-const userId = ref("系辦主管");
-const email = ref("csie_office@ntnu.edu.tw");
-const phone = ref("0912345678");
 const adminAuth = useRecruitmentAdminAuthStore();
 const api = new RecruitmentAdminAPI(adminAuth);
+const adminStore = useAdminInfoStore();
+
+const adminInfo: RecruitmentAdminAuthResponse = toRaw(adminStore.userInfo);
 
 const initialPassValue = {
 	isCurrentPassBlank: false,
