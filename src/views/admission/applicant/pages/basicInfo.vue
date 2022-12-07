@@ -526,7 +526,7 @@ import Button from "primevue/button";
 import { useAdmissionApplicantAuthStore } from "@/stores/universalAuth";
 import { AdmissionApplicantAPI } from "@/api/admission/applicant/api";
 import { AdmissionApplicantGetUserInfoResponse } from "@/api/admission/applicant/types";
-import { log } from "console";
+
 const applicantAuth = useAdmissionApplicantAuthStore();
 const api = new AdmissionApplicantAPI(applicantAuth);
 // const project = useProjectIdStore();
@@ -756,22 +756,16 @@ const getUserInfo = async () => {
 };
 
 onMounted(async () => {
-	const response = getUserInfo();
-
-	await response.then((res) => {
-		// console.log(res);
-		if (Object.keys(res).length) setBasicInfo(res);
-	});
+	const response = await getUserInfo();
+	if (response) setBasicInfo(response);
 });
 
 watch(
 	() => loading.fetch,
 	async () => {
-		const response = getUserInfo();
+		const response = await getUserInfo();
 
-		await response.then((res) => {
-			if (Object.keys(res).length) setBasicInfo(res);
-		});
+		if (response) setBasicInfo(response);
 
 		loading.fetch = false;
 	}
