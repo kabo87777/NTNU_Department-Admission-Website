@@ -163,8 +163,6 @@ const selectedProgram = ref<AdmissionReviewerProgramListResponse>();
 watchEffect(() => {
 	if (!programs.value) return;
 
-	if (programs.value.length == 0) throw new Error("No programs available!");
-
 	globalStore.updateadmissionReviewerProgramData(programs.value[0]);
 
 	selectedProgram.value = programs.value[0];

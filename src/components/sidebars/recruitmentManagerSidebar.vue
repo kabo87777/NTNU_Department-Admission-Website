@@ -534,8 +534,6 @@ const selectedProgram = ref<RecruitmentAdminProgramListResponse>();
 watchEffect(() => {
 	if (!programs.value) return;
 
-	if (programs.value.length == 0) throw new Error("No programs available!");
-
 	globalStore.$patch((state) => {
 		state.program = programs.value[0];
 	});
