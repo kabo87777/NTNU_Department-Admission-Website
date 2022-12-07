@@ -92,7 +92,7 @@ onMounted(async () => {
 	background: rgb(136, 136, 136);
 	color: white;
 	border-radius: 19px;
-	z-index: 10;
+	z-index: 100;
 	cursor: pointer;
 	margin-left: 650px;
 	transform: translateX(-50%);
