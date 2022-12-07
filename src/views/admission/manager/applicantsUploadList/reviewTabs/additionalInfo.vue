@@ -293,16 +293,7 @@ const setInfo = (info: AdmAdminGetApplicantMoredocResponses) => {
 };
 
 const saveChange = async (body: object) => {
-	try {
-		return await api.updateApplicantMoreDocState(props.userId, body);
-	} catch (e: any) {
-		if (e instanceof InvalidSessionError) {
-			console.error(
-				"Session has already expired while changing password"
-			);
-			return;
-		}
-	}
+	return await api.updateApplicantMoreDocState(props.userId, body);
 };
 
 function handleSendEmail() {
@@ -381,16 +372,7 @@ const saveOnclick = () => {
 const { data } = useQuery(
 	["adminApplicantMoredocInfo"],
 	async () => {
-		try {
-			return await api.getApplicantMoreDocRes(props.userId);
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				console.error(
-					"Session has already expired while quering appliacntList"
-				);
-				return;
-			}
-		}
+		return await api.getApplicantMoreDocRes(props.userId);
 	},
 	{
 		onSuccess: (data) => {

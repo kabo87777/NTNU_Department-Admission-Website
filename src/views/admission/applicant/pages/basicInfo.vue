@@ -648,16 +648,7 @@ const setBasicInfo = (res: AdmissionApplicantGetUserInfoResponse) => {
 };
 
 const saveInfo = async (body: object) => {
-	try {
-		return await api.patchBasicInfo(body);
-	} catch (e: any) {
-		if (e instanceof InvalidSessionError) {
-			console.error(
-				"Session has already expired while changing password"
-			);
-			return;
-		}
-	}
+	return await api.patchBasicInfo(body);
 };
 
 const address = (prod: any) => {

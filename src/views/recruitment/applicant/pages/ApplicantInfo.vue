@@ -593,16 +593,7 @@ const setBasicInfo = (res: RecruitmentApplicantUserInfoResponse) => {
 };
 
 const saveInfo = async (body: object) => {
-	try {
-		return await api.patchBasicInfo(project.project.pid, body);
-	} catch (e: any) {
-		if (e instanceof InvalidSessionError) {
-			console.error(
-				"Session has already expired while changing password"
-			);
-			return;
-		}
-	}
+	return await api.patchBasicInfo(project.project.pid, body);
 };
 
 const addHours = (numHrs: number, date = new Date()) => {

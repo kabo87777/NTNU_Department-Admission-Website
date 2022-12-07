@@ -153,16 +153,7 @@ const resetPassValue = () => {
 };
 
 const patchChangePassword = async (body: object) => {
-	try {
-		return await api.changePassword(body);
-	} catch (e: any) {
-		if (e instanceof InvalidSessionError) {
-			console.error(
-				"Session has already expired while changing password"
-			);
-			return;
-		}
-	}
+	return await api.changePassword(body);
 };
 
 const handleSubmit = async () => {

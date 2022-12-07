@@ -185,24 +185,10 @@ const {
 } = useQuery(
 	["applicantList"],
 	async () => {
-		try {
-			if (globalStore.program === undefined)
-				throw new Error("undefined program");
+		if (globalStore.program === undefined)
+			throw new Error("undefined program");
 
-			return await api.getApplicantList(globalStore.program.id);
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				// FIXME: show session expiry notification??
-				// Why are we even here in the first place?
-				// MainContainer should have checked already.
-				console.error(
-					"Session has already expired while querying applicant list"
-				);
-				router.push("/");
-				return;
-			}
-			throw e;
-		}
+		return await api.getApplicantList(globalStore.program.id);
 	},
 	{
 		onSuccess: (data) => {

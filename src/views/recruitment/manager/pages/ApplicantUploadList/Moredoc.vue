@@ -298,20 +298,9 @@ const setInfo = (info: RecruimentAdminGetApplicantMoredocResponses) => {
 };
 
 const saveChange = async (body: object) => {
-	try {
-		return await api.updateApplicantMoreDocState(
-			programId as number,
-			props.userId,
-			body
-		);
-	} catch (e: any) {
-		if (e instanceof InvalidSessionError) {
-			console.error(
-				"Session has already expired while changing password"
-			);
-			return;
-		}
-	}
+	if (!programId) throw new Error("invalid programId");
+
+	return await api.updateApplicantMoreDocState(programId, props.userId, body);
 };
 
 function handleSendEmail() {
@@ -390,19 +379,9 @@ const saveOnclick = () => {
 const { data } = useQuery(
 	["recruitmentApplicantMoredocInfo"],
 	async () => {
-		try {
-			return await api.getApplicantMoreDocRes(
-				programId as number,
-				props.userId
-			);
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				console.error(
-					"Session has already expired while quering appliacntList"
-				);
-				return;
-			}
-		}
+		if (!programId) throw new Error("invalid programId");
+
+		return await api.getApplicantMoreDocRes(programId, props.userId);
 	},
 	{
 		onSuccess: (data) => {

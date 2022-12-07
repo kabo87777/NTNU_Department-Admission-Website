@@ -387,16 +387,11 @@ const programData: RecruitmentAdminProgramListResponse = reactive({
 const getInfoFileField = useQuery(
 	["infoFileField"],
 	async () => {
-		try {
-			if (store.program) {
-				const allData = await api.getProgramList();
-				return allData[store.program.id - 1];
-			}
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				console.error("Invalid Session Error");
-			}
-		}
+		if (!store.program)
+			throw new Error("infoFileField: no program selected");
+
+		const allData = await api.getProgramList();
+		return allData[store.program.id - 1];
 	},
 	{
 		refetchOnWindowFocus: false,
@@ -447,15 +442,10 @@ const getInfoFileField = useQuery(
 // API: Patch Info/File Data
 const patchInfoFileField = useMutation(
 	async (newData: RecruitmentAdminProgramListResponse) => {
-		try {
-			if (store.program) {
-				return await api.updateProgramData(store.program.id, newData);
-			}
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				console.error("Invalid Session Error");
-			}
-		}
+		if (!store.program)
+			throw new Error("patchInfoFileField: no program selected");
+
+		return await api.updateProgramData(store.program.id, newData);
 	},
 	{
 		onSuccess: () => {

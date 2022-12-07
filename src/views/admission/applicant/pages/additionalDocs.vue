@@ -90,16 +90,7 @@ const createToEdit = () => {
 };
 
 const uploadFile = async (body: object) => {
-	try {
-		return await api.uploadRefillFile(body);
-	} catch (e: any) {
-		if (e instanceof InvalidSessionError) {
-			console.error(
-				"Session has already expired while changing password"
-			);
-			return;
-		}
-	}
+	return await api.uploadRefillFile(body);
 };
 
 const handleUpload = async (body: object) => {

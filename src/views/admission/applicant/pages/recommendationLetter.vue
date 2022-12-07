@@ -560,17 +560,7 @@ const fetchResponse = reactive({
 const { data } = useQuery(
 	["recommendLetterList"],
 	async () => {
-		try {
-			return await api.getRecommendLetterList();
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				console.error(
-					"Session has already expired while querying programList"
-				);
-				router.push("/");
-				return;
-			}
-		}
+		return await api.getRecommendLetterList();
 	},
 	{
 		onSuccess: (data) => {
@@ -639,42 +629,15 @@ const openModal = () => {
 };
 
 const deleteRecommendLetter = async (letterId: number) => {
-	try {
-		return await api.deleteRecommendLetter(letterId);
-	} catch (e: any) {
-		if (e instanceof InvalidSessionError) {
-			console.error(
-				"Session has already expired while changing password"
-			);
-			return;
-		}
-	}
+  return await api.deleteRecommendLetter(letterId);
 };
 
 const postRecommendLetter = async (body: object) => {
-	try {
-		return await api.saveRecommendLetter(body);
-	} catch (e: any) {
-		if (e instanceof InvalidSessionError) {
-			console.error(
-				"Session has already expired while changing password"
-			);
-			return;
-		}
-	}
+	return await api.saveRecommendLetter(body);
 };
 
 const requestRecommendLetter = async (letterId: number) => {
-	try {
-		return await api.requestRecommendLetter(letterId);
-	} catch (e: any) {
-		if (e instanceof InvalidSessionError) {
-			console.error(
-				"Session has already expired while changing password"
-			);
-			return;
-		}
-	}
+	return await api.requestRecommendLetter(letterId);
 };
 
 const handleDelete = async (letterId: number) => {

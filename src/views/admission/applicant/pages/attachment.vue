@@ -264,42 +264,15 @@ const createToEdit = (index: number, category: string) => {
 };
 
 const deleteFile = async (fileId: number) => {
-	try {
-		return await api.deleteFile(fileId);
-	} catch (e: any) {
-		if (e instanceof InvalidSessionError) {
-			console.error(
-				"Session has already expired while changing password"
-			);
-			return;
-		}
-	}
+	return await api.deleteFile(fileId);
 };
 
 const createFile = async (body: object) => {
-	try {
-		return await api.createFile(body);
-	} catch (e: any) {
-		if (e instanceof InvalidSessionError) {
-			console.error(
-				"Session has already expired while changing password"
-			);
-			return;
-		}
-	}
+	return await api.createFile(body);
 };
 
 const editFile = async (body: object, fileId: number) => {
-	try {
-		return await api.editFile(body, fileId);
-	} catch (e: any) {
-		if (e instanceof InvalidSessionError) {
-			console.error(
-				"Session has already expired while changing password"
-			);
-			return;
-		}
-	}
+	return await api.editFile(body, fileId);
 };
 
 const handleDelete = async (fileId: number) => {
