@@ -25,7 +25,7 @@
 
 <script setup lang="ts">
 import NavBar from "@/components/NavBar.vue";
-import SideBar from "@/components/sidebars/SideBar.vue";
+import SideBar from "@/components/sidebars/admissionManagerSideBar.vue";
 import { useQuery } from "@tanstack/vue-query";
 import { useToast } from "primevue/usetoast";
 

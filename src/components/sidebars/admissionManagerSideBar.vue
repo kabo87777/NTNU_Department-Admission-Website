@@ -216,7 +216,7 @@
 					</div>
 					<div class="ml-8px">
 						<Button
-							@click="newProject"
+							@click="isDisplayNewProjectPrompt = true"
 							class="h-36px p-button-outlined p-button-success !bg-white"
 						>
 							<img
@@ -233,7 +233,7 @@
 			</div>
 			<Dialog
 				header="新增專案"
-				v-model:visible="displayNewProject"
+				v-model:visible="isDisplayNewProjectPrompt"
 				class="w-484px h-282px"
 			>
 				<divider class="!mt-0px" />
@@ -261,7 +261,7 @@
 						}}</span>
 					</Button>
 					<Button
-						@click="closeDisplayNewProject"
+						@click="closeDisplayNewProjectPrompt"
 						class="p-button-outlined p-button-danger !ml-32px !mt-26px !w-105px !h-44px"
 					>
 						<img
@@ -369,7 +369,7 @@
 			</div>
 			<Dialog
 				header="新增專案"
-				v-model:visible="displayNewProject"
+				v-model:visible="isDisplayNewProjectPrompt"
 				class="w-484px h-282px"
 			>
 				<divider class="!mt-0px" />
@@ -397,7 +397,7 @@
 						}}</span>
 					</Button>
 					<Button
-						@click="closeDisplayNewProject"
+						@click="closeDisplayNewProjectPrompt"
 						class="p-button-outlined p-button-danger !ml-32px !mt-26px !w-105px !h-44px"
 					>
 						<img
@@ -462,30 +462,33 @@
 
 <script setup lang="ts">
 import "primevue/resources/primevue.min.css";
-import { ref, watchEffect, watch, computed } from "vue";
 import Dropdown from "primevue/dropdown";
 import Button from "primevue/button";
 import Divider from "primevue/divider";
 import Dialog from "primevue/dialog";
 import InputText from "primevue/inputtext";
+import { useToast } from "primevue/usetoast";
 import { useRouter } from "vue-router";
+
+import { ref, watchEffect, watch, computed } from "vue";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
+
 import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
-import { AdmissionAdminAPI } from "@/api/admission/admin/api";
-import { useMutation, useQuery } from "@tanstack/vue-query";
 import { useGlobalStore } from "@/stores/globalStore";
+
+import { AdmissionAdminAPI } from "@/api/admission/admin/api";
 import { AdmissionAdminProgramListResponse } from "@/api/admission/admin/types";
 
 const router = useRouter();
-
+const toast = useToast();
+const queryClient = useQueryClient();
 const adminAuth = useAdmissionAdminAuthStore();
 const globalStore = useGlobalStore();
+
 const api = new AdmissionAdminAPI(adminAuth);
+
 const programData = useMutation(async (newProgramData: any) => {
-	try {
-		return await api.addNewProgram(newProgramData);
-	} catch (error) {
-		console.log(error);
-	}
+	return await api.addNewProgram(newProgramData);
 });
 
 const { isLoading, data: programs } = useQuery(["programList"], async () => {
@@ -516,44 +519,62 @@ watch(selectedProgram, (selection) => {
 	console.debug("Selected program:\n" + JSON.stringify(selection, null, 2));
 });
 
-const displayNewProject = ref(false);
+const isDisplayNewProjectPrompt = ref(false);
 const newProjectName = ref("");
 
 const generateOptions = (data: AdmissionAdminProgramListResponse) => {
 	return data.category + data.name;
 };
 
-function newProject() {
-	displayNewProject.value = true;
-}
-
 const newProgram = ref(false);
+
 function addNewProject() {
-	const today = new Date();
-	try {
-		programData.mutate({
+	const todayDateString = dateTransform(new Date()) + "+08:00";
+
+	programData.mutate(
+		{
 			category: "",
 			name: newProjectName.value,
-			application_start_date: dateTransform(today) + "+08:00",
-			application_end_date: dateTransform(today) + "+08:00",
-			review_start_date: dateTransform(today) + "+08:00",
-			review_end_date: dateTransform(today) + "+08:00",
+			application_start_date: todayDateString,
+			application_end_date: todayDateString,
+			review_start_date: todayDateString,
+			review_end_date: todayDateString,
 			stage: "application_stage",
 			applicant_required_info: '["file1", "file2"]',
 			applicant_required_file: '["file3", "file4"]',
 			reviewer_required_info: '["file1", "file2"]',
 			reviewer_required_file: '["file3", "file4"]',
-		});
-		newProgram.value = true;
-		// toast.add({severity:'success', summary: '更改成功', life: 3000});
-	} catch (error) {
-		// toast.add({severity:'error', summary: '資料錯誤', life: 3000});
-	}
-	displayNewProject.value = false;
+		},
+		{
+			onError: (e: any) => {
+				toast.add({
+					severity: "error",
+					summary: e.toString(),
+					life: 3000,
+				});
+			},
+			onSuccess: () => {
+				newProgram.value = true;
+
+				toast.add({
+					severity: "success",
+					summary: "更改成功",
+					life: 3000,
+				});
+			},
+			onSettled: async () => {
+				await queryClient.invalidateQueries({
+					queryKey: ["programList"],
+				});
+			},
+		}
+	);
+
+	isDisplayNewProjectPrompt.value = false;
 }
 
-function closeDisplayNewProject() {
-	displayNewProject.value = false;
+function closeDisplayNewProjectPrompt() {
+	isDisplayNewProjectPrompt.value = false;
 }
 
 function dateTransform(date?: Date) {
