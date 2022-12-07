@@ -1,4 +1,5 @@
 <template>
+	<Toast position="top-right" />
 	<div>
 		<div style="position: fixed; top: 0; width: 100%; z-index: 10">
 			<NavBar />
@@ -25,23 +26,40 @@
 <script setup lang="ts">
 import NavBar from "@/components/NavBar.vue";
 import SideBar from "@/components/sidebars/SideBar.vue";
-
-import { watch } from "vue";
-import { useRouter } from "vue-router";
+import { useQuery } from "@tanstack/vue-query";
+import { useToast } from "primevue/usetoast";
 
 import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
 import { doUniversalAuthSessionValidation } from "@/api/universalAuth";
 
-const router = useRouter();
+const toast = useToast();
 
 const adminAuth = useAdmissionAdminAuthStore();
 
-watch(router.currentRoute, async () => {
-	if (!(await doUniversalAuthSessionValidation(adminAuth))) {
-		router.replace({ name: "AdmissionManagerSignin" });
-		// TODO: show session expired notification
+const authorizationStatusQuery = useQuery(
+	["admissionAdminAuthorizationStatus"],
+	async () => {
+		const status = await doUniversalAuthSessionValidation(adminAuth);
+
+		if (status) return true;
+
+		console.log("MainContainer: We are unauthorized!");
+
+		// TODO: i18n
+		toast.add({
+			severity: "error",
+			summary: "錯誤",
+			detail: "您的登入階段已經失效，請重新登入",
+			life: 100000,
+		});
+
+		return false;
+
+		// TODO: return to sign in page
+
+		// router.replace({ name: "AdmissionManagerSignin" });
 	}
-});
+);
 </script>
 
 <style scoped></style>

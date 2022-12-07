@@ -226,7 +226,7 @@ export class AdmissionAdminAPI extends GenericAPI {
 			throw new Error("Failed to add new program");
 	}
 
-	async deleteProgram(programID: number): Promise<any> {
+	async deleteProgram(programID: number): Promise<void> {
 		const response: APIGenericResponse = await this.instance.delete(
 			`/admission/admin/program/${programID}`
 		);
