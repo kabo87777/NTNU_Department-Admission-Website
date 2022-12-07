@@ -1,176 +1,147 @@
-<template class="overflow-hidden">
+<template>
 	<Toast position="top-right" />
-	<div class="flex">
-		<!-- <div class="flex-shrink-1">
-			<img src="/assets/login-page/Login-img.png" class="fill" />
-		</div> -->
-		<div>
-			<img src="/assets/login-page/Login-img.png" class="h-screen" />
-		</div>
-		<div class="m-auto">
-			<div class="px-8">
-				<div class="flex m-auto h-15">
-					<div>
-						<img
-							src="/assets/login-page/NTNU-logo-B1.png"
-							class="h-15"
-						/>
-					</div>
-					<Divider layout="vertical" />
-					<div class="mt-1.5">
-						<div class="text-4xl font-bold text-gray-500">
-							資訊工程學系
-						</div>
-						<div class="text-xs text-gray-400">
-							Department of Computer Science and Information
-							Enginering
-						</div>
-					</div>
-				</div>
+	<div class="fixed inset-y-0 left-0">
+		<img src="/assets/login-page/Login-img.png" class="h-200" />
+	</div>
+	<!-- FIXME:附著在底下的空白，以免圖片露餡，但或許有更好的做法 -->
+	<div
+		class="fixed inset-y-0 right-0 z-30 bg-white"
+		w="125 <sm:full lg:150"
+	/>
+	<div
+		class="absolute inset-y-0 right-0 z-50 bg-white"
+		w="125 <sm:full lg:150"
+		px="lg:15"
+	>
+		<div class="flex flex-col py-4 gap-6 mx-8 h-full">
+			<!-- 標題內容 -->
+			<div space="y-2">
+				<img
+					src="/assets/login-page/NTNU-logo-B1.png"
+					w="48"
+					class="sm:invisible"
+				/>
+				<!-- 返回按鈕 -->
 				<router-link to="/recruitment">
 					<button
 						class="flex items-center gap-2 px-2 py-2 mt-5 mb-3"
-						bg="transparent hover:gray-100"
-						text="sm gray-400 hover:gray-600"
-						border="rounded"
+						bg="hover:nGrey-200 active:nGrey-600"
+						text="sm secondary hover:title active:white"
+						border="rounded-lg"
 					>
 						<i class="pi pi-angle-left" />
 						<div>切換登入身份</div>
 						<div>Change your identity</div>
 					</button>
 				</router-link>
-				<div class="px-8 space-y-2">
-					<!-- <div class="text-s text-gray-500">
-						國立台灣師範大學資訊工程學系 NTNU CSIE
-					</div> -->
-					<div class="flex items-end gap-2 font-medium text-gray-900">
-						<div class="text-4xl">教師聘請系統</div>
-						<div class="text-xl">Teacher Recruitment System</div>
+				<div class="mx-8" space="y-2">
+					<div text="3xl title" font="medium">教師聘請系統</div>
+					<div text="lg title" font="medium">
+						Teacher Recruitment System
 					</div>
 				</div>
 			</div>
-			<div class="px-8 py-4 space-y-8">
-				<Divider align="center" class="applicantTextColor">
-					<div class="flex px-2 gap-2">
-						<div>申請端登入</div>
-						<div>Applicant Login</div>
-					</div>
-				</Divider>
-				<form @submit="onSubmit" ref="form">
-					<div class="px-150px">
-						<Field
-							name="email"
-							v-slot="{ field, errorMessage, meta }"
-							v-model="email"
-						>
-							<div class="flex-col px-4">
-								<div
-									class="flex items-center gap-2 pb-2"
-									text="sm gray-500"
-								>
-									<div>電郵地址</div>
-									<div>E-mail</div>
-								</div>
-								<InputText
-									v-bind="field"
-									name="email"
-									type="email"
-									class="input p-inputtext-sm w-full"
-									:disabled="isSubmitting"
-									required
-								/>
-								<!-- TODO: styling -->
-								<span v-if="errorMessage && meta.touched">
-									{{ errorMessage }}
-								</span>
+
+			<Divider align="center">
+				<div class="px-4 font-light" text="sm pApplicant">
+					申請者登入 Applicant Login
+				</div>
+			</Divider>
+
+			<!-- 登入輸入內容 -->
+			<div class="mx-8">
+				<form @submit="onSubmit" ref="form" space="y-6">
+					<!-- 輸入帳號 -->
+					<Field
+						name="email"
+						v-slot="{ field, errorMessage, meta }"
+						v-model="email"
+					>
+						<div class="flex-col" text="sm body" font="light">
+							<div p="b-2" text="sm gray-500">
+								電郵地址 E-mail
 							</div>
-						</Field>
-						<Field
-							name="password"
-							v-slot="{ field, errorMessage, meta }"
-							v-model="password"
-						>
-							<div class="flex-col px-4">
-								<div
-									class="flex items-center gap-2 pb-2"
-									text="sm gray-500"
-								>
-									<div>密碼</div>
-									<div>Password</div>
-								</div>
-								<InputText
-									v-bind="field"
-									name="password"
-									type="password"
-									class="input p-inputtext-sm w-full"
-									:disabled="isSubmitting"
-									required
-								/>
-								<!-- TODO: styling -->
-								<span v-if="errorMessage && meta.touched">
-									{{ errorMessage }}
-								</span>
-							</div>
-						</Field>
-						<div class="flex items-center px-4 gap-2">
-							<Checkbox
-								v-model="isRememberAccount"
-								:binary="true"
+							<InputText
+								v-bind="field"
+								name="email"
+								type="email"
+								class="input p-inputtext-sm w-full"
+								:disabled="isSubmitting"
+								required
 							/>
-							<div class="space-y-0.5 mt-3" text="xs gray-500">
-								<div>下次登入時記住帳號</div>
-								<div>Remember Account at next Login</div>
-							</div>
+							<!-- TODO: styling -->
+							<span v-if="errorMessage && meta.touched">
+								{{ errorMessage }}
+							</span>
 						</div>
-						<div class="flex-col-inline px-4 gap-y-8">
-							<div class="ml-168px mt-40px">
-								<Turnstile ref="turnstileRef" />
-							</div>
-							<div class="flex justify-center">
-								<Button
-									class="py-2 w-80 applicantbuttonStyle"
-									border="2  rounded-lg"
-									type="submit"
-									:loading="
-										isTurnstileRunning || isSubmitting
-									"
-								>
-									<div
-										class="flex justify-center gap-2 mx-auto"
-									>
-										<div>登入</div>
-										<div>Login</div>
-									</div>
-								</Button>
-							</div>
-							<div class="flex justify-center items-center">
-								<router-link to="/recruitment/applicant/regist">
-									<button
-										class="flex justify-center gap-2 px-1 py-1"
-										bg="transparent hover:gray-100"
-										text="sm gray-400 hover:gray-600"
-										border="rounded"
-									>
-										<div>註冊</div>
-										<div>Register</div>
-									</button>
-								</router-link>
-								<Divider layout="vertical" />
-								<router-link
-									to="/recruitment/applicant/forgetpassword"
-								>
-									<button
-										class="flex justify-center gap-2 px-1 py-1"
-										bg="transparent hover:gray-100"
-										text="sm gray-400 hover:gray-600"
-										border="rounded"
-									>
-										<div>忘記密碼</div>
-										<div>Forget Password</div>
-									</button>
-								</router-link>
-							</div>
+					</Field>
+					<Field
+						name="password"
+						v-slot="{ field, errorMessage, meta }"
+						v-model="password"
+					>
+						<div class="flex-col" text="sm body" font="light">
+							<div p="b-2" text="sm gray-500">密碼 Password</div>
+							<InputText
+								v-bind="field"
+								name="password"
+								type="password"
+								class="input p-inputtext-sm w-full"
+								:disabled="isSubmitting"
+								required
+							/>
+							<!-- TODO: styling -->
+							<span v-if="errorMessage && meta.touched">
+								{{ errorMessage }}
+							</span>
 						</div>
+					</Field>
+					<!-- 勾選記住帳號 -->
+					<div class="flex items-center gap-2 m-2">
+						<Checkbox v-model="isRememberAccount" :binary="true" />
+						<div text="sm body" font="light">
+							下次登入時記住帳號 Remember Account at next Login
+						</div>
+					</div>
+					<!-- Captcha 按鈕 -->
+					<div>
+						<Turnstile ref="turnstileRef" />
+					</div>
+					<!-- 登入按鈕 -->
+					<div class="mx-auto w-4/5">
+						<button
+							class="py-3 w-full"
+							bg="hover:nGold-300 active:nGold-500"
+							border="2 opacity-30 nGold-600 rounded-lg hover:nGold-300"
+							text="pApplicant hover:title active:white"
+							:loading="isTurnstileRunning || isSubmitting"
+						>
+							<div>登入 Login</div>
+						</button>
+					</div>
+					<!-- 註冊/忘記密碼按鈕 -->
+					<div class="flex place-content-center">
+						<router-link to="/recruitment/applicant/regist">
+							<button
+								class="p-3 w-full"
+								bg="hover:nGrey-200 active:nGrey-600"
+								text="sm body hover:title active:white"
+								border="rounded-lg"
+							>
+								<div>註冊 Register</div>
+							</button>
+						</router-link>
+						<Divider layout="vertical" />
+						<router-link to="/recruitment/applicant/forgetpassword">
+							<button
+								class="p-3 w-full"
+								bg="hover:nGrey-200 active:nGrey-600"
+								text="sm body hover:title active:white"
+								border="rounded-lg"
+							>
+								<div>忘記密碼 Forget Password</div>
+							</button>
+						</router-link>
 					</div>
 				</form>
 			</div>
