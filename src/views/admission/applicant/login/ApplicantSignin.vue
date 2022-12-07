@@ -14,6 +14,7 @@ import LoginForm from "@/components/LoginForm.vue";
 </script> -->
 
 <template>
+	<Toast position="top-right" />
 	<div class="grid grid-cols-2 gap-15px">
 		<div>
 			<img src="/assets/login-page/Login-img.png" class="h-screen" />
@@ -145,6 +146,7 @@ import LoginForm from "@/components/LoginForm.vue";
 </template>
 
 <script setup lang="ts">
+import { useToast } from "primevue/usetoast";
 import { ref, watch, computed, toRaw } from "vue";
 import { useRouter } from "vue-router";
 import { Field, useForm } from "vee-validate";
@@ -163,6 +165,7 @@ import Checkbox from "primevue/checkbox";
 import Button from "primevue/button";
 import InputText from "primevue/inputtext";
 
+const toast = useToast();
 const router = useRouter();
 
 const redirectToMainContainer = () =>
@@ -253,7 +256,14 @@ const onSubmit = handleSubmit(async function (values, actions) {
 		redirectToMainContainer();
 	} catch (e: any) {
 		// TODO: show error message
-		console.log(e);
+		// console.log(e);
+		toast.add({
+			severity: "error",
+			summary: "Error",
+			detail: "Invalid admission ticket number or password",
+			life: 5000,
+		});
+
 		if (e?.response?.status === 401) console.log("invalid credentials");
 	}
 });

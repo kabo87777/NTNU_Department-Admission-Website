@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="ml-128px mt-20 mb-20">
 		<h1 class="text-4xl text-bold tracking-widest">{{ $t("專案設定") }}</h1>
 		<Divider class="bg-ntnuRed" />
 		<h2 class="text-2xl text-bold tracking-widest inline-block">

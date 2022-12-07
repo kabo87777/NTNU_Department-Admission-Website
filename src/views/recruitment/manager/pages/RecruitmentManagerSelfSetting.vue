@@ -1,53 +1,20 @@
 <template>
-	<div class="ml-50px mt-50px">
-		<div>{{ $t("使用者管理") }}</div>
+	<div class="mt-80px ml-50px">
+		<div class="font-[500] text-[32px] font-bold">
+			{{ $t("使用者管理") }}
+		</div>
 		<div class="bigRedDivider"></div>
-		<div class="mt-20px">
-			{{ $t("帳號名稱") }}：{{ userId }}
-			<Button @click="editUserId" class="p-button-outlined">
-				<img src="/assets/UserSetting/Edit.png" />
-				{{ $t("修改") }}
-			</Button>
-			<Dialog header="修改名稱" v-model:visible="displayUserId">
-				<div>{{ $t("輸入新名稱") }}</div>
-				<InputText type="text" v-model="userId"></InputText>
-				<div class="mt-10px">
-					<Button @click="ensureUserId">{{ $t("確認修改") }}</Button>
-					<Button @click="cancelUserId">{{ $t("取消") }}</Button>
-				</div>
-			</Dialog>
+		<div class="mt-8px px-12px py-24px">
+			<div class="text-[20px] font-[350]">
+				{{ $t("帳號名稱") }}：{{ adminInfo.name }}
+			</div>
+			<div class="mt-36px text-[20px] font-[350]">
+				{{ $t("聯絡信箱") }}：{{ adminInfo.email }}
+			</div>
 		</div>
-		<div class="mt-20px">
-			{{ $t("聯絡信箱") }}：{{ email }}
-			<Button @click="editEmail" class="p-button-outlined">
-				<img src="/assets/UserSetting/Edit.png" />
-				{{ $t("修改") }}
-			</Button>
-			<Dialog header="修改信箱" v-model:visible="displayEmail">
-				<div>{{ $t("輸入新信箱") }}</div>
-				<InputText type="text" v-model="email"></InputText>
-				<div class="mt-10px">
-					<Button @click="ensureEmail">{{ $t("確認修改") }}</Button>
-					<Button @click="cancelEmail">{{ $t("取消") }}</Button>
-				</div>
-			</Dialog>
-		</div>
-		<div class="mt-20px">
-			{{ $t("手機號碼") }}：{{ phone }}
-			<Button @click="editPhone" class="p-button-outlined">
-				<img src="/assets/UserSetting/Edit.png" />
-				{{ $t("修改") }}
-			</Button>
-			<Dialog header="修改信箱" v-model:visible="displayPhone">
-				<div>{{ $t("輸入新號碼") }}</div>
-				<InputText type="text" v-model="phone"></InputText>
-				<div class="mt-10px">
-					<Button @click="ensurePhone">{{ $t("確認修改") }}</Button>
-					<Button @click="cancelPhone">{{ $t("取消") }}</Button>
-				</div>
-			</Dialog>
-		</div>
-		<Divider />
+		<ParagraphDivider class="mt-12px" />
+		<!-- <div class="mt-36px text-[20px] font-[350]">{{ $t("手機號碼") }}：{{ phone }}</div> -->
+		<!-- <Divider /> -->
 		<div class="mt-20px font-[500] font-bold text-[24px] flex">
 			<div>{{ $t("修改密碼") }}</div>
 			<i class="pi pi-lock ml-16px mt-4px text-[#C6BCD0]" />
@@ -120,57 +87,21 @@
 <script setup lang="ts">
 import Button from "primevue/button";
 import InputText from "primevue/inputtext";
-import { onMounted, reactive, ref, toRaw } from "vue";
-import Dialog from "primevue/dialog";
+import { reactive, ref, toRaw } from "vue";
 import { InvalidSessionError } from "@/api/error";
-import { useAdminInfoStore } from "@/stores/RecruitmentAdminStore";
 import { useRecruitmentAdminAuthStore } from "@/stores/universalAuth";
-import { RecruitmentManagerAuthResponse } from "@/api/recruitment/reviewer/types";
 import { useToast } from "primevue/usetoast";
 import { RecruitmentAdminAPI } from "@/api/recruitment/admin/api";
+import ParagraphDivider from "@/styles/paragraphDividerApplicant.vue";
+import { useAdminInfoStore } from "@/stores/RecruitmentAdminStore";
+import type { RecruitmentAdminAuthResponse } from "@/api/recruitment/admin/types";
 
 const toast = useToast();
-const userId = ref("系辦主管");
-const displayUserId = ref();
-const editUserId = () => {
-	displayUserId.value = true;
-};
-const ensureUserId = () => {
-	displayUserId.value = false;
-};
-const cancelUserId = () => {
-	displayUserId.value = false;
-};
-
-const email = ref("csie_office@ntnu.edu.tw");
-const displayEmail = ref();
-const editEmail = () => {
-	displayEmail.value = true;
-};
-const ensureEmail = () => {
-	displayEmail.value = false;
-};
-const cancelEmail = () => {
-	displayEmail.value = false;
-};
-
-const phone = ref("0912345678");
-const displayPhone = ref();
-const editPhone = () => {
-	displayPhone.value = true;
-};
-const ensurePhone = () => {
-	displayPhone.value = false;
-};
-const cancelPhone = () => {
-	displayPhone.value = false;
-};
-
 const adminAuth = useRecruitmentAdminAuthStore();
-const adminStore = useAdminInfoStore();
 const api = new RecruitmentAdminAPI(adminAuth);
+const adminStore = useAdminInfoStore();
 
-// const adminInfo: RecruitmentManagerAuthResponse = toRaw(adminStore.userInfo);
+const adminInfo: RecruitmentAdminAuthResponse = toRaw(adminStore.userInfo);
 
 const initialPassValue = {
 	isCurrentPassBlank: false,
@@ -283,6 +214,4 @@ const handleSubmit = async () => {
 		});
 	}
 };
-
-//onMounted(() => {});
 </script>

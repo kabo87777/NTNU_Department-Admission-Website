@@ -3,6 +3,8 @@ import type {
 	AdmissionAdminProgramListResponse,
 	AdmAdminReviewerListResponse,
 	AdmissionAdminApplicantsListResponse,
+	AdmAdminGetApplicantInfo,
+	AdmAdminGetApplicantAttachmentData,
 	AdmissionAdminScoreFieldResponse,
 	AdmAdminReviewerRelatedProgramResponse,
 	AdmAdminEditApplicantRequest,
@@ -12,6 +14,7 @@ import type {
 	AdmissionAdminSingleDocsGradeResponse,
 	AdmissionAdminSingleOralGradeResponse,
 	AdmissionAdminCreateReviewerRequest,
+	AdmAdminGetApplicantMoredocResponses,
 } from "./types";
 import type { APIGenericResponse } from "@/api/types";
 import { GenericAPI } from "@/api/api";
@@ -44,10 +47,10 @@ export class AdmissionAdminAPI extends GenericAPI {
 	}
 
 	async getReviewerPrograms(
-		reviewerID: Ref<number>
+		reviewerID: number
 	): Promise<AdmAdminReviewerRelatedProgramResponse[]> {
 		const data: APIGenericResponse = await this.instance.get(
-			`/admission/admin/reviewer/${reviewerID.value}/relation`
+			`/admission/admin/reviewer/${reviewerID}/relation`
 		);
 		if (data.error === true || typeof data.data === "undefined")
 			throw new Error("Failed to fetch reviewer-related program list");
@@ -64,6 +67,67 @@ export class AdmissionAdminAPI extends GenericAPI {
 		if (data.error === true || typeof data.data.applicants === "undefined")
 			throw new Error("Failed to fetch applicant list");
 		return data.data.applicants;
+	}
+
+	async getApplicantBasicInfo(
+		userId: number
+	): Promise<AdmAdminGetApplicantInfo> {
+		const data: APIGenericResponse = await this.instance.get(
+			`/admission/admin/applicant/${userId}/info`
+		);
+
+		if (data.error === true)
+			throw new Error("Failed to fetch applicant basic info");
+
+		return data.data[0];
+	}
+
+	async getApplicantFile(
+		userId: number
+	): Promise<AdmAdminGetApplicantAttachmentData[]> {
+		const data: APIGenericResponse = await this.instance.get(
+			`/admission/admin/applicant/${userId}/file`
+		);
+
+		if (data.error === true)
+			throw new Error("Failed to fetch applicant attachment");
+
+		return data.data;
+	}
+
+	async getApplicantMoreDocRes(
+		userId: number
+	): Promise<AdmAdminGetApplicantMoredocResponses> {
+		const data: APIGenericResponse = await this.instance.get(
+			`admission/admin/applicant/${userId}/moredoc`
+		);
+
+		if (data.error === true)
+			throw new Error("Failed to fetch applicant more doc state");
+
+		return data.data;
+	}
+
+	async updateApplicantMoreDocState(
+		userId: number,
+		body: object
+	): Promise<AdmissionAdminGenericResponse> {
+		const data: APIGenericResponse = await this.instance.patch(
+			`admission/admin/applicant/${userId}/moredoc`,
+			body
+		);
+
+		if (data.error !== false) {
+			return {
+				success: false,
+				message: data.message,
+			};
+		}
+
+		return {
+			success: true,
+			message: data.message,
+		};
 	}
 
 	async getScoreField(
@@ -101,11 +165,13 @@ export class AdmissionAdminAPI extends GenericAPI {
 				headers: {
 					"Content-Type": "multipart/form-data",
 				},
+				timeout: 61000,
+				timeoutErrorMessage: "[TIMEOUT] Importing applicants",
 			}
 		);
 		if (
 			response.error === true ||
-			typeof response.data.totalImport === "undefined"
+			typeof response.data?.totalImport === "undefined"
 		)
 			throw new Error("Failed to import applicant accounts.");
 
@@ -170,7 +236,7 @@ export class AdmissionAdminAPI extends GenericAPI {
 
 	async changePassword(body: object): Promise<AdmissionAdminGenericResponse> {
 		const data: APIGenericResponse = await this.instance.patch(
-			"admission/auth/admin/password",
+			"/admission/auth/admin/password",
 			body
 		);
 
@@ -239,16 +305,15 @@ export class AdmissionAdminAPI extends GenericAPI {
 		return data.data;
 	}
 
-	async updateApplicantStage(
-		applicantID: Ref<number>,
-		data: any
-	): Promise<any> {
+	async updateApplicantStage(applicantID: number, data: any): Promise<any> {
 		const response: APIGenericResponse = await this.instance.patch(
-			`/admission/admin/applicant/${applicantID.value}`,
+			`/admission/admin/applicant/${applicantID}`,
 			data
 		);
 		if (response.error === true)
 			throw new Error("Failed to update program");
+
+		return response;
 	}
 	async createReviewer(
 		data: AdmissionAdminCreateReviewerRequest
@@ -261,5 +326,133 @@ export class AdmissionAdminAPI extends GenericAPI {
 		if (response.error === true) throw new Error("Failed to add reviewer");
 
 		return response;
+	}
+	async changeReviewerAccountState(
+		id: number,
+		action: "activate" | "disable"
+	) {
+		const state = action === "activate" ? false : true;
+		const response: APIGenericResponse = await this.instance.patch(
+			`/admission/admin/reviewer/${id}/state`,
+			{
+				isDisabled: state,
+			}
+		);
+		if (response.error === true)
+			throw new Error(
+				`Failed to ${action} reviewer's account state: ${response.message}`
+			);
+
+		return response;
+	}
+	async assignReviewertoProgram(reviewerID: number, programID: number) {
+		const response: APIGenericResponse = await this.instance.post(
+			`/admission/admin/program/${programID}/addreviewer`,
+			{
+				reviewer_id: reviewerID,
+			}
+		);
+
+		if (response.error === true) throw new Error(`${response.message}`);
+		return response;
+	}
+
+	async removeReviewerFromProgram(reviewerID: number, programID: number) {
+		const response: APIGenericResponse = await this.instance.delete(
+			`/admission/admin/program/${programID}/deletereviewer`,
+			{
+				data: {
+					reviewer_id: reviewerID,
+				},
+			}
+		);
+
+		if (response.error === true) throw new Error(`${response.message}`);
+		return response;
+	}
+
+	async getDocsReport(programID: number): Promise<string> {
+		return await this.instance.get(
+			`/admission/admin/program/${programID}/get_docs_report`
+		);
+	}
+
+	async getDocsAnonyReport(programID: number): Promise<string> {
+		return await this.instance.get(
+			`/admission/admin/program/${programID}/get_docs_report?hide=true`
+		);
+	}
+
+	async getGenReport(programID: number): Promise<string> {
+		return await this.instance.get(
+			`/admission/admin/program/${programID}/get_gen_report`
+		);
+	}
+
+	async getGenAnonyReport(programID: number): Promise<string> {
+		return await this.instance.get(
+			`admission/admin/program/${programID}/get_gen_report?hide=true`
+		);
+	}
+
+	async getEnrollReport(programID: number): Promise<string> {
+		return await this.instance.get(
+			`/admission/admin/program/${programID}/get_enroll_report`
+		);
+	}
+
+	async getDocsReportGenerated(programID: number): Promise<GenericAPI> {
+		const data: APIGenericResponse = await this.instance.get(
+			`/admission/admin/program/${programID}/generate_docs`
+		);
+
+		if (data.error === true || typeof data.data === "undefined")
+			throw new Error("Failed to generate the docs report");
+
+		return data.data;
+	}
+
+	async getDocsAnonyReportGenerated(programID: number): Promise<GenericAPI> {
+		const data: APIGenericResponse = await this.instance.get(
+			`/admission/admin/program/${programID}/generate_docs?hide=true`
+		);
+
+		if (data.error === true || typeof data.data === "undefined")
+			throw new Error("Failed to generate the anonymous docs report");
+
+		return data.data;
+	}
+
+	async getGenReportGenerated(programID: number): Promise<GenericAPI> {
+		const data: APIGenericResponse = await this.instance.get(
+			`/admission/admin/program/${programID}/generate_general`
+		);
+
+		if (data.error === true || typeof data.data === "undefined")
+			throw new Error("Failed to generate the general report");
+
+		return data.data;
+	}
+
+	async getGenAnonyReportGenerated(programID: number): Promise<GenericAPI> {
+		const data: APIGenericResponse = await this.instance.get(
+			`/admission/admin/program/${programID}/generate_general?hide=true`
+		);
+
+		if (data.error === true || typeof data.data === "undefined")
+			throw new Error("Failed to generate the anonymous general report");
+
+		return data.data;
+	}
+
+	async getEnrollReportGenerated(programID: number): Promise<GenericAPI> {
+		const data: APIGenericResponse = await this.instance.get(
+			`/admission/admin/program/${programID}/generate_enroll`
+		);
+
+		if (data.error === true || typeof data.data === "undefined")
+			throw new Error("Failed to generate the enroll report");
+
+		return data.data;
 	}
 }
