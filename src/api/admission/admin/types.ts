@@ -20,6 +20,11 @@ export interface AdmissionManagerAuthResponse {
 	updated_at: string;
 }
 
+export interface AdmissionAdminGenericStatusResponse {
+	success?: boolean;
+	message?: string | [];
+}
+
 export interface AdmissionAdminProgramListResponse {
 	id: number;
 	category: string;
@@ -110,22 +115,105 @@ export interface AdmissionAdminApplicantsListResponse {
 	provider: string;
 	uid: string;
 	allow_password_change: boolean;
-	isInit: null;
-	lang: null;
+	isInit: any | null;
+	lang: string | null;
 	name: string;
-	nickname: null;
-	image: null;
+	nickname: string | null;
+	image: any | null;
 	email: string;
 	username: string;
-	docs_order: null;
-	oral_order: null;
-	file: null;
-	docs_stage: null;
-	oral_stage: null;
+	docs_order: number | null;
+	oral_order: number;
+	file: any | null;
+	docs_stage: string | null;
+	oral_stage: string | null;
 	created_at: string;
 	updated_at: string;
 	s_program_id: number;
 	application_stage: null;
+	isMoredoc: boolean;
+	moredoc_category: string;
+	moredoc_end_date: string;
+	moredoc_name: string;
+	moredoc_start_date: string;
+}
+
+export interface AdmAdminGetApplicantInfo {
+	admission_id: string;
+	birth?: Date;
+	birthcountry?: string;
+	cn_surname?: string;
+	communicate_address?: string;
+	communicate_zipcode?: number | string;
+	created_at: string;
+	day_phone?: string;
+	en_givenname?: string;
+	en_midname?: string;
+	en_surname?: string;
+	graduated_school?: string;
+	graduated_major?: string;
+	household_address?: string;
+	household_zipcode?: number | string;
+	id: number;
+	isDisabled?: boolean;
+	isForeigner?: boolean;
+	isSameDept?: boolean;
+	mobile_phone?: string;
+	title?: string;
+	name?: string;
+	nationality?: string;
+	national_id?: string;
+	night_phone?: string;
+	s_applicant_id: number;
+	suffix?: string;
+	sex?: string;
+	updated_at: string;
+}
+
+export interface AdmAdminGetApplicantInfoHeader {
+	id: number;
+	name: string;
+	admission_id: string;
+}
+
+export interface AdmAdminGetApplicantAttachmentData {
+	id: number;
+	category: string;
+	name: string;
+	filepath: {
+		url: string | any;
+	};
+	school?: string;
+	score?: number;
+	s_applicant_id: number;
+	created_at: string;
+	updated_at: string;
+}
+
+export interface AdmAdminGetApplicantAttachmentDataDetail {
+	id?: number;
+	category?: string;
+	name?: string;
+	filepath?: {
+		url?: string | any;
+	};
+	school?: string;
+	score?: number;
+	s_applicant_id?: number;
+	created_at?: string;
+	updated_at?: string;
+	order: number;
+	state: number;
+}
+
+export interface AdmAdminGetApplicantMoredocResponses {
+	name: string;
+	program_id: number;
+	isMoredoc: boolean;
+	moredoc_start_date: Date;
+	moredoc_end_date: Date;
+	moredoc_category: string;
+	moredoc_name: string;
 }
 
 export interface AdmAdminEditApplicantRequest {

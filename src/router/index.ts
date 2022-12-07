@@ -88,19 +88,21 @@ import recruitmentManagerPasswordForget from "@/views/recruitment/manager/login/
 import recruitmentManagerPasswordForgetEmailSent from "@/views/recruitment/manager/login/pwdForgetEmailSent.vue";
 // Recruitment Manager section
 import recruitmentManagerMainContainer from "@/views/recruitment/manager/MainContainer.vue";
-import recruitmentManagerApplicantUploadList from "@/views/recruitment/manager/pages/ApplicantUploadList/TableList.vue";
+import recruitmentManagerApplicantUploadList from "@/views/recruitment/manager/pages/ApplicantUploadList/ApplicantList.vue";
 import recruitmentManagerReviewProgress from "@/views/recruitment/manager/pages/ReviewProgress.vue";
 import recruitmentManagerUserSetting from "@/views/recruitment/manager/pages/RecruitmentManagerSelfSetting.vue";
 import recruitmentApplicationUpload from "@/views/recruitment/manager/pages/UploadFileSetting.vue";
 import recruitmentGradeDataList from "@/views/recruitment/manager/gradeDataList.vue";
 import recruitmentReviewScroreField from "@/views/recruitment/manager/reviewScoreField.vue";
 import recruitmentProjectSetting from "@/views/recruitment/manager/pages/ProjectSetting.vue";
+import recruitmentManagerApplicant from "@/views/recruitment/manager/pages/ApplicantUploadList/Applicant.vue";
 import recruitmentManagerApplicationAccountSetting from "@/views/recruitment/manager/pages/ApplicationAccountSetting.vue";
 import * as Recruitment from "./recruitment";
 const R = Recruitment.default;
 
 //Recommender section
 import recommenderAuthVerification from "@/views/admission/recommender/AuthVerification.vue";
+import recommendLetterFillIn from "@/views/admission/recommender/FillRecommendLetter.vue";
 
 const routes: Array<RouteRecordRaw> = [
 	// Choose recruitment / admission
@@ -301,7 +303,7 @@ const routes: Array<RouteRecordRaw> = [
 						component: ApplicantsUploadList,
 					},
 					{
-						path: "applicantsUploadList/:accId",
+						path: "applicantsUploadList/:userId",
 						name: "ApplicantUploadedDocs",
 						component: ApplicantUploadedDocs,
 					},
@@ -327,6 +329,11 @@ const routes: Array<RouteRecordRaw> = [
 				path: "admission/recommenderAuthVerify",
 				name: "recommenderAuthVerify",
 				component: recommenderAuthVerification,
+			},
+			{
+				path: "admission/recommendLetterFillIn",
+				name: "recommendLetterFillIn",
+				component: recommendLetterFillIn,
 			},
 
 			// Recruitment
@@ -468,6 +475,11 @@ const routes: Array<RouteRecordRaw> = [
 						path: "attachmentList",
 						name: "recruitmentManagerApplicantUploadList",
 						component: recruitmentManagerApplicantUploadList,
+					},
+					{
+						path: "applicant/:userId",
+						name: "recruitmentManagerApplicant",
+						component: recruitmentManagerApplicant,
 					},
 					{
 						path: "userSetting",
