@@ -175,34 +175,29 @@ const {
 } = useQuery(
 	["program"],
 	async () => {
-		try {
-			return (await api.getProgramList()).filter(
-				(program) => program.id === globalStore.program!.id
-			)[0];
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				// FIXME: show session expiry notification??
-				// Why are we even here in the first place?
-				// MainContainer should have checked already.
-				console.error(
-					"Session has already expired while querying programList"
-				);
-				router.push("/");
-				return;
-			}
+		const programs = await api.getProgramList();
+
+		const filteredPrograms = programs.filter(
+			(program) => program.id === globalStore.program!.id
+		);
+
+		if (filteredPrograms.length < 1) {
+			throw new Error("No available programs!");
 		}
+
+		return filteredPrograms[0];
 	},
 	{
 		onSuccess: (data) => {
-			oldProgramName.value = data!.name;
-			programName.value = data!.name;
-			selected_type.value = data!.category;
-			programCreateDate.value = data!.created_at.slice(0, 10);
-			recruit_start_time.value = new Date(data!.recruit_start_date);
-			recruit_end_time.value = new Date(data!.recruit_end_date);
-			review_stage1_start_time.value = new Date(data!.review_start_date);
-			review_stage1_end_time.value = new Date(data!.review_end_date);
-			project_details.value = data!.detail;
+			oldProgramName.value = data.name;
+			programName.value = data.name;
+			selected_type.value = data.category;
+			programCreateDate.value = data.created_at.slice(0, 10);
+			recruit_start_time.value = new Date(data.recruit_start_date);
+			recruit_end_time.value = new Date(data.recruit_end_date);
+			review_stage1_start_time.value = new Date(data.review_start_date);
+			review_stage1_end_time.value = new Date(data.review_end_date);
+			project_details.value = data.detail;
 		},
 	}
 );
