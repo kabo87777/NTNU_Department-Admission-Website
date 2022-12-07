@@ -58,15 +58,12 @@
 						v-model="email"
 					>
 						<div class="flex-col" text="sm body" font="light">
-							<div class="flex gap-2 pb-2" text="sm gray-500">
-								<div>電郵地址</div>
-								<div>E-mail</div>
-							</div>
+							<div p="b-2">電郵地址 E-mail</div>
 							<InputText
 								v-bind="field"
 								name="email"
 								type="email"
-								class="input p-inputtext-sm"
+								class="p-inputtext-sm w-full"
 								:disabled="isSubmitting"
 								required
 							/>
@@ -83,15 +80,12 @@
 						v-model="password"
 					>
 						<div class="flex-col" text="sm body" font="light">
-							<div class="flex gap-2 pb-2" text="sm gray-500">
-								<div>密碼</div>
-								<div>Password</div>
-							</div>
+							<div p="b-2">密碼 Password</div>
 							<InputText
 								v-bind="field"
 								name="password"
 								type="password"
-								class="input p-inputtext-sm w-full"
+								class="p-inputtext-sm w-full"
 								:disabled="isSubmitting"
 								required
 							/>
@@ -102,10 +96,11 @@
 						</div>
 					</Field>
 					<!-- 勾選記住帳號 -->
-					<div class="flex items-center gap-2 m-2">
+					<div class="flex items-center gap-2 w-full">
 						<Checkbox v-model="isRememberAccount" :binary="true" />
-						<div text="sm body" font="light">
-							下次登入時記住帳號 Remember Account at next Login
+						<div text="xs body" font="light">
+							<div>下次登入時記住帳號</div>
+							<div>Remember Account at next Login</div>
 						</div>
 					</div>
 					<!-- Captcha 按鈕 -->
@@ -124,7 +119,8 @@
 							<div>登入 Login</div>
 						</button>
 					</div>
-					<div class="w-4/5 mx-auto">
+					<!-- 忘記密碼 -->
+					<div class="w-3/5 mx-auto">
 						<router-link to="/recruitment/manager/forgetpassword">
 							<button
 								class="p-3 w-full"
@@ -254,24 +250,3 @@ const onSubmit = handleSubmit(async function (values, actions) {
 	}
 });
 </script>
-
-<style setup lang="css">
-.managerTextColor {
-	color: #79363c;
-}
-.managerButtonStyle {
-	background-color: #ffe4df;
-	border-color: #f3baae;
-	color: #4d3639;
-}
-.managerButtonStyle:hover {
-	background-color: #94282c;
-	border-color: #94282c;
-	color: white;
-}
-.managerButtonStyle:active {
-	background-color: #62373e;
-	border-color: #62373e;
-	color: white;
-}
-</style>

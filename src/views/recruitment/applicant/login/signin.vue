@@ -58,14 +58,12 @@
 						v-model="email"
 					>
 						<div class="flex-col" text="sm body" font="light">
-							<div p="b-2" text="sm gray-500">
-								電郵地址 E-mail
-							</div>
+							<div p="b-2">電郵地址 E-mail</div>
 							<InputText
 								v-bind="field"
 								name="email"
 								type="email"
-								class="input p-inputtext-sm w-full"
+								class="p-inputtext-sm w-full"
 								:disabled="isSubmitting"
 								required
 							/>
@@ -81,12 +79,12 @@
 						v-model="password"
 					>
 						<div class="flex-col" text="sm body" font="light">
-							<div p="b-2" text="sm gray-500">密碼 Password</div>
+							<div p="b-2">密碼 Password</div>
 							<InputText
 								v-bind="field"
 								name="password"
 								type="password"
-								class="input p-inputtext-sm w-full"
+								class="p-inputtext-sm w-full"
 								:disabled="isSubmitting"
 								required
 							/>
@@ -97,10 +95,11 @@
 						</div>
 					</Field>
 					<!-- 勾選記住帳號 -->
-					<div class="flex items-center gap-2 m-2">
+					<div class="flex items-center gap-2 w-full">
 						<Checkbox v-model="isRememberAccount" :binary="true" />
-						<div text="sm body" font="light">
-							下次登入時記住帳號 Remember Account at next Login
+						<div text="xs body" font="light">
+							<div>下次登入時記住帳號</div>
+							<div>Remember Account at next Login</div>
 						</div>
 					</div>
 					<!-- Captcha 按鈕 -->
@@ -272,24 +271,3 @@ const onSubmit = handleSubmit(async function (values, actions) {
 	}
 });
 </script>
-
-<style setup lang="css">
-.applicantTextColor {
-	color: #736028;
-}
-.applicantButtonStyle {
-	background-color: #fafac7;
-	border-color: #dbd379;
-	color: #544830;
-}
-.applicantButtonStyle:hover {
-	background-color: #8a7b27;
-	border-color: #8a7b27;
-	color: white;
-}
-.applicantButtonStyle:active {
-	background-color: #624f2a;
-	border-color: #624f2a;
-	color: white;
-}
-</style>

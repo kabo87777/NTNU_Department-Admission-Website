@@ -48,7 +48,7 @@
 			</Divider>
 
 			<!-- 按鈕選項 -->
-			<div class="w-4/5 mx-auto" space="y-8">
+			<div class="w-2/3 mx-auto" space="y-8">
 				<div class="flex-auto place-items-center">
 					<router-link to="/recruitment/applicant/signin">
 						<button

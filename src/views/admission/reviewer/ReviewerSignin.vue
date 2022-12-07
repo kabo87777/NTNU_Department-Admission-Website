@@ -1,131 +1,142 @@
 <template>
 	<Toast position="top-right" />
-	<div class="grid grid-cols-2 gap-15px">
-		<div>
-			<img src="/assets/login-page/Login-img.png" class="h-screen" />
-		</div>
-		<div class="m-auto">
-			<div class="flex m-auto h-15">
-				<div>
-					<img
-						src="/assets/login-page/NTNU-logo-B1.png"
-						class="h-15"
-					/>
-				</div>
-				<Divider layout="vertical" />
-				<div class="mt-1.5">
-					<div class="text-4xl font-bold text-gray-500">
-						資訊工程學系
-					</div>
-					<div class="text-xs text-gray-400">
-						Department of Computer Science and Information
-						Enginering
-					</div>
-				</div>
-			</div>
-			<div>
+	<div class="fixed inset-y-0 left-0">
+		<img src="/assets/login-page/Login-img.png" class="h-200" />
+	</div>
+	<!-- FIXME:附著在底下的空白，以免圖片露餡，但或許有更好的做法 -->
+	<div
+		class="fixed inset-y-0 right-0 z-30 bg-white"
+		w="125 <sm:full lg:150"
+	/>
+	<div
+		class="absolute inset-y-0 right-0 z-50 bg-white"
+		w="125 <sm:full lg:150"
+		px="lg:15"
+	>
+		<div class="flex flex-col py-4 gap-6 mx-8 h-full">
+			<!-- 標題內容 -->
+			<div space="y-2">
+				<img
+					src="/assets/login-page/NTNU-logo-B1.png"
+					w="48"
+					class="sm:invisible"
+				/>
+				<!-- 返回按鈕 -->
 				<router-link to="/admission">
 					<button
 						class="flex items-center gap-2 px-2 py-2 mt-5 mb-3"
-						bg="transparent hover:gray-100"
-						text="sm gray-400 hover:gray-600"
-						border="rounded"
+						bg="hover:nGrey-200 active:nGrey-600"
+						text="sm secondary hover:title active:white"
+						border="rounded-lg"
 					>
 						<i class="pi pi-angle-left" />
 						<div>切換登入身份</div>
 						<div>Change your identity</div>
 					</button>
 				</router-link>
-			</div>
-			<div>
-				<div class="mt-100px ml-164px text-4xl font-bold text-gray-500">
-					{{ $t("審查委員系統") }}
+				<div class="mx-8" space="y-2">
+					<div text="3xl title" font="medium">
+						資訊工程學系報名系統
+					</div>
+					<div text="lg title" font="medium">
+						NTNU CSIE Admissions
+					</div>
 				</div>
 			</div>
-			<form @submit="onSubmit" ref="form">
-				<Field
-					name="email"
-					v-slot="{ field, errorMessage, meta }"
-					v-model="email"
-				>
-					<div class="block mt-50px ml-168px">
-						<div class="text-base text-gray-600">
-							<label for="email">{{ $t("電郵") }}</label>
-						</div>
-						<div class="mt-4px">
+
+			<Divider align="center">
+				<div class="px-4 font-light" text="sm pReviewer">
+					審查委員登入 Reviewer Login
+				</div>
+			</Divider>
+
+			<!-- 登入輸入內容 -->
+			<div class="mx-8">
+				<form @submit="onSubmit" ref="form" space="y-6">
+					<!-- 輸入帳號 -->
+					<Field
+						name="email"
+						v-slot="{ field, errorMessage, meta }"
+						v-model="email"
+					>
+						<div class="flex-col" text="sm body" font="light">
+							<div p="b-2">電郵地址 E-mail</div>
 							<InputText
 								v-bind="field"
 								name="email"
 								type="email"
-								class="input"
+								class="p-inputtext-sm w-full"
 								:disabled="isSubmitting"
 								required
 							/>
+							<!-- TODO: styling -->
+							<span v-if="errorMessage && meta.touched">
+								{{ errorMessage }}
+							</span>
 						</div>
-						<!-- TODO: styling -->
-						<span v-if="errorMessage && meta.touched">
-							{{ errorMessage }}
-						</span>
-					</div>
-				</Field>
-				<Field
-					name="password"
-					v-slot="{ field, errorMessage, meta }"
-					v-model="password"
-				>
-					<div class="block mt-24px ml-168px">
-						<div class="text-base text-gray-600">
-							<label for="password">{{ $t("密碼") }}</label>
-						</div>
-						<div class="mt-4px">
+					</Field>
+					<!-- 輸入密碼 -->
+					<Field
+						name="password"
+						v-slot="{ field, errorMessage, meta }"
+						v-model="password"
+					>
+						<div class="flex-col" text="sm body" font="light">
+							<div p="b-2">密碼 Password</div>
 							<InputText
 								v-bind="field"
 								name="password"
 								type="password"
-								class="input"
+								class="p-inputtext-sm w-full"
 								:disabled="isSubmitting"
 								required
 							/>
+							<!-- TODO: styling -->
+							<span v-if="errorMessage && meta.touched">
+								{{ errorMessage }}
+							</span>
 						</div>
-						<!-- TODO: styling -->
-						<span v-if="errorMessage && meta.touched">
-							{{ errorMessage }}
-						</span>
-					</div>
-				</Field>
-				<div class="flex relative ml-168px mt-8px">
-					<div class="flex">
-						<div class="pt-3px">
-							<Checkbox
-								v-model="isRememberAccount"
-								:binary="true"
-							/>
+					</Field>
+					<!-- 勾選記住帳號 -->
+					<div class="flex items-center gap-2 w-full">
+						<Checkbox v-model="isRememberAccount" :binary="true" />
+						<div text="xs body" font="light">
+							<div>下次登入時記住帳號</div>
+							<div>Remember Account at next Login</div>
 						</div>
-						<label class="text-xs text-gray-500 ml-4px">
-							<div>{{ $t("下次登入記住帳號") }}</div>
-						</label>
 					</div>
-					<div class="absolute ml-320px text-xs">
+					<!-- Captcha 按鈕 -->
+					<div>
+						<Turnstile ref="turnstileRef" />
+					</div>
+					<!-- 登入按鈕 -->
+					<div class="mx-auto w-4/5">
+						<!-- TODO: add spinning wheel while Turnstile runs -->
+						<button
+							class="p-3 w-full"
+							bg="hover:nBlue-200 active:nBlue-500"
+							border="2 opacity-30 nBlue-600 rounded-lg hover:nBlue-200"
+							text="pReviewer hover:title active:white"
+							:loading="isTurnstileRunning || isSubmitting"
+						>
+							<div>登入 Login</div>
+						</button>
+					</div>
+					<!-- 忘記密碼按鈕 -->
+					<div class="mx-auto w-3/5">
 						<router-link to="/admission/reviewer/forgetpassword">
-							<div class="text-right font-bold goldText">
-								{{ $t("忘記密碼") }}
-							</div>
+							<button
+								class="p-3 w-full"
+								bg="hover:nGrey-200 active:nGrey-600"
+								text="sm body hover:title active:white"
+								border="rounded-lg"
+							>
+								<div>忘記密碼 Forget Password</div>
+							</button>
 						</router-link>
 					</div>
-				</div>
-				<div class="ml-168px mt-40px">
-					<Turnstile ref="turnstileRef" />
-				</div>
-				<div class="mt-50px ml-168px">
-					<!-- TODO: add spinning wheel while Turnstile runs -->
-					<Button
-						class="bg-darkBlue h-60px w-420px"
-						type="submit"
-						:loading="isTurnstileRunning || isSubmitting"
-						:label="$t('登入')"
-					/>
-				</div>
-			</form>
+				</form>
+			</div>
 		</div>
 	</div>
 </template>

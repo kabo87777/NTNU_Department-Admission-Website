@@ -38,7 +38,7 @@
 			</Divider>
 
 			<!-- 按鈕選項 -->
-			<div class="w-4/5 mx-auto" space="y-12">
+			<div class="w-3/4 mx-auto" space="y-12">
 				<div class="flex-auto place-items-center">
 					<router-link to="/admission">
 						<button
