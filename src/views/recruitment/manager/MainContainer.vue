@@ -24,7 +24,7 @@
 
 <script setup lang="ts">
 import NavBar from "@/components/NavBar.vue";
-import SideBar from "@/components/recruitmentManagerSidebar.vue";
+import SideBar from "@/components/sidebars/recruitmentManagerSidebar.vue";
 import { watch } from "vue";
 import { useRouter } from "vue-router";
 import { useRecruitmentAdminAuthStore } from "@/stores/universalAuth";
