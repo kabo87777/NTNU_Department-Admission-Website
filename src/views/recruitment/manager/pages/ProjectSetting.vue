@@ -7,7 +7,7 @@
 		</h2>
 		<Button
 			class="w-110px h-40px !ml-20px p-button-outlined p-button-success"
-			@click="update"
+			@click="updateProgramData"
 		>
 			<img
 				alt="logo"
@@ -125,23 +125,20 @@
 </template>
 
 <script setup lang="ts">
-import Divider from "primevue/divider";
+import { useToast } from "primevue/usetoast";
 import Button from "primevue/button";
-import InputText from "primevue/inputtext";
-import { ref } from "vue";
 import Calendar from "primevue/calendar";
-import Textarea from "primevue/textarea";
 import Checkbox from "primevue/checkbox";
+import Divider from "primevue/divider";
+import InputText from "primevue/inputtext";
+import Textarea from "primevue/textarea";
+
+import { ref } from "vue";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
+
+import { RecruitmentAdminAPI } from "@/api/recruitment/admin/api";
 import { useRecruitmentAdminAuthStore } from "@/stores/universalAuth";
 import { useGlobalStore } from "@/stores/RecruitmentAdminStore";
-import { RecruitmentAdminAPI } from "@/api/recruitment/admin/api";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
-import { InvalidSessionError } from "@/api/error";
-import { router } from "@/router";
-import { useToast } from "primevue/usetoast";
-
-// Get QueryClient from the context
-const queryClient = useQueryClient();
 
 const programName = ref<string>("");
 const oldProgramName = ref<string>("");
@@ -154,25 +151,19 @@ const project_details = ref("");
 const checked = ref(false);
 const programCreateDate = ref("");
 
+// Get QueryClient from the context
+const queryClient = useQueryClient();
 const globalStore = useGlobalStore();
+const toast = useToast();
 const adminAuth = useRecruitmentAdminAuthStore();
+
 const api = new RecruitmentAdminAPI(adminAuth);
-const programData = useMutation(async (newProgramData: any) => {
-	try {
-		return await api.updateProgramData(
-			globalStore.program!.id,
-			newProgramData
-		);
-	} catch (error) {
-		console.log(error);
-	}
+
+const programDataMutation = useMutation(async (newProgramData: any) => {
+	return await api.updateProgramData(globalStore.program!.id, newProgramData);
 });
-const {
-	isLoading,
-	isError,
-	data: program,
-	error,
-} = useQuery(
+
+useQuery(
 	["program"],
 	async () => {
 		const programs = await api.getProgramList();
@@ -202,10 +193,9 @@ const {
 	}
 );
 
-const toast = useToast();
-function update() {
-	try {
-		programData.mutate({
+function updateProgramData() {
+	programDataMutation.mutate(
+		{
 			category: selected_type.value,
 			name: programName.value,
 			recruit_start_date:
@@ -217,11 +207,27 @@ function update() {
 				dateTransform(review_stage1_end_time.value) + "+08:00",
 			require_file: '["file1", "file2"]',
 			detail: project_details.value,
-		});
-		toast.add({ severity: "success", summary: "更改成功", life: 3000 });
-	} catch (error) {
-		toast.add({ severity: "error", summary: "資料錯誤", life: 3000 });
-	}
+		},
+		{
+			onError: (e: any) => {
+				toast.add({
+					severity: "error",
+					summary: e.toString(),
+					life: 3000,
+				});
+			},
+			onSuccess: () => {
+				toast.add({
+					severity: "success",
+					summary: "更改成功",
+					life: 3000,
+				});
+			},
+			onSettled: async () => {
+				await queryClient.invalidateQueries({ queryKey: ["program"] });
+			},
+		}
+	);
 }
 
 async function deleteProject() {
