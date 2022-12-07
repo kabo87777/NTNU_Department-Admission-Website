@@ -133,67 +133,45 @@
 
 <script setup lang="ts">
 import "primevue/resources/primevue.min.css";
-import { ref, watch, watchEffect, toRaw, computed } from "vue";
 import Dropdown from "primevue/dropdown";
 import Button from "primevue/button";
+
+import { ref, watch, watchEffect } from "vue";
 import { RouterLink, useRouter } from "vue-router";
-import { useAdmissionReviewerAuthStore } from "@/stores/universalAuth";
-import { AdmissionReviewerAPI } from "@/api/admission/reviewer/api";
 import { useQuery } from "@tanstack/vue-query";
-import { InvalidSessionError } from "@/api/error";
+
+import { AdmissionReviewerAPI } from "@/api/admission/reviewer/api";
 import { AdmissionReviewerProgramListResponse } from "@/api/admission/reviewer/types";
+import { useAdmissionReviewerAuthStore } from "@/stores/universalAuth";
 import { useGlobalStore } from "@/stores/AdmissionReviewerStore";
 
 const router = useRouter();
 
 const reviewerAuth = useAdmissionReviewerAuthStore();
 const api = new AdmissionReviewerAPI(reviewerAuth);
-const store = useGlobalStore();
+const globalStore = useGlobalStore();
 
-const {
-	isLoading,
-	isError,
-	data: programs,
-	error,
-} = useQuery(["admissionReviewerProgramList"], async () => {
-	try {
+const { data: programs } = useQuery(
+	["admissionReviewerProgramList"],
+	async () => {
 		return await api.getProgramList();
-	} catch (e: any) {
-		if (e instanceof InvalidSessionError) {
-			// FIXME: show session expiry notification??
-			// Why are we even here in the first place?
-			// MainContainer should have checked already.
-			console.error(
-				"Session has already expired while querying programList"
-			);
-			router.push("/");
-			return;
-		}
 	}
-});
+);
 
-const dataPrograms = () => {
-	if (programs.value) {
-		const temp = toRaw(programs.value);
-		return temp[0];
-	}
-}; //convert proxy to array or object
-
-// const selectedProgram = ref(dataPrograms());
-
-// FIXME: this should NOT be hardcoded.
 const selectedProgram = ref<AdmissionReviewerProgramListResponse>();
+
 watchEffect(() => {
-	if (programs.value && programs.value.length > 1) {
-		const temp = programs.value[0];
-		store.updateadmissionReviewerProgramData(temp);
-		// selectedProgram.value=toRaw(programs.value[0])
-		selectedProgram.value = programs.value[0];
-	}
+	if (!programs.value) return;
+
+	if (programs.value.length == 0) throw new Error("No programs available!");
+
+	globalStore.updateadmissionReviewerProgramData(programs.value[0]);
+
+	selectedProgram.value = programs.value[0];
 });
 
 watch(selectedProgram, (selection) => {
-	store.updateadmissionReviewerProgramData(selectedProgram!.value!);
+	globalStore.updateadmissionReviewerProgramData(selectedProgram!.value!);
 
 	console.debug("Selected program:\n" + JSON.stringify(selection, null, 2));
 });
