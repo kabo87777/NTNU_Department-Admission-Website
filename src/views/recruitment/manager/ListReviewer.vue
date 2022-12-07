@@ -337,7 +337,8 @@ const addReviewerModal = ref({
 		name: "",
 		email: "",
 		password: "",
-		redirect_url: "http://127.0.0.1:5173/recruitment/reviewer/signin",
+		redirect_url:
+			"https://admissions-frontend-staging.birkhoff.me/recruitment/reviewer/signin",
 	},
 	visible: false,
 	open: () => (addReviewerModal.value.visible = true),

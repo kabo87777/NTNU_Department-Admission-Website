@@ -1,4 +1,5 @@
 <template class="overflow-hidden">
+	<Toast position="top-right" />
 	<div class="flex">
 		<!-- <div class="flex-shrink-1">
 			<img src="/assets/login-page/Login-img.png" class="fill" />
@@ -168,6 +169,7 @@
 </template>
 
 <script setup lang="ts">
+import { useToast } from "primevue/usetoast";
 import { ref, watch, computed } from "vue";
 import { useRouter } from "vue-router";
 import { Field, useForm } from "vee-validate";
@@ -175,15 +177,19 @@ import * as yup from "yup";
 
 import { RecruitmentAdminAPI } from "@/api/recruitment/admin/api";
 import { useRecruitmentAdminAuthStore } from "@/stores/universalAuth";
+import { useUserInfoStore } from "@/stores/RecruitmentReviewerStore";
 
 import type { TurnstileComponentExposes } from "@/components/Turnstile.vue";
 import Turnstile from "@/components/Turnstile.vue";
+import type { RecruitmentAdminAuthResponse } from "@/api/recruitment/admin/types";
 
 import Button from "primevue/button";
 import Checkbox from "primevue/checkbox";
 import InputText from "primevue/inputtext";
 
+const toast = useToast();
 const router = useRouter();
+const userInfo = useUserInfoStore();
 
 const redirectToMainContainer = () => {
 	// TODO: Change Tag - Manager to Admin
@@ -241,17 +247,35 @@ const onSubmit = handleSubmit(async function (values, actions) {
 		if (!turnstileResponse) throw new Error("Turnstile challenge failed");
 
 		const api = new RecruitmentAdminAPI(authStore);
+		const doLogin = async () => {
+			return await api.requestNewSession({
+				email: values.email,
+				password: values.password,
+				"cf-turnstile-response": turnstileResponse,
+			});
+		};
 
-		await api.requestNewSession({
-			email: values.email,
-			password: values.password,
-			"cf-turnstile-response": turnstileResponse,
-		});
+		const handleDataType = async () => {
+			const reviewerInfo: RecruitmentAdminAuthResponse =
+				await doLogin().then((res) => {
+					return res.data;
+				});
+
+			return reviewerInfo;
+		};
+
+		userInfo.saveUserInfo(await handleDataType());
 
 		redirectToMainContainer();
 	} catch (e: any) {
 		// TODO: show error message
-		console.log(e);
+		// console.log(e);
+		toast.add({
+			severity: "error",
+			summary: "Error",
+			detail: "Invalid email or password",
+			life: 5000,
+		});
 		if (e?.response?.status === 401) console.log("invalid credentials");
 	}
 });

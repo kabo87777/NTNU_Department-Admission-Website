@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<div style="position: fixed; top: 0; width: 100%; z-index: 1000">
+		<div style="position: fixed; top: 0; width: 100%; z-index: 10">
 			<NavBar :showSwitchLang="false" />
 		</div>
 		<div style="margin-top: 60px; padding: 60px 20%">

@@ -165,11 +165,13 @@ export class AdmissionAdminAPI extends GenericAPI {
 				headers: {
 					"Content-Type": "multipart/form-data",
 				},
+				timeout: 61000,
+				timeoutErrorMessage: "[TIMEOUT] Importing applicants",
 			}
 		);
 		if (
 			response.error === true ||
-			typeof response.data.totalImport === "undefined"
+			typeof response.data?.totalImport === "undefined"
 		)
 			throw new Error("Failed to import applicant accounts.");
 
@@ -367,5 +369,90 @@ export class AdmissionAdminAPI extends GenericAPI {
 
 		if (response.error === true) throw new Error(`${response.message}`);
 		return response;
+	}
+
+	async getDocsReport(programID: number): Promise<string> {
+		return await this.instance.get(
+			`/admission/admin/program/${programID}/get_docs_report`
+		);
+	}
+
+	async getDocsAnonyReport(programID: number): Promise<string> {
+		return await this.instance.get(
+			`/admission/admin/program/${programID}/get_docs_report?hide=true`
+		);
+	}
+
+	async getGenReport(programID: number): Promise<string> {
+		return await this.instance.get(
+			`/admission/admin/program/${programID}/get_gen_report`
+		);
+	}
+
+	async getGenAnonyReport(programID: number): Promise<string> {
+		return await this.instance.get(
+			`admission/admin/program/${programID}/get_gen_report?hide=true`
+		);
+	}
+
+	async getEnrollReport(programID: number): Promise<string> {
+		return await this.instance.get(
+			`/admission/admin/program/${programID}/get_enroll_report`
+		);
+	}
+
+	async getDocsReportGenerated(programID: number): Promise<GenericAPI> {
+		const data: APIGenericResponse = await this.instance.get(
+			`/admission/admin/program/${programID}/generate_docs`
+		);
+
+		if (data.error === true || typeof data.data === "undefined")
+			throw new Error("Failed to generate the docs report");
+
+		return data.data;
+	}
+
+	async getDocsAnonyReportGenerated(programID: number): Promise<GenericAPI> {
+		const data: APIGenericResponse = await this.instance.get(
+			`/admission/admin/program/${programID}/generate_docs?hide=true`
+		);
+
+		if (data.error === true || typeof data.data === "undefined")
+			throw new Error("Failed to generate the anonymous docs report");
+
+		return data.data;
+	}
+
+	async getGenReportGenerated(programID: number): Promise<GenericAPI> {
+		const data: APIGenericResponse = await this.instance.get(
+			`/admission/admin/program/${programID}/generate_general`
+		);
+
+		if (data.error === true || typeof data.data === "undefined")
+			throw new Error("Failed to generate the general report");
+
+		return data.data;
+	}
+
+	async getGenAnonyReportGenerated(programID: number): Promise<GenericAPI> {
+		const data: APIGenericResponse = await this.instance.get(
+			`/admission/admin/program/${programID}/generate_general?hide=true`
+		);
+
+		if (data.error === true || typeof data.data === "undefined")
+			throw new Error("Failed to generate the anonymous general report");
+
+		return data.data;
+	}
+
+	async getEnrollReportGenerated(programID: number): Promise<GenericAPI> {
+		const data: APIGenericResponse = await this.instance.get(
+			`/admission/admin/program/${programID}/generate_enroll`
+		);
+
+		if (data.error === true || typeof data.data === "undefined")
+			throw new Error("Failed to generate the enroll report");
+
+		return data.data;
 	}
 }

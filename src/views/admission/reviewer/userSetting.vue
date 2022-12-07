@@ -13,9 +13,9 @@
 				{{ $t("聯絡信箱") }}{{ $t(":") }}{{ " "
 				}}{{ reviewerInfo.email }}
 			</div>
-			<div class="mt-36px text-[20px] font-[350]">
+			<!-- <div class="mt-36px text-[20px] font-[350]">
 				{{ $t("手機號碼") }}{{ $t(":") }}{{ " " }} 手機號碼缺失
-			</div>
+			</div> -->
 		</div>
 		<ParagraphDivider class="mt-12px" />
 		<div class="mt-20px font-[500] font-bold text-[24px] flex">
@@ -77,7 +77,7 @@
 				</div>
 			</div>
 			<Button
-				class="p-button-sm p-button-secondary p-button-outlined !mt-60px"
+				class="p-button-sm p-button-secondary p-button-outlined !mt-60px !text-[16px]"
 				type="submit"
 				icon="pi pi-pencil"
 				:loading="isChangePassLoading"
