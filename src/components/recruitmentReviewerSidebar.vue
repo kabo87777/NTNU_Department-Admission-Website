@@ -87,7 +87,7 @@
 							{{ $t("審查端帳戶") }}
 						</div>
 						<div class="mt-4px ml-[-2px] text-16px">
-							{{ $t("系辦主管") }}
+							{{ reviewerInfo.name }}
 						</div>
 					</div>
 				</div>
@@ -137,10 +137,17 @@ import { useQuery } from "@tanstack/vue-query";
 import { InvalidSessionError } from "@/api/error";
 import { useGlobalStore } from "@/stores/RecruitmentReviewerStore";
 import { RecruitmentReviewerProgramListResponse } from "@/api/recruitment/reviewer/types";
+import { RecruitmentManagerAuthResponse } from "@/api/recruitment/reviewer/types";
+import { useUserInfoStore } from "@/stores/RecruitmentReviewerStore";
 
 const reviewerAuth = useRecruitmentReviewerAuthStore();
 const store = useGlobalStore();
+const reviewerStore = useUserInfoStore();
 const api = new RecruitmentReviewerAPI(reviewerAuth);
+
+const reviewerInfo: RecruitmentManagerAuthResponse = toRaw(
+	reviewerStore.userInfo
+);
 
 const {
 	isLoading,

@@ -566,10 +566,12 @@ const setBasicInfo = (res: RecruitmentApplicantUserInfoResponse) => {
 	name.enMidName = res.en_midname as string;
 	name.enName = res.en_givenname as string;
 
-	if (identity.nationality === "台灣") {
+	if (res.nationality === "台灣") {
+		identity.selectedIdentity = "本地人士";
 		identity.ic = res.national_id as string;
 		identity.nationality = res.nationality as string;
-	} else if (identity.nationality !== null) {
+	} else if (res.nationality !== null) {
+		identity.selectedIdentity = "外籍人士";
 		identity.ui = res.national_id as string;
 		identity.nationality = res.nationality as string;
 	}

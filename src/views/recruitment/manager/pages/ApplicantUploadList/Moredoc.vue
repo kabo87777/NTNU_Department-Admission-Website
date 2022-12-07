@@ -207,14 +207,17 @@
 </template>
 
 <script setup lang="ts">
-import "@/styles/customize.css";
-import "primeicons/primeicons.css";
-import { reactive, watch, ref, toRaw } from "vue";
-import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
-import { AdmissionAdminAPI } from "@/api/admission/admin/api";
+import { reactive, onMounted, toRaw, watch, ref } from "vue";
+import { useRecruitmentAdminAuthStore } from "@/stores/universalAuth";
+import { RecruitmentAdminAPI } from "@/api/recruitment/admin/api";
+import { useGlobalStore } from "@/stores/RecruitmentAdminStore";
 import { useQuery } from "@tanstack/vue-query";
 import { InvalidSessionError } from "@/api/error";
-import { AdmAdminGetApplicantMoredocResponses } from "@/api/admission/admin/types";
+import {
+	RecruitmentAdminGenericStatusResponse,
+	RecruimentAdminGetApplicantMoredocResponses,
+} from "@/api/recruitment/admin/types";
+import ParagraphDivider from "@/styles/paragraphDivider.vue";
 import { useToast } from "primevue/usetoast";
 import SelectButton from "primevue/selectbutton";
 import InputText from "primevue/inputtext";
@@ -222,11 +225,13 @@ import Button from "primevue/button";
 import Dropdown from "primevue/dropdown";
 import Calendar from "primevue/calendar";
 import Dialog from "primevue/dialog";
-import ParagraphDivider from "../../../../../styles/paragraphDivider.vue";
+
+const adminAuth = useRecruitmentAdminAuthStore();
+const api = new RecruitmentAdminAPI(adminAuth);
+const store = useGlobalStore();
+const programId = store.program?.id;
 
 const props = defineProps(["userId"]);
-const adminAuth = useAdmissionAdminAuthStore();
-const api = new AdmissionAdminAPI(adminAuth);
 
 const toast = useToast();
 
@@ -264,7 +269,7 @@ const tabOptions = ref([
 ]);
 
 const categoryOptions = ref([
-	{ name: "就學經歷" },
+	{ name: "教學經歷" },
 	{ name: "考試與檢定分數" },
 	{ name: "其他有利於審查資料" },
 ]);
@@ -282,7 +287,7 @@ const addHours = (numHrs: number, date = new Date()) => {
 	return dateCpy;
 };
 
-const setInfo = (info: AdmAdminGetApplicantMoredocResponses) => {
+const setInfo = (info: RecruimentAdminGetApplicantMoredocResponses) => {
 	activeTab.value = info.isMoredoc
 		? tabOptions.value[1]
 		: tabOptions.value[0];
@@ -294,7 +299,11 @@ const setInfo = (info: AdmAdminGetApplicantMoredocResponses) => {
 
 const saveChange = async (body: object) => {
 	try {
-		return await api.updateApplicantMoreDocState(props.userId, body);
+		return await api.updateApplicantMoreDocState(
+			programId as number,
+			props.userId,
+			body
+		);
 	} catch (e: any) {
 		if (e instanceof InvalidSessionError) {
 			console.error(
@@ -379,10 +388,13 @@ const saveOnclick = () => {
 };
 
 const { data } = useQuery(
-	["adminApplicantMoredocInfo"],
+	["recruitmentApplicantMoredocInfo"],
 	async () => {
 		try {
-			return await api.getApplicantMoreDocRes(props.userId);
+			return await api.getApplicantMoreDocRes(
+				programId as number,
+				props.userId
+			);
 		} catch (e: any) {
 			if (e instanceof InvalidSessionError) {
 				console.error(
@@ -394,7 +406,7 @@ const { data } = useQuery(
 	},
 	{
 		onSuccess: (data) => {
-			setInfo(data as AdmAdminGetApplicantMoredocResponses);
+			setInfo(data as RecruimentAdminGetApplicantMoredocResponses);
 		},
 	}
 );
@@ -402,7 +414,10 @@ const { data } = useQuery(
 watch(
 	() => isLoading.fetch,
 	async () => {
-		const response = await api.getApplicantMoreDocRes(props.userId);
+		const response = await api.getApplicantMoreDocRes(
+			programId as number,
+			props.userId
+		);
 
 		setInfo(response);
 
@@ -410,5 +425,3 @@ watch(
 	}
 );
 </script>
-
-<style setup lang="css"></style>

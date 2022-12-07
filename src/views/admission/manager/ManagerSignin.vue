@@ -1,4 +1,5 @@
 <template>
+	<Toast position="top-right" />
 	<div class="grid grid-cols-2 gap-15px">
 		<div>
 			<img src="/assets/login-page/Login-img.png" class="h-screen" />
@@ -130,6 +131,7 @@
 </template>
 
 <script setup lang="ts">
+import { useToast } from "primevue/usetoast";
 import { ref, watch, computed } from "vue";
 import { useRouter } from "vue-router";
 import { Field, useForm } from "vee-validate";
@@ -145,6 +147,7 @@ import Checkbox from "primevue/checkbox";
 import Button from "primevue/button";
 import InputText from "primevue/inputtext";
 
+const toast = useToast();
 const router = useRouter();
 
 const redirectToMainContainer = () =>
@@ -155,7 +158,7 @@ const authStore = useAdmissionAdminAuthStore();
 // Login Form
 const turnstileRef = ref<TurnstileComponentExposes>();
 const isRememberAccount = ref(false);
-const email = ref("example@email.com");
+const email = ref("ntnuaadmin1@yopmail.com");
 const password = ref("Example123");
 const isTurnstileRunning = computed(() => !turnstileRef.value?.turnstileToken);
 
@@ -163,7 +166,7 @@ const isTurnstileRunning = computed(() => !turnstileRef.value?.turnstileToken);
 // https://vee-validate.logaretm.com/v4/guide/composition-api/handling-forms/#javascript-submissions-ajax
 const { handleSubmit, isSubmitting } = useForm({
 	validationSchema: yup.object({
-		email: yup.string().required("Required").email("Invalid email"),
+		email: yup.string().required("Required"),
 		password: yup.string().required("Required"),
 		// .min(8, "Must be 8 characters or more")
 		// .matches(/[a-z]+/, "One lowercase character")
@@ -212,7 +215,14 @@ const onSubmit = handleSubmit(async function (values, actions) {
 		redirectToMainContainer();
 	} catch (e: any) {
 		// TODO: show error message
-		console.log(e);
+		// console.log(e);
+		toast.add({
+			severity: "error",
+			summary: "Error",
+			detail: "Invalid email or password",
+			life: 5000,
+		});
+
 		if (e?.response?.status === 401) console.log("invalid credentials");
 	}
 });

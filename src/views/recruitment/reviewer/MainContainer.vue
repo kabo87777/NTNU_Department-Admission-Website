@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<div style="position: fixed; top: 0; width: 100%; z-index: 1000">
+		<div style="position: fixed; top: 0; width: 100%; z-index: 10">
 			<NavBar />
 		</div>
 		<div style="display: flex; margin-top: 60px; position: relative">

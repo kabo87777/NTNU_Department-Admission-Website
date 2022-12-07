@@ -1,8 +1,8 @@
 <template>
 	<div class="relative" style="height: 100%">
 		<div class="flex">
-			<div class="sidebarVerticalBigRedDivider mt-32px"></div>
-			<div class="sidebarVerticalSmallRedDivider mt-32px"></div>
+			<div class="sidebarVerticalBigBlueDivider mt-32px"></div>
+			<div class="sidebarVerticalSmallBlueDivider mt-32px"></div>
 			<div class="mt-32px ml-12px w-[100%]">
 				<Dropdown
 					v-model="selectedProgram"
@@ -25,7 +25,7 @@
 			</div>
 		</div>
 
-		<div class="flex mt-32px">
+		<div class="flex mt-50px">
 			<div class="sidebarBlueDivider"></div>
 			<div class="mt-[-8px] ml-8px text-[#236192] text-18px font-bold">
 				{{ $t("第一階段審查") }}
