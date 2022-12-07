@@ -472,7 +472,6 @@ import { useRouter } from "vue-router";
 import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
 import { AdmissionAdminAPI } from "@/api/admission/admin/api";
 import { useMutation, useQuery } from "@tanstack/vue-query";
-import { InvalidSessionError } from "@/api/error";
 import { useGlobalStore } from "@/stores/globalStore";
 import { AdmissionAdminProgramListResponse } from "@/api/admission/admin/types";
 
@@ -489,12 +488,7 @@ const programData = useMutation(async (newProgramData: any) => {
 	}
 });
 
-const {
-	isLoading,
-	isError,
-	data: programs,
-	error,
-} = useQuery(["programList"], async () => {
+const { isLoading, data: programs } = useQuery(["programList"], async () => {
 	return await api.getProgramList();
 });
 
