@@ -177,7 +177,7 @@ const onSubmit = async () => {
 					life: 3000,
 				});
 				setTimeout(() => {
-					router.replace({ name: "recruitmentAdminSignin" });
+					router.replace({ name: "recruitmentManagerSignin" });
 				}, 3000);
 			} else if (
 				!changePassRes.success &&
