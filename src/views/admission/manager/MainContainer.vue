@@ -39,6 +39,7 @@ const adminAuth = useAdmissionAdminAuthStore();
 watch(router.currentRoute, async () => {
 	if (!(await doUniversalAuthSessionValidation(adminAuth))) {
 		router.replace({ name: "AdmissionManagerSignin" });
+		return;
 		// TODO: show session expired notification
 	}
 });
