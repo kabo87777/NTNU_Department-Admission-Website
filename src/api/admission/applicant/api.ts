@@ -127,6 +127,25 @@ export class AdmissionApplicantAPI extends GenericAPI {
 		};
 	}
 
+	async editEmail(body: object): Promise<AdmissionApplicantGenericResponse> {
+		const data: APIGenericResponse = await this.instance.patch(
+			"admission/auth/applicant",
+			body
+		);
+
+		if (data.error !== false) {
+			return {
+				success: false,
+				message: data.message.full_messages,
+			};
+		}
+
+		return {
+			success: true,
+			message: data.message,
+		};
+	}
+
 	async changePassword(
 		body: object
 	): Promise<AdmissionApplicantGenericResponse> {

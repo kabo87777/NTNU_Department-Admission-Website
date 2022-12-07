@@ -16,7 +16,23 @@
 				<SideBar />
 			</div>
 			<div style="margin-left: 360px; width: 100%; padding: 60px 6%">
-				<router-view />
+				<!-- 畫面顯示(已開放專案申請時) -->
+				<div v-if="project.project.pid"><router-view /></div>
+				<!-- 畫面顯示(未開放專案申請時) -->
+				<div v-else class="relative h-150">
+					<div class="recruitmentAdditionNoData">
+						<img
+							src="/assets/admissionApplicant/Newsletter.png"
+							alt="NO DATA"
+							style="border-radius: 50%"
+						/>
+						<div
+							class="text-center font-bold text-[24px] text-[#736028]"
+						>
+							{{ $t("暫未開放申請") }}
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>

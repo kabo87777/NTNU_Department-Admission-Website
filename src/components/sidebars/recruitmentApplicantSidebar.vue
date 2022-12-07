@@ -5,16 +5,19 @@
 			<div class="sidebarVerticalSmallYellowDivider mt-32px"></div>
 			<div class="mt-32px ml-12px w-[100%]">
 				<div class="sidebarTitleBar">
-					{{
-						$t("sidebarTitleYear", {
-							year: currentYear,
-							roc: rocYear,
-						}) +
-						$t(project.project.category) +
-						$t("sidebarTitleGroup", {
-							group: project.project.name["0"],
-						})
-					}}
+					<div v-if="project.project.pid">
+						{{
+							$t("sidebarTitleYear", {
+								year: currentYear,
+								roc: rocYear,
+							}) +
+							$t(project.project.category) +
+							$t("sidebarTitleGroup", {
+								group: project.project.name["0"],
+							})
+						}}
+					</div>
+					<div v-else>{{ $t("暫無專案") }}</div>
 				</div>
 			</div>
 		</div>
@@ -211,6 +214,7 @@
 					</div>
 					<div class="ml-12px">
 						<Button
+							v-if="project.project.pid"
 							class="p-button-secondary p-button-outlined"
 							style="height: 40px; border: 2px solid #736028"
 							@click="isModalVisible = true"

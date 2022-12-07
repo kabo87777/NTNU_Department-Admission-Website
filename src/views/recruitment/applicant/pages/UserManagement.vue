@@ -1,5 +1,5 @@
 <template>
-	<div class="mt-80px ml-50px">
+	<div>
 		<div class="font-[500] text-[32px] font-bold">
 			{{ $t("使用者管理") }}
 		</div>
