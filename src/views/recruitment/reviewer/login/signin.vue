@@ -1,4 +1,5 @@
 <template class="overflow-hidden">
+	<Toast position="top-right" />
 	<div class="flex">
 		<!-- <div class="flex-shrink-1">
             <img src="/assets/login-page/Login-img.png" class="fill" />
@@ -168,6 +169,7 @@
 </template>
 
 <script setup lang="ts">
+import { useToast } from "primevue/usetoast";
 import { ref, watch, computed } from "vue";
 import { useRouter } from "vue-router";
 import { Field, useForm } from "vee-validate";
@@ -186,6 +188,7 @@ import Button from "primevue/button";
 import Checkbox from "primevue/checkbox";
 import InputText from "primevue/inputtext";
 
+const toast = useToast();
 const router = useRouter();
 
 const redirectToMainContainer = () =>
@@ -270,7 +273,14 @@ const onSubmit = handleSubmit(async function (values, actions) {
 		redirectToMainContainer();
 	} catch (e: any) {
 		// TODO: show error message
-		console.log(e);
+		// console.log(e);
+		toast.add({
+			severity: "error",
+			summary: "Error",
+			detail: "Invalid email or password",
+			life: 5000,
+		});
+
 		if (e?.response?.status === 401) console.log("invalid credentials");
 	}
 });

@@ -337,7 +337,7 @@ const importApplicantCallback = (event: FileUploadUploaderEvent) => {
 	formdata.append("file", file);
 	formdata.append(
 		"redirect_url",
-		"http://127.0.0.1:5173/admission/applicant/signin"
+		"https://admissions-frontend-staging.birkhoff.me/admission/applicant/signin"
 	);
 	uploadApplicantImport(formdata);
 };

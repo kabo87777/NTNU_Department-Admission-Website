@@ -5,7 +5,9 @@
 			{{ trans.reviewScoreField.value }}
 		</div>
 		<div class="bigRedDivider"></div>
-
+		<Message severity="warn"
+			>各個評分項目與佔比同時填 0 表示關閉該評分項目</Message
+		>
 		<!-- Body - Score Field: Phase 1 -->
 		<div class="my-6" text="2xl gray-900">
 			{{ trans.scoreOptionSetting.value }}
@@ -280,6 +282,7 @@
 </template>
 
 <script setup lang="ts">
+import Message from "primevue/message";
 import InputText from "primevue/inputtext";
 import InputNumber from "primevue/inputnumber";
 import Button from "primevue/button";

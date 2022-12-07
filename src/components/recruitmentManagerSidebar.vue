@@ -449,7 +449,7 @@
 							{{ $t("管理端帳戶") }}
 						</div>
 						<div class="text-16px mt-4px ml-8px tracking-wider">
-							{{ $t("系辦主管") }}
+							{{ adminInfo.name }}
 						</div>
 					</div>
 				</div>
@@ -489,7 +489,7 @@
 
 <script setup lang="ts">
 import "primevue/resources/primevue.min.css";
-import { ref, computed, watchEffect, watch } from "vue";
+import { ref, computed, watchEffect, watch, toRaw } from "vue";
 import Dropdown from "primevue/dropdown";
 import Button from "primevue/button";
 import Divider from "primevue/divider";
@@ -502,9 +502,13 @@ import { useQuery, useMutation } from "@tanstack/vue-query";
 import { InvalidSessionError } from "@/api/error";
 import { useGlobalStore } from "@/stores/RecruitmentAdminStore";
 import { RecruitmentAdminProgramListResponse } from "@/api/recruitment/admin/types";
+import { useAdminInfoStore } from "@/stores/RecruitmentAdminStore";
+import type { RecruitmentAdminAuthResponse } from "@/api/recruitment/admin/types";
 
 const router = useRouter();
+const adminStore = useAdminInfoStore();
 
+const adminInfo: RecruitmentAdminAuthResponse = toRaw(adminStore.userInfo);
 const adminAuth = useRecruitmentAdminAuthStore();
 const store = useGlobalStore();
 
