@@ -202,7 +202,6 @@ import { useMutation, useQuery } from "@tanstack/vue-query";
 import { InvalidSessionError } from "@/api/error";
 import { useGlobalStore } from "@/stores/AdmissionReviewerStore";
 import { useToast } from "primevue/usetoast";
-import { e } from "vitest/dist/index-40e0cb97";
 
 const reviewerAuth = useAdmissionReviewerAuthStore();
 const api = new AdmissionReviewerAPI(reviewerAuth);
@@ -245,7 +244,7 @@ const {
 			totalApplicant.value = data!.length;
 			applicantGraded.value = 0;
 			data!.forEach((applicant) => {
-				if (applicant.isOralGraded) {
+				if (applicant.isDocsGraded) {
 					applicantGraded.value += 1;
 				}
 			});

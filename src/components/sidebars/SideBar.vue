@@ -13,7 +13,7 @@
 					style="border-radius: 8px; border: 1px solid black"
 				>
 					<template #value="slotProps">
-						<div class="mt-6px tracking-1px text-18px font-medium">
+						<div class="mt-6px tracking-2px text-18px font-medium">
 							{{ slotProps?.value?.category }}
 							{{ slotProps?.value?.name }}
 						</div>
