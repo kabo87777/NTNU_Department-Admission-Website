@@ -154,7 +154,7 @@ export class RecruitmentAdminAPI extends GenericAPI {
 		userId: number,
 		body: object
 	): Promise<RecruitmentAdminGenericStatusResponse> {
-		const data: APIGenericResponse = await this.instance.post(
+		const data: APIGenericResponse = await this.instance.patch(
 			`recruitment/admin/program/${programID}/applicant/${userId}/moredoc`,
 			body
 		);
