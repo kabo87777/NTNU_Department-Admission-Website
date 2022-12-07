@@ -352,7 +352,7 @@
 					</div>
 					<div class="ml-8px">
 						<Button
-							@click="newProject"
+							@click="isDisplayNewProjectPrompt = true"
 							class="h-36px p-button-outlined p-button-success !bg-white"
 						>
 							<img
