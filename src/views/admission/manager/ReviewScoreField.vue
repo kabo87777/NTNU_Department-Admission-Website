@@ -625,7 +625,7 @@ async function saveChange() {
 			oral_grade_weight_4: oralScore[4].weight,
 			oral_grade_weight_5: oralScore[5].weight,
 		});
-	} catch (error) {
+	} catch (error: any) {
 		toast.add({
 			severity: "error",
 			summary: "Unable to Patch Score Data: " + error.toString(),
@@ -652,7 +652,7 @@ async function saveChange() {
 	// Patch Info/File Data
 	try {
 		await patchInfoFileField.mutateAsync(programData);
-	} catch (error) {
+	} catch (error: any) {
 		toast.add({
 			severity: "error",
 			summary: "Unable to Info/File Data: " + error.toString(),
