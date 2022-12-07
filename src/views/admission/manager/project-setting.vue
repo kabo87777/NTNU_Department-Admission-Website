@@ -1,5 +1,5 @@
 <template>
-	<div class="ml-128px mt-20 mb-20">
+	<div>
 		<h1 class="text-4xl text-bold tracking-widest">{{ $t("專案設定") }}</h1>
 		<Divider class="bg-ntnuRed" />
 		<h2 class="text-2xl text-bold tracking-widest inline-block">
@@ -62,19 +62,23 @@
 				:showIcon="true"
 				:showTime="true"
 				class="w-320px h-44px mt-10px"
+				:baseZIndex="zIndex"
 			/>
 		</div>
 		<div class="inline-block ml-100px">
 			<h5 class="text-base tracking-widest mt-30px">
 				{{ $t("申請端關閉時間/日期") }} :
 			</h5>
-			<Calendar
-				inputId="icon"
-				v-model="application_end_time"
-				:showIcon="true"
-				:showTime="true"
-				class="w-320px h-44px mt-10px"
-			/>
+			<div>
+				<Calendar
+					inputId="icon"
+					v-model="application_end_time"
+					:showIcon="true"
+					:showTime="true"
+					class="w-320px h-44px mt-10px"
+					:baseZIndex="zIndex"
+				/>
+			</div>
 		</div>
 		<br />
 		<div class="inline-block">
@@ -87,6 +91,7 @@
 				:showIcon="true"
 				:showTime="true"
 				class="w-320px h-44px mt-10px"
+				:baseZIndex="zIndex"
 			/>
 		</div>
 		<div class="inline-block ml-100px">
@@ -99,6 +104,7 @@
 				:showIcon="true"
 				:showTime="true"
 				class="w-320px h-44px mt-10px"
+				:baseZIndex="zIndex"
 			/>
 		</div>
 		<h5 class="text-base tracking-widest mt-30px">
@@ -112,7 +118,7 @@
 			/>
 		</div>
 		<br />
-		<div>
+		<!-- <div>
 			<Checkbox
 				inputId="binary"
 				v-model="checked"
@@ -130,7 +136,7 @@
 				cols="30"
 				class="w-950px h-320px !mt-30px !ml-10px"
 			/>
-		</div>
+		</div> -->
 	</div>
 </template>
 
@@ -174,6 +180,7 @@ const translation = {
 	phase1: t("第一階段 (書面審查)"),
 	phase2: t("第二階段 (口試審查)"),
 };
+const zIndex = 100;
 const review_stages = ref([translation.phase1, translation.phase2]);
 const globalStore = useGlobalStore();
 const adminAuth = useAdmissionAdminAuthStore();
