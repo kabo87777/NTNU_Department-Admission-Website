@@ -34,10 +34,10 @@
 
 			<!-- 按鈕選項 -->
 			<div class="w-4/5 mx-auto" space="y-8" text="xl">
-				<div class="flex-auto justify-center">
+				<div class="flex-auto place-items-center">
 					<router-link to="/admission">
 						<button
-							class="p-4 w-full max-w-90"
+							class="p-4 w-full"
 							bg="hover:nGold-300 active:nGold-500"
 							border="2 nGold-600 rounded-lg hover:nGold-300"
 							text="pApplicant hover:title active:white"
@@ -46,12 +46,12 @@
 						</button>
 					</router-link>
 				</div>
-				<div class="flex-auto justify-center">
+				<div class="flex-auto place-items-center">
 					<router-link to="/recruitment">
 						<button
-							class="p-4 w-full max-w-90"
+							class="p-4 w-full"
 							bg="hover:nRed-300 active:nRed-500"
-							border="2 nRed-600 rounded-lg hover:white"
+							border="2 nRed-600 rounded-lg hover:nRed-300"
 							text="pAdmin hover:title active:white"
 						>
 							<div>教師聘請系統 Recruitment System</div>
