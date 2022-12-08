@@ -203,43 +203,39 @@ const {
 } = useQuery(
 	["program"],
 	async () => {
-		try {
-			return (await api.getProgramList()).filter(
-				(program) => program.id === globalStore.program!.id
-			)[0];
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				// FIXME: show session expiry notification??
-				// Why are we even here in the first place?
-				// MainContainer should have checked already.
-				console.error(
-					"Session has already expired while querying programList"
-				);
-				router.push("/");
-				return;
-			}
+		const programs = await api.getProgramList();
+
+		const filteredPrograms = programs.filter(
+			(program) => program.id === globalStore.program!.id
+		);
+
+		if (filteredPrograms.length < 1) {
+			throw new Error("No available programs!");
 		}
+
+		return filteredPrograms[0];
 	},
 	{
 		onSuccess: (data) => {
-			oldProgramName.value = data!.name;
-			programName.value = data!.name;
-			selected_type.value = data!.category;
-			programCreateDate.value = data!.created_at.slice(0, 10);
+			oldProgramName.value = data.name;
+			programName.value = data.name;
+			selected_type.value = data.category;
+			programCreateDate.value = data.created_at.slice(0, 10);
 			application_start_time.value = new Date(
-				data!.application_start_date
+				data.application_start_date
 			);
-			application_end_time.value = new Date(data!.application_end_date);
-			review_stage1_start_time.value = new Date(data!.review_start_date);
-			review_stage1_end_time.value = new Date(data!.review_end_date);
-			project_details.value = data!.detail;
-			if (data!.stage === "docs_stage") {
+			application_end_time.value = new Date(data.application_end_date);
+			review_stage1_start_time.value = new Date(data.review_start_date);
+			review_stage1_end_time.value = new Date(data.review_end_date);
+			project_details.value = data.detail;
+			if (data.stage === "docs_stage") {
 				review_stage.value = translation.phase1;
 			}
-			if (data!.stage === "oral_stage") {
+			if (data.stage === "oral_stage") {
 				review_stage.value = translation.phase2;
 			}
 		},
+		// TODO: onError
 	}
 );
 
@@ -275,9 +271,9 @@ function update() {
 	}
 }
 
-function deleteProject() {
+async function deleteProject() {
 	try {
-		api.deleteProgram(globalStore.program!.id);
+		await api.deleteProgram(globalStore.program!.id);
 		toast.add({ severity: "success", summary: "刪除成功", life: 3000 });
 	} catch (error) {
 		toast.add({ severity: "error", summary: "刪除失敗", life: 3000 });
