@@ -101,14 +101,12 @@ const programId = store.program?.id;
 
 const props = defineProps(["userId"]);
 
-const attachmentList: RecruitmentAdminGetApplicantAttachmentList[] = reactive(
-	[]
-);
-const teachingExpList: RecruitmentAdminGetApplicantAttachmentListDetail[] =
+let attachmentList: RecruitmentAdminGetApplicantAttachmentList[] = reactive([]);
+let teachingExpList: RecruitmentAdminGetApplicantAttachmentListDetail[] =
 	reactive([]);
-const examCertificateList: RecruitmentAdminGetApplicantAttachmentListDetail[] =
+let examCertificateList: RecruitmentAdminGetApplicantAttachmentListDetail[] =
 	reactive([]);
-const otherList: RecruitmentAdminGetApplicantAttachmentListDetail[] = reactive(
+let otherList: RecruitmentAdminGetApplicantAttachmentListDetail[] = reactive(
 	[]
 );
 
@@ -149,19 +147,10 @@ const getFileList = async () => {
 };
 
 onMounted(async () => {
-	const response = getFileList();
-	await response.then((res) => {
-		res.map((item) => {
-			if (item) attachmentList.push(item);
-		});
-	});
+	const res = await getFileList();
+
+	attachmentList = [...attachmentList, ...res];
 
 	splitThreeList(toRaw(attachmentList));
-	console.log(
-		attachmentList,
-		teachingExpList,
-		examCertificateList,
-		otherList
-	);
 });
 </script>

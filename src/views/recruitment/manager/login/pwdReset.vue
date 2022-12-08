@@ -121,18 +121,15 @@ const password = reactive({
 });
 
 const putResetPassword = async (data: universalAuthResetPwdData) => {
-	try {
-		if (access_token !== null && client !== null && uid !== null) {
-			return await api.requestResetPasswordSession(
-				data,
-				access_token,
-				client,
-				uid
-			);
-		}
-	} catch (error) {
-		console.log(error);
-	}
+	if (!access_token || !client || !uid)
+		throw new Error("Missing credentials");
+
+	return await api.requestResetPasswordSession(
+		data,
+		access_token,
+		client,
+		uid
+	);
 };
 
 const onSubmit = async () => {
@@ -156,41 +153,37 @@ const onSubmit = async () => {
 			password_confirmation: password.confirmPass,
 		};
 
-		const response = putResetPassword(body);
+		const res = await putResetPassword(body);
 
-		await response.then((res) => {
-			if (res?.error === false && res?.message !== undefined) {
-				changePassRes.success = toRaw(!res.error);
-				changePassRes.message = toRaw(res.message);
-			}
+		if (res?.error === false && res?.message !== undefined) {
+			changePassRes.success = toRaw(!res.error);
+			changePassRes.message = toRaw(res.message);
+		}
 
-			isChangePassLoading.value = false;
+		isChangePassLoading.value = false;
 
-			if (changePassRes.success) {
-				toast.add({
-					severity: "success",
-					summary: "Success",
-					detail: "變更密碼成功 ! (3 秒後為您導向登入畫面)。",
-					life: 3000,
-				});
-				setTimeout(() => {
-					router.replace({ name: "recruitmentAdminSignin" });
-				}, 3000);
-			} else if (
-				!changePassRes.success &&
-				password.newPass !== "" &&
-				password.confirmPass !== ""
-			) {
-				toast.add({
-					severity: "error",
-					summary: "Error",
-					detail: changePassRes.message[
-						changePassRes.message.length - 1
-					],
-					life: 5000,
-				});
-			}
-		});
+		if (changePassRes.success) {
+			toast.add({
+				severity: "success",
+				summary: "Success",
+				detail: "變更密碼成功 ! (3 秒後為您導向登入畫面)。",
+				life: 3000,
+			});
+			setTimeout(() => {
+				router.replace({ name: "recruitmentAdminSignin" });
+			}, 3000);
+		} else if (
+			!changePassRes.success &&
+			password.newPass !== "" &&
+			password.confirmPass !== ""
+		) {
+			toast.add({
+				severity: "error",
+				summary: "Error",
+				detail: changePassRes.message[changePassRes.message.length - 1],
+				life: 5000,
+			});
+		}
 	}
 };
 </script>

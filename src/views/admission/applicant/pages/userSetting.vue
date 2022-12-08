@@ -188,35 +188,31 @@ const handleSubmit = async () => {
 			password_confirmation: password.confirmPass,
 		};
 
-		const response = patchChangePassword(body);
+		const res = await patchChangePassword(body);
 
-		await response.then((res) => {
-			if (res?.success !== undefined && res?.message !== undefined) {
-				changePassRes.success = toRaw(res.success);
-				changePassRes.message = toRaw(res.message);
-			}
+		if (res?.success !== undefined && res?.message !== undefined) {
+			changePassRes.success = toRaw(res.success);
+			changePassRes.message = toRaw(res.message);
+		}
 
-			isChangePassLoading.value = false;
+		isChangePassLoading.value = false;
 
-			if (changePassRes.success) {
-				resetPassValue();
-				toast.add({
-					severity: "success",
-					summary: "Success",
-					detail: changePassRes.message,
-					life: 3000,
-				});
-			} else {
-				toast.add({
-					severity: "error",
-					summary: "Error",
-					detail: changePassRes.message[
-						changePassRes.message.length - 1
-					],
-					life: 5000,
-				});
-			}
-		});
+		if (changePassRes.success) {
+			resetPassValue();
+			toast.add({
+				severity: "success",
+				summary: "Success",
+				detail: changePassRes.message,
+				life: 3000,
+			});
+		} else {
+			toast.add({
+				severity: "error",
+				summary: "Error",
+				detail: changePassRes.message[changePassRes.message.length - 1],
+				life: 5000,
+			});
+		}
 	}
 };
 

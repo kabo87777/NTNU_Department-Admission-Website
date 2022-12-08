@@ -238,18 +238,16 @@ const handleSubmit = async () => {
 		!password.notMatch
 	) {
 		isRegistLoading.value = true;
-		const response = postEmailRegister();
-		await response.then((res) => {
-			console.log(res);
-			if (res?.status !== undefined && res?.message !== undefined) {
-				RegisterResponse.success = toRaw(res.status);
-				RegisterResponse.message = toRaw(res.message);
-			}
-			isRegistLoading.value = false;
-			if (RegisterResponse.success) {
-				redirectToRegistDonePage();
-			}
-		});
+		const res = await postEmailRegister();
+
+		if (res?.status !== undefined && res?.message !== undefined) {
+			RegisterResponse.success = toRaw(res.status);
+			RegisterResponse.message = toRaw(res.message);
+		}
+		isRegistLoading.value = false;
+		if (RegisterResponse.success) {
+			redirectToRegistDonePage();
+		}
 	}
 };
 </script>

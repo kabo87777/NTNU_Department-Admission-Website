@@ -649,56 +649,44 @@ const handleSave = async () => {
 
 	loading.save = true;
 
-	const response = saveInfo(body);
+	const res = await saveInfo(body);
 
-	await response.then((res) => {
-		if (res?.success !== undefined && res?.message !== undefined) {
-			fetchResponse.success = toRaw(res.success);
-			fetchResponse.message = toRaw(res.message);
-		}
+	if (res?.success !== undefined && res?.message !== undefined) {
+		fetchResponse.success = toRaw(res.success);
+		fetchResponse.message = toRaw(res.message);
+	}
 
-		loading.save = false;
+	loading.save = false;
 
-		if (fetchResponse.success) {
-			toast.add({
-				severity: "success",
-				summary: "Success",
-				detail: fetchResponse.message,
-				life: 3000,
-			});
-		} else {
-			toast.add({
-				severity: "error",
-				summary: "Error",
-				detail: fetchResponse.message,
-				life: 5000,
-			});
-		}
-	});
+	if (fetchResponse.success) {
+		toast.add({
+			severity: "success",
+			summary: "Success",
+			detail: fetchResponse.message,
+			life: 3000,
+		});
+	} else {
+		toast.add({
+			severity: "error",
+			summary: "Error",
+			detail: fetchResponse.message,
+			life: 5000,
+		});
+	}
 
 	loading.fetch = true;
 };
 
-const getBasicInfo = async () => {
-	return await api.getBasicInfo(project.project.pid);
-};
-
 onMounted(async () => {
-	const response = getBasicInfo();
-
-	await response.then((res) => {
-		if (Object.keys(res).length) setBasicInfo(res);
-	});
+	const response = await api.getBasicInfo(project.project.pid);
+	setBasicInfo(response);
 });
 
 watch(
 	() => loading.fetch,
 	async () => {
-		const response = getBasicInfo();
-
-		await response.then((res) => {
-			if (Object.keys(res).length) setBasicInfo(res);
-		});
+		const response = await api.getBasicInfo(project.project.pid);
+		setBasicInfo(response);
 
 		loading.fetch = false;
 	}
