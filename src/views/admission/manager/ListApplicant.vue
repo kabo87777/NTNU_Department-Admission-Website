@@ -185,6 +185,7 @@ const {
 } = useQuery(
 	["applicantList"],
 	async () => {
+    console.log(globalStore)
 		if (globalStore.program === undefined)
 			throw new Error("undefined program");
 

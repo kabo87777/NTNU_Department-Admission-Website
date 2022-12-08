@@ -1,9 +1,6 @@
 <template>
 	<Toast position="top-right" />
 	<div class="flex">
-		<div class="flex-shrink-1">
-			<img src="/assets/login-page/Login-img.png" class="fill" />
-		</div>
 		<div class="flex-none w-150 px-6 pt-40 space-y-8">
 			<div class="px-8 space-y-2">
 				<div class="text-s text-gray-500">
