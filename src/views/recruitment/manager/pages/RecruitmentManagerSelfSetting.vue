@@ -138,7 +138,7 @@ const resetPassValue = () => {
 };
 
 const patchChangePassword = async (body: object) => {
-  return await api.changePassword(body);
+	return await api.changePassword(body);
 };
 
 const handleSubmit = async () => {

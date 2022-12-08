@@ -261,9 +261,7 @@ const { data: applicantInfo } = useQuery(
 const { data: programGrading } = useQuery(
 	["programGrading"],
 	async () => {
-    return await api.getProgramGrading(
-      store.admissionReviewerProgram!.id
-    );
+		return await api.getProgramGrading(store.admissionReviewerProgram!.id);
 	},
 	{
 		onSuccess: (data) => {

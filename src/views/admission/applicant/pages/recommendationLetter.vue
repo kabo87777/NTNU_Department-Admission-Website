@@ -629,7 +629,7 @@ const openModal = () => {
 };
 
 const deleteRecommendLetter = async (letterId: number) => {
-  return await api.deleteRecommendLetter(letterId);
+	return await api.deleteRecommendLetter(letterId);
 };
 
 const postRecommendLetter = async (body: object) => {

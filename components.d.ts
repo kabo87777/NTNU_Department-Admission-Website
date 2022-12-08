@@ -7,7 +7,6 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    AdissionReviewerSidebar: typeof import('./src/components/sidebars/adissionReviewerSidebar.vue')['default']
     AdmissionApplicantSidebar: typeof import('./src/components/sidebars/admissionApplicantSidebar.vue')['default']
     AdmissionManagerSideBar: typeof import('./src/components/sidebars/admissionManagerSideBar.vue')['default']
     AdmissionReviewerSidebar: typeof import('./src/components/sidebars/admissionReviewerSidebar.vue')['default']
@@ -25,11 +24,9 @@ declare module '@vue/runtime-core' {
     RecruitmentReviewerSidebar: typeof import('./src/components/sidebars/recruitmentReviewerSidebar.vue')['default']
     RefillState: typeof import('./src/components/attachmentStates/RefillState.vue')['default']
     ResetPasswordForm: typeof import('./src/components/ResetPasswordForm.vue')['default']
-    ReviewerSidebar: typeof import('./src/components/reviewerSidebar.vue')['default']
     ReviewState: typeof import('./src/components/attachmentStates/reviewState.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    SideBar: typeof import('./src/components/sidebars/SideBar.vue')['default']
     Turnstile: typeof import('./src/components/Turnstile.vue')['default']
   }
 }
