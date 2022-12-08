@@ -440,7 +440,7 @@ const routes: Array<RouteRecordRaw> = [
 	},
 	// Recruitment - manager
 	{
-		path: "recruitment/manager",
+		path: "/recruitment/manager",
 		name: "recruitmentAdminMainContainer",
 		component: () =>
 			import("@/views/recruitment/manager/MainContainer.vue"),
@@ -522,7 +522,7 @@ const routes: Array<RouteRecordRaw> = [
 		],
 	},
 	{
-		path: "recruitment/reviewer",
+		path: "/recruitment/reviewer",
 		name: "recruitmentReviewerMainContainer",
 		component: () =>
 			import("@/views/recruitment/reviewer/MainContainer.vue"),
