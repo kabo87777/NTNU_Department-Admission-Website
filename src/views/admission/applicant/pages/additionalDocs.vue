@@ -70,13 +70,13 @@ const toast = useToast();
 
 const isEnabled = applicantInfo.isMoredoc;
 
-const refillFile = reactive({
+let refillFile = reactive({
 	state: 3,
 	loading: false,
 	order: 1,
 });
 
-const fetchResponse = reactive({
+let fetchResponse = reactive({
 	success: false,
 	message: "" as string | [],
 });

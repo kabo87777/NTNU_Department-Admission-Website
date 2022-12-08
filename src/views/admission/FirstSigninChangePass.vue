@@ -73,7 +73,7 @@ import InputText from "primevue/inputtext";
 import Button from "primevue/button";
 import { reactive } from "vue";
 
-const password = reactive({
+let password = reactive({
 	newPass: "",
 	verifyPass: "",
 	isMatch: true,

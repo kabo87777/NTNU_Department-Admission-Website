@@ -515,7 +515,7 @@ const api = new AdmissionApplicantAPI(applicantAuth);
 
 const toast = useToast();
 
-const isActionLoading = reactive({
+let isActionLoading = reactive({
 	request: false,
 	save: false,
 	delete: false,
@@ -524,13 +524,13 @@ const isActionLoading = reactive({
 
 const modalShowErr = ref(false);
 
-const isModalVisible = reactive({
+let isModalVisible = reactive({
 	fill: false,
 	delete: false,
 	request: false,
 });
 
-const modalValue = reactive({
+let modalValue = reactive({
 	name: "",
 	appellation: "",
 	relationship: "",
@@ -541,7 +541,7 @@ const modalValue = reactive({
 	sign: "",
 });
 
-const isModalValueBlank = reactive({
+let isModalValueBlank = reactive({
 	name: false,
 	appellation: false,
 	relationship: false,
@@ -552,7 +552,7 @@ const isModalValueBlank = reactive({
 	sign: false,
 });
 
-const fetchResponse = reactive({
+let fetchResponse = reactive({
 	success: false,
 	message: "" as string | [],
 });
@@ -574,7 +574,7 @@ const { data } = useQuery(
 	}
 );
 
-const letterList = reactive([
+let letterList = reactive([
 	data.value?.map((item) => {
 		return {
 			...item,

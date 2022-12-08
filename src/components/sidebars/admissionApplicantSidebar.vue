@@ -292,7 +292,7 @@ const currentYear = new Date().getFullYear();
 const rocYear = currentYear - 1911;
 const isProgramAvailable = ref(false);
 
-const applicantProgram = reactive({
+let applicantProgram = reactive({
 	id: 1,
 	category: "111年碩士班",
 	name: "A組",
@@ -300,7 +300,7 @@ const applicantProgram = reactive({
 	end_date: "",
 });
 
-const tags: Tags = reactive({
+let tags: Tags = reactive({
 	basicInfo: "completed",
 	attachment: "incomplete",
 	recommendLetter: "unable",

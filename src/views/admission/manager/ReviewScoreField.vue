@@ -374,7 +374,7 @@ const trans = {
 };
 
 // Field content & data
-const docsScore = reactive([
+let docsScore = reactive([
 	{ name: "Total", weight: 0, index: 0 },
 	{ name: trans.labelName[1].value, weight: 0, index: 1 },
 	{ name: trans.labelName[2].value, weight: 0, index: 2 },
@@ -382,7 +382,7 @@ const docsScore = reactive([
 	{ name: trans.labelName[4].value, weight: 0, index: 4 },
 	{ name: trans.labelName[5].value, weight: 0, index: 5 },
 ]);
-const oralScore = reactive([
+let oralScore = reactive([
 	{ name: "Total", weight: 0, index: 0 },
 	{ name: trans.labelName[1].value, weight: 0, index: 1 },
 	{ name: trans.labelName[2].value, weight: 0, index: 2 },
@@ -390,7 +390,7 @@ const oralScore = reactive([
 	{ name: trans.labelName[4].value, weight: 0, index: 4 },
 	{ name: trans.labelName[5].value, weight: 0, index: 5 },
 ]);
-const showedInfo = reactive([
+let showedInfo = reactive([
 	{ id: "姓名資訊", visible: true, checked: true },
 	{ id: "入學身分", visible: true, checked: true },
 	{ id: "戶籍資訊", visible: true, checked: true },
@@ -398,7 +398,7 @@ const showedInfo = reactive([
 	{ id: "身份資料", visible: true, checked: true },
 	{ id: "聯絡資料", visible: true, checked: true },
 ]);
-const showedFile = reactive([
+let showedFile = reactive([
 	{ id: "就學經歷", visible: true, checked: true },
 	{ id: "考試與檢定分數", visible: true, checked: true },
 	{ id: "其他有利於審查資料", visible: true, checked: true },
@@ -414,7 +414,7 @@ const fieldList = {
 		checked: [""],
 	},
 };
-const programData: AdmissionAdminProgramListResponse = reactive({
+let programData: AdmissionAdminProgramListResponse = reactive({
 	id: 0,
 	category: "",
 	name: "",

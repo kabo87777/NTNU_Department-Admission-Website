@@ -101,7 +101,7 @@ const toast = useToast();
 const reviewerAuth = useAdmissionReviewerAuthStore();
 const api = new AdmissionReviewerAPI(reviewerAuth);
 const isChangePassLoading = ref(false);
-const changePassRes = reactive({
+let changePassRes = reactive({
 	success: false,
 	message: "" as string | [],
 });
@@ -115,7 +115,7 @@ const uid = new URLSearchParams(url.search).get("uid");
 // console.log("client = ", client);
 // console.log("uid = ", uid);
 
-const password = reactive({
+let password = reactive({
 	isNewPassBlank: false,
 	notMatch: false,
 	newPass: "",

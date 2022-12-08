@@ -123,11 +123,11 @@ const initialPassValue = {
 	confirmPass: "",
 };
 
-const password = reactive(initialPassValue);
+let password = reactive(initialPassValue);
 
 const isChangePassLoading = ref(false);
 
-const changePassRes = reactive({
+let changePassRes = reactive({
 	success: false,
 	message: "" as string | [],
 });

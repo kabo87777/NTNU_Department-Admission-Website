@@ -347,7 +347,7 @@ const store = useGlobalStore();
 const queryClient = useQueryClient();
 
 // Field Data
-const showedInfo = reactive([
+let showedInfo = reactive([
 	{ id: "姓名資訊", checked: false },
 	{ id: "入職身分", checked: false },
 	{ id: "戶籍資訊", checked: false },
@@ -355,7 +355,7 @@ const showedInfo = reactive([
 	{ id: "身份資料", checked: false },
 	{ id: "聯絡資料", checked: false },
 ]);
-const showedFile = reactive([
+let showedFile = reactive([
 	{ id: "教學經歷", checked: false },
 	{ id: "考試與檢定分數", checked: false },
 	{ id: "其他有利於審查資料", checked: false },
@@ -364,7 +364,7 @@ const fieldList = {
 	infoChecked: [""],
 	fileChecked: [""],
 };
-const programData: RecruitmentAdminProgramListResponse = reactive({
+let programData: RecruitmentAdminProgramListResponse = reactive({
 	id: 0,
 	category: "",
 	name: "",

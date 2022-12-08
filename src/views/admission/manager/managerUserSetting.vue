@@ -112,12 +112,12 @@ const initialPassValue = {
 
 const isChangePassLoading = ref(false);
 
-const changePassRes = reactive({
+let changePassRes = reactive({
 	success: false,
 	message: "" as string | [],
 });
 
-const password = reactive({
+let password = reactive({
 	isCurrentPassBlank: false,
 	isNewPassBlank: false,
 	notMatch: false,

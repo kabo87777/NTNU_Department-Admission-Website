@@ -230,29 +230,29 @@ const api = new AdmissionAdminAPI(adminAuth);
 
 const toast = useToast();
 
-const fetchResponse = reactive({
+let fetchResponse = reactive({
 	success: false,
 	message: "" as string | [],
 });
 
 const activeTab = ref({ name: "關閉", value: false });
-const date = reactive({
+let date = reactive({
 	start: new Date(),
 	end: new Date(),
 });
-const docInfo = reactive({
+let docInfo = reactive({
 	category: "",
 	name: "",
 });
 
-const showRequire = reactive({
+let showRequire = reactive({
 	start: false,
 	end: false,
 	category: false,
 	name: false,
 });
 
-const isLoading = reactive({
+let isLoading = reactive({
 	save: false,
 	send: false,
 	fetch: false,
@@ -269,7 +269,7 @@ const categoryOptions = ref([
 	{ name: "其他有利於審查資料" },
 ]);
 
-const isModalVisible = reactive({
+let isModalVisible = reactive({
 	sendEmail: false,
 	saveChange: false,
 });

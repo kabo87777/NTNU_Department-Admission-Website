@@ -533,17 +533,17 @@ const api = new AdmissionApplicantAPI(applicantAuth);
 
 const toast = useToast();
 
-const fetchResponse = reactive({
+let fetchResponse = reactive({
 	success: false,
 	message: "" as string | [],
 });
 
-const loading = reactive({
+let loading = reactive({
 	fetch: false,
 	save: false,
 });
 
-const name = reactive({
+let name = reactive({
 	id: 0,
 	admission_id: 0,
 	appellation: "",
@@ -555,36 +555,36 @@ const name = reactive({
 	enMidName: "",
 });
 
-const identity = reactive({
+let identity = reactive({
 	selectedIdentity: "",
 	ic: "",
 	nationality: "",
 	ui: "",
 });
 
-const householdAddr = reactive({
+let householdAddr = reactive({
 	addr: "",
 	postcode: "",
 });
 
-const currentAddr = reactive({
+let currentAddr = reactive({
 	isAddrSame: false,
 	addr: "",
 	postcode: "",
 });
 
-const born = reactive({
+let born = reactive({
 	sex: "",
 	country: "",
 	birth: new Date(),
 });
 
-const contact = reactive({
+let contact = reactive({
 	email: "",
 	phone: "",
 });
 
-const required = reactive({
+let required = reactive({
 	enFamName: false,
 	enName: false,
 	identity: false,

@@ -61,7 +61,7 @@ const api = new AdmissionApplicantAPI(applicantAuth);
 
 const hasNews = ref(false);
 
-const program = reactive({
+let program = reactive({
 	id: 1,
 	category: "111年碩士班",
 	name: "A組",

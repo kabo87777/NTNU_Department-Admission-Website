@@ -189,14 +189,14 @@ let otherList: AttachmentDetailData[] = reactive([]);
 
 const toast = useToast();
 
-const isLoading = reactive({
+let isLoading = reactive({
 	delete: false,
 	create: false,
 	edit: false,
 	fetch: false,
 });
 
-const fetchResponse = reactive({
+let fetchResponse = reactive({
 	success: false,
 	message: "" as string | [],
 });

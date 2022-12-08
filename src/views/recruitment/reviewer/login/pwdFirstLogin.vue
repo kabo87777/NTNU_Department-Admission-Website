@@ -81,7 +81,7 @@ import { reactive } from "vue";
 import InputText from "primevue/inputtext";
 
 const userName = ref("小明");
-const userNewPwd = reactive({
+let userNewPwd = reactive({
 	password: "",
 	confirmPwd: "",
 });
