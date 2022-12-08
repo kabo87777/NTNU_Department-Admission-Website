@@ -1,132 +1,135 @@
 <template>
 	<Toast position="top-right" />
-	<div class="fixed inset-y-0 left-0">
-		<img src="/assets/login-page/Login-img.png" class="h-200" />
-	</div>
-	<!-- FIXME:附著在底下的空白，以免圖片露餡，但或許有更好的做法 -->
-	<div
-		class="fixed inset-y-0 right-0 z-30 bg-white"
-		w="125 <sm:full lg:150"
+	<!-- Background Image -->
+	<img
+		src="/assets/login-page/Login-img.png"
+		class="fixed min-h-screen h-200"
 	/>
+	<!-- White Background -->
 	<div
-		class="absolute inset-y-0 right-0 z-50 bg-white"
-		w="125 <sm:full lg:150"
-		px="lg:15"
+		class="fixed h-screen z-1 right-0 bg-white"
+		w="<md:screen md:min-112 screen-4/9"
+	/>
+	<!-- Content -->
+	<div
+		class="absolute h-screen z-50 right-0 bg-white"
+		w="<md:screen md:min-112 screen-4/9"
 	>
-		<div class="flex flex-col py-4 gap-6 mx-8 h-full">
-			<!-- 標題內容 -->
-			<div space="y-2">
-				<img
-					src="/assets/login-page/NTNU-logo-B1.png"
-					w="48"
-					class="sm:invisible"
-				/>
-				<!-- 返回按鈕 -->
-				<router-link to="/recruitment">
-					<button
-						class="flex items-center gap-2 px-2 py-2 mt-5 mb-3"
-						bg="hover:nGrey-200 active:nGrey-600"
-						text="sm secondary hover:title active:white"
-						border="rounded-lg"
-					>
-						<i class="pi pi-angle-left" />
-						<div>切換登入身份</div>
-						<div>Change your identity</div>
-					</button>
-				</router-link>
-				<div class="mx-8" space="y-2">
-					<div text="3xl title" font="medium">教師聘請系統</div>
-					<div text="lg title" font="medium">
-						Teacher Recruitment System
-					</div>
+		<div flex="~ col" mx="auto" w="100" h="full" justify="center">
+			<!-- Button: Back to MainPage -->
+			<router-link to="/recruitment">
+				<button
+					class="flex items-center gap-2 p-2 my-4"
+					text="sm secondary"
+					border="rounded-lg"
+					hover="bg-nGrey-200 text-title"
+					active="bg-nGrey-600 text-white"
+				>
+					<i class="pi pi-angle-left" />
+					<div>切換登入身份</div>
+					<div>Change your identity</div>
+				</button>
+			</router-link>
+			<div mx="4" space="y-2">
+				<div text="secondary" font="light">
+					國立臺灣師範大學資訊工程學系
+				</div>
+				<div text="3xl title" font="medium">教師聘請系統</div>
+				<div text="lg title" font="medium">
+					Teacher Recruitment System
 				</div>
 			</div>
-
+			<!-- Divider -->
 			<Divider align="center">
-				<div class="px-4 font-light" text="sm pAdmin">
-					行政人員登入 Manager Login
-				</div>
+				<div p="4" text="sm pAdmin">行政人員登入 Manager Login</div>
 			</Divider>
-
-			<!-- 登入輸入內容 -->
-			<div class="mx-8">
+			<!-- Login Form -->
+			<div flex="~ col gap-8" w="3/4" mx="auto">
 				<form @submit="onSubmit" ref="form" space="y-6">
-					<!-- 輸入帳號 -->
+					<!-- Account -->
 					<Field
 						name="email"
 						v-slot="{ field, errorMessage, meta }"
 						v-model="email"
 					>
-						<div class="flex-col" text="sm body" font="light">
-							<div p="b-2">電郵地址 E-mail</div>
+						<div flex="~ col gap-1">
+							<div text="sm body" font="light">
+								電郵地址 E-mail
+							</div>
 							<InputText
 								v-bind="field"
 								name="email"
 								type="email"
-								class="p-inputtext-sm w-full"
+								class="h-11"
 								:disabled="isSubmitting"
 								required
 							/>
-							<!-- TODO: styling -->
-							<span v-if="errorMessage && meta.touched">
-								{{ errorMessage }}
-							</span>
+							<div
+								v-if="errorMessage && meta.touched"
+								text="xs danger"
+								font="light"
+							>
+								※ 此欄位不可為空白 Required
+							</div>
 						</div>
 					</Field>
-					<!-- 輸入密碼 -->
+					<!-- Password -->
 					<Field
 						name="password"
 						v-slot="{ field, errorMessage, meta }"
 						v-model="password"
 					>
-						<div class="flex-col" text="sm body" font="light">
-							<div p="b-2">密碼 Password</div>
+						<div flex="~ col gap-1">
+							<div text="sm body" font="light">密碼 Password</div>
 							<InputText
 								v-bind="field"
 								name="password"
 								type="password"
-								class="p-inputtext-sm w-full"
+								class="h-11"
 								:disabled="isSubmitting"
 								required
 							/>
-							<!-- TODO: styling -->
-							<span v-if="errorMessage && meta.touched">
-								{{ errorMessage }}
-							</span>
+							<div
+								v-if="errorMessage && meta.touched"
+								text="xs danger"
+								font="light"
+							>
+								※ 此欄位不可為空白 Required
+							</div>
 						</div>
 					</Field>
-					<!-- 勾選記住帳號 -->
-					<div class="flex items-center gap-2 w-full">
+					<!-- Remember Account -->
+					<div flex="~" gap="2" w="full" class="items-center">
 						<Checkbox v-model="isRememberAccount" :binary="true" />
 						<div text="xs body" font="light">
 							<div>下次登入時記住帳號</div>
 							<div>Remember Account at next Login</div>
 						</div>
 					</div>
-					<!-- Captcha 按鈕 -->
+					<!-- Captcha -->
 					<div>
 						<Turnstile ref="turnstileRef" />
 					</div>
-					<!-- 登入按鈕 -->
-					<div class="w-4/5 mx-auto">
+					<!-- Login Button -->
+					<div flex="~ col" gap="6" w="60" m="auto">
+						<!-- TODO: add spinning wheel while Turnstile runs -->
 						<button
-							class="p-3 w-full"
-							bg="hover:nRed-200 active:nRed-500"
-							border="2 opacity-30 nRed-600 rounded-lg hover:nBlue-200"
-							text="pAdmin hover:title active:white"
+							class="p-2 w-full border-2 text-pAdmin"
+							border="2 opacity-30 nRed-600 rounded-lg"
+							hover="text-title bg-nRed-200 border-nRed-200"
+							active="text-white bg-nRed-600"
 							:loading="isTurnstileRunning || isSubmitting"
 						>
 							<div>登入 Login</div>
 						</button>
-					</div>
-					<!-- 忘記密碼 -->
-					<div class="w-3/5 mx-auto">
+						<!-- Forget Password -->
 						<router-link to="/recruitment/manager/forgetpassword">
 							<button
-								class="p-3 w-full"
-								bg="hover:nGrey-200 active:nGrey-600"
-								text="sm body hover:title active:white"
+								class="p-2 w-full"
+								text="sm secondary"
 								border="rounded-lg"
+								hover="bg-nGrey-200 text-title"
+								active="bg-nGrey-600 text-white"
 							>
 								<div>忘記密碼 Forget Password</div>
 							</button>
@@ -242,9 +245,11 @@ const onSubmit = handleSubmit(async function (values, actions) {
 		// console.log(e);
 		toast.add({
 			severity: "error",
-			summary: "Error",
-			detail: "Invalid email or password",
-			life: 5000,
+			summary: "登入失敗 Login Failed",
+			detail: `准考證號碼或密碼輸入錯誤
+			Invalid Registration Number or Password`,
+			closable: false,
+			life: 3000,
 		});
 		if (e?.response?.status === 401) console.log("invalid credentials");
 	}
