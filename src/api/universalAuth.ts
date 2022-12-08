@@ -100,19 +100,26 @@ export async function doUniversalAuthSignOut(auth: AuthStore) {
 	if (response.data?.error !== false) throw new Error("Sign out failed");
 }
 
-export async function doUniversalAuthSessionValidation(auth: AuthStore) {
+export async function doUniversalAuthSessionValidation(
+	auth: AuthStore
+): Promise<boolean> {
 	if (!auth.isValidCredentials) return false;
 
-	const response = await axios({
-		method: "GET",
-		url: auth.apiEndpoint + "/validate_token",
-		headers: {
-			"Content-Type": "application/json",
-			authorization: auth.credentials?.authorization,
-		},
-		data: {},
-	});
-	if (response.data?.status !== "success") return false;
+	try {
+		const response = await axios({
+			method: "GET",
+			url: auth.apiEndpoint + "/validate_token",
+			headers: {
+				"Content-Type": "application/json",
+				authorization: auth.credentials?.authorization,
+			},
+			data: {},
+		});
+
+		if (response.data?.status !== "success") return false;
+	} catch (e) {
+		return false;
+	}
 
 	return true;
 }
