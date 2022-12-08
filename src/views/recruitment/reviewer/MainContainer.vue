@@ -26,20 +26,22 @@
 import NavBar from "@/components/NavBar.vue";
 import recruitmentReviewerSideBar from "@/components/sidebars/recruitmentReviewerSidebar.vue";
 
-import { watch } from "vue";
+import { useQuery } from "@tanstack/vue-query";
 import { useRouter } from "vue-router";
+
 import { useRecruitmentReviewerAuthStore } from "@/stores/universalAuth";
 import { doUniversalAuthSessionValidation } from "@/api/universalAuth";
 
 const router = useRouter();
 
-const reviewerAuth = useRecruitmentReviewerAuthStore();
+const auth = useRecruitmentReviewerAuthStore();
 
-watch(router.currentRoute, async () => {
-	if (!(await doUniversalAuthSessionValidation(reviewerAuth))) {
-		router.replace({ name: "recruitmentReviewerSignin" });
-		// TODO: show session expired notification
-	}
+useQuery(["recruitmentReviewerAuthorizationStatus", auth], async () => {
+	const status = await doUniversalAuthSessionValidation(auth);
+
+	if (status) return true;
+
+	return router.replace({ name: "RecruitmentReviewerSignin" });
 });
 </script>
 

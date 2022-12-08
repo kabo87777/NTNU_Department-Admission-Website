@@ -23,21 +23,22 @@
 </template>
 
 <script setup lang="ts">
-import { watch } from "vue";
 import { useRouter } from "vue-router";
 import { useQuery } from "@tanstack/vue-query";
-import { InvalidSessionError } from "@/api/error";
-import { RecruitmentApplicantAPI } from "@/api/recruitment/applicant/api";
+
 import { useRecruitmentApplicantAuthStore } from "@/stores/universalAuth";
 import { useProjectIdStore } from "@/stores/RecruitmentApplicantStore";
-import NavBar from "@/components/NavBar.vue";
-import SideBar from "@/components/sidebars/recruitmentApplicantSidebar.vue";
+
+import { RecruitmentApplicantAPI } from "@/api/recruitment/applicant/api";
 import { doUniversalAuthSessionValidation } from "@/api/universalAuth";
 
+import NavBar from "@/components/NavBar.vue";
+import SideBar from "@/components/sidebars/recruitmentApplicantSidebar.vue";
+
 const router = useRouter();
-const applicantAuth = useRecruitmentApplicantAuthStore();
+const auth = useRecruitmentApplicantAuthStore();
 const project = useProjectIdStore();
-const api = new RecruitmentApplicantAPI(applicantAuth);
+const api = new RecruitmentApplicantAPI(auth);
 
 const { data } = useQuery(
 	["programList"],
@@ -55,13 +56,16 @@ const { data } = useQuery(
 		},
 	}
 );
-router.push("/recruitment/applicant/switchProject");
-watch(router.currentRoute, async () => {
-	if (!(await doUniversalAuthSessionValidation(applicantAuth))) {
-		router.replace({ name: "RecruitmentApplicantSignin" });
-		// TODO: show session expired notification
-	}
+
+useQuery(["recruitmentApplicantAuthorizationStatus", auth], async () => {
+	const status = await doUniversalAuthSessionValidation(auth);
+
+	if (status) return true;
+
+	return router.replace({ name: "RecruitmentApplicantSignin" });
 });
+
+router.push("/recruitment/applicant/switchProject");
 </script>
 
 <style scoped></style>

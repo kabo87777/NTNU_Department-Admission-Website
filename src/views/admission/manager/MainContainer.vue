@@ -24,42 +24,26 @@
 </template>
 
 <script setup lang="ts">
-import NavBar from "@/components/NavBar.vue";
-import SideBar from "@/components/sidebars/admissionManagerSideBar.vue";
 import { useQuery } from "@tanstack/vue-query";
-import { useToast } from "primevue/usetoast";
+import { useRouter } from "vue-router";
 
 import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
 import { doUniversalAuthSessionValidation } from "@/api/universalAuth";
 
-const toast = useToast();
+import NavBar from "@/components/NavBar.vue";
+import SideBar from "@/components/sidebars/admissionManagerSideBar.vue";
 
-const adminAuth = useAdmissionAdminAuthStore();
+const router = useRouter();
 
-const authorizationStatusQuery = useQuery(
-	["admissionAdminAuthorizationStatus"],
-	async () => {
-		const status = await doUniversalAuthSessionValidation(adminAuth);
+const auth = useAdmissionAdminAuthStore();
 
-		if (status) return true;
+useQuery(["admissionAdminAuthorizationStatus", auth], async () => {
+	const status = await doUniversalAuthSessionValidation(auth);
 
-		console.log("MainContainer: We are unauthorized!");
+	if (status) return true;
 
-		// TODO: i18n
-		toast.add({
-			severity: "error",
-			summary: "錯誤",
-			detail: "您的登入階段已經失效，請重新登入",
-			life: 100000,
-		});
-
-		return false;
-
-		// TODO: return to sign in page
-
-		// router.replace({ name: "AdmissionManagerSignin" });
-	}
-);
+	return router.replace({ name: "AdmissionManagerSignin" });
+});
 </script>
 
 <style scoped></style>
