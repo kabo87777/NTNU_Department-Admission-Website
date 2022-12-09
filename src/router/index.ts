@@ -393,7 +393,7 @@ const routes: Array<RouteRecordRaw> = [
 		path: "/recruitment/applicant",
 		name: "recruitmentApplicantMainContainer",
 		component: () =>
-			import("@/views/recruitment/applicant/mainContainer.vue"),
+			import("@/views/recruitment/applicant/MainContainer.vue"),
 		children: [
 			//Recruitment - applicant info pages
 			{
