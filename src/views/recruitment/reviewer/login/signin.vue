@@ -1,152 +1,121 @@
 <template>
 	<Toast position="top-right" />
-	<!-- Background Image -->
-	<img
-		src="/assets/login-page/Login-img.png"
-		class="fixed min-h-screen h-200"
-	/>
-	<!-- White Background -->
-	<div
-		class="fixed h-screen z-1 right-0 bg-white"
-		w="<md:screen md:min-112 screen-4/9"
-	/>
-	<!-- Content -->
-	<div
-		class="absolute h-screen z-50 right-0 bg-white"
-		w="<md:screen md:min-112 screen-4/9"
-	>
-		<div flex="~ col" mx="auto" w="100" h="full">
-			<div my="auto">
-				<!-- Button: Back to MainPage -->
-				<router-link to="/recruitment">
-					<button
-						class="flex items-center gap-2 p-2 my-4"
-						text="sm secondary"
-						border="rounded-lg"
-						hover="bg-nGrey-200 text-title"
-						active="bg-nGrey-600 text-white"
-					>
-						<i class="pi pi-angle-left" />
-						<div>切換登入身份</div>
-						<div>Change your identity</div>
-					</button>
-				</router-link>
-				<div mx="4" space="y-2">
-					<div text="secondary" font="light">
-						國立臺灣師範大學資訊工程學系
-					</div>
-					<div text="3xl title" font="medium">教師聘請系統</div>
-					<div text="lg title" font="medium">
-						Teacher Recruitment System
-					</div>
-				</div>
-				<!-- Divider -->
-				<Divider align="center">
-					<div p="4" text="sm pReviewer">
-						審查委員登入 Reviewer Login
-					</div>
-				</Divider>
-				<!-- Login Form -->
-				<div flex="~ col gap-8" w="3/4" mx="auto">
-					<form @submit="onSubmit" ref="form" space="y-6">
-						<!-- Account -->
-						<Field
-							name="email"
-							v-slot="{ field, errorMessage, meta }"
-							v-model="email"
-						>
-							<div flex="~ col gap-1">
-								<div text="sm body" font="light">
-									電郵地址 E-mail
-								</div>
-								<InputText
-									v-bind="field"
-									name="email"
-									type="email"
-									class="h-11"
-									:disabled="isSubmitting"
-									required
-								/>
-								<div
-									v-if="errorMessage && meta.touched"
-									text="xs danger"
-									font="light"
-								>
-									※ 此欄位不可為空白 Required
-								</div>
-							</div>
-						</Field>
-						<!-- Password -->
-						<Field
-							name="password"
-							v-slot="{ field, errorMessage, meta }"
-							v-model="password"
-						>
-							<div flex="~ col gap-1">
-								<div text="sm body" font="light">
-									密碼 Password
-								</div>
-								<InputText
-									v-bind="field"
-									name="password"
-									type="password"
-									class="h-11"
-									:disabled="isSubmitting"
-									required
-								/>
-								<div
-									v-if="errorMessage && meta.touched"
-									text="xs danger"
-									font="light"
-								>
-									※ 此欄位不可為空白 Required
-								</div>
-							</div>
-						</Field>
-						<!-- Remember Account -->
-						<div flex="~" gap="2" w="full" class="items-center">
-							<Checkbox
-								v-model="isRememberAccount"
-								:binary="true"
-							/>
-							<div text="xs body" font="light">
-								<div>下次登入時記住帳號</div>
-								<div>Remember Account at next Login</div>
-							</div>
-						</div>
-						<!-- Captcha -->
-						<div>
-							<Turnstile ref="turnstileRef" />
-						</div>
-						<!-- Login Button -->
-						<div flex="~ col" gap="6" w="60" m="auto">
-							<button
-								class="p-2 w-full border-2 text-pReviewer"
-								border="2 opacity-30 nBlue-500 rounded-lg"
-								hover="text-title bg-nBlue-200 border-nBlue-200"
-								active="text-white bg-nBlue-500"
-								:loading="isTurnstileRunning || isSubmitting"
-							>
-								<div>登入 Login</div>
-							</button>
-							<!-- 忘記密碼按鈕 -->
-							<router-link
-								to="/recruitment/reviewer/forgetpassword"
-							>
-								<button
-									class="p-2 w-full"
-									text="sm secondary"
-									border="rounded-lg"
-									hover="bg-nGrey-200 text-title"
-									active="bg-nGrey-600 text-white"
-								>
-									<div>忘記密碼 Forget Password</div>
-								</button>
-							</router-link>
-						</div>
-					</form>
-				</div>
+	<div my="auto">
+		<!-- Button: Back to Recruitment Login -->
+		<router-link to="/recruitment">
+			<button
+				class="flex items-center gap-2 p-2 my-4"
+				text="sm secondary"
+				border="rounded-lg"
+				hover="bg-nGrey-200 text-title"
+				active="bg-nGrey-600 text-white"
+			>
+				<i class="pi pi-angle-left" />
+				<div>切換登入身份</div>
+				<div>Change your identity</div>
+			</button>
+		</router-link>
+		<div mx="4" space="y-2">
+			<div text="secondary" font="light">
+				國立臺灣師範大學資訊工程學系
 			</div>
+			<div text="3xl title" font="medium">教師聘請系統</div>
+			<div text="xl title" font="medium">Teacher Recruitment System</div>
+		</div>
+		<!-- Divider -->
+		<Divider align="center">
+			<div p="8" text="sm pReviewer">審查委員登入 Reviewer Login</div>
+		</Divider>
+		<!-- Login Form -->
+		<div flex="~ col gap-8" w="3/4" mx="auto">
+			<form @submit="onSubmit" ref="form" space="y-6">
+				<!-- Account -->
+				<Field
+					name="email"
+					v-slot="{ field, errorMessage, meta }"
+					v-model="email"
+				>
+					<div flex="~ col gap-1">
+						<div text="sm body" font="light">電郵地址 E-mail</div>
+						<InputText
+							v-bind="field"
+							name="email"
+							type="email"
+							class="h-11"
+							:disabled="isSubmitting"
+							required
+						/>
+						<div
+							v-if="errorMessage && meta.touched"
+							text="xs danger"
+							font="light"
+						>
+							※ 此欄位不可為空白 Required
+						</div>
+					</div>
+				</Field>
+				<!-- Password -->
+				<Field
+					name="password"
+					v-slot="{ field, errorMessage, meta }"
+					v-model="password"
+				>
+					<div flex="~ col gap-1">
+						<div text="sm body" font="light">密碼 Password</div>
+						<InputText
+							v-bind="field"
+							name="password"
+							type="password"
+							class="h-11"
+							:disabled="isSubmitting"
+							required
+						/>
+						<div
+							v-if="errorMessage && meta.touched"
+							text="xs danger"
+							font="light"
+						>
+							※ 此欄位不可為空白 Required
+						</div>
+					</div>
+				</Field>
+				<!-- Remember Account -->
+				<div flex="~" gap="2" w="full" class="items-center">
+					<Checkbox v-model="isRememberAccount" :binary="true" />
+					<div text="xs body" font="light">
+						<div>下次登入時記住帳號</div>
+						<div>Remember Account at next Login</div>
+					</div>
+				</div>
+				<!-- Captcha -->
+				<div>
+					<Turnstile ref="turnstileRef" />
+				</div>
+				<!-- Login Button -->
+				<div flex="~ col" gap="6" w="60" m="auto">
+					<button
+						class="p-2 w-full border-2 text-pReviewer"
+						border="2 opacity-30 nBlue-500 rounded-lg"
+						hover="text-title bg-nBlue-200 border-nBlue-200"
+						active="text-white bg-nBlue-500"
+						:loading="isTurnstileRunning || isSubmitting"
+					>
+						<div>登入 Login</div>
+					</button>
+					<!-- Forget Password -->
+					<router-link to="/recruitment/reviewer/forgetpassword">
+						<button
+							class="p-2 w-full"
+							text="sm secondary"
+							border="rounded-lg"
+							hover="bg-nGrey-200 text-title"
+							active="bg-nGrey-600 text-white"
+						>
+							<div>忘記密碼 Forget Password</div>
+						</button>
+					</router-link>
+				</div>
+			</form>
 		</div>
 	</div>
 </template>

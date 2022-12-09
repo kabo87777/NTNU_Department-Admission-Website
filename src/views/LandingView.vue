@@ -8,23 +8,25 @@
 		<!-- White Background -->
 		<div
 			class="fixed h-screen z-1 right-0 bg-white"
-			w="<md:screen md:min-112 screen-4/9"
+			w="<md:screen md:min-132 screen-4/9"
 		/>
-		<router-view />
 		<div
-			v-if="showGateway"
 			class="absolute h-screen z-50 right-0"
-			w="<md:screen md:min-112 screen-4/9"
+			w="<md:screen md:min-132 screen-4/9"
 		>
-			<div flex="~ col" mx="auto" w="100" h="full">
-				<div my="auto">
+			<div flex="~ col" mx="auto" w="120" h="full">
+				<!-- Login Page -->
+				<router-view />
+
+				<!-- Main Page -->
+				<div my="auto" v-if="showGateway">
 					<!-- NTNU School Logo -->
 					<img
 						src="/assets/login-page/NTNU-logo-B1.png"
 						class="w-48 py-4 md:hidden"
 					/>
 					<!-- Title -->
-					<div mx="4" space="y-2">
+					<div mx="8" space="y-2">
 						<div text="secondary" font="light" class="<md:hidden">
 							國立臺灣師範大學
 						</div>
