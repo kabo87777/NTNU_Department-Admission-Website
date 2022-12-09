@@ -1,128 +1,124 @@
-<template class="overflow-hidden">
-	<div class="flex">
-		<div class="flex-shrink-1">
-			<img src="/assets/login-page/Login-img.png" class="fill" />
-		</div>
-		<div class="flex-none w-150 px-6 pt-18 space-y-8">
-			<router-link to="/recruitment/applicant/signin">
-				<button
-					class="flex items-center gap-2 px-2 py-2"
-					bg="transparent hover:gray-100"
-					text="sm gray-400 hover:gray-600"
-					border="rounded"
-				>
-					<div class="pi pi-angle-left" />
-					<div>返回登入頁面</div>
-					<div>Back to Login</div>
-				</button>
-			</router-link>
-			<div class="px-8 space-y-2">
-				<div class="text-s text-gray-500">
-					國立台灣師範大學資訊工程學系 NTNU CSIE
-				</div>
-				<div class="flex items-end gap-2 font-medium text-gray-900">
-					<div class="text-4xl">教師聘請系統</div>
-					<div class="text-xl">Teacher Recruitment System</div>
-				</div>
-			</div>
-			<div class="px-8 py-4 space-y-4">
-				<div class="flex items-center gap-2 applicantTextColor">
-					<i class="pi pi-circle" style="font-size: 0.5rem" />
-					<div class="flex-none font-medium">申請端註冊</div>
-					<div class="flex-none font-medium">Applicant Register</div>
-					<Divider />
-				</div>
-				<div class="flex-col px-4 pt-4">
-					<div
-						class="flex items-center gap-2 pb-2"
-						text="sm gray-500"
+<template>
+	<!-- Background Image -->
+	<img
+		src="/assets/login-page/Login-img.png"
+		class="fixed min-h-screen h-200"
+	/>
+	<!-- White Background -->
+	<div
+		class="fixed h-screen z-1 right-0 bg-white"
+		w="<md:screen md:min-112 screen-4/9"
+	/>
+	<!-- Content -->
+	<div
+		class="absolute h-screen z-50 right-0 bg-white"
+		w="<md:screen md:min-112 screen-4/9"
+	>
+		<div flex="~ col" mx="auto" w="100" h="screen">
+			<div my="auto">
+				<!-- Button: Back to MainPage -->
+				<router-link to="/recruitment/applicant/signin">
+					<button
+						class="flex items-center gap-2 p-2 my-4"
+						text="sm secondary"
+						border="rounded-lg"
+						hover="bg-nGrey-200 text-title"
+						active="bg-nGrey-600 text-white"
 					>
-						<div>輸入使用者名稱</div>
-						<div>Enter Username</div>
+						<i class="pi pi-angle-left" />
+						<div>回到登入畫面</div>
+						<div>Back to login page</div>
+					</button>
+				</router-link>
+				<div mx="4" space="y-2">
+					<div text="secondary" font="light">
+						國立臺灣師範大學資訊工程學系
 					</div>
-					<InputText
-						name="username"
-						type="username"
-						v-model="userRegistData.name"
-						class="p-inputtext-sm w-full"
-						required
-					/>
-					<div class="absolute" v-if="password.isNameBlank">
-						<small id="newPass-help" class="p-error">
-							{{ $t("必須輸入使用者名稱") }}
-						</small>
+					<div text="3xl title" font="medium">教師聘請系統</div>
+					<div text="lg title" font="medium">
+						Teacher Recruitment System
 					</div>
 				</div>
-				<div class="flex-col px-4 pt-4">
-					<div
-						class="flex items-center gap-2 pb-2"
-						text="sm gray-500"
-					>
-						<div>設置電郵</div>
-						<div>Seting E-mail</div>
+				<!-- Divider -->
+				<Divider align="center">
+					<div p="4" text="sm pApplicant">
+						申請者註冊 Applicant Regist
 					</div>
-					<InputText
-						name="email"
-						type="email"
-						v-model="userRegistData.email"
-						class="p-inputtext-sm w-full"
-						required
-					/>
-					<div class="absolute" v-if="password.isEmailBlank">
-						<small id="newPass-help" class="p-error">
-							{{ $t("必須輸入輸入電郵") }}
-						</small>
+				</Divider>
+				<!-- Regist Form -->
+				<div flex="~ col gap-6" w="3/4" mx="auto">
+					<!-- Username -->
+					<div flex="~ col gap-1" text="sm body" font="light">
+						<div>輸入使用者名稱 Enter Username</div>
+						<InputText
+							name="username"
+							type="text"
+							v-model="userRegistData.name"
+							class="h-11"
+							:class="{ 'p-invalid': password.isNameBlank }"
+							required
+						/>
+						<div text="xs danger" v-if="password.isNameBlank">
+							※ 必須輸入使用者名稱 Username is required.
+						</div>
 					</div>
-				</div>
+					<!-- E-mail -->
+					<div flex="~ col gap-1" text="sm body" font="light">
+						<div>設置電郵 Setting E-mail</div>
+						<InputText
+							name="email"
+							type="email"
+							v-model="userRegistData.email"
+							class="h-11"
+							:class="{ 'p-invalid': password.isNameBlank }"
+							required
+						/>
+						<div text="xs danger" v-if="password.isEmailBlank">
+							※ 必須輸入輸入電郵 E-mail is required.
+						</div>
+					</div>
 
-				<div class="flex-col px-4 pt-4">
-					<div
-						class="flex items-center gap-2 pb-2"
-						text="sm gray-500"
-					>
-						<div>設置密碼</div>
-						<div>Setting Password</div>
+					<div flex="~ col gap-1" text="sm body" font="light">
+						<div>設置密碼 Setting Password</div>
+						<InputText
+							name="password"
+							type="password"
+							v-model="userRegistData.password"
+							class="h-11"
+							:class="{
+								'p-invalid': password.isCurrentPassBlank,
+							}"
+							required
+						/>
+						<div
+							text="xs danger"
+							v-if="password.isCurrentPassBlank"
+						>
+							※ 請輸入新密碼 Please set your new password.
+						</div>
 					</div>
-					<InputText
-						name="password"
-						type="password"
-						v-model="userRegistData.password"
-						class="p-inputtext-sm w-full"
-						required
-					/>
-					<div class="absolute" v-if="password.isCurrentPassBlank">
-						<small id="newPass-help" class="p-error">
-							{{ $t("請輸入新密碼") }}
-						</small>
-					</div>
-				</div>
-				<div class="flex-col px-4 pt-4">
-					<div
-						class="flex items-center gap-2 pb-2"
-						text="sm gray-500"
-					>
-						<div>確認密碼</div>
-						<div>Confirm Password</div>
-					</div>
-					<InputText
-						name="password"
-						type="password"
-						v-model="userRegistData.password_confirmation"
-						class="p-inputtext-sm w-full"
-						required
-					/>
-					<div class="absolute" v-if="password.notMatch">
-						<small id="confirmPass-help" class="p-error">
-							{{ $t("密碼不符") }}
-						</small>
+					<div flex="~ col gap-1" text="sm body" font="light">
+						<div>確認密碼 Confirm Password</div>
+						<InputText
+							name="password"
+							type="password"
+							v-model="userRegistData.password_confirmation"
+							class="h-11"
+							:class="{ 'p-invalid': password.notMatch }"
+							required
+						/>
+						<div text="xs danger" v-if="password.notMatch">
+							※ 密碼不符 Confirm password is not matched.
+						</div>
 					</div>
 				</div>
-			</div>
-			<div class="flex-col-inline px-4 gap-y-8">
-				<div class="flex justify-center">
-					<Button
-						class="py-2 w-80 applicantButtonStyle"
-						border="2  rounded-lg"
+				<!-- Regist Button -->
+				<div flex="~ col" w="60" m="x-auto t-8 b-auto">
+					<button
+						class="p-2 w-full border-2 text-pApplicant"
+						border="2 opacity-30 nGold-500 rounded-lg"
+						hover="text-title bg-nGold-300 border-nGold-300"
+						active="text-white bg-nGold-500"
 						:loading="isRegistLoading"
 						@click="handleSubmit"
 					>
@@ -130,10 +126,10 @@
 							<div>註冊</div>
 							<div>Register</div>
 						</div>
-					</Button>
-				</div>
-				<div class="ml-168px mt-40px">
-					<Turnstile ref="turnstileRef" />
+					</button>
+					<div>
+						<Turnstile ref="turnstileRef" />
+					</div>
 				</div>
 			</div>
 		</div>
@@ -209,11 +205,7 @@ const postEmailRegister = async () => {
 };
 
 const handleSubmit = async () => {
-	if (userRegistData.name === "") {
-		password.isNameBlank = true;
-	} else {
-		password.isNameBlank = false;
-	}
+	password.isNameBlank = userRegistData.name === "" ? true : false;
 
 	if (userRegistData.email === "") {
 		password.isEmailBlank = true;
