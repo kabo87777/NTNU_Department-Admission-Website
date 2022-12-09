@@ -150,4 +150,5 @@ export interface AdmissionApplicantGetUserInfoResponse {
 	household_zipcode?: number | string;
 	communicate_address?: string;
 	communicate_zipcode?: number | string;
+	isForeigner: boolean;
 }

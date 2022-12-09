@@ -620,12 +620,11 @@ const setBasicInfo = (res: AdmissionApplicantGetUserInfoResponse) => {
 	name.enFamName = res.en_surname as string;
 	name.enMidName = res.en_midname as string;
 	name.enName = res.en_givenname as string;
-
-	if (res.nationality === "台灣") {
+	if (res.isForeigner === false) {
 		identity.selectedIdentity = "本地人士";
 		identity.ic = res.national_id as string;
 		identity.nationality = res.nationality as string;
-	} else if (res.nationality !== null) {
+	} else {
 		identity.selectedIdentity = "外籍人士";
 		identity.ui = res.national_id as string;
 		identity.nationality = res.nationality as string;
@@ -636,7 +635,9 @@ const setBasicInfo = (res: AdmissionApplicantGetUserInfoResponse) => {
 	currentAddr.addr = res.communicate_address as string;
 	currentAddr.postcode = res.communicate_zipcode as string;
 	currentAddr.isAddrSame =
-		householdAddr.addr === currentAddr.addr && householdAddr.addr !== ""
+		householdAddr.addr === currentAddr.addr &&
+		householdAddr.addr !== "" &&
+		res.isForeigner === false
 			? true
 			: false;
 
@@ -694,8 +695,16 @@ const handleSave = async () => {
 			identity.selectedIdentity === "本地人士"
 				? identity.ic
 				: identity.ui,
-		household_address: householdAddr.addr,
-		household_zipcode: householdAddr.postcode,
+		household_address:
+			// householdAddr.addr,
+			identity.selectedIdentity === "本地人士"
+				? householdAddr.addr
+				: null,
+		household_zipcode:
+			// householdAddr.postcode,
+			identity.selectedIdentity === "本地人士"
+				? householdAddr.postcode
+				: null,
 		communicate_address: currentAddr.isAddrSame
 			? householdAddr.addr
 			: currentAddr.addr,
@@ -706,18 +715,8 @@ const handleSave = async () => {
 		birthcountry: born.country,
 		birth: addHours(8, new Date(born.birth)),
 		mobile_phone: contact.phone,
+		isForeigner: identity.selectedIdentity === "本地人士" ? false : true,
 	};
-
-	const keys = Object.keys(body);
-	Object.values(body).map((value, index) => {
-		if (value === null || value === "") {
-			const keyName = keys[
-				index
-			] as keyof AdmissionApplicantGetUserInfoResponse;
-
-			delete body[keyName];
-		}
-	});
 
 	loading.save = true;
 
