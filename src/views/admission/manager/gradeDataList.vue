@@ -478,7 +478,7 @@
 					{{ $t("不通過") }} {{ oralStage4Count }} {{ $t("位") }}
 				</div>
 				<Button
-					class="w-140px h-44px !ml-360px p-button-outlined p-button-success"
+					class="w-140px h-44px !ml-560px p-button-outlined p-button-success"
 					@click="saveOralOrder"
 				>
 					<img
@@ -543,7 +543,7 @@
 			<div class="bigRedDivider !mt-30px"></div>
 			<div class="flex text-xl mt-20px">
 				<Button
-					class="w-140px h-44px !ml-470px p-button-outlined p-button-success"
+					class="w-140px h-44px !ml-600px p-button-outlined p-button-success"
 					@click="saveEnrollOrder"
 				>
 					<img
@@ -594,7 +594,7 @@
 			<div class="bigRedDivider !mt-30px"></div>
 			<div class="flex text-xl mt-20px">
 				<Button
-					class="w-140px h-44px !ml-470px p-button-outlined p-button-success"
+					class="w-140px h-44px !ml-600px p-button-outlined p-button-success"
 					@click="saveReserveOrder"
 				>
 					<img
@@ -1033,6 +1033,7 @@ store.$subscribe(() => {
 	});
 });
 const editProduct = (prod: any) => {
+	p1_result.value = prod.data.application_stage;
 	name.value = prod.data.name;
 	id.value = prod.data.id;
 	productDialog.value = true;
