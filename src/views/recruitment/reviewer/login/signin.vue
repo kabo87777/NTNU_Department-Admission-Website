@@ -239,7 +239,7 @@ const onSubmit = handleSubmit(async function (values, actions) {
 			})
 		);
 
-		router.replace({ name: "recruitmentReviewerMainContainer" });
+		router.replace({ name: "RecruitmentReviewerMainContainer" });
 	} catch (e: any) {
 		if (e?.response?.status === 401) {
 			return toast.add({

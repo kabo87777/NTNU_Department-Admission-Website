@@ -236,7 +236,7 @@ const onSubmit = handleSubmit(async function (values, actions) {
 			})
 		);
 
-		router.replace({ name: "recruitmentAdminMainContainer" });
+		router.replace({ name: "RecruitmentAdminMainContainer" });
 	} catch (e: any) {
 		if (e?.response?.status === 401) {
 			return toast.add({
