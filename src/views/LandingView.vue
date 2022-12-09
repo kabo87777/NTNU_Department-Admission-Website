@@ -41,7 +41,7 @@
 					<Divider align="center">
 						<div p="4" text="sm body" font="light">請選擇系統</div>
 					</Divider>
-					<div flex="~ col gap-12" w="3/4" mx="auto">
+					<div flex="~ col gap-12" w="80" mx="auto">
 						<router-link :to="{ name: 'AdmissionSignin' }">
 							<button
 								class="p-4 w-full border-2 text-pApplicant"

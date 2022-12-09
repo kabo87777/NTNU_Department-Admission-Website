@@ -28,7 +28,7 @@
 			</div>
 		</Divider>
 		<!-- Buttons -->
-		<div flex="~ col gap-8" w="3/4" mx="auto">
+		<div flex="~ col gap-8" w="80" mx="auto">
 			<router-link to="/recruitment/applicant/signin">
 				<button
 					class="p-4 w-full border-2 text-pApplicant"
