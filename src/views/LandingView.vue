@@ -53,7 +53,6 @@
 			</div>
 		</div>
 	</div>
-	<router-view v-else />
 </template>
 
 <script setup lang="ts">
