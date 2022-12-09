@@ -1,55 +1,67 @@
 <template>
 	<div v-if="!isLoggedIn" class="grid grid-cols-2 gap-15px">
-		<div>
-			<img src="/assets/login-page/Login-img.png" class="h-screen" />
-		</div>
+		<!-- Background Image -->
+		<img
+			src="/assets/login-page/Login-img.png"
+			class="fixed min-h-screen h-200"
+		/>
+		<!-- White Background -->
+		<div
+			class="fixed h-screen z-1 right-0 bg-white"
+			w="<md:screen md:min-112 screen-4/9"
+		/>
 		<router-view />
-		<div v-if="showGateway" class="m-auto">
-			<div class="flex m-auto h-15">
-				<div>
+		<div
+			v-if="showGateway"
+			class="absolute h-screen z-50 right-0"
+			w="<md:screen md:min-112 screen-4/9"
+		>
+			<div flex="~ col" mx="auto" w="100" h="full">
+				<div my="auto">
+					<!-- NTNU School Logo -->
 					<img
 						src="/assets/login-page/NTNU-logo-B1.png"
-						class="h-15"
+						class="w-48 py-4 md:hidden"
 					/>
-				</div>
-				<Divider layout="vertical" />
-				<div class="mt-1.5">
-					<div class="text-4xl font-bold text-gray-500">
-						資訊工程學系
+					<!-- Title -->
+					<div mx="4" space="y-2">
+						<div text="secondary" font="light" class="<md:hidden">
+							國立臺灣師範大學
+						</div>
+						<div text="3xl title" font="medium">
+							資訊工程學系報名系統
+						</div>
+						<div text="xl title" font="medium">
+							NTNU CSIE Admissions
+						</div>
 					</div>
-					<div class="text-xs text-gray-400">
-						Department of Computer Science and Information
-						Enginering
+					<!-- Divider -->
+					<Divider align="center">
+						<div p="4" text="sm body" font="light">請選擇系統</div>
+					</Divider>
+					<div flex="~ col gap-12" w="3/4" mx="auto">
+						<router-link :to="{ name: 'AdmissionSignin' }">
+							<button
+								class="p-4 w-full border-2 text-pApplicant"
+								border="2 opacity-30 nGold-500 rounded-lg"
+								hover="text-title bg-nGold-300 border-nGold-300"
+								active="text-white bg-nGold-500"
+							>
+								<div>招生系統 Admission System</div>
+							</button>
+						</router-link>
+						<router-link :to="{ name: 'RecruitmentSignin' }">
+							<button
+								class="p-4 w-full border-2 text-pReviewer"
+								border="2 opacity-30 nBlue-500 rounded-lg"
+								hover="text-title bg-nBlue-200 border-nBlue-200"
+								active="text-white bg-nBlue-500"
+							>
+								<div>教師聘請系統 Recruitment System</div>
+							</button>
+						</router-link>
 					</div>
 				</div>
-			</div>
-			<div>
-				<div class="mt-100px ml-204px text-4xl font-bold text-gray-500">
-					{{ $t("資訊工程學系報名系統") }}
-				</div>
-				<div class="ml-204px text-xs text-gray-500">
-					NTNU CSIE Admissions
-				</div>
-			</div>
-			<div class="mt-50px ml-184px userLogin">
-				<router-link :to="{ name: 'AdmissionSignin' }">
-					<button
-						class="text-xl h-90px w-420px md:mx-auto w-full py-4 admissionButtonStyle"
-						border="2  rounded-lg"
-					>
-						<div>招生系統 Admission System</div>
-					</button>
-				</router-link>
-			</div>
-			<div class="mt-50px ml-184px">
-				<router-link :to="{ name: 'RecruitmentSignin' }">
-					<button
-						class="text-xl h-90px w-420px md:mx-auto w-full py-4 recruitmentButtonStyle"
-						border="2  rounded-lg"
-					>
-						<div>教師聘請系統 Recruitment System</div>
-					</button>
-				</router-link>
 			</div>
 		</div>
 	</div>
@@ -126,36 +138,3 @@ onMounted(async () => {
 	console.log(`[App] We are ${isLoggedIn.value ? "" : "un"}authorized`);
 });
 </script>
-
-<style setup lang="css">
-.admissionButtonStyle {
-	background-color: #fafac7;
-	border-color: #dbd379;
-	color: #544830;
-}
-.admissionButtonStyle:hover {
-	background-color: #8a7b27;
-	border-color: #8a7b27;
-	color: white;
-}
-.admissionButtonStyle:active {
-	background-color: #624f2a;
-	border-color: #624f2a;
-	color: white;
-}
-.recruitmentButtonStyle {
-	background-color: #dfe7fd;
-	border-color: #a5b9ec;
-	color: #003a5c;
-}
-.recruitmentButtonStyle:hover {
-	background-color: #2459a4;
-	border-color: #2459a4;
-	color: white;
-}
-.recruitmentButtonStyle:active {
-	background-color: #0b4873;
-	border-color: #0b4873;
-	color: white;
-}
-</style>
