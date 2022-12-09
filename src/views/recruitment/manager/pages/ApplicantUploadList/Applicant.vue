@@ -77,19 +77,12 @@ const tabs = ref([
 const { data } = useQuery(
 	["adminApplicantBasisInfo"],
 	async () => {
-		try {
-			return await api.getApplicantBasicInfo(
-				programId as number,
-				Number(route.params.userId)
-			);
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				console.error(
-					"Session has already expired while quering appliacntList"
-				);
-				return;
-			}
-		}
+		if (!programId) throw new Error("invalid programId");
+
+		return await api.getApplicantBasicInfo(
+			programId,
+			Number(route.params.userId)
+		);
 	},
 	{
 		onSuccess: (data) => {

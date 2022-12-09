@@ -230,18 +230,21 @@ const onSubmit = handleSubmit(async function (values, actions) {
 
 		redirectToMainContainer();
 	} catch (e: any) {
-		// TODO: show error message
-		// console.log(e);
+		if (e?.response?.status === 401) {
+			return toast.add({
+				severity: "error",
+				summary: "Error",
+				detail: "Invalid email or password",
+				life: 5000,
+			});
+		}
+
 		toast.add({
 			severity: "error",
-			summary: "登入失敗 Login Failed",
-			detail: `准考證號碼或密碼輸入錯誤
-			Invalid Registration Number or Password`,
-			closable: false,
-			life: 3000,
+			summary: "Error",
+			detail: e.toString(),
+			life: 5000,
 		});
-
-		if (e?.response?.status === 401) console.log("invalid credentials");
 	}
 });
 </script>

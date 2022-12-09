@@ -1,8 +1,5 @@
 <template class="overflow-hidden">
 	<div class="flex">
-		<div class="flex-shrink-1">
-			<img src="/assets/login-page/Login-img.png" class="fill" />
-		</div>
 		<div class="flex-none w-150 px-6 pt-18 space-y-8">
 			<router-link to="/admission/manager/signin">
 				<button

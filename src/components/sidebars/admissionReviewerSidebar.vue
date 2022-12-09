@@ -25,8 +25,15 @@
 			</div>
 		</div>
 
+		<div class="flex mt-50px">
+			<div class="sidebarBlueDivider"></div>
+			<div class="mt-[-8px] ml-8px text-[#236192] text-18px font-bold">
+				{{ $t("第一階段審查") }}
+			</div>
+		</div>
+
 		<router-link
-			to="/recruitment/reviewer/requiredDataReview"
+			to="/admission/reviewer/applicationReview"
 			custom
 			v-slot="{ navigate }"
 		>
@@ -43,13 +50,13 @@
 				<span
 					class="text-left tracking-3px ml-3 font-bold text-[18px] text-[#2D2926]"
 				>
-					{{ $t("必看資料評閱") }}
+					{{ $t("書面資料評閱") }}
 				</span>
 			</Button>
 		</router-link>
 
 		<router-link
-			to="/recruitment/reviewer/optionalDataReview"
+			to="/admission/reviewer/oralReview"
 			custom
 			v-slot="{ navigate }"
 		>
@@ -66,11 +73,10 @@
 				<span
 					class="text-left tracking-3px ml-3 font-bold text-[18px] text-[#2D2926]"
 				>
-					{{ $t("選看資料評閱") }}
+					{{ $t("口試資料評閱") }}
 				</span>
 			</Button>
 		</router-link>
-
 		<div
 			class="absolute bg-gray-200 bg-opacity-50 h-140px w-[100%]"
 			style="bottom: 0px"
@@ -87,13 +93,13 @@
 							{{ $t("審查端帳戶") }}
 						</div>
 						<div class="mt-4px ml-[-2px] text-16px">
-							{{ reviewerInfo.name }}
+							{{ $t("系辦主管") }}
 						</div>
 					</div>
 				</div>
 				<div class="flex absolute mt-18px mr-4px" style="right: 0px">
 					<router-link
-						to="/recruitment/reviewer/userSetting"
+						to="/admission/reviewer/reviewerUserSetting"
 						custom
 						v-slot="{ navigate }"
 					>
@@ -127,75 +133,48 @@
 
 <script setup lang="ts">
 import "primevue/resources/primevue.min.css";
-import { ref, watch, watchEffect, toRaw, computed } from "vue";
 import Dropdown from "primevue/dropdown";
 import Button from "primevue/button";
-import { useRouter } from "vue-router";
-import { useRecruitmentReviewerAuthStore } from "@/stores/universalAuth";
-import { RecruitmentReviewerAPI } from "@/api/recruitment/reviewer/api";
+
+import { ref, watch, watchEffect } from "vue";
+import { RouterLink, useRouter } from "vue-router";
 import { useQuery } from "@tanstack/vue-query";
-import { InvalidSessionError } from "@/api/error";
-import { useGlobalStore } from "@/stores/RecruitmentReviewerStore";
-import { RecruitmentReviewerProgramListResponse } from "@/api/recruitment/reviewer/types";
-import { RecruitmentManagerAuthResponse } from "@/api/recruitment/reviewer/types";
-import { useUserInfoStore } from "@/stores/RecruitmentReviewerStore";
 
-const reviewerAuth = useRecruitmentReviewerAuthStore();
-const store = useGlobalStore();
-const reviewerStore = useUserInfoStore();
-const api = new RecruitmentReviewerAPI(reviewerAuth);
-
-const reviewerInfo: RecruitmentManagerAuthResponse = toRaw(
-	reviewerStore.userInfo
-);
-
-const {
-	isLoading,
-	isError,
-	data: programs,
-	error,
-} = useQuery(["programList"], async () => {
-	try {
-		return await api.getProgramList();
-	} catch (e: any) {
-		if (e instanceof InvalidSessionError) {
-			// FIXME: show session expiry notification??
-			// Why are we even here in the first place?
-			// MainContainer should have checked already.
-			console.error(
-				"Session has already expired while querying programList"
-			);
-			router.push("/");
-			return;
-		}
-	}
-});
+import { AdmissionReviewerAPI } from "@/api/admission/reviewer/api";
+import { AdmissionReviewerProgramListResponse } from "@/api/admission/reviewer/types";
+import { useAdmissionReviewerAuthStore } from "@/stores/universalAuth";
+import { useGlobalStore } from "@/stores/AdmissionReviewerStore";
 
 const router = useRouter();
 
-// FIXME: this should NOT be hardcoded.
-const selectedProgram = ref<RecruitmentReviewerProgramListResponse>();
+const reviewerAuth = useAdmissionReviewerAuthStore();
+const api = new AdmissionReviewerAPI(reviewerAuth);
+const globalStore = useGlobalStore();
+
+const { data: programs } = useQuery(
+	["admissionReviewerProgramList"],
+	async () => {
+		return await api.getProgramList();
+	}
+);
+
+const selectedProgram = ref<AdmissionReviewerProgramListResponse>();
 
 watchEffect(() => {
-	if (programs.value && programs.value.length > 1) {
-		const temp = programs.value[0];
-		store.$patch((state) => {
-			// state.program = temp;
-		});
-		// selectedProgram.value=toRaw(programs.value[0])
-		selectedProgram.value = programs.value[0];
-	}
+	if (!programs.value) return;
+
+	globalStore.updateadmissionReviewerProgramData(programs.value[0]);
+
+	selectedProgram.value = programs.value[0];
 });
 
 watch(selectedProgram, (selection) => {
-	store.$patch({ recruitmentReviewerProgram: selectedProgram.value });
+	globalStore.updateadmissionReviewerProgramData(selectedProgram!.value!);
 
 	console.debug("Selected program:\n" + JSON.stringify(selection, null, 2));
 });
 
-const generateOptions = (data: RecruitmentReviewerProgramListResponse) => {
-	return data.category + data.name;
-};
+const generateOptions = (data: any) => data.category + data.name;
 
 async function signOut() {
 	await api.invalidateSession();

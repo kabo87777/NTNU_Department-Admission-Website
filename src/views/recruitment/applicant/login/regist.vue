@@ -151,7 +151,7 @@ const applicantAuth = useRecruitmentApplicantAuthStore();
 const router = useRouter();
 const turnstileRef = ref<TurnstileComponentExposes>();
 const isRegistLoading = ref(false);
-const userRegistData = reactive({
+let userRegistData = reactive({
 	name: "",
 	email: "",
 	password: "",
@@ -160,7 +160,7 @@ const userRegistData = reactive({
 		"https://admissions-frontend-staging.birkhoff.me/recruitment/applicant/signin",
 });
 
-const password = reactive({
+let password = reactive({
 	isCurrentPassBlank: false,
 	isNameBlank: false,
 	isEmailBlank: false,
@@ -171,7 +171,7 @@ const password = reactive({
 	confirmPass: "",
 });
 
-const RegisterResponse = reactive({
+let RegisterResponse = reactive({
 	success: false,
 	message: "" as string | [],
 });
@@ -233,18 +233,16 @@ const handleSubmit = async () => {
 		!password.notMatch
 	) {
 		isRegistLoading.value = true;
-		const response = postEmailRegister();
-		await response.then((res) => {
-			console.log(res);
-			if (res?.status !== undefined && res?.message !== undefined) {
-				RegisterResponse.success = toRaw(res.status);
-				RegisterResponse.message = toRaw(res.message);
-			}
-			isRegistLoading.value = false;
-			if (RegisterResponse.success) {
-				redirectToRegistDonePage();
-			}
-		});
+		const res = await postEmailRegister();
+
+		if (res?.status !== undefined && res?.message !== undefined) {
+			RegisterResponse.success = toRaw(res.status);
+			RegisterResponse.message = toRaw(res.message);
+		}
+		isRegistLoading.value = false;
+		if (RegisterResponse.success) {
+			redirectToRegistDonePage();
+		}
 	}
 };
 </script>

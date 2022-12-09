@@ -193,7 +193,7 @@ const props = defineProps([
 const name = ref(props.itemName);
 const schoolName = ref(props.schoolName);
 const score = ref(props.score);
-const file = reactive({
+let file = reactive({
 	fileUrl: "",
 	name: "",
 	size: 0,

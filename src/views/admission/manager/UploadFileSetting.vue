@@ -351,7 +351,7 @@ const store = useGlobalStore();
 const queryClient = useQueryClient();
 
 // Field Data
-const showedInfo = reactive([
+let showedInfo = reactive([
 	{ id: "姓名資訊", checked: false },
 	{ id: "入學身分", checked: false },
 	{ id: "戶籍資訊", checked: false },
@@ -359,12 +359,12 @@ const showedInfo = reactive([
 	{ id: "身份資料", checked: false },
 	{ id: "聯絡資料", checked: false },
 ]);
-const showedFile = reactive([
+let showedFile = reactive([
 	{ id: "就學經歷", checked: false },
 	{ id: "考試與檢定分數", checked: false },
 	{ id: "其他有利於審查資料", checked: false },
 ]);
-const programData: AdmissionAdminProgramListResponse = reactive({
+let programData: AdmissionAdminProgramListResponse = reactive({
 	id: 0,
 	category: "",
 	name: "",
@@ -390,16 +390,11 @@ const fieldList = {
 const getInfoFileField = useQuery(
 	["infoFileField"],
 	async () => {
-		try {
-			if (store.program) {
-				const allData = await api.getProgramList();
-				return allData[store.program.id - 1];
-			}
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				console.error("Invalid Session Error");
-			}
-		}
+		if (!store.program)
+			throw new Error("infoFileField: no program selected");
+
+		const allData = await api.getProgramList();
+		return allData[store.program.id - 1];
 	},
 	{
 		refetchOnWindowFocus: false,
@@ -450,14 +445,8 @@ const getInfoFileField = useQuery(
 // API: Patch Info/File Data
 const patchInfoFileField = useMutation(
 	async (newData: AdmissionAdminProgramListResponse) => {
-		try {
-			if (store.program) {
-				return await api.updateProgramData(store.program.id, newData);
-			}
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				console.error("Invalid Session Error");
-			}
+		if (store.program) {
+			return await api.updateProgramData(store.program.id, newData);
 		}
 	},
 	{

@@ -21,24 +21,25 @@
 </template>
 
 <script setup lang="ts">
-import NavBar from "@/components/NavBar.vue";
-import SideBar from "@/components/sidebars/SideBar.vue";
-
-import { watch } from "vue";
+import { useQuery } from "@tanstack/vue-query";
 import { useRouter } from "vue-router";
 
 import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
 import { doUniversalAuthSessionValidation } from "@/api/universalAuth";
 
+import NavBar from "@/components/NavBar.vue";
+import SideBar from "@/components/sidebars/admissionManagerSideBar.vue";
+
 const router = useRouter();
 
-const adminAuth = useAdmissionAdminAuthStore();
+const auth = useAdmissionAdminAuthStore();
 
-watch(router.currentRoute, async () => {
-	if (!(await doUniversalAuthSessionValidation(adminAuth))) {
-		router.replace({ name: "AdmissionManagerSignin" });
-		// TODO: show session expired notification
-	}
+useQuery(["admissionAdminAuthorizationStatus", auth], async () => {
+	const status = await doUniversalAuthSessionValidation(auth);
+
+	if (status) return true;
+
+	return router.replace({ name: "AdmissionManagerSignin" });
 });
 </script>
 

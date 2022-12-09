@@ -526,24 +526,24 @@ import Button from "primevue/button";
 import { useAdmissionApplicantAuthStore } from "@/stores/universalAuth";
 import { AdmissionApplicantAPI } from "@/api/admission/applicant/api";
 import { AdmissionApplicantGetUserInfoResponse } from "@/api/admission/applicant/types";
-import { log } from "console";
+
 const applicantAuth = useAdmissionApplicantAuthStore();
 const api = new AdmissionApplicantAPI(applicantAuth);
 // const project = useProjectIdStore();
 
 const toast = useToast();
 
-const fetchResponse = reactive({
+let fetchResponse = reactive({
 	success: false,
 	message: "" as string | [],
 });
 
-const loading = reactive({
+let loading = reactive({
 	fetch: false,
 	save: false,
 });
 
-const name = reactive({
+let name = reactive({
 	id: 0,
 	admission_id: 0,
 	appellation: "",
@@ -555,36 +555,36 @@ const name = reactive({
 	enMidName: "",
 });
 
-const identity = reactive({
+let identity = reactive({
 	selectedIdentity: "",
 	ic: "",
 	nationality: "",
 	ui: "",
 });
 
-const householdAddr = reactive({
+let householdAddr = reactive({
 	addr: "",
 	postcode: "",
 });
 
-const currentAddr = reactive({
+let currentAddr = reactive({
 	isAddrSame: false,
 	addr: "",
 	postcode: "",
 });
 
-const born = reactive({
+let born = reactive({
 	sex: "",
 	country: "",
 	birth: new Date(),
 });
 
-const contact = reactive({
+let contact = reactive({
 	email: "",
 	phone: "",
 });
 
-const required = reactive({
+let required = reactive({
 	enFamName: false,
 	enName: false,
 	identity: false,
@@ -648,16 +648,7 @@ const setBasicInfo = (res: AdmissionApplicantGetUserInfoResponse) => {
 };
 
 const saveInfo = async (body: object) => {
-	try {
-		return await api.patchBasicInfo(body);
-	} catch (e: any) {
-		if (e instanceof InvalidSessionError) {
-			console.error(
-				"Session has already expired while changing password"
-			);
-			return;
-		}
-	}
+	return await api.patchBasicInfo(body);
 };
 
 const address = (prod: any) => {
@@ -721,32 +712,30 @@ const handleSave = async () => {
 
 	loading.save = true;
 
-	const response = saveInfo(body);
+	const res = await saveInfo(body);
 
-	await response.then((res) => {
-		if (res?.success !== undefined && res?.message !== undefined) {
-			fetchResponse.success = toRaw(res.success);
-			fetchResponse.message = toRaw(res.message);
-		}
+	if (res?.success !== undefined && res?.message !== undefined) {
+		fetchResponse.success = toRaw(res.success);
+		fetchResponse.message = toRaw(res.message);
+	}
 
-		loading.save = false;
+	loading.save = false;
 
-		if (fetchResponse.success) {
-			toast.add({
-				severity: "success",
-				summary: "Success",
-				detail: fetchResponse.message,
-				life: 3000,
-			});
-		} else {
-			toast.add({
-				severity: "error",
-				summary: "Error",
-				detail: fetchResponse.message,
-				life: 5000,
-			});
-		}
-	});
+	if (fetchResponse.success) {
+		toast.add({
+			severity: "success",
+			summary: "Success",
+			detail: fetchResponse.message,
+			life: 3000,
+		});
+	} else {
+		toast.add({
+			severity: "error",
+			summary: "Error",
+			detail: fetchResponse.message,
+			life: 5000,
+		});
+	}
 
 	loading.fetch = true;
 };
@@ -756,22 +745,16 @@ const getUserInfo = async () => {
 };
 
 onMounted(async () => {
-	const response = getUserInfo();
-
-	await response.then((res) => {
-		// console.log(res);
-		if (Object.keys(res).length) setBasicInfo(res);
-	});
+	const response = await getUserInfo();
+	if (response) setBasicInfo(response);
 });
 
 watch(
 	() => loading.fetch,
 	async () => {
-		const response = getUserInfo();
+		const response = await getUserInfo();
 
-		await response.then((res) => {
-			if (Object.keys(res).length) setBasicInfo(res);
-		});
+		if (response) setBasicInfo(response);
 
 		loading.fetch = false;
 	}
