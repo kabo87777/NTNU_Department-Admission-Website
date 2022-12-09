@@ -60,7 +60,7 @@
 					>
 						<img
 							alt="logo"
-							src="/assets/admissionApplicant/switch.svg"
+							src="/assets/reviewer-page/Arhive.png"
 							style="width: 18px"
 						/>
 						<h1 class="ml-8px text-16px">
@@ -78,7 +78,7 @@
 					>
 						<img
 							alt="logo"
-							src="/assets/admissionApplicant/switch.svg"
+							src="/assets/admissionApplicant\switch.svg"
 							style="width: 18px"
 						/>
 						<h1 class="ml-8px text-16px">
@@ -96,7 +96,7 @@
 					>
 						<img
 							alt="logo"
-							src="/assets/admissionApplicant/switch.svg"
+							src="/assets/reviewer-page/Arhive.png"
 							style="width: 18px"
 						/>
 						<h1 class="ml-8px text-16px">
