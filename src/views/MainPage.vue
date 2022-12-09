@@ -50,23 +50,7 @@
 					</button>
 				</router-link>
 			</div>
-			<div class="ml-8px">
-				<router-link to="/recruitment">
-					<button
-						class="h-40px w-130px p-button-outlined p-button-success adminSmallButtonStyle"
-						border="2  rounded-lg"
-					>
-						<img
-							alt="logo"
-							src="/assets/admissionApplicant\Close_round.svg"
-							style="width: 18px"
-						/>
-						<h1 class="ml-8px text-16px">
-							{{ $t("取消變更") }}
-						</h1>
-					</button>
-				</router-link>
-			</div>
+
 			<div>..</div>
 			<div class="ml-8px">
 				<router-link to="/recruitment">
@@ -76,7 +60,7 @@
 					>
 						<img
 							alt="logo"
-							src="/assets/reviewer-page/Arhive.png"
+							src="/assets/admissionApplicant/switch.svg"
 							style="width: 18px"
 						/>
 						<h1 class="ml-8px text-16px">
@@ -94,11 +78,11 @@
 					>
 						<img
 							alt="logo"
-							src="/assets/admissionApplicant\Done_round.svg"
+							src="/assets/admissionApplicant/switch.svg"
 							style="width: 18px"
 						/>
 						<h1 class="ml-8px text-16px">
-							{{ $t("設定儲存") }}
+							{{ $t("切換專案") }}
 						</h1>
 					</button>
 				</router-link>
@@ -112,7 +96,7 @@
 					>
 						<img
 							alt="logo"
-							src="/assets/reviewer-page/Arhive.png"
+							src="/assets/admissionApplicant/switch.svg"
 							style="width: 18px"
 						/>
 						<h1 class="ml-8px text-16px">
@@ -130,7 +114,7 @@
 					>
 						<img
 							alt="logo"
-							src="/assets/reviewer-page/Arhive.png"
+							src="/assets/admissionApplicant/switch.svg"
 							style="width: 18px"
 						/>
 						<h1 class="ml-8px text-16px">
@@ -140,6 +124,62 @@
 				</router-link>
 			</div>
 			<div>..</div>
+			<div class="ml-8px">
+				<router-link to="/recruitment">
+					<button
+						class="h-40px w-130px p-button-outlined p-button-success adminSmallButtonStyle"
+						border="2  rounded-lg"
+					>
+						<img
+							class="change-my-color"
+							alt="logo"
+							src="/assets/admissionApplicant/switch.svg"
+							style="width: 18px"
+						/>
+						<h1 class="ml-8px text-16px">
+							{{ $t("取消變更") }}
+						</h1>
+					</button>
+				</router-link>
+			</div>
+			<div>..</div>
+			<div class="ml-8px">
+				<router-link to="/recruitment">
+					<button
+						class="h-40px w-130px p-button-outlined p-button-success adminSmallButtonStyle"
+						border="2  rounded-lg"
+					>
+						<svg
+							width="20"
+							height="20"
+							viewBox="0 0 20 20"
+							fill="none"
+							xmlns="http://www.w3.org/2000/svg"
+						>
+							<path
+								d="M15 5L5 15"
+								v-bind:stroke="mycolor"
+								stroke-width="2"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+							/>
+							<path
+								d="M5 5L15 15"
+								v-bind:stroke="mycolor"
+								stroke-width="2"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+							/>
+						</svg>
+						<h1 class="ml-8px text-16px">
+							{{ $t("取消變更") }}
+						</h1>
+					</button>
+				</router-link>
+			</div>
+			<div class="sizes">
+				<Button label="Small" icon="pi pi-check" class="p-button-sm" />
+			</div>
 		</div>
 	</div>
 </template>
@@ -147,6 +187,9 @@
 <script setup lang="ts">
 import Button from "primevue/button";
 import Divider from "primevue/divider";
+import { ref } from "vue";
+
+const mycolor = ref("#ff0000");
 </script>
 
 <style setup lang="css">
@@ -180,130 +223,16 @@ import Divider from "primevue/divider";
 	border-color: #0b4873;
 	color: white;
 }
-
-.admissionSmallButtonStyle {
-	background-color: #ffffff;
-	border-color: #62373e;
-	color: #62373e;
-	box-sizing: border-box;
-
-	/* Auto layout */
-
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	align-items: center;
-	padding: 16px 12px;
-	gap: 6px;
+.change-my-color {
+	color: "green";
+	/*filter: hue-rotate(180deg);*/
+	/*filter: contrast(1000);*/
+	/*filter: brightness(0.25);*/
 }
-.admissionSmallButtonStyle:hover {
-	background-color: #dbd379;
-	border-color: #dbd379;
-	color: #292a2b;
-}
-.admissionSmallButtonStyle:active {
-	background-color: #8a7b27;
-	border-color: #8a7b27;
-	color: #fafac7;
-}
-
-.reviewSmallButtonStyle {
-	background-color: #ffffff;
-	border-color: #18528c;
-	color: #18528c;
-	box-sizing: border-box;
-
-	/* Auto layout */
-
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	align-items: center;
-	padding: 16px 12px;
-	gap: 6px;
-}
-.reviewSmallButtonStyle:hover {
-	background-color: #a5b9ec;
-	border-color: #292a2b;
-	color: #292a2b;
-}
-.reviewSmallButtonStyle:active {
-	background-color: #2459a4;
-	border-color: #2459a4;
-	color: #dfe7fd;
-}
-
-.adminSmallButtonStyle {
-	background-color: #ffffff;
-	border-color: #62373e;
-	color: #62373e;
-	box-sizing: border-box;
-
-	/* Auto layout */
-
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	align-items: center;
-	padding: 16px 12px;
-	gap: 6px;
-}
-.adminSmallButtonStyle:hover {
-	background-color: #f3baae;
-	border-color: #f3baae;
-	color: #292a2b;
-}
-.adminSmallButtonStyle:active {
-	background-color: #79363c;
-	border-color: #79363c;
-	color: #ffe4df;
-}
-
-.adminDeleteSmallButtonStyle {
-	background-color: #ffffff;
-	border-color: #616366;
-	color: #616366;
-	box-sizing: border-box;
-	/* Auto layout */
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	align-items: center;
-	padding: 16px 12px;
-	gap: 6px;
-}
-.adminDeleteSmallButtonStyle:hover {
-	background-color: #d9dada;
-	border-color: #292a2b;
-	color: #292a2b;
-}
-.adminDeleteSmallButtonStyle:active {
-	background-color: #616366;
-	border-color: #616366;
-	color: #f5f6f6;
-}
-
-.saveButtonStyle {
-	background-color: #bcd19b;
-	border-color: #bcd19b;
-	color: #101820;
-	box-sizing: border-box;
-	/* Auto layout */
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	align-items: center;
-	padding: 16px 12px;
-	gap: 6px;
-}
-.saveButtonStyle:hover {
-	background-color: #bcd19b;
-	border-color: #bcd19b;
-	color: #101820;
-}
-.saveButtonStyle:active {
-	background-color: #bcd19b;
-	border-color: #bcd19b;
-	color: #101820;
+.change-my-color:hover {
+	color: "green";
+	filter: hue-rotate(180deg);
+	/*filter: contrast(1000);*/
+	/*filter: brightness(0.25);*/
 }
 </style>

@@ -140,3 +140,125 @@
   width: 100%;
   margin-top: 8px;
 }
+
+
+.admissionSmallButtonStyle {
+	background-color: #dbd379;
+	border-color: #736028;
+	color: #736028;
+	box-sizing: border-box;
+	/* Auto layout */
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	padding: 16px 12px;
+	gap: 6px;
+}
+.admissionSmallButtonStyle:hover {
+	background-color: #dbd379;
+	border-color: #dbd379;
+	color: #292a2b;
+}
+.admissionSmallButtonStyle:active {
+	background-color: #8a7b27;
+	border-color: #8a7b27;
+	color: #fafac7;
+}
+
+.reviewSmallButtonStyle {
+	background-color: #a5b9ec;
+	border-color: #18528c;
+	color: #18528c;
+	box-sizing: border-box;
+	/* Auto layout */
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	padding: 16px 12px;
+	gap: 6px;
+}
+.reviewSmallButtonStyle:hover {
+	background-color: #a5b9ec;
+	border-color: #a5b9ec;
+	color: #292a2b;
+}
+.reviewSmallButtonStyle:active {
+	background-color: #2459a4;
+	border-color: #2459a4;
+	color: #dfe7fd;
+}
+
+.adminSmallButtonStyle {
+	background-color: #f3baae;
+	border-color: #62373e;
+	color: #62373e;
+	box-sizing: border-box;
+	/* Auto layout */
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	padding: 16px 12px;
+	gap: 6px;
+	cursor: pointer;
+}
+.adminSmallButtonStyle:hover {
+	background-color: #f3baae;
+	border-color: #f3baae;
+	color: #292a2b;
+}
+.adminSmallButtonStyle:active {
+	background-color: #79363c;
+	border-color: #79363c;
+	color: #ffe4df;
+}
+
+.adminDeleteSmallButtonStyle {
+	background-color: #d9dada;
+	border-color: #616366;
+	color: #616366;
+	box-sizing: border-box;
+	/* Auto layout */
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	padding: 16px 12px;
+	gap: 6px;
+}
+.adminDeleteSmallButtonStyle:hover {
+	background-color: #d9dada;
+	border-color: #d9dada;
+	color: #292a2b;
+}
+.adminDeleteSmallButtonStyle:active {
+	background-color: #616366;
+	border-color: #616366;
+	color: #f5f6f6;
+}
+
+.saveButtonStyle {
+	background-color: #bcd19b;
+	border-color: #bcd19b;
+	color: #101820;
+	box-sizing: border-box;
+	/* Auto layout */
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	padding: 16px 12px;
+	gap: 6px;
+}
+.saveButtonStyle {
+	background-color: #bcd19b;
+	border-color: #bcd19b;
+	color: #101820;
+}
+.saveButtonStyle:active {
+	background-color: #bcd19b;
+	border-color: #bcd19b;
+	color: #101820;
+}
