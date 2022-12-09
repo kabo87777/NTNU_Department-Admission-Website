@@ -2,7 +2,7 @@
 	<div v-if="!isLoggedIn" class="grid grid-cols-2 gap-15px">
 		<!-- Background Image -->
 		<img
-			src="/assets/login-page/Login-img.png"
+			src="/assets/login-page/Login-img.jpg"
 			class="fixed min-h-screen h-200"
 		/>
 		<!-- White Background -->
