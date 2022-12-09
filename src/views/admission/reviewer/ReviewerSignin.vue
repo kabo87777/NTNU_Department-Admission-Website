@@ -130,7 +130,7 @@ import { useUserInfoStore } from "@/stores/AdmissionReviewerStore";
 import type { TurnstileComponentExposes } from "@/components/Turnstile.vue";
 import Turnstile from "@/components/Turnstile.vue";
 
-import type { AdmissionManagerAuthResponse } from "@/api/admission/reviewer/types";
+import type { AdmissionReviewerAuthResponse } from "@/api/admission/reviewer/types";
 
 import Checkbox from "primevue/checkbox";
 import Button from "primevue/button";
@@ -198,11 +198,13 @@ const onSubmit = handleSubmit(async function (values, actions) {
 		const api = new AdmissionReviewerAPI(authStore);
 
 		userInfo.saveUserInfo(
-			await api.requestNewSession({
-				email: values.email,
-				password: values.password,
-				"cf-turnstile-response": turnstileResponse,
-			})
+			(
+				await api.requestNewSession({
+					email: values.email,
+					password: values.password,
+					"cf-turnstile-response": turnstileResponse,
+				})
+			).data
 		);
 
 		router.replace({ name: "AdmissionReviewerMainContainer" });

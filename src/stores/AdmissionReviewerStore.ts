@@ -1,11 +1,11 @@
 import {
 	AdmissionReviewerProgramListResponse,
-	AdmissionManagerAuthResponse,
+	AdmissionReviewerAuthResponse,
 } from "@/api/admission/reviewer/types";
 import { defineStore } from "pinia";
 import { ref } from "vue";
 
-export const useGlobalStore = defineStore("global", () => {
+export const useGlobalStore = defineStore("globalAdmissionReviewer", () => {
 	const admissionReviewerProgram =
 		ref<AdmissionReviewerProgramListResponse>();
 
@@ -41,7 +41,7 @@ export const useUserInfoStore = defineStore({
 	}),
 	getters: {},
 	actions: {
-		saveUserInfo(userInfo: AdmissionManagerAuthResponse = info) {
+		saveUserInfo(userInfo: AdmissionReviewerAuthResponse = info) {
 			this.userInfo = userInfo;
 		},
 	},

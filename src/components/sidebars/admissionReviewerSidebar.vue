@@ -178,7 +178,7 @@ const generateOptions = (data: any) => data.category + data.name;
 
 async function signOut() {
 	await api.invalidateSession();
-	router.push("/recruitment/reviewer/signin");
+	router.push("/admission/reviewer/signin");
 }
 </script>
 

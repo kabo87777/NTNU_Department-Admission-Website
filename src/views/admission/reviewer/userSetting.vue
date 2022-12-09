@@ -100,7 +100,7 @@ import "primeicons/primeicons.css";
 import { AdmissionReviewerAPI } from "@/api/admission/reviewer/api";
 import { InvalidSessionError } from "@/api/error";
 import { useAdmissionReviewerAuthStore } from "@/stores/universalAuth";
-import { AdmissionManagerAuthResponse } from "@/api/admission/reviewer/types";
+import { AdmissionReviewerAuthResponse } from "@/api/admission/reviewer/types";
 import { useUserInfoStore } from "@/stores/AdmissionReviewerStore";
 
 const route = useRoute();
@@ -110,7 +110,7 @@ const reviewerAuth = useAdmissionReviewerAuthStore();
 const reviewerStore = useUserInfoStore();
 const api = new AdmissionReviewerAPI(reviewerAuth);
 
-const reviewerInfo: AdmissionManagerAuthResponse = toRaw(
+const reviewerInfo: AdmissionReviewerAuthResponse = toRaw(
 	reviewerStore.userInfo
 );
 

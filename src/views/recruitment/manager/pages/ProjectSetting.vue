@@ -164,7 +164,7 @@ const programDataMutation = useMutation(async (newProgramData: any) => {
 });
 
 useQuery(
-	["program"],
+	["RAdminprogram"],
 	async () => {
 		const programs = await api.getProgramList();
 

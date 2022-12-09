@@ -70,6 +70,9 @@ const toast = useToast();
 
 const isEnabled = applicantInfo.isMoredoc;
 
+console.log(isEnabled);
+console.log(applicantStore.userInfo);
+
 let refillFile = reactive({
 	state: 3,
 	loading: false,
