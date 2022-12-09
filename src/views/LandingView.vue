@@ -82,27 +82,27 @@ const showGateway = computed(() => route.name === "LandingView");
 onMounted(async () => {
 	const identities: any = {
 		admissionApplicant: {
-			appPath: "/admission/applicant",
+			route: "AdmissionApplicantMainContainer",
 			auth: useAdmissionApplicantAuthStore(),
 		},
 		admissionReviewer: {
-			appPath: "/admission/reviewer",
+			route: "AdmissionReviewerMainContainer",
 			auth: useAdmissionReviewerAuthStore(),
 		},
 		admissionAdmin: {
-			appPath: "/admission/admin",
+			route: "AdmissionManagerMainContainer",
 			auth: useAdmissionAdminAuthStore(),
 		},
 		recruitmentApplicant: {
-			appPath: "/recruitment/applicant",
+			route: "RecruitmentApplicantMainContainer",
 			auth: useRecruitmentApplicantAuthStore(),
 		},
 		recruitmentReviewer: {
-			appPath: "/recruitment/reviewer",
+			route: "RecruitmentReviewerMainContainer",
 			auth: useRecruitmentReviewerAuthStore(),
 		},
 		recruitmentAdmin: {
-			appPath: "/recruitment/admin",
+			route: "RecruitmentAdminMainContainer",
 			auth: useRecruitmentAdminAuthStore(),
 		},
 	};
@@ -116,9 +116,9 @@ onMounted(async () => {
 
 		isLoggedIn.value = true;
 		console.log(
-			`[App] Validated credentials for ${identities[role].appPath}. Redirecting.`
+			`[App] Validated credentials for ${identities[role].route}. Redirecting.`
 		);
-		router.replace({ path: identities[role].appPath });
+		router.replace({ name: identities[role].route });
 
 		break;
 	}
