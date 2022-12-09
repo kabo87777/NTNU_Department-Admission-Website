@@ -154,9 +154,6 @@ import InputText from "primevue/inputtext";
 const toast = useToast();
 const router = useRouter();
 
-const redirectToMainContainer = () =>
-	router.replace({ name: "AdmissionApplicantMainContainer" });
-
 const authStore = useAdmissionApplicantAuthStore();
 const userInfo = useUserInfoStore();
 
@@ -214,24 +211,13 @@ const onSubmit = handleSubmit(async function (values, actions) {
 
 		const api = new AdmissionApplicantAPI(authStore);
 
-		const doLogin = async () => {
-			return await api.requestNewSession({
+		userInfo.saveUserInfo(
+			await api.requestNewSession({
 				username: values.username,
 				password: values.password,
 				"cf-turnstile-response": turnstileResponse,
-			});
-		};
-
-		const handleDataType = async () => {
-			const applicantInfo: AdmissionApplicantAuthResponse =
-				await doLogin().then((res) => {
-					return res.data;
-				});
-
-			return applicantInfo;
-		};
-
-		userInfo.saveUserInfo(await handleDataType());
+			})
+		);
 
 		window.localStorage.removeItem("AdmissionApplicantUsername");
 		window.localStorage.setItem(
@@ -239,18 +225,23 @@ const onSubmit = handleSubmit(async function (values, actions) {
 			userInfo.userInfo.name
 		);
 
-		redirectToMainContainer();
+		router.replace({ name: "AdmissionApplicantMainContainer" });
 	} catch (e: any) {
-		// TODO: show error message
-		// console.log(e);
+		if (e?.response?.status === 401) {
+			return toast.add({
+				severity: "error",
+				summary: "Error",
+				detail: "Invalid email or password",
+				life: 5000,
+			});
+		}
+
 		toast.add({
 			severity: "error",
 			summary: "Error",
-			detail: "Invalid admission ticket number or password",
+			detail: e.toString(),
 			life: 5000,
 		});
-
-		if (e?.response?.status === 401) console.log("invalid credentials");
 	}
 });
 </script>

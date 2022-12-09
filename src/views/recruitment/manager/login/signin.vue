@@ -166,7 +166,6 @@ import { useUserInfoStore } from "@/stores/RecruitmentReviewerStore";
 
 import type { TurnstileComponentExposes } from "@/components/Turnstile.vue";
 import Turnstile from "@/components/Turnstile.vue";
-import type { RecruitmentAdminAuthResponse } from "@/api/recruitment/admin/types";
 
 import Button from "primevue/button";
 import Checkbox from "primevue/checkbox";
@@ -176,10 +175,6 @@ const toast = useToast();
 const router = useRouter();
 const userInfo = useUserInfoStore();
 
-const redirectToMainContainer = () => {
-	// TODO: Change Tag - Manager to Admin
-	router.replace({ name: "recruitmentAdminMainContainer" });
-};
 const authStore = useRecruitmentAdminAuthStore();
 
 // Login Form
@@ -232,36 +227,32 @@ const onSubmit = handleSubmit(async function (values, actions) {
 		if (!turnstileResponse) throw new Error("Turnstile challenge failed");
 
 		const api = new RecruitmentAdminAPI(authStore);
-		const doLogin = async () => {
-			return await api.requestNewSession({
+
+		userInfo.saveUserInfo(
+			await api.requestNewSession({
 				email: values.email,
 				password: values.password,
 				"cf-turnstile-response": turnstileResponse,
-			});
-		};
+			})
+		);
 
-		const handleDataType = async () => {
-			const reviewerInfo: RecruitmentAdminAuthResponse =
-				await doLogin().then((res) => {
-					return res.data;
-				});
-
-			return reviewerInfo;
-		};
-
-		userInfo.saveUserInfo(await handleDataType());
-
-		redirectToMainContainer();
+		router.replace({ name: "recruitmentAdminMainContainer" });
 	} catch (e: any) {
-		// TODO: show error message
-		// console.log(e);
+		if (e?.response?.status === 401) {
+			return toast.add({
+				severity: "error",
+				summary: "Error",
+				detail: "Invalid email or password",
+				life: 5000,
+			});
+		}
+
 		toast.add({
 			severity: "error",
 			summary: "Error",
-			detail: "Invalid email or password",
+			detail: e.toString(),
 			life: 5000,
 		});
-		if (e?.response?.status === 401) console.log("invalid credentials");
 	}
 });
 </script>
