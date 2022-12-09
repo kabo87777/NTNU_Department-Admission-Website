@@ -36,7 +36,7 @@ const router = useRouter();
 
 const auth = useAdmissionApplicantAuthStore();
 
-useQuery(["admissionApplicantAuthorizationStatus", auth], async () => {
+useQuery(["admissionApplicantAuthorizationStatus"], async () => {
 	const status = await doUniversalAuthSessionValidation(auth);
 
 	if (status) return true;

@@ -57,7 +57,7 @@ const { data } = useQuery(
 	}
 );
 
-useQuery(["recruitmentApplicantAuthorizationStatus", auth], async () => {
+useQuery(["recruitmentApplicantAuthorizationStatus"], async () => {
 	const status = await doUniversalAuthSessionValidation(auth);
 
 	if (status) return true;

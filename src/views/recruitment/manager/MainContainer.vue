@@ -36,7 +36,7 @@ const router = useRouter();
 
 const auth = useRecruitmentAdminAuthStore();
 
-useQuery(["recruitmentManagerAuthorizationStatus", auth], async () => {
+useQuery(["recruitmentManagerAuthorizationStatus"], async () => {
 	const status = await doUniversalAuthSessionValidation(auth);
 
 	if (status) return true;
