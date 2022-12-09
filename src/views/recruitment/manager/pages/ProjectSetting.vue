@@ -1,5 +1,5 @@
 <template>
-	<div class="ml-128px mt-20 mb-20">
+	<div>
 		<h1 class="text-4xl text-bold tracking-widest">{{ $t("專案設定") }}</h1>
 		<Divider class="bg-ntnuRed" />
 		<h2 class="text-2xl text-bold tracking-widest inline-block">
@@ -62,6 +62,7 @@
 				:showIcon="true"
 				:showTime="true"
 				class="w-320px h-44px mt-10px"
+				dateFormat="yy/mm/dd"
 			/>
 		</div>
 		<div class="inline-block ml-100px">
@@ -74,6 +75,7 @@
 				:showIcon="true"
 				:showTime="true"
 				class="w-320px h-44px mt-10px"
+				dateFormat="yy/mm/dd"
 			/>
 		</div>
 		<br />
@@ -87,6 +89,7 @@
 				:showIcon="true"
 				:showTime="true"
 				class="w-320px h-44px mt-10px"
+				dateFormat="yy/mm/dd"
 			/>
 		</div>
 		<div class="inline-block ml-100px">
@@ -99,6 +102,7 @@
 				:showIcon="true"
 				:showTime="true"
 				class="w-320px h-44px mt-10px"
+				dateFormat="yy/mm/dd"
 			/>
 		</div>
 		<br />
@@ -210,19 +214,29 @@ const {
 const toast = useToast();
 function update() {
 	try {
-		programData.mutate({
-			category: selected_type.value,
-			name: programName.value,
-			recruit_start_date:
-				dateTransform(recruit_start_time.value) + "+08:00",
-			recruit_end_date: dateTransform(recruit_end_time.value) + "+08:00",
-			review_start_date:
-				dateTransform(review_stage1_start_time.value) + "+08:00",
-			review_end_date:
-				dateTransform(review_stage1_end_time.value) + "+08:00",
-			require_file: '["file1", "file2"]',
-			detail: project_details.value,
-		});
+		programData.mutate(
+			{
+				category: selected_type.value,
+				name: programName.value,
+				recruit_start_date:
+					dateTransform(recruit_start_time.value) + "+08:00",
+				recruit_end_date:
+					dateTransform(recruit_end_time.value) + "+08:00",
+				review_start_date:
+					dateTransform(review_stage1_start_time.value) + "+08:00",
+				review_end_date:
+					dateTransform(review_stage1_end_time.value) + "+08:00",
+				require_file: '["file1", "file2"]',
+				detail: project_details.value,
+			},
+			{
+				onSuccess: () => {
+					queryClient.invalidateQueries({
+						queryKey: ["programList"],
+					});
+				},
+			}
+		);
 		toast.add({ severity: "success", summary: "更改成功", life: 3000 });
 	} catch (error) {
 		toast.add({ severity: "error", summary: "資料錯誤", life: 3000 });
@@ -239,6 +253,10 @@ async function deleteProject() {
 
 	await queryClient.invalidateQueries({ queryKey: ["programList"] });
 }
+
+globalStore.$subscribe(() => {
+	queryClient.invalidateQueries({ queryKey: ["program"] });
+});
 
 function dateTransform(date?: Date) {
 	const result = new Date(date!.setHours(date!.getHours() + 8))

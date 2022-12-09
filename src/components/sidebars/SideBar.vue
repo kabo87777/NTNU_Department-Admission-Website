@@ -471,7 +471,7 @@ import InputText from "primevue/inputtext";
 import { useRouter } from "vue-router";
 import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
 import { AdmissionAdminAPI } from "@/api/admission/admin/api";
-import { useMutation, useQuery } from "@tanstack/vue-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
 import { InvalidSessionError } from "@/api/error";
 import { useGlobalStore } from "@/stores/globalStore";
 import { AdmissionAdminProgramListResponse } from "@/api/admission/admin/types";
@@ -534,7 +534,8 @@ function newProject() {
 }
 
 const newProgram = ref(false);
-function addNewProject() {
+const queryClient = useQueryClient();
+async function addNewProject() {
 	const today = new Date();
 	try {
 		programData.mutate({
@@ -551,6 +552,7 @@ function addNewProject() {
 			reviewer_required_file: '["file3", "file4"]',
 		});
 		newProgram.value = true;
+		await queryClient.invalidateQueries({ queryKey: ["programList"] });
 		// toast.add({severity:'success', summary: '更改成功', life: 3000});
 	} catch (error) {
 		// toast.add({severity:'error', summary: '資料錯誤', life: 3000});

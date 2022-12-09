@@ -747,7 +747,7 @@ import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
 import { AdmissionAdminAPI } from "@/api/admission/admin/api";
-import { useMutation, useQuery } from "@tanstack/vue-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
 import { InvalidSessionError } from "@/api/error";
 import { useGlobalStore } from "@/stores/globalStore";
 import { useToast } from "primevue/usetoast";
@@ -974,7 +974,7 @@ const applicantDocsGrade = useQuery(
 	async () => {
 		try {
 			if (applicantID.value !== undefined) {
-				return await api.getSingleDocsGrade(applicantID);
+				return await api.getSingleDocsGrade(applicantID.value);
 			}
 			return null;
 		} catch (error) {
@@ -1001,7 +1001,7 @@ const applicantOralGrade = useQuery(
 	async () => {
 		try {
 			if (applicantID.value !== undefined) {
-				return await api.getSingleOralGrade(applicantID);
+				return await api.getSingleOralGrade(applicantID.value);
 			}
 			return null;
 		} catch (error) {
@@ -1023,17 +1023,20 @@ const applicantOralGrade = useQuery(
 		},
 	}
 );
+
+store.$subscribe(() => {
+	queryClient.invalidateQueries({
+		queryKey: ["admissionAdminDocsGradeList"],
+	});
+	queryClient.invalidateQueries({
+		queryKey: ["admissionAdminOralGradeList"],
+	});
+});
 const editProduct = (prod: any) => {
 	name.value = prod.data.name;
 	id.value = prod.data.id;
 	productDialog.value = true;
 	applicantID.value = prod.data.id;
-	if (!applicantDocsGrade.isFetched.value) {
-		applicantDocsGrade.refetch({ throwOnError: true });
-	}
-	if (!applicantOralGrade.isFetched.value) {
-		applicantOralGrade.refetch({ throwOnError: true });
-	}
 };
 
 const applicantStage = useMutation(async (newStage: any) => {
@@ -1043,7 +1046,8 @@ const applicantStage = useMutation(async (newStage: any) => {
 		console.log(error);
 	}
 });
-function doneEdit() {
+const queryClient = useQueryClient();
+async function doneEdit() {
 	applicantStage.mutate({
 		docs_stage: p1_result.value,
 		docs_order: oral_order.value,
@@ -1052,6 +1056,12 @@ function doneEdit() {
 	});
 	applicantDocsGradeList.refetch({ throwOnError: true });
 	productDialog.value = false;
+	await queryClient.invalidateQueries({
+		queryKey: ["admissionAdminDocsGradeList"],
+	});
+	await queryClient.invalidateQueries({
+		queryKey: ["admissionAdminOralGradeList"],
+	});
 }
 function cancelEdit() {
 	productDialog.value = false;

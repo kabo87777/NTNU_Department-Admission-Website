@@ -90,7 +90,7 @@ import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { useRecruitmentReviewerAuthStore } from "@/stores/universalAuth";
 import { RecruitmentReviewerAPI } from "@/api/recruitment/reviewer/api";
-import { useQuery } from "@tanstack/vue-query";
+import { useQuery, useQueryClient } from "@tanstack/vue-query";
 import { InvalidSessionError } from "@/api/error";
 import { useGlobalStore } from "@/stores/RecruitmentReviewerStore";
 import { useToast } from "primevue/usetoast";
@@ -230,4 +230,13 @@ const onRowSelect = (event: any) => {
 		"/recruitment/reviewer/singleRequiredDataReview/" + event.data.id
 	);
 };
+const queryClient = useQueryClient();
+store.$subscribe(() => {
+	queryClient.invalidateQueries({
+		queryKey: ["recruitmenReviewerApplicantList"],
+	});
+	queryClient.invalidateQueries({
+		queryKey: ["recruitmentReviewerProgramList"],
+	});
+});
 </script>

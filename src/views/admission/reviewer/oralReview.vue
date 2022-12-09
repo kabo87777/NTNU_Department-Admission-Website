@@ -198,7 +198,7 @@ import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { useAdmissionReviewerAuthStore } from "@/stores/universalAuth";
 import { AdmissionReviewerAPI } from "@/api/admission/reviewer/api";
-import { useMutation, useQuery } from "@tanstack/vue-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
 import { InvalidSessionError } from "@/api/error";
 import { useGlobalStore } from "@/stores/AdmissionReviewerStore";
 import { useToast } from "primevue/usetoast";
@@ -305,11 +305,11 @@ const { data: programGrading } = useQuery(
 			score1Proportion.value = data!.oral_grade_weight_1;
 			score2Proportion.value = data!.oral_grade_weight_2;
 			score3Proportion.value = data!.oral_grade_weight_3;
-			if (data!.oral_grade_weight_4) {
-				score4Proportion.value = data!.oral_grade_weight_4;
+			if (data!.oral_grade_weight_4 !== 0) {
+				score4Proportion.value = data!.oral_grade_weight_4!;
 			}
-			if (data!.oral_grade_weight_5) {
-				score5Proportion.value = data!.oral_grade_weight_5;
+			if (data!.oral_grade_weight_5 !== 0) {
+				score5Proportion.value = data!.oral_grade_weight_5!;
 			}
 			score1FieldName.value =
 				score1Title.value + score1Proportion.value + "%";
@@ -325,9 +325,12 @@ const { data: programGrading } = useQuery(
 				score5FieldName.value =
 					score5Title.value + score5Proportion.value + "%";
 			}
-			if (data!.oral_grade_name_4 && data!.oral_grade_name_5) {
+			if (
+				data!.oral_grade_weight_4 !== 0 &&
+				data!.oral_grade_weight_5 !== 0
+			) {
 				scoreCount.value = 5;
-			} else if (data!.oral_grade_name_4) {
+			} else if (data!.oral_grade_weight_4 !== 0) {
 				scoreCount.value = 4;
 			} else {
 				scoreCount.value = 3;
@@ -458,4 +461,14 @@ const onRowSelect = (event: any) => {
 	// 	toast.add("");
 	// }
 };
+const queryClient = useQueryClient();
+store.$subscribe(() => {
+	queryClient.invalidateQueries({
+		queryKey: ["admissionReviewerApplicantList"],
+	});
+	queryClient.invalidateQueries({ queryKey: ["programGrading"] });
+	queryClient.invalidateQueries({
+		queryKey: ["admissionReviewerProgramList"],
+	});
+});
 </script>

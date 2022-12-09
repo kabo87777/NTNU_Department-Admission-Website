@@ -63,6 +63,7 @@
 				:showTime="true"
 				class="w-320px h-44px mt-10px"
 				:baseZIndex="zIndex"
+				dateFormat="yy/mm/dd"
 			/>
 		</div>
 		<div class="inline-block ml-100px">
@@ -77,6 +78,7 @@
 					:showTime="true"
 					class="w-320px h-44px mt-10px"
 					:baseZIndex="zIndex"
+					dateFormat="yy/mm/dd"
 				/>
 			</div>
 		</div>
@@ -92,6 +94,7 @@
 				:showTime="true"
 				class="w-320px h-44px mt-10px"
 				:baseZIndex="zIndex"
+				dateFormat="yy/mm/dd"
 			/>
 		</div>
 		<div class="inline-block ml-100px">
@@ -105,6 +108,7 @@
 				:showTime="true"
 				class="w-320px h-44px mt-10px"
 				:baseZIndex="zIndex"
+				dateFormat="yy/mm/dd"
 			/>
 		</div>
 		<h5 class="text-base tracking-widest mt-30px">
@@ -144,7 +148,7 @@
 import Divider from "primevue/divider";
 import Button from "primevue/button";
 import InputText from "primevue/inputtext";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import Dropdown from "primevue/dropdown";
 import Calendar from "primevue/calendar";
 import Textarea from "primevue/textarea";
@@ -153,7 +157,7 @@ import SelectButton from "primevue/selectbutton";
 import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
 import { useGlobalStore } from "@/stores/globalStore";
 import { AdmissionAdminAPI } from "@/api/admission/admin/api";
-import { useMutation, useQuery } from "@tanstack/vue-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
 import { InvalidSessionError } from "@/api/error";
 import { router } from "@/router";
 import { useToast } from "primevue/usetoast";
@@ -241,7 +245,8 @@ const {
 
 const toast = useToast();
 const stage = ref("");
-function update() {
+const queryClient = useQueryClient();
+async function update() {
 	if (review_stage.value === translation.phase1) {
 		stage.value = "docs_stage";
 	} else if (review_stage.value === translation.phase2) {
@@ -250,21 +255,30 @@ function update() {
 		stage.value = "application_stage";
 	}
 	try {
-		programData.mutate({
-			category: selected_type.value,
-			name: programName.value,
-			application_start_date:
-				dateTransform(application_start_time.value) + "+08:00",
-			application_end_date:
-				dateTransform(application_end_time.value) + "+08:00",
-			review_start_date:
-				dateTransform(review_stage1_start_time.value) + "+08:00",
-			review_end_date:
-				dateTransform(review_stage1_end_time.value) + "+08:00",
-			require_file: '["file1", "file2"]',
-			stage: stage.value,
-			detail: project_details.value,
-		});
+		programData.mutate(
+			{
+				category: selected_type.value,
+				name: programName.value,
+				application_start_date:
+					dateTransform(application_start_time.value) + "+08:00",
+				application_end_date:
+					dateTransform(application_end_time.value) + "+08:00",
+				review_start_date:
+					dateTransform(review_stage1_start_time.value) + "+08:00",
+				review_end_date:
+					dateTransform(review_stage1_end_time.value) + "+08:00",
+				require_file: '["file1", "file2"]',
+				stage: stage.value,
+				detail: project_details.value,
+			},
+			{
+				onSuccess: () => {
+					queryClient.invalidateQueries({
+						queryKey: ["programList"],
+					});
+				},
+			}
+		);
 		toast.add({ severity: "success", summary: "更改成功", life: 3000 });
 	} catch (error) {
 		toast.add({ severity: "error", summary: "資料錯誤", life: 3000 });
@@ -278,7 +292,14 @@ async function deleteProject() {
 	} catch (error) {
 		toast.add({ severity: "error", summary: "刪除失敗", life: 3000 });
 	}
+	await queryClient.invalidateQueries({ queryKey: ["programList"] });
 }
+
+globalStore.$subscribe(() => {
+	queryClient.invalidateQueries({
+		queryKey: ["program"],
+	});
+});
 
 function dateTransform(date?: Date) {
 	const result = new Date(date!.setHours(date!.getHours() + 8))

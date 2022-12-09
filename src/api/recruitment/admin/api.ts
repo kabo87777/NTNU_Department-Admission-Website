@@ -236,10 +236,10 @@ export class RecruitmentAdminAPI extends GenericAPI {
 
 	async getSingleApplicantWithDetail(
 		programID: number,
-		applicantID: Ref<number>
+		applicantID: number
 	): Promise<RecruitmentAdminSingleApplicantWithDetailResponse> {
 		const data: APIGenericResponse = await this.instance.get(
-			`/recruitment/admin/program/${programID}/applicant/${applicantID.value}/reviewstate`
+			`/recruitment/admin/program/${programID}/applicant/${applicantID}/reviewstate`
 		);
 
 		if (data.error === true || typeof data.data === "undefined")

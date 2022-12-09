@@ -87,7 +87,10 @@
 				class="ml-34px !w-132px !h-44px"
 			/>
 		</div>
-		<div class="flex mt-10px" v-if="programGrading?.docs_grade_name_4">
+		<div
+			class="flex mt-10px"
+			v-if="programGrading?.docs_grade_weight_4 !== 0"
+		>
 			<div class="text-xl mt-5px">
 				{{ score4Title }} ({{ score4Proportion }}%)
 			</div>
@@ -98,7 +101,7 @@
 			/>
 			<div
 				class="text-xl ml-125px mt-5px"
-				v-if="programGrading?.docs_grade_name_5"
+				v-if="programGrading?.docs_grade_weight_5 !== 0"
 			>
 				{{ score5Title }} ({{ score5Proportion }}%)
 			</div>
@@ -106,7 +109,7 @@
 				inputId="integeronly"
 				v-model="inputScore_5"
 				class="ml-34px !w-132px !h-44px"
-				v-if="programGrading?.docs_grade_name_5"
+				v-if="programGrading?.docs_grade_weight_5 !== 0"
 			/>
 		</div>
 		<div class="flex mt-10px">
@@ -405,6 +408,7 @@ function saveScore() {
 			isImmediateEnroll: accessChecked.value,
 			immediate_enroll_comment: accessReason.value,
 		});
+		toast.add({ severity: "success", summary: "保存成功", life: 3000 });
 	} catch (error) {
 		// console.log(error);
 	}
