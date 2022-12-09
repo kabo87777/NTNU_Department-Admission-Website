@@ -497,7 +497,6 @@ import { toRaw, ref, reactive, watch } from "vue";
 import { useAdmissionApplicantAuthStore } from "@/stores/universalAuth";
 import { AdmissionApplicantAPI } from "@/api/admission/applicant/api";
 import type { AdmissionApplicantRecLetListRes } from "@/api/admission/applicant/types";
-import { InvalidSessionError } from "@/api/error";
 import { useQuery } from "@tanstack/vue-query";
 import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
@@ -628,10 +627,6 @@ const openModal = () => {
 	clearModalValue();
 };
 
-const requestRecommendLetter = async (letterId: number) => {
-	return await api.requestRecommendLetter(letterId);
-};
-
 const handleDelete = async (letterId: number) => {
 	isActionLoading.delete = true;
 	const res = await api.deleteRecommendLetter(letterId);
@@ -731,7 +726,7 @@ const handleSave = async () => {
 
 const handleRequest = async (letterId: number) => {
 	isActionLoading.request = true;
-	const res = await requestRecommendLetter(letterId);
+	const res = await api.requestRecommendLetter(letterId);
 
 	if (res?.success !== undefined && res?.message !== undefined) {
 		fetchResponse.success = toRaw(res.success);

@@ -134,17 +134,12 @@ import { useUserInfoStore } from "@/stores/RecruitmentReviewerStore";
 import type { TurnstileComponentExposes } from "@/components/Turnstile.vue";
 import Turnstile from "@/components/Turnstile.vue";
 
-import type { RecruitmentManagerAuthResponse } from "@/api/recruitment/reviewer/types";
-
 import Button from "primevue/button";
 import Checkbox from "primevue/checkbox";
 import InputText from "primevue/inputtext";
 
 const toast = useToast();
 const router = useRouter();
-
-const redirectToMainContainer = () =>
-	router.replace({ name: "recruitmentReviewerMainContainer" });
 
 const authStore = useRecruitmentReviewerAuthStore();
 const userInfo = useUserInfoStore();
@@ -203,39 +198,31 @@ const onSubmit = handleSubmit(async function (values, actions) {
 
 		const api = new RecruitmentReviewerAPI(authStore);
 
-		const doLogin = async () => {
-			return await api.requestNewSession({
+		userInfo.saveUserInfo(
+			await api.requestNewSession({
 				email: values.email,
 				password: values.password,
 				"cf-turnstile-response": turnstileResponse,
-			});
-		};
+			})
+		);
 
-		const handleDataType = async () => {
-			const reviewerInfo: RecruitmentManagerAuthResponse =
-				await doLogin().then((res) => {
-					return res.data;
-				});
-
-			return reviewerInfo;
-		};
-
-		userInfo.saveUserInfo(await handleDataType());
-
-		redirectToMainContainer();
+		router.replace({ name: "RecruitmentReviewerMainContainer" });
 	} catch (e: any) {
-		// TODO: show error message
-		// console.log(e);
+		if (e?.response?.status === 401) {
+			return toast.add({
+				severity: "error",
+				summary: "Error",
+				detail: "Invalid email or password",
+				life: 5000,
+			});
+		}
+
 		toast.add({
 			severity: "error",
-			summary: "登入失敗 Login Failed",
-			detail: `准考證號碼或密碼輸入錯誤
-			Invalid Registration Number or Password`,
-			closable: false,
-			life: 3000,
+			summary: "Error",
+			detail: e.toString(),
+			life: 5000,
 		});
-
-		if (e?.response?.status === 401) console.log("invalid credentials");
 	}
 });
 </script>

@@ -142,9 +142,6 @@ import InputText from "primevue/inputtext";
 const toast = useToast();
 const router = useRouter();
 
-const redirectToMainContainer = () =>
-	router.replace({ name: "AdmissionManagerMainContainer" });
-
 const authStore = useAdmissionAdminAuthStore();
 
 // Login Form
@@ -201,7 +198,7 @@ const onSubmit = handleSubmit(async function (values, actions) {
 			"cf-turnstile-response": turnstileResponse,
 		});
 
-		redirectToMainContainer();
+		router.replace({ name: "AdmissionManagerMainContainer" });
 	} catch (e: any) {
 		if (e?.response?.status === 401) {
 			return toast.add({

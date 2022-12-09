@@ -36,7 +36,7 @@ const router = useRouter();
 
 const auth = useAdmissionApplicantAuthStore();
 
-useQuery(["admissionApplicantAuthorizationStatus", auth], async () => {
+useQuery(["admissionApplicantAuthorizationStatus"], async () => {
 	const status = await doUniversalAuthSessionValidation(auth);
 
 	if (status) return true;
@@ -44,7 +44,7 @@ useQuery(["admissionApplicantAuthorizationStatus", auth], async () => {
 	return router.replace({ name: "AdmissionApplicantSignin" });
 });
 
-router.push("/admission/applicant/latestNews");
+router.push({ name: "AdmissionApplicantLatestNews" });
 </script>
 
 <style scoped></style>

@@ -145,9 +145,6 @@ import InputText from "primevue/inputtext";
 const toast = useToast();
 const router = useRouter();
 
-const redirectToMainContainer = () =>
-	router.replace({ name: "AdmissionReviewerMainContainer" });
-
 const authStore = useAdmissionReviewerAuthStore();
 const userInfo = useUserInfoStore();
 
@@ -206,39 +203,31 @@ const onSubmit = handleSubmit(async function (values, actions) {
 		// TODO: reviewer sign in at /admission/reviewer
 		const api = new AdmissionReviewerAPI(authStore);
 
-		const doLogin = async () => {
-			return await api.requestNewSession({
+		userInfo.saveUserInfo(
+			await api.requestNewSession({
 				email: values.email,
 				password: values.password,
 				"cf-turnstile-response": turnstileResponse,
-			});
-		};
+			})
+		);
 
-		const handleDataType = async () => {
-			const reviewerInfo: AdmissionManagerAuthResponse =
-				await doLogin().then((res) => {
-					return res.data;
-				});
-
-			return reviewerInfo;
-		};
-
-		userInfo.saveUserInfo(await handleDataType());
-
-		redirectToMainContainer();
+		router.replace({ name: "AdmissionReviewerMainContainer" });
 	} catch (e: any) {
-		// TODO: show error message
-		// console.log(e);
+		if (e?.response?.status === 401) {
+			return toast.add({
+				severity: "error",
+				summary: "Error",
+				detail: "Invalid email or password",
+				life: 5000,
+			});
+		}
+
 		toast.add({
 			severity: "error",
-			summary: "登入失敗 Login Failed",
-			detail: `准考證號碼或密碼輸入錯誤
-			Invalid Registration Number or Password`,
-			closable: false,
-			life: 3000,
+			summary: "Error",
+			detail: e.toString(),
+			life: 5000,
 		});
-
-		if (e?.response?.status === 401) console.log("invalid credentials");
 	}
 });
 </script>

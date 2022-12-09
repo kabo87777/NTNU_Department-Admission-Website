@@ -36,7 +36,7 @@ const router = useRouter();
 
 const auth = useRecruitmentReviewerAuthStore();
 
-useQuery(["recruitmentReviewerAuthorizationStatus", auth], async () => {
+useQuery(["recruitmentReviewerAuthorizationStatus"], async () => {
 	const status = await doUniversalAuthSessionValidation(auth);
 
 	if (status) return true;

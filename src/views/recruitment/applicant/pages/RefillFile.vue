@@ -42,13 +42,8 @@
 
 <script setup lang="ts">
 import { ref, reactive, toRaw, onMounted, watch } from "vue";
-import { InvalidSessionError } from "@/api/error";
 import CreateState from "@/components/attachmentStates/createState.vue";
 import RefillState from "@/components/attachmentStates/RefillState.vue";
-import {
-	AttachmentData,
-	AttachmentDetailData,
-} from "@/api/recruitment/applicant/types";
 import { useRecruitmentApplicantAuthStore } from "@/stores/universalAuth";
 import { RecruitmentApplicantAPI } from "@/api/recruitment/applicant/api";
 import { useProjectIdStore } from "@/stores/RecruitmentApplicantStore";

@@ -513,7 +513,6 @@
 
 <script setup lang="ts">
 import { ref, reactive, onMounted, watch, toRaw } from "vue";
-import { InvalidSessionError } from "@/api/error";
 import ParagraphDivider from "@/styles/paragraphDividerApplicant.vue";
 import { useToast } from "primevue/usetoast";
 import Dropdown from "primevue/dropdown";
@@ -647,10 +646,6 @@ const setBasicInfo = (res: AdmissionApplicantGetUserInfoResponse) => {
 	contact.phone = res.mobile_phone as string;
 };
 
-const saveInfo = async (body: object) => {
-	return await api.patchBasicInfo(body);
-};
-
 const address = (prod: any) => {
 	if (currentAddr.isAddrSame === false) {
 		currentAddr.addr = householdAddr.addr;
@@ -712,7 +707,7 @@ const handleSave = async () => {
 
 	loading.save = true;
 
-	const res = await saveInfo(body);
+	const res = await api.patchBasicInfo(body);
 
 	if (res?.success !== undefined && res?.message !== undefined) {
 		fetchResponse.success = toRaw(res.success);
@@ -740,19 +735,15 @@ const handleSave = async () => {
 	loading.fetch = true;
 };
 
-const getUserInfo = async () => {
-	return await api.getUserInfo();
-};
-
 onMounted(async () => {
-	const response = await getUserInfo();
+	const response = await api.getUserInfo();
 	if (response) setBasicInfo(response);
 });
 
 watch(
 	() => loading.fetch,
 	async () => {
-		const response = await getUserInfo();
+		const response = await api.getUserInfo();
 
 		if (response) setBasicInfo(response);
 

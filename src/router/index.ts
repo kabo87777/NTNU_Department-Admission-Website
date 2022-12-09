@@ -379,21 +379,21 @@ const routes: Array<RouteRecordRaw> = [
 	// Admission - Recommendation Letters
 	{
 		path: "/admission/recommenderAuthVerify",
-		name: "recommenderAuthVerify",
+		name: "RecommenderAuthVerify",
 		component: () =>
 			import("@/views/admission/recommender/AuthVerification.vue"),
 	},
 	{
 		path: "/admission/recommendLetterFillIn",
-		name: "recommendLetterFillIn",
+		name: "RecommendLetterFillIn",
 		component: () =>
 			import("@/views/admission/recommender/FillRecommendLetter.vue"),
 	},
 	{
 		path: "/recruitment/applicant",
-		name: "recruitmentApplicantMainContainer",
+		name: "RecruitmentApplicantMainContainer",
 		component: () =>
-			import("@/views/recruitment/applicant/mainContainer.vue"),
+			import("@/views/recruitment/applicant/MainContainer.vue"),
 		children: [
 			//Recruitment - applicant info pages
 			{
@@ -441,7 +441,7 @@ const routes: Array<RouteRecordRaw> = [
 	// Recruitment - manager
 	{
 		path: "/recruitment/manager",
-		name: "recruitmentAdminMainContainer",
+		name: "RecruitmentAdminMainContainer",
 		component: () =>
 			import("@/views/recruitment/manager/MainContainer.vue"),
 		children: [
@@ -523,7 +523,7 @@ const routes: Array<RouteRecordRaw> = [
 	},
 	{
 		path: "/recruitment/reviewer",
-		name: "recruitmentReviewerMainContainer",
+		name: "RecruitmentReviewerMainContainer",
 		component: () =>
 			import("@/views/recruitment/reviewer/MainContainer.vue"),
 		children: [

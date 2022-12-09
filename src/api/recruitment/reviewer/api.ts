@@ -6,7 +6,6 @@ import type {
 	RecruitmentReviewerApplicantListResponse,
 	RecruitmentReviewerApplicantCommentResponse,
 	RecruitmentReviewerApplicantInfoResponse,
-	RecruitmentReviewerProgramResponse,
 	RecruitmentReviewerGenericResponse,
 } from "./types";
 import type { APIGenericResponse } from "@/api/types";
@@ -31,7 +30,7 @@ export class RecruitmentReviewerAPI extends GenericAPI {
 		body: object
 	): Promise<RecruitmentReviewerGenericResponse> {
 		const data: APIGenericResponse = await this.instance.patch(
-			"recruitment/auth/reviewer/password",
+			"/recruitment/auth/reviewer/password",
 			body
 		);
 

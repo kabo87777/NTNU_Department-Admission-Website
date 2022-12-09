@@ -95,7 +95,6 @@ import { AdmissionApplicantAuthResponse } from "@/api/admission/applicant/types"
 import { useAdmissionApplicantAuthStore } from "@/stores/universalAuth";
 import { useUserInfoStore } from "@/stores/AdmissionApplicantStore";
 import { AdmissionApplicantAPI } from "@/api/admission/applicant/api";
-import { InvalidSessionError } from "@/api/error";
 import ParagraphDivider from "@/styles/paragraphDividerApplicant.vue";
 import { useToast } from "primevue/usetoast";
 import InputText from "primevue/inputtext";
@@ -152,10 +151,6 @@ const resetPassValue = () => {
 	password.confirmPass = initialPassValue.confirmPass;
 };
 
-const patchChangePassword = async (body: object) => {
-	return await api.changePassword(body);
-};
-
 const handleSubmit = async () => {
 	if (password.currentPass === "") {
 		password.isCurrentPassBlank = true;
@@ -188,7 +183,7 @@ const handleSubmit = async () => {
 			password_confirmation: password.confirmPass,
 		};
 
-		const res = await patchChangePassword(body);
+		const res = await api.changePassword(body);
 
 		if (res?.success !== undefined && res?.message !== undefined) {
 			changePassRes.success = toRaw(res.success);
