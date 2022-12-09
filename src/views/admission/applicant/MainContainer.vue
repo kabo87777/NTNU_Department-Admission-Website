@@ -44,7 +44,7 @@ useQuery(["admissionApplicantAuthorizationStatus"], async () => {
 	return router.replace({ name: "AdmissionApplicantSignin" });
 });
 
-router.push("/admission/applicant/latestNews");
+router.push({ name: "AdmissionApplicantLatestNews" });
 </script>
 
 <style scoped></style>
