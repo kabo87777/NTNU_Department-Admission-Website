@@ -12,7 +12,7 @@
 			<ReviewState
 				v-if="item.state === 1"
 				category="教學經歷"
-				identity="admissionManager"
+				identity="recruitmentManager"
 				:itemName="item.name"
 				:order="index + 1"
 				:showActionButtons="false"
@@ -39,7 +39,7 @@
 			<ReviewState
 				v-if="item.state === 1"
 				category="考試與檢定分數"
-				identity="admissionManager"
+				identity="recruitmentManager"
 				:itemName="item.name"
 				:order="index + 1"
 				:showActionButtons="false"
@@ -66,7 +66,7 @@
 			<ReviewState
 				v-if="item.state === 1"
 				category="其他有利於審查資料"
-				identity="admissionManager"
+				identity="recruitmentManager"
 				:itemName="item.name"
 				:order="index + 1"
 				:showActionButtons="false"

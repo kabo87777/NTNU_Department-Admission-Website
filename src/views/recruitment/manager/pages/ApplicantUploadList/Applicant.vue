@@ -2,7 +2,7 @@
 	<div>
 		<div class="flex">
 			<div class="prevPage">
-				<router-link to="/admission/manager/applicantsUploadList"
+				<router-link to="/recruitment/manager/attachmentList"
 					><i class="pi pi-chevron-left"></i
 					>{{ $t("上傳資料列表") }}</router-link
 				>
