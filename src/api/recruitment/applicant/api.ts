@@ -31,7 +31,7 @@ export class RecruitmentApplicantAPI extends GenericAPI {
 			`/recruitment/applicant/program/${pid}/info`
 		);
 
-		if (data.error === true) console.log("Failed to fetch user info");
+		if (data.error === true) throw new Error("Failed to fetch user info");
 
 		return data.data;
 	}

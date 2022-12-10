@@ -7,6 +7,8 @@ const i18n = createI18n({
 		window.localStorage.getItem("lastLocale") || navigator.language || "",
 	fallbackLocale: "zh",
 	messages,
+	fallbackWarn: false,
+	missingWarn: false,
 });
 
 const { t, te, locale } = i18n.global;

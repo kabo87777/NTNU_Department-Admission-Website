@@ -42,13 +42,8 @@
 
 <script setup lang="ts">
 import { ref, reactive, toRaw, onMounted, watch } from "vue";
-import { InvalidSessionError } from "@/api/error";
 import CreateState from "@/components/attachmentStates/createState.vue";
 import RefillState from "@/components/attachmentStates/RefillState.vue";
-import {
-	AttachmentData,
-	AttachmentDetailData,
-} from "@/api/recruitment/applicant/types";
 import { useRecruitmentApplicantAuthStore } from "@/stores/universalAuth";
 import { RecruitmentApplicantAPI } from "@/api/recruitment/applicant/api";
 import { useProjectIdStore } from "@/stores/RecruitmentApplicantStore";
@@ -62,13 +57,13 @@ const toast = useToast();
 
 const isEnabled = ref(false);
 
-const refillFile = reactive({
+let refillFile = reactive({
 	state: 3,
 	loading: false,
 	order: 1,
 });
 
-const fetchResponse = reactive({
+let fetchResponse = reactive({
 	success: false,
 	message: "" as string | [],
 });
@@ -82,47 +77,36 @@ const createToEdit = () => {
 };
 
 const uploadFile = async (body: object) => {
-	try {
-		return await api.uploadRefillFile(body, project.project.pid);
-	} catch (e: any) {
-		if (e instanceof InvalidSessionError) {
-			console.error(
-				"Session has already expired while changing password"
-			);
-			return;
-		}
-	}
+	return await api.uploadRefillFile(body, project.project.pid);
 };
 
 const handleUpload = async (body: object) => {
 	refillFile.loading = true;
 
-	const response = uploadFile(body);
+	const res = await uploadFile(body);
 
-	await response.then((res) => {
-		if (res?.success !== undefined && res?.message !== undefined) {
-			fetchResponse.success = toRaw(res.success);
-			fetchResponse.message = toRaw(res.message);
-		}
+	if (res?.success !== undefined && res?.message !== undefined) {
+		fetchResponse.success = toRaw(res.success);
+		fetchResponse.message = toRaw(res.message);
+	}
 
-		refillFile.loading = false;
+	refillFile.loading = false;
 
-		if (fetchResponse.success) {
-			toast.add({
-				severity: "success",
-				summary: "Success",
-				detail: fetchResponse.message,
-				life: 3000,
-			});
-		} else {
-			toast.add({
-				severity: "error",
-				summary: "Error",
-				detail: fetchResponse.message,
-				life: 5000,
-			});
-		}
-	});
+	if (fetchResponse.success) {
+		toast.add({
+			severity: "success",
+			summary: "Success",
+			detail: fetchResponse.message,
+			life: 3000,
+		});
+	} else {
+		toast.add({
+			severity: "error",
+			summary: "Error",
+			detail: fetchResponse.message,
+			life: 5000,
+		});
+	}
 };
 
 onMounted(async () => {

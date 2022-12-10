@@ -230,29 +230,29 @@ const api = new AdmissionAdminAPI(adminAuth);
 
 const toast = useToast();
 
-const fetchResponse = reactive({
+let fetchResponse = reactive({
 	success: false,
 	message: "" as string | [],
 });
 
 const activeTab = ref({ name: "關閉", value: false });
-const date = reactive({
+let date = reactive({
 	start: new Date(),
 	end: new Date(),
 });
-const docInfo = reactive({
+let docInfo = reactive({
 	category: "",
 	name: "",
 });
 
-const showRequire = reactive({
+let showRequire = reactive({
 	start: false,
 	end: false,
 	category: false,
 	name: false,
 });
 
-const isLoading = reactive({
+let isLoading = reactive({
 	save: false,
 	send: false,
 	fetch: false,
@@ -269,7 +269,7 @@ const categoryOptions = ref([
 	{ name: "其他有利於審查資料" },
 ]);
 
-const isModalVisible = reactive({
+let isModalVisible = reactive({
 	sendEmail: false,
 	saveChange: false,
 });
@@ -293,16 +293,7 @@ const setInfo = (info: AdmAdminGetApplicantMoredocResponses) => {
 };
 
 const saveChange = async (body: object) => {
-	try {
-		return await api.updateApplicantMoreDocState(props.userId, body);
-	} catch (e: any) {
-		if (e instanceof InvalidSessionError) {
-			console.error(
-				"Session has already expired while changing password"
-			);
-			return;
-		}
-	}
+	return await api.updateApplicantMoreDocState(props.userId, body);
 };
 
 function handleSendEmail() {
@@ -320,33 +311,31 @@ async function handleSaveChange() {
 		moredoc_name: docInfo.name,
 	};
 
-	const response = saveChange(body);
+	const res = await saveChange(body);
 
-	await response.then((res) => {
-		if (res?.success !== undefined && res?.message !== undefined) {
-			fetchResponse.success = toRaw(res.success);
-			fetchResponse.message = toRaw(res.message);
-		}
+	if (res?.success !== undefined && res?.message !== undefined) {
+		fetchResponse.success = toRaw(res.success);
+		fetchResponse.message = toRaw(res.message);
+	}
 
-		isLoading.save = false;
-		isModalVisible.saveChange = false;
+	isLoading.save = false;
+	isModalVisible.saveChange = false;
 
-		if (fetchResponse.success) {
-			toast.add({
-				severity: "success",
-				summary: "Success",
-				detail: fetchResponse.message,
-				life: 3000,
-			});
-		} else {
-			toast.add({
-				severity: "error",
-				summary: "Error",
-				detail: fetchResponse.message,
-				life: 5000,
-			});
-		}
-	});
+	if (fetchResponse.success) {
+		toast.add({
+			severity: "success",
+			summary: "Success",
+			detail: fetchResponse.message,
+			life: 3000,
+		});
+	} else {
+		toast.add({
+			severity: "error",
+			summary: "Error",
+			detail: fetchResponse.message,
+			life: 5000,
+		});
+	}
 
 	isLoading.fetch = true;
 }
@@ -381,16 +370,7 @@ const saveOnclick = () => {
 const { data } = useQuery(
 	["adminApplicantMoredocInfo"],
 	async () => {
-		try {
-			return await api.getApplicantMoreDocRes(props.userId);
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				console.error(
-					"Session has already expired while quering appliacntList"
-				);
-				return;
-			}
-		}
+		return await api.getApplicantMoreDocRes(props.userId);
 	},
 	{
 		onSuccess: (data) => {
