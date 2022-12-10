@@ -46,7 +46,7 @@
 					</template>
 					<template #body="slotProps">
 						<div class="m-auto text-center">
-							<Tag
+							<!-- <Tag
 								v-if="
 									slotProps.data.application_stage ===
 									'已送審'
@@ -66,7 +66,8 @@
 							</Tag>
 							<Tag v-else severity="danger">
 								{{ slotProps.data.application_stage }}
-							</Tag>
+							</Tag> -->
+							{{ slotProps.data.docs_stage }}
 						</div>
 					</template>
 				</Column>
@@ -76,7 +77,7 @@
 					</template>
 					<template #body="slotProps">
 						<div
-							v-if="slotProps.data.isMoreDoc"
+							v-if="slotProps.data.isMoredoc"
 							class="m-auto text-center"
 						>
 							{{ $t("已開放") }}
