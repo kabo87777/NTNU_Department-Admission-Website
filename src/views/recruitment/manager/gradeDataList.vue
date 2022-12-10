@@ -270,7 +270,7 @@ const singleApplicantRecommand = useQuery(
 
 		return await api.getSingleApplicantWithDetail(
 			store.program!.id!,
-			applicantID
+			applicantID.value
 		);
 	},
 	{
