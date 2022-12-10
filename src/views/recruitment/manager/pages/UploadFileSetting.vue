@@ -49,7 +49,7 @@
 					<label
 						for="permanentAd"
 						class="ml-8px text-24px font-medium"
-						>{{ trans.admissionIdentity.value }}</label
+						>{{ trans.recruitmentIdentity.value }}</label
 					>
 				</div>
 				<div class="flex mt-40px">
@@ -301,7 +301,7 @@ const trans = {
 	basicCol: computed(() => t("基本資料欄位")),
 	attachmentCol: computed(() => t("檢附資料欄位")),
 	nameInfo: computed(() => t("姓名資訊")),
-	admissionIdentity: computed(() => t("入學身分")),
+	recruitmentIdentity: computed(() => t("入學身分")),
 	registAddressInfo: computed(() => t("戶籍資訊")),
 	residentAddress: computed(() => t("現居地址")),
 	identityInfo: computed(() => t("身份資料")),

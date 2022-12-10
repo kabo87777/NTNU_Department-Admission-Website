@@ -202,11 +202,13 @@ const onSubmit = handleSubmit(async function (values, actions) {
 		const api = new AdmissionApplicantAPI(authStore);
 
 		userInfo.saveUserInfo(
-			await api.requestNewSession({
-				username: values.username,
-				password: values.password,
-				"cf-turnstile-response": turnstileResponse,
-			})
+			(
+				await api.requestNewSession({
+					username: values.username,
+					password: values.password,
+					"cf-turnstile-response": turnstileResponse,
+				})
+			).data
 		);
 
 		window.localStorage.removeItem("AdmissionApplicantUsername");

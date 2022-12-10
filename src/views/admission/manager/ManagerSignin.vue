@@ -131,6 +131,7 @@ import * as yup from "yup";
 
 import { AdmissionAdminAPI } from "@/api/admission/admin/api";
 import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
+import { useUserInfoStore } from "@/stores/AdmissionAdminStore";
 
 import type { TurnstileComponentExposes } from "@/components/Turnstile.vue";
 import Turnstile from "@/components/Turnstile.vue";
@@ -143,6 +144,7 @@ const toast = useToast();
 const router = useRouter();
 
 const authStore = useAdmissionAdminAuthStore();
+const userInfo = useUserInfoStore();
 
 // Login Form
 const turnstileRef = ref<TurnstileComponentExposes>();
@@ -192,11 +194,15 @@ const onSubmit = handleSubmit(async function (values, actions) {
 
 		const api = new AdmissionAdminAPI(authStore);
 
-		await api.requestNewSession({
-			email: values.email,
-			password: values.password,
-			"cf-turnstile-response": turnstileResponse,
-		});
+		userInfo.saveUserInfo(
+			(
+				await api.requestNewSession({
+					email: values.email,
+					password: values.password,
+					"cf-turnstile-response": turnstileResponse,
+				})
+			).data
+		);
 
 		router.replace({ name: "AdmissionManagerMainContainer" });
 	} catch (e: any) {

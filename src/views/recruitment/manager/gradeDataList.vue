@@ -240,7 +240,7 @@ const pendingCount = ref(0);
 const passCount = ref(0);
 const notPassCount = ref(0);
 const applicantGradeList = useQuery(
-	["admissionAdminGradeList"],
+	["recruitmentAdminGradeList"],
 	async () => {
 		return await api.getApplicantListWithDetail(store.program!.id!);
 	},
@@ -263,11 +263,11 @@ const recommandCount = ref(0);
 const notRecommandCount = ref(0);
 const reviewers = ref<RecruitmentAdminSingleReviewerRecommendResponse[]>();
 const singleApplicantRecommand = useQuery(
-	["admissionAdminDocsGrade", applicantID],
+	["recruitmentAdminDocsGrade", applicantID],
 	async () => {
 		if (!applicantID.value)
 			throw new Error(
-				"admissionAdminDocsGrade: applicantID is undefined"
+				"recruitmentAdminDocsGrade: applicantID is undefined"
 			);
 
 		return await api.getSingleApplicantWithDetail(

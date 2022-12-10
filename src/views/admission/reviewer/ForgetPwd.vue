@@ -116,25 +116,3 @@ const enterEmail = async () => {
 	}
 };
 </script>
-
-<style setup lang="css">
-.reviewerTextColor {
-	color: #0b4873;
-}
-
-.reviewerButtonStyle {
-	background-color: #dfe7fd;
-	border-color: #a5b9ec;
-	color: #003a5c;
-}
-.reviewerButtonStyle:hover {
-	background-color: #2459a4;
-	border-color: #2459a4;
-	color: white;
-}
-.reviewerButtonStyle:active {
-	background-color: #0b4873;
-	border-color: #0b4873;
-	color: white;
-}
-</style>
