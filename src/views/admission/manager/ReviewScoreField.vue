@@ -287,15 +287,18 @@ import InputText from "primevue/inputtext";
 import InputNumber from "primevue/inputnumber";
 import Button from "primevue/button";
 import Checkbox from "primevue/checkbox";
-import ParagraphDivider from "@/styles/paragraphDivider.vue";
 import { useToast } from "primevue/usetoast";
-import { reactive, ref, watch, computed } from "vue";
-import { useI18n } from "vue-i18n";
-import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
-import { AdmissionAdminAPI } from "@/api/admission/admin/api";
-import { useGlobalStore } from "@/stores/globalStore";
-import { InvalidSessionError } from "@/api/error";
+
+import ParagraphDivider from "@/styles/paragraphDivider.vue";
+
 import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
+import { reactive, watch, computed } from "vue";
+import { useI18n } from "vue-i18n";
+
+import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
+import { useGlobalStore } from "@/stores/globalStore";
+
+import { AdmissionAdminAPI } from "@/api/admission/admin/api";
 import {
 	AdmissionAdminScoreFieldResponse,
 	AdmissionAdminProgramListResponse,
@@ -303,6 +306,10 @@ import {
 
 const { t } = useI18n();
 const toast = useToast();
+const adminAuth = useAdmissionAdminAuthStore();
+const api = new AdmissionAdminAPI(adminAuth);
+const globalStore = useGlobalStore();
+const queryClient = useQueryClient();
 
 // I18n translation
 const trans = {
@@ -366,15 +373,8 @@ const trans = {
 	},
 };
 
-// API Authorization
-const adminAuth = useAdmissionAdminAuthStore();
-const api = new AdmissionAdminAPI(adminAuth);
-const store = useGlobalStore();
-// Tanstack Query
-const queryClient = useQueryClient();
-
 // Field content & data
-const docsScore = reactive([
+let docsScore = reactive([
 	{ name: "Total", weight: 0, index: 0 },
 	{ name: trans.labelName[1].value, weight: 0, index: 1 },
 	{ name: trans.labelName[2].value, weight: 0, index: 2 },
@@ -382,7 +382,7 @@ const docsScore = reactive([
 	{ name: trans.labelName[4].value, weight: 0, index: 4 },
 	{ name: trans.labelName[5].value, weight: 0, index: 5 },
 ]);
-const oralScore = reactive([
+let oralScore = reactive([
 	{ name: "Total", weight: 0, index: 0 },
 	{ name: trans.labelName[1].value, weight: 0, index: 1 },
 	{ name: trans.labelName[2].value, weight: 0, index: 2 },
@@ -390,7 +390,7 @@ const oralScore = reactive([
 	{ name: trans.labelName[4].value, weight: 0, index: 4 },
 	{ name: trans.labelName[5].value, weight: 0, index: 5 },
 ]);
-const showedInfo = reactive([
+let showedInfo = reactive([
 	{ id: "姓名資訊", visible: true, checked: true },
 	{ id: "入學身分", visible: true, checked: true },
 	{ id: "戶籍資訊", visible: true, checked: true },
@@ -398,7 +398,7 @@ const showedInfo = reactive([
 	{ id: "身份資料", visible: true, checked: true },
 	{ id: "聯絡資料", visible: true, checked: true },
 ]);
-const showedFile = reactive([
+let showedFile = reactive([
 	{ id: "就學經歷", visible: true, checked: true },
 	{ id: "考試與檢定分數", visible: true, checked: true },
 	{ id: "其他有利於審查資料", visible: true, checked: true },
@@ -414,7 +414,7 @@ const fieldList = {
 		checked: [""],
 	},
 };
-const programData: AdmissionAdminProgramListResponse = reactive({
+let programData: AdmissionAdminProgramListResponse = reactive({
 	id: 0,
 	category: "",
 	name: "",
@@ -433,63 +433,56 @@ const programData: AdmissionAdminProgramListResponse = reactive({
 });
 
 // API: Get Score Data
-const getScoreField = useQuery(
-	["scoreField"],
-	async () => {
-		try {
-			if (store.program) {
-				return await api.getScoreField(store.program.id);
-			}
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				console.error("Invalid Session Error");
-			}
-		}
+const getScoreField = useQuery({
+	queryKey: ["scoreField"],
+	queryFn: async () => {
+		if (!globalStore.program)
+			throw new Error("getScoreField: no program selected");
+
+		return await api.getScoreField(globalStore.program.id);
 	},
-	{
-		onSuccess: (data) => {
-			// Pass Data one by one (There)
-			if (data) {
-				docsScore[0].weight = data.docs_weight;
-				oralScore[0].weight = data.oral_weight;
-				docsScore[1].name = data.docs_grade_name_1;
-				docsScore[2].name = data.docs_grade_name_2;
-				docsScore[3].name = data.docs_grade_name_3;
-				docsScore[4].name = data.docs_grade_name_4;
-				docsScore[5].name = data.docs_grade_name_5;
-				docsScore[1].weight = data.docs_grade_weight_1;
-				docsScore[2].weight = data.docs_grade_weight_2;
-				docsScore[3].weight = data.docs_grade_weight_3;
-				docsScore[4].weight = data.docs_grade_weight_4;
-				docsScore[5].weight = data.docs_grade_weight_5;
-				oralScore[1].name = data.oral_grade_name_1;
-				oralScore[2].name = data.oral_grade_name_2;
-				oralScore[3].name = data.oral_grade_name_3;
-				oralScore[4].name = data.oral_grade_name_4;
-				oralScore[5].name = data.oral_grade_name_5;
-				oralScore[1].weight = data.oral_grade_weight_1;
-				oralScore[2].weight = data.oral_grade_weight_2;
-				oralScore[3].weight = data.oral_grade_weight_3;
-				oralScore[4].weight = data.oral_grade_weight_4;
-				oralScore[5].weight = data.oral_grade_weight_5;
-			}
-			console.log("Get Score Data Successfully");
-		},
-	}
-);
+	onSuccess: (data) => {
+		// Pass Data one by one (There)
+		docsScore[0].weight = data.docs_weight;
+		oralScore[0].weight = data.oral_weight;
+		docsScore[1].name = data.docs_grade_name_1;
+		docsScore[2].name = data.docs_grade_name_2;
+		docsScore[3].name = data.docs_grade_name_3;
+		docsScore[4].name = data.docs_grade_name_4;
+		docsScore[5].name = data.docs_grade_name_5;
+		docsScore[1].weight = data.docs_grade_weight_1;
+		docsScore[2].weight = data.docs_grade_weight_2;
+		docsScore[3].weight = data.docs_grade_weight_3;
+		docsScore[4].weight = data.docs_grade_weight_4;
+		docsScore[5].weight = data.docs_grade_weight_5;
+		oralScore[1].name = data.oral_grade_name_1;
+		oralScore[2].name = data.oral_grade_name_2;
+		oralScore[3].name = data.oral_grade_name_3;
+		oralScore[4].name = data.oral_grade_name_4;
+		oralScore[5].name = data.oral_grade_name_5;
+		oralScore[1].weight = data.oral_grade_weight_1;
+		oralScore[2].weight = data.oral_grade_weight_2;
+		oralScore[3].weight = data.oral_grade_weight_3;
+		oralScore[4].weight = data.oral_grade_weight_4;
+		oralScore[5].weight = data.oral_grade_weight_5;
+		console.log("Get Score Data Successfully");
+	},
+	onError: (e: any) => {
+		toast.add({
+			severity: "error",
+			summary: e.toString(),
+			life: 3000,
+		});
+	},
+});
 
 // API: Patch Score Data
 const patchScoreField = useMutation(
 	async (newData: AdmissionAdminScoreFieldResponse) => {
-		try {
-			if (store.program) {
-				return await api.patchScoreField(store.program.id, newData);
-			}
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				console.error("Invalid Session Error");
-			}
-		}
+		if (!globalStore.program)
+			throw new Error("patchScoreField: no program selected");
+
+		return await api.patchScoreField(globalStore.program.id, newData);
 	},
 	{
 		onSuccess: () => {
@@ -502,41 +495,35 @@ const patchScoreField = useMutation(
 const getInfoFileField = useQuery(
 	["infoFileField"],
 	async () => {
-		try {
-			if (store.program) {
-				const allData = await api.getProgramList();
-				return allData[store.program.id - 1];
-			}
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				console.error("Invalid Session Error");
-			}
-		}
+		if (!globalStore.program)
+			throw new Error("infoFileField: no program selected");
+
+		const progarmList = await api.getProgramList();
+
+		// if (!Object.prototype.hasOwnProperty.call(progarmList, store.program.id - 1))
+
+		if (!progarmList[globalStore.program.id - 1])
+			throw new Error("infoFileField query error");
+
+		return progarmList[globalStore.program.id - 1];
 	},
 	{
 		onSuccess: (data) => {
-			if (data) {
-				programData.id = data.id;
-				programData.category = data.category;
-				programData.name = data.name;
-				programData.application_start_date =
-					data.application_start_date;
-				programData.application_end_date = data.application_end_date;
-				programData.review_start_date = data.review_start_date;
-				programData.review_end_date = data.review_end_date;
-				programData.stage = data.stage;
-				programData.created_at = data.created_at;
-				programData.updated_at = data.updated_at;
-				programData.detail = data.detail;
-				programData.applicant_required_info =
-					data.applicant_required_info;
-				programData.applicant_required_file =
-					data.applicant_required_file;
-				programData.reviewer_required_info =
-					data.reviewer_required_info;
-				programData.reviewer_required_file =
-					data.reviewer_required_file;
-			}
+			programData.id = data.id;
+			programData.category = data.category;
+			programData.name = data.name;
+			programData.application_start_date = data.application_start_date;
+			programData.application_end_date = data.application_end_date;
+			programData.review_start_date = data.review_start_date;
+			programData.review_end_date = data.review_end_date;
+			programData.stage = data.stage;
+			programData.created_at = data.created_at;
+			programData.updated_at = data.updated_at;
+			programData.detail = data.detail;
+			programData.applicant_required_info = data.applicant_required_info;
+			programData.applicant_required_file = data.applicant_required_file;
+			programData.reviewer_required_info = data.reviewer_required_info;
+			programData.reviewer_required_file = data.reviewer_required_file;
 			fieldList.info = {
 				visible: JSON.parse(programData.applicant_required_info),
 				checked: JSON.parse(programData.reviewer_required_info),
@@ -546,22 +533,13 @@ const getInfoFileField = useQuery(
 				checked: JSON.parse(programData.reviewer_required_file),
 			};
 			showedInfo.forEach((element) => {
-				if (fieldList.info.visible.includes(element.id))
-					element.visible = true;
-				else element.visible = false;
-				if (fieldList.info.checked.includes(element.id))
-					element.checked = true;
-				else element.checked = false;
+				element.visible = fieldList.info.visible.includes(element.id);
+				element.checked = fieldList.info.checked.includes(element.id);
 			});
 			showedFile.forEach((element) => {
-				if (fieldList.file.visible.includes(element.id))
-					element.visible = true;
-				else element.visible = false;
-				if (fieldList.file.checked.includes(element.id))
-					element.checked = true;
-				else element.checked = false;
+				element.visible = fieldList.file.visible.includes(element.id);
+				element.checked = fieldList.file.checked.includes(element.id);
 			});
-			console.log("Get Info/File Successfully");
 		},
 	}
 );
@@ -569,15 +547,10 @@ const getInfoFileField = useQuery(
 // API: Patch Info/File Data
 const patchInfoFileField = useMutation(
 	async (newData: AdmissionAdminProgramListResponse) => {
-		try {
-			if (store.program) {
-				return await api.updateProgramData(store.program.id, newData);
-			}
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				console.error("Invalid Session Error");
-			}
-		}
+		if (!globalStore.program)
+			throw new Error("patchInfoFileField: no program selected");
+
+		return await api.updateProgramData(globalStore.program.id, newData);
 	},
 	{
 		onSuccess: () => {
@@ -587,11 +560,10 @@ const patchInfoFileField = useMutation(
 );
 
 // ButtonFn: Save Changes and Patch Data
-function saveChange() {
+async function saveChange() {
+	// Adjust and Check correctness of Data
 	try {
-		// Adjust and Check correctness of Data
-		const docsSum = ref(0),
-			oralSum = ref(0);
+		let docsSum = 0;
 		docsScore.forEach((element) => {
 			if (element.name === null && element.weight > 0)
 				element.name =
@@ -600,8 +572,12 @@ function saveChange() {
 					].value;
 			if (element.weight < 0 || element.weight > 100)
 				throw { object: element, message: "Invalid Weight" };
-			if (element.index) docsSum.value += element.weight;
+			if (element.index) docsSum += element.weight;
 		});
+		if (docsSum !== 100)
+			throw { object: docsScore, message: "Invalid Sum" };
+
+		let oralSum = 0;
 		oralScore.forEach((element) => {
 			if (element.name === null && element.weight > 0)
 				element.name =
@@ -610,15 +586,22 @@ function saveChange() {
 					].value;
 			if (element.weight < 0 || element.weight > 100)
 				throw { object: element, message: "Invalid Weight" };
-			if (element.index) oralSum.value += element.weight;
+			if (element.index) oralSum += element.weight;
 		});
-		if (docsSum.value !== 100)
-			throw { object: docsScore, message: "Invalid Sum" };
-		if (docsSum.value !== 100)
+		if (oralSum !== 100)
 			throw { object: oralScore, message: "Invalid Sum" };
-		// Patch Score Data
-		patchScoreField.mutate({
-			// IMPROVE: Use Array to pass value instead of Hard-code.
+	} catch (e: any) {
+		console.error(e);
+		toast.add({
+			severity: "error",
+			summary: "check developer tools",
+			life: 3000,
+		});
+	}
+
+	// Patch Score Data
+	try {
+		await patchScoreField.mutateAsync({
 			docs_weight: docsScore[0].weight,
 			oral_weight: oralScore[0].weight,
 			docs_grade_name_1: docsScore[1].name,
@@ -642,39 +625,48 @@ function saveChange() {
 			oral_grade_weight_4: oralScore[4].weight,
 			oral_grade_weight_5: oralScore[5].weight,
 		});
-
-		// Adjust Info/File Data
-		fieldList.info.checked.splice(0, fieldList.info.checked.length);
-		fieldList.file.checked.splice(0, fieldList.file.checked.length);
-		showedInfo.forEach((element) => {
-			if (!fieldList.info.checked.includes(element.id))
-				if (element.checked) fieldList.info.checked.push(element.id);
-		});
-		showedFile.forEach((element) => {
-			if (!fieldList.file.checked.includes(element.id))
-				if (element.checked) fieldList.file.checked.push(element.id);
-		});
-		programData.reviewer_required_info = JSON.stringify(
-			fieldList.info.checked
-		);
-		programData.reviewer_required_file = JSON.stringify(
-			fieldList.file.checked
-		);
-		// Patch Info/File Data
-		patchInfoFileField.mutate(programData);
-		toast.add({
-			severity: "success",
-			summary: trans.changeSuccess.value,
-			life: 3000,
-		});
-	} catch (e: any) {
-		console.log(e);
+	} catch (error: any) {
 		toast.add({
 			severity: "error",
-			summary: "Fail to Save Change",
+			summary: "Unable to Patch Score Data: " + error.toString(),
 			life: 3000,
 		});
+
+		throw error;
 	}
+
+	// Adjust Info/File Data
+	fieldList.info.checked.splice(0, fieldList.info.checked.length);
+	fieldList.file.checked.splice(0, fieldList.file.checked.length);
+	showedInfo.forEach((element) => {
+		if (!fieldList.info.checked.includes(element.id))
+			if (element.checked) fieldList.info.checked.push(element.id);
+	});
+	showedFile.forEach((element) => {
+		if (!fieldList.file.checked.includes(element.id))
+			if (element.checked) fieldList.file.checked.push(element.id);
+	});
+	programData.reviewer_required_info = JSON.stringify(fieldList.info.checked);
+	programData.reviewer_required_file = JSON.stringify(fieldList.file.checked);
+
+	// Patch Info/File Data
+	try {
+		await patchInfoFileField.mutateAsync(programData);
+	} catch (error: any) {
+		toast.add({
+			severity: "error",
+			summary: "Unable to Info/File Data: " + error.toString(),
+			life: 3000,
+		});
+
+		throw error;
+	}
+
+	toast.add({
+		severity: "success",
+		summary: trans.changeSuccess.value,
+		life: 3000,
+	});
 }
 
 // ButtonFn: Discard Changes and Update Data

@@ -208,22 +208,7 @@ const {
 } = useQuery(
 	["admissionReviewerApplicantList"],
 	async () => {
-		try {
-			return await api.getApplicantList(
-				store.admissionReviewerProgram!.id!
-			);
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				// FIXME: show session expiry notification??
-				// Why are we even here in the first place?
-				// MainContainer should have checked already.
-				console.error(
-					"Session has already expired while querying programList"
-				);
-				router.push("/");
-				return;
-			}
-		}
+		return await api.getApplicantList(store.admissionReviewerProgram!.id!);
 	},
 	{
 		onSuccess: (data) => {
@@ -260,22 +245,7 @@ const scoreCount = ref(0);
 const { data: programGrading } = useQuery(
 	["programGrading"],
 	async () => {
-		try {
-			return await api.getProgramGrading(
-				store.admissionReviewerProgram!.id
-			);
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				// FIXME: show session expiry notification??
-				// Why are we even here in the first place?
-				// MainContainer should have checked already.
-				console.error(
-					"Session has already expired while querying applicantInfo"
-				);
-				router.push("/");
-				return;
-			}
-		}
+		return await api.getProgramGrading(store.admissionReviewerProgram!.id);
 	},
 	{
 		onSuccess: (data) => {
@@ -325,12 +295,8 @@ const { data: programGrading } = useQuery(
 	}
 );
 
-const oralGrade = useMutation(async () => {
-	try {
-		return await api.submitOralGrade(store.admissionReviewerProgram!.id);
-	} catch (error) {
-		console.log(error);
-	}
+const oralGrade = useMutation(["oralGrade"], async () => {
+	return await api.submitOralGrade(store.admissionReviewerProgram!.id);
 });
 
 const toast = useToast();
@@ -342,12 +308,8 @@ const showTemplate = () => {
 		group: "bc",
 	});
 };
-const onConfirm = () => {
-	try {
-		oralGrade.mutate();
-	} catch (error) {
-		console.log(error);
-	}
+const onConfirm = async () => {
+	await oralGrade.mutateAsync();
 	toast.removeGroup("bc");
 };
 const onReject = () => {
@@ -360,20 +322,7 @@ const isBetweenDate = ref("非開放時段");
 const { data: programs } = useQuery(
 	["admissionReviewerProgramList"],
 	async () => {
-		try {
-			return await api.getProgramList();
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				// FIXME: show session expiry notification??
-				// Why are we even here in the first place?
-				// MainContainer should have checked already.
-				console.error(
-					"Session has already expired while querying programList"
-				);
-				router.push("/");
-				return;
-			}
-		}
+		return await api.getProgramList();
 	},
 	{
 		onSuccess: (data) => {

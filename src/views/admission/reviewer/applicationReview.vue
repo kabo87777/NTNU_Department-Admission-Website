@@ -196,22 +196,7 @@ const {
 } = useQuery(
 	["admissionReviewerApplicantList"],
 	async () => {
-		try {
-			return await api.getApplicantList(
-				store.admissionReviewerProgram!.id!
-			);
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				// FIXME: show session expiry notification??
-				// Why are we even here in the first place?
-				// MainContainer should have checked already.
-				console.error(
-					"Session has already expired while querying programList"
-				);
-				router.push("/");
-				return;
-			}
-		}
+		return await api.getApplicantList(store.admissionReviewerProgram!.id!);
 	},
 	{
 		onSuccess: (data) => {
@@ -250,22 +235,7 @@ const scoreCount = ref(0);
 const { data: programGrading } = useQuery(
 	["programGrading"],
 	async () => {
-		try {
-			return await api.getProgramGrading(
-				store.admissionReviewerProgram!.id
-			);
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				// FIXME: show session expiry notification??
-				// Why are we even here in the first place?
-				// MainContainer should have checked already.
-				console.error(
-					"Session has already expired while querying applicantInfo"
-				);
-				router.push("/");
-				return;
-			}
-		}
+		return await api.getProgramGrading(store.admissionReviewerProgram!.id);
 	},
 	{
 		onSuccess: (data) => {
@@ -349,20 +319,7 @@ const isBetweenDate = ref("非開放時段");
 const { data: programs } = useQuery(
 	["admissionReviewerProgramList"],
 	async () => {
-		try {
-			return await api.getProgramList();
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				// FIXME: show session expiry notification??
-				// Why are we even here in the first place?
-				// MainContainer should have checked already.
-				console.error(
-					"Session has already expired while querying programList"
-				);
-				router.push("/");
-				return;
-			}
-		}
+		return await api.getProgramList();
 	},
 	{
 		onSuccess: (data) => {

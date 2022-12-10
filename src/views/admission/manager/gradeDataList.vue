@@ -782,20 +782,7 @@ const applicantID = ref();
 const applicantDocsGradeList = useQuery(
 	["admissionAdminDocsGradeList"],
 	async () => {
-		try {
-			return await api.getDocsGradeList(store.program!.id!);
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				// FIXME: show session expiry notification??
-				// Why are we even here in the first place?
-				// MainContainer should have checked already.
-				console.error(
-					"Session has already expired while querying programList"
-				);
-				router.push("/");
-				return;
-			}
-		}
+		return await api.getDocsGradeList(store.program!.id!);
 	},
 	{
 		onSuccess: (data) => {
@@ -825,20 +812,7 @@ const applicantDocsGradeList = useQuery(
 const applicantOralGradeList = useQuery(
 	["admissionAdminOralGradeList"],
 	async () => {
-		try {
-			return await api.getOralGradeList(store.program!.id!);
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				// FIXME: show session expiry notification??
-				// Why are we even here in the first place?
-				// MainContainer should have checked already.
-				console.error(
-					"Session has already expired while querying programList"
-				);
-				router.push("/");
-				return;
-			}
-		}
+		return await api.getOralGradeList(store.program!.id!);
 	},
 	{
 		onSuccess: (data) => {
@@ -1153,65 +1127,25 @@ function saveReserveOrder() {
 	}
 }
 
-const callGenerateAnonyDocReport = () => {
-	const { data: generateAnonyDoc } = useQuery(
-		["generateAnonyDoc"],
-		async () => {
-			try {
-				return await api.getDocsAnonyReportGenerated(
-					store.program!.id!
-				);
-			} catch (error) {
-				console.log(error);
-			}
-		}
-	);
-};
+async function downloadPDFFile(
+	getPDFfn: () => Promise<string>,
+	reportType: string,
+	anonymous: boolean
+) {
+	let pdf;
 
-const callGenerateDocReport = () => {
-	const { data: generateDoc } = useQuery(["generateDoc"], async () => {
-		try {
-			return await api.getDocsReportGenerated(store.program!.id!);
-		} catch (error) {
-			console.log(error);
-		}
-	});
-};
+	try {
+		pdf = await getPDFfn();
+	} catch (error: any) {
+		toast.add({
+			severity: "error",
+			summary: "Unable to download PDF: " + error.toString(),
+			life: 3000,
+		});
 
-const callGenerateGenReport = () => {
-	const { data: generateGen } = useQuery(["generateGen"], async () => {
-		try {
-			return await api.getGenReportGenerated(store.program!.id!);
-		} catch (error) {
-			console.log(error);
-		}
-	});
-};
+		return;
+	}
 
-const callGenerateAnonyGenReport = () => {
-	const { data: generateAnonyGen } = useQuery(
-		["generateAnonyGen"],
-		async () => {
-			try {
-				return await api.getGenAnonyReportGenerated(store.program!.id!);
-			} catch (error) {
-				console.log(error);
-			}
-		}
-	);
-};
-
-const callGenerateEnrollReport = () => {
-	const { data: generateEnroll } = useQuery(["generateEnroll"], async () => {
-		try {
-			return await api.getEnrollReportGenerated(store.program!.id!);
-		} catch (error) {
-			console.log(error);
-		}
-	});
-};
-
-function downloadPDFFile(pdf: string, reportType: string, anonymous: boolean) {
 	const linkSource = `data:application/pdf;base64,${pdf}`;
 	const downloadLink = document.createElement("a");
 	const ID = store.program!.id!;
@@ -1228,93 +1162,28 @@ function downloadPDFFile(pdf: string, reportType: string, anonymous: boolean) {
 	downloadLink.click();
 }
 
-const docPdfData = ref("");
-const { data: docpdfdata } = useQuery(
-	["docPdfBase64"],
-	async () => {
-		try {
-			callGenerateDocReport();
-			return await api.getDocsReport(store.program!.id!);
-		} catch (error) {
-			console.log(error);
-		}
-	},
-	{
-		onSuccess: (data) => {
-			docPdfData.value = data!;
-		},
-	}
-);
+const docPdfData = async () => {
+	await api.getDocsReportGenerated(store.program!.id!);
+	return await api.getDocsReport(store.program!.id!);
+};
 
-const docAnonyPdfData = ref("");
-const { data: docanonypdfdata } = useQuery(
-	["docAnonyPdfBase64"],
-	async () => {
-		try {
-			callGenerateAnonyDocReport();
-			return await api.getDocsAnonyReport(store.program!.id!);
-		} catch (error) {
-			console.log(error);
-		}
-	},
-	{
-		onSuccess: (data) => {
-			docAnonyPdfData.value = data!;
-		},
-	}
-);
+const docAnonyPdfData = async () => {
+	await api.getDocsAnonyReportGenerated(store.program!.id!);
+	return await api.getDocsAnonyReport(store.program!.id!);
+};
 
-const genPdfData = ref("");
-const { data: genpdfdata } = useQuery(
-	["genPdfBase64"],
-	async () => {
-		try {
-			callGenerateGenReport();
-			return await api.getGenReport(store.program!.id!);
-		} catch (error) {
-			console.log(error);
-		}
-	},
-	{
-		onSuccess: (data) => {
-			genPdfData.value = data!;
-		},
-	}
-);
+const genPdfData = async () => {
+	await api.getGenReportGenerated(store.program!.id!);
+	return await api.getGenReport(store.program!.id!);
+};
 
-const genAnonyPdfData = ref("");
-const { data: genanonypdfdata } = useQuery(
-	["genAnonyPdfBase64"],
-	async () => {
-		try {
-			callGenerateAnonyGenReport();
-			return await api.getGenAnonyReport(store.program!.id!);
-		} catch (error) {
-			console.log(error);
-		}
-	},
-	{
-		onSuccess: (data) => {
-			genAnonyPdfData.value = data!;
-		},
-	}
-);
+const genAnonyPdfData = async () => {
+	await api.getGenAnonyReportGenerated(store.program!.id!);
+	return await api.getGenAnonyReport(store.program!.id!);
+};
 
-const enrollPdfData = ref("");
-const { data: enrollpdfdata } = useQuery(
-	["enrollPdfBase64"],
-	async () => {
-		try {
-			callGenerateEnrollReport();
-			return await api.getEnrollReport(store.program!.id!);
-		} catch (error) {
-			console.log(error);
-		}
-	},
-	{
-		onSuccess: (data) => {
-			enrollPdfData.value = data!;
-		},
-	}
-);
+const enrollPdfData = async () => {
+	await api.getEnrollReportGenerated(store.program!.id!);
+	return await api.getEnrollReport(store.program!.id!);
+};
 </script>
