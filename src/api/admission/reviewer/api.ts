@@ -10,8 +10,6 @@ import type {
 	AdmissionReviewerApplicantFileListResponse,
 } from "./types";
 import type { APIGenericResponse } from "@/api/types";
-import { Blob } from "buffer";
-import { Ref } from "vue";
 
 export class AdmissionReviewerAPI extends GenericAPI {
 	constructor(auth: AuthStore) {

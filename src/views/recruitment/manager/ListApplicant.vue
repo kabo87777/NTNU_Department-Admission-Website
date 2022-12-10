@@ -171,22 +171,10 @@ const {
 } = useQuery(
 	["applicantList"],
 	async () => {
-		try {
-			if (store.program)
-				return await api.getApplicantList(store.program.id);
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				// FIXME: show session expiry notification??
-				// Why are we even here in the first place?
-				// MainContainer should have checked already.
-				console.error(
-					"Session has already expired while querying applicant list"
-				);
-				router.push("/");
-				return;
-			}
-			throw e;
-		}
+		if (!store.program)
+			throw new Error("applicantList: no program selected");
+
+		return await api.getApplicantList(store.program.id);
 	},
 	{
 		onSuccess: (data) => {

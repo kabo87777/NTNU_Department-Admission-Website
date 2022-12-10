@@ -8,7 +8,7 @@ export interface AdmissionReviewerSignInInput {
 	"cf-turnstile-response": string;
 }
 
-export interface AdmissionManagerAuthResponse {
+export interface AdmissionReviewerAuthResponse {
 	email: string;
 	provider: string;
 	uid: string;

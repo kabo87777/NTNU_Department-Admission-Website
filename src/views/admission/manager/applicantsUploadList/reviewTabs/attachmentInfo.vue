@@ -100,11 +100,12 @@ const api = new AdmissionAdminAPI(adminAuth);
 
 const props = defineProps(["userId"]);
 
-const attachmentList: AdmAdminGetApplicantAttachmentData[] = reactive([]);
-const schoolExpList: AdmAdminGetApplicantAttachmentDataDetail[] = reactive([]);
-const examCertificateList: AdmAdminGetApplicantAttachmentDataDetail[] =
-	reactive([]);
-const otherList: AdmAdminGetApplicantAttachmentDataDetail[] = reactive([]);
+let attachmentList: AdmAdminGetApplicantAttachmentData[] = reactive([]);
+let schoolExpList: AdmAdminGetApplicantAttachmentDataDetail[] = reactive([]);
+let examCertificateList: AdmAdminGetApplicantAttachmentDataDetail[] = reactive(
+	[]
+);
+let otherList: AdmAdminGetApplicantAttachmentDataDetail[] = reactive([]);
 
 const splitThreeList = async (
 	fullList: AdmAdminGetApplicantAttachmentData[]
@@ -138,17 +139,10 @@ const splitThreeList = async (
 	});
 };
 
-const getFileList = async () => {
-	return await api.getApplicantFile(props.userId);
-};
-
 onMounted(async () => {
-	const response = getFileList();
-	await response.then((res) => {
-		res.map((item) => {
-			if (item) attachmentList.push(item);
-		});
-	});
+	const res = await api.getApplicantFile(props.userId);
+
+	attachmentList = [...attachmentList, ...res];
 
 	splitThreeList(toRaw(attachmentList));
 });

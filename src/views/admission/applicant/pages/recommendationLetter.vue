@@ -497,7 +497,6 @@ import { toRaw, ref, reactive, watch } from "vue";
 import { useAdmissionApplicantAuthStore } from "@/stores/universalAuth";
 import { AdmissionApplicantAPI } from "@/api/admission/applicant/api";
 import type { AdmissionApplicantRecLetListRes } from "@/api/admission/applicant/types";
-import { InvalidSessionError } from "@/api/error";
 import { useQuery } from "@tanstack/vue-query";
 import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
@@ -515,7 +514,7 @@ const api = new AdmissionApplicantAPI(applicantAuth);
 
 const toast = useToast();
 
-const isActionLoading = reactive({
+let isActionLoading = reactive({
 	request: false,
 	save: false,
 	delete: false,
@@ -524,13 +523,13 @@ const isActionLoading = reactive({
 
 const modalShowErr = ref(false);
 
-const isModalVisible = reactive({
+let isModalVisible = reactive({
 	fill: false,
 	delete: false,
 	request: false,
 });
 
-const modalValue = reactive({
+let modalValue = reactive({
 	name: "",
 	appellation: "",
 	relationship: "",
@@ -541,7 +540,7 @@ const modalValue = reactive({
 	sign: "",
 });
 
-const isModalValueBlank = reactive({
+let isModalValueBlank = reactive({
 	name: false,
 	appellation: false,
 	relationship: false,
@@ -552,7 +551,7 @@ const isModalValueBlank = reactive({
 	sign: false,
 });
 
-const fetchResponse = reactive({
+let fetchResponse = reactive({
 	success: false,
 	message: "" as string | [],
 });
@@ -560,17 +559,7 @@ const fetchResponse = reactive({
 const { data } = useQuery(
 	["recommendLetterList"],
 	async () => {
-		try {
-			return await api.getRecommendLetterList();
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				console.error(
-					"Session has already expired while querying programList"
-				);
-				router.push("/");
-				return;
-			}
-		}
+		return await api.getRecommendLetterList();
 	},
 	{
 		onSuccess: (data) => {
@@ -584,7 +573,7 @@ const { data } = useQuery(
 	}
 );
 
-const letterList = reactive([
+let letterList = reactive([
 	data.value?.map((item) => {
 		return {
 			...item,
@@ -638,77 +627,36 @@ const openModal = () => {
 	clearModalValue();
 };
 
-const deleteRecommendLetter = async (letterId: number) => {
-	try {
-		return await api.deleteRecommendLetter(letterId);
-	} catch (e: any) {
-		if (e instanceof InvalidSessionError) {
-			console.error(
-				"Session has already expired while changing password"
-			);
-			return;
-		}
-	}
-};
-
-const postRecommendLetter = async (body: object) => {
-	try {
-		return await api.saveRecommendLetter(body);
-	} catch (e: any) {
-		if (e instanceof InvalidSessionError) {
-			console.error(
-				"Session has already expired while changing password"
-			);
-			return;
-		}
-	}
-};
-
-const requestRecommendLetter = async (letterId: number) => {
-	try {
-		return await api.requestRecommendLetter(letterId);
-	} catch (e: any) {
-		if (e instanceof InvalidSessionError) {
-			console.error(
-				"Session has already expired while changing password"
-			);
-			return;
-		}
-	}
-};
-
 const handleDelete = async (letterId: number) => {
 	isActionLoading.delete = true;
-	const response = deleteRecommendLetter(letterId);
+	const res = await api.deleteRecommendLetter(letterId);
 
-	await response.then((res) => {
-		if (res?.success !== undefined && res?.message !== undefined) {
-			fetchResponse.success = toRaw(res.success);
-			fetchResponse.message = toRaw(res.message);
-		}
+	if (res?.success !== undefined && res?.message !== undefined) {
+		fetchResponse.success = toRaw(res.success);
+		fetchResponse.message = toRaw(res.message);
+	}
 
-		isActionLoading.delete = false;
-		isActionLoading.fetch = true;
+	isActionLoading.delete = false;
+	isActionLoading.fetch = true;
 
-		if (fetchResponse.success) {
-			toast.add({
-				severity: "success",
-				summary: "Success",
-				detail: fetchResponse.message,
-				life: 3000,
-			});
-		} else {
-			toast.add({
-				severity: "error",
-				summary: "Error",
-				detail: fetchResponse.message,
-				life: 5000,
-			});
-		}
+	if (fetchResponse.success) {
+		toast.add({
+			severity: "success",
+			summary: "Success",
+			detail: fetchResponse.message,
+			life: 3000,
+		});
+	} else {
+		toast.add({
+			severity: "error",
+			summary: "Error",
+			detail: fetchResponse.message,
+			life: 5000,
+		});
+	}
 
-		clearFetchResponse();
-		isModalVisible.delete = false;
-	});
+	clearFetchResponse();
+	isModalVisible.delete = false;
 };
 
 const handleSave = async () => {
@@ -748,50 +696,20 @@ const handleSave = async () => {
 			},
 		};
 
-		const response = postRecommendLetter(body);
+		const res = await api.saveRecommendLetter(body);
 
-		await response.then((res) => {
-			if (res?.success !== undefined && res?.message !== undefined) {
-				fetchResponse.success = toRaw(res.success);
-				fetchResponse.message = toRaw(res.message);
-			}
-
-			isActionLoading.save = false;
-
-			if (fetchResponse.success) {
-				resetIsModalValueBlank();
-				clearModalValue();
-				modalShowErr.value = false;
-				isModalVisible.fill = false;
-				toast.add({
-					severity: "success",
-					summary: "Success",
-					detail: fetchResponse.message,
-					life: 3000,
-				});
-			} else {
-				modalShowErr.value = true;
-			}
-
-			if (fetchResponse.success) clearFetchResponse();
-		});
-	}
-};
-
-const handleRequest = async (letterId: number) => {
-	isActionLoading.request = true;
-	const response = requestRecommendLetter(letterId);
-
-	await response.then((res) => {
 		if (res?.success !== undefined && res?.message !== undefined) {
 			fetchResponse.success = toRaw(res.success);
 			fetchResponse.message = toRaw(res.message);
 		}
 
-		isActionLoading.request = false;
-		isActionLoading.fetch = true;
+		isActionLoading.save = false;
 
 		if (fetchResponse.success) {
+			resetIsModalValueBlank();
+			clearModalValue();
+			modalShowErr.value = false;
+			isModalVisible.fill = false;
 			toast.add({
 				severity: "success",
 				summary: "Success",
@@ -799,17 +717,43 @@ const handleRequest = async (letterId: number) => {
 				life: 3000,
 			});
 		} else {
-			toast.add({
-				severity: "error",
-				summary: "Error",
-				detail: fetchResponse.message,
-				life: 5000,
-			});
+			modalShowErr.value = true;
 		}
 
-		clearFetchResponse();
-		isModalVisible.request = false;
-	});
+		if (fetchResponse.success) clearFetchResponse();
+	}
+};
+
+const handleRequest = async (letterId: number) => {
+	isActionLoading.request = true;
+	const res = await api.requestRecommendLetter(letterId);
+
+	if (res?.success !== undefined && res?.message !== undefined) {
+		fetchResponse.success = toRaw(res.success);
+		fetchResponse.message = toRaw(res.message);
+	}
+
+	isActionLoading.request = false;
+	isActionLoading.fetch = true;
+
+	if (fetchResponse.success) {
+		toast.add({
+			severity: "success",
+			summary: "Success",
+			detail: fetchResponse.message,
+			life: 3000,
+		});
+	} else {
+		toast.add({
+			severity: "error",
+			summary: "Error",
+			detail: fetchResponse.message,
+			life: 5000,
+		});
+	}
+
+	clearFetchResponse();
+	isModalVisible.request = false;
 };
 
 watch(
