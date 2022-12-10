@@ -1,5 +1,5 @@
 <template>
-	<div v-if="!isLoggedIn" class="grid grid-cols-2 gap-15px">
+	<div v-if="!isLoggedIn">
 		<!-- Background Image -->
 		<img
 			src="/assets/login-page/Login-img.jpg"
