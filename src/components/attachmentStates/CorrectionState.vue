@@ -174,7 +174,6 @@ import { ref, reactive } from "vue";
 import Button from "primevue/button";
 import InputText from "primevue/inputtext";
 import InputNumber from "primevue/inputnumber";
-import FileUpload from "primevue/fileupload";
 import Dialog from "primevue/dialog";
 import "primeicons/primeicons.css";
 
@@ -193,7 +192,7 @@ const props = defineProps([
 const name = ref(props.itemName);
 const schoolName = ref(props.schoolName);
 const score = ref(props.score);
-const file = reactive({
+let file = reactive({
 	fileUrl: "",
 	name: "",
 	size: 0,

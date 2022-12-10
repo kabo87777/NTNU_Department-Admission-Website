@@ -31,7 +31,7 @@ export class AdmissionApplicantAPI extends GenericAPI {
 		);
 
 		if (data.error === true) throw new Error("Failed to fetch user info");
-		console.log(data);
+
 		return data.data;
 	}
 
