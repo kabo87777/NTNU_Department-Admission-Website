@@ -10,6 +10,7 @@
 				v-model="currentTab"
 				:options="tabOptions"
 				aria-labelledby="single"
+				:unselectable="false"
 			/>
 		</div>
 		<div v-if="currentTab === translation.phase1">

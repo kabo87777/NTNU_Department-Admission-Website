@@ -1,47 +1,23 @@
 <template>
 	<div>
 		<h1 class="text-4xl text-bold tracking-widest">{{ $t("專案設定") }}</h1>
-		<Divider class="bg-ntnuRed" />
-		<h2 class="text-2xl text-bold tracking-widest inline-block">
+		<div class="bigRedDivider"></div>
+		<h2 class="text-2xl text-bold tracking-widest inline-block mt-16px">
 			{{ oldProgramName }}
 		</h2>
-		<Button
-			class="w-110px h-40px !ml-20px p-button-outlined p-button-success"
-			@click="update"
-		>
-			<img
-				alt="logo"
-				src="/assets/project-setting/Check_fill.png"
-				style="width: 1.5rem"
-				class="fill-green-500"
-			/>
-			<span class="tracking-1px">{{ $t("保存") }}</span>
-		</Button>
-		<Button
-			class="w-110px h-40px !ml-20px p-button-outlined p-button-danger"
-			@click="deleteProject"
-		>
-			<img
-				alt="logo"
-				src="/assets/project-setting/Close_round.png"
-				style="width: 1.5rem"
-				class="fill-green-500"
-			/>
-			<span class="tracking-1px">{{ $t("刪除") }}</span>
-		</Button>
-		<h3 class="text-xs tracking-widest text-gray-500">
+		<h3 class="text-s tracking-widest text-gray-500 mt-8px">
 			{{ programCreateDate }} · {{ $t("新增到專案") }}
 		</h3>
-		<h5 class="text-base tracking-widest mt-30px">
+		<h5 class="text-base tracking-widest mt-32px">
 			{{ $t("專案名稱 (修改)") }} :
 		</h5>
 		<InputText
 			type="text"
 			v-model="programName"
-			class="w-960px h-44px mt-10px"
+			class="w-960px h-44px !mt-16px"
 		/>
 		<div>
-			<h5 class="text-base tracking-widest mt-30px">
+			<h5 class="text-base tracking-widest mt-32px">
 				{{ $t("屬性") }} :
 			</h5>
 			<Dropdown
@@ -49,25 +25,27 @@
 				:options="types"
 				optionLabel="type_name"
 				optionValue="type_name"
-				class="!w-320px !h-44px mt-10px"
+				class="!w-320px !h-44px mt-16px"
 			/>
 		</div>
 		<div class="inline-block">
-			<h5 class="text-base tracking-widest mt-30px">
+			<h5 class="text-base tracking-widest mt-52px">
 				{{ $t("申請端開放時間/日期") }} :
 			</h5>
-			<Calendar
-				inputId="icon"
-				v-model="application_start_time"
-				:showIcon="true"
-				:showTime="true"
-				class="w-320px h-44px mt-10px"
-				:baseZIndex="zIndex"
-				dateFormat="yy/mm/dd"
-			/>
+			<div>
+				<Calendar
+					inputId="icon"
+					v-model="application_start_time"
+					:showIcon="true"
+					:showTime="true"
+					class="w-320px h-44px mt-16px"
+					:baseZIndex="zIndex"
+					dateFormat="yy/mm/dd"
+				/>
+			</div>
 		</div>
 		<div class="inline-block ml-100px">
-			<h5 class="text-base tracking-widest mt-30px">
+			<h5 class="text-base tracking-widest mt-52px">
 				{{ $t("申請端關閉時間/日期") }} :
 			</h5>
 			<div>
@@ -76,7 +54,7 @@
 					v-model="application_end_time"
 					:showIcon="true"
 					:showTime="true"
-					class="w-320px h-44px mt-10px"
+					class="w-320px h-44px mt-16px"
 					:baseZIndex="zIndex"
 					dateFormat="yy/mm/dd"
 				/>
@@ -84,41 +62,60 @@
 		</div>
 		<br />
 		<div class="inline-block">
-			<h5 class="text-base tracking-widest mt-30px">
-				{{ $t("審查端開放時間/日期") }} :
+			<h5 class="text-base tracking-widest mt-32px">
+				{{ $t("書面審查開放時間/日期") }} :
 			</h5>
 			<Calendar
 				inputId="icon"
 				v-model="review_stage1_start_time"
 				:showIcon="true"
 				:showTime="true"
-				class="w-320px h-44px mt-10px"
+				class="w-320px h-44px mt-16px"
 				:baseZIndex="zIndex"
 				dateFormat="yy/mm/dd"
 			/>
 		</div>
 		<div class="inline-block ml-100px">
-			<h5 class="text-base tracking-widest mt-30px">
-				{{ $t("審查端關閉時間/日期") }} :
+			<h5 class="text-base tracking-widest mt-32px">
+				{{ $t("書面審查關閉時間/日期") }} :
 			</h5>
 			<Calendar
 				inputId="icon"
 				v-model="review_stage1_end_time"
 				:showIcon="true"
 				:showTime="true"
-				class="w-320px h-44px mt-10px"
+				class="w-320px h-44px mt-16px"
 				:baseZIndex="zIndex"
 				dateFormat="yy/mm/dd"
 			/>
 		</div>
-		<h5 class="text-base tracking-widest mt-30px">
-			{{ $t("變更審查階段(若為申請階段可不選取)") }} :
-		</h5>
-		<div class="p-fluid !w-740px">
-			<SelectButton
-				v-model="review_stage"
-				:options="review_stages"
-				aria-labelledby="single"
+		<br />
+		<div class="inline-block">
+			<h5 class="text-base tracking-widest mt-32px">
+				{{ $t("口試審查開放時間/日期") }} :
+			</h5>
+			<Calendar
+				inputId="icon"
+				v-model="review_stage1_start_time"
+				:showIcon="true"
+				:showTime="true"
+				class="w-320px h-44px mt-16px"
+				:baseZIndex="zIndex"
+				dateFormat="yy/mm/dd"
+			/>
+		</div>
+		<div class="inline-block ml-100px">
+			<h5 class="text-base tracking-widest mt-32px">
+				{{ $t("口試審查關閉時間/日期") }} :
+			</h5>
+			<Calendar
+				inputId="icon"
+				v-model="review_stage1_end_time"
+				:showIcon="true"
+				:showTime="true"
+				class="w-320px h-44px mt-16px"
+				:baseZIndex="zIndex"
+				dateFormat="yy/mm/dd"
 			/>
 		</div>
 		<br />
@@ -141,6 +138,40 @@
 				class="w-950px h-320px !mt-30px !ml-10px"
 			/>
 		</div> -->
+		<div class="mt-100px">
+			<div class="bigRedDivider"></div>
+		</div>
+		<div class="flex mt-24px">
+			<div class="m-auto">
+				<div class="flex">
+					<Button
+						class="bg-white h-60px w-140px border-ntnuRed"
+						@click="deleteProject"
+					>
+						<i
+							class="pi pi-times ml-1 mr-2 box-border"
+							text="sm ntnuRed"
+						></i>
+						<div class="m-auto tracking-2" text="sm ntnuRed">
+							<div>{{ $t("刪除專案") }}</div>
+						</div>
+					</Button>
+					<div class="w-24px"></div>
+					<Button
+						class="bg-Green h-60px w-140px border-ntnuRed"
+						@click="update"
+					>
+						<i
+							class="pi pi-check ml-1 mr-2 box-border"
+							text="sm black"
+						></i>
+						<div class="m-auto tracking-2" text="sm black">
+							<div>{{ $t("儲存設定") }}</div>
+						</div>
+					</Button>
+				</div>
+			</div>
+		</div>
 	</div>
 </template>
 
