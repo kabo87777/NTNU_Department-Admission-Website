@@ -638,77 +638,36 @@ const openModal = () => {
 	clearModalValue();
 };
 
-const deleteRecommendLetter = async (letterId: number) => {
-	try {
-		return await api.deleteRecommendLetter(letterId);
-	} catch (e: any) {
-		if (e instanceof InvalidSessionError) {
-			console.error(
-				"Session has already expired while changing password"
-			);
-			return;
-		}
-	}
-};
-
-const postRecommendLetter = async (body: object) => {
-	try {
-		return await api.saveRecommendLetter(body);
-	} catch (e: any) {
-		if (e instanceof InvalidSessionError) {
-			console.error(
-				"Session has already expired while changing password"
-			);
-			return;
-		}
-	}
-};
-
-const requestRecommendLetter = async (letterId: number) => {
-	try {
-		return await api.requestRecommendLetter(letterId);
-	} catch (e: any) {
-		if (e instanceof InvalidSessionError) {
-			console.error(
-				"Session has already expired while changing password"
-			);
-			return;
-		}
-	}
-};
-
 const handleDelete = async (letterId: number) => {
 	isActionLoading.delete = true;
-	const response = deleteRecommendLetter(letterId);
+	const response = await api.deleteRecommendLetter(letterId);
 
-	await response.then((res) => {
-		if (res?.success !== undefined && res?.message !== undefined) {
-			fetchResponse.success = toRaw(res.success);
-			fetchResponse.message = toRaw(res.message);
-		}
+	if (response?.success !== undefined && response?.message !== undefined) {
+		fetchResponse.success = toRaw(response.success);
+		fetchResponse.message = toRaw(response.message);
+	}
 
-		isActionLoading.delete = false;
-		isActionLoading.fetch = true;
+	isActionLoading.delete = false;
+	isActionLoading.fetch = true;
 
-		if (fetchResponse.success) {
-			toast.add({
-				severity: "success",
-				summary: "Success",
-				detail: fetchResponse.message,
-				life: 3000,
-			});
-		} else {
-			toast.add({
-				severity: "error",
-				summary: "Error",
-				detail: fetchResponse.message,
-				life: 5000,
-			});
-		}
+	if (fetchResponse.success) {
+		toast.add({
+			severity: "success",
+			summary: "Success",
+			detail: fetchResponse.message,
+			life: 3000,
+		});
+	} else {
+		toast.add({
+			severity: "error",
+			summary: "Error",
+			detail: fetchResponse.message,
+			life: 5000,
+		});
+	}
 
-		clearFetchResponse();
-		isModalVisible.delete = false;
-	});
+	clearFetchResponse();
+	isModalVisible.delete = false;
 };
 
 const handleSave = async () => {
@@ -748,50 +707,23 @@ const handleSave = async () => {
 			},
 		};
 
-		const response = postRecommendLetter(body);
+		const response = await api.saveRecommendLetter(body);
 
-		await response.then((res) => {
-			if (res?.success !== undefined && res?.message !== undefined) {
-				fetchResponse.success = toRaw(res.success);
-				fetchResponse.message = toRaw(res.message);
-			}
-
-			isActionLoading.save = false;
-
-			if (fetchResponse.success) {
-				resetIsModalValueBlank();
-				clearModalValue();
-				modalShowErr.value = false;
-				isModalVisible.fill = false;
-				toast.add({
-					severity: "success",
-					summary: "Success",
-					detail: fetchResponse.message,
-					life: 3000,
-				});
-			} else {
-				modalShowErr.value = true;
-			}
-
-			if (fetchResponse.success) clearFetchResponse();
-		});
-	}
-};
-
-const handleRequest = async (letterId: number) => {
-	isActionLoading.request = true;
-	const response = requestRecommendLetter(letterId);
-
-	await response.then((res) => {
-		if (res?.success !== undefined && res?.message !== undefined) {
-			fetchResponse.success = toRaw(res.success);
-			fetchResponse.message = toRaw(res.message);
+		if (
+			response?.success !== undefined &&
+			response?.message !== undefined
+		) {
+			fetchResponse.success = toRaw(response.success);
+			fetchResponse.message = toRaw(response.message);
 		}
 
-		isActionLoading.request = false;
-		isActionLoading.fetch = true;
+		isActionLoading.save = false;
 
 		if (fetchResponse.success) {
+			resetIsModalValueBlank();
+			clearModalValue();
+			modalShowErr.value = false;
+			isModalVisible.fill = false;
 			toast.add({
 				severity: "success",
 				summary: "Success",
@@ -799,17 +731,47 @@ const handleRequest = async (letterId: number) => {
 				life: 3000,
 			});
 		} else {
-			toast.add({
-				severity: "error",
-				summary: "Error",
-				detail: fetchResponse.message,
-				life: 5000,
-			});
+			modalShowErr.value = true;
 		}
 
-		clearFetchResponse();
-		isModalVisible.request = false;
+		if (fetchResponse.success) clearFetchResponse();
+	}
+};
+
+const handleRequest = async (letterId: number) => {
+	isActionLoading.request = true;
+	const url =
+		"https://admissions-frontend-staging.birkhoff.me/admission/recommenderAuthVerify";
+	const response = await api.requestRecommendLetter(letterId, {
+		params: { redirect_url: url },
 	});
+
+	if (response?.success !== undefined && response?.message !== undefined) {
+		fetchResponse.success = toRaw(response.success);
+		fetchResponse.message = toRaw(response.message);
+	}
+
+	isActionLoading.request = false;
+	isActionLoading.fetch = true;
+
+	if (fetchResponse.success) {
+		toast.add({
+			severity: "success",
+			summary: "Success",
+			detail: fetchResponse.message,
+			life: 3000,
+		});
+	} else {
+		toast.add({
+			severity: "error",
+			summary: "Error",
+			detail: fetchResponse.message,
+			life: 5000,
+		});
+	}
+
+	clearFetchResponse();
+	isModalVisible.request = false;
 };
 
 watch(

@@ -219,10 +219,12 @@ export class AdmissionApplicantAPI extends GenericAPI {
 	}
 
 	async requestRecommendLetter(
-		letterId: number
+		letterId: number,
+		url: object
 	): Promise<AdmissionApplicantGenericResponse> {
 		const data: APIGenericResponse = await this.instance.get(
-			`admission/applicant/recommendletter/${letterId}/send_email`
+			`admission/applicant/recommendletter/${letterId}/send_email`,
+			url
 		);
 
 		if (data.error !== false)
