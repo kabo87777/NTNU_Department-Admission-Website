@@ -73,7 +73,7 @@
 				</div>
 			</div>
 			<router-link
-				to="/recruitment/manager/applicationAccountSetting"
+				to="/recruitment/manager/ListApplicant"
 				custom
 				v-slot="{ navigate }"
 			>

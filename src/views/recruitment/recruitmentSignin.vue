@@ -1,127 +1,69 @@
-<template class="overflow-hidden">
-	<div class="m-auto">
-		<div class="flex m-auto h-15">
-			<div>
-				<img src="/assets/login-page/NTNU-logo-B1.png" class="h-15" />
-			</div>
-			<Divider layout="vertical" />
-			<div class="mt-1.5">
-				<div class="text-4xl font-bold text-gray-500">資訊工程學系</div>
-				<div class="text-xs text-gray-400">
-					Department of Computer Science and Information Enginering
-				</div>
-			</div>
-		</div>
+<template>
+	<div my="auto">
+		<!-- Button: Back to LandingView -->
 		<router-link :to="{ name: 'LandingView' }">
 			<button
-				class="flex items-center gap-2 px-2 py-2 mt-5 mb-3"
-				bg="transparent hover:gray-100"
-				text="sm gray-400 hover:gray-600"
-				border="rounded"
+				class="flex items-center gap-2 p-2 my-4"
+				text="sm secondary"
+				border="rounded-lg"
+				hover="bg-nGrey-200 text-title"
+				active="bg-nGrey-600 text-white"
 			>
 				<i class="pi pi-angle-left" />
 				<div>選擇其他系統</div>
 				<div>Select other system</div>
 			</button>
 		</router-link>
-		<div class="px-8 space-y-2">
-			<!-- <div class="text-s text-gray-500">
-        國立台灣師範大學資訊工程學系 NTNU CSIE
-      </div> -->
-			<div class="flex items-end gap-2 font-medium text-gray-900">
-				<div class="text-4xl">教師聘請系統</div>
-				<div class="text-xl">Teacher Recruitment System</div>
+		<div mx="8" space="y-2">
+			<div text="secondary" font="light">
+				國立臺灣師範大學資訊工程學系
 			</div>
+			<div text="3xl title" font="medium">教師聘請系統</div>
+			<div text="lg title" font="medium">Teacher Recruitment System</div>
 		</div>
-		<div class="px-8 py-4 space-y-8">
-			<Divider align="center" class="text-gray-700">
-				<div class="flex px-2 gap-2">
-					<div>選擇身份</div>
-					<div>Select your identity</div>
-				</div>
-			</Divider>
-			<div class="flex items-center justify-center">
-				<router-link to="/recruitment/applicant/signin">
-					<button
-						class="text-xl h-90px w-420px md:mx-auto w-full py-4 applicantButtonStyle"
-						border="2  rounded-lg"
-					>
-						<div>申請者登入 Applicant Login</div>
-					</button>
-				</router-link>
+		<!-- Divider -->
+		<Divider align="center">
+			<div p="4" text="sm body" font="light">
+				選擇身份 Select your identity
 			</div>
-			<div class="flex items-center justify-center">
-				<router-link to="/recruitment/reviewer/signin">
-					<button
-						class="text-xl h-90px w-420px md:mx-auto w-full py-4 reviewerButtonStyle"
-						border="2  rounded-lg"
-					>
-						<div>審查委員登入 Reviewer Login</div>
-					</button>
-				</router-link>
-			</div>
-			<div class="flex items-center justify-center">
-				<router-link to="/recruitment/manager/signin">
-					<button
-						class="text-xl h-90px w-420px md:mx-auto w-full py-4 managerButtonStyle"
-						border="2  rounded-lg"
-					>
-						<div>行政人員登入 Manager Login</div>
-					</button>
-				</router-link>
-			</div>
+		</Divider>
+		<!-- Buttons -->
+		<div flex="~ col gap-8" w="80" mx="auto">
+			<router-link to="/recruitment/applicant/signin">
+				<button
+					class="p-4 w-full border-2 text-pApplicant"
+					border="2 opacity-30 nGold-500 rounded-lg"
+					hover="text-title bg-nGold-300 border-nGold-300"
+					active="text-white bg-nGold-500"
+				>
+					<div>申請者登入 Applicant Login</div>
+				</button>
+			</router-link>
+			<router-link to="/recruitment/reviewer/signin">
+				<button
+					class="p-4 w-full border-2 text-pReviewer"
+					border="2 opacity-30 nBlue-500 rounded-lg"
+					hover="text-title bg-nBlue-200 border-nBlue-200"
+					active="text-white bg-nBlue-500"
+				>
+					<div>審查委員登入 Reviewer Login</div>
+				</button>
+			</router-link>
+			<router-link to="/recruitment/manager/signin">
+				<button
+					class="p-4 w-full border-2 text-pAdmin"
+					border="2 opacity-30 nRed-600 rounded-lg"
+					hover="text-title bg-nRed-200 border-nRed-200"
+					active="text-white bg-nRed-600"
+				>
+					<div>行政人員登入 Manager Login</div>
+				</button>
+			</router-link>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
+import Button from "primevue/button";
 import Divider from "primevue/divider";
 </script>
-
-<style setup lang="css">
-.applicantButtonStyle {
-	background-color: #fafac7;
-	border-color: #dbd379;
-	color: #544830;
-}
-.applicantButtonStyle:hover {
-	background-color: #8a7b27;
-	border-color: #8a7b27;
-	color: white;
-}
-.applicantButtonStyle:active {
-	background-color: #624f2a;
-	border-color: #624f2a;
-	color: white;
-}
-.reviewerButtonStyle {
-	background-color: #dfe7fd;
-	border-color: #a5b9ec;
-	color: #003a5c;
-}
-.reviewerButtonStyle:hover {
-	background-color: #2459a4;
-	border-color: #2459a4;
-	color: white;
-}
-.reviewerButtonStyle:active {
-	background-color: #0b4873;
-	border-color: #0b4873;
-	color: white;
-}
-.managerButtonStyle {
-	background-color: #ffe4df;
-	border-color: #f3baae;
-	color: #4d3639;
-}
-.managerButtonStyle:hover {
-	background-color: #94282c;
-	border-color: #94282c;
-	color: white;
-}
-.managerButtonStyle:active {
-	background-color: #62373e;
-	border-color: #62373e;
-	color: white;
-}
-</style>

@@ -1,275 +1,280 @@
 <template>
-	<div>
-		<div class="font-bold text-32px">{{ trans.uploadField.value }}</div>
-		<div class="bigRedDivider"></div>
-		<div class="p-fluid">
-			<SelectButton
-				class="mt-8px"
-				v-model="activeTab"
-				:options="tabOptions"
-				optionLabel="name"
-				aria-labelledby="single"
-			>
-			</SelectButton>
+	<!-- Header -->
+	<div class="fixed bg-white top-15 left-1/4 right-0 z-50 <lg:left-60">
+		<div class="w-9/10 pt-6 m-auto">
+			<div class="font-medium text-3xl text-title">
+				{{ trans.uploadField.value }}
+			</div>
+			<div class="bigRedDivider"></div>
+			<div class="p-fluid">
+				<SelectButton
+					class="mt-8px"
+					v-model="activeTab"
+					:options="tabOptions"
+					optionLabel="name"
+					aria-labelledby="single"
+				>
+				</SelectButton>
+			</div>
 		</div>
-		<div v-if="activeTab.value === 1">
-			<div class="mt-16px">
-				<div>
+	</div>
+	<!-- Body -->
+	<div class="py-36" text="body xl">
+		<!-- 基本資料欄位 -->
+		<div v-if="activeTab.value === 1" class="space-y-8">
+			<!-- 姓名資訊 -->
+			<div class="space-y-4">
+				<div class="flex content-center">
 					<Checkbox
 						inputId="nameInfo"
+						class="pt-1"
 						v-model="showedInfo[0].checked"
 						:binary="true"
 					/>
-					<label
-						for="nameInfo"
-						class="ml-8px text-24px font-medium"
-						>{{ trans.nameInfo.value }}</label
-					>
+					<label for="nameInfo" class="ml-2">
+						{{ trans.nameInfo.value }}
+					</label>
 				</div>
-				<div class="flex mt-40px">
-					<div class="w-1/3 pl-16px">
+				<div class="flex font-light gap-4 ml-6" text="secondary sm">
+					<div class="pr-10">
 						{{ trans.details.prefixSuffix.value }}
 					</div>
-					<div class="w-1/3 pl-16px">
+					<div class="pr-10">
 						{{ trans.details.chineseName.value }}
 					</div>
-					<div class="w-1/3 pl-16px">
+					<div class="pr-10">
 						{{ trans.details.englishName.value }}
 					</div>
 				</div>
-				<ParagraphDivider />
 			</div>
-			<div class="mt-16px">
-				<div>
+			<ParagraphDivider />
+			<!-- 入學身份 -->
+			<div class="space-y-4">
+				<div class="flex content-center">
 					<Checkbox
 						inputId="enrollment"
+						class="pt-1"
 						v-model="showedInfo[1].checked"
 						:binary="true"
 					/>
-					<label
-						for="enrollment"
-						class="ml-8px text-24px font-medium"
-						>{{ trans.admissionIdentity.value }}</label
-					>
+					<label for="enrollment" class="ml-2">
+						{{ trans.admissionIdentity.value }}
+					</label>
 				</div>
-				<div class="flex mt-40px">
-					<div class="w-1/2 pl-16px">
+				<div class="flex font-light gap-4 ml-6" text="secondary sm">
+					<div class="pr-10">
 						{{ trans.details.phdDegree.value }}
 					</div>
-					<div class="w-1/2 pl-16px">
+					<div class="pr-10">
 						{{ trans.details.masterDegree.value }}
 					</div>
 				</div>
-				<ParagraphDivider />
 			</div>
-			<div class="mt-16px">
-				<div>
+			<ParagraphDivider />
+			<!-- 戶籍資訊 -->
+			<div class="space-y-4">
+				<div class="flex content-center">
 					<Checkbox
 						inputId="permanentAd"
+						class="pt-1"
 						v-model="showedInfo[2].checked"
 						:binary="true"
 					/>
-					<label
-						for="permanentAd"
-						class="ml-8px text-24px font-medium"
-						>{{ trans.registAddressInfo.value }}</label
-					>
+					<label for="permanentAd" class="ml-2">
+						{{ trans.registAddressInfo.value }}
+					</label>
 				</div>
-				<div class="flex mt-40px">
-					<div class="w-1/3 pl-16px">
+				<div class="flex font-light gap-4 ml-6" text="secondary sm">
+					<div class="pr-10">
 						{{ trans.details.countryState.value }}
 					</div>
-					<div class="w-1/3 pl-16px">
+					<div class="pr-10">
 						{{ trans.details.cityPostNumber.value }}
 					</div>
-					<div class="w-1/3 pl-16px">
+					<div class="pr-10">
 						{{ trans.details.streetAddress.value }}
 					</div>
 				</div>
 				<ParagraphDivider />
 			</div>
-			<div class="mt-16px">
-				<div>
+			<!-- 現居地址 -->
+			<div class="space-y-4">
+				<div class="flex content-center">
 					<Checkbox
 						inputId="mailingAd"
+						class="pt-1"
 						v-model="showedInfo[3].checked"
 						:binary="true"
 					/>
-					<label
-						for="mailingAd"
-						class="ml-8px text-24px font-medium"
-						>{{ trans.residentAddress.value }}</label
-					>
+					<label for="mailingAd" class="ml-2">
+						{{ trans.residentAddress.value }}
+					</label>
 				</div>
-				<div class="flex mt-40px">
-					<div class="w-1/3 pl-16px">
+				<div class="flex font-light gap-4 ml-6" text="secondary sm">
+					<div class="pr-10">
 						{{ trans.details.countryState.value }}
 					</div>
-					<div class="w-1/3 pl-16px">
+					<div class="pr-10">
 						{{ trans.details.cityPostNumber.value }}
 					</div>
-					<div class="w-1/3 pl-16px">
+					<div class="pr-10">
 						{{ trans.details.streetAddress.value }}
 					</div>
 				</div>
 				<ParagraphDivider />
 			</div>
-			<div class="mt-16px">
-				<div>
+			<!-- 身份資料 -->
+			<div class="space-y-4">
+				<div class="flex content-center">
 					<Checkbox
 						inputId="basicIdentityInfo"
+						class="pt-1"
 						v-model="showedInfo[4].checked"
 						:binary="true"
 					/>
-					<label
-						for="basicIdentityInfo"
-						class="ml-8px text-24px font-medium"
-						>{{ trans.identityInfo.value }}</label
-					>
+					<label for="basicIdentityInfo" class="ml-2">{{
+						trans.identityInfo.value
+					}}</label>
 				</div>
-				<div class="flex mt-40px">
-					<div class="w-1/4 pl-16px">
+				<div class="flex font-light gap-4 ml-6" text="secondary sm">
+					<div class="pr-10">
 						{{ trans.details.legalGender.value }}
 					</div>
-					<div class="w-1/4 pl-16px">
+					<div class="pr-10">
 						{{ trans.details.bornCountry.value }}
 					</div>
-					<div class="w-1/4 pl-16px">
+					<div class="pr-10">
 						{{ trans.details.citizenship.value }}
 					</div>
-					<div class="w-1/4 pl-16px">
+					<div class="pr-10">
 						{{ trans.details.bornDate.value }}
 					</div>
 				</div>
 				<ParagraphDivider />
 			</div>
-			<div class="mt-16px">
-				<div>
+			<!-- 聯絡資料 -->
+			<div class="space-y-4">
+				<div class="flex content-center">
 					<Checkbox
 						inputId="contactInfo"
+						class="pt-1"
 						v-model="showedInfo[5].checked"
 						:binary="true"
 					/>
-					<label
-						for="contactInfo"
-						class="ml-8px text-24px font-medium"
-						>{{ trans.contactInfo.value }}</label
-					>
+					<label for="contactInfo" class="ml-2">{{
+						trans.contactInfo.value
+					}}</label>
 				</div>
-				<div class="flex mt-40px">
-					<div class="w-1/4 pl-16px">
+				<div class="flex font-light gap-4 ml-6" text="secondary sm">
+					<div class="pr-10">
 						{{ trans.details.email.value }}
 					</div>
-					<div class="w-1/4 pl-16px">
+					<div class="pr-10">
 						{{ trans.details.mainNumber.value }}
 					</div>
-					<div class="w-1/4 pl-16px">
+					<div class="pr-10">
 						{{ trans.details.secondaryNumber.value }}
 					</div>
-					<div class="w-1/4 pl-16px">
+					<div class="pr-10">
 						{{ trans.details.mobileNumber.value }}
 					</div>
 				</div>
 			</div>
 		</div>
-		<div v-else-if="activeTab.value === 2">
-			<div class="mt-16px">
-				<div>
+		<!-- 檢附資料欄位 -->
+		<div v-else class="space-y-8">
+			<!-- 就學經歷 -->
+			<div class="space-y-4">
+				<div class="flex content-center">
 					<Checkbox
 						inputId="schoolExp"
+						class="pt-1"
 						v-model="showedFile[0].checked"
 						:binary="true"
 					/>
-					<label
-						for="schoolExp"
-						class="ml-8px text-24px font-medium"
-						>{{ trans.schoolExp.value }}</label
-					>
+					<label for="schoolExp" class="ml-2">{{
+						trans.schoolExp.value
+					}}</label>
 				</div>
-				<div class="flex mt-40px">
-					<div class="pl-16px">
+				<div class="flex font-light gap-4 ml-6" text="secondary sm">
+					<div class="pr-10">
 						{{ trans.details.fileName.value }}
 					</div>
-					<div class="pl-16px">
+					<div class="pr-10">
 						{{ trans.details.fileUpload.value }}
 					</div>
 				</div>
-				<ParagraphDivider />
 			</div>
-			<div class="mt-16px">
-				<div>
+			<ParagraphDivider />
+			<!-- 考試與檢定分數 -->
+			<div class="space-y-4">
+				<div class="flex content-center">
 					<Checkbox
 						inputId="score"
+						class="pt-1"
 						v-model="showedFile[1].checked"
 						:binary="true"
 					/>
-					<label for="score" class="ml-8px text-24px font-medium">{{
+					<label for="score" class="ml-2">{{
 						trans.examScore.value
 					}}</label>
 				</div>
-				<div class="flex mt-40px">
-					<div class="pl-16px">
+				<div class="flex font-light gap-4 ml-6" text="secondary sm">
+					<div class="pr-10">
 						{{ trans.details.fileName.value }}
 					</div>
-					<div class="pl-16px">
+					<div class="pr-10">
 						{{ trans.details.fileUpload.value }}
 					</div>
 				</div>
-				<ParagraphDivider />
 			</div>
-			<div class="mt-16px">
-				<div>
+			<ParagraphDivider />
+			<!-- 其他有利於審查資料 -->
+			<div class="space-y-4">
+				<div class="flex content-center">
 					<Checkbox
 						inputId="other"
+						class="pt-1"
 						v-model="showedFile[2].checked"
 						:binary="true"
 					/>
-					<label for="other" class="ml-8px text-24px font-medium">{{
+					<label for="other" class="ml-2">{{
 						trans.advantageFile.value
 					}}</label>
 				</div>
-				<div class="flex mt-40px">
-					<div class="pl-16px">
+				<div class="flex font-light gap-4 ml-6" text="secondary sm">
+					<div class="pr-10">
 						{{ trans.details.fileName.value }}
 					</div>
-					<div class="pl-16px">
+					<div class="pr-10">
 						{{ trans.details.fileUpload.value }}
 					</div>
 				</div>
 			</div>
 		</div>
-		<div class="mt-100px">
+	</div>
+	<!-- Footer -->
+	<div class="fixed bg-white bottom-0 left-1/4 right-0 z-50 <lg:left-60">
+		<div class="w-9/10 pt-2 m-auto space-y-2 pb-6">
 			<div class="bigRedDivider"></div>
-		</div>
-		<div class="flex mt-24px">
-			<div class="m-auto">
-				<div class="flex">
-					<Button
-						class="bg-white h-60px w-140px border-ntnuRed"
-						@click="refreshData"
-					>
-						<i
-							class="pi pi-times ml-1 mr-2 box-border"
-							text="sm ntnuRed"
-						></i>
-						<div class="m-auto tracking-2" text="sm ntnuRed">
-							<div>{{ $t("取消變更") }}</div>
-						</div>
-					</Button>
-					<div class="w-24px"></div>
-					<Button
-						class="bg-Green h-60px w-140px border-ntnuRed"
-						@click="saveChange"
-					>
-						<i
-							class="pi pi-check ml-1 mr-2 box-border"
-							text="sm black"
-						></i>
-						<div class="m-auto tracking-2" text="sm black">
-							<div>{{ $t("儲存設定") }}</div>
-						</div>
-					</Button>
-				</div>
+			<div class="flex justify-center gap-6 pt-2">
+				<!-- 取消變更 -->
+				<Button class="bg-White border-Red" @click="refreshData">
+					<i
+						class="pi pi-times ml-1 mr-2 box-border"
+						text="sm ntnuRed"
+					></i>
+					<div class="m-auto tracking-2" text="sm nRed-500">
+						<div>{{ $t("取消變更") }}</div>
+					</div>
+				</Button>
+				<!-- 儲存設定 -->
+				<Button class="bg-Green border-ntnuRed" @click="saveChange">
+					<i class="pi pi-check ml-1 mr-2 box-border" text="sm"></i>
+					<div class="m-auto tracking-2" text="sm">
+						<div>{{ $t("儲存設定") }}</div>
+					</div>
+				</Button>
 			</div>
 		</div>
 	</div>
