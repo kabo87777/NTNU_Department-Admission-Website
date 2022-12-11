@@ -1,9 +1,6 @@
 <template class="overflow-hidden">
 	<Toast position="top-right" />
 	<div class="flex">
-		<div class="flex-shrink-1">
-			<img src="/assets/login-page/Login-img.png" class="fill" />
-		</div>
 		<div class="flex-none w-150 px-6 pt-40 space-y-8">
 			<div class="px-8 space-y-2">
 				<div class="text-s text-gray-500">
@@ -104,7 +101,7 @@ const toast = useToast();
 const applicantAuth = useAdmissionApplicantAuthStore();
 const api = new AdmissionApplicantAPI(applicantAuth);
 const isChangePassLoading = ref(false);
-const changePassRes = reactive({
+let changePassRes = reactive({
 	success: false,
 	message: "" as string | [],
 });
@@ -118,7 +115,7 @@ const uid = new URLSearchParams(url.search).get("uid");
 // console.log("client = ", client);
 // console.log("uid = ", uid);
 
-const password = reactive({
+let password = reactive({
 	isNewPassBlank: false,
 	notMatch: false,
 	newPass: "",
@@ -126,32 +123,20 @@ const password = reactive({
 });
 
 const putResetPassword = async (data: universalAuthResetPwdData) => {
-	try {
-		if (access_token !== null && client !== null && uid !== null) {
-			return await api.requestResetPasswordSession(
-				data,
-				access_token,
-				client,
-				uid
-			);
-		}
-	} catch (error) {
-		console.log(error);
-	}
+	if (!access_token || !client || !uid)
+		throw new Error("Missing credentials");
+
+	return await api.requestResetPasswordSession(
+		data,
+		access_token,
+		client,
+		uid
+	);
 };
 
 const onSubmit = async () => {
-	if (password.newPass === "") {
-		password.isNewPassBlank = true;
-	} else {
-		password.isNewPassBlank = false;
-	}
-
-	if (password.newPass !== password.confirmPass) {
-		password.notMatch = true;
-	} else {
-		password.notMatch = false;
-	}
+	password.isNewPassBlank = password.newPass === "";
+	password.notMatch = password.newPass !== password.confirmPass;
 
 	if (!password.notMatch) {
 		isChangePassLoading.value = true;
@@ -161,41 +146,38 @@ const onSubmit = async () => {
 			password_confirmation: password.confirmPass,
 		};
 
-		const response = putResetPassword(body);
+		const res = await putResetPassword(body);
 
-		await response.then((res) => {
-			if (res?.error === false && res?.message !== undefined) {
-				changePassRes.success = toRaw(!res.error);
-				changePassRes.message = toRaw(res.message);
-			}
+		if (res?.error === false && res?.message !== undefined) {
+			changePassRes.success = toRaw(!res.error);
+			changePassRes.message = toRaw(res.message);
+		}
 
-			isChangePassLoading.value = false;
+		isChangePassLoading.value = false;
 
-			if (changePassRes.success) {
-				toast.add({
-					severity: "success",
-					summary: "Success",
-					detail: "變更密碼成功 ! (3 秒後為您導向登入畫面)。",
-					life: 3000,
-				});
-				setTimeout(() => {
-					router.replace({ name: "AdmissionApplicantSignin" });
-				}, 3000);
-			} else if (
-				!changePassRes.success &&
-				password.newPass !== "" &&
-				password.confirmPass !== ""
-			) {
-				toast.add({
-					severity: "error",
-					summary: "Error",
-					detail: changePassRes.message[
-						changePassRes.message.length - 1
-					],
-					life: 5000,
-				});
-			}
-		});
+		if (changePassRes.success) {
+			toast.add({
+				severity: "success",
+				summary: "Success",
+				detail: "變更密碼成功 ! (3 秒後為您導向登入畫面)。",
+				life: 3000,
+			});
+
+			setTimeout(() => {
+				router.replace({ name: "AdmissionApplicantSignin" });
+			}, 3000);
+
+			return;
+		}
+
+		if (password.newPass !== "" && password.confirmPass !== "") {
+			toast.add({
+				severity: "error",
+				summary: "Error",
+				detail: changePassRes.message[changePassRes.message.length - 1],
+				life: 5000,
+			});
+		}
 	}
 };
 </script>

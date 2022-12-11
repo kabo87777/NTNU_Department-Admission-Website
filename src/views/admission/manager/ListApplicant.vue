@@ -168,7 +168,7 @@ import ConfirmDialog from "primevue/confirmdialog";
 import { useConfirm } from "primevue/useconfirm";
 import Message from "primevue/message";
 const confirm = useConfirm();
-const store = useGlobalStore();
+const globalStore = useGlobalStore();
 const adminAuth = useAdmissionAdminAuthStore();
 const api = new AdmissionAdminAPI(adminAuth);
 const tableData = ref<AdmissionAdminApplicantsListResponse[]>(
@@ -185,24 +185,11 @@ const {
 } = useQuery(
 	["applicantList"],
 	async () => {
-		try {
-			if (store.program === undefined)
-				throw new Error("undefined program");
+		console.log(globalStore);
+		if (globalStore.program === undefined)
+			throw new Error("undefined program");
 
-			return await api.getApplicantList(store.program.id);
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				// FIXME: show session expiry notification??
-				// Why are we even here in the first place?
-				// MainContainer should have checked already.
-				console.error(
-					"Session has already expired while querying applicant list"
-				);
-				router.push("/");
-				return;
-			}
-			throw e;
-		}
+		return await api.getApplicantList(globalStore.program.id);
 	},
 	{
 		onSuccess: (data) => {
@@ -230,7 +217,7 @@ interface modalForm {
 	allow_password_change: boolean;
 }
 
-store.$subscribe((mutation, state) => {
+globalStore.$subscribe((mutation, state) => {
 	if (state.program) {
 		console.log(state.program.category + state.program.name);
 	}
@@ -275,10 +262,10 @@ const getTableItemQty = computed(() => {
 
 const { mutate: uploadApplicantImport } = useMutation({
 	mutationFn: (data: FormData) => {
-		if (!store.program) throw new Error("Invalid state: program");
+		if (!globalStore.program) throw new Error("Invalid state: program");
 		console.log("mutate");
 		isImporting.value = true;
-		return api.postApplicantsXlsx(store.program.id, data);
+		return api.postApplicantsXlsx(globalStore.program.id, data);
 	},
 	onSuccess: () => {
 		// Refetch applicnt list on successful import
