@@ -564,7 +564,7 @@
 				dataKey="id"
 				:scrollable="true"
 				scrollHeight="700px"
-				@rowReorder="onRowReorder3"
+				@rowReorder="onRowReorder4"
 				class="p-datatable-lg !h-700px"
 				removableSort
 			>
@@ -816,7 +816,10 @@ const applicantOralGradeList = useQuery(
 	},
 	{
 		onSuccess: (data) => {
-			oralGradeList.value = data;
+			oralGradeList.value = data!.filter(
+				(item) => item.isImmediateEnroll === false
+			);
+			oralGradeList.value.sort((a, b) => a.oral_order - b.oral_order);
 			oralStage1Count.value =
 				data!.filter((item) => item.enroll_stage === null).length +
 				data!.filter((item) => item.enroll_stage === "待審核").length;
@@ -836,6 +839,9 @@ const applicantOralGradeList = useQuery(
 			admittedList.value = data!.filter(
 				(item) => item.enroll_stage === "正取"
 			);
+			admittedList.value.sort(
+				(a: any, b: any) => a.enroll_order - b.enroll_order
+			);
 			admittedOrderList.value = [];
 			for (let i = 1; i <= admittedList.value.length; i++) {
 				admittedOrderList.value.push(i);
@@ -847,6 +853,9 @@ const applicantOralGradeList = useQuery(
 			for (let i = 1; i <= reserveList.value.length; i++) {
 				reserveOrderList.value.push(i);
 			}
+			reserveOrderList.value.sort(
+				(a: any, b: any) => a.enroll_order - b.enroll_order
+			);
 		},
 	}
 );
@@ -935,7 +944,11 @@ const onRowReorder2 = (event: any) => {
 };
 
 const onRowReorder3 = (event: any) => {
-	oralGradeList.value = event.value;
+	admittedList.value = event.value;
+};
+
+const onRowReorder4 = (event: any) => {
+	reserveList.value = event.value;
 };
 
 const docsReviewerCount = ref(0);
@@ -1043,26 +1056,38 @@ function cancelEdit() {
 	productDialog.value = false;
 }
 
-const batchUpdateApplicantStages = useMutation(async (applicants: any) => {
-	for (const applicant of applicants) {
-		try {
-			const result = await api.updateApplicantStage(
-				applicant.applicantID,
-				applicant.stages
-			);
-			if (result.status !== "success")
-				throw new Error(
-					`Failed to patch applicant (id = ${applicant.applicantID})`
+const batchUpdateApplicantStages = useMutation(
+	async (applicants: any) => {
+		for (const applicant of applicants) {
+			try {
+				const result = await api.updateApplicantStage(
+					applicant.applicantID,
+					applicant.stages
 				);
+				if (result.status !== "success")
+					throw new Error(
+						`Failed to patch applicant (id = ${applicant.applicantID})`
+					);
 
-			// console.log(`Patched applicant (id = ${applicant.applicantID})`)
-			// update progress
-		} catch (error) {
-			console.log(error);
-			break;
+				// console.log(`Patched applicant (id = ${applicant.applicantID})`)
+				// update progress
+			} catch (error) {
+				console.log(error);
+				break;
+			}
 		}
+	},
+	{
+		onSuccess: () => {
+			queryClient.invalidateQueries({
+				queryKey: ["admissionAdminDocsGradeList"],
+			});
+			queryClient.invalidateQueries({
+				queryKey: ["admissionAdminOralGradeList"],
+			});
+		},
 	}
-});
+);
 
 function saveOralOrder() {
 	let list = [];

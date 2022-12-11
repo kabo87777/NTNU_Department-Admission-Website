@@ -1,59 +1,26 @@
 <template>
 	<div>
 		<h1 class="text-4xl text-bold tracking-widest">{{ $t("專案設定") }}</h1>
-		<Divider class="bg-ntnuRed" />
-		<h2 class="text-2xl text-bold tracking-widest inline-block">
+		<div class="bigRedDivider"></div>
+		<h2 class="text-2xl text-bold tracking-widest inline-block mt-16px">
 			{{ oldProgramName }}
 		</h2>
-		<Button
-			class="w-110px h-40px !ml-20px p-button-outlined p-button-success"
-			@click="updateProgramData"
-		>
-			<img
-				alt="logo"
-				src="/assets/project-setting/Check_fill.png"
-				style="width: 1.5rem"
-				class="fill-green-500"
-			/>
-			<span class="tracking-1px">{{ $t("保存") }}</span>
-		</Button>
-		<Button
-			class="w-110px h-40px !ml-20px p-button-outlined p-button-danger"
-			@click="deleteProject"
-		>
-			<img
-				alt="logo"
-				src="/assets/project-setting/Close_round.png"
-				style="width: 1.5rem"
-				class="fill-green-500"
-			/>
-			<span class="tracking-1px">{{ $t("刪除") }}</span>
-		</Button>
-		<h3 class="text-xs tracking-widest text-gray-500">
+		<h3 class="text-s tracking-widest text-gray-500 mt-8px">
 			{{ programCreateDate }} · {{ $t("新增到專案") }}
 		</h3>
-		<h5 class="text-base tracking-widest mt-30px mb-10px">
+		<h5 class="text-base tracking-widest mt-32px mb-10px">
 			{{ $t("專案名稱 (修改)") }} :
 		</h5>
 		<InputText
 			type="text"
 			v-model="programName"
-			class="w-960px h-44px mt-10px"
+			class="w-960px h-44px mt-16px"
 		/>
-		<div>
-			<!-- <h5 class="text-base tracking-widest mt-30px">
-				{{ $t("屬性") }} :
-			</h5>
-			<Dropdown
-				v-model="selected_type"
-				:options="types"
-				optionLabel="type_name"
-				optionValue="type_name"
-				class="!w-320px !h-44px mt-10px"
-			/> -->
+		<div class="text-lg tracking-widest font-bold mt-120px text-red-500">
+			{{ $t("請在申請端開放之前完成其他專案設定") }}
 		</div>
 		<div class="inline-block">
-			<h5 class="text-base tracking-widest mt-30px">
+			<h5 class="text-base tracking-widest mt-48px">
 				{{ $t("申請端開放時間/日期") }} :
 			</h5>
 			<Calendar
@@ -66,7 +33,7 @@
 			/>
 		</div>
 		<div class="inline-block ml-100px">
-			<h5 class="text-base tracking-widest mt-30px">
+			<h5 class="text-base tracking-widest mt-48px">
 				{{ $t("申請端關閉時間/日期") }} :
 			</h5>
 			<Calendar
@@ -105,25 +72,39 @@
 				dateFormat="yy/mm/dd"
 			/>
 		</div>
-		<br />
-		<div>
-			<Checkbox
-				inputId="binary"
-				v-model="checked"
-				:binary="true"
-				class="!align-top mt-30px"
-			/>
-			<h5
-				class="text-base tracking-widest mt-30px ml-10px align-top inline-block"
-			>
-				{{ $t("專案詳細") }} :
-			</h5>
-			<Textarea
-				v-model="project_details"
-				rows="5"
-				cols="30"
-				class="w-950px h-320px !mt-30px !ml-10px"
-			/>
+		<div class="mt-200px">
+			<div class="bigRedDivider"></div>
+		</div>
+		<div class="flex mt-24px">
+			<div class="m-auto">
+				<div class="flex">
+					<Button
+						class="bg-white h-60px w-140px border-ntnuRed"
+						@click="deleteProject"
+					>
+						<i
+							class="pi pi-times ml-1 mr-2 box-border"
+							text="sm ntnuRed"
+						></i>
+						<div class="m-auto tracking-2" text="sm ntnuRed">
+							<div>{{ $t("刪除專案") }}</div>
+						</div>
+					</Button>
+					<div class="w-24px"></div>
+					<Button
+						class="bg-Green h-60px w-140px border-ntnuRed"
+						@click="updateProgramData"
+					>
+						<i
+							class="pi pi-check ml-1 mr-2 box-border"
+							text="sm black"
+						></i>
+						<div class="m-auto tracking-2" text="sm black">
+							<div>{{ $t("儲存設定") }}</div>
+						</div>
+					</Button>
+				</div>
+			</div>
 		</div>
 	</div>
 </template>
@@ -198,6 +179,24 @@ useQuery(
 );
 
 function updateProgramData() {
+	if (recruit_end_time.value < recruit_start_time.value) {
+		toast.add({
+			severity: "error",
+			summary: "錯誤",
+			detail: "申請結束時間不得早於申請開始時間",
+			life: 3000,
+		});
+		return;
+	}
+	if (review_stage1_end_time.value < review_stage1_start_time.value) {
+		toast.add({
+			severity: "error",
+			summary: "錯誤",
+			detail: "審核結束時間不得早於審核開始時間",
+			life: 3000,
+		});
+		return;
+	}
 	programDataMutation.mutate(
 		{
 			category: selected_type.value,

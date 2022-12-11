@@ -28,11 +28,11 @@
 				class="!w-320px !h-44px mt-16px"
 			/>
 		</div>
-		<div class="text-lg tracking-widest font-bold mt-24px text-red-500">
+		<div class="text-lg tracking-widest font-bold mt-36px text-red-500">
 			{{ $t("請在申請端開放之前完成其他專案設定") }}
 		</div>
 		<div class="inline-block">
-			<h5 class="text-base tracking-widest mt-16px">
+			<h5 class="text-base tracking-widest mt-48px">
 				{{ $t("申請端開放時間/日期") }} :
 			</h5>
 			<div>
@@ -48,7 +48,7 @@
 			</div>
 		</div>
 		<div class="inline-block ml-100px">
-			<h5 class="text-base tracking-widest mt-16px">
+			<h5 class="text-base tracking-widest mt-48px">
 				{{ $t("申請端關閉時間/日期") }} :
 			</h5>
 			<div>
@@ -99,7 +99,7 @@
 			</h5>
 			<Calendar
 				inputId="icon"
-				v-model="review_stage1_start_time"
+				v-model="review_stage2_start_time"
 				:showIcon="true"
 				:showTime="true"
 				class="w-320px h-44px mt-16px"
@@ -113,7 +113,7 @@
 			</h5>
 			<Calendar
 				inputId="icon"
-				v-model="review_stage1_end_time"
+				v-model="review_stage2_end_time"
 				:showIcon="true"
 				:showTime="true"
 				class="w-320px h-44px mt-16px"
@@ -209,6 +209,8 @@ const application_start_time = ref<Date>();
 const application_end_time = ref();
 const review_stage1_start_time = ref();
 const review_stage1_end_time = ref();
+const review_stage2_start_time = ref();
+const review_stage2_end_time = ref();
 const project_details = ref("");
 const checked = ref(false);
 const programCreateDate = ref("");
@@ -281,6 +283,33 @@ const toast = useToast();
 const stage = ref("");
 const queryClient = useQueryClient();
 async function update() {
+	if (application_end_time.value < application_start_time.value!) {
+		toast.add({
+			severity: "error",
+			summary: "錯誤",
+			detail: "申請截止時間不得早於申請開始時間",
+			life: 3000,
+		});
+		return;
+	}
+	if (review_stage1_end_time.value < review_stage1_start_time.value!) {
+		toast.add({
+			severity: "error",
+			summary: "錯誤",
+			detail: "書面審查截止時間不得早於書面審查開始時間",
+			life: 3000,
+		});
+		return;
+	}
+	if (review_stage2_end_time.value < review_stage2_start_time.value!) {
+		toast.add({
+			severity: "error",
+			summary: "錯誤",
+			detail: "口試審查截止時間不得早於口試審查開始時間",
+			life: 3000,
+		});
+		return;
+	}
 	if (review_stage.value === translation.phase1) {
 		stage.value = "docs_stage";
 	} else if (review_stage.value === translation.phase2) {

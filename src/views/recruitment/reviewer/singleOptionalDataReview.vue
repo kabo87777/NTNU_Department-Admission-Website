@@ -79,19 +79,9 @@
 			/>
 		</div>
 		<div class="flex mt-42px">
-			<Checkbox
-				inputId="binary"
-				v-model="checked"
-				:binary="true"
-				class="!w-31px !h-31px mt-9px"
-			/>
-			<div class="text-xl ml-5px mt-5px">
-				{{ $t("已閱讀所有必看資料 (*字號部分之資料)") }}
-			</div>
 			<Button
-				class="w-100px h-40px !ml-795px p-button-success"
+				class="w-100px h-40px !ml-1200px p-button-success"
 				@click="saveScore"
-				:disabled="!checked"
 			>
 				<img
 					alt="logo"

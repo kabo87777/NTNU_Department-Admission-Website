@@ -13,7 +13,6 @@
 				scrollHeight="700px"
 				class="!h-700px"
 			>
-				<Column field="id" :header="ID"></Column>
 				<Column field="name" :header="applicantName"></Column>
 				<Column field="revieweResult" :header="recommand">
 					<template #body="slotProps">
@@ -124,6 +123,7 @@
 					:showTime="true"
 					class="mt-8px !w-576px !h-44px ml-52px"
 					:baseZIndex="zIndex"
+					dateFormat="yy-mm-dd"
 				/>
 				<Calendar
 					v-else
@@ -134,6 +134,7 @@
 					class="mt-8px !w-576px !h-44px ml-52px"
 					:baseZIndex="zIndex"
 					disabled
+					dateFormat="yy-mm-dd"
 				/>
 				<Button
 					class="w-140px h-44px !mt-48px !ml-200px p-button-outlined p-button-success"
@@ -256,7 +257,7 @@ const applicantGradeList = useQuery(
 		},
 	}
 );
-const applicantID = ref();
+const applicantID = ref(applicantGradeList.data.value![0].id);
 const recommandCount = ref(0);
 const notRecommandCount = ref(0);
 const reviewers = ref<RecruitmentAdminSingleReviewerRecommendResponse[]>();
