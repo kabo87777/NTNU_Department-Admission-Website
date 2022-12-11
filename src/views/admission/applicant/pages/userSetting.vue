@@ -128,7 +128,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive, toRaw } from "vue";
+import { reactive, toRaw } from "vue";
 import { AdmissionApplicantAuthResponse } from "@/api/admission/applicant/types";
 import { useAdmissionApplicantAuthStore } from "@/stores/universalAuth";
 import { useUserInfoStore } from "@/stores/AdmissionApplicantStore";
@@ -196,12 +196,7 @@ let password = reactive({
 });
 
 const resetPassValue = () => {
-	password.isCurrentPassBlank = initialPassValue.isCurrentPassBlank;
-	password.isNewPassBlank = initialPassValue.isNewPassBlank;
-	password.notMatch = initialPassValue.notMatch;
-	password.currentPass = initialPassValue.currentPass;
-	password.newPass = initialPassValue.newPass;
-	password.confirmPass = initialPassValue.confirmPass;
+	Object.assign(password, initialPassValue);
 };
 
 const handleEditEmail = async () => {
@@ -241,7 +236,7 @@ const handleEditEmail = async () => {
 	isLoading.editEmail = false;
 
 	if (editEmailRes.success) {
-		resetPassValue();
+		Object.assign(password, initialPassValue); //reset password input to initial value
 		toast.add({
 			severity: "success",
 			summary: "Success",
@@ -301,7 +296,7 @@ const handleSubmit = async () => {
 		isLoading.changePass = false;
 
 		if (changePassRes.success) {
-			resetPassValue();
+			Object.assign(password, initialPassValue); //reset password input to initial value
 			toast.add({
 				severity: "success",
 				summary: "Success",
@@ -318,8 +313,4 @@ const handleSubmit = async () => {
 		}
 	}
 };
-
-onMounted(() => {
-	//console.log(route.params);
-});
 </script>
