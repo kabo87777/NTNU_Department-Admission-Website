@@ -385,10 +385,10 @@ let programData: RecruitmentAdminProgramListResponse = reactive({
 
 // API: Get Info/File Data
 const getInfoFileField = useQuery(
-	["infoFileField"],
+	["recruitmentInfoFileField"],
 	async () => {
 		if (!store.program)
-			throw new Error("infoFileField: no program selected");
+			throw new Error("recruitmentInfoFileField: no program selected");
 
 		const allData = await api.getProgramList();
 		return allData[store.program.id - 1];
@@ -449,7 +449,7 @@ const patchInfoFileField = useMutation(
 	},
 	{
 		onSuccess: () => {
-			queryClient.invalidateQueries(["infoFileField"]);
+			queryClient.invalidateQueries(["recruitmentInfoFileField"]);
 		},
 	}
 );
@@ -491,7 +491,7 @@ function saveChange() {
 }
 
 function refreshData() {
-	queryClient.invalidateQueries(["infoFileField"]);
+	queryClient.invalidateQueries(["recruitmentInfoFileField"]);
 }
 
 watch(activeTab, () => {
