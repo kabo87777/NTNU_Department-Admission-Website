@@ -86,17 +86,7 @@ const programList = ref<RecruitmentApplicantProgramResponse[]>(
 const { data } = useQuery(
 	["programList"],
 	async () => {
-		try {
-			return await api.getProgramList();
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				console.error(
-					"Session has already expired while querying programList"
-				);
-				router.push("/");
-				return;
-			}
-		}
+		return await api.getProgramList();
 	},
 	{
 		onSuccess: (data) => {

@@ -122,11 +122,11 @@ const initialPassValue = {
 	confirmPass: "",
 };
 
-const password = reactive(initialPassValue);
+let password = reactive(initialPassValue);
 
 const isChangePassLoading = ref(false);
 
-const changePassRes = reactive({
+let changePassRes = reactive({
 	success: false,
 	message: "" as string | [],
 });
@@ -141,16 +141,7 @@ const resetPassValue = () => {
 };
 
 const patchChangePassword = async (body: object) => {
-	try {
-		return await api.changePassword(body);
-	} catch (e: any) {
-		if (e instanceof InvalidSessionError) {
-			console.error(
-				"Session has already expired while changing password"
-			);
-			return;
-		}
-	}
+	return await api.changePassword(body);
 };
 
 const handleSubmit = async () => {
@@ -185,35 +176,31 @@ const handleSubmit = async () => {
 			password_confirmation: password.confirmPass,
 		};
 
-		const response = patchChangePassword(body);
+		const res = await patchChangePassword(body);
 
-		await response.then((res) => {
-			if (res?.success !== undefined && res?.message !== undefined) {
-				changePassRes.success = toRaw(res.success);
-				changePassRes.message = toRaw(res.message);
-			}
+		if (res?.success !== undefined && res?.message !== undefined) {
+			changePassRes.success = toRaw(res.success);
+			changePassRes.message = toRaw(res.message);
+		}
 
-			isChangePassLoading.value = false;
+		isChangePassLoading.value = false;
 
-			if (changePassRes.success) {
-				resetPassValue();
-				toast.add({
-					severity: "success",
-					summary: "Success",
-					detail: changePassRes.message,
-					life: 3000,
-				});
-			} else {
-				toast.add({
-					severity: "error",
-					summary: "Error",
-					detail: changePassRes.message[
-						changePassRes.message.length - 1
-					],
-					life: 5000,
-				});
-			}
-		});
+		if (changePassRes.success) {
+			resetPassValue();
+			toast.add({
+				severity: "success",
+				summary: "Success",
+				detail: changePassRes.message,
+				life: 3000,
+			});
+		} else {
+			toast.add({
+				severity: "error",
+				summary: "Error",
+				detail: changePassRes.message[changePassRes.message.length - 1],
+				life: 5000,
+			});
+		}
 	}
 };
 

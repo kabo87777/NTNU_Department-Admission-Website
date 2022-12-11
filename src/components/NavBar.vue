@@ -71,7 +71,7 @@ const props = defineProps(["showSwitchLang"]);
 const menu = ref();
 
 let items = ref(
-	(availableLocales as string[]).map((loc: string) => {
+	availableLocales.map((loc: string) => {
 		return {
 			label: t("語言名稱", "", { locale: loc }),
 			icon: "",

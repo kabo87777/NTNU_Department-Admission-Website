@@ -137,17 +137,7 @@ const applicantList: AdmissionAdminApplicantsListResponse[] = reactive<
 const { data } = useQuery(
 	["applicantListUpload"],
 	async () => {
-		try {
-			return await api.getApplicantList(store.program!.id as number);
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				console.error(
-					"Session has already expired while quering appliacntList"
-				);
-				router.push("/");
-				return;
-			}
-		}
+		return await api.getApplicantList(store.program!.id as number);
 	},
 	{
 		onSuccess: (data) => {

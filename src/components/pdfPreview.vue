@@ -10,7 +10,7 @@
 	</div>
 </template>
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { onMounted } from "vue";
 import VuePdfEmbed from "vue-pdf-embed";
 
 const props = defineProps({
