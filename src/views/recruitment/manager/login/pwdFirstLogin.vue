@@ -1,8 +1,5 @@
 <template class="overflow-hidden">
 	<div class="flex">
-		<div class="flex-shrink-1">
-			<img src="/assets/login-page/Login-img.png" class="fill" />
-		</div>
 		<div class="flex-none w-150 px-6 pt-40 space-y-8">
 			<div class="px-8 space-y-2">
 				<div class="text-s text-gray-500">
@@ -84,7 +81,7 @@ import { reactive } from "vue";
 import InputText from "primevue/inputtext";
 
 const userName = ref("小明");
-const userNewPwd = reactive({
+let userNewPwd = reactive({
 	password: "",
 	confirmPwd: "",
 });

@@ -329,7 +329,7 @@ const applicantName = window.localStorage.getItem(
 const currentYear = new Date().getFullYear();
 const rocYear = currentYear - 1911;
 
-const tags: Tags = reactive({
+let tags: Tags = reactive({
 	basicInfo: "completed",
 	attachment: "incomplete",
 	additionalDocs: "unable",

@@ -133,7 +133,6 @@ import { AdmissionApplicantAuthResponse } from "@/api/admission/applicant/types"
 import { useAdmissionApplicantAuthStore } from "@/stores/universalAuth";
 import { useUserInfoStore } from "@/stores/AdmissionApplicantStore";
 import { AdmissionApplicantAPI } from "@/api/admission/applicant/api";
-import { InvalidSessionError } from "@/api/error";
 import { useI18n } from "vue-i18n";
 import ParagraphDivider from "@/styles/paragraphDividerApplicant.vue";
 import { useToast } from "primevue/usetoast";
@@ -177,7 +176,7 @@ const isLoading = reactive({
 	editEmail: false,
 });
 
-const changePassRes = reactive({
+let changePassRes = reactive({
 	success: false,
 	message: "" as string | [],
 });
@@ -187,7 +186,7 @@ const editEmailRes = reactive({
 	message: "" as string | [],
 });
 
-const password = reactive({
+let password = reactive({
 	isCurrentPassBlank: false,
 	isNewPassBlank: false,
 	notMatch: false,
@@ -203,32 +202,6 @@ const resetPassValue = () => {
 	password.currentPass = initialPassValue.currentPass;
 	password.newPass = initialPassValue.newPass;
 	password.confirmPass = initialPassValue.confirmPass;
-};
-
-const patchChangeEmail = async (body: object) => {
-	try {
-		return await api.editEmail(body);
-	} catch (e: any) {
-		if (e instanceof InvalidSessionError) {
-			console.error(
-				"Session has already expired while changing password"
-			);
-			return;
-		}
-	}
-};
-
-const patchChangePassword = async (body: object) => {
-	try {
-		return await api.changePassword(body);
-	} catch (e: any) {
-		if (e instanceof InvalidSessionError) {
-			console.error(
-				"Session has already expired while changing password"
-			);
-			return;
-		}
-	}
 };
 
 const handleEditEmail = async () => {
@@ -258,34 +231,32 @@ const handleEditEmail = async () => {
 
 	isLoading.editEmail = true;
 	const body = { email: email.email };
-	const response = patchChangeEmail(body);
+	const response = await api.editEmail(body);
 
-	await response.then((res) => {
-		if (res?.success !== undefined && res?.message !== undefined) {
-			editEmailRes.success = toRaw(res.success);
-			editEmailRes.message = toRaw(res.message);
-		}
+	if (response?.success !== undefined && response?.message !== undefined) {
+		editEmailRes.success = toRaw(response.success);
+		editEmailRes.message = toRaw(response.message);
+	}
 
-		isLoading.editEmail = false;
+	isLoading.editEmail = false;
 
-		if (editEmailRes.success) {
-			resetPassValue();
-			toast.add({
-				severity: "success",
-				summary: "Success",
-				detail: editEmailRes.message,
-				life: 3000,
-			});
-			email.isEdit = false;
-		} else {
-			toast.add({
-				severity: "error",
-				summary: "Error",
-				detail: editEmailRes.message[editEmailRes.message.length - 1],
-				life: 5000,
-			});
-		}
-	});
+	if (editEmailRes.success) {
+		resetPassValue();
+		toast.add({
+			severity: "success",
+			summary: "Success",
+			detail: editEmailRes.message,
+			life: 3000,
+		});
+		email.isEdit = false;
+	} else {
+		toast.add({
+			severity: "error",
+			summary: "Error",
+			detail: editEmailRes.message[editEmailRes.message.length - 1],
+			life: 5000,
+		});
+	}
 };
 
 const handleSubmit = async () => {
@@ -320,35 +291,31 @@ const handleSubmit = async () => {
 			password_confirmation: password.confirmPass,
 		};
 
-		const response = patchChangePassword(body);
+		const res = await api.changePassword(body);
 
-		await response.then((res) => {
-			if (res?.success !== undefined && res?.message !== undefined) {
-				changePassRes.success = toRaw(res.success);
-				changePassRes.message = toRaw(res.message);
-			}
+		if (res?.success !== undefined && res?.message !== undefined) {
+			changePassRes.success = toRaw(res.success);
+			changePassRes.message = toRaw(res.message);
+		}
 
-			isLoading.changePass = false;
+		isLoading.changePass = false;
 
-			if (changePassRes.success) {
-				resetPassValue();
-				toast.add({
-					severity: "success",
-					summary: "Success",
-					detail: changePassRes.message,
-					life: 3000,
-				});
-			} else {
-				toast.add({
-					severity: "error",
-					summary: "Error",
-					detail: changePassRes.message[
-						changePassRes.message.length - 1
-					],
-					life: 5000,
-				});
-			}
-		});
+		if (changePassRes.success) {
+			resetPassValue();
+			toast.add({
+				severity: "success",
+				summary: "Success",
+				detail: changePassRes.message,
+				life: 3000,
+			});
+		} else {
+			toast.add({
+				severity: "error",
+				summary: "Error",
+				detail: changePassRes.message[changePassRes.message.length - 1],
+				life: 5000,
+			});
+		}
 	}
 };
 

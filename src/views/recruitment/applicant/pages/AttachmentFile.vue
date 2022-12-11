@@ -182,21 +182,21 @@ const applicantAuth = useRecruitmentApplicantAuthStore();
 const api = new RecruitmentApplicantAPI(applicantAuth);
 const project = useProjectIdStore();
 
-const attachmentList: AttachmentData[] = reactive([]);
-const teachingExpList: AttachmentDetailData[] = reactive([]);
-const examCertificateList: AttachmentDetailData[] = reactive([]);
-const otherList: AttachmentDetailData[] = reactive([]);
+let attachmentList: AttachmentData[] = reactive([]);
+let teachingExpList: AttachmentDetailData[] = reactive([]);
+let examCertificateList: AttachmentDetailData[] = reactive([]);
+let otherList: AttachmentDetailData[] = reactive([]);
 
 const toast = useToast();
 
-const isLoading = reactive({
+let isLoading = reactive({
 	delete: false,
 	create: false,
 	edit: false,
 	fetch: false,
 });
 
-const fetchResponse = reactive({
+let fetchResponse = reactive({
 	success: false,
 	message: "" as string | [],
 });
@@ -266,144 +266,111 @@ const createToEdit = (index: number, category: string) => {
 };
 
 const deleteFile = async (fileId: number) => {
-	try {
-		return await api.deleteFile(project.project.pid, fileId);
-	} catch (e: any) {
-		if (e instanceof InvalidSessionError) {
-			console.error(
-				"Session has already expired while changing password"
-			);
-			return;
-		}
-	}
+	return await api.deleteFile(project.project.pid, fileId);
 };
 
 const createFile = async (body: object) => {
-	try {
-		return await api.createFile(project.project.pid, body);
-	} catch (e: any) {
-		if (e instanceof InvalidSessionError) {
-			console.error(
-				"Session has already expired while changing password"
-			);
-			return;
-		}
-	}
+	return await api.createFile(project.project.pid, body);
 };
 
 const editFile = async (body: object, fileId: number) => {
-	try {
-		return await api.editFile(body, project.project.pid, fileId);
-	} catch (e: any) {
-		if (e instanceof InvalidSessionError) {
-			console.error(
-				"Session has already expired while changing password"
-			);
-			return;
-		}
-	}
+	return await api.editFile(body, project.project.pid, fileId);
 };
 
 const handleDelete = async (fileId: number) => {
 	isLoading.delete = true;
 
-	const response = deleteFile(fileId);
+	const res = await deleteFile(fileId);
 
-	await response.then((res) => {
-		if (res?.success !== undefined && res?.message !== undefined) {
-			fetchResponse.success = toRaw(res.success);
-			fetchResponse.message = toRaw(res.message);
-		}
+	if (res?.success !== undefined && res?.message !== undefined) {
+		fetchResponse.success = toRaw(res.success);
+		fetchResponse.message = toRaw(res.message);
+	}
 
-		isLoading.delete = false;
-		isLoading.fetch = true;
+	isLoading.delete = false;
+	isLoading.fetch = true;
 
-		if (fetchResponse.success) {
-			toast.add({
-				severity: "success",
-				summary: "Success",
-				detail: fetchResponse.message,
-				life: 3000,
-			});
-		} else {
-			toast.add({
-				severity: "error",
-				summary: "Error",
-				detail: fetchResponse.message,
-				life: 5000,
-			});
-		}
+	if (fetchResponse.success) {
+		toast.add({
+			severity: "success",
+			summary: "Success",
+			detail: fetchResponse.message,
+			life: 3000,
+		});
+	} else {
+		toast.add({
+			severity: "error",
+			summary: "Error",
+			detail: fetchResponse.message,
+			life: 5000,
+		});
+	}
 
-		isLoading.fetch = true;
-	});
+	isLoading.fetch = true;
 };
 
 const handleCreate = async (body: object) => {
 	isLoading.create = true;
 
-	const response = createFile(body);
+	const res = await createFile(body);
 
-	await response.then((res) => {
-		if (res?.success !== undefined && res?.message !== undefined) {
-			fetchResponse.success = toRaw(res.success);
-			fetchResponse.message = toRaw(res.message);
-		}
+	if (res?.success !== undefined && res?.message !== undefined) {
+		fetchResponse.success = toRaw(res.success);
+		fetchResponse.message = toRaw(res.message);
+	}
 
-		isLoading.create = false;
-		isLoading.fetch = true;
+	isLoading.create = false;
+	isLoading.fetch = true;
 
-		if (fetchResponse.success) {
-			toast.add({
-				severity: "success",
-				summary: "Success",
-				detail: fetchResponse.message,
-				life: 3000,
-			});
-		} else {
-			toast.add({
-				severity: "error",
-				summary: "Error",
-				detail: fetchResponse.message,
-				life: 5000,
-			});
-		}
+	if (fetchResponse.success) {
+		toast.add({
+			severity: "success",
+			summary: "Success",
+			detail: fetchResponse.message,
+			life: 3000,
+		});
+	} else {
+		toast.add({
+			severity: "error",
+			summary: "Error",
+			detail: fetchResponse.message,
+			life: 5000,
+		});
+	}
 
-		isLoading.fetch = true;
-	});
+	isLoading.fetch = true;
 };
 
 const handleEdit = async (body: object, fileId: number) => {
 	isLoading.edit = true;
 
-	const response = editFile(body, fileId);
+	const res = await editFile(body, fileId);
 
-	await response.then((res) => {
-		if (res?.success !== undefined && res?.message !== undefined) {
-			fetchResponse.success = toRaw(res.success);
-			fetchResponse.message = toRaw(res.message);
-		}
+	if (res?.success !== undefined && res?.message !== undefined) {
+		fetchResponse.success = toRaw(res.success);
+		fetchResponse.message = toRaw(res.message);
+	}
 
-		isLoading.edit = false;
-		isLoading.fetch = true;
+	isLoading.edit = false;
+	isLoading.fetch = true;
 
-		if (fetchResponse.success) {
-			toast.add({
-				severity: "success",
-				summary: "Success",
-				detail: fetchResponse.message,
-				life: 3000,
-			});
-		} else {
-			toast.add({
-				severity: "error",
-				summary: "Error",
-				detail: fetchResponse.message,
-				life: 5000,
-			});
-		}
+	if (fetchResponse.success) {
+		toast.add({
+			severity: "success",
+			summary: "Success",
+			detail: fetchResponse.message,
+			life: 3000,
+		});
+	} else {
+		toast.add({
+			severity: "error",
+			summary: "Error",
+			detail: fetchResponse.message,
+			life: 5000,
+		});
+	}
 
-		isLoading.fetch = true;
-	});
+	isLoading.fetch = true;
 };
 
 const splitThreeList = async (fullList: AttachmentData[]) => {
@@ -463,16 +430,9 @@ const getFileList = async () => {
 };
 
 onMounted(async () => {
-	const response = getFileList();
-	await response.then((res) => {
-		if (Object.keys(res).length) {
-			res.map((item) => {
-				if (item) {
-					attachmentList.push(item);
-				}
-			});
-		}
-	});
+	const res = await getFileList();
+
+	if (res) attachmentList = [...attachmentList, ...res];
 
 	splitThreeList(toRaw(attachmentList));
 });
@@ -480,19 +440,11 @@ onMounted(async () => {
 watch(
 	() => isLoading.fetch,
 	async () => {
-		const response = getFileList();
-
 		clearAllList();
 
-		await response.then((res) => {
-			if (Object.keys(res).length) {
-				res.map((item) => {
-					if (item) {
-						attachmentList.push(item);
-					}
-				});
-			}
-		});
+		const res = await getFileList();
+
+		if (res) attachmentList = [...attachmentList, ...res];
 
 		isLoading.fetch = false;
 

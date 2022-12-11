@@ -1,144 +1,123 @@
-<!-- <template>
-	<LandingViewBase>
-		<template #form>
-			<LoginForm role="applicant">
-				<template #h1>{{ $t("資訊工程學系報名系統") }}</template>
-			</LoginForm>
-		</template>
-	</LandingViewBase>
-</template>
-
-<script setup lang="ts">
-import LandingViewBase from "@/components/LandingViewLayout.vue";
-import LoginForm from "@/components/LoginForm.vue";
-</script> -->
-
 <template>
 	<Toast position="top-right" />
-	<div class="grid grid-cols-2 gap-15px">
-		<div>
-			<img src="/assets/login-page/Login-img.png" class="h-screen" />
+	<div my="auto">
+		<!-- Button: Back to Admission Login -->
+		<router-link to="/admission">
+			<button
+				class="flex items-center gap-2 p-2 my-4"
+				text="sm secondary"
+				border="rounded-lg"
+				hover="bg-nGrey-200 text-title"
+				active="bg-nGrey-600 text-white"
+			>
+				<i class="pi pi-angle-left" />
+				<div>切換登入身份</div>
+				<div>Change your identity</div>
+			</button>
+		</router-link>
+		<!-- Title -->
+		<div mx="4" space="y-2">
+			<div text="secondary" font="light">
+				國立臺灣師範大學資訊工程學系
+			</div>
+			<div text="3xl title" font="medium">招生系統</div>
+			<div text="xl title" font="medium">NTNU CSIE Admissions System</div>
 		</div>
-		<div class="m-auto">
-			<div class="flex m-auto h-15">
-				<div>
-					<img
-						src="/assets/login-page/NTNU-logo-B1.png"
-						class="h-15"
-					/>
-				</div>
-				<Divider layout="vertical" />
-				<div class="mt-1.5">
-					<div class="text-4xl font-bold text-gray-500">
-						資訊工程學系
-					</div>
-					<div class="text-xs text-gray-400">
-						Department of Computer Science and Information
-						Enginering
-					</div>
-				</div>
-			</div>
-			<div>
-				<router-link to="/admission">
-					<button
-						class="flex items-center gap-2 px-2 py-2 mt-5 mb-3"
-						bg="transparent hover:gray-100"
-						text="sm gray-400 hover:gray-600"
-						border="rounded"
-					>
-						<i class="pi pi-angle-left" />
-						<div>切換登入身份</div>
-						<div>Change your identity</div>
-					</button>
-				</router-link>
-			</div>
-			<div>
-				<div class="mt-100px ml-164px text-4xl font-bold text-gray-500">
-					{{ $t("資訊工程學系報名系統") }}
-				</div>
-			</div>
-			<form @submit="onSubmit" ref="form">
+		<!-- Divider -->
+		<Divider align="center">
+			<div p="8" text="sm pApplicant">申請者登入 Applicant Login</div>
+		</Divider>
+		<!-- Login Form -->
+		<div flex="~ col gap-8" w="3/4" mx="auto">
+			<form @submit="onSubmit" ref="form" space="y-6">
+				<!-- Account -->
 				<Field
 					name="username"
 					v-slot="{ field, errorMessage, meta }"
 					v-model="username"
 				>
-					<div class="block mt-50px ml-168px">
-						<div class="text-base text-gray-600">
-							<label for="username">{{ $t("准考證號碼") }}</label>
+					<div flex="~ col gap-1">
+						<div text="sm body" font="light">
+							准考證號碼 Registration Number
 						</div>
-						<div class="mt-4px">
-							<InputText
-								v-bind="field"
-								name="username"
-								type="username"
-								class="input"
-								:disabled="isSubmitting"
-								required
-							/>
+						<InputText
+							v-bind="field"
+							name="username"
+							type="text"
+							class="h-11"
+							:disabled="isSubmitting"
+							required
+						/>
+						<div
+							v-if="errorMessage && meta.touched"
+							text="xs danger"
+							font="light"
+						>
+							※ 此欄位不可為空白 Required
 						</div>
-						<!-- TODO: styling -->
-						<span v-if="errorMessage && meta.touched">
-							{{ errorMessage }}
-						</span>
 					</div>
 				</Field>
+				<!-- Password -->
 				<Field
 					name="password"
 					v-slot="{ field, errorMessage, meta }"
 					v-model="password"
 				>
-					<div class="block mt-24px ml-168px">
-						<div class="text-base text-gray-600">
-							<label for="password">{{ $t("密碼") }}</label>
+					<div flex="~ col gap-1">
+						<div text="sm body" font="light">密碼 Password</div>
+						<InputText
+							v-bind="field"
+							name="password"
+							type="password"
+							class="h-11"
+							:disabled="isSubmitting"
+							required
+						/>
+						<div
+							v-if="errorMessage && meta.touched"
+							text="xs danger"
+							font="light"
+						>
+							※ 此欄位不可為空白 Required
 						</div>
-						<div class="mt-4px">
-							<InputText
-								v-bind="field"
-								name="password"
-								type="password"
-								class="input"
-								:disabled="isSubmitting"
-								required
-							/>
-						</div>
-						<!-- TODO: styling -->
-						<span v-if="errorMessage && meta.touched">
-							{{ errorMessage }}
-						</span>
 					</div>
 				</Field>
-				<div class="flex relative ml-168px mt-8px">
-					<div class="flex">
-						<div class="pt-3px">
-							<Checkbox
-								v-model="isRememberAccount"
-								:binary="true"
-							/>
-						</div>
-						<label class="text-xs text-gray-500 ml-4px">
-							<div>{{ $t("下次登入記住帳號") }}</div>
-						</label>
-					</div>
-					<div class="absolute ml-320px text-xs">
-						<router-link to="/admission/applicant/forgetpassword">
-							<div class="text-right font-bold goldText">
-								{{ $t("忘記密碼") }}
-							</div>
-						</router-link>
+				<!-- Remember Account -->
+				<div flex="~" gap="2" w="full" class="items-center">
+					<Checkbox v-model="isRememberAccount" :binary="true" />
+					<div text="xs body" font="light">
+						<div>下次登入時記住帳號</div>
+						<div>Remember Account at next Login</div>
 					</div>
 				</div>
-				<div class="ml-168px mt-40px">
+				<!-- Captcha -->
+				<div>
 					<Turnstile ref="turnstileRef" />
 				</div>
-				<div class="mt-50px ml-168px">
+				<!-- Login Button -->
+				<div flex="~ col" gap="6" w="60" m="auto">
 					<!-- TODO: add spinning wheel while Turnstile runs -->
-					<Button
-						class="bg-darkBlue h-60px w-420px"
-						type="submit"
+					<button
+						class="p-2 w-full border-2 text-pApplicant"
+						border="2 opacity-30 nGold-500 rounded-lg"
+						hover="text-title bg-nGold-300 border-nGold-300"
+						active="text-white bg-nGold-500"
 						:loading="isTurnstileRunning || isSubmitting"
-						:label="$t('登入')"
-					/>
+					>
+						<div>登入 Login</div>
+					</button>
+					<!-- Forget Password Button -->
+					<router-link to="/admission/applicant/forgetpassword">
+						<button
+							class="p-2 w-full"
+							text="sm secondary"
+							border="rounded-lg"
+							hover="bg-nGrey-200 text-title"
+							active="bg-nGrey-600 text-white"
+						>
+							<div>忘記密碼 Forget Password</div>
+						</button>
+					</router-link>
 				</div>
 			</form>
 		</div>
@@ -168,9 +147,6 @@ import InputText from "primevue/inputtext";
 const toast = useToast();
 const router = useRouter();
 
-const redirectToMainContainer = () =>
-	router.replace({ name: "AdmissionApplicantMainContainer" });
-
 const authStore = useAdmissionApplicantAuthStore();
 const userInfo = useUserInfoStore();
 
@@ -187,9 +163,6 @@ const { handleSubmit, isSubmitting } = useForm({
 	validationSchema: yup.object({
 		username: yup.string().required("Required"),
 		password: yup.string().required("Required"),
-		// .min(8, "Must be 8 characters or more")
-		// .matches(/[a-z]+/, "One lowercase character")
-		// .matches(/[A-Z]+/, "One uppercase character"),
 	}),
 });
 
@@ -228,24 +201,15 @@ const onSubmit = handleSubmit(async function (values, actions) {
 
 		const api = new AdmissionApplicantAPI(authStore);
 
-		const doLogin = async () => {
-			return await api.requestNewSession({
-				username: values.username,
-				password: values.password,
-				"cf-turnstile-response": turnstileResponse,
-			});
-		};
-
-		const handleDataType = async () => {
-			const applicantInfo: AdmissionApplicantAuthResponse =
-				await doLogin().then((res) => {
-					return res.data;
-				});
-
-			return applicantInfo;
-		};
-
-		userInfo.saveUserInfo(await handleDataType());
+		userInfo.saveUserInfo(
+			(
+				await api.requestNewSession({
+					username: values.username,
+					password: values.password,
+					"cf-turnstile-response": turnstileResponse,
+				})
+			).data
+		);
 
 		window.localStorage.removeItem("AdmissionApplicantUsername");
 		window.localStorage.setItem(
@@ -253,30 +217,23 @@ const onSubmit = handleSubmit(async function (values, actions) {
 			userInfo.userInfo.name
 		);
 
-		redirectToMainContainer();
+		router.replace({ name: "AdmissionApplicantMainContainer" });
 	} catch (e: any) {
-		// TODO: show error message
-		// console.log(e);
+		if (e?.response?.status === 401) {
+			return toast.add({
+				severity: "error",
+				summary: "Error",
+				detail: "Invalid email or password",
+				life: 5000,
+			});
+		}
+
 		toast.add({
 			severity: "error",
 			summary: "Error",
-			detail: "Invalid admission ticket number or password",
+			detail: e.toString(),
 			life: 5000,
 		});
-
-		if (e?.response?.status === 401) console.log("invalid credentials");
 	}
 });
 </script>
-
-<style setup lang="css">
-.input {
-	width: 420px;
-}
-.goldText {
-	color: #897a27;
-}
-.bg-darkBlue {
-	background-color: #07385a;
-}
-</style>
