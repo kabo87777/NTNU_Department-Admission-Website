@@ -238,6 +238,7 @@ const disable = computed(() => {
 const pendingCount = ref(0);
 const passCount = ref(0);
 const notPassCount = ref(0);
+const applicantID = ref(1);
 const applicantGradeList = useQuery(
 	["recruitmentAdminGradeList"],
 	async () => {
@@ -254,10 +255,10 @@ const applicantGradeList = useQuery(
 			notPassCount.value = data!.filter(
 				(item) => item.revieweResult === "不通過"
 			).length;
+			applicantID.value = data![0].id;
 		},
 	}
 );
-const applicantID = ref(applicantGradeList.data.value![0].id);
 const recommandCount = ref(0);
 const notRecommandCount = ref(0);
 const reviewers = ref<RecruitmentAdminSingleReviewerRecommendResponse[]>();
