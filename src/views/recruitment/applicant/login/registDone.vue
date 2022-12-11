@@ -1,64 +1,49 @@
-<template class="overflow-hidden">
-	<div class="flex">
-		<div class="flex-none w-150 px-6 pt-18 space-y-8">
-			<router-link to="/recruitment/applicant/signin">
-				<button
-					class="flex items-center gap-2 px-2 py-2"
-					bg="transparent hover:gray-100"
-					text="sm gray-400 hover:gray-600"
-					border="rounded"
-				>
-					<i class="pi pi-angle-left" />
-					<div>返回登入頁面</div>
-					<div>Back to Login</div>
-				</button>
-			</router-link>
-			<div class="px-8 space-y-2">
-				<div class="text-s text-gray-500">
-					國立台灣師範大學資訊工程學系 NTNU CSIE
-				</div>
-				<div class="flex items-end gap-2 font-medium text-gray-900">
-					<div class="text-4xl">教師聘請系統</div>
-					<div class="text-xl">Teacher Recruitment System</div>
-				</div>
+<template>
+	<div my="auto">
+		<!-- Button: Back to Applicant Signin -->
+		<router-link to="/recruitment/applicant/signin">
+			<button
+				class="flex items-center gap-2 p-2 my-4"
+				text="sm secondary"
+				border="rounded-lg"
+				hover="bg-nGrey-200 text-title"
+				active="bg-nGrey-600 text-white"
+			>
+				<i class="pi pi-angle-left" />
+				<div>回到登入畫面</div>
+				<div>Back to login page</div>
+			</button>
+		</router-link>
+		<div mx="4" space="y-2">
+			<div text="secondary" font="light">
+				國立臺灣師範大學資訊工程學系
 			</div>
-			<div class="px-8 py-4 space-y-4">
-				<div class="flex items-center gap-2 applicantTextColor">
-					<i class="pi pi-circle" style="font-size: 0.5rem" />
-					<div class="flex-none font-medium">申請端註冊</div>
-					<div class="flex-none font-medium">Applicant Register</div>
-					<Divider />
-				</div>
-			</div>
-			<div class="p-12 space-y-4">
-				<div class="flex w-full justify-center">
-					<i
-						class="pi pi-check-circle successColor"
-						style="font-size: 4rem"
-					/>
-				</div>
-				<div class="space-y-1 successColor">
-					<div text="xl" class="flex w-full justify-center gap-2">
-						<div>註冊成功</div>
-						<div>Successfull</div>
-					</div>
-				</div>
-			</div>
-			<div class="px-16 py-12">
-				<div
-					class="flex justify-center items-center p-4 gap-4"
-					bg="rounded-xl gray-100"
-					border="rounded-xl"
-					text="gray-500"
-				>
-					<i class="pi pi-envelope" style="font-size: 1.5rem" />
-					<div class="space-y-1">
-						<div text="xs">請至郵箱啟動帳號，並返回登入畫面</div>
-						<div text="xs">
-							Please Check your mail in order to active your
-							account, then turn back to Login page.
-						</div>
-					</div>
+			<div text="3xl title" font="medium">教師聘請系統</div>
+			<div text="xl title" font="medium">Teacher Recruitment System</div>
+		</div>
+		<!-- Divider -->
+		<Divider align="center">
+			<div p="4" text="sm pApplicant">申請者註冊 Applicant Regist</div>
+		</Divider>
+		<!-- Regist Successful -->
+		<div flex="~ col" text="success lg" class="items-center" py="8">
+			<i class="pi pi-check-circle" m="b-4 r-2" style="font-size: 4rem" />
+			<div>註冊成功</div>
+			<div>Successfull</div>
+		</div>
+		<!-- Info: Check E-mail -->
+		<div
+			class="flex justify-center items-center p-6 gap-6 my-6"
+			text="secondary"
+			bg="nGrey-50"
+			border="rounded-xl"
+		>
+			<i class="pi pi-envelope" style="font-size: 2rem" />
+			<div class="space-y-1" text="xs">
+				<div>請至郵箱啟動帳號，並返回登入畫面</div>
+				<div>
+					Please Check your mail in order to active your account, then
+					turn back to Login page.
 				</div>
 			</div>
 		</div>
@@ -66,12 +51,3 @@
 </template>
 
 <script setup lang="ts"></script>
-
-<style setup lang="css">
-.successColor {
-	color: #62ae01;
-}
-.applicantTextColor {
-	color: #736028;
-}
-</style>
