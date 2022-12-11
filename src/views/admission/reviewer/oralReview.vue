@@ -30,7 +30,6 @@
 				<ColumnGroup type="header">
 					<Row>
 						<Column :header="oralOrder" :rowspan="2"></Column>
-						<Column :header="ID" :rowspan="2"></Column>
 						<Column :header="applicantName" :rowspan="2"></Column>
 						<Column :header="docGrade" :rowspan="2"></Column>
 						<Column :header="reviewerGrade" :colspan="scoreCount" />
@@ -70,7 +69,6 @@
 				</ColumnGroup>
 				<div v-if="true">
 					<Column field="oral_order"></Column>
-					<Column field="id"></Column>
 					<Column field="name"></Column>
 					<Column>
 						<template #body="slotProps">

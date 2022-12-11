@@ -28,7 +28,6 @@
 				@rowSelect="onRowSelect"
 				class="p-datatable-lg !h-700px"
 			>
-				<Column field="id" :header="ID"></Column>
 				<Column field="name" :header="applicantName"></Column>
 				<Column field="isRecommend" :header="reviewerRating">
 					<template #body="slotProps">
