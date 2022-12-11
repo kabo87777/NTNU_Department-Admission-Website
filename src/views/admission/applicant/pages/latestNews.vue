@@ -37,8 +37,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, reactive } from "vue";
+import { ref, reactive } from "vue";
 
+import { useQuery } from "@tanstack/vue-query";
 import { useAdmissionApplicantAuthStore } from "@/stores/universalAuth";
 
 import { AdmissionApplicantAPI } from "@/api/admission/applicant/api";
@@ -56,48 +57,55 @@ let program = reactive({
 	end_date: "",
 });
 
-onMounted(async () => {
-	const res = await api.getProgram();
+useQuery(
+	["getAdmApplicantCurrentProgramNews"],
+	async () => {
+		return await api.getProgram();
+	},
+	{
+		onSuccess: (data) => {
+			hasNews.value = true;
+			program.id = data.id;
+			program.category = data.category;
+			program.name = data.name;
 
-	if (!res) return;
+			const convertISOtoString = (date: Date) => {
+				const year = date.getFullYear();
+				const month =
+					date.getMonth() + 1 < 10
+						? "0" + date.getMonth() + 1
+						: date.getMonth() + 1;
+				const day =
+					date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+				const hr =
+					date.getHours() < 10
+						? "0" + date.getHours()
+						: date.getHours();
+				const min =
+					date.getMinutes() < 10
+						? "0" + date.getMinutes()
+						: date.getMinutes();
+				const dateString =
+					year.toString() +
+					"-" +
+					month.toString() +
+					"-" +
+					day.toString() +
+					" " +
+					hr.toString() +
+					":" +
+					min.toString();
 
-	hasNews.value = true;
-	program.id = res.id;
-	program.category = res.category;
-	program.name = res.name;
+				return dateString;
+			};
 
-	const convertISOtoString = (date: Date) => {
-		const year = date.getFullYear();
-		const month =
-			date.getMonth() + 1 < 10
-				? "0" + date.getMonth() + 1
-				: date.getMonth() + 1;
-		const day = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
-		const hr =
-			date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
-		const min =
-			date.getMinutes() < 10
-				? "0" + date.getMinutes()
-				: date.getMinutes();
-		const dateString =
-			year.toString() +
-			"-" +
-			month.toString() +
-			"-" +
-			day.toString() +
-			" " +
-			hr.toString() +
-			":" +
-			min.toString();
-
-		return dateString;
-	};
-
-	const start_date = new Date(res.application_start_date);
-	const end_date = new Date(res.application_end_date);
-	program.start_date = convertISOtoString(start_date);
-	program.end_date = convertISOtoString(end_date);
-});
+			const start_date = new Date(data.application_start_date);
+			const end_date = new Date(data.application_end_date);
+			program.start_date = convertISOtoString(start_date);
+			program.end_date = convertISOtoString(end_date);
+		},
+	}
+);
 </script>
 
 <style setup lang="css">
