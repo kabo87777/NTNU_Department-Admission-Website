@@ -204,17 +204,18 @@
 					style="
 						background-color: #8a7b27;
 						border-radius: 50%;
-						width: 32px;
-						height: 32px;
-						margin-left: 18px;
+						width: 40px;
+						height: 40px;
+						margin-top: -4px;
+						margin-left: 16px;
 					"
 				>
 					<i
 						class="pi pi-user ml-6.5px mt-8px"
-						style="font-size: 1.2rem"
+						style="font-size: 1.7rem"
 					/>
 				</div>
-				<div class="mt-[-4px] ml-16px">
+				<div class="mt-[-4px] ml-12px">
 					<div
 						class="text-[14px] font-[500] font-bold text-[#736028]"
 					>
