@@ -318,6 +318,7 @@ import IncompleteTag from "@/styles/tags/incompleteTag.vue";
 import { useRouter } from "vue-router";
 import Dialog from "primevue/dialog";
 import "primeicons/primeicons.css";
+import "@/styles/customize.css";
 
 const { t } = useI18n();
 const router = useRouter();

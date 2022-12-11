@@ -20,7 +20,7 @@
 				<div v-if="project.project.pid"><router-view /></div>
 				<!-- 畫面顯示(未開放專案申請時) -->
 				<div v-else class="relative h-150">
-					<div class="recruitmentAdditionNoData">
+					<div class="recruitmentMainNoData">
 						<img
 							src="/assets/admissionApplicant/Newsletter.png"
 							alt="NO DATA"
@@ -84,4 +84,13 @@ useQuery(["recruitmentApplicantAuthorizationStatus"], async () => {
 router.push("/recruitment/applicant/switchProject");
 </script>
 
-<style scoped></style>
+<style setup lang="css">
+.recruitmentMainNoData {
+	position: absolute;
+	left: 50%;
+	top: 63%;
+	transform: translate(-50%, -50%);
+	height: 400px;
+	width: 500px;
+}
+</style>
