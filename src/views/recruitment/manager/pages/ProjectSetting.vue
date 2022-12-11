@@ -246,7 +246,7 @@ async function deleteProject() {
 }
 
 globalStore.$subscribe(() => {
-	queryClient.invalidateQueries({ queryKey: ["program"] });
+	queryClient.invalidateQueries({ queryKey: ["RAdminprogram"] });
 });
 
 function dateTransform(date?: Date) {

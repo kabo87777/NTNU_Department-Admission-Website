@@ -28,8 +28,11 @@
 				class="!w-320px !h-44px mt-16px"
 			/>
 		</div>
+		<div class="text-lg tracking-widest font-bold mt-24px text-red-500">
+			{{ $t("請在申請端開放之前完成其他專案設定") }}
+		</div>
 		<div class="inline-block">
-			<h5 class="text-base tracking-widest mt-52px">
+			<h5 class="text-base tracking-widest mt-16px">
 				{{ $t("申請端開放時間/日期") }} :
 			</h5>
 			<div>
@@ -45,7 +48,7 @@
 			</div>
 		</div>
 		<div class="inline-block ml-100px">
-			<h5 class="text-base tracking-widest mt-52px">
+			<h5 class="text-base tracking-widest mt-16px">
 				{{ $t("申請端關閉時間/日期") }} :
 			</h5>
 			<div>
@@ -328,7 +331,7 @@ async function deleteProject() {
 
 globalStore.$subscribe(() => {
 	queryClient.invalidateQueries({
-		queryKey: ["program"],
+		queryKey: ["Aadminprogram"],
 	});
 });
 

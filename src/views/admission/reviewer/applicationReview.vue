@@ -30,7 +30,6 @@
 			>
 				<ColumnGroup type="header">
 					<Row>
-						<Column :header="ID" :rowspan="2"></Column>
 						<Column :header="applicantName" :rowspan="2"></Column>
 						<Column :header="reviewerGrade" :colspan="scoreCount" />
 						<Column :header="totalscore" :rowspan="2"></Column>
@@ -67,7 +66,6 @@
 						/>
 					</Row>
 				</ColumnGroup>
-				<Column field="id"></Column>
 				<Column field="name"></Column>
 				<Column field="docs_grade_1" />
 				<Column field="docs_grade_2" />
@@ -104,7 +102,11 @@
 						<p v-else>-</p>
 					</template>
 				</Column>
-				<Column field="immediate_enroll_comment"></Column>
+				<Column field="immediate_enroll_comment" dataType="string">
+					<template #body="slotProps">
+						{{ short(slotProps.data.immediate_enroll_comment) }}
+					</template>
+				</Column>
 			</DataTable>
 			<div class="bigBlueDivider !mt-50px"></div>
 			<div class="flex text-xl mt-20px">
@@ -393,4 +395,12 @@ store.$subscribe(() => {
 		queryKey: ["admissionReviewerProgramList"],
 	});
 });
+function short(str: string | null) {
+	if (str === null) return "";
+	if (str.length > 10) {
+		return str.slice(0, 10) + "...";
+	} else {
+		return str;
+	}
+}
 </script>
