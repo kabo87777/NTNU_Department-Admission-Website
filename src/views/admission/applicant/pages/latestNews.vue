@@ -9,26 +9,13 @@
 			<div class="newsCard">
 				<div>
 					{{
-						$t("申請開放時間") +
+						$t("申請時間") +
 						$t(":") +
-						$t("startApply", {
-							year: program.start_year,
-							month: program.start_month,
-							day: program.start_day,
-							hour: program.start_hour,
-						})
-					}}
-				</div>
-				<div class="mt-8px">
-					{{
-						$t("申請截止時間") +
-						$t(":") +
-						$t("endApply", {
-							year: program.end_year,
-							month: program.end_month,
-							day: program.end_day,
-							hour: program.end_hour,
-						})
+						program.start_date +
+						" " +
+						"~" +
+						" " +
+						program.end_date
 					}}
 				</div>
 			</div>
@@ -65,14 +52,8 @@ let program = reactive({
 	id: 1,
 	category: "111年碩士班",
 	name: "A組",
-	start_year: "",
-	start_month: "",
-	start_day: "",
-	start_hour: "",
-	end_year: "",
-	end_month: "",
-	end_day: "",
-	end_hour: "",
+	start_date: "",
+	end_date: "",
 });
 
 onMounted(async () => {
@@ -85,15 +66,37 @@ onMounted(async () => {
 	program.category = res.category;
 	program.name = res.name;
 
-	// TODO: this is not good practice
-	program.start_year = res.application_start_date.slice(0, 4);
-	program.start_month = res.application_start_date.slice(5, 7);
-	program.start_day = res.application_start_date.slice(8, 10);
-	program.start_hour = res.application_start_date.slice(11, 13);
-	program.end_year = res.application_end_date.slice(0, 4);
-	program.end_month = res.application_end_date.slice(5, 7);
-	program.end_day = res.application_end_date.slice(8, 10);
-	program.end_hour = res.application_end_date.slice(11, 13);
+	const convertISOtoString = (date: Date) => {
+		const year = date.getFullYear();
+		const month =
+			date.getMonth() + 1 < 10
+				? "0" + date.getMonth() + 1
+				: date.getMonth() + 1;
+		const day = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+		const hr =
+			date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+		const min =
+			date.getMinutes() < 10
+				? "0" + date.getMinutes()
+				: date.getMinutes();
+		const dateString =
+			year.toString() +
+			"-" +
+			month.toString() +
+			"-" +
+			day.toString() +
+			" " +
+			hr.toString() +
+			":" +
+			min.toString();
+
+		return dateString;
+	};
+
+	const start_date = new Date(res.application_start_date);
+	const end_date = new Date(res.application_end_date);
+	program.start_date = convertISOtoString(start_date);
+	program.end_date = convertISOtoString(end_date);
 });
 </script>
 
