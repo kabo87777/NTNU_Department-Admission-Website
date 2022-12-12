@@ -20,6 +20,8 @@
 			</div>
 		</div>
 	</div>
+	<ScrollTop target="parent" :threshold="100" icon="pi pi-arrow-up" />
+	<ScrollTop />
 </template>
 
 <script setup lang="ts">
@@ -34,6 +36,7 @@ import { doUniversalAuthSessionValidation } from "@/api/universalAuth";
 
 import NavBar from "@/components/NavBar.vue";
 import SideBar from "@/components/sidebars/recruitmentApplicantSidebar.vue";
+import ScrollTop from "primevue/scrolltop";
 
 const router = useRouter();
 const auth = useRecruitmentApplicantAuthStore();

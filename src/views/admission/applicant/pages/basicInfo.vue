@@ -490,6 +490,24 @@
 			</div>
 		</div>
 		<div class="bigYellowDivider"></div>
+		<div>
+			<Button
+				class="p-button-secondary"
+				style="
+					margin-top: 32px;
+					margin-left: 100%;
+					transform: translateX(-100%);
+					width: 100px;
+					height: 44px;
+					background-color: #f0dfad;
+					border: 2px solid #a18b4a;
+					color: #736028;
+				"
+				icon="pi pi-save"
+				:label="$t('儲存')"
+				@click="handleSave()"
+			/>
+		</div>
 	</div>
 </template>
 
