@@ -162,7 +162,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, onMounted, toRaw, watch } from "vue";
+import { reactive, toRaw, watch } from "vue";
 import { useToast } from "primevue/usetoast";
 
 import ReviewState from "@/components/attachmentStates/reviewState.vue";
@@ -170,6 +170,8 @@ import EditState from "@/components/attachmentStates/editState.vue";
 import CreateState from "@/components/attachmentStates/createState.vue";
 import CorrectionState from "@/components/attachmentStates/CorrectionState.vue";
 import ParagraphDivider from "@/styles/paragraphDividerApplicant.vue";
+
+import { useQuery } from "@tanstack/vue-query";
 
 import {
 	AttachmentData,
@@ -412,13 +414,29 @@ const clearAllList = () => {
 	otherList.splice(0, otherList.length);
 };
 
-onMounted(async () => {
-	const res = await api.getFileList();
+useQuery(
+	["admApplicantGetAttachtmentList"],
+	async () => {
+		return await api.getFileList();
+	},
+	{
+		onSuccess: (data) => {
+			attachmentList = [...attachmentList, ...data];
 
-	attachmentList = [...attachmentList, ...res];
+			splitThreeList(toRaw(attachmentList));
+		},
 
-	splitThreeList(toRaw(attachmentList));
-});
+		onError: (data) => {
+			toast.add({
+				severity: "error",
+				summary: "Error",
+				detail: "Unable to fetch attachment list",
+				life: 5000,
+			});
+			console.log(data);
+		},
+	}
+);
 
 watch(
 	() => isLoading.fetch,
