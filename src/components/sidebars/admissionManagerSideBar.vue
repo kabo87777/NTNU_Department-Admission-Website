@@ -403,7 +403,7 @@
 						<img
 							alt="logo"
 							src="/assets/sidebar/Close_round.png"
-							style="width: 18rem"
+							style="width: 1.25rem"
 							class="!ml-0px"
 						/>
 						<span class="text-left text-xl">{{ $t("取消") }}</span>
