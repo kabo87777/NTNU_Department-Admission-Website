@@ -27,11 +27,7 @@
 					/>
 					<!-- Title -->
 					<div mx="8" space="y-2">
-						<div
-							text="lg secondary"
-							font="light"
-							class="<md:hidden"
-						>
+						<div text="lg secondary" class="<md:hidden">
 							國立臺灣師範大學
 						</div>
 						<div text="4xl title" font="medium">
@@ -44,7 +40,7 @@
 					<!-- Divider -->
 					<div mx="12">
 						<Divider align="center">
-							<div p="4" text="body" font="light">請選擇系統</div>
+							<div p="x-4 y-6" text="secondary">請選擇系統</div>
 						</Divider>
 					</div>
 					<div flex="~ col gap-12" w="80" mx="auto">

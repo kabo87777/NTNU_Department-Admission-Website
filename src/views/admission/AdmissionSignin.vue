@@ -16,9 +16,7 @@
 		</router-link>
 		<!-- Title -->
 		<div mx="8" space="y-2">
-			<div text="lg secondary" font="light">
-				國立臺灣師範大學資訊工程學系
-			</div>
+			<div text="lg secondary">國立臺灣師範大學資訊工程學系</div>
 			<div text="4xl title" font="medium">招生系統</div>
 			<div text="2xl title" font="medium">
 				NTNU CSIE Admissions System
@@ -27,7 +25,7 @@
 		<!-- Divider -->
 		<div mx="12">
 			<Divider align="center">
-				<div p="x-4 y-6" text="body" font="light">
+				<div p="x-4 y-6" text="secondary">
 					選擇身份 Select your identity
 				</div>
 			</Divider>

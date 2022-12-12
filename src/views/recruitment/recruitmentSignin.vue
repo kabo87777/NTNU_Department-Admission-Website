@@ -15,18 +15,18 @@
 			</button>
 		</router-link>
 		<div mx="8" space="y-2">
-			<div text="lg secondary" font="light">
-				國立臺灣師範大學資訊工程學系
-			</div>
+			<div text="lg secondary">國立臺灣師範大學資訊工程學系</div>
 			<div text="4xl title" font="medium">教師聘請系統</div>
 			<div text="2xl title" font="medium">Teacher Recruitment System</div>
 		</div>
 		<!-- Divider -->
-		<Divider align="center">
-			<div p="4" text="body" font="light">
-				選擇身份 Select your identity
-			</div>
-		</Divider>
+		<div mx="12">
+			<Divider align="center">
+				<div p="x-4 y-6" text="secondary">
+					選擇身份 Select your identity
+				</div>
+			</Divider>
+		</div>
 		<!-- Buttons -->
 		<div flex="~ col gap-8" w="80" mx="auto">
 			<router-link to="/recruitment/applicant/signin">

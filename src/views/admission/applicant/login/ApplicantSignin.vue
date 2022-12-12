@@ -5,7 +5,7 @@
 		<router-link to="/admission">
 			<button
 				class="flex items-center gap-2 p-2 my-4"
-				text="sm secondary"
+				text="secondary"
 				border="rounded-lg"
 				hover="bg-nGrey-200 text-title"
 				active="bg-nGrey-600 text-white"
@@ -17,18 +17,22 @@
 		</router-link>
 		<!-- Title -->
 		<div mx="4" space="y-2">
-			<div text="secondary" font="light">
-				國立臺灣師範大學資訊工程學系
+			<div text="lg secondary">國立臺灣師範大學資訊工程學系</div>
+			<div text="4xl title" font="medium">招生系統</div>
+			<div text="2xl title" font="medium">
+				NTNU CSIE Admissions System
 			</div>
-			<div text="3xl title" font="medium">招生系統</div>
-			<div text="xl title" font="medium">NTNU CSIE Admissions System</div>
 		</div>
 		<!-- Divider -->
-		<Divider align="center">
-			<div p="8" text="sm pApplicant">申請者登入 Applicant Login</div>
-		</Divider>
+		<div mx="12">
+			<Divider align="center">
+				<div p="x-4 y-6" text="pApplicant">
+					申請者登入 Applicant Login
+				</div>
+			</Divider>
+		</div>
 		<!-- Login Form -->
-		<div flex="~ col gap-8" w="3/4" mx="auto">
+		<div flex="~ col" w="3/4" mx="auto">
 			<form @submit="onSubmit" ref="form" space="y-6">
 				<!-- Account -->
 				<Field
@@ -37,9 +41,7 @@
 					v-model="username"
 				>
 					<div flex="~ col gap-1">
-						<div text="sm body" font="light">
-							准考證號碼 Registration Number
-						</div>
+						<div text="body">准考證號碼 Registration Number</div>
 						<InputText
 							v-bind="field"
 							name="username"
@@ -48,13 +50,12 @@
 							:disabled="isSubmitting"
 							required
 						/>
-						<div
+						<!-- <div
 							v-if="errorMessage && meta.touched"
-							text="xs danger"
-							font="light"
+							text="sm danger"
 						>
 							※ 此欄位不可為空白 Required
-						</div>
+						</div> -->
 					</div>
 				</Field>
 				<!-- Password -->
@@ -64,7 +65,7 @@
 					v-model="password"
 				>
 					<div flex="~ col gap-1">
-						<div text="sm body" font="light">密碼 Password</div>
+						<div text="body">密碼 Password</div>
 						<InputText
 							v-bind="field"
 							name="password"
@@ -73,19 +74,18 @@
 							:disabled="isSubmitting"
 							required
 						/>
-						<div
+						<!-- <div
 							v-if="errorMessage && meta.touched"
-							text="xs danger"
-							font="light"
+							text="sm danger"
 						>
 							※ 此欄位不可為空白 Required
-						</div>
+						</div> -->
 					</div>
 				</Field>
 				<!-- Remember Account -->
 				<div flex="~" gap="2" w="full" class="items-center">
 					<Checkbox v-model="isRememberAccount" :binary="true" />
-					<div text="xs body" font="light">
+					<div text="sm secondary">
 						<div>下次登入時記住帳號</div>
 						<div>Remember Account at next Login</div>
 					</div>
@@ -95,10 +95,11 @@
 					<Turnstile ref="turnstileRef" />
 				</div>
 				<!-- Login Button -->
-				<div flex="~ col" gap="6" w="60" m="auto">
+				<div flex="~ col" gap="6" w="60" m="auto" pt="12">
 					<!-- TODO: add spinning wheel while Turnstile runs -->
 					<button
-						class="p-2 w-full border-2 text-pApplicant"
+						class="p-2 w-full border-2 font-medium"
+						text="lg pApplicant"
 						border="2 opacity-30 nGold-500 rounded-lg"
 						hover="text-title bg-nGold-300 border-nGold-300"
 						active="text-white bg-nGold-500"
@@ -109,8 +110,7 @@
 					<!-- Forget Password Button -->
 					<router-link to="/admission/applicant/forgetpassword">
 						<button
-							class="p-2 w-full"
-							text="sm secondary"
+							class="p-2 w-full text-secondary font-medium"
 							border="rounded-lg"
 							hover="bg-nGrey-200 text-title"
 							active="bg-nGrey-600 text-white"
