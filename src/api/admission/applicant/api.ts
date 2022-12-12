@@ -180,7 +180,6 @@ export class AdmissionApplicantAPI extends GenericAPI {
 
 	async saveRecommendLetter(
 		body: object
-		// CHANGE THE RESPONSE TYPE ONCE BACKEND CONFIRM THE DATA STRUCTURE
 	): Promise<AdmissionApplicantGenericResponse> {
 		const data: APIGenericResponse = await this.instance.post(
 			"admission/applicant/recommendletter",
