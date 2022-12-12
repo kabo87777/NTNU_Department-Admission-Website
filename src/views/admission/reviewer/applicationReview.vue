@@ -30,7 +30,6 @@
 			>
 				<ColumnGroup type="header">
 					<Row>
-						<Column :header="ID" :rowspan="2"></Column>
 						<Column :header="applicantName" :rowspan="2"></Column>
 						<Column :header="reviewerGrade" :colspan="scoreCount" />
 						<Column :header="totalscore" :rowspan="2"></Column>
@@ -67,7 +66,6 @@
 						/>
 					</Row>
 				</ColumnGroup>
-				<Column field="id"></Column>
 				<Column field="name"></Column>
 				<Column field="docs_grade_1" />
 				<Column field="docs_grade_2" />
@@ -104,26 +102,16 @@
 						<p v-else>-</p>
 					</template>
 				</Column>
-				<Column field="immediate_enroll_comment"></Column>
+				<Column field="immediate_enroll_comment" dataType="string">
+					<template #body="slotProps">
+						{{ short(slotProps.data.immediate_enroll_comment) }}
+					</template>
+				</Column>
 			</DataTable>
 			<div class="bigBlueDivider !mt-50px"></div>
 			<div class="flex text-xl mt-20px">
-				<div>
-					{{ $t("評分進度") }}
-				</div>
-
-				<ProgressBar
-					:value="progressValue"
-					:showValue="false"
-					class="!w-439px ml-24px mt-5px"
-				/>
-				<!-- FIXME: program amount of people must be got by using API -->
-				<div class="ml-24px">
-					{{ applicantGraded }} / {{ totalApplicant }} {{ $t("位") }}
-				</div>
-
 				<Button
-					class="w-140px h-44px !ml-480px p-button-success"
+					class="w-140px h-44px !ml-1200px p-button-success"
 					@click="showTemplate"
 				>
 					<img
@@ -169,7 +157,7 @@
 					</template>
 				</Toast>
 			</div>
-			<div class="ml-860px mt-12px text-red-500">
+			<div class="ml-930px mt-12px text-red-500">
 				{{ $t("※成績送出即無法再次修改，煩請送出前再三確認成績無誤") }}
 			</div>
 		</div>
@@ -190,7 +178,7 @@ import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { useAdmissionReviewerAuthStore } from "@/stores/universalAuth";
 import { AdmissionReviewerAPI } from "@/api/admission/reviewer/api";
-import { useMutation, useQuery } from "@tanstack/vue-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
 import { InvalidSessionError } from "@/api/error";
 import { useGlobalStore } from "@/stores/AdmissionReviewerStore";
 import { useToast } from "primevue/usetoast";
@@ -265,11 +253,11 @@ const { data: programGrading } = useQuery(
 			score1Proportion.value = data!.docs_grade_weight_1;
 			score2Proportion.value = data!.docs_grade_weight_2;
 			score3Proportion.value = data!.docs_grade_weight_3;
-			if (data!.docs_grade_weight_4) {
-				score4Proportion.value = data!.docs_grade_weight_4;
+			if (data!.docs_grade_weight_4 !== 0) {
+				score4Proportion.value = data!.docs_grade_weight_4!;
 			}
-			if (data!.docs_grade_weight_5) {
-				score5Proportion.value = data!.docs_grade_weight_5;
+			if (data!.docs_grade_weight_5 !== 0) {
+				score5Proportion.value = data!.docs_grade_weight_5!;
 			}
 			score1FieldName.value =
 				score1Title.value + score1Proportion.value + "%";
@@ -285,9 +273,12 @@ const { data: programGrading } = useQuery(
 				score5FieldName.value =
 					score5Title.value + score5Proportion.value + "%";
 			}
-			if (data!.docs_grade_name_4 && data!.docs_grade_name_5) {
+			if (
+				data!.docs_grade_weight_4 !== 0 &&
+				data!.docs_grade_weight_5 !== 0
+			) {
 				scoreCount.value = 5;
-			} else if (data!.docs_grade_name_4) {
+			} else if (data!.docs_grade_weight_4 !== 0) {
 				scoreCount.value = 4;
 			} else {
 				scoreCount.value = 3;
@@ -394,4 +385,22 @@ const onRowSelect = (event: any) => {
 	selectedData.value = "";
 	router.push("/admission/reviewer/singleApplicationReview/" + event.data.id);
 };
+const queryClient = useQueryClient();
+store.$subscribe(() => {
+	queryClient.invalidateQueries({
+		queryKey: ["admissionReviewerApplicantList"],
+	});
+	queryClient.invalidateQueries({ queryKey: ["programGrading"] });
+	queryClient.invalidateQueries({
+		queryKey: ["admissionReviewerProgramList"],
+	});
+});
+function short(str: string | null) {
+	if (str === null) return "";
+	if (str.length > 10) {
+		return str.slice(0, 10) + "...";
+	} else {
+		return str;
+	}
+}
 </script>
