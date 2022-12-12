@@ -158,15 +158,6 @@
 				</div>
 				<div class="flex mt-40px">
 					<div class="w-1/4 pl-16px">
-						{{ trans.details.email.value }}
-					</div>
-					<div class="w-1/4 pl-16px">
-						{{ trans.details.mainNumber.value }}
-					</div>
-					<div class="w-1/4 pl-16px">
-						{{ trans.details.secondaryNumber.value }}
-					</div>
-					<div class="w-1/4 pl-16px">
 						{{ trans.details.mobileNumber.value }}
 					</div>
 				</div>
@@ -319,8 +310,8 @@ const trans = {
 		countryState: computed(() => t("※ 國家/州")),
 		cityPostNumber: computed(() => t("※ 城市/郵遞區號")),
 		streetAddress: computed(() => t("※ 街道地址")),
-		legalGender: computed(() => t("※ 法定性別/ 性別認同")),
-		bornCountry: computed(() => t("※ 出生國")),
+		legalGender: computed(() => t("※ 生理性別")),
+		bornCountry: computed(() => t("※ 出生國家")),
 		bornDate: computed(() => t("※ 出生日期")),
 		citizenship: computed(() => t("※ 主要國籍")),
 		email: computed(() => t("※ 電子郵件")),

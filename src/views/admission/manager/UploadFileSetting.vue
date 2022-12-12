@@ -91,9 +91,6 @@
 					<div class="pr-10">
 						{{ trans.details.cityPostNumber.value }}
 					</div>
-					<div class="pr-10">
-						{{ trans.details.streetAddress.value }}
-					</div>
 				</div>
 				<ParagraphDivider />
 			</div>
@@ -116,9 +113,6 @@
 					</div>
 					<div class="pr-10">
 						{{ trans.details.cityPostNumber.value }}
-					</div>
-					<div class="pr-10">
-						{{ trans.details.streetAddress.value }}
 					</div>
 				</div>
 				<ParagraphDivider />
@@ -166,15 +160,6 @@
 					}}</label>
 				</div>
 				<div class="flex font-light gap-4 ml-6" text="secondary sm">
-					<div class="pr-10">
-						{{ trans.details.email.value }}
-					</div>
-					<div class="pr-10">
-						{{ trans.details.mainNumber.value }}
-					</div>
-					<div class="pr-10">
-						{{ trans.details.secondaryNumber.value }}
-					</div>
 					<div class="pr-10">
 						{{ trans.details.mobileNumber.value }}
 					</div>
@@ -321,10 +306,10 @@ const trans = {
 		locals: computed(() => t("※ 本國人士")),
 		foreigner: computed(() => t("※外籍人士")),
 		countryState: computed(() => t("※ 國家/州")),
-		cityPostNumber: computed(() => t("※ 城市/郵遞區號")),
+		cityPostNumber: computed(() => t("※ 郵遞區號")),
 		streetAddress: computed(() => t("※ 街道地址")),
-		legalGender: computed(() => t("※ 法定性別/ 性別認同")),
-		bornCountry: computed(() => t("※ 出生國")),
+		legalGender: computed(() => t("※ 生理性別")),
+		bornCountry: computed(() => t("※ 出生國家")),
 		bornDate: computed(() => t("※ 出生日期")),
 		citizenship: computed(() => t("※ 主要國籍")),
 		email: computed(() => t("※ 電子郵件")),
