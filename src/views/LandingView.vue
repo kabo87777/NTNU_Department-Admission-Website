@@ -14,8 +14,8 @@
 			class="absolute h-screen z-50 right-0"
 			w="<md:screen md:min-132 screen-4/9"
 		>
-			<div flex="~ col" mx="auto" w="120" h="full">
-				<!-- Login Page -->
+			<div flex="~ col" mx="auto" w="9/10 max-160" h="full">
+				<!-- For remain Login Pages -->
 				<router-view />
 
 				<!-- Main Page -->
@@ -27,24 +27,30 @@
 					/>
 					<!-- Title -->
 					<div mx="8" space="y-2">
-						<div text="secondary" font="light" class="<md:hidden">
+						<div
+							text="lg secondary"
+							font="light"
+							class="<md:hidden"
+						>
 							國立臺灣師範大學
 						</div>
-						<div text="3xl title" font="medium">
+						<div text="4xl title" font="medium">
 							資訊工程學系報名系統
 						</div>
-						<div text="xl title" font="medium">
+						<div text="2xl title" font="medium">
 							NTNU CSIE Admissions
 						</div>
 					</div>
 					<!-- Divider -->
-					<Divider align="center">
-						<div p="4" text="sm body" font="light">請選擇系統</div>
-					</Divider>
+					<div mx="12">
+						<Divider align="center">
+							<div p="4" text="body" font="light">請選擇系統</div>
+						</Divider>
+					</div>
 					<div flex="~ col gap-12" w="80" mx="auto">
 						<router-link :to="{ name: 'AdmissionSignin' }">
 							<button
-								class="p-4 w-full border-2 text-pApplicant"
+								class="p-4 w-full border-2 text-pApplicant text-lg"
 								border="2 opacity-30 nGold-500 rounded-lg"
 								hover="text-title bg-nGold-300 border-nGold-300"
 								active="text-white bg-nGold-500"
@@ -54,7 +60,7 @@
 						</router-link>
 						<router-link :to="{ name: 'RecruitmentSignin' }">
 							<button
-								class="p-4 w-full border-2 text-pReviewer"
+								class="p-4 w-full border-2 text-pReviewer text-lg"
 								border="2 opacity-30 nBlue-500 rounded-lg"
 								hover="text-title bg-nBlue-200 border-nBlue-200"
 								active="text-white bg-nBlue-500"
