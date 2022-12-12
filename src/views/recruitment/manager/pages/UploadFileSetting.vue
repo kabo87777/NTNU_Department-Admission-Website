@@ -54,10 +54,10 @@
 				</div>
 				<div class="flex mt-40px">
 					<div class="w-1/2 pl-16px">
-						{{ trans.details.phdDegree.value }}
+						{{ trans.details.locals.value }}
 					</div>
 					<div class="w-1/2 pl-16px">
-						{{ trans.details.masterDegree.value }}
+						{{ trans.details.foreigner.value }}
 					</div>
 				</div>
 				<ParagraphDivider />
@@ -314,8 +314,8 @@ const trans = {
 		prefixSuffix: computed(() => t("※ 稱謂/後綴")),
 		chineseName: computed(() => t("※ 中文姓氏/名字")),
 		englishName: computed(() => t("※ 英文姓氏/中間名/名字")),
-		phdDegree: computed(() => t("※ 博士生")),
-		masterDegree: computed(() => t("※ 碩士生")),
+		locals: computed(() => t("※ 本地人士")),
+		foreigner: computed(() => t("※外籍人士")),
 		countryState: computed(() => t("※ 國家/州")),
 		cityPostNumber: computed(() => t("※ 城市/郵遞區號")),
 		streetAddress: computed(() => t("※ 街道地址")),
