@@ -30,7 +30,6 @@
 			>
 				<ColumnGroup type="header">
 					<Row>
-						<Column :header="ID" :rowspan="2"></Column>
 						<Column :header="applicantName" :rowspan="2"></Column>
 						<Column :header="reviewerGrade" :colspan="scoreCount" />
 						<Column :header="totalscore" :rowspan="2"></Column>
@@ -56,24 +55,23 @@
 						<Column :header="score2FieldName" :colspan="1" />
 						<Column :header="score3FieldName" :colspan="1" />
 						<Column
-							v-if="scoreCount > 3"
+							v-if="(score4FieldName && score4Proportion !== 0)"
 							:header="score4FieldName"
 							:colspan="1"
 						/>
 						<Column
-							v-if="scoreCount > 4"
+							v-if="(score5FieldName && score5Proportion !== 0)"
 							:header="score5FieldName"
 							:colspan="1"
 						/>
 					</Row>
 				</ColumnGroup>
-				<Column field="id"></Column>
 				<Column field="name"></Column>
 				<Column field="docs_grade_1" />
 				<Column field="docs_grade_2" />
 				<Column field="docs_grade_3" />
-				<Column v-if="scoreCount > 3" field="docs_grade_4" />
-				<Column v-if="scoreCount > 4" field="docs_grade_5" />
+				<Column v-if="score4FieldName && score4Proportion !== 0" field="docs_grade_4" />
+				<Column v-if="(score5FieldName && score5Proportion !== 0)" field="docs_grade_5" />
 				<Column>
 					<template #body="slotProps">
 						{{
@@ -108,20 +106,6 @@
 			</DataTable>
 			<div class="bigBlueDivider !mt-50px"></div>
 			<div class="flex text-xl mt-20px">
-				<div>
-					{{ $t("評分進度") }}
-				</div>
-
-				<ProgressBar
-					:value="progressValue"
-					:showValue="false"
-					class="!w-439px ml-24px mt-5px"
-				/>
-				<!-- FIXME: program amount of people must be got by using API -->
-				<div class="ml-24px">
-					{{ applicantGraded }} / {{ totalApplicant }} {{ $t("位") }}
-				</div>
-
 				<Button
 					class="w-140px h-44px !ml-480px p-button-success"
 					@click="showTemplate"
@@ -285,12 +269,12 @@ const { data: programGrading } = useQuery(
 				score5FieldName.value =
 					score5Title.value + score5Proportion.value + "%";
 			}
-			if (data!.docs_grade_name_4 && data!.docs_grade_name_5) {
-				scoreCount.value = 5;
-			} else if (data!.docs_grade_name_4) {
-				scoreCount.value = 4;
-			} else {
-				scoreCount.value = 3;
+			scoreCount.value = 3;
+			if (data!.docs_grade_name_4 && data!.docs_grade_weight_4 !== 0) {
+				scoreCount.value++;
+			}
+			if (data!.docs_grade_name_5 && data!.docs_grade_weight_5 !== 0) {
+				scoreCount.value++;
 			}
 		},
 	}
