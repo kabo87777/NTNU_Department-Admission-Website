@@ -26,7 +26,6 @@ export class RecruitmentAdminAPI extends GenericAPI {
 		pid: number
 	): Promise<RecruitmentAdminApplicantListResponse[]> {
 		const data: APIGenericResponse = await this.instance.get(
-			// @PT FIXME: This should not be hardcode
 			`/recruitment/admin/program/${pid}/file`
 		);
 
@@ -36,7 +35,6 @@ export class RecruitmentAdminAPI extends GenericAPI {
 		return data.data;
 	}
 
-	// TODO: disannotation while backend finished admin get program API
 	async getProgramList(): Promise<RecruitmentAdminProgramListResponse[]> {
 		const data: APIGenericResponse = await this.instance.get(
 			"/recruitment/admin/program"
@@ -154,7 +152,7 @@ export class RecruitmentAdminAPI extends GenericAPI {
 		userId: number,
 		body: object
 	): Promise<RecruitmentAdminGenericStatusResponse> {
-		const data: APIGenericResponse = await this.instance.post(
+		const data: APIGenericResponse = await this.instance.patch(
 			`recruitment/admin/program/${programID}/applicant/${userId}/moredoc`,
 			body
 		);

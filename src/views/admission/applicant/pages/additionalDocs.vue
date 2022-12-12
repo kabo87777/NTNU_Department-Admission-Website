@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<!-- 畫面顯示(開放補件時) -->
-		<div v-if="isEnabled" class="px-12px py-24px">
+		<div v-if="isEnabled">
 			<div class="font-[500] text-[32px] font-bold">
 				{{ $t("補交文件系統") }}
 			</div>
