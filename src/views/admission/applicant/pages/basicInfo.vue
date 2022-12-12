@@ -502,7 +502,6 @@
 				stroke="#4a5568"
 				stroke-width="1"
 				stroke-linecap="square"
-				stroke-linejoin="arcs"
 			>
 				<path d="M18 15l-6-6-6 6" />
 			</svg>
@@ -749,32 +748,4 @@ watch(
 		loading.fetch = false;
 	}
 );
-const app = new Vue({
-	el: "#app",
-	data() {
-		return {
-			scTimer: 0,
-			scY: 0,
-		};
-	},
-	mounted() {
-		window.addEventListener("scroll", this.handleScroll);
-	},
-	methods: {
-		handleScroll: function () {
-			if (this.scTimer) return;
-			this.scTimer = setTimeout(() => {
-				this.scY = window.scrollY;
-				clearTimeout(this.scTimer);
-				this.scTimer = 0;
-			}, 100);
-		},
-		toTop: function () {
-			window.scrollTo({
-				top: 0,
-				behavior: "smooth",
-			});
-		},
-	},
-});
 </script>
