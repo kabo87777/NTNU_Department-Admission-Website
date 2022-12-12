@@ -14,10 +14,7 @@
 			class="absolute h-screen z-50 right-0"
 			w="<md:screen md:min-132 screen-4/9"
 		>
-			<div flex="~ col" mx="auto" w="9/10 max-160" h="full">
-				<!-- For other Login Pages -->
-				<router-view />
-
+			<div flex="~ col" mx="auto" w="5/6 max-160" h="full">
 				<!-- Main Page -->
 				<div my="auto" v-if="showGateway">
 					<!-- Title -->
@@ -29,19 +26,23 @@
 						<template #English>NTNU CSIE Admisssions</template>
 						<template #Divider>請選擇系統</template>
 					</Title>
-					<!-- Button -->
-					<div flex="~ col gap-12" max-w="80" mx="auto">
+					<!-- Body -->
+					<Body #Content>
 						<router-link :to="{ name: 'AdmissionSignin' }">
-							<nButton type="Applicant" size="lg" w="full" p="4">
+							<NButton type="Applicant" size="lg" w="full" p="4">
 								招生系統 Admission System
-							</nButton>
+							</NButton>
 						</router-link>
 						<router-link :to="{ name: 'RecruitmentSignin' }">
-							<nButton type="Reviewer" size="lg" w="full" p="4">
+							<NButton type="Reviewer" size="lg" w="full" p="4">
 								教師聘請系統 Recruitment System
-							</nButton>
+							</NButton>
 						</router-link>
-					</div>
+					</Body>
+				</div>
+				<!-- For other Login Pages -->
+				<div my="auto" v-else>
+					<router-view />
 				</div>
 			</div>
 		</div>
@@ -49,8 +50,9 @@
 </template>
 
 <script setup lang="ts">
-import nButton from "@/styles/CustomButton.vue";
+import NButton from "@/styles/CustomButton.vue";
 import Title from "@/styles/login/LoginTitle.vue";
+import Body from "@/styles/login/LoginBody.vue";
 import { onMounted, ref, computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
 

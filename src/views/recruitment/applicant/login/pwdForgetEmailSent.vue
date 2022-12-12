@@ -67,7 +67,10 @@
 	</div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import nButton from "@/styles/CustomButton.vue";
+import Title from "@/styles/login/LoginTitle.vue";
+</script>
 
 <style setup lang="css">
 .successColor {

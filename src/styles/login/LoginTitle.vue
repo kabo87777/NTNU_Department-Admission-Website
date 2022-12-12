@@ -18,9 +18,9 @@
 		</div>
 	</div>
 	<!-- Divider -->
-	<div mx="12">
+	<div mx="8">
 		<Divider align="center">
-			<div p="x-4 y-6" text="secondary">
+			<div p="x-2 y-6" text="secondary">
 				<slot name="Divider" />
 			</div>
 		</Divider>
