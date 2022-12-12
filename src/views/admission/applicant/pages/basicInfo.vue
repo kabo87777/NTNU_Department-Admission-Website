@@ -160,7 +160,7 @@
 				</div>
 			</div>
 			<div v-if="identity.selectedIdentity === '外籍人士'">
-				<div >
+				<div>
 					<div class="flex pt-16px">
 						<div class="w-1/3">
 							<div>{{ "*" + $t("國籍") }}</div>
@@ -607,7 +607,7 @@ let required = reactive({
 	phone: false,
 });
 
-const identityOptions = ref([{ name: "本地人士" }, { name: "外籍人士" }]);
+const identityOptions = ref([{ name: "本國人士" }, { name: "外籍人士" }]);
 
 const basicInfo: AdmissionApplicantGetUserInfoResponse =
 	reactive<AdmissionApplicantGetUserInfoResponse>(
@@ -641,21 +641,21 @@ const handleSave = async () => {
 		en_midname: name.enMidName,
 		en_givenname: name.enName,
 		nationality:
-			identity.selectedIdentity === "本地人士"
+			identity.selectedIdentity === "本國人士"
 				? "台灣"
 				: identity.nationality,
 		national_id:
-			identity.selectedIdentity === "本地人士"
+			identity.selectedIdentity === "本國人士"
 				? identity.ic
 				: identity.ui,
 		household_address:
 			// householdAddr.addr,
-			identity.selectedIdentity === "本地人士"
+			identity.selectedIdentity === "本國人士"
 				? householdAddr.addr
 				: null,
 		household_zipcode:
 			// householdAddr.postcode,
-			identity.selectedIdentity === "本地人士"
+			identity.selectedIdentity === "本國人士"
 				? householdAddr.postcode
 				: null,
 		communicate_address: currentAddr.isAddrSame
@@ -670,7 +670,7 @@ const handleSave = async () => {
 		// birth: dayjs(born.birth).add(8, 'hour'),
 		birth: addHours(8, new Date(born.birth)),
 		mobile_phone: contact.phone,
-		isForeigner: identity.selectedIdentity === "本地人士" ? false : true,
+		isForeigner: identity.selectedIdentity === "本國人士" ? false : true,
 	};
 
 	const keys = Object.keys(body);
@@ -714,7 +714,7 @@ const handleSave = async () => {
 	loading.fetch = true;
 };
 
-const { data} = useQuery(
+const { data } = useQuery(
 	["AdmissionApplicantGetUserInfoResponse"],
 	async () => {
 		return await api.getUserInfo();
@@ -731,7 +731,7 @@ const { data} = useQuery(
 			name.enMidName = data?.en_midname as string;
 			name.enName = data?.en_givenname as string;
 			if (data?.isForeigner === false) {
-				identity.selectedIdentity = "本地人士";
+				identity.selectedIdentity = "本國人士";
 				identity.ic = data?.national_id as string;
 				identity.nationality = data?.nationality as string;
 			} else {
@@ -760,6 +760,4 @@ const { data} = useQuery(
 		},
 	}
 );
-
-
 </script>
