@@ -211,7 +211,6 @@ const review_stage1_start_time = ref();
 const review_stage1_end_time = ref();
 const review_stage2_start_time = ref();
 const review_stage2_end_time = ref();
-const project_details = ref("");
 const checked = ref(false);
 const programCreateDate = ref("");
 const review_stage = ref("");
@@ -267,7 +266,6 @@ const {
 			application_end_time.value = new Date(data.application_end_date);
 			review_stage1_start_time.value = new Date(data.review_start_date);
 			review_stage1_end_time.value = new Date(data.review_end_date);
-			project_details.value = data.detail;
 			if (data.stage === "docs_stage") {
 				review_stage.value = translation.phase1;
 			}
@@ -330,9 +328,7 @@ async function update() {
 					dateTransform(review_stage1_start_time.value) + "+08:00",
 				review_end_date:
 					dateTransform(review_stage1_end_time.value) + "+08:00",
-				require_file: '["file1", "file2"]',
 				stage: stage.value,
-				detail: project_details.value,
 			},
 			{
 				onSuccess: () => {

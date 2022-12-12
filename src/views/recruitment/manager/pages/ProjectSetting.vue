@@ -132,7 +132,6 @@ const recruit_start_time = ref();
 const recruit_end_time = ref();
 const review_stage1_start_time = ref();
 const review_stage1_end_time = ref();
-const project_details = ref("");
 const checked = ref(false);
 const programCreateDate = ref("");
 
@@ -173,7 +172,6 @@ useQuery(
 			recruit_end_time.value = new Date(data.recruit_end_date);
 			review_stage1_start_time.value = new Date(data.review_start_date);
 			review_stage1_end_time.value = new Date(data.review_end_date);
-			project_details.value = data.detail;
 		},
 	}
 );
@@ -208,8 +206,6 @@ function updateProgramData() {
 				dateTransform(review_stage1_start_time.value) + "+08:00",
 			review_end_date:
 				dateTransform(review_stage1_end_time.value) + "+08:00",
-			require_file: '["file1", "file2"]',
-			detail: project_details.value,
 		},
 		{
 			onError: (e: any) => {
