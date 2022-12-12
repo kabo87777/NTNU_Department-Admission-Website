@@ -87,18 +87,19 @@
 				class="ml-34px !w-132px !h-44px"
 			/>
 		</div>
-		<div class="flex mt-16px" v-if="programGrading?.oral_grade_name_4">
-			<div class="text-xl mt-5px">
+		<div class="flex mt-16px">
+			<div class="text-xl mt-5px" v-if="programGrading?.oral_grade_name_4 && programGrading?.oral_grade_weight_4 !== 0">
 				{{ oscore4Title }} ({{ oscore4Proportion }}%)
 			</div>
 			<InputNumber
 				inputId="integeronly"
 				v-model="oinputScore_4"
 				class="ml-34px !w-132px !h-44px"
+				v-if="programGrading?.oral_grade_name_4 && programGrading?.oral_grade_weight_4 !== 0"
 			/>
 			<div
 				class="text-xl ml-125px mt-5px"
-				v-if="programGrading?.oral_grade_name_5"
+				v-if="programGrading?.oral_grade_name_5 && programGrading?.oral_grade_weight_5 !== 0"
 			>
 				{{ oscore5Title }} ({{ oscore5Proportion }}%)
 			</div>
@@ -106,7 +107,7 @@
 				inputId="integeronly"
 				v-model="oinputScore_5"
 				class="ml-34px !w-132px !h-44px"
-				v-if="programGrading?.oral_grade_name_5"
+				v-if="programGrading?.oral_grade_name_5 && programGrading?.oral_grade_weight_5 !== 0"
 			/>
 		</div>
 		<div class="flex mt-24px">
@@ -217,11 +218,11 @@ const total_score = computed(() => {
 });
 const oral_score = computed(() => {
 	return (
-		(oinputScore_1!.value! * score1Proportion.value) / 100 +
-		(oinputScore_2!.value! * score2Proportion.value) / 100 +
-		(oinputScore_3!.value! * score3Proportion.value) / 100 +
-		(oinputScore_4!.value! * score4Proportion.value) / 100 +
-		(oinputScore_5!.value! * score5Proportion.value) / 100
+		(oinputScore_1!.value! * oscore1Proportion.value) / 100 +
+		(oinputScore_2!.value! * oscore2Proportion.value) / 100 +
+		(oinputScore_3!.value! * oscore3Proportion.value) / 100 +
+		(oinputScore_4!.value! * oscore4Proportion.value) / 100 +
+		(oinputScore_5!.value! * oscore5Proportion.value) / 100
 	);
 });
 
