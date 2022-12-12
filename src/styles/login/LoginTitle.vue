@@ -1,4 +1,10 @@
 <template>
+	<!-- NTNU School Logo -->
+	<img
+		src="/assets/login-page/NTNU-logo-B1.png"
+		class="w-48 py-4 md:hidden"
+		v-if="showLogo"
+	/>
 	<!-- Title -->
 	<div mx="8" space="y-2">
 		<div text="lg secondary">
@@ -20,3 +26,14 @@
 		</Divider>
 	</div>
 </template>
+
+<script setup lang="ts">
+import Divider from "primevue/divider";
+import { computed } from "vue";
+
+const props = defineProps(["logo"]);
+const showLogo = computed(() => {
+	if (props.logo === "true") return true;
+	else return false;
+});
+</script>

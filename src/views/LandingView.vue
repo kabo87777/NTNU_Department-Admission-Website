@@ -15,54 +15,31 @@
 			w="<md:screen md:min-132 screen-4/9"
 		>
 			<div flex="~ col" mx="auto" w="9/10 max-160" h="full">
-				<!-- For remain Login Pages -->
+				<!-- For other Login Pages -->
 				<router-view />
 
 				<!-- Main Page -->
 				<div my="auto" v-if="showGateway">
-					<!-- NTNU School Logo -->
-					<img
-						src="/assets/login-page/NTNU-logo-B1.png"
-						class="w-48 py-4 md:hidden"
-					/>
 					<!-- Title -->
-					<div mx="8" space="y-2">
-						<div text="lg secondary" class="<md:hidden">
-							國立臺灣師範大學
-						</div>
-						<div text="4xl title" font="medium">
-							資訊工程學系報名系統
-						</div>
-						<div text="2xl title" font="medium">
-							NTNU CSIE Admissions
-						</div>
-					</div>
-					<!-- Divider -->
-					<div mx="12">
-						<Divider align="center">
-							<div p="x-4 y-6" text="secondary">請選擇系統</div>
-						</Divider>
-					</div>
-					<div flex="~ col gap-12" w="80" mx="auto">
+					<Title logo="true">
+						<template #Subtitle>
+							<div class="<md:hidden">國立臺灣師範大學</div>
+						</template>
+						<template #Chinese>資訊工程學系報名系統</template>
+						<template #English>NTNU CSIE Admisssions</template>
+						<template #Divider>請選擇系統</template>
+					</Title>
+					<!-- Button -->
+					<div flex="~ col gap-12" max-w="80" mx="auto">
 						<router-link :to="{ name: 'AdmissionSignin' }">
-							<button
-								class="p-4 w-full border-2 text-pApplicant text-lg"
-								border="2 opacity-30 nGold-500 rounded-lg"
-								hover="text-title bg-nGold-300 border-nGold-300"
-								active="text-white bg-nGold-500"
-							>
-								<div>招生系統 Admission System</div>
-							</button>
+							<nButton type="Applicant" size="lg" w="full" p="4">
+								招生系統 Admission System
+							</nButton>
 						</router-link>
 						<router-link :to="{ name: 'RecruitmentSignin' }">
-							<button
-								class="p-4 w-full border-2 text-pReviewer text-lg"
-								border="2 opacity-30 nBlue-500 rounded-lg"
-								hover="text-title bg-nBlue-200 border-nBlue-200"
-								active="text-white bg-nBlue-500"
-							>
-								<div>教師聘請系統 Recruitment System</div>
-							</button>
+							<nButton type="Reviewer" size="lg" w="full" p="4">
+								教師聘請系統 Recruitment System
+							</nButton>
 						</router-link>
 					</div>
 				</div>
@@ -72,7 +49,8 @@
 </template>
 
 <script setup lang="ts">
-import Divider from "primevue/divider";
+import nButton from "@/styles/CustomButton.vue";
+import Title from "@/styles/login/LoginTitle.vue";
 import { onMounted, ref, computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
