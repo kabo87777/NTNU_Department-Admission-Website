@@ -144,7 +144,7 @@ import { useMutation, useQuery } from "@tanstack/vue-query";
 import { InvalidSessionError } from "@/api/error";
 import { router } from "@/router";
 import { RecruitmentAdminApplicantsListResponse } from "@/api/recruitment/admin/types";
-import { useGlobalStore } from "@/stores/globalStore";
+import { useGlobalStore } from "@/stores/RecruitmentAdminStore";
 import ConfirmDialog from "primevue/confirmdialog";
 import { useConfirm } from "primevue/useconfirm";
 
@@ -169,10 +169,10 @@ const {
 	data: applicants,
 	refetch,
 } = useQuery(
-	["applicantList"],
+	["recruitmentApplicantList"],
 	async () => {
 		if (!store.program)
-			throw new Error("applicantList: no program selected");
+			throw new Error("recruitmentApplicantList: no program selected");
 
 		return await api.getApplicantList(store.program.id);
 	},
