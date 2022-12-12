@@ -118,7 +118,7 @@
 		<div class="px-12px py-24px">
 			<div class="flex">
 				<div class="text-[24px] font-[50] font-bold">
-					{{ $t("入職身份") }}
+					{{ $t("入學身份") }}
 				</div>
 				<div class="mt-6px ml-40px text-[#8D9093] text-[14px]">
 					{{ $t('" * " 為必填欄位') }}
@@ -160,8 +160,8 @@
 				</div>
 			</div>
 			<div v-if="identity.selectedIdentity === '外籍人士'">
-				<div class="px-12px py-24px">
-					<div class="flex">
+				<div >
+					<div class="flex pt-16px">
 						<div class="w-1/3">
 							<div>{{ "*" + $t("國籍") }}</div>
 							<div>
@@ -202,8 +202,10 @@
 						</div>
 					</div>
 				</div>
-				<ParagraphDivider />
-				<div class="px-12px py-24px">
+				<div class="pt-24px">
+					<ParagraphDivider />
+				</div>
+				<div class="py-24px">
 					<div class="flex">
 						<div class="text-[24px] font-[50] font-bold">
 							{{ $t("現居地址") }}
@@ -515,13 +517,14 @@
 import { ref, reactive, onMounted, watch, toRaw } from "vue";
 import ParagraphDivider from "@/styles/paragraphDividerApplicant.vue";
 import { useToast } from "primevue/usetoast";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
 import Dropdown from "primevue/dropdown";
 import InputText from "primevue/inputtext";
 import Checkbox from "primevue/checkbox";
 import RadioButton from "primevue/radiobutton";
 import Calendar from "primevue/calendar";
 import Button from "primevue/button";
-
+import dayjs from "dayjs";
 import { useAdmissionApplicantAuthStore } from "@/stores/universalAuth";
 import { AdmissionApplicantAPI } from "@/api/admission/applicant/api";
 import { AdmissionApplicantGetUserInfoResponse } from "@/api/admission/applicant/types";
@@ -531,6 +534,7 @@ const api = new AdmissionApplicantAPI(applicantAuth);
 // const project = useProjectIdStore();
 
 const toast = useToast();
+const now = dayjs();
 
 let fetchResponse = reactive({
 	success: false,
@@ -576,6 +580,7 @@ let born = reactive({
 	sex: "",
 	country: "",
 	birth: new Date(),
+	// birth: dayjs(new Date()),
 });
 
 let contact = reactive({
@@ -608,44 +613,6 @@ const basicInfo: AdmissionApplicantGetUserInfoResponse =
 	reactive<AdmissionApplicantGetUserInfoResponse>(
 		{} as AdmissionApplicantGetUserInfoResponse
 	);
-
-const setBasicInfo = (res: AdmissionApplicantGetUserInfoResponse) => {
-	name.id = res.id as number;
-	name.admission_id = res.admission_id as number;
-	name.appellation = res.title as string;
-	name.suffix = res.suffix as string;
-	name.zhFamName = res.cn_surname as string;
-	name.zhName = res.name as string;
-	name.enFamName = res.en_surname as string;
-	name.enMidName = res.en_midname as string;
-	name.enName = res.en_givenname as string;
-	if (res.isForeigner === false) {
-		identity.selectedIdentity = "本地人士";
-		identity.ic = res.national_id as string;
-		identity.nationality = res.nationality as string;
-	} else {
-		identity.selectedIdentity = "外籍人士";
-		identity.ui = res.national_id as string;
-		identity.nationality = res.nationality as string;
-	}
-
-	householdAddr.addr = res.household_address as string;
-	householdAddr.postcode = res.household_zipcode as string;
-	currentAddr.addr = res.communicate_address as string;
-	currentAddr.postcode = res.communicate_zipcode as string;
-	currentAddr.isAddrSame =
-		householdAddr.addr === currentAddr.addr &&
-		householdAddr.addr !== "" &&
-		res.isForeigner === false
-			? true
-			: false;
-
-	born.sex = res.sex as string;
-	born.country = res.birthcountry as string;
-	born.birth = res.birth as Date;
-
-	contact.phone = res.mobile_phone as string;
-};
 
 const address = (prod: any) => {
 	if (currentAddr.isAddrSame === false) {
@@ -699,10 +666,23 @@ const handleSave = async () => {
 			: currentAddr.postcode,
 		sex: born.sex,
 		birthcountry: born.country,
+		// birth: born.birth,
+		// birth: dayjs(born.birth).add(8, 'hour'),
 		birth: addHours(8, new Date(born.birth)),
 		mobile_phone: contact.phone,
 		isForeigner: identity.selectedIdentity === "本地人士" ? false : true,
 	};
+
+	const keys = Object.keys(body);
+	Object.values(body).map((value, index) => {
+		if (value === null || value === "") {
+			const keyName = keys[
+				index
+			] as keyof AdmissionApplicantGetUserInfoResponse;
+
+			delete body[keyName];
+		}
+	});
 
 	loading.save = true;
 
@@ -734,19 +714,52 @@ const handleSave = async () => {
 	loading.fetch = true;
 };
 
-onMounted(async () => {
-	const response = await api.getUserInfo();
-	if (response) setBasicInfo(response);
-});
-
-watch(
-	() => loading.fetch,
+const { data} = useQuery(
+	["AdmissionApplicantGetUserInfoResponse"],
 	async () => {
-		const response = await api.getUserInfo();
+		return await api.getUserInfo();
+	},
+	{
+		onSuccess: (data) => {
+			name.id = data?.id as number;
+			name.admission_id = data?.admission_id as number;
+			name.appellation = data?.title as string;
+			name.suffix = data?.suffix as string;
+			name.zhFamName = data?.cn_surname as string;
+			name.zhName = data?.name as string;
+			name.enFamName = data?.en_surname as string;
+			name.enMidName = data?.en_midname as string;
+			name.enName = data?.en_givenname as string;
+			if (data?.isForeigner === false) {
+				identity.selectedIdentity = "本地人士";
+				identity.ic = data?.national_id as string;
+				identity.nationality = data?.nationality as string;
+			} else {
+				identity.selectedIdentity = "外籍人士";
+				identity.ui = data?.national_id as string;
+				identity.nationality = data?.nationality as string;
+			}
 
-		if (response) setBasicInfo(response);
+			householdAddr.addr = data?.household_address as string;
+			householdAddr.postcode = data?.household_zipcode as string;
+			currentAddr.addr = data?.communicate_address as string;
+			currentAddr.postcode = data?.communicate_zipcode as string;
+			currentAddr.isAddrSame =
+				householdAddr.addr === currentAddr.addr &&
+				householdAddr.addr !== "" &&
+				data?.isForeigner === false
+					? true
+					: false;
 
-		loading.fetch = false;
+			born.sex = data?.sex as string;
+			born.country = data?.birthcountry as string;
+			// born.birth = dayjs(res.birth)  ;
+			born.birth = data?.birth as Date;
+
+			contact.phone = data?.mobile_phone as string;
+		},
 	}
 );
+
+
 </script>
