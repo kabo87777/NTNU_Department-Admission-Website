@@ -64,11 +64,11 @@
 				<Column field="oral_grade_2" />
 				<Column field="oral_grade_3" />
 				<Column
-					v-if="(score4FieldName && score4Proportion !== 0)"
+					v-if="score4FieldName && score4Proportion !== 0"
 					field="oral_grade_4"
 				/>
 				<Column
-					v-if="(score5FieldName && score5Proportion !== 0)"
+					v-if="score5FieldName && score5Proportion !== 0"
 					field="oral_grade_5"
 				/>
 				<Column>
@@ -126,23 +126,23 @@
 									score5Proportion) /
 									100) *
 								oralWeight +
-							((slotProps.data.docs_grade_1 *
-								docScore1Proportion) /
-								100 +
-								(slotProps.data.docs_grade_2 *
-									docScore2Proportion) /
+								((slotProps.data.docs_grade_1 *
+									docScore1Proportion) /
 									100 +
-								(slotProps.data.docs_grade_3 *
-									docScore3Proportion) /
-									100 +
-								(slotProps.data.docs_grade_4 *
-									docScore4Proportion) /
-									100 +
-								(slotProps.data.docs_grade_5 *
-									docScore5Proportion) /
-									100) *
-								docWeight) / 100
-								
+									(slotProps.data.docs_grade_2 *
+										docScore2Proportion) /
+										100 +
+									(slotProps.data.docs_grade_3 *
+										docScore3Proportion) /
+										100 +
+									(slotProps.data.docs_grade_4 *
+										docScore4Proportion) /
+										100 +
+									(slotProps.data.docs_grade_5 *
+										docScore5Proportion) /
+										100) *
+									docWeight) /
+							100
 						}}
 					</template>
 				</Column>
@@ -346,10 +346,10 @@ const { data: programGrading } = useQuery(
 			}
 
 			scoreCount.value = 3;
-			if(data!.oral_grade_name_4 && data!.oral_grade_weight_4 !== 0){
+			if (data!.oral_grade_name_4 && data!.oral_grade_weight_4 !== 0) {
 				scoreCount.value++;
 			}
-			if(data!.oral_grade_name_5 && data!.oral_grade_weight_5 !== 0){
+			if (data!.oral_grade_name_5 && data!.oral_grade_weight_5 !== 0) {
 				scoreCount.value++;
 			}
 			// if (data!.oral_grade_name_4 && data!.oral_grade_name_5) {
