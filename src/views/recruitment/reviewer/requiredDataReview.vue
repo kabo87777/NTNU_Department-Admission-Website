@@ -28,7 +28,6 @@
 				@rowSelect="onRowSelect"
 				class="p-datatable-lg !h-700px"
 			>
-				<Column field="id" :header="ID"></Column>
 				<Column field="name" :header="applicantName"></Column>
 				<Column field="isRecommend" :header="reviewerRating">
 					<template #body="slotProps">
@@ -45,19 +44,6 @@
 			</DataTable>
 			<div class="bigBlueDivider !mt-50px"></div>
 			<div class="flex text-xl mt-20px">
-				<div>
-					{{ $t("評比進度") }}
-				</div>
-
-				<ProgressBar
-					:value="progressValue"
-					:showValue="false"
-					class="!w-439px ml-24px mt-5px"
-				/>
-				<div class="ml-24px">
-					{{ applicantGraded }} / {{ totalApplicant }} {{ $t("位") }}
-				</div>
-
 				<Button
 					class="w-140px h-44px !ml-480px p-button-success"
 					disabled
