@@ -46,9 +46,7 @@
 							id="newPass"
 							v-model="password.newPass"
 							aria-describedby="newPass-help"
-							><template #header>
-								<h6>{{ $t("輸入密碼") }}</h6>
-							</template>
+						>
 							<template #footer>
 								<Divider />
 								<p class="mt-2">{{ $t("必須") }}</p>
