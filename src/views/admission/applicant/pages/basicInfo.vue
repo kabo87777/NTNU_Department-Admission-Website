@@ -491,22 +491,6 @@
 		</div>
 		<div class="bigYellowDivider"></div>
 	</div>
-	<div id="app" v-cloak>
-		<div id="pagetop" class="fixed right-0 bottom-0" @click="toTop">
-			<svg
-				xmlns="http://www.w3.org/2000/svg"
-				width="48"
-				height="48"
-				viewBox="0 0 24 24"
-				fill="none"
-				stroke="#4a5568"
-				stroke-width="1"
-				stroke-linecap="square"
-			>
-				<path d="M18 15l-6-6-6 6" />
-			</svg>
-		</div>
-	</div>
 </template>
 
 <script setup lang="ts">
