@@ -119,25 +119,25 @@ const routes: Array<RouteRecordRaw> = [
 				path: "recruitment/applicant/signin",
 				name: "RecruitmentApplicantSignin",
 				component: () =>
-					import("@/views/recruitment/applicant/login/signin.vue"),
+					import("@/views/recruitment/applicant/login/Signin.vue"),
 			},
 			{
 				path: "recruitment/applicant/regist",
 				name: "recruitmentApplicantRegist",
 				component: () =>
-					import("@/views/recruitment/applicant/login/regist.vue"),
+					import("@/views/recruitment/applicant/login/Regist.vue"),
 			},
 			{
 				path: "recruitment/applicant/password/reset",
 				name: "recruitmentApplicantPasswordReset",
 				component: () =>
-					import("@/views/recruitment/applicant/login/pwdReset.vue"),
+					import("@/views/recruitment/applicant/login/PwdReset.vue"),
 			},
 			{
 				path: "recruitment/applicant/forgetpassword",
 				name: "recruitmentApplicantPasswordForget",
 				component: () =>
-					import("@/views/recruitment/applicant/login/pwdForget.vue"),
+					import("@/views/recruitment/applicant/login/PwdForget.vue"),
 			},
 			// Recruitment - Reviewer
 			{
