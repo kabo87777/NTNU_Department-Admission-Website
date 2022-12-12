@@ -7,7 +7,7 @@
 		</NButton>
 	</router-link>
 	<!-- Title -->
-	<Title logo="true">
+	<Title>
 		<template #Subtitle>
 			<div class="<md:hidden">國立臺灣師範大學資訊工程學系</div>
 		</template>
