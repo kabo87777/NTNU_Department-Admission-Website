@@ -480,17 +480,17 @@ const project = useProjectIdStore();
 
 const toast = useToast();
 
-const fetchResponse = reactive({
+let fetchResponse = reactive({
 	success: false,
 	message: "" as string | [],
 });
 
-const loading = reactive({
+let loading = reactive({
 	fetch: false,
 	save: false,
 });
 
-const name = reactive({
+let name = reactive({
 	id: 0,
 	appellation: "",
 	suffix: "",
@@ -501,36 +501,36 @@ const name = reactive({
 	enMidName: "",
 });
 
-const identity = reactive({
+let identity = reactive({
 	selectedIdentity: "",
 	ic: "",
 	nationality: "",
 	ui: "",
 });
 
-const householdAddr = reactive({
+let householdAddr = reactive({
 	addr: "",
 	postcode: "",
 });
 
-const currentAddr = reactive({
+let currentAddr = reactive({
 	isAddrSame: false,
 	addr: "",
 	postcode: "",
 });
 
-const born = reactive({
+let born = reactive({
 	sex: "",
 	country: "",
 	birth: new Date(),
 });
 
-const contact = reactive({
+let contact = reactive({
 	email: "",
 	phone: "",
 });
 
-const required = reactive({
+let required = reactive({
 	enFamName: false,
 	enName: false,
 	identity: false,
@@ -566,10 +566,12 @@ const setBasicInfo = (res: RecruitmentApplicantUserInfoResponse) => {
 	name.enMidName = res.en_midname as string;
 	name.enName = res.en_givenname as string;
 
-	if (identity.nationality === "台灣") {
+	if (res.nationality === "台灣") {
+		identity.selectedIdentity = "本地人士";
 		identity.ic = res.national_id as string;
 		identity.nationality = res.nationality as string;
-	} else if (identity.nationality !== null) {
+	} else if (res.nationality !== null) {
+		identity.selectedIdentity = "外籍人士";
 		identity.ui = res.national_id as string;
 		identity.nationality = res.nationality as string;
 	}
@@ -591,16 +593,7 @@ const setBasicInfo = (res: RecruitmentApplicantUserInfoResponse) => {
 };
 
 const saveInfo = async (body: object) => {
-	try {
-		return await api.patchBasicInfo(project.project.pid, body);
-	} catch (e: any) {
-		if (e instanceof InvalidSessionError) {
-			console.error(
-				"Session has already expired while changing password"
-			);
-			return;
-		}
-	}
+	return await api.patchBasicInfo(project.project.pid, body);
 };
 
 const addHours = (numHrs: number, date = new Date()) => {
@@ -656,56 +649,44 @@ const handleSave = async () => {
 
 	loading.save = true;
 
-	const response = saveInfo(body);
+	const res = await saveInfo(body);
 
-	await response.then((res) => {
-		if (res?.success !== undefined && res?.message !== undefined) {
-			fetchResponse.success = toRaw(res.success);
-			fetchResponse.message = toRaw(res.message);
-		}
+	if (res?.success !== undefined && res?.message !== undefined) {
+		fetchResponse.success = toRaw(res.success);
+		fetchResponse.message = toRaw(res.message);
+	}
 
-		loading.save = false;
+	loading.save = false;
 
-		if (fetchResponse.success) {
-			toast.add({
-				severity: "success",
-				summary: "Success",
-				detail: fetchResponse.message,
-				life: 3000,
-			});
-		} else {
-			toast.add({
-				severity: "error",
-				summary: "Error",
-				detail: fetchResponse.message,
-				life: 5000,
-			});
-		}
-	});
+	if (fetchResponse.success) {
+		toast.add({
+			severity: "success",
+			summary: "Success",
+			detail: fetchResponse.message,
+			life: 3000,
+		});
+	} else {
+		toast.add({
+			severity: "error",
+			summary: "Error",
+			detail: fetchResponse.message,
+			life: 5000,
+		});
+	}
 
 	loading.fetch = true;
 };
 
-const getBasicInfo = async () => {
-	return await api.getBasicInfo(project.project.pid);
-};
-
 onMounted(async () => {
-	const response = getBasicInfo();
-
-	await response.then((res) => {
-		if (Object.keys(res).length) setBasicInfo(res);
-	});
+	const response = await api.getBasicInfo(project.project.pid);
+	setBasicInfo(response);
 });
 
 watch(
 	() => loading.fetch,
 	async () => {
-		const response = getBasicInfo();
-
-		await response.then((res) => {
-			if (Object.keys(res).length) setBasicInfo(res);
-		});
+		const response = await api.getBasicInfo(project.project.pid);
+		setBasicInfo(response);
 
 		loading.fetch = false;
 	}

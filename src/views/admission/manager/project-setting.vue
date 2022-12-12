@@ -69,14 +69,16 @@
 			<h5 class="text-base tracking-widest mt-30px">
 				{{ $t("申請端關閉時間/日期") }} :
 			</h5>
-			<Calendar
-				inputId="icon"
-				v-model="application_end_time"
-				:showIcon="true"
-				:showTime="true"
-				class="w-320px h-44px mt-10px"
-				:baseZIndex="zIndex"
-			/>
+			<div>
+				<Calendar
+					inputId="icon"
+					v-model="application_end_time"
+					:showIcon="true"
+					:showTime="true"
+					class="w-320px h-44px mt-10px"
+					:baseZIndex="zIndex"
+				/>
+			</div>
 		</div>
 		<br />
 		<div class="inline-block">
@@ -116,7 +118,7 @@
 			/>
 		</div>
 		<br />
-		<div>
+		<!-- <div>
 			<Checkbox
 				inputId="binary"
 				v-model="checked"
@@ -134,7 +136,7 @@
 				cols="30"
 				class="w-950px h-320px !mt-30px !ml-10px"
 			/>
-		</div>
+		</div> -->
 	</div>
 </template>
 
@@ -178,7 +180,7 @@ const translation = {
 	phase1: t("第一階段 (書面審查)"),
 	phase2: t("第二階段 (口試審查)"),
 };
-const zIndex = ref(3000);
+const zIndex = 100;
 const review_stages = ref([translation.phase1, translation.phase2]);
 const globalStore = useGlobalStore();
 const adminAuth = useAdmissionAdminAuthStore();
@@ -199,45 +201,41 @@ const {
 	data: program,
 	error,
 } = useQuery(
-	["program"],
+	["Aadminprogram"],
 	async () => {
-		try {
-			return (await api.getProgramList()).filter(
-				(program) => program.id === globalStore.program!.id
-			)[0];
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				// FIXME: show session expiry notification??
-				// Why are we even here in the first place?
-				// MainContainer should have checked already.
-				console.error(
-					"Session has already expired while querying programList"
-				);
-				router.push("/");
-				return;
-			}
+		const programs = await api.getProgramList();
+
+		const filteredPrograms = programs.filter(
+			(program) => program.id === globalStore.program!.id
+		);
+
+		if (filteredPrograms.length < 1) {
+			throw new Error("No available programs!");
 		}
+
+		return filteredPrograms[0];
 	},
 	{
 		onSuccess: (data) => {
-			oldProgramName.value = data!.name;
-			programName.value = data!.name;
-			selected_type.value = data!.category;
-			programCreateDate.value = data!.created_at.slice(0, 10);
+			oldProgramName.value = data.name;
+			programName.value = data.name;
+			selected_type.value = data.category;
+			programCreateDate.value = data.created_at.slice(0, 10);
 			application_start_time.value = new Date(
-				data!.application_start_date
+				data.application_start_date
 			);
-			application_end_time.value = new Date(data!.application_end_date);
-			review_stage1_start_time.value = new Date(data!.review_start_date);
-			review_stage1_end_time.value = new Date(data!.review_end_date);
-			project_details.value = data!.detail;
-			if (data!.stage === "docs_stage") {
+			application_end_time.value = new Date(data.application_end_date);
+			review_stage1_start_time.value = new Date(data.review_start_date);
+			review_stage1_end_time.value = new Date(data.review_end_date);
+			project_details.value = data.detail;
+			if (data.stage === "docs_stage") {
 				review_stage.value = translation.phase1;
 			}
-			if (data!.stage === "oral_stage") {
+			if (data.stage === "oral_stage") {
 				review_stage.value = translation.phase2;
 			}
 		},
+		// TODO: onError
 	}
 );
 
@@ -273,9 +271,9 @@ function update() {
 	}
 }
 
-function deleteProject() {
+async function deleteProject() {
 	try {
-		api.deleteProgram(globalStore.program!.id);
+		await api.deleteProgram(globalStore.program!.id);
 		toast.add({ severity: "success", summary: "刪除成功", life: 3000 });
 	} catch (error) {
 		toast.add({ severity: "error", summary: "刪除失敗", life: 3000 });

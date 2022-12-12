@@ -1,18 +1,18 @@
 <template>
 	<div>
 		<!-- TITLE -->
-		<div class="mt-24px text-24px font-bold">{{ $t("就學經歷") }}</div>
+		<div class="mt-24px text-24px font-bold">{{ $t("教學經歷") }}</div>
 
 		<!-- SCHOOL EXPERIENCE -->
 		<div
-			v-for="(item, index) in schoolExpList"
+			v-for="(item, index) in teachingExpList"
 			:key="index"
 			class="listContainer"
 		>
 			<ReviewState
 				v-if="item.state === 1"
-				category="就學經歷"
-				identity="admissionManager"
+				category="教學經歷"
+				identity="recruitmentManager"
 				:itemName="item.name"
 				:order="index + 1"
 				:showActionButtons="false"
@@ -39,7 +39,7 @@
 			<ReviewState
 				v-if="item.state === 1"
 				category="考試與檢定分數"
-				identity="admissionManager"
+				identity="recruitmentManager"
 				:itemName="item.name"
 				:order="index + 1"
 				:showActionButtons="false"
@@ -66,7 +66,7 @@
 			<ReviewState
 				v-if="item.state === 1"
 				category="其他有利於審查資料"
-				identity="admissionManager"
+				identity="recruitmentManager"
 				:itemName="item.name"
 				:order="index + 1"
 				:showActionButtons="false"
@@ -85,37 +85,40 @@
 
 <script setup lang="ts">
 import { reactive, onMounted, toRaw } from "vue";
-import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
-import { AdmissionAdminAPI } from "@/api/admission/admin/api";
-import ReviewState from "@/components/attachmentStates/reviewState.vue";
-import ParagraphDivider from "@/styles/paragraphDivider.vue";
-import "primeicons/primeicons.css";
+import { useRecruitmentAdminAuthStore } from "@/stores/universalAuth";
+import { RecruitmentAdminAPI } from "@/api/recruitment/admin/api";
+import { useGlobalStore } from "@/stores/RecruitmentAdminStore";
 import {
-	AdmAdminGetApplicantAttachmentData,
-	AdmAdminGetApplicantAttachmentDataDetail,
-} from "@/api/admission/admin/types";
+	RecruitmentAdminGetApplicantAttachmentListDetail,
+	RecruitmentAdminGetApplicantAttachmentList,
+} from "@/api/recruitment/admin/types";
+import ParagraphDivider from "@/styles/paragraphDivider.vue";
 
-const adminAuth = useAdmissionAdminAuthStore();
-const api = new AdmissionAdminAPI(adminAuth);
+const adminAuth = useRecruitmentAdminAuthStore();
+const api = new RecruitmentAdminAPI(adminAuth);
+const store = useGlobalStore();
+const programId = store.program?.id;
 
 const props = defineProps(["userId"]);
 
-let attachmentList: AdmAdminGetApplicantAttachmentData[] = reactive([]);
-let schoolExpList: AdmAdminGetApplicantAttachmentDataDetail[] = reactive([]);
-let examCertificateList: AdmAdminGetApplicantAttachmentDataDetail[] = reactive(
+let attachmentList: RecruitmentAdminGetApplicantAttachmentList[] = reactive([]);
+let teachingExpList: RecruitmentAdminGetApplicantAttachmentListDetail[] =
+	reactive([]);
+let examCertificateList: RecruitmentAdminGetApplicantAttachmentListDetail[] =
+	reactive([]);
+let otherList: RecruitmentAdminGetApplicantAttachmentListDetail[] = reactive(
 	[]
 );
-let otherList: AdmAdminGetApplicantAttachmentDataDetail[] = reactive([]);
 
 const splitThreeList = async (
-	fullList: AdmAdminGetApplicantAttachmentData[]
+	fullList: RecruitmentAdminGetApplicantAttachmentList[]
 ) => {
 	fullList.map((item) => {
 		switch (item.category) {
-			case "就學經歷": {
-				schoolExpList.push({
+			case "教學經歷": {
+				teachingExpList.push({
 					...item,
-					order: schoolExpList.length,
+					order: teachingExpList.length,
 					state: 1,
 				});
 				break;
@@ -139,33 +142,15 @@ const splitThreeList = async (
 	});
 };
 
+const getFileList = async () => {
+	return await api.getApplicantFileList(programId as number, props.userId);
+};
+
 onMounted(async () => {
-	const res = await api.getApplicantFile(props.userId);
+	const res = await getFileList();
 
 	attachmentList = [...attachmentList, ...res];
 
 	splitThreeList(toRaw(attachmentList));
 });
 </script>
-
-<style setup lang="css">
-.listContainer {
-	margin-top: 16px;
-	padding: 0 32px 24px 32px;
-	border: 3px dashed rgb(174, 174, 174);
-	border-radius: 16px;
-	background-color: rgb(244, 244, 244);
-}
-
-.emptyContainer {
-	text-align: center;
-	color: #333333;
-	font-size: 20px;
-	font-weight: bold;
-	margin-top: 16px;
-	padding: 24px 32px;
-	border: 3px dashed rgb(174, 174, 174);
-	border-radius: 16px;
-	background-color: rgb(244, 244, 244);
-}
-</style>

@@ -231,20 +231,7 @@ const {
 } = useQuery(
 	["applicantGrade"],
 	async () => {
-		try {
-			return await api.getSingleApplicantGrade(ID.value);
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				// FIXME: show session expiry notification??
-				// Why are we even in the first place?
-				// MainContainer should have checked already.
-				console.error(
-					"Session has already expired while querying programList"
-				);
-				router.push("/");
-				return;
-			}
-		}
+		return await api.getSingleApplicantGrade(ID.value);
 	},
 	{
 		onSuccess: (data) => {
@@ -262,20 +249,7 @@ const {
 const { data: applicantInfo } = useQuery(
 	["applicantInfo"],
 	async () => {
-		try {
-			return await api.getSingleApplicantInfo(ID.value);
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				// FIXME: show session expiry notification??
-				// Why are we even here in the first place?
-				// MainContainer should have checked already.
-				console.error(
-					"Session has already expired while querying applicantInfo"
-				);
-				router.push("/");
-				return;
-			}
-		}
+		return await api.getSingleApplicantInfo(ID.value);
 	},
 	{
 		onSuccess: (data) => {
@@ -287,22 +261,7 @@ const { data: applicantInfo } = useQuery(
 const { data: programGrading } = useQuery(
 	["programGrading"],
 	async () => {
-		try {
-			return await api.getProgramGrading(
-				store.admissionReviewerProgram!.id
-			);
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				// FIXME: show session expiry notification??
-				// Why are we even here in the first place?
-				// MainContainer should have checked already.
-				console.error(
-					"Session has already expired while querying applicantInfo"
-				);
-				router.push("/");
-				return;
-			}
-		}
+		return await api.getProgramGrading(store.admissionReviewerProgram!.id);
 	},
 	{
 		onSuccess: (data) => {
@@ -335,20 +294,7 @@ const pdfData = ref("JVBERi0xLjMKJcTl8uXrp/");
 const { data: pdfBase64 } = useQuery(
 	["pdfBase64"],
 	async () => {
-		try {
-			return await api.getApplicantSingleFile("1", 1);
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				// FIXME: show session expiry notification??
-				// Why are we even here in the first place?
-				// MainContainer should have checked already.
-				console.error(
-					"Session has already expired while querying applicantInfo"
-				);
-				router.push("/");
-				return;
-			}
-		}
+		return await api.getApplicantSingleFile("1", 1);
 	},
 	{
 		onSuccess: (data) => {

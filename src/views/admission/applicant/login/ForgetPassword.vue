@@ -1,87 +1,84 @@
-<template class="overflow-hidden">
-	<div class="flex">
-		<div class="flex-shrink-1">
-			<img src="/assets/login-page/Login-img.png" class="fill" />
+<template>
+	<div my="auto">
+		<!-- Button: Back to Recruitment Login -->
+		<router-link to="/admission/applicant/signin">
+			<button
+				class="flex items-center gap-2 p-2 my-4"
+				text="sm secondary"
+				border="rounded-lg"
+				hover="bg-nGrey-200 text-title"
+				active="bg-nGrey-600 text-white"
+			>
+				<i class="pi pi-angle-left" />
+				<div>返回登入頁面</div>
+				<div>Back to Login</div>
+			</button>
+		</router-link>
+		<!-- Title -->
+		<div mx="8" space="y-2">
+			<div text="secondary" font="light">
+				國立臺灣師範大學資訊工程學系
+			</div>
+			<div class="flex items-end gap-2 font-medium text-gray-900">
+				<div text="3xl title" font="medium">招生系統</div>
+				<div text="xl title" font="medium">Admission System</div>
+			</div>
 		</div>
-		<div class="flex-none w-150 px-6 pt-18 space-y-8">
-			<router-link to="/admission/applicant/signin">
-				<button
-					class="flex items-center gap-2 px-2 py-2"
-					bg="transparent hover:gray-100"
-					text="sm gray-400 hover:gray-600"
-					border="rounded"
-				>
-					<i class="pi pi-angle-left" />
-					<div>返回登入頁面</div>
-					<div>Back to Login</div>
-				</button>
-			</router-link>
-			<div class="px-8 space-y-2">
-				<div class="text-s text-gray-500">
-					國立台灣師範大學資訊工程學系 NTNU CSIE
-				</div>
-				<div class="flex items-end gap-2 font-medium text-gray-900">
-					<div class="text-4xl">招生系統</div>
-					<div class="text-xl">Admission System</div>
-				</div>
-			</div>
-			<div class="px-8 py-4 space-y-4">
-				<div class="flex items-center gap-2 applicantTextColor">
-					<i class="pi pi-circle" style="font-size: 0.5rem" />
-					<div class="flex-none font-medium">忘記密碼</div>
-					<div class="flex-none font-medium">Forget Password</div>
-					<Divider />
-				</div>
-				<div class="flex-col px-4 py-8">
-					<div
-						class="flex items-center gap-2 pb-2"
-						text="sm gray-500"
-					>
-						<div>使用者名稱</div>
-						<div>Username</div>
-					</div>
-					<InputText
-						name="username"
-						type="username"
-						v-model="forgetPwdUsername"
-						class="p-inputtext-sm w-full"
-						required
-					/>
-				</div>
-				<div
-					class="flex p-4 gap-1 justify-center"
-					text="xs gray-500"
-					border="rounded-xl"
-					bg="gray-100"
-				>
-					<div class="px-2">
-						<div>
-							系統將會送出一封郵件至您的電子信箱，您可以透過郵件連結更改密碼
-						</div>
-						<div>
-							We would send a mail to your e-mail address, you
-							could change your password by the link.
-						</div>
+		<!-- Divider -->
+		<Divider align="center">
+			<div p="4" text="sm pApplicant">申請者忘記密碼 Forget Password</div>
+		</Divider>
+		<!-- Content -->
+		<div flex="~ col gap-8" w="3/4" mx="auto">
+			<!-- User Name -->
+			<div class="flex-col px-4 py-8">
+				<div flex="~ col gap-1">
+					<div div text="sm body" font="light">
+						使用者名稱 Username
 					</div>
 				</div>
+				<InputText
+					name="username"
+					type="text"
+					v-model="forgetPwdUsername"
+					class="p-inputtext-sm w-full"
+					required
+				/>
 			</div>
-			<div class="flex justify-center px-4">
+			<!-- Remind Message -->
+			<div
+				class="flex flex-col p-4 gap-1 justify-center space-y-2"
+				text="xs Secondary"
+				font="light"
+				border="rounded-xl"
+				bg="nGrey-50"
+			>
+				<div text="xs Secondary" font="light">
+					系統將會送出一封郵件至您的電子信箱，您可以透過郵件連結更改密碼
+				</div>
+				<div text="xs Secondary" font="light">
+					We would send a mail to your e-mail address, you could
+					change your password by the link.
+				</div>
+			</div>
+			<!-- Submit Button -->
+			<div w="60" mx="auto">
 				<router-link to="/admission/applicant/forgetpassword/emailSent">
-					<Button
-						class="py-2 w-80 applicantButtonStyle"
-						border="2  rounded-lg"
+					<button
+						class="p-2 w-full border-2 text-pApplicant"
+						border="2 opacity-30 nGold-500 rounded-lg"
+						hover="text-title bg-nGold-300 border-nGold-300"
+						active="text-white bg-nGold-500"
 						@click="enterEmail"
 					>
-						<div class="flex justify-center gap-2 mx-auto">
-							<div>提交</div>
-							<div>Submit</div>
-						</div>
-					</Button>
+						<div>提交 Submit</div>
+					</button>
 				</router-link>
 			</div>
-			<div class="ml-168px mt-40px">
-				<Turnstile ref="turnstileRef" />
-			</div>
+		</div>
+		<!-- Captcha -->
+		<div>
+			<Turnstile ref="turnstileRef" />
 		</div>
 	</div>
 </template>
@@ -107,7 +104,7 @@ const consumeTurnstileToken = () => {
 const enterEmail = async () => {
 	try {
 		const redirectUrl =
-			"http://127.0.0.1:5173/admission/applicant/password/reset";
+			"https://admissions-frontend-staging.birkhoff.me/admission/applicant/password/reset";
 		const turnstileResponse = consumeTurnstileToken();
 		if (!turnstileResponse) throw new Error("Turnstile challenge failed");
 		const api = new AdmissionApplicantAPI(authStore);
@@ -123,24 +120,3 @@ const enterEmail = async () => {
 	}
 };
 </script>
-
-<style setup lang="css">
-.applicantTextColor {
-	color: #736028;
-}
-.applicantButtonStyle {
-	background-color: #fafac7;
-	border-color: #dbd379;
-	color: #544830;
-}
-.applicantButtonStyle:hover {
-	background-color: #8a7b27;
-	border-color: #8a7b27;
-	color: white;
-}
-.applicantButtonStyle:active {
-	background-color: #624f2a;
-	border-color: #624f2a;
-	color: white;
-}
-</style>

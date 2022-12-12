@@ -9,6 +9,10 @@ import type {
 	RecruitmentAdminReviewersListResponse,
 	RecruitmentAdminApplicantListWithDetailResponse,
 	RecruitmentAdminSingleApplicantWithDetailResponse,
+	RecruitmentAdminApplicantResponse,
+	RecruitmentAdminGetApplicantAttachmentList,
+	RecruimentAdminGetApplicantMoredocResponses,
+	RecruitmentAdminGenericStatusResponse,
 } from "./types";
 import type { APIGenericResponse } from "@/api/types";
 import { Ref } from "vue";
@@ -103,6 +107,69 @@ export class RecruitmentAdminAPI extends GenericAPI {
 		if (data.error === true || typeof data.data.applicants === "undefined")
 			throw new Error("Failed to fetch applicant list");
 		return data.data.applicants;
+	}
+
+	async getApplicantBasicInfo(
+		programID: number,
+		userId: number
+	): Promise<RecruitmentAdminApplicantResponse> {
+		const data: APIGenericResponse = await this.instance.get(
+			`/recruitment/admin/program/${programID}/applicant/${userId}/info`
+		);
+		if (data.error === true)
+			throw new Error("Failed to fetch appplicant info");
+
+		return data.data;
+	}
+
+	async getApplicantFileList(
+		programID: number,
+		userId: number
+	): Promise<RecruitmentAdminGetApplicantAttachmentList[]> {
+		const data: APIGenericResponse = await this.instance.get(
+			`/recruitment/admin/program/${programID}/applicant/${userId}/file`
+		);
+		if (data.error === true)
+			throw new Error("Failed to fetch applicant attachment");
+
+		return data.data;
+	}
+
+	async getApplicantMoreDocRes(
+		programID: number,
+		userId: number
+	): Promise<RecruimentAdminGetApplicantMoredocResponses> {
+		const data: APIGenericResponse = await this.instance.get(
+			`recruitment/admin/program/${programID}/applicant/${userId}/moredoc`
+		);
+
+		if (data.error === true)
+			throw new Error("Failed to fetch applicant more doc state");
+
+		return data.data;
+	}
+
+	async updateApplicantMoreDocState(
+		programID: number,
+		userId: number,
+		body: object
+	): Promise<RecruitmentAdminGenericStatusResponse> {
+		const data: APIGenericResponse = await this.instance.post(
+			`recruitment/admin/program/${programID}/applicant/${userId}/moredoc`,
+			body
+		);
+
+		if (data.error !== false) {
+			return {
+				success: false,
+				message: data.message,
+			};
+		}
+
+		return {
+			success: true,
+			message: data.message,
+		};
 	}
 
 	async deleteApplicant(id: number) {

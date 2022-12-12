@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<div style="position: fixed; top: 0; width: 100%; z-index: 1000">
+		<div style="position: fixed; top: 0; width: 100%; z-index: 10">
 			<NavBar />
 		</div>
 		<div style="display: flex; margin-top: 60px; position: relative">
@@ -23,36 +23,27 @@
 </template>
 
 <script setup lang="ts">
-import { watch } from "vue";
 import { useRouter } from "vue-router";
 import { useQuery } from "@tanstack/vue-query";
-import { InvalidSessionError } from "@/api/error";
-import { RecruitmentApplicantAPI } from "@/api/recruitment/applicant/api";
+
 import { useRecruitmentApplicantAuthStore } from "@/stores/universalAuth";
 import { useProjectIdStore } from "@/stores/RecruitmentApplicantStore";
-import NavBar from "@/components/NavBar.vue";
-import SideBar from "@/components/sidebars/recruitmentApplicantSidebar.vue";
+
+import { RecruitmentApplicantAPI } from "@/api/recruitment/applicant/api";
 import { doUniversalAuthSessionValidation } from "@/api/universalAuth";
 
+import NavBar from "@/components/NavBar.vue";
+import SideBar from "@/components/sidebars/recruitmentApplicantSidebar.vue";
+
 const router = useRouter();
-const applicantAuth = useRecruitmentApplicantAuthStore();
+const auth = useRecruitmentApplicantAuthStore();
 const project = useProjectIdStore();
-const api = new RecruitmentApplicantAPI(applicantAuth);
+const api = new RecruitmentApplicantAPI(auth);
 
 const { data } = useQuery(
 	["programList"],
 	async () => {
-		try {
-			return await api.getProgramList();
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				console.error(
-					"Session has already expired while querying programList"
-				);
-				router.push("/");
-				return;
-			}
-		}
+		return await api.getProgramList();
 	},
 	{
 		onSuccess: (data) => {
@@ -65,13 +56,16 @@ const { data } = useQuery(
 		},
 	}
 );
-router.push("/recruitment/applicant/switchProject");
-watch(router.currentRoute, async () => {
-	if (!(await doUniversalAuthSessionValidation(applicantAuth))) {
-		router.replace({ name: "RecruitmentApplicantSignin" });
-		// TODO: show session expired notification
-	}
+
+useQuery(["recruitmentApplicantAuthorizationStatus"], async () => {
+	const status = await doUniversalAuthSessionValidation(auth);
+
+	if (status) return true;
+
+	return router.replace({ name: "RecruitmentApplicantSignin" });
 });
+
+router.push("/recruitment/applicant/switchProject");
 </script>
 
 <style scoped></style>

@@ -1,173 +1,127 @@
-<template class="overflow-hidden">
-	<div class="flex">
-		<!-- <div class="flex-shrink-1">
-            <img src="/assets/login-page/Login-img.png" class="fill" />
-        </div> -->
-		<div>
-			<img src="/assets/login-page/Login-img.png" class="h-screen" />
+<template>
+	<Toast position="top-right" />
+	<div my="auto">
+		<!-- Button: Back to Recruitment Login -->
+		<router-link to="/recruitment">
+			<button
+				class="flex items-center gap-2 p-2 my-4"
+				text="sm secondary"
+				border="rounded-lg"
+				hover="bg-nGrey-200 text-title"
+				active="bg-nGrey-600 text-white"
+			>
+				<i class="pi pi-angle-left" />
+				<div>切換登入身份</div>
+				<div>Change your identity</div>
+			</button>
+		</router-link>
+		<div mx="4" space="y-2">
+			<div text="secondary" font="light">
+				國立臺灣師範大學資訊工程學系
+			</div>
+			<div text="3xl title" font="medium">教師聘請系統</div>
+			<div text="xl title" font="medium">Teacher Recruitment System</div>
 		</div>
-		<div class="m-auto">
-			<div class="px-8">
-				<div class="flex m-auto h-15">
-					<div>
-						<img
-							src="/assets/login-page/NTNU-logo-B1.png"
-							class="h-15"
+		<!-- Divider -->
+		<Divider align="center">
+			<div p="8" text="sm pReviewer">審查委員登入 Reviewer Login</div>
+		</Divider>
+		<!-- Login Form -->
+		<div flex="~ col gap-8" w="3/4" mx="auto">
+			<form @submit="onSubmit" ref="form" space="y-6">
+				<!-- Account -->
+				<Field
+					name="email"
+					v-slot="{ field, errorMessage, meta }"
+					v-model="email"
+				>
+					<div flex="~ col gap-1">
+						<div text="sm body" font="light">電郵地址 E-mail</div>
+						<InputText
+							v-bind="field"
+							name="email"
+							type="email"
+							class="h-11"
+							:disabled="isSubmitting"
+							required
 						/>
+						<div
+							v-if="errorMessage && meta.touched"
+							text="xs danger"
+							font="light"
+						>
+							※ 此欄位不可為空白 Required
+						</div>
 					</div>
-					<Divider layout="vertical" />
-					<div class="mt-1.5">
-						<div class="text-4xl font-bold text-gray-500">
-							資訊工程學系
+				</Field>
+				<!-- Password -->
+				<Field
+					name="password"
+					v-slot="{ field, errorMessage, meta }"
+					v-model="password"
+				>
+					<div flex="~ col gap-1">
+						<div text="sm body" font="light">密碼 Password</div>
+						<InputText
+							v-bind="field"
+							name="password"
+							type="password"
+							class="h-11"
+							:disabled="isSubmitting"
+							required
+						/>
+						<div
+							v-if="errorMessage && meta.touched"
+							text="xs danger"
+							font="light"
+						>
+							※ 此欄位不可為空白 Required
 						</div>
-						<div class="text-xs text-gray-400">
-							Department of Computer Science and Information
-							Enginering
-						</div>
+					</div>
+				</Field>
+				<!-- Remember Account -->
+				<div flex="~" gap="2" w="full" class="items-center">
+					<Checkbox v-model="isRememberAccount" :binary="true" />
+					<div text="xs body" font="light">
+						<div>下次登入時記住帳號</div>
+						<div>Remember Account at next Login</div>
 					</div>
 				</div>
+				<!-- Captcha -->
 				<div>
-					<router-link to="/recruitment">
+					<Turnstile ref="turnstileRef" />
+				</div>
+				<!-- Login Button -->
+				<div flex="~ col" gap="6" w="60" m="auto">
+					<button
+						class="p-2 w-full border-2 text-pReviewer"
+						border="2 opacity-30 nBlue-500 rounded-lg"
+						hover="text-title bg-nBlue-200 border-nBlue-200"
+						active="text-white bg-nBlue-500"
+						:loading="isTurnstileRunning || isSubmitting"
+					>
+						<div>登入 Login</div>
+					</button>
+					<!-- Forget Password -->
+					<router-link to="/recruitment/reviewer/forgetpassword">
 						<button
-							class="flex items-center gap-2 px-2 py-2 mt-5 mb-3"
-							bg="transparent hover:gray-100"
-							text="sm gray-400 hover:gray-600"
-							border="rounded"
+							class="p-2 w-full"
+							text="sm secondary"
+							border="rounded-lg"
+							hover="bg-nGrey-200 text-title"
+							active="bg-nGrey-600 text-white"
 						>
-							<i class="pi pi-angle-left" />
-							<div>切換登入身份</div>
-							<div>Change your identity</div>
+							<div>忘記密碼 Forget Password</div>
 						</button>
 					</router-link>
 				</div>
-				<div class="px-8 space-y-2">
-					<!-- <div class="text-s text-gray-500">
-                        國立台灣師範大學資訊工程學系 NTNU CSIE
-                    </div> -->
-					<div class="flex items-end gap-2 font-medium text-gray-900">
-						<div class="text-4xl">教師聘請系統</div>
-						<div class="text-xl">Teacher Recruitment System</div>
-					</div>
-				</div>
-			</div>
-			<div class="px-8 py-4 space-y-8">
-				<Divider align="center" class="reviewerTextColor">
-					<div class="flex px-2 gap-2">
-						<div>審查委員登入</div>
-						<div>Reviewer Login</div>
-					</div>
-				</Divider>
-				<form @submit="onSubmit" ref="form">
-					<div class="px-150px">
-						<Field
-							name="email"
-							v-slot="{ field, errorMessage, meta }"
-							v-model="email"
-						>
-							<div class="flex-col">
-								<div
-									class="flex items-center gap-2 pb-2"
-									text="sm gray-500"
-								>
-									<div>電郵地址</div>
-									<div>E-mail</div>
-								</div>
-								<InputText
-									v-bind="field"
-									name="email"
-									type="email"
-									class="input p-inputtext-sm w-full"
-									:disabled="isSubmitting"
-									required
-								/>
-								<!-- TODO: styling -->
-								<span v-if="errorMessage && meta.touched">
-									{{ errorMessage }}
-								</span>
-							</div>
-						</Field>
-						<Field
-							name="password"
-							v-slot="{ field, errorMessage, meta }"
-							v-model="password"
-						>
-							<div class="flex-col">
-								<div
-									class="flex items-center gap-2 pb-2"
-									text="sm gray-500"
-								>
-									<div>密碼</div>
-									<div>Password</div>
-								</div>
-								<InputText
-									v-bind="field"
-									name="password"
-									type="password"
-									class="input p-inputtext-sm w-full"
-									:disabled="isSubmitting"
-									required
-								/>
-								<!-- TODO: styling -->
-								<span v-if="errorMessage && meta.touched">
-									{{ errorMessage }}
-								</span>
-							</div>
-						</Field>
-						<div class="flex items-center gap-2">
-							<Checkbox
-								v-model="isRememberAccount"
-								:binary="true"
-							/>
-							<div class="space-y-0.5 mt-3" text="xs gray-500">
-								<div>下次登入時記住帳號</div>
-								<div>Remember Account at next Login</div>
-							</div>
-						</div>
-						<div class="flex-col-inline gap-y-8">
-							<div class="ml-168px mt-40px">
-								<Turnstile ref="turnstileRef" />
-							</div>
-							<div class="flex justify-center">
-								<Button
-									class="py-2 w-80"
-									border="2  rounded-lg"
-									type="submit"
-									:loading="
-										isTurnstileRunning || isSubmitting
-									"
-								>
-									<div
-										class="flex justify-center gap-2 mx-auto"
-									>
-										<div>登入</div>
-										<div>Login</div>
-									</div>
-								</Button>
-							</div>
-							<div class="flex justify-center items-center py-4">
-								<router-link
-									to="/recruitment/reviewer/forgetpassword"
-								>
-									<button
-										class="flex justify-center gap-2 px-1 py-1"
-										bg="transparent hover:gray-100"
-										text="sm gray-400 hover:gray-600"
-										border="rounded"
-									>
-										<div>忘記密碼</div>
-										<div>Forget Password</div>
-									</button>
-								</router-link>
-							</div>
-						</div>
-					</div>
-				</form>
-			</div>
+			</form>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
+import { useToast } from "primevue/usetoast";
 import { ref, watch, computed } from "vue";
 import { useRouter } from "vue-router";
 import { Field, useForm } from "vee-validate";
@@ -180,16 +134,12 @@ import { useUserInfoStore } from "@/stores/RecruitmentReviewerStore";
 import type { TurnstileComponentExposes } from "@/components/Turnstile.vue";
 import Turnstile from "@/components/Turnstile.vue";
 
-import type { RecruitmentManagerAuthResponse } from "@/api/recruitment/reviewer/types";
-
 import Button from "primevue/button";
 import Checkbox from "primevue/checkbox";
 import InputText from "primevue/inputtext";
 
+const toast = useToast();
 const router = useRouter();
-
-const redirectToMainContainer = () =>
-	router.replace({ name: "recruitmentReviewerMainContainer" });
 
 const authStore = useRecruitmentReviewerAuthStore();
 const userInfo = useUserInfoStore();
@@ -197,7 +147,7 @@ const userInfo = useUserInfoStore();
 // Login Form
 const turnstileRef = ref<TurnstileComponentExposes>();
 const isRememberAccount = ref(false);
-const email = ref("example@email.com");
+const email = ref("ntnurreviewer1@yopmail.com");
 const password = ref("Example123");
 const isTurnstileRunning = computed(() => !turnstileRef.value?.turnstileToken);
 
@@ -248,52 +198,31 @@ const onSubmit = handleSubmit(async function (values, actions) {
 
 		const api = new RecruitmentReviewerAPI(authStore);
 
-		const doLogin = async () => {
-			return await api.requestNewSession({
+		userInfo.saveUserInfo(
+			await api.requestNewSession({
 				email: values.email,
 				password: values.password,
 				"cf-turnstile-response": turnstileResponse,
-			});
-		};
+			})
+		);
 
-		const handleDataType = async () => {
-			const reviewerInfo: RecruitmentManagerAuthResponse =
-				await doLogin().then((res) => {
-					return res.data;
-				});
-
-			return reviewerInfo;
-		};
-
-		userInfo.saveUserInfo(await handleDataType());
-
-		redirectToMainContainer();
+		router.replace({ name: "RecruitmentReviewerMainContainer" });
 	} catch (e: any) {
-		// TODO: show error message
-		console.log(e);
-		if (e?.response?.status === 401) console.log("invalid credentials");
+		if (e?.response?.status === 401) {
+			return toast.add({
+				severity: "error",
+				summary: "Error",
+				detail: "Invalid email or password",
+				life: 5000,
+			});
+		}
+
+		toast.add({
+			severity: "error",
+			summary: "Error",
+			detail: e.toString(),
+			life: 5000,
+		});
 	}
 });
 </script>
-
-<style setup lang="css">
-.reviewerTextColor {
-	color: #0b4873;
-}
-
-.reviewerButtonStyle {
-	background-color: #dfe7fd;
-	border-color: #a5b9ec;
-	color: #003a5c;
-}
-.reviewerButtonStyle:hover {
-	background-color: #2459a4;
-	border-color: #2459a4;
-	color: white;
-}
-.reviewerButtonStyle:active {
-	background-color: #0b4873;
-	border-color: #0b4873;
-	color: white;
-}
-</style>

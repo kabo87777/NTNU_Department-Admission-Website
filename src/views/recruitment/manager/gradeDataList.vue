@@ -240,22 +240,9 @@ const pendingCount = ref(0);
 const passCount = ref(0);
 const notPassCount = ref(0);
 const applicantGradeList = useQuery(
-	["admissionAdminGradeList"],
+	["recruitmentAdminGradeList"],
 	async () => {
-		try {
-			return await api.getApplicantListWithDetail(store.program!.id!);
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				// FIXME: show session expiry notification??
-				// Why are we even here in the first place?
-				// MainContainer should have checked already.
-				console.error(
-					"Session has already expired while querying programList"
-				);
-				router.push("/");
-				return;
-			}
-		}
+		return await api.getApplicantListWithDetail(store.program!.id!);
 	},
 	{
 		onSuccess: (data) => {
@@ -276,28 +263,17 @@ const recommandCount = ref(0);
 const notRecommandCount = ref(0);
 const reviewers = ref<RecruitmentAdminSingleReviewerRecommendResponse[]>();
 const singleApplicantRecommand = useQuery(
-	["admissionAdminDocsGrade", applicantID],
+	["recruitmentAdminDocsGrade", applicantID],
 	async () => {
-		try {
-			if (applicantID.value !== undefined) {
-				return await api.getSingleApplicantWithDetail(
-					store.program!.id!,
-					applicantID
-				);
-			}
-			return null;
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				// FIXME: show session expiry notification??
-				// Why are we even here in the first place?
-				// MainContainer should have checked already.
-				console.error(
-					"Session has already expired while querying programList"
-				);
-				router.push("/");
-				return;
-			}
-		}
+		if (!applicantID.value)
+			throw new Error(
+				"recruitmentAdminDocsGrade: applicantID is undefined"
+			);
+
+		return await api.getSingleApplicantWithDetail(
+			store.program!.id!,
+			applicantID
+		);
 	},
 	{
 		onSuccess: (data) => {

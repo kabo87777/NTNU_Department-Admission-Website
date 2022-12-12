@@ -168,23 +168,10 @@ const {
 } = useQuery(
 	["recruitmenReviewerComment"],
 	async () => {
-		try {
-			return await api.getApplicantComment(
-				store.recruitmentReviewerProgram!.id!,
-				ID.value
-			);
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				// FIXME: show session expiry notification??
-				// Why are we even here in the first place?
-				// MainContainer should have checked already.
-				console.error(
-					"Session has already expired while querying programList"
-				);
-				router.push("/");
-				return;
-			}
-		}
+		return await api.getApplicantComment(
+			store.recruitmentReviewerProgram!.id!,
+			ID.value
+		);
 	},
 	{
 		onSuccess: (data) => {
@@ -205,23 +192,10 @@ const {
 const { data: applicantInfo } = useQuery(
 	["recruitmenReviewerInfo"],
 	async () => {
-		try {
-			return await api.getApplicantInfo(
-				store.recruitmentReviewerProgram!.id!,
-				ID.value
-			);
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				// FIXME: show session expiry notification??
-				// Why are we even here in the first place?
-				// MainContainer should have checked already.
-				console.error(
-					"Session has already expired while querying programList"
-				);
-				router.push("/");
-				return;
-			}
-		}
+		return await api.getApplicantInfo(
+			store.recruitmentReviewerProgram!.id!,
+			ID.value
+		);
 	},
 	{
 		onSuccess: (data) => {
