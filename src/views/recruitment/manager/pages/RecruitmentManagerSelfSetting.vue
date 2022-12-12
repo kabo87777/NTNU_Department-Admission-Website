@@ -41,13 +41,28 @@
 				<div class="w-[50%]">
 					<div>{{ $t("設定新密碼") }}{{ $t(":") }}</div>
 					<div>
-						<InputText
+						<Password
 							class="w-[70%] h-40px !mt-4px"
 							id="newPass"
-							type="password"
 							v-model="password.newPass"
 							aria-describedby="newPass-help"
-						/>
+							><template #header>
+								<h6>{{ $t("輸入密碼") }}</h6>
+							</template>
+							<template #footer>
+								<Divider />
+								<p class="mt-2">{{ $t("必須") }}</p>
+								<ul
+									class="pl-2 ml-2 mt-0"
+									style="line-height: 1.5"
+								>
+									<li>{{ $t("至少一個大寫字母") }}</li>
+									<li>{{ $t("至少一個小寫字母") }}</li>
+									<li>{{ $t("至少需要一個數字") }}</li>
+									<li>{{ $t("最短長度為8個字") }}</li>
+								</ul>
+							</template>
+						</Password>
 					</div>
 					<div class="absolute" v-if="password.isNewPassBlank">
 						<small id="newPass-help" class="p-error">
@@ -87,22 +102,22 @@
 <script setup lang="ts">
 import Button from "primevue/button";
 import InputText from "primevue/inputtext";
+import Password from "primevue/password";
 import { reactive, ref, toRaw } from "vue";
 import { InvalidSessionError } from "@/api/error";
 import { useRecruitmentAdminAuthStore } from "@/stores/universalAuth";
 import { useToast } from "primevue/usetoast";
 import { RecruitmentAdminAPI } from "@/api/recruitment/admin/api";
 import ParagraphDivider from "@/styles/paragraphDividerApplicant.vue";
-import { useAdminInfoStore } from "@/stores/RecruitmentAdminStore";
 import type { RecruitmentAdminAuthResponse } from "@/api/recruitment/admin/types";
+import { useUserInfoStore } from "@/stores/RecruitmentAdminStore";
 
 const toast = useToast();
 const adminAuth = useRecruitmentAdminAuthStore();
 const api = new RecruitmentAdminAPI(adminAuth);
-const adminStore = useAdminInfoStore();
-
+const adminStore = useUserInfoStore();
 const adminInfo: RecruitmentAdminAuthResponse = toRaw(adminStore.userInfo);
-
+// console.log("name: ", adminInfo.name, "email: ", adminInfo.email);
 const initialPassValue = {
 	isCurrentPassBlank: false,
 	isNewPassBlank: false,
