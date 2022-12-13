@@ -13,6 +13,7 @@
 					:options="tabOptions"
 					optionLabel="name"
 					aria-labelledby="single"
+					:unselectable="false"
 				>
 				</SelectButton>
 			</div>
