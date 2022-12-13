@@ -1,39 +1,26 @@
 <template>
 	<Toast position="top-right" />
-	<div my="auto">
-		<!-- Button: Back to Admission Login -->
-		<router-link to="/admission">
-			<button
-				class="flex items-center gap-2 p-2 my-4"
-				text="secondary"
-				border="rounded-lg"
-				hover="bg-nGrey-200 text-title"
-				active="bg-nGrey-600 text-white"
-			>
-				<i class="pi pi-angle-left" />
-				<div>切換登入身份</div>
-				<div>Change your identity</div>
-			</button>
-		</router-link>
-		<!-- Title -->
-		<div mx="4" space="y-2">
-			<div text="lg secondary">國立臺灣師範大學資訊工程學系</div>
-			<div text="4xl title" font="medium">招生系統</div>
-			<div text="2xl title" font="medium">
-				NTNU CSIE Admissions System
-			</div>
-		</div>
-		<!-- Divider -->
-		<div mx="12">
-			<Divider align="center">
-				<div p="x-4 y-6" text="pApplicant">
-					申請者登入 Applicant Login
-				</div>
-			</Divider>
-		</div>
-		<!-- Login Form -->
-		<div flex="~ col" w="3/4" mx="auto">
-			<form @submit="onSubmit" ref="form" space="y-6">
+	<!-- Return Button -->
+	<router-link to="/admission">
+		<NButton type="White" icon="pi pi-angle-left" p="2" my="4">
+			切換登入身份 Change your identity
+		</NButton>
+	</router-link>
+	<!-- Title -->
+	<Title>
+		<template #Subtitle>
+			<div class="<md:hidden">國立臺灣師範大學資訊工程學系</div>
+		</template>
+		<template #Chinese>招生系統</template>
+		<template #English>NTNU CSIE Admissions System</template>
+		<template #Divider>
+			<div text="pApplicant">申請者登入 Applicant Login</div>
+		</template>
+	</Title>
+	<!-- Login Form -->
+	<form @submit="onSubmit" ref="form">
+		<Body>
+			<template #Content>
 				<!-- Account -->
 				<Field
 					name="username"
@@ -41,21 +28,15 @@
 					v-model="username"
 				>
 					<div flex="~ col gap-1">
-						<div text="body">准考證號碼 Registration Number</div>
+						<div text="sm body">准考證號碼 Registration Number</div>
 						<InputText
 							v-bind="field"
 							name="username"
 							type="text"
-							class="h-11"
+							class="h-12"
 							:disabled="isSubmitting"
 							required
 						/>
-						<!-- <div
-							v-if="errorMessage && meta.touched"
-							text="sm danger"
-						>
-							※ 此欄位不可為空白 Required
-						</div> -->
 					</div>
 				</Field>
 				<!-- Password -->
@@ -65,21 +46,15 @@
 					v-model="password"
 				>
 					<div flex="~ col gap-1">
-						<div text="body">密碼 Password</div>
+						<div text="sm body">密碼 Password</div>
 						<InputText
 							v-bind="field"
 							name="password"
 							type="password"
-							class="h-11"
+							class="h-12"
 							:disabled="isSubmitting"
 							required
 						/>
-						<!-- <div
-							v-if="errorMessage && meta.touched"
-							text="sm danger"
-						>
-							※ 此欄位不可為空白 Required
-						</div> -->
 					</div>
 				</Field>
 				<!-- Remember Account -->
@@ -90,38 +65,27 @@
 						<div>Remember Account at next Login</div>
 					</div>
 				</div>
-				<!-- Captcha -->
-				<div>
-					<Turnstile ref="turnstileRef" />
-				</div>
+			</template>
+			<template #Footer>
 				<!-- Login Button -->
-				<div flex="~ col" gap="6" w="60" m="auto" pt="12">
-					<!-- TODO: add spinning wheel while Turnstile runs -->
-					<button
-						class="p-2 w-full border-2 font-medium"
-						text="lg pApplicant"
-						border="2 opacity-30 nGold-500 rounded-lg"
-						hover="text-title bg-nGold-300 border-nGold-300"
-						active="text-white bg-nGold-500"
-						:loading="isTurnstileRunning || isSubmitting"
-					>
-						<div>登入 Login</div>
-					</button>
-					<!-- Forget Password Button -->
-					<router-link to="/admission/applicant/forgetpassword">
-						<button
-							class="p-2 w-full text-secondary font-medium"
-							border="rounded-lg"
-							hover="bg-nGrey-200 text-title"
-							active="bg-nGrey-600 text-white"
-						>
-							<div>忘記密碼 Forget Password</div>
-						</button>
-					</router-link>
-				</div>
-			</form>
-		</div>
-	</div>
+				<Turnstile ref="turnstileRef" />
+				<NButton
+					class="w-3/5 p-2 m-auto"
+					type="Applicant"
+					size="lg"
+					:loading="isTurnstileRunning || isSubmitting"
+				>
+					登入 Login
+				</NButton>
+				<!-- Forget Password Button -->
+				<router-link to="/admission/applicant/forgetpassword">
+					<NButton w="3/5" p="2" m="auto" size="sm" type="White">
+						忘記密碼 Forget Password
+					</NButton>
+				</router-link>
+			</template>
+		</Body>
+	</form>
 </template>
 
 <script setup lang="ts">
@@ -141,8 +105,10 @@ import Turnstile from "@/components/Turnstile.vue";
 import type { AdmissionApplicantAuthResponse } from "@/api/admission/applicant/types";
 
 import Checkbox from "primevue/checkbox";
-import Button from "primevue/button";
 import InputText from "primevue/inputtext";
+import NButton from "@/styles/CustomButton.vue";
+import Title from "@/styles/login/LoginTitle.vue";
+import Body from "@/styles/login/LoginBody.vue";
 
 const toast = useToast();
 const router = useRouter();

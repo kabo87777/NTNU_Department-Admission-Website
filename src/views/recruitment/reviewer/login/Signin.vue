@@ -102,7 +102,6 @@ import { useUserInfoStore } from "@/stores/RecruitmentReviewerStore";
 import type { TurnstileComponentExposes } from "@/components/Turnstile.vue";
 import Turnstile from "@/components/Turnstile.vue";
 
-import Button from "primevue/button";
 import Checkbox from "primevue/checkbox";
 import InputText from "primevue/inputtext";
 import NButton from "@/styles/CustomButton.vue";

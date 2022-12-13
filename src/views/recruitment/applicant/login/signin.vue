@@ -115,7 +115,6 @@ import Turnstile from "@/components/Turnstile.vue";
 
 import type { RecruitmentApplicantAuthResponse } from "@/api/recruitment/applicant/types";
 
-import Button from "primevue/button";
 import Checkbox from "primevue/checkbox";
 import InputText from "primevue/inputtext";
 
