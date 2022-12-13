@@ -464,7 +464,7 @@ import { useRecruitmentApplicantAuthStore } from "@/stores/universalAuth";
 import { RecruitmentApplicantAPI } from "@/api/recruitment/applicant/api";
 import { useProjectIdStore } from "@/stores/RecruitmentApplicantStore";
 import { RecruitmentApplicantUserInfoResponse } from "@/api/recruitment/applicant/types";
-import { InvalidSessionError } from "@/api/error";
+import { useQuery } from "@tanstack/vue-query";
 import ParagraphDivider from "@/styles/paragraphDividerApplicant.vue";
 import { useToast } from "primevue/usetoast";
 import Dropdown from "primevue/dropdown";
@@ -479,6 +479,8 @@ const api = new RecruitmentApplicantAPI(applicantAuth);
 const project = useProjectIdStore();
 
 const toast = useToast();
+
+const requiredInputFields = ref("");
 
 let fetchResponse = reactive({
 	success: false,
@@ -677,10 +679,51 @@ const handleSave = async () => {
 	loading.fetch = true;
 };
 
-onMounted(async () => {
-	const response = await api.getBasicInfo(project.project.pid);
-	setBasicInfo(response);
-});
+useQuery(
+	["getRecruitmentApplicantBasicInfo"],
+	async () => {
+		return await api.getBasicInfo(project.project.pid);
+	},
+	{
+		onSuccess: (data) => {
+			setBasicInfo(data);
+		},
+		onError: (data) => {
+			toast.add({
+				severity: "error",
+				summary: "Error",
+				detail: "Unable to fetch user basic info",
+				life: 5000,
+			});
+			console.log(data);
+		},
+	}
+);
+
+useQuery(
+	["getRecruitmentApplicantProgramInfo_1"],
+	async () => {
+		return await api.getProgramList();
+	},
+	{
+		onSuccess: (data) => {
+			data.map((item) => {
+				if (item.id === project.project.pid)
+					requiredInputFields.value =
+						item.applicant_required_info as string;
+			});
+		},
+		onError: (data) => {
+			toast.add({
+				severity: "error",
+				summary: "Error",
+				detail: "Unable to fetch user require input",
+				life: 5000,
+			});
+			console.log(data);
+		},
+	}
+);
 
 watch(
 	() => loading.fetch,

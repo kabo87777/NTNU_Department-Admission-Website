@@ -114,7 +114,7 @@
 				</div>
 			</div>
 		</div>
-		<ParagraphDivider />
+		<ParagraphDivider v-if="requiredInputFields.includes('name')" />
 		<div class="px-12px py-24px">
 			<div class="flex">
 				<div class="text-[24px] font-[50] font-bold">
@@ -512,7 +512,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted, watch, toRaw } from "vue";
+import { ref, reactive, watch, toRaw } from "vue";
 import ParagraphDivider from "@/styles/paragraphDividerApplicant.vue";
 import { useToast } from "primevue/usetoast";
 import Dropdown from "primevue/dropdown";
@@ -522,6 +522,7 @@ import RadioButton from "primevue/radiobutton";
 import Calendar from "primevue/calendar";
 import Button from "primevue/button";
 
+import { useQuery } from "@tanstack/vue-query";
 import { useAdmissionApplicantAuthStore } from "@/stores/universalAuth";
 import { AdmissionApplicantAPI } from "@/api/admission/applicant/api";
 import { AdmissionApplicantGetUserInfoResponse } from "@/api/admission/applicant/types";
@@ -531,6 +532,8 @@ const api = new AdmissionApplicantAPI(applicantAuth);
 // const project = useProjectIdStore();
 
 const toast = useToast();
+
+const requiredInputFields = ref("");
 
 let fetchResponse = reactive({
 	success: false,
@@ -603,11 +606,6 @@ let required = reactive({
 });
 
 const identityOptions = ref([{ name: "本地人士" }, { name: "外籍人士" }]);
-
-const basicInfo: AdmissionApplicantGetUserInfoResponse =
-	reactive<AdmissionApplicantGetUserInfoResponse>(
-		{} as AdmissionApplicantGetUserInfoResponse
-	);
 
 const setBasicInfo = (res: AdmissionApplicantGetUserInfoResponse) => {
 	name.id = res.id as number;
@@ -735,10 +733,47 @@ const handleSave = async () => {
 	loading.fetch = true;
 };
 
-onMounted(async () => {
-	const response = await api.getUserInfo();
-	if (response) setBasicInfo(response);
-});
+useQuery(
+	["getAdmApplicantBasicInfo"],
+	async () => {
+		return await api.getUserInfo();
+	},
+	{
+		onSuccess: (data) => {
+			setBasicInfo(data);
+		},
+		onError: (data) => {
+			toast.add({
+				severity: "error",
+				summary: "Error",
+				detail: "Unable to fetch user basic info",
+				life: 5000,
+			});
+			console.log(data);
+		},
+	}
+);
+
+useQuery(
+	["getAdmApplicantProgramInfo_1"],
+	async () => {
+		return await api.getProgram();
+	},
+	{
+		onSuccess: (data) => {
+			requiredInputFields.value = data.applicant_required_info;
+		},
+		onError: (data) => {
+			toast.add({
+				severity: "error",
+				summary: "Error",
+				detail: "Unable to fetch user require input",
+				life: 5000,
+			});
+			console.log(data);
+		},
+	}
+);
 
 watch(
 	() => loading.fetch,
