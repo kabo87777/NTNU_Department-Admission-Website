@@ -312,7 +312,7 @@
 							{{ $t("管理端帳戶") }}
 						</div>
 						<div class="text-16px mt-4px ml-8px tracking-wider">
-							{{ $t("系辦主管") }}
+							{{ adminInfo.name }}
 						</div>
 					</div>
 				</div>
@@ -500,13 +500,15 @@ import { useRecruitmentAdminAuthStore } from "@/stores/universalAuth";
 import { RecruitmentAdminAPI } from "@/api/recruitment/admin/api";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/vue-query";
 import { InvalidSessionError } from "@/api/error";
-import { useGlobalStore } from "@/stores/RecruitmentAdminStore";
+import {
+	useGlobalStore,
+	useUserInfoStore,
+} from "@/stores/RecruitmentAdminStore";
 import { RecruitmentAdminProgramListResponse } from "@/api/recruitment/admin/types";
-import { useAdminInfoStore } from "@/stores/RecruitmentAdminStore";
 import type { RecruitmentAdminAuthResponse } from "@/api/recruitment/admin/types";
 
 const router = useRouter();
-const adminStore = useAdminInfoStore();
+const adminStore = useUserInfoStore();
 
 const adminInfo: RecruitmentAdminAuthResponse = toRaw(adminStore.userInfo);
 const adminAuth = useRecruitmentAdminAuthStore();
