@@ -442,7 +442,7 @@
 					<img
 						alt="logo"
 						src="/assets/sidebar/User_circle.png"
-						class="h-32px w-32px ml-20px"
+						class="h-40px w-40px ml-20px"
 					/>
 					<div>
 						<div class="text-xs ml-8px">
@@ -498,7 +498,7 @@ import InputText from "primevue/inputtext";
 import { useRouter } from "vue-router";
 import { useRecruitmentAdminAuthStore } from "@/stores/universalAuth";
 import { RecruitmentAdminAPI } from "@/api/recruitment/admin/api";
-import { useQuery, useMutation } from "@tanstack/vue-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/vue-query";
 import { InvalidSessionError } from "@/api/error";
 import { useGlobalStore } from "@/stores/RecruitmentAdminStore";
 import { RecruitmentAdminProgramListResponse } from "@/api/recruitment/admin/types";
@@ -557,7 +557,8 @@ function newProject() {
 }
 
 const newProgram = ref(false);
-function addNewProject() {
+const queryClient = useQueryClient();
+async function addNewProject() {
 	const today = new Date();
 	try {
 		programData.mutate({
@@ -580,6 +581,7 @@ function addNewProject() {
 		// toast.add({severity:'error', summary: '資料錯誤', life: 3000});
 	}
 	displayNewProject.value = false;
+	await queryClient.invalidateQueries({ queryKey: ["programList"] });
 }
 
 function closeDisplayNewProject() {
