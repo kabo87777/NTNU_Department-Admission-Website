@@ -68,10 +68,7 @@ const applicantInfo: AdmissionApplicantAuthResponse = toRaw(
 
 const toast = useToast();
 
-const isEnabled = applicantInfo.isMoredoc;
-
-console.log(isEnabled);
-console.log(applicantStore.userInfo);
+const isEnabled = ref(applicantInfo.isMoredoc);
 
 let refillFile = reactive({
 	state: 3,
@@ -111,6 +108,7 @@ const handleUpload = async (body: object) => {
 			detail: fetchResponse.message,
 			life: 3000,
 		});
+		isEnabled.value = false;
 	} else {
 		toast.add({
 			severity: "error",

@@ -28,7 +28,6 @@
 				@rowSelect="onRowSelect"
 				class="p-datatable-lg !h-700px"
 			>
-				<Column field="id" :header="ID"></Column>
 				<Column field="name" :header="applicantName"></Column>
 				<Column field="isRecommend" :header="reviewerRating">
 					<template #body="slotProps">
@@ -45,21 +44,8 @@
 			</DataTable>
 			<div class="bigBlueDivider !mt-50px"></div>
 			<div class="flex text-xl mt-20px">
-				<div>
-					{{ $t("評比進度") }}
-				</div>
-
-				<ProgressBar
-					:value="progressValue"
-					:showValue="false"
-					class="!w-439px ml-24px mt-5px"
-				/>
-				<div class="ml-24px">
-					{{ applicantGraded }} / {{ totalApplicant }} {{ $t("位") }}
-				</div>
-
 				<Button
-					class="w-140px h-44px !ml-480px p-button-success"
+					class="w-140px h-44px !ml-1200px p-button-success"
 					disabled
 				>
 					<img
@@ -71,7 +57,7 @@
 					<span class="tracking-1px">{{ $t("送出評比") }}</span>
 				</Button>
 			</div>
-			<div class="ml-860px mt-12px text-red-500">
+			<div class="ml-930px mt-12px text-red-500">
 				{{ $t("※成績送出即無法再次修改，煩請送出前再三確認成績無誤") }}
 			</div>
 		</div>
@@ -90,7 +76,7 @@ import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { useRecruitmentReviewerAuthStore } from "@/stores/universalAuth";
 import { RecruitmentReviewerAPI } from "@/api/recruitment/reviewer/api";
-import { useQuery } from "@tanstack/vue-query";
+import { useQuery, useQueryClient } from "@tanstack/vue-query";
 import { InvalidSessionError } from "@/api/error";
 import { useGlobalStore } from "@/stores/RecruitmentReviewerStore";
 import { useToast } from "primevue/usetoast";
@@ -204,4 +190,13 @@ const onRowSelect = (event: any) => {
 		"/recruitment/reviewer/singleRequiredDataReview/" + event.data.id
 	);
 };
+const queryClient = useQueryClient();
+store.$subscribe(() => {
+	queryClient.invalidateQueries({
+		queryKey: ["recruitmenReviewerApplicantList"],
+	});
+	queryClient.invalidateQueries({
+		queryKey: ["recruitmentReviewerProgramList"],
+	});
+});
 </script>

@@ -55,6 +55,13 @@
 			</Button>
 		</router-link>
 
+		<div class="flex mt-50px">
+			<div class="sidebarBlueDivider"></div>
+			<div class="mt-[-8px] ml-8px text-[#236192] text-18px font-bold">
+				{{ $t("第二階段審查") }}
+			</div>
+		</div>
+
 		<router-link
 			to="/admission/reviewer/oralReview"
 			custom
