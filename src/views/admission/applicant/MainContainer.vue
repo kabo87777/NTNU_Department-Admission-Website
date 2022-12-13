@@ -20,11 +20,14 @@
 			</div>
 		</div>
 	</div>
+	<ScrollTop target="parent" :threshold="100" icon="pi pi-arrow-up" />
+	<ScrollTop />
 </template>
 
 <script setup lang="ts">
 import NavBar from "@/components/NavBar.vue";
 import SideBar from "@/components/sidebars/admissionApplicantSidebar.vue";
+import ScrollTop from "primevue/scrolltop";
 
 import { useQuery } from "@tanstack/vue-query";
 import { useRouter } from "vue-router";
