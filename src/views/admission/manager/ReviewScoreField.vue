@@ -121,8 +121,8 @@
 				</label>
 			</div>
 			<div class="flex mx-10 gap-8 mb-4" text="gray-500">
-				<div>{{ trans.details.master.value }}</div>
-				<div>{{ trans.details.phD.value }}</div>
+				<div>{{ trans.details.locals.value }}</div>
+				<div>{{ trans.details.foreigner.value }}</div>
 			</div>
 		</div>
 		<!-- showInfo - checkbox 3 -->
@@ -351,8 +351,8 @@ const trans = {
 		suffix: computed(() => t("※ 稱謂/後綴")),
 		chineseName: computed(() => t("※ 中文姓氏/名字")),
 		englishName: computed(() => t("※ 英文姓氏/中間名/名字")),
-		master: computed(() => t("※ 碩士生")),
-		phD: computed(() => t("※ 博士生")),
+		locals: computed(() => t("※ 本國人士")),
+		foreigner: computed(() => t("※外籍人士")),
 		country: computed(() => t("※ 國家/州")),
 		city: computed(() => t("※ 城市/郵遞區號")),
 		streetAddr: computed(() => t("※ 街道地址")),
