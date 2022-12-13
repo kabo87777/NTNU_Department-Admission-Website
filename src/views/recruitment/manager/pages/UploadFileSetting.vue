@@ -54,10 +54,10 @@
 				</div>
 				<div class="flex mt-40px">
 					<div class="w-1/2 pl-16px">
-						{{ trans.details.phdDegree.value }}
+						{{ trans.details.locals.value }}
 					</div>
 					<div class="w-1/2 pl-16px">
-						{{ trans.details.masterDegree.value }}
+						{{ trans.details.foreigner.value }}
 					</div>
 				</div>
 				<ParagraphDivider />
@@ -157,15 +157,6 @@
 					>
 				</div>
 				<div class="flex mt-40px">
-					<div class="w-1/4 pl-16px">
-						{{ trans.details.email.value }}
-					</div>
-					<div class="w-1/4 pl-16px">
-						{{ trans.details.mainNumber.value }}
-					</div>
-					<div class="w-1/4 pl-16px">
-						{{ trans.details.secondaryNumber.value }}
-					</div>
 					<div class="w-1/4 pl-16px">
 						{{ trans.details.mobileNumber.value }}
 					</div>
@@ -314,13 +305,13 @@ const trans = {
 		prefixSuffix: computed(() => t("※ 稱謂/後綴")),
 		chineseName: computed(() => t("※ 中文姓氏/名字")),
 		englishName: computed(() => t("※ 英文姓氏/中間名/名字")),
-		phdDegree: computed(() => t("※ 博士生")),
-		masterDegree: computed(() => t("※ 碩士生")),
+		locals: computed(() => t("※ 本國人士")),
+		foreigner: computed(() => t("※ 外籍人士")),
 		countryState: computed(() => t("※ 國家/州")),
 		cityPostNumber: computed(() => t("※ 城市/郵遞區號")),
 		streetAddress: computed(() => t("※ 街道地址")),
-		legalGender: computed(() => t("※ 法定性別/ 性別認同")),
-		bornCountry: computed(() => t("※ 出生國")),
+		legalGender: computed(() => t("※ 生理性別")),
+		bornCountry: computed(() => t("※ 出生國家")),
 		bornDate: computed(() => t("※ 出生日期")),
 		citizenship: computed(() => t("※ 主要國籍")),
 		email: computed(() => t("※ 電子郵件")),
