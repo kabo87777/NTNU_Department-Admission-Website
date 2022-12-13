@@ -82,10 +82,10 @@ export interface AdmissionApplicantGetProgramResponse {
 	id: number;
 	category: string;
 	name: string;
-	application_start_date: string;
-	application_end_date: string;
-	review_start_date: string;
-	review_end_date: string;
+	application_start_date: Date;
+	application_end_date: Date;
+	review_start_date: Date;
+	review_end_date: Date;
 	require_file: [];
 	stage: string;
 	created_at: string;
