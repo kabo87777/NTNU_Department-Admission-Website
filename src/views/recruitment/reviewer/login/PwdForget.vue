@@ -1,7 +1,7 @@
 <template>
 	<!-- Return Button -->
 	<router-link to="/recruitment/reviewer/signin">
-		<NButton type="White" icon="pi pi-angle-left" p="2" my="4">
+		<NButton type="White" size="sm" icon="pi pi-angle-left" p="2" my="6">
 			回到登入畫面 Back to login page
 		</NButton>
 	</router-link>

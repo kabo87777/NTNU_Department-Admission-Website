@@ -1,7 +1,7 @@
 <template>
 	<!-- Return Button -->
 	<router-link :to="{ name: 'LandingView' }">
-		<NButton type="White" icon="pi pi-angle-left" p="2" my="4">
+		<NButton type="White" size="sm" icon="pi pi-angle-left" p="2" my="6">
 			選擇其他系統 Choose other system
 		</NButton>
 	</router-link>
