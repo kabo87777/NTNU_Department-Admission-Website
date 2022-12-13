@@ -130,7 +130,7 @@ import * as yup from "yup";
 
 import { RecruitmentAdminAPI } from "@/api/recruitment/admin/api";
 import { useRecruitmentAdminAuthStore } from "@/stores/universalAuth";
-import { useUserInfoStore } from "@/stores/RecruitmentReviewerStore";
+import { useUserInfoStore } from "@/stores/RecruitmentAdminStore";
 
 import type { TurnstileComponentExposes } from "@/components/Turnstile.vue";
 import Turnstile from "@/components/Turnstile.vue";
@@ -197,11 +197,13 @@ const onSubmit = handleSubmit(async function (values, actions) {
 		const api = new RecruitmentAdminAPI(authStore);
 
 		userInfo.saveUserInfo(
-			await api.requestNewSession({
-				email: values.email,
-				password: values.password,
-				"cf-turnstile-response": turnstileResponse,
-			})
+			(
+				await api.requestNewSession({
+					email: values.email,
+					password: values.password,
+					"cf-turnstile-response": turnstileResponse,
+				})
+			).data
 		);
 
 		router.replace({ name: "RecruitmentAdminMainContainer" });
