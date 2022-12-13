@@ -629,11 +629,11 @@ const openModal = () => {
 
 const handleDelete = async (letterId: number) => {
 	isActionLoading.delete = true;
-	const res = await api.deleteRecommendLetter(letterId);
+	const response = await api.deleteRecommendLetter(letterId);
 
-	if (res?.success !== undefined && res?.message !== undefined) {
-		fetchResponse.success = toRaw(res.success);
-		fetchResponse.message = toRaw(res.message);
+	if (response?.success !== undefined && response?.message !== undefined) {
+		fetchResponse.success = toRaw(response.success);
+		fetchResponse.message = toRaw(response.message);
 	}
 
 	isActionLoading.delete = false;
@@ -696,11 +696,14 @@ const handleSave = async () => {
 			},
 		};
 
-		const res = await api.saveRecommendLetter(body);
+		const response = await api.saveRecommendLetter(body);
 
-		if (res?.success !== undefined && res?.message !== undefined) {
-			fetchResponse.success = toRaw(res.success);
-			fetchResponse.message = toRaw(res.message);
+		if (
+			response?.success !== undefined &&
+			response?.message !== undefined
+		) {
+			fetchResponse.success = toRaw(response.success);
+			fetchResponse.message = toRaw(response.message);
 		}
 
 		isActionLoading.save = false;
@@ -726,11 +729,16 @@ const handleSave = async () => {
 
 const handleRequest = async (letterId: number) => {
 	isActionLoading.request = true;
-	const res = await api.requestRecommendLetter(letterId);
 
-	if (res?.success !== undefined && res?.message !== undefined) {
-		fetchResponse.success = toRaw(res.success);
-		fetchResponse.message = toRaw(res.message);
+	const url =
+		"https://admissions-frontend-staging.birkhoff.me/admission/recommenderAuthVerify";
+	const response = await api.requestRecommendLetter(letterId, {
+		params: { redirect_url: url },
+	});
+
+	if (response?.success !== undefined && response?.message !== undefined) {
+		fetchResponse.success = toRaw(response.success);
+		fetchResponse.message = toRaw(response.message);
 	}
 
 	isActionLoading.request = false;

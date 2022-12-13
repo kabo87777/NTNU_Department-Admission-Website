@@ -80,7 +80,7 @@
 					<img
 						alt="logo"
 						src="/assets/sidebar/User_circle.png"
-						class="h-32px w-32px ml-24px"
+						class="h-40px w-40px ml-20px mt-[-3px]"
 					/>
 					<div class="ml-12px">
 						<div class="text-14px">
