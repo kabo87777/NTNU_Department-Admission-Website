@@ -118,7 +118,7 @@
 		<div class="px-12px py-24px">
 			<div class="flex">
 				<div class="text-[24px] font-[50] font-bold">
-					{{ $t("入職身份") }}
+					{{ $t("入學身份") }}
 				</div>
 				<div class="mt-6px ml-40px text-[#8D9093] text-[14px]">
 					{{ $t('" * " 為必填欄位') }}
@@ -126,7 +126,7 @@
 			</div>
 			<div class="flex pt-24px">
 				<div class="w-1/3">
-					<div>{{ "*" + $t("入職身份") }}</div>
+					<div>{{ "*" + $t("入學身份") }}</div>
 					<div>
 						<Dropdown
 							class="w-[70%] h-36px !mt-4px"
@@ -160,8 +160,8 @@
 				</div>
 			</div>
 			<div v-if="identity.selectedIdentity === '外籍人士'">
-				<div class="px-12px py-24px">
-					<div class="flex">
+				<div>
+					<div class="flex pt-16px">
 						<div class="w-1/3">
 							<div>{{ "*" + $t("國籍") }}</div>
 							<div>
@@ -202,8 +202,10 @@
 						</div>
 					</div>
 				</div>
-				<ParagraphDivider />
-				<div class="px-12px py-24px">
+				<div class="pt-24px">
+					<ParagraphDivider />
+				</div>
+				<div class="py-24px">
 					<div class="flex">
 						<div class="text-[24px] font-[50] font-bold">
 							{{ $t("現居地址") }}
@@ -515,14 +517,14 @@
 import { ref, reactive, watch, toRaw } from "vue";
 import ParagraphDivider from "@/styles/paragraphDividerApplicant.vue";
 import { useToast } from "primevue/usetoast";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
 import Dropdown from "primevue/dropdown";
 import InputText from "primevue/inputtext";
 import Checkbox from "primevue/checkbox";
 import RadioButton from "primevue/radiobutton";
 import Calendar from "primevue/calendar";
 import Button from "primevue/button";
-
-import { useQuery } from "@tanstack/vue-query";
+import dayjs from "dayjs";
 import { useAdmissionApplicantAuthStore } from "@/stores/universalAuth";
 import { AdmissionApplicantAPI } from "@/api/admission/applicant/api";
 import { AdmissionApplicantGetUserInfoResponse } from "@/api/admission/applicant/types";
@@ -532,6 +534,7 @@ const api = new AdmissionApplicantAPI(applicantAuth);
 // const project = useProjectIdStore();
 
 const toast = useToast();
+const now = dayjs();
 
 const requiredInputFields = ref("");
 
@@ -579,6 +582,7 @@ let born = reactive({
 	sex: "",
 	country: "",
 	birth: new Date(),
+	// birth: dayjs(new Date()),
 });
 
 let contact = reactive({
@@ -605,7 +609,7 @@ let required = reactive({
 	phone: false,
 });
 
-const identityOptions = ref([{ name: "本地人士" }, { name: "外籍人士" }]);
+const identityOptions = ref([{ name: "本國人士" }, { name: "外籍人士" }]);
 
 const setBasicInfo = (res: AdmissionApplicantGetUserInfoResponse) => {
 	name.id = res.id as number;
@@ -671,15 +675,23 @@ const handleSave = async () => {
 		en_midname: name.enMidName,
 		en_givenname: name.enName,
 		nationality:
-			identity.selectedIdentity === "本地人士"
+			identity.selectedIdentity === "本國人士"
 				? "台灣"
 				: identity.nationality,
 		national_id:
-			identity.selectedIdentity === "本地人士"
+			identity.selectedIdentity === "本國人士"
 				? identity.ic
 				: identity.ui,
-		household_address: householdAddr.addr,
-		household_zipcode: householdAddr.postcode,
+		household_address:
+			// householdAddr.addr,
+			identity.selectedIdentity === "本國人士"
+				? householdAddr.addr
+				: null,
+		household_zipcode:
+			// householdAddr.postcode,
+			identity.selectedIdentity === "本國人士"
+				? householdAddr.postcode
+				: null,
 		communicate_address: currentAddr.isAddrSame
 			? householdAddr.addr
 			: currentAddr.addr,
@@ -688,8 +700,11 @@ const handleSave = async () => {
 			: currentAddr.postcode,
 		sex: born.sex,
 		birthcountry: born.country,
+		// birth: born.birth,
+		// birth: dayjs(born.birth).add(8, 'hour'),
 		birth: addHours(8, new Date(born.birth)),
 		mobile_phone: contact.phone,
+		isForeigner: identity.selectedIdentity === "本國人士" ? false : true,
 	};
 
 	const keys = Object.keys(body);
@@ -779,10 +794,7 @@ watch(
 	() => loading.fetch,
 	async () => {
 		const response = await api.getUserInfo();
-
-		if (response) setBasicInfo(response);
-
-		loading.fetch = false;
+		setBasicInfo(response);
 	}
 );
 </script>

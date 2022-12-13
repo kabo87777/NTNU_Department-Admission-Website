@@ -551,7 +551,7 @@ let required = reactive({
 	phone: false,
 });
 
-const identityOptions = ref([{ name: "本地人士" }, { name: "外籍人士" }]);
+const identityOptions = ref([{ name: "本國人士" }, { name: "外籍人士" }]);
 
 const basicInfo: RecruitmentApplicantUserInfoResponse =
 	reactive<RecruitmentApplicantUserInfoResponse>(
@@ -617,11 +617,11 @@ const handleSave = async () => {
 		en_midname: name.enMidName,
 		en_givenname: name.enName,
 		nationality:
-			identity.selectedIdentity === "本地人士"
+			identity.selectedIdentity === "本國人士"
 				? "台灣"
 				: identity.nationality,
 		national_id:
-			identity.selectedIdentity === "本地人士"
+			identity.selectedIdentity === "本國人士"
 				? identity.ic
 				: identity.ui,
 		household_address: householdAddr.addr,
