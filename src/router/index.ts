@@ -170,20 +170,20 @@ const routes: Array<RouteRecordRaw> = [
 				path: "recruitment/manager/signin",
 				name: "RecruitmentManagerSignin",
 				component: () =>
-					import("@/views/recruitment/manager/login/Signin.vue"),
+					import("@/views/recruitment/manager/login/signin.vue"),
 			},
 			// Recruitment - manager forget & reset password
 			{
 				path: "recruitment/manager/password/reset",
 				name: "recruitmentManagerPasswordReset",
 				component: () =>
-					import("@/views/recruitment/manager/login/PwdReset.vue"),
+					import("@/views/recruitment/manager/login/pwdReset.vue"),
 			},
 			{
 				path: "recruitment/manager/forgetpassword",
 				name: "recruitmentManagerPasswordForget",
 				component: () =>
-					import("@/views/recruitment/manager/login/PwdForget.vue"),
+					import("@/views/recruitment/manager/login/pwdForget.vue"),
 			},
 		],
 	},
