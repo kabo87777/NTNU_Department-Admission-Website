@@ -356,5 +356,10 @@
 	"生理性別": "Sex",
 	"生理男性": "Male",
 	"生理女性": "Femal",
-	"請選擇身份": "Please choose your identity"
+	"請選擇身份": "Please choose your identity",
+	"※ 本國人士": "※ Nationals",
+	"※ 外籍人士": "※ Foreigner",
+	"※ 郵遞區號": "※ Postal Code",
+	"※ 生理性別": "※ Sex",
+	"※ 出生國家": "※ Country Of Birth"
 }
