@@ -13,7 +13,6 @@
 				scrollHeight="700px"
 				class="!h-700px"
 			>
-				<Column field="id" :header="ID"></Column>
 				<Column field="name" :header="applicantName"></Column>
 				<Column field="revieweResult" :header="recommand">
 					<template #body="slotProps">
@@ -124,6 +123,7 @@
 					:showTime="true"
 					class="mt-8px !w-576px !h-44px ml-52px"
 					:baseZIndex="zIndex"
+					dateFormat="yy-mm-dd"
 				/>
 				<Calendar
 					v-else
@@ -134,6 +134,7 @@
 					class="mt-8px !w-576px !h-44px ml-52px"
 					:baseZIndex="zIndex"
 					disabled
+					dateFormat="yy-mm-dd"
 				/>
 				<Button
 					class="w-140px h-44px !mt-48px !ml-200px p-button-outlined p-button-success"
@@ -201,7 +202,7 @@ import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { useRecruitmentAdminAuthStore } from "@/stores/universalAuth";
 import { RecruitmentAdminAPI } from "@/api/recruitment/admin/api";
-import { useMutation, useQuery } from "@tanstack/vue-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
 import { InvalidSessionError } from "@/api/error";
 import { useGlobalStore } from "@/stores/RecruitmentAdminStore";
 import { useToast } from "primevue/usetoast";
@@ -230,15 +231,14 @@ const results = ref([
 	translation.notPass,
 	translation.pass,
 ]);
-const selectedInterviewTime = ref<Date>(
-	new Date("2022-12-30T00:00:00.000+08:00")
-);
+const selectedInterviewTime = ref<Date>(new Date());
 const disable = computed(() => {
 	return selectedResult.value === translation.pass;
 });
 const pendingCount = ref(0);
 const passCount = ref(0);
 const notPassCount = ref(0);
+const applicantID = ref(1);
 const applicantGradeList = useQuery(
 	["recruitmentAdminGradeList"],
 	async () => {
@@ -255,10 +255,10 @@ const applicantGradeList = useQuery(
 			notPassCount.value = data!.filter(
 				(item) => item.revieweResult === "不通過"
 			).length;
+			applicantID.value = data![0].id;
 		},
 	}
 );
-const applicantID = ref();
 const recommandCount = ref(0);
 const notRecommandCount = ref(0);
 const reviewers = ref<RecruitmentAdminSingleReviewerRecommendResponse[]>();
@@ -272,7 +272,7 @@ const singleApplicantRecommand = useQuery(
 
 		return await api.getSingleApplicantWithDetail(
 			store.program!.id!,
-			applicantID
+			applicantID.value
 		);
 	},
 	{
@@ -284,7 +284,9 @@ const singleApplicantRecommand = useQuery(
 			} else {
 				selectedResult.value = data!.revieweResult;
 			}
-			selectedInterviewTime.value = new Date(data!.interviewDate);
+			if (data!.interviewDate) {
+				selectedInterviewTime.value = new Date(data!.interviewDate);
+			}
 			recommandCount.value = data!.isRecommendNum;
 			notRecommandCount.value =
 				data!.allReviewerNum - data!.isRecommendNum;
@@ -325,7 +327,7 @@ const applicantStage = useMutation(async (newStage: any) => {
 		console.log(error);
 	}
 });
-function doneEdit() {
+async function doneEdit() {
 	if (selectedResult.value === translation.pass) {
 		applicantStage.mutate({
 			review_result: selectedResult.value,
@@ -339,7 +341,18 @@ function doneEdit() {
 	}
 
 	productDialog.value = false;
+	await queryClient.invalidateQueries({
+		queryKey: ["recruitmentAdminGradeList"],
+	});
+	await queryClient.invalidateQueries({
+		queryKey: ["recruitmentAdminRecommand"],
+	});
 }
+const queryClient = useQueryClient();
+store.$subscribe(() => {
+	queryClient.invalidateQueries({ queryKey: ["recruitmentAdminGradeList"] });
+	queryClient.invalidateQueries({ queryKey: ["recruitmentAdminRecommand"] });
+});
 function dateTransform(date: string) {
 	return (
 		date.slice(0, 4) +

@@ -127,6 +127,25 @@ export class AdmissionApplicantAPI extends GenericAPI {
 		};
 	}
 
+	async editEmail(body: object): Promise<AdmissionApplicantGenericResponse> {
+		const data: APIGenericResponse = await this.instance.patch(
+			"admission/auth/applicant",
+			body
+		);
+
+		if (data.error !== false) {
+			return {
+				success: false,
+				message: data.message.full_messages,
+			};
+		}
+
+		return {
+			success: true,
+			message: data.message,
+		};
+	}
+
 	async changePassword(
 		body: object
 	): Promise<AdmissionApplicantGenericResponse> {
@@ -161,7 +180,6 @@ export class AdmissionApplicantAPI extends GenericAPI {
 
 	async saveRecommendLetter(
 		body: object
-		// CHANGE THE RESPONSE TYPE ONCE BACKEND CONFIRM THE DATA STRUCTURE
 	): Promise<AdmissionApplicantGenericResponse> {
 		const data: APIGenericResponse = await this.instance.post(
 			"admission/applicant/recommendletter",
@@ -200,10 +218,12 @@ export class AdmissionApplicantAPI extends GenericAPI {
 	}
 
 	async requestRecommendLetter(
-		letterId: number
+		letterId: number,
+		url: object
 	): Promise<AdmissionApplicantGenericResponse> {
 		const data: APIGenericResponse = await this.instance.get(
-			`admission/applicant/recommendletter/${letterId}/send_email`
+			`admission/applicant/recommendletter/${letterId}/send_email`,
+			url
 		);
 
 		if (data.error !== false)
