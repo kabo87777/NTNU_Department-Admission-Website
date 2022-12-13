@@ -415,7 +415,7 @@
 					<img
 						alt="logo"
 						src="/assets/sidebar/User_circle.png"
-						class="h-32px w-32px ml-20px"
+						class="h-40px w-40px ml-20px"
 					/>
 					<div>
 						<div class="text-xs ml-8px">

@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<!-- 畫面顯示(開放補件時) -->
-		<div v-if="isEnabled" class="px-12px py-24px">
+		<div v-if="isEnabled">
 			<div class="font-[500] text-[32px] font-bold">
 				{{ $t("補交文件系統") }}
 			</div>
@@ -68,10 +68,7 @@ const applicantInfo: AdmissionApplicantAuthResponse = toRaw(
 
 const toast = useToast();
 
-const isEnabled = applicantInfo.isMoredoc;
-
-console.log(isEnabled);
-console.log(applicantStore.userInfo);
+const isEnabled = ref(applicantInfo.isMoredoc);
 
 let refillFile = reactive({
 	state: 3,
@@ -111,6 +108,7 @@ const handleUpload = async (body: object) => {
 			detail: fetchResponse.message,
 			life: 3000,
 		});
+		isEnabled.value = false;
 	} else {
 		toast.add({
 			severity: "error",
