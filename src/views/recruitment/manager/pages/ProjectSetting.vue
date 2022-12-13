@@ -78,31 +78,23 @@
 		<div class="flex mt-24px">
 			<div class="m-auto">
 				<div class="flex">
-					<Button
-						class="bg-white h-60px w-140px border-ntnuRed"
+					<NButton
+						type="Admin"
+						class="bg-white h-60px w-140px"
 						@click="deleteProject"
+						icon="pi pi-times"
 					>
-						<i
-							class="pi pi-times ml-1 mr-2 box-border"
-							text="sm ntnuRed"
-						></i>
-						<div class="m-auto tracking-2" text="sm ntnuRed">
-							<div>{{ $t("刪除專案") }}</div>
-						</div>
-					</Button>
+						<div>{{ $t("刪除專案") }}</div>
+					</NButton>
 					<div class="w-24px"></div>
-					<Button
-						class="bg-Green h-60px w-140px border-ntnuRed"
+					<NButton
+						type="Admin"
+						class="bg-Green h-60px w-140px"
 						@click="updateProgramData"
+						icon="pi pi-check"
 					>
-						<i
-							class="pi pi-check ml-1 mr-2 box-border"
-							text="sm black"
-						></i>
-						<div class="m-auto tracking-2" text="sm black">
-							<div>{{ $t("儲存設定") }}</div>
-						</div>
-					</Button>
+						<div>{{ $t("儲存設定") }}</div>
+					</NButton>
 				</div>
 			</div>
 		</div>
@@ -117,6 +109,7 @@ import Checkbox from "primevue/checkbox";
 import Divider from "primevue/divider";
 import InputText from "primevue/inputtext";
 import Textarea from "primevue/textarea";
+import NButton from "@/styles/CustomButton.vue";
 
 import { ref } from "vue";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";

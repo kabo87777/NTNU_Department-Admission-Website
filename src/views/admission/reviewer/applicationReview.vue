@@ -122,8 +122,9 @@
 			</DataTable>
 			<div class="bigBlueDivider !mt-50px"></div>
 			<div class="flex text-xl mt-20px">
-				<Button
-					class="w-140px h-44px !ml-1200px p-button-success"
+				<NButton
+					type="Reviewer"
+					class="w-140px h-44px !ml-1200px"
 					@click="showTemplate"
 				>
 					<img
@@ -133,7 +134,7 @@
 						class="fill-green-500"
 					/>
 					<span class="tracking-1px">{{ $t("送出成績") }}</span>
-				</Button>
+				</NButton>
 				<Toast position="bottom-center" group="bc" class="!w-400px">
 					<template #message="slotProps">
 						<div class="">
@@ -194,6 +195,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
 import { InvalidSessionError } from "@/api/error";
 import { useGlobalStore } from "@/stores/AdmissionReviewerStore";
 import { useToast } from "primevue/usetoast";
+import NButton from "@/styles/CustomButton.vue";
 
 const reviewerAuth = useAdmissionReviewerAuthStore();
 const api = new AdmissionReviewerAPI(reviewerAuth);

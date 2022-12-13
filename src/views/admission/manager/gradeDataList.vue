@@ -209,30 +209,24 @@
 						/>
 					</div>
 				</div>
-				<Button
-					class="w-140px h-44px !mt-100px !ml-200px p-button-outlined p-button-success"
-					@click="doneEdit"
-				>
-					<img
-						alt="logo"
-						src="/assets/gradeDataList/Done_round.png"
-						style="width: 1.5rem"
-						class="fill-green-500"
-					/>
-					<span class="tracking-1px">{{ $t("儲存變更") }}</span>
-				</Button>
-				<Button
-					class="w-100px h-44px !mt-40px !ml-49px p-button-outlined p-button-danger"
-					@click="cancelEdit"
-				>
-					<img
-						alt="logo"
-						src="/assets/project-setting/Close_round.png"
-						style="width: 1.5rem"
-						class="fill-green-500"
-					/>
-					<span class="tracking-1px">{{ $t("取消") }}</span>
-				</Button>
+				<div class="flex !mt-100px">
+					<NButton
+						type="Admin"
+						class="w-140px h-44px !ml-170px"
+						@click="doneEdit"
+						icon="pi pi-check"
+					>
+						<span class="tracking-1px">{{ $t("儲存變更") }}</span>
+					</NButton>
+					<NButton
+						type="Admin"
+						class="w-100px h-44px !ml-49px"
+						@click="cancelEdit"
+						icon="pi pi-times"
+					>
+						<span class="tracking-1px">{{ $t("取消") }}</span>
+					</NButton>
+				</div>
 			</Dialog>
 			<div class="bigRedDivider !mt-30px"></div>
 			<div class="flex text-xl mt-20px">
@@ -436,30 +430,24 @@
 						/>
 					</div>
 				</div>
-				<Button
-					class="w-140px h-44px !mt-100px !ml-200px p-button-outlined p-button-success"
-					@click="doneEdit"
-				>
-					<img
-						alt="logo"
-						src="/assets/gradeDataList/Done_round.png"
-						style="width: 1.5rem"
-						class="fill-green-500"
-					/>
-					<span class="tracking-1px">{{ $t("儲存變更") }}</span>
-				</Button>
-				<Button
-					class="w-100px h-44px !mt-40px !ml-49px p-button-outlined p-button-danger"
-					@click="cancelEdit"
-				>
-					<img
-						alt="logo"
-						src="/assets/project-setting/Close_round.png"
-						style="width: 1.5rem"
-						class="fill-green-500"
-					/>
-					<span class="tracking-1px">{{ $t("取消") }}</span>
-				</Button>
+				<div class="flex !mt-100px">
+					<NButton
+						type="Admin"
+						class="w-140px h-44px !ml-170px"
+						@click="doneEdit"
+						icon="pi pi-check"
+					>
+						<span class="tracking-1px">{{ $t("儲存變更") }}</span>
+					</NButton>
+					<NButton
+						type="Admin"
+						class="w-100px h-44px !ml-49px"
+						@click="cancelEdit"
+						icon="pi pi-times"
+					>
+						<span class="tracking-1px">{{ $t("取消") }}</span>
+					</NButton>
+				</div>
 			</Dialog>
 			<div class="bigRedDivider !mt-30px"></div>
 			<div class="flex text-xl mt-20px">
@@ -478,18 +466,14 @@
 				<div class="!ml-30px">
 					{{ $t("不通過") }} {{ oralStage4Count }} {{ $t("位") }}
 				</div>
-				<Button
-					class="w-140px h-44px !ml-560px p-button-outlined p-button-success"
+				<NButton
+					type="Admin"
+					class="w-140px h-44px !ml-500px"
 					@click="saveOralOrder"
+					icon="pi pi-check"
 				>
-					<img
-						alt="logo"
-						src="/assets/project-setting/Check_fill.png"
-						style="width: 1.5rem"
-						class="fill-green-500"
-					/>
 					<span class="tracking-1px">{{ $t("保存順序") }}</span>
-				</Button>
+				</NButton>
 			</div>
 		</div>
 		<div v-if="currentTab === translation.iEnrollList">
@@ -543,18 +527,14 @@
 			</DataTable>
 			<div class="bigRedDivider !mt-30px"></div>
 			<div class="flex text-xl mt-20px">
-				<Button
-					class="w-140px h-44px !ml-600px p-button-outlined p-button-success"
+				<NButton
+					type="Admin"
+					class="w-140px h-44px !ml-570px"
 					@click="saveEnrollOrder"
+					icon="pi pi-check"
 				>
-					<img
-						alt="logo"
-						src="/assets/project-setting/Check_fill.png"
-						style="width: 1.5rem"
-						class="fill-green-500"
-					/>
 					<span class="tracking-1px">{{ $t("保存順序") }}</span>
-				</Button>
+				</NButton>
 			</div>
 		</div>
 		<div v-if="currentTab === translation.reserveList">
@@ -594,18 +574,14 @@
 			</DataTable>
 			<div class="bigRedDivider !mt-30px"></div>
 			<div class="flex text-xl mt-20px">
-				<Button
-					class="w-140px h-44px !ml-600px p-button-outlined p-button-success"
+				<NButton
+					type="Admin"
+					class="w-140px h-44px !ml-570px"
 					@click="saveReserveOrder"
+					icon="pi pi-check"
 				>
-					<img
-						alt="logo"
-						src="/assets/project-setting/Check_fill.png"
-						style="width: 1.5rem"
-						class="fill-green-500"
-					/>
 					<span class="tracking-1px">{{ $t("保存順序") }}</span>
-				</Button>
+				</NButton>
 			</div>
 		</div>
 		<div v-if="currentTab === translation.printReport">
@@ -619,8 +595,9 @@
 						{{ $t("審查書面評分") }}
 					</div>
 				</div>
-				<Button
-					class="w-[20%] h-[60%] !bg-purple-500/10 m-4px p-button-outlined p-button-help"
+				<NButton
+					type="Admin"
+					class="w-[20%] h-[60%] !bg-purple-500/10 m-4px"
 					@click="downloadPDFFile(docPdfData, 'doc_report', false)"
 				>
 					<img
@@ -632,9 +609,10 @@
 					<span class="tracking-1px text-lg">{{
 						$t("報表列印")
 					}}</span>
-				</Button>
-				<Button
-					class="w-[20%] h-[60%] !bg-blue-500/10 m-4px p-button-outlined"
+				</NButton>
+				<NButton
+					type="Admin"
+					class="w-[20%] h-[60%] !bg-blue-500/10 m-4px"
 					@click="
 						downloadPDFFile(docAnonyPdfData, 'doc_report', true)
 					"
@@ -648,7 +626,7 @@
 					<span class="tracking-1px text-lg">{{
 						$t("匿名報表列印")
 					}}</span>
-				</Button>
+				</NButton>
 			</div>
 			<div
 				class="flex items-center mx-auto h-144px w-[100%] justify-around bg-gray-500/10 rounded-md my-4"
@@ -660,8 +638,9 @@
 						{{ $t("審查總評分") }}
 					</div>
 				</div>
-				<Button
-					class="w-[20%] h-[60%] !bg-purple-500/10 m-4px p-button-outlined p-button-help"
+				<NButton
+					type="Admin"
+					class="w-[20%] h-[60%] !bg-purple-500/10 m-4px"
 					@click="
 						downloadPDFFile(genPdfData, 'general_report', false)
 					"
@@ -675,9 +654,10 @@
 					<span class="tracking-1px text-lg">{{
 						$t("報表列印")
 					}}</span>
-				</Button>
-				<Button
-					class="w-[20%] h-[60%] !bg-blue-500/10 m-4px p-button-outlined"
+				</NButton>
+				<NButton
+					type="Admin"
+					class="w-[20%] h-[60%] !bg-blue-500/10 m-4px"
 					@click="
 						downloadPDFFile(genAnonyPdfData, 'general_report', true)
 					"
@@ -691,7 +671,7 @@
 					<span class="tracking-1px text-lg">{{
 						$t("匿名報表列印")
 					}}</span>
-				</Button>
+				</NButton>
 			</div>
 			<div
 				class="flex items-center mx-auto h-144px w-[100%] justify-around bg-gray-500/10 rounded-md my-4"
@@ -703,8 +683,9 @@
 						{{ $t("錄取名單") }}
 					</div>
 				</div>
-				<Button
-					class="w-[20%] h-[60%] !bg-purple-500/10 m-4px p-button-outlined p-button-help"
+				<NButton
+					type="Admin"
+					class="w-[20%] h-[60%] !bg-purple-500/10 m-4px"
 					@click="
 						downloadPDFFile(enrollPdfData, 'enroll_report', false)
 					"
@@ -718,7 +699,7 @@
 					<span class="tracking-1px text-lg">{{
 						$t("報表列印")
 					}}</span>
-				</Button>
+				</NButton>
 			</div>
 			<!-- 
 			<div class="flex items-center justify-around bg-teal-100 rounded-md py-[40%] w-[80%] mx-auto">
@@ -755,6 +736,7 @@ import { useToast } from "primevue/usetoast";
 import { AdmissionAdminReviewerGradeResponse } from "@/api/admission/admin/types";
 import { AdmissionAdminOralGradeListResponse } from "@/api/admission/admin/types";
 import Toast from "primevue/toast";
+import NButton from "@/styles/CustomButton.vue";
 
 const adminAuth = useAdmissionAdminAuthStore();
 const api = new AdmissionAdminAPI(adminAuth);

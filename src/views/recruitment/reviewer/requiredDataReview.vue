@@ -59,7 +59,7 @@
 				</Column>
 			</DataTable>
 			<div class="bigBlueDivider !mt-50px"></div>
-			<div class="flex text-xl mt-20px">
+			<!-- <div class="flex text-xl mt-20px">
 				<Button
 					class="w-140px h-44px !ml-1200px p-button-success"
 					disabled
@@ -75,7 +75,7 @@
 			</div>
 			<div class="ml-930px mt-12px text-red-500">
 				{{ $t("※成績送出即無法再次修改，煩請送出前再三確認成績無誤") }}
-			</div>
+			</div> -->
 		</div>
 	</div>
 </template>

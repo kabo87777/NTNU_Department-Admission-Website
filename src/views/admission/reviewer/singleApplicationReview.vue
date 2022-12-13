@@ -7,20 +7,17 @@
 				custom
 				v-slot="{ navigate }"
 			>
-				<Button
-					class="p-button-secondary p-button-text !w-164px !h-29px"
+				<NButton
+					type="Reviewer"
+					class="!w-164px !h-29px"
 					@click="navigate"
 					role="link"
+					icon="pi pi-angle-left"
 				>
-					<img
-						alt="logo"
-						src="/assets/reviewer-page/Expand_left.png"
-						style="width: 1.5rem"
-					/>
 					<span class="text-base">
 						{{ $t("書面資料評閱") }}
 					</span>
-				</Button>
+				</NButton>
 			</router-link>
 			<div class="text-[32px] ml-24px">
 				{{ ID }}
@@ -63,22 +60,30 @@
 				:page="page"
 			/>
 			<div class="flex !mt-120px justify-around">
-				<Button
-					label="上一頁"
+				<NButton
+					type="Reviewer"
 					icon="pi pi-chevron-left"
 					iconPos="left"
 					@click="page--"
 					:disabled="page === 1"
 					class="!w-200px !h-40px"
-				/>
-				<Button
-					label="下一頁"
+				>
+					<span class="text-base">
+						{{ $t("上一頁") }}
+					</span>
+				</NButton>
+				<NButton
+					type="Reviewer"
 					icon="pi pi-chevron-right"
 					iconPos="right"
 					@click="page++"
 					:disabled="page === 4"
 					class="!w-200px !h-40px"
-				/>
+				>
+					<span class="text-base">
+						{{ $t("下一頁") }}
+					</span>
+				</NButton>
 			</div>
 		</div>
 		<div class="bigBlueDivider"></div>
@@ -163,18 +168,14 @@
 			<div class="text-xl ml-180px mt-5px">
 				{{ $t("書面分數合計： ") }} {{ total_score }} {{ $t("分") }}
 			</div>
-			<Button
+			<NButton
+				type="Reviewer"
 				class="w-100px h-40px !ml-20px p-button-success"
 				@click="saveScore"
+				icon="pi pi-check"
 			>
-				<img
-					alt="logo"
-					src="/assets/project-setting/Check_fill.png"
-					style="width: 1.5rem"
-					class="fill-green-500"
-				/>
 				<span class="tracking-1px">{{ $t("保存") }}</span>
-			</Button>
+			</NButton>
 		</div>
 	</div>
 </template>
@@ -195,6 +196,7 @@ import { useGlobalStore } from "@/stores/AdmissionReviewerStore";
 import { useToast } from "primevue/usetoast";
 import SelectButton from "primevue/selectbutton";
 import VuePdfEmbed from "vue-pdf-embed";
+import NButton from "@/styles/CustomButton.vue";
 
 const route = useRoute();
 const { t } = useI18n();
