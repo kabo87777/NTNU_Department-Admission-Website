@@ -2,7 +2,7 @@
 	<Toast position="top-right" />
 	<!-- Return Button -->
 	<router-link to="/admission">
-		<NButton type="White" icon="pi pi-angle-left" p="2" my="4">
+		<NButton type="White" size="sm" icon="pi pi-angle-left" p="2" my="6">
 			切換登入身份 Change your identity
 		</NButton>
 	</router-link>

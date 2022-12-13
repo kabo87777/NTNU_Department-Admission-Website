@@ -2,7 +2,7 @@
 	<Toast position="top-right" />
 	<!-- Return Button -->
 	<router-link to="/admission">
-		<NButton type="White" icon="pi pi-angle-left" p="2" my="4">
+		<NButton type="White" size="sm" icon="pi pi-angle-left" p="2" my="6">
 			切換登入身份 Change your identity
 		</NButton>
 	</router-link>
@@ -60,7 +60,7 @@
 				<!-- Remember Account -->
 				<div flex="~" gap="2" w="full" class="items-center">
 					<Checkbox v-model="isRememberAccount" :binary="true" />
-					<div text="xs body">
+					<div text="sm body">
 						<div>下次登入時記住帳號</div>
 						<div>Remember Account at next Login</div>
 					</div>
