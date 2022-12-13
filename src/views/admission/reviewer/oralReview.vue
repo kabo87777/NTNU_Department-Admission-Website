@@ -52,16 +52,28 @@
 						<Column :header="reason" :rowspan="2"></Column> -->
 					</Row>
 					<Row>
-						<Column :header="score1FieldName" :colspan="1" />
-						<Column :header="score2FieldName" :colspan="1" />
-						<Column :header="score3FieldName" :colspan="1" />
 						<Column
-							v-if="scoreCount > 3"
+							v-if="score1Proportion > 0"
+							:header="score1FieldName"
+							:colspan="1"
+						/>
+						<Column
+							v-if="score2Proportion > 0"
+							:header="score2FieldName"
+							:colspan="1"
+						/>
+						<Column
+							v-if="score3Proportion > 0"
+							:header="score3FieldName"
+							:colspan="1"
+						/>
+						<Column
+							v-if="score4Proportion > 0"
 							:header="score4FieldName"
 							:colspan="1"
 						/>
 						<Column
-							v-if="scoreCount > 4"
+							v-if="score5Proportion > 0"
 							:header="score5FieldName"
 							:colspan="1"
 						/>
@@ -91,11 +103,11 @@
 							}}
 						</template>
 					</Column>
-					<Column field="oral_grade_1" />
-					<Column field="oral_grade_2" />
-					<Column field="oral_grade_3" />
-					<Column v-if="scoreCount > 3" field="oral_grade_4" />
-					<Column v-if="scoreCount > 4" field="oral_grade_5" />
+					<Column v-if="score1Proportion > 0" field="oral_grade_1" />
+					<Column v-if="score2Proportion > 0" field="oral_grade_2" />
+					<Column v-if="score3Proportion > 0" field="oral_grade_3" />
+					<Column v-if="score4Proportion > 0" field="oral_grade_4" />
+					<Column v-if="score5Proportion > 0" field="oral_grade_5" />
 					<!-- <Column
 					field="isImmediateEnroll"
 					dataType="boolean"
@@ -223,9 +235,9 @@ const {
 	}
 );
 
-const score1Proportion = ref(30);
-const score2Proportion = ref(30);
-const score3Proportion = ref(40);
+const score1Proportion = ref(0);
+const score2Proportion = ref(0);
+const score3Proportion = ref(0);
 const score4Proportion = ref(0);
 const score5Proportion = ref(0);
 const score1Title = ref("");
@@ -256,14 +268,26 @@ const { data: programGrading } = useQuery(
 			if (data!.oral_grade_name_5) {
 				score5Title.value = data!.oral_grade_name_5;
 			}
-			score1Proportion.value = data!.oral_grade_weight_1;
-			score2Proportion.value = data!.oral_grade_weight_2;
-			score3Proportion.value = data!.oral_grade_weight_3;
+			scoreCount.value = 0;
+			if (data!.oral_grade_weight_1 !== 0) {
+				score1Proportion.value = data!.oral_grade_weight_1!;
+				scoreCount.value++;
+			}
+			if (data!.oral_grade_weight_2 !== 0) {
+				score2Proportion.value = data!.oral_grade_weight_2!;
+				scoreCount.value++;
+			}
+			if (data!.oral_grade_weight_3 !== 0) {
+				score3Proportion.value = data!.oral_grade_weight_3!;
+				scoreCount.value++;
+			}
 			if (data!.oral_grade_weight_4 !== 0) {
 				score4Proportion.value = data!.oral_grade_weight_4!;
+				scoreCount.value++;
 			}
 			if (data!.oral_grade_weight_5 !== 0) {
 				score5Proportion.value = data!.oral_grade_weight_5!;
+				scoreCount.value++;
 			}
 			score1FieldName.value =
 				score1Title.value + score1Proportion.value + "%";
