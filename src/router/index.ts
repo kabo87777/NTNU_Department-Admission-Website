@@ -59,50 +59,60 @@ const routes: Array<RouteRecordRaw> = [
 				path: "admission/reviewer/signin",
 				name: "AdmissionReviewerSignin",
 				component: () =>
-					import("@/views/admission/reviewer/ReviewerSignin.vue"),
+					import(
+						"@/views/admission/reviewer/login/ReviewerSignin.vue"
+					),
 			},
 			{
 				path: "/admission/reviewer/forgetpassword",
 				name: "AdmissionReviewerForgetpassword",
 				component: () =>
-					import("@/views/admission/reviewer/ForgetPwd.vue"),
+					import("@/views/admission/reviewer/login/ForgetPwd.vue"),
 			},
 			{
 				path: "/admission/reviewer/password/reset",
 				name: "AdmissionReviewerResetPassword",
 				component: () =>
-					import("@/views/admission/reviewer/ResetPassword.vue"),
+					import(
+						"@/views/admission/reviewer/login/ResetPassword.vue"
+					),
 			},
 			{
 				path: "/admission/reviewer/forgetpassword/emailSent",
 				name: "AdmissionReviewerForgetPasswordEmailSent",
 				component: () =>
-					import("@/views/admission/reviewer/ForgetPwdEmailSent.vue"),
+					import(
+						"@/views/admission/reviewer/login/ForgetPwdEmailSent.vue"
+					),
 			},
 			// Admission - Manager
 			{
 				path: "admission/manager/signin",
 				name: "AdmissionManagerSignin",
 				component: () =>
-					import("@/views/admission/manager/ManagerSignin.vue"),
+					import("@/views/admission/manager/login/ManagerSignin.vue"),
 			},
 			{
 				path: "admission/manager/forgetPassword",
 				name: "AdmissionManagerForgetPassword",
 				component: () =>
-					import("@/views/admission/manager/ForgetPassword.vue"),
+					import(
+						"@/views/admission/manager/login/ForgetPassword.vue"
+					),
 			},
 			{
 				path: "admission/manager/password/reset",
 				name: "AdmissionManagerResetPassword",
 				component: () =>
-					import("@/views/admission/manager/ResetPwd.vue"),
+					import("@/views/admission/manager/login/ResetPwd.vue"),
 			},
 			{
 				path: "admission/manager/forgetpassword/emailSent",
 				name: "AdmissionManagerForgetPasswordEmailSent",
 				component: () =>
-					import("@/views/admission/manager/ForgetPwdEmailSent.vue"),
+					import(
+						"@/views/admission/manager/login/ForgetPwdEmailSent.vue"
+					),
 			},
 			// Recruitment - choose role
 			{
