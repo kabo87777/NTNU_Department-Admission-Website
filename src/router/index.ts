@@ -160,48 +160,30 @@ const routes: Array<RouteRecordRaw> = [
 					import("@/views/recruitment/reviewer/login/pwdForget.vue"),
 			},
 			{
-				path: "recruitment/reviewer/forgetpassword/emailSent",
-				name: "recruitmentReviewerPasswordForgetEmailSent",
-				component: () =>
-					import(
-						"@/views/recruitment/reviewer/login/pwdForgetEmailSent.vue"
-					),
-			},
-			{
 				path: "recruitment/reviewer/password/firstLogin",
 				name: "recruitmentReviewerPasswordFirstLogin",
 				component: () =>
-					import(
-						"@/views/recruitment/reviewer/login/pwdFirstLogin.vue"
-					),
+					import("@/views/recruitment/reviewer/login/FirstLogin.vue"),
 			},
 			// Recruitment - Manager
 			{
 				path: "recruitment/manager/signin",
 				name: "RecruitmentManagerSignin",
 				component: () =>
-					import("@/views/recruitment/manager/login/signin.vue"),
+					import("@/views/recruitment/manager/login/Signin.vue"),
 			},
 			// Recruitment - manager forget & reset password
 			{
 				path: "recruitment/manager/password/reset",
 				name: "recruitmentManagerPasswordReset",
 				component: () =>
-					import("@/views/recruitment/manager/login/pwdReset.vue"),
+					import("@/views/recruitment/manager/login/PwdReset.vue"),
 			},
 			{
 				path: "recruitment/manager/forgetpassword",
 				name: "recruitmentManagerPasswordForget",
 				component: () =>
-					import("@/views/recruitment/manager/login/pwdForget.vue"),
-			},
-			{
-				path: "recruitment/manager/forgetpassword/emailSent",
-				name: "recruitmentManagerPasswordForgetEmailSent",
-				component: () =>
-					import(
-						"@/views/recruitment/manager/login/pwdForgetEmailSent.vue"
-					),
+					import("@/views/recruitment/manager/login/PwdForget.vue"),
 			},
 		],
 	},
