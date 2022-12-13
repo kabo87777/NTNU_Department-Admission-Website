@@ -67,11 +67,8 @@
 				</div>
 			</template>
 			<template #Footer>
-				<!-- Captcha -->
-				<div>
-					<Turnstile ref="turnstileRef" />
-				</div>
 				<!-- Login Button -->
+				<Turnstile ref="turnstileRef" />
 				<NButton
 					class="w-3/5 p-2 m-auto"
 					type="Applicant"

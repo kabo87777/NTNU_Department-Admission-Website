@@ -1,92 +1,69 @@
-<template class="overflow-hidden">
+<template>
 	<Toast position="top-right" />
-	<div class="flex">
-		<div class="flex-none w-150 px-6 pt-40 space-y-8">
-			<div class="px-8 space-y-2">
-				<div class="text-s text-gray-500">
-					國立台灣師範大學資訊工程學系 NTNU CSIE
-				</div>
-				<div class="flex items-end gap-2 font-medium text-gray-900">
-					<div class="text-4xl">教師聘請系統</div>
-					<div class="text-xl">Teacher Recruitment System</div>
-				</div>
-			</div>
-			<div class="px-8 pb-8 space-y-4">
-				<div class="flex items-end gap-2 managerTextColor">
-					<div>歡迎</div>
-				</div>
-				<div class="flex items-center gap-2 managerTextColor">
-					<i class="pi pi-circle" style="font-size: 0.5rem" />
-					<div class="flex-none font-medium">重設密碼</div>
-					<div class="flex-none font-medium">Reset Password</div>
-					<Divider />
-				</div>
-				<div class="flex-col px-4">
-					<div
-						class="flex items-center gap-2 pb-2"
-						text="sm gray-500"
-					>
-						<div>設置密碼</div>
-						<div>Setting Password</div>
-					</div>
-					<InputText
-						name="password"
-						type="password"
-						v-model="password.newPass"
-						class="p-inputtext-sm w-full"
-						required
-					/>
-					<div class="absolute" v-if="password.isNewPassBlank">
-						<small id="newPass-help" class="p-error">
-							{{ $t("請輸入新密碼") }}
-						</small>
-					</div>
-				</div>
-				<div class="flex-col px-4 pt-4">
-					<div
-						class="flex items-center gap-2 pb-2"
-						text="sm gray-500"
-					>
-						<div>確認密碼</div>
-						<div>Confirm Password</div>
-					</div>
-					<InputText
-						name="password"
-						type="password"
-						v-model="password.confirmPass"
-						class="p-inputtext-sm w-full"
-						required
-					/>
-					<div class="absolute" v-if="password.notMatch">
-						<small id="confirmPass-help" class="p-error">
-							{{ $t("密碼不符") }}
-						</small>
-					</div>
+	<!-- Title -->
+	<Title>
+		<template #Subtitle>
+			<div class="<md:hidden">國立臺灣師範大學資訊工程學系</div>
+		</template>
+		<template #Chinese>教師聘請系統</template>
+		<template #English>Teacher Recruitment System</template>
+		<template #Divider>
+			<div text="pAdmin">行政人員重設密碼 Reset Password</div>
+		</template>
+	</Title>
+	<!-- Body -->
+	<Body>
+		<template #Content>
+			<!-- Set Password -->
+			<div flex="~ col gap-1">
+				<div text="sm body">設置密碼 Setting Password</div>
+				<InputText
+					name="password"
+					type="password"
+					v-model="password.newPass"
+					class="h-12 w-full"
+					required
+				/>
+				<div text="xs danger" v-if="password.isNewPassBlank">
+					※ 請輸入新密碼 Please Set your new Password.
 				</div>
 			</div>
-			<div class="flex-col-inline px-4 gap-y-8">
-				<div class="flex justify-center">
-					<Button
-						class="p-button-sm p-button-secondary p-button-outlined !mt-60px !text-[16px]"
-						type="submit"
-						:loading="isChangePassLoading"
-						@click="onSubmit()"
-					>
-						<div class="flex justify-center gap-2 mx-auto">
-							<div>提交</div>
-							<div>Submit</div>
-						</div>
-					</Button>
+			<!-- Confirm Password -->
+			<div flex="~ col gap-1">
+				<div text="sm body">確認密碼 Confirm Password</div>
+				<InputText
+					name="password"
+					type="password"
+					v-model="password.confirmPass"
+					class="h-12 w-full"
+					required
+				/>
+				<div text="xs danger" v-if="password.notMatch">
+					※ 密碼不符 Confirm password is not matched.
 				</div>
-				<div></div>
 			</div>
-		</div>
-	</div>
+		</template>
+		<template #Footer>
+			<!-- Submit Button -->
+			<NButton
+				class="w-3/5 p-2 m-auto"
+				type="Admin"
+				size="lg"
+				:loading="isChangePassLoading"
+				@click="onSubmit()"
+			>
+				提交 Submit
+			</NButton>
+		</template>
+	</Body>
 </template>
 
 <script setup lang="ts">
-import { ref, toRaw, reactive } from "vue";
 import InputText from "primevue/inputtext";
+import NButton from "@/styles/CustomButton.vue";
+import Title from "@/styles/login/LoginTitle.vue";
+import Body from "@/styles/login/LoginBody.vue";
+import { ref, toRaw, reactive } from "vue";
 import { useToast } from "primevue/usetoast";
 import { useRecruitmentAdminAuthStore } from "@/stores/universalAuth";
 import { RecruitmentAdminAPI } from "@/api/recruitment/admin/api";

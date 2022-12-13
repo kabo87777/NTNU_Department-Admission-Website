@@ -1,34 +1,27 @@
 <template>
 	<Toast position="top-right" />
-	<div my="auto">
-		<!-- Button: Back to Recruitment Login -->
-		<router-link to="/recruitment">
-			<button
-				class="flex items-center gap-2 p-2 my-4"
-				text="sm secondary"
-				border="rounded-lg"
-				hover="bg-nGrey-200 text-title"
-				active="bg-nGrey-600 text-white"
-			>
-				<i class="pi pi-angle-left" />
-				<div>切換登入身份</div>
-				<div>Change your identity</div>
-			</button>
-		</router-link>
-		<div mx="4" space="y-2">
-			<div text="secondary" font="light">
-				國立臺灣師範大學資訊工程學系
-			</div>
-			<div text="3xl title" font="medium">教師聘請系統</div>
-			<div text="xl title" font="medium">Teacher Recruitment System</div>
-		</div>
-		<!-- Divider -->
-		<Divider align="center">
-			<div p="8" text="sm pAdmin">行政人員登入 Manager Login</div>
-		</Divider>
-		<!-- Login Form -->
-		<div flex="~ col gap-8" w="3/4" mx="auto">
-			<form @submit="onSubmit" ref="form" space="y-6">
+	<Toast position="top-right" />
+	<!-- Return Button -->
+	<router-link :to="{ name: 'RecruitmentSignin' }">
+		<NButton type="White" icon="pi pi-angle-left" p="2" my="4">
+			切換登入身份 Change your identity
+		</NButton>
+	</router-link>
+	<!-- Title -->
+	<Title>
+		<template #Subtitle>
+			<div class="<md:hidden">國立臺灣師範大學資訊工程學系</div>
+		</template>
+		<template #Chinese>教師聘請系統</template>
+		<template #English>Teacher Recruitment System</template>
+		<template #Divider>
+			<div text="pAdmin">行政人員登入 Manager Login</div>
+		</template>
+	</Title>
+	<!-- Body -->
+	<form @submit="onSubmit" ref="form">
+		<Body>
+			<template #Content>
 				<!-- Account -->
 				<Field
 					name="email"
@@ -36,22 +29,15 @@
 					v-model="email"
 				>
 					<div flex="~ col gap-1">
-						<div text="sm body" font="light">電郵地址 E-mail</div>
+						<div text="sm body">電郵地址 E-mail</div>
 						<InputText
 							v-bind="field"
 							name="email"
 							type="email"
-							class="h-11"
+							class="h-12"
 							:disabled="isSubmitting"
 							required
 						/>
-						<div
-							v-if="errorMessage && meta.touched"
-							text="xs danger"
-							font="light"
-						>
-							※ 此欄位不可為空白 Required
-						</div>
 					</div>
 				</Field>
 				<!-- Password -->
@@ -61,64 +47,46 @@
 					v-model="password"
 				>
 					<div flex="~ col gap-1">
-						<div text="sm body" font="light">密碼 Password</div>
+						<div text="sm body">密碼 Password</div>
 						<InputText
 							v-bind="field"
 							name="password"
 							type="password"
-							class="h-11"
+							class="h-12"
 							:disabled="isSubmitting"
 							required
 						/>
-						<div
-							v-if="errorMessage && meta.touched"
-							text="xs danger"
-							font="light"
-						>
-							※ 此欄位不可為空白 Required
-						</div>
 					</div>
 				</Field>
 				<!-- Remember Account -->
 				<div flex="~" gap="2" w="full" class="items-center">
 					<Checkbox v-model="isRememberAccount" :binary="true" />
-					<div text="xs body" font="light">
+					<div text="xs body">
 						<div>下次登入時記住帳號</div>
 						<div>Remember Account at next Login</div>
 					</div>
 				</div>
-				<!-- Captcha -->
-				<div>
-					<Turnstile ref="turnstileRef" />
-				</div>
+			</template>
+			<template #Footer>
 				<!-- Login Button -->
-				<div flex="~ col" gap="6" w="60" m="auto">
-					<!-- TODO: add spinning wheel while Turnstile runs -->
-					<button
-						class="p-2 w-full border-2 text-pAdmin"
-						border="2 opacity-30 nRed-600 rounded-lg"
-						hover="text-title bg-nRed-200 border-nRed-200"
-						active="text-white bg-nRed-600"
-						:loading="isTurnstileRunning || isSubmitting"
-					>
-						<div>登入 Login</div>
-					</button>
-					<!-- Forget Password -->
-					<router-link to="/recruitment/manager/forgetpassword">
-						<button
-							class="p-2 w-full"
-							text="sm secondary"
-							border="rounded-lg"
-							hover="bg-nGrey-200 text-title"
-							active="bg-nGrey-600 text-white"
-						>
-							<div>忘記密碼 Forget Password</div>
-						</button>
-					</router-link>
-				</div>
-			</form>
-		</div>
-	</div>
+				<Turnstile ref="turnstileRef" />
+				<NButton
+					class="w-3/5 p-2 m-auto"
+					type="Admin"
+					size="lg"
+					:loading="isTurnstileRunning || isSubmitting"
+				>
+					登入 Login
+				</NButton>
+				<!-- Forget Password -->
+				<router-link to="/recruitment/manager/forgetpassword">
+					<NButton w="3/5" p="2" m="auto" size="sm" type="White">
+						忘記密碼 Forget Password
+					</NButton>
+				</router-link>
+			</template>
+		</Body>
+	</form>
 </template>
 
 <script setup lang="ts">
@@ -135,9 +103,11 @@ import { useUserInfoStore } from "@/stores/RecruitmentReviewerStore";
 import type { TurnstileComponentExposes } from "@/components/Turnstile.vue";
 import Turnstile from "@/components/Turnstile.vue";
 
-import Button from "primevue/button";
 import Checkbox from "primevue/checkbox";
 import InputText from "primevue/inputtext";
+import NButton from "@/styles/CustomButton.vue";
+import Title from "@/styles/login/LoginTitle.vue";
+import Body from "@/styles/login/LoginBody.vue";
 
 const toast = useToast();
 const router = useRouter();

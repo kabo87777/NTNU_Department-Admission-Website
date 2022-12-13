@@ -71,7 +71,6 @@ import { useRecruitmentApplicantAuthStore } from "@/stores/universalAuth";
 import { RecruitmentApplicantAPI } from "@/api/recruitment/applicant/api";
 import { universalAuthResetPwdData } from "@/api/universalAuth";
 import { useRouter } from "vue-router";
-import { BooleanSchema } from "yup";
 const router = useRouter();
 
 const toast = useToast();
