@@ -265,13 +265,9 @@ const {
 			);
 			application_end_time.value = new Date(data.application_end_date);
 			review_stage1_start_time.value = new Date(data.review_start_date);
-			review_stage1_end_time.value = new Date(data.review_end_date);
-			if (data.stage === "docs_stage") {
-				review_stage.value = translation.phase1;
-			}
-			if (data.stage === "oral_stage") {
-				review_stage.value = translation.phase2;
-			}
+			review_stage1_end_time.value = new Date(data.docs_end_date);
+			review_stage2_start_time.value = new Date(data.oral_start_date);
+			review_stage2_end_time.value = new Date(data.review_end_date);
 		},
 		// TODO: onError
 	}
@@ -326,9 +322,13 @@ async function update() {
 					dateTransform(application_end_time.value) + "+08:00",
 				review_start_date:
 					dateTransform(review_stage1_start_time.value) + "+08:00",
-				review_end_date:
+				docs_end_date:
 					dateTransform(review_stage1_end_time.value) + "+08:00",
-				stage: stage.value,
+				oral_start_date:
+					dateTransform(review_stage2_start_time.value) + "+08:00",
+				review_end_date:
+					dateTransform(review_stage2_end_time.value) + "+08:00",
+				require_file: '["file1", "file2"]',
 			},
 			{
 				onSuccess: () => {

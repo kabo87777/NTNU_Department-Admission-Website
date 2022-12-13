@@ -39,7 +39,26 @@
 		</div>
 		<div class="mt-10px !h-1830px !ml-40px">
 			<vue-pdf-embed
-				:source="'data:application/pdf;base64,' + pdfData"
+				v-if="data === '基本資料'"
+				:source="'data:application/pdf;base64,' + infoPDF"
+				class="!h-1600px"
+				:page="page"
+			/>
+			<vue-pdf-embed
+				v-if="data === '檢附資料'"
+				:source="'data:application/pdf;base64,' + uploadFilePDF"
+				class="!h-1600px"
+				:page="page"
+			/>
+			<vue-pdf-embed
+				v-if="data === '推薦信'"
+				:source="'data:application/pdf;base64,' + recommendLetterPDF"
+				class="!h-1600px"
+				:page="page"
+			/>
+			<vue-pdf-embed
+				v-if="data === '整合pdf'"
+				:source="'data:application/pdf;base64,' + combinePDF"
 				class="!h-1600px"
 				:page="page"
 			/>
@@ -289,19 +308,51 @@ const { data: programGrading } = useQuery(
 		},
 	}
 );
-
-const config = {
-	headers: { Authorization: adminAuth.credentials?.authorization },
-};
-const pdfData = ref("JVBERi0xLjMKJcTl8uXrp/");
-const { data: pdfBase64 } = useQuery(
-	["pdfBase64"],
+const infoPDF = ref("");
+const recommendLetterPDF = ref("");
+const uploadFilePDF = ref("");
+const combinePDF = ref("");
+useQuery(
+	["infoPDF"],
 	async () => {
-		return await api.getApplicantSingleFile("1", 1);
+		return await api.getApplicantInfoFile(ID.value);
 	},
 	{
 		onSuccess: (data) => {
-			pdfData.value = data!;
+			infoPDF.value = data!;
+		},
+	}
+);
+useQuery(
+	["recommendLetterPDF"],
+	async () => {
+		return await api.getApplicantRecommendLetter(ID.value);
+	},
+	{
+		onSuccess: (data) => {
+			recommendLetterPDF.value = data!;
+		},
+	}
+);
+useQuery(
+	["combinePDF"],
+	async () => {
+		return await api.getApplicantCombineFile(ID.value);
+	},
+	{
+		onSuccess: (data) => {
+			combinePDF.value = data!;
+		},
+	}
+);
+useQuery(
+	["uploadFilePDF"],
+	async () => {
+		return await api.getApplicantCategoryCombineFile(ID.value);
+	},
+	{
+		onSuccess: (data) => {
+			uploadFilePDF.value = data!;
 		},
 	}
 );

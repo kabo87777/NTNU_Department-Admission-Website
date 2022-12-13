@@ -1043,7 +1043,7 @@ async function doneEdit() {
 		oral_stage: p2_result.value,
 		oral_order: admitted_order.value,
 	});
-	applicantDocsGradeList.refetch({ throwOnError: true });
+	// applicantDocsGradeList.refetch({ throwOnError: true });
 	productDialog.value = false;
 	await queryClient.invalidateQueries({
 		queryKey: ["admissionAdminDocsGradeList"],

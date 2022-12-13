@@ -41,6 +41,22 @@
 					</template>
 				</Column>
 				<Column field="comment" :header="reason" />
+				<Column :header="recommanded">
+					<template #body="slotProps">
+						<Button
+							v-if="slotProps.data.isRecommend"
+							icon="pi pi-check-circle"
+							class="p-button-rounded p-button-danger p-button-text"
+							@click="notRecommend(slotProps)"
+						/>
+						<Button
+							v-else
+							icon="pi pi-circle"
+							class="p-button-rounded p-button-danger p-button-text"
+							@click="recommend(slotProps)"
+						/>
+					</template>
+				</Column>
 			</DataTable>
 			<div class="bigBlueDivider !mt-50px"></div>
 			<div class="flex text-xl mt-20px">
@@ -71,13 +87,11 @@ import { computed, ref } from "vue";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import Button from "primevue/button";
-import ProgressBar from "primevue/progressbar";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { useRecruitmentReviewerAuthStore } from "@/stores/universalAuth";
 import { RecruitmentReviewerAPI } from "@/api/recruitment/reviewer/api";
-import { useQuery, useQueryClient } from "@tanstack/vue-query";
-import { InvalidSessionError } from "@/api/error";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
 import { useGlobalStore } from "@/stores/RecruitmentReviewerStore";
 import { useToast } from "primevue/usetoast";
 
@@ -100,27 +114,11 @@ const {
 	isError,
 	data: applicantList,
 	error,
-} = useQuery(
-	["recruitmenReviewerApplicantList"],
-	async () => {
-		return await api.getRequiredApplicantList(
-			store.recruitmentReviewerProgram!.id!
-		);
-	},
-	{
-		onSuccess: (data) => {
-			totalApplicant.value = data!.length;
-			applicantGraded.value = 0;
-			data!.forEach((applicant) => {
-				if (applicant.isRecommend != null) {
-					applicantGraded.value += 1;
-				}
-			});
-			progressValue.value =
-				(applicantGraded.value / totalApplicant.value) * 100;
-		},
-	}
-);
+} = useQuery(["recruitmenReviewerApplicantList"], async () => {
+	return await api.getRequiredApplicantList(
+		store.recruitmentReviewerProgram!.id!
+	);
+});
 
 const reviewStartTime = ref("");
 const reviewEndTime = ref("");
@@ -184,6 +182,40 @@ const reason = computed(() => t("理由/註記"));
 
 const selectedData = ref();
 const router = useRouter();
+const applicantID = ref();
+const newApplicantComment = useMutation(
+	async (newProgramData: any) => {
+		try {
+			return await api.updateApplicantComment(
+				store.recruitmentReviewerProgram!.id!,
+				applicantID.value,
+				newProgramData
+			);
+		} catch (error) {
+			toast.add({ severity: "error", summary: "無法保存", life: 3000 });
+			console.log(error);
+		}
+	},
+	{
+		onSuccess: () => {
+			queryClient.invalidateQueries({
+				queryKey: ["recruitmenReviewerApplicantList"],
+			});
+		},
+	}
+);
+const recommend = (event: any) => {
+	applicantID.value = event.data.id;
+	newApplicantComment.mutate({
+		isRecommend: true,
+	});
+};
+const notRecommend = (event: any) => {
+	applicantID.value = event.data.id;
+	newApplicantComment.mutate({
+		isRecommend: false,
+	});
+};
 const onRowSelect = (event: any) => {
 	selectedData.value = "";
 	router.push(
@@ -199,4 +231,5 @@ store.$subscribe(() => {
 		queryKey: ["recruitmentReviewerProgramList"],
 	});
 });
+const toast = useToast();
 </script>
