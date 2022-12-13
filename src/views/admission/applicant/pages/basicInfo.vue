@@ -126,7 +126,7 @@
 			</div>
 			<div class="flex pt-24px">
 				<div class="w-1/3">
-					<div>{{ "*" + $t("入職身份") }}</div>
+					<div>{{ "*" + $t("入學身份") }}</div>
 					<div>
 						<Dropdown
 							class="w-[70%] h-36px !mt-4px"
