@@ -35,14 +35,6 @@ const routes: Array<RouteRecordRaw> = [
 					import("@/views/admission/applicant/login/PwdReset.vue"),
 			},
 			{
-				path: "admission/applicant/forgetPassword/emailSent",
-				name: "AdmissionApplicantForgetPasswordEmailSent",
-				component: () =>
-					import(
-						"@/views/admission/applicant/login/PwdForgetEmailSent.vue"
-					),
-			},
-			{
 				path: "admission/applicant/forgetPassword",
 				name: "AdmissionApplicantForgetPassword",
 				component: () =>
@@ -67,14 +59,6 @@ const routes: Array<RouteRecordRaw> = [
 				component: () =>
 					import("@/views/admission/reviewer/login/PwdReset.vue"),
 			},
-			{
-				path: "/admission/reviewer/forgetpassword/emailSent",
-				name: "AdmissionReviewerForgetPasswordEmailSent",
-				component: () =>
-					import(
-						"@/views/admission/reviewer/login/PwdForgetEmailSent.vue"
-					),
-			},
 			// Admission - Manager
 			{
 				path: "admission/manager/signin",
@@ -93,14 +77,6 @@ const routes: Array<RouteRecordRaw> = [
 				name: "AdmissionManagerResetPassword",
 				component: () =>
 					import("@/views/admission/manager/login/PwdReset.vue"),
-			},
-			{
-				path: "admission/manager/forgetpassword/emailSent",
-				name: "AdmissionManagerForgetPasswordEmailSent",
-				component: () =>
-					import(
-						"@/views/admission/manager/login/PwdForgetEmailSent.vue"
-					),
 			},
 			// Recruitment - choose role
 			{
