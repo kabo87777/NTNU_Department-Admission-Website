@@ -42,22 +42,24 @@
 				class="!h-1600px"
 				:page="page"
 			/>
-			<Button
-				label="上一頁"
-				icon="pi pi-chevron-left"
-				iconPos="left"
-				@click="page--"
-				:disabled="page === 1"
-				class="!mt-120px"
-			/>
-			<Button
-				label="下一頁"
-				icon="pi pi-chevron-right"
-				iconPos="right"
-				@click="page++"
-				:disabled="page === 4"
-				class="!ml-1030px"
-			/>
+			<div class="flex !mt-120px justify-around">
+				<Button
+					label="上一頁"
+					icon="pi pi-chevron-left"
+					iconPos="left"
+					@click="page--"
+					:disabled="page === 1"
+					class="!w-200px !h-40px"
+				/>
+				<Button
+					label="下一頁"
+					icon="pi pi-chevron-right"
+					iconPos="right"
+					@click="page++"
+					:disabled="page === 4"
+					class="!w-200px !h-40px"
+				/>
+			</div>
 		</div>
 		<div class="bigBlueDivider"></div>
 		<div class="flex mt-32px">

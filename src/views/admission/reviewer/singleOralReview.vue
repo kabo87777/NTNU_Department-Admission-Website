@@ -62,73 +62,76 @@
 				class="!h-1600px"
 				:page="page"
 			/>
-			<Button
-				label="上一頁"
-				icon="pi pi-chevron-left"
-				iconPos="left"
-				@click="page--"
-				:disabled="page === 1"
-				class="!mt-120px"
-			/>
-			<Button
-				label="下一頁"
-				icon="pi pi-chevron-right"
-				iconPos="right"
-				@click="page++"
-				:disabled="page === 4"
-				class="!ml-1030px"
-			/>
+			<div class="flex !mt-120px justify-around">
+				<Button
+					label="上一頁"
+					icon="pi pi-chevron-left"
+					iconPos="left"
+					@click="page--"
+					:disabled="page === 1"
+					class="!w-200px !h-40px"
+				/>
+				<Button
+					label="下一頁"
+					icon="pi pi-chevron-right"
+					iconPos="right"
+					@click="page++"
+					:disabled="page === 4"
+					class="!w-200px !h-40px"
+				/>
+			</div>
 		</div>
 		<div class="bigBlueDivider"></div>
 		<div class="flex mt-16px">
-			<div class="text-xl mt-5px">
+			<div class="text-xl mt-5px" v-if="oscore1Proportion !== 0">
 				{{ oscore1Title }} ({{ oscore1Proportion }}%)
 			</div>
 			<InputNumber
 				inputId="integeronly"
 				v-model="oinputScore_1"
 				class="ml-34px !w-132px !h-44px"
+				v-if="oscore1Proportion !== 0"
 			/>
-			<div class="text-xl ml-125px mt-5px">
+			<div class="text-xl ml-125px mt-5px" v-if="oscore2Proportion !== 0">
 				{{ oscore2Title }} ({{ oscore2Proportion }}%)
 			</div>
 			<InputNumber
 				inputId="integeronly"
 				v-model="oinputScore_2"
 				class="ml-34px !w-132px !h-44px"
+				v-if="oscore2Proportion !== 0"
 			/>
-			<div class="text-xl ml-125px mt-5px">
+			<div class="text-xl ml-125px mt-5px" v-if="oscore3Proportion !== 0">
 				{{ oscore3Title }} ({{ oscore3Proportion }}%)
 			</div>
 			<InputNumber
 				inputId="integeronly"
 				v-model="oinputScore_3"
 				class="ml-34px !w-132px !h-44px"
+				v-if="oscore3Proportion !== 0"
 			/>
 		</div>
 		<div
 			class="flex mt-16px"
-			v-if="programGrading?.oral_grade_weight_4 !== 0"
+			v-if="oscore4Proportion !== 0 || oscore5Proportion !== 0"
 		>
-			<div class="text-xl mt-5px">
+			<div class="text-xl mt-5px" v-if="oscore4Proportion !== 0">
 				{{ oscore4Title }} ({{ oscore4Proportion }}%)
 			</div>
 			<InputNumber
 				inputId="integeronly"
 				v-model="oinputScore_4"
 				class="ml-34px !w-132px !h-44px"
+				v-if="oscore4Proportion !== 0"
 			/>
-			<div
-				class="text-xl ml-125px mt-5px"
-				v-if="programGrading?.oral_grade_weight_5 !== 0"
-			>
+			<div class="text-xl ml-125px mt-5px" v-if="oscore5Proportion !== 0">
 				{{ oscore5Title }} ({{ oscore5Proportion }}%)
 			</div>
 			<InputNumber
 				inputId="integeronly"
 				v-model="oinputScore_5"
 				class="ml-34px !w-132px !h-44px"
-				v-if="programGrading?.oral_grade_weight_5 !== 0"
+				v-if="oscore5Proportion !== 0"
 			/>
 		</div>
 		<div class="flex mt-24px">
@@ -202,9 +205,9 @@ const score2Proportion = ref(30);
 const score3Proportion = ref(40);
 const score4Proportion = ref(0);
 const score5Proportion = ref(0);
-const oscore1Proportion = ref(30);
-const oscore2Proportion = ref(30);
-const oscore3Proportion = ref(40);
+const oscore1Proportion = ref(0);
+const oscore2Proportion = ref(0);
+const oscore3Proportion = ref(0);
 const oscore4Proportion = ref(0);
 const oscore5Proportion = ref(0);
 const score1Title = ref("");
@@ -304,14 +307,20 @@ const { data: programGrading } = useQuery(
 			if (data!.docs_grade_name_5) {
 				score5Title.value = data!.docs_grade_name_5;
 			}
-			score1Proportion.value = data!.docs_grade_weight_1;
-			score2Proportion.value = data!.docs_grade_weight_2;
-			score3Proportion.value = data!.docs_grade_weight_3;
-			if (data!.docs_grade_weight_4) {
-				score4Proportion.value = data!.docs_grade_weight_4;
+			if (data!.docs_grade_weight_1 !== 0) {
+				score1Proportion.value = data!.docs_grade_weight_1!;
 			}
-			if (data!.docs_grade_weight_5) {
-				score5Proportion.value = data!.docs_grade_weight_5;
+			if (data!.docs_grade_weight_2 !== 0) {
+				score2Proportion.value = data!.docs_grade_weight_2!;
+			}
+			if (data!.docs_grade_weight_3 !== 0) {
+				score3Proportion.value = data!.docs_grade_weight_3!;
+			}
+			if (data!.docs_grade_weight_4 !== 0) {
+				score4Proportion.value = data!.docs_grade_weight_4!;
+			}
+			if (data!.docs_grade_weight_5 !== 0) {
+				score5Proportion.value = data!.docs_grade_weight_5!;
 			}
 
 			//oral section
@@ -324,14 +333,20 @@ const { data: programGrading } = useQuery(
 			if (data!.oral_grade_name_5) {
 				oscore5Title.value = data!.oral_grade_name_5;
 			}
-			oscore1Proportion.value = data!.oral_grade_weight_1;
-			oscore2Proportion.value = data!.oral_grade_weight_2;
-			oscore3Proportion.value = data!.oral_grade_weight_3;
-			if (data!.oral_grade_weight_4) {
-				oscore4Proportion.value = data!.oral_grade_weight_4;
+			if (data!.oral_grade_weight_1 !== 0) {
+				oscore1Proportion.value = data!.oral_grade_weight_1!;
 			}
-			if (data!.oral_grade_weight_5) {
-				oscore5Proportion.value = data!.oral_grade_weight_5;
+			if (data!.oral_grade_weight_2 !== 0) {
+				oscore2Proportion.value = data!.oral_grade_weight_2!;
+			}
+			if (data!.oral_grade_weight_3 !== 0) {
+				oscore3Proportion.value = data!.oral_grade_weight_3!;
+			}
+			if (data!.oral_grade_weight_4 !== 0) {
+				oscore4Proportion.value = data!.oral_grade_weight_4!;
+			}
+			if (data!.oral_grade_weight_5 !== 0) {
+				oscore5Proportion.value = data!.oral_grade_weight_5!;
 			}
 		},
 	}
