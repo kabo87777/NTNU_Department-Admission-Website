@@ -148,8 +148,8 @@ const authStore = useRecruitmentAdminAuthStore();
 // Login Form
 const turnstileRef = ref<TurnstileComponentExposes>();
 const isRememberAccount = ref(false);
-const email = ref("");
-const password = ref("");
+const email = ref("ntnuradmin1@yopmail.com");
+const password = ref("Example123");
 const isTurnstileRunning = computed(() => !turnstileRef.value?.turnstileToken);
 
 // TODO: i18n error message
