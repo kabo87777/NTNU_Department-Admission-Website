@@ -86,7 +86,7 @@ const routes: Array<RouteRecordRaw> = [
 					titleKey: "登入頁面",
 				},
 				component: () =>
-					import("@/views/recruitment/recruitmentSignin.vue"),
+					import("@/views/recruitment/XecruitmentSignin.vue"),
 			},
 			// Recruitment - Applicant
 			{
