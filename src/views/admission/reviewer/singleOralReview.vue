@@ -1,5 +1,6 @@
 <template>
-	<div class="ml-128px mr-128px mt-62px">
+	<div v-if="load"></div>
+	<div v-else>
 		<div class="flex">
 			<router-link
 				to="/admission/reviewer/oralReview"
@@ -28,63 +29,93 @@
 				{{ name }}
 			</div>
 		</div>
-		<div class="bigBrownDivider"></div>
-		<div class="p-fluid">
+		<div class="bigBlueDivider"></div>
+		<div class="p-fluid !mt-5px">
 			<SelectButton
-				v-model="vfield"
-				:options="field"
+				v-model="data"
+				:options="datas"
 				aria-labelledby="single"
-				class=""
-			></SelectButton>
+			/>
 		</div>
-		<div class="mt-10px h-670px">
-			<PDFView :pdfUrl="jsPdf" class="!h650px" />
+		<div class="mt-10px !h-1830px !ml-40px">
+			<vue-pdf-embed
+				:source="'data:application/pdf;base64,' + pdfData"
+				class="!h-1600px"
+				:page="page"
+			/>
+			<Button
+				label="上一頁"
+				icon="pi pi-chevron-left"
+				iconPos="left"
+				@click="page--"
+				:disabled="page === 1"
+				class="!mt-120px"
+			/>
+			<Button
+				label="下一頁"
+				icon="pi pi-chevron-right"
+				iconPos="right"
+				@click="page++"
+				:disabled="page === 4"
+				class="!ml-1030px"
+			/>
 		</div>
 		<div class="bigBlueDivider"></div>
-		<div class="flex mt-32px">
+		<div class="flex mt-16px">
 			<div class="text-xl mt-5px">
-				{{ $t("學習歷程") }} ({{ learningExProportion }}%)
+				{{ oscore1Title }} ({{ oscore1Proportion }}%)
 			</div>
 			<InputNumber
 				inputId="integeronly"
-				v-model="inputScore_1"
+				v-model="oinputScore_1"
 				class="ml-34px !w-132px !h-44px"
 			/>
 			<div class="text-xl ml-125px mt-5px">
-				{{ $t("發展潛能") }} ({{ devPotentialProportion }}%)
+				{{ oscore2Title }} ({{ oscore2Proportion }}%)
 			</div>
 			<InputNumber
 				inputId="integeronly"
-				v-model="inputScore_2"
+				v-model="oinputScore_2"
 				class="ml-34px !w-132px !h-44px"
 			/>
 			<div class="text-xl ml-125px mt-5px">
-				{{ $t("學習潛力") }} ({{ learnPotentialProportion }}%)
+				{{ oscore3Title }} ({{ oscore3Proportion }}%)
 			</div>
 			<InputNumber
 				inputId="integeronly"
-				v-model="inputScore_3"
+				v-model="oinputScore_3"
 				class="ml-34px !w-132px !h-44px"
 			/>
 		</div>
-		<div class="flex mt-42px">
-			<Checkbox
-				inputId="binary"
-				v-model="accessChecked"
-				:binary="true"
-				class="!w-31px !h-31px mt-9px"
-			/>
-			<div class="text-xl ml-5px mt-5px">
-				{{ $t("逕取，逕取原因：") }}
+		<div
+			class="flex mt-16px"
+			v-if="programGrading?.oral_grade_weight_4 !== 0"
+		>
+			<div class="text-xl mt-5px">
+				{{ oscore4Title }} ({{ oscore4Proportion }}%)
 			</div>
-			<InputText
-				type="text"
-				v-model="accessReason"
-				class="!w-549px !h-44px"
-				:disabled="disable"
+			<InputNumber
+				inputId="integeronly"
+				v-model="oinputScore_4"
+				class="ml-34px !w-132px !h-44px"
 			/>
-			<div class="text-xl ml-220px mt-5px">
-				{{ $t("書面分數合計： ") }} {{ total_score }} {{ $t("分") }}
+			<div
+				class="text-xl ml-125px mt-5px"
+				v-if="programGrading?.oral_grade_weight_5 !== 0"
+			>
+				{{ oscore5Title }} ({{ oscore5Proportion }}%)
+			</div>
+			<InputNumber
+				inputId="integeronly"
+				v-model="oinputScore_5"
+				class="ml-34px !w-132px !h-44px"
+				v-if="programGrading?.oral_grade_weight_5 !== 0"
+			/>
+		</div>
+		<div class="flex mt-24px">
+			<div>{{ $t("書面分數：") }} {{ total_score }} {{ $t("分") }}</div>
+			<div class="text-xl ml-180px mt-5px">
+				{{ $t("口試分數合計： ") }} {{ oral_score }} {{ $t("分") }}
 			</div>
 			<Button
 				class="w-100px h-40px !ml-20px p-button-success"
@@ -104,188 +135,253 @@
 
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import Button from "primevue/button";
 import InputNumber from "primevue/inputnumber";
 import Checkbox from "primevue/checkbox";
 import InputText from "primevue/inputtext";
-import SelectButton from "primevue/selectbutton";
+import { useI18n } from "vue-i18n";
 import PDFView from "@/components/pdfPreview.vue";
 import jsPdf from "./test.pdf";
+import { useAdmissionReviewerAuthStore } from "@/stores/universalAuth";
+import { AdmissionReviewerAPI } from "@/api/admission/reviewer/api";
+import { useMutation, useQuery } from "@tanstack/vue-query";
+import { InvalidSessionError } from "@/api/error";
+import { useGlobalStore } from "@/stores/AdmissionReviewerStore";
+import { useToast } from "primevue/usetoast";
+import SelectButton from "primevue/selectbutton";
+import VuePdfEmbed from "vue-pdf-embed";
 
 const route = useRoute();
+const { t } = useI18n();
+const router = useRouter();
+
+const adminAuth = useAdmissionReviewerAuthStore();
+const store = useGlobalStore();
+const api = new AdmissionReviewerAPI(adminAuth);
+
+const page = ref(1);
+const data = ref("基本資料");
+const datas = ref(["基本資料", "檢附資料", "推薦信", "整合pdf"]);
 
 // FIXME: logic may refactor
 
 const ID = computed(() => route.params.id);
-const inputScore_1 = ref(25);
-const inputScore_2 = ref(22);
-const inputScore_3 = ref(31);
+const newApplicantGrade = useMutation(async (newProgramData: any) => {
+	try {
+		return await api.updateSingleApplicantGrade(ID.value, newProgramData);
+	} catch (error) {
+		toast.add({ severity: "error", summary: "無法保存", life: 3000 });
+		console.log(error);
+	}
+});
 const accessChecked = ref();
 const disable = computed(() => !accessChecked.value);
 const accessReason = ref("");
-const total_score = computed(
-	() => inputScore_1.value + inputScore_2.value + inputScore_3.value
-);
-const learningExProportion = ref(30);
-const devPotentialProportion = ref(30);
-const learnPotentialProportion = ref(40);
+const score1Proportion = ref(30);
+const score2Proportion = ref(30);
+const score3Proportion = ref(40);
+const score4Proportion = ref(0);
+const score5Proportion = ref(0);
+const oscore1Proportion = ref(30);
+const oscore2Proportion = ref(30);
+const oscore3Proportion = ref(40);
+const oscore4Proportion = ref(0);
+const oscore5Proportion = ref(0);
+const score1Title = ref("");
+const score2Title = ref("");
+const score3Title = ref("");
+const score4Title = ref("");
+const score5Title = ref("");
+const oscore1Title = ref("");
+const oscore2Title = ref("");
+const oscore3Title = ref("");
+const oscore4Title = ref("");
+const oscore5Title = ref("");
+const inputScore_1 = ref(0);
+const inputScore_2 = ref(0);
+const inputScore_3 = ref(0);
+const inputScore_4 = ref(0);
+const inputScore_5 = ref(0);
+const oinputScore_1 = ref(0);
+const oinputScore_2 = ref(0);
+const oinputScore_3 = ref(0);
+const oinputScore_4 = ref(0);
+const oinputScore_5 = ref(0);
+const name = ref("");
+const total_score = computed(() => {
+	return (
+		(inputScore_1!.value! * score1Proportion.value) / 100 +
+		(inputScore_2!.value! * score2Proportion.value) / 100 +
+		(inputScore_3!.value! * score3Proportion.value) / 100 +
+		(inputScore_4!.value! * score4Proportion.value) / 100 +
+		(inputScore_5!.value! * score5Proportion.value) / 100
+	);
+});
+const oral_score = computed(() => {
+	return (
+		(oinputScore_1!.value! * score1Proportion.value) / 100 +
+		(oinputScore_2!.value! * score2Proportion.value) / 100 +
+		(oinputScore_3!.value! * score3Proportion.value) / 100 +
+		(oinputScore_4!.value! * score4Proportion.value) / 100 +
+		(oinputScore_5!.value! * score5Proportion.value) / 100
+	);
+});
 
-const vfield = ref();
-const field = ref(["基本資料欄位", "檢附資料欄位"]);
-
-// FIXME: This should not be hardcode.
-
-const data_list = ref([
-	{
-		id: "1000",
-		name: "Aaa",
-		score_1: 25,
-		score_2: 25,
-		score_3: 30,
-		total_score: 80,
-		contactInfo: "0912345678",
-		schoolEx: "a國小 b國中 c高中",
-		exam: "GRE:340 TOEFL:120",
-		otherInfo: "olympic champion",
+const {
+	isLoading,
+	isError,
+	data: applicantGrade,
+	error,
+} = useQuery(
+	["applicantGrade"],
+	async () => {
+		return await api.getSingleApplicantGrade(ID.value);
 	},
 	{
-		id: "1001",
-		name: "Bbb",
-		score_1: 25,
-		score_2: 25,
-		score_3: 30,
-		total_score: 80,
-		contactInfo: "0912345678",
-		schoolEx: "a國小 b國中 c高中",
-		exam: "GRE:340 TOEFL:120",
-		otherInfo: "olympic champion",
-	},
-	{
-		id: "1002",
-		name: "Ccc",
-		score_1: 25,
-		score_2: 25,
-		score_3: 30,
-		total_score: 80,
-		contactInfo: "0912345678",
-		schoolEx: "a國小 b國中 c高中",
-		exam: "GRE:340 TOEFL:120",
-		otherInfo: "olympic champion",
-	},
-	{
-		id: "1003",
-		name: "Ddd",
-		score_1: 25,
-		score_2: 25,
-		score_3: 30,
-		total_score: 80,
-		contactInfo: "0912345678",
-		schoolEx: "a國小 b國中 c高中",
-		exam: "GRE:340 TOEFL:120",
-		otherInfo: "olympic champion",
-	},
-	{
-		id: "1004",
-		name: "Eee",
-		score_1: 25,
-		score_2: 25,
-		score_3: 30,
-		total_score: 80,
-		contactInfo: "0912345678",
-		schoolEx: "a國小 b國中 c高中",
-		exam: "GRE:340 TOEFL:120",
-		otherInfo: "olympic champion",
-	},
-	{
-		id: "1005",
-		name: "fff",
-		score_1: 25,
-		score_2: 25,
-		score_3: 30,
-		total_score: 80,
-		contactInfo: "0912345678",
-		schoolEx: "a國小 b國中 c高中",
-		exam: "GRE:340 TOEFL:120",
-		otherInfo: "olympic champion",
-	},
-	{
-		id: "1006",
-		name: "Ggg",
-		score_1: 25,
-		score_2: 25,
-		score_3: 30,
-		total_score: 80,
-		contactInfo: "0912345678",
-		schoolEx: "a國小 b國中 c高中",
-		exam: "GRE:340 TOEFL:120",
-		otherInfo: "olympic champion",
-	},
-	{
-		id: "1007",
-		name: "Hhh",
-		score_1: 25,
-		score_2: 25,
-		score_3: 30,
-		total_score: 80,
-		contactInfo: "0912345678",
-		schoolEx: "a國小 b國中 c高中",
-		exam: "GRE:340 TOEFL:120",
-		otherInfo: "olympic champion",
-	},
-	{
-		id: "1008",
-		name: "Iii",
-		score_1: 25,
-		score_2: 25,
-		score_3: 30,
-		total_score: 80,
-		contactInfo: "0912345678",
-		schoolEx: "a國小 b國中 c高中",
-		exam: "GRE:340 TOEFL:120",
-		otherInfo: "olympic champion",
-	},
-	{
-		id: "1009",
-		name: "Jjj",
-		score_1: 25,
-		score_2: 25,
-		score_3: 30,
-		total_score: 80,
-		contactInfo: "0912345678",
-		schoolEx: "a國小 b國中 c高中",
-		exam: "GRE:340 TOEFL:120",
-		otherInfo: "olympic champion",
-	},
-	{
-		id: "1010",
-		name: "Kkk",
-		score_1: 25,
-		score_2: 25,
-		score_3: 30,
-		total_score: 80,
-		contactInfo: "0912345678",
-		schoolEx: "a國小 b國中 c高中",
-		exam: "GRE:340 TOEFL:120",
-		otherInfo: "olympic champion",
-	},
-]);
-
-const name = computed(
-	() =>
-		data_list.value[data_list.value.findIndex((obj) => obj.id == ID.value)]
-			.name
+		onSuccess: (data) => {
+			oinputScore_1.value = data!.oral_grade_1;
+			oinputScore_2.value = data!.oral_grade_2;
+			oinputScore_3.value = data!.oral_grade_3;
+			oinputScore_4.value = data!.oral_grade_4;
+			oinputScore_5.value = data!.oral_grade_5;
+			inputScore_1.value = data!.docs_grade_1;
+			inputScore_2.value = data!.docs_grade_2;
+			inputScore_3.value = data!.docs_grade_3;
+			inputScore_4.value = data!.docs_grade_4;
+			inputScore_5.value = data!.docs_grade_5;
+			accessChecked.value = data!.isImmediateEnroll;
+			accessReason.value = data!.immediate_enroll_comment;
+		},
+	}
 );
 
+const { data: applicantInfo } = useQuery(
+	["applicantInfo"],
+	async () => {
+		return await api.getSingleApplicantInfo(ID.value);
+	},
+	{
+		onSuccess: (data) => {
+			name.value = data![0].name;
+		},
+	}
+);
+
+const { data: programGrading } = useQuery(
+	["programGrading"],
+	async () => {
+		return await api.getProgramGrading(store.admissionReviewerProgram!.id);
+	},
+	{
+		onSuccess: (data) => {
+			//docs section
+			score1Title.value = data!.docs_grade_name_1;
+			score2Title.value = data!.docs_grade_name_2;
+			score3Title.value = data!.docs_grade_name_3;
+			if (data!.docs_grade_name_4) {
+				score4Title.value = data!.docs_grade_name_4;
+			}
+			if (data!.docs_grade_name_5) {
+				score5Title.value = data!.docs_grade_name_5;
+			}
+			score1Proportion.value = data!.docs_grade_weight_1;
+			score2Proportion.value = data!.docs_grade_weight_2;
+			score3Proportion.value = data!.docs_grade_weight_3;
+			if (data!.docs_grade_weight_4) {
+				score4Proportion.value = data!.docs_grade_weight_4;
+			}
+			if (data!.docs_grade_weight_5) {
+				score5Proportion.value = data!.docs_grade_weight_5;
+			}
+
+			//oral section
+			oscore1Title.value = data!.oral_grade_name_1;
+			oscore2Title.value = data!.oral_grade_name_2;
+			oscore3Title.value = data!.oral_grade_name_3;
+			if (data!.oral_grade_name_4) {
+				oscore4Title.value = data!.oral_grade_name_4;
+			}
+			if (data!.oral_grade_name_5) {
+				oscore5Title.value = data!.oral_grade_name_5;
+			}
+			oscore1Proportion.value = data!.oral_grade_weight_1;
+			oscore2Proportion.value = data!.oral_grade_weight_2;
+			oscore3Proportion.value = data!.oral_grade_weight_3;
+			if (data!.oral_grade_weight_4) {
+				oscore4Proportion.value = data!.oral_grade_weight_4;
+			}
+			if (data!.oral_grade_weight_5) {
+				oscore5Proportion.value = data!.oral_grade_weight_5;
+			}
+		},
+	}
+);
+
+const pdfData = ref("JVBERi0xLjMKJcTl8uXrp/");
+const { data: pdfBase64 } = useQuery(
+	["pdfBase64"],
+	async () => {
+		return await api.getApplicantSingleFile("1", 1);
+	},
+	{
+		onSuccess: (data) => {
+			pdfData.value = data!;
+		},
+	}
+);
+
+const load = computed(() => {
+	if (isLoading.value) {
+		return true;
+	}
+	return false;
+});
+
+const toast = useToast();
 function saveScore() {
-	data_list.value[
-		data_list.value.findIndex((obj) => obj.id == ID.value)
-	].score_1 = inputScore_1.value;
-	data_list.value[
-		data_list.value.findIndex((obj) => obj.id == ID.value)
-	].score_2 = inputScore_2.value;
-	data_list.value[
-		data_list.value.findIndex((obj) => obj.id == ID.value)
-	].score_3 = inputScore_3.value;
+	const today = new Date();
+	if (
+		oinputScore_1.value > 100 ||
+		oinputScore_2.value > 100 ||
+		oinputScore_3.value > 100
+	) {
+		toast.add({
+			severity: "error",
+			summary: "成績請輸入0~100",
+			life: 3000,
+		});
+		return;
+	}
+	if (
+		oinputScore_1.value < 0 ||
+		oinputScore_2.value < 0 ||
+		oinputScore_3.value < 0
+	) {
+		toast.add({
+			severity: "error",
+			summary: "成績請輸入0~100",
+			life: 3000,
+		});
+		return;
+	}
+	// if (accessChecked.value && !accessReason.value) {
+	// 	toast.add({ severity: "error", summary: "請輸入理由", life: 3000 });
+	// 	return;
+	// }
+	try {
+		newApplicantGrade.mutate({
+			oral_grade_1: oinputScore_1.value,
+			oral_grade_2: oinputScore_2.value,
+			oral_grade_3: oinputScore_3.value,
+			oral_grade_4: oinputScore_4.value,
+			oral_grade_5: oinputScore_5.value,
+			// isImmediateEnroll: accessChecked.value,
+			// immediate_enroll_comment: accessReason.value,
+		});
+		toast.add({ severity: "success", summary: "保存成功", life: 3000 });
+	} catch (error) {
+		// console.log(error);
+	}
 }
 </script>

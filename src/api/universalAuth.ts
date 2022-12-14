@@ -13,6 +13,26 @@ export interface universalAuthSendResetPwdEmailData {
 	"cf-turnstile-response": string;
 }
 
+export interface AdmissionApplicantAuthSendResetPwdEmailData {
+	username: string;
+	redirect_url: string;
+	"cf-turnstile-response": string;
+}
+
+export interface universalAuthSendPostEmailRegister {
+	name: string;
+	email: string;
+	password: string;
+	password_confirmation: string;
+	confirm_success_url: string;
+	"cf-turnstile-response": string;
+}
+
+export interface universalAuthResetPwdData {
+	password: string;
+	password_confirmation: string;
+}
+
 // type guard
 const buildAuthCredentialsFromHeaders = (
 	headers: any
@@ -80,20 +100,26 @@ export async function doUniversalAuthSignOut(auth: AuthStore) {
 	if (response.data?.error !== false) throw new Error("Sign out failed");
 }
 
-export async function doUniversalAuthSessionValidation(auth: AuthStore) {
+export async function doUniversalAuthSessionValidation(
+	auth: AuthStore
+): Promise<boolean> {
 	if (!auth.isValidCredentials) return false;
 
-	const response = await axios({
-		method: "GET",
-		url: auth.apiEndpoint + "/validate_token",
-		headers: {
-			"Content-Type": "application/json",
-			authorization: auth.credentials?.authorization,
-		},
-		data: {},
-	});
+	try {
+		const response = await axios({
+			method: "GET",
+			url: auth.apiEndpoint + "/validate_token",
+			headers: {
+				"Content-Type": "application/json",
+				authorization: auth.credentials?.authorization,
+			},
+			data: {},
+		});
 
-	if (!response.data?.success) return false;
+		if (response.data?.status !== "success") return false;
+	} catch (e) {
+		return false;
+	}
 
 	return true;
 }
@@ -104,5 +130,43 @@ export async function doUniversalAuthSendForgotPwdEmail(
 ) {
 	const response = await axios.post(auth.apiEndpoint + "/password", data);
 	console.log("response: ", response);
+	return response.data;
+}
+export async function doUniversalAuthSendPostEmailRegister(
+	auth: AuthStore,
+	data: universalAuthSendPostEmailRegister
+) {
+	const response = await axios.post(auth.apiEndpoint, data);
+	console.log("response: ", response);
+	return response.data;
+}
+
+export async function doAdmisssionApplicantAuthSendForgotPwdEmail(
+	auth: AuthStore,
+	data: AdmissionApplicantAuthSendResetPwdEmailData
+) {
+	const response = await axios.post(auth.apiEndpoint + "/password", data);
+	console.log("response: ", response);
+	return response.data;
+}
+
+export async function doUniversalAuthResetPassword(
+	auth: AuthStore,
+	data: universalAuthResetPwdData,
+	access_token: string,
+	client: string,
+	uid: string
+) {
+	const response = await axios({
+		method: "PUT",
+		url: auth.apiEndpoint + "/password",
+		headers: {
+			"access-token": access_token,
+			client: client,
+			uid: uid,
+		},
+		data: data,
+	});
+	console.log("response", response);
 	return response.data;
 }

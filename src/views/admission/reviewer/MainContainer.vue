@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<div style="position: fixed; top: 0; width: 100%; z-index: 1000">
+		<div style="position: fixed; top: 0; width: 100%; z-index: 10">
 			<NavBar />
 		</div>
 		<div style="display: flex; margin-top: 60px; position: relative">
@@ -8,26 +8,28 @@
 				style="
 					position: fixed;
 					float: left;
-					width: 20%;
-					min-width: 384px;
+					width: 360px;
 					border-right: 1px solid gray;
 					height: 100%;
 				"
 			>
 				<ReviewerSideBar />
 			</div>
-			<div style="margin-left: 400px; position: absolute; width: 80%">
+			<div style="margin-left: 360px; width: 100%; padding: 60px 6%">
 				<router-view />
 			</div>
 		</div>
 	</div>
+	<ScrollTop target="parent" :threshold="100" icon="pi pi-arrow-up" />
+	<ScrollTop />
 </template>
 
 <script setup lang="ts">
 import NavBar from "@/components/NavBar.vue";
-import ReviewerSideBar from "@/components/reviewerSidebar.vue";
+import ReviewerSideBar from "@/components/sidebars/admissionReviewerSidebar.vue";
+import ScrollTop from "primevue/scrolltop";
 
-import { watch } from "vue";
+import { useQuery } from "@tanstack/vue-query";
 import { useRouter } from "vue-router";
 
 import { useAdmissionReviewerAuthStore } from "@/stores/universalAuth";
@@ -35,13 +37,14 @@ import { doUniversalAuthSessionValidation } from "@/api/universalAuth";
 
 const router = useRouter();
 
-const reviewerAuth = useAdmissionReviewerAuthStore();
+const auth = useAdmissionReviewerAuthStore();
 
-watch(router.currentRoute, async () => {
-	if (!(await doUniversalAuthSessionValidation(reviewerAuth))) {
-		router.replace({ name: "AdmissionReviewerSignin" });
-		// TODO: show session expired notification
-	}
+useQuery(["admissionReviewerAuthorizationStatus"], async () => {
+	const status = await doUniversalAuthSessionValidation(auth);
+
+	if (status) return true;
+
+	return router.replace({ name: "AdmissionReviewerSignin" });
 });
 </script>
 

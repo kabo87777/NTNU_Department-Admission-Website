@@ -1,113 +1,108 @@
 <template>
-	<div class="mt-16px">
-		<div class="mt-16px">
+	<div>
+		<div class="mt-24px">
 			<div>
-				<label class="ml-8px text-24px font-medium">{{
-					$t("系統設置")
-				}}</label>
+				<label class="text-24px font-bold">{{ $t("系統設置") }}</label>
 			</div>
 		</div>
 		<div>
 			<SelectButton
-				class="mt-16px pl-16px selecttable"
+				class="mt-16px pl-16px"
 				v-model="activeTab"
 				:options="tabOptions"
 				optionLabel="name"
 				aria-labelledby="single"
+				:unselectable="false"
 			>
 			</SelectButton>
 		</div>
-		<div class="flex mt-16px">
+		<div class="flex mt-32px">
 			<div class="w-1/3 pl-16px">{{ $t("開放時間") }}</div>
 			<div class="w-1/3 pl-16px">{{ $t("截止時間") }}</div>
 		</div>
 		<div class="flex mt-16px">
-			<div p-fluid grid formgrid>
-				<Calendar
-					class="pl-16px"
-					inputId="time24"
-					v-model="date1"
-					:showTime="true"
-					:showSeconds="true"
-					:showIcon="true"
-				>
-				</Calendar>
+			<div class="w-1/3 pl-16px">
+				<div>
+					<Calendar dateFormat="yy-mm-dd" v-model="date.start" />
+				</div>
+				<div v-show="showRequire.start" class="absolute">
+					<small class="p-error">{{ $t("此為必填欄位") }}</small>
+				</div>
 			</div>
-			<div p-fluid grid formgrid>
-				<Calendar
-					class="pl-50px"
-					inputId="time24"
-					v-model="date2"
-					:showTime="true"
-					:showSeconds="true"
-					:showIcon="true"
-				>
-				</Calendar>
+			<div class="w-1/3 pl-16px">
+				<div>
+					<Calendar dateFormat="yy-mm-dd" v-model="date.end" />
+				</div>
+				<div v-show="showRequire.end" class="absolute">
+					<small class="p-error">{{ $t("此為必填欄位") }}</small>
+				</div>
 			</div>
 		</div>
 
 		<ParagraphDivider />
 
-		<div class="mt-16px">
+		<div class="mt-24px">
 			<div>
-				<label class="ml-8px text-24px font-medium">{{
-					$t("補件需求")
-				}}</label>
+				<label class="text-24px font-bold">{{ $t("補件需求") }}</label>
 			</div>
-		</div>
-		<div class="block mt-16px">
-			<div class="w-1/3 pl-16px">{{ $t("補件需求說明") }}:</div>
-			<div class="mt-8px ml-16px">
-				<InputText type="text" v-model="inputvalue" class="h-10" />
-				<span :style="{ marginLeft: '.5em' }">{{ inputvalue }}</span>
-			</div>
-		</div>
-		<div class="mt-16px ml-16px">
-			<Checkbox inputId="text" v-model="textChecked" :binary="true" />
-			<label for="text" class="ml-8px font-medium">{{
-				$t("文字輸入框")
-			}}</label>
 		</div>
 		<div class="flex mt-16px">
-			<div class="mt-16px ml-16px">
-				<Checkbox inputId="file" v-model="fileChecked" :binary="true" />
-				<label for="file" class="ml-8px font-medium"
-					>{{ $t("上傳檔案，檔案類型") }}:</label
-				>
-			</div>
-			<div class="ml-16px">
-				<span class="p-float-label">
+			<div class="w-1/3 pl-16px">
+				<div>{{ $t("類別") }}:</div>
+				<div class="mt-8px">
 					<Dropdown
-						id="dropdown"
-						v-model="value8"
-						:options="cities"
+						class="h-10 w-240px"
+						v-model="docInfo.category"
+						placeholder="請選擇類別"
+						:options="categoryOptions"
 						optionLabel="name"
-						class="h-10 w-40"
+						optionValue="name"
+					>
+						<template #value="slotProps">
+							<div v-if="slotProps.value" class="mt-[-6px]">
+								{{ slotProps.value }}
+							</div>
+							<div v-else class="mt-[-6px]">
+								{{ $t(slotProps.placeholder) }}
+							</div>
+						</template>
+						<template #option="slotProps">
+							<div class="mt-[-6px] h-12px">
+								{{ $t(slotProps.option.name) }}
+							</div>
+						</template>
+					</Dropdown>
+				</div>
+				<div v-show="showRequire.category" class="absolute">
+					<small class="p-error">{{ $t("此為必填欄位") }}</small>
+				</div>
+			</div>
+			<div class="w-1/3 pl-16px">
+				<div>{{ $t("文件名稱") }}:</div>
+				<div class="mt-8px">
+					<InputText
+						type="text"
+						v-model="docInfo.name"
+						class="h-10 w-240px"
 					/>
-				</span>
-			</div>
-
-			<div class="flex relative mt-40px">
-				<div class="smallRedDivider"></div>
-				<div class="smallRedDivider absolute right-0"></div>
+				</div>
+				<div v-show="showRequire.name" class="absolute">
+					<small class="p-error">{{ $t("此為必填欄位") }}</small>
+				</div>
 			</div>
 		</div>
 
-		<ParagraphDivider />
-
-		<div class="mt-16px">
-			<div>
-				<label class="ml-8px text-24px font-medium">{{
-					$t("提交內容")
-				}}</label>
-			</div>
-		</div>
-		<div class="mt-16px">{{ $t("尚未提交任何文字，檔案") }}</div>
-		<div class="bigRedDivider"></div>
-		<div class="mt-16px ml-20px grid justify-center">
+		<div class="bigRedDivider" style="margin-top: 32px"></div>
+		<div class="flex mt-16px ml-20px justify-center">
 			<Button
-				@click="displayEmail"
-				class="grid justify-center p-button-outlined p-button-secondary text-20px tracking-wide"
+				@click="saveOnclick"
+				class="p-button-outlined p-button-secondary text-20px"
+			>
+				{{ $t("儲存變更") }}
+			</Button>
+			<Button
+				@click="isModalVisible.sendEmail = true"
+				class="p-button-outlined p-button-secondary !ml-40px text-20px"
 			>
 				{{ $t("寄送E-mail通知") }}
 			</Button>
@@ -116,105 +111,284 @@
 		<div class="mt-20px"></div>
 	</div>
 	<Dialog
-		header="寄送email通知"
-		v-model:visible="emailNotification"
-		class="w-484px h-238px !tracking-4px"
+		v-model:visible="isModalVisible.sendEmail"
+		class="w-500px"
+		:closable="false"
+		:draggable="false"
+		:modal="true"
 	>
-		<divider class="!mt-0px" />
-		<p class="mt-24px text-base tracking-2px">
-			{{ $t("確定要寄送email通知已開啟補件系統嗎") }}?
-		</p>
-		<div class="flex">
+		<template #header>
+			<div class="font-bold text-[24px]">
+				{{ $t("確認") }}
+			</div>
+		</template>
+		<template #default>
+			<div class="flex">
+				<div class="mt-2px">
+					<i class="pi pi-question-circle" style="font-size: 20px" />
+				</div>
+				<div class="ml-4px">
+					{{ $t("確認寄送通知") + $t("?") }}
+				</div>
+			</div>
+		</template>
+		<template #footer>
 			<Button
-				@click="closeEmail"
-				class="p-button-outlined p-button-success !ml-70px !mt-26px !w-105px !h-44px"
-			>
-				<img
-					alt="logo"
-					src="/assets/sidebar/Done_round.png"
-					style="width: 1.25rem"
-					class="!ml-0px"
-				/>
-				<span class="text-left text-xl">
-					{{ $t("確定") }}
-				</span>
-			</Button>
+				class="p-button-outlined p-button-secondary"
+				style="border: 2px solid #94282c; color: #94282c; height: 36px"
+				icon="pi pi-times"
+				iconClass="text-[#94282c]"
+				:label="$t('取消')"
+				@click="isModalVisible.sendEmail = false"
+			/>
 			<Button
-				@click="closeEmail"
-				class="p-button-outlined p-button-danger !ml-32px !mt-26px !w-105px !h-44px"
-			>
-				<img
-					alt="logo"
-					src="/assets/sidebar/Close_round.png"
-					style="width: 1.25rem"
-					class="!ml-0px"
-				/>
-				<span class="text-left text-xl">{{ $t("取消") }}</span>
-			</Button>
-		</div>
+				class="p-button-outlined p-button-secondary"
+				style="
+					color: #53565a;
+					border: 2px solid #bcd19b;
+					margin-left: 16px;
+					height: 36px;
+				"
+				icon="pi pi-check"
+				iconClass="text-[#53565A]"
+				:label="$t('確認')"
+				:loading="isLoading.send"
+				@click="handleSendEmail"
+			/>
+		</template>
+	</Dialog>
+	<Dialog
+		v-model:visible="isModalVisible.saveChange"
+		class="w-500px"
+		:closable="false"
+		:draggable="false"
+		:modal="true"
+	>
+		<template #header>
+			<div class="font-bold text-[24px]">
+				{{ $t("儲存") }}
+			</div>
+		</template>
+		<template #default>
+			<div class="flex">
+				<div class="mt-2px">
+					<i class="pi pi-question-circle" style="font-size: 20px" />
+				</div>
+				<div class="ml-4px">
+					{{ $t("確認儲存變更") + $t("?") }}
+				</div>
+			</div>
+		</template>
+		<template #footer>
+			<Button
+				class="p-button-outlined p-button-secondary"
+				style="border: 2px solid #94282c; color: #94282c; height: 36px"
+				icon="pi pi-times"
+				iconClass="text-[#94282c]"
+				:label="$t('取消')"
+				@click="isModalVisible.saveChange = false"
+			/>
+			<Button
+				class="p-button-outlined p-button-secondary"
+				style="
+					color: #53565a;
+					border: 2px solid #bcd19b;
+					margin-left: 16px;
+					height: 36px;
+				"
+				icon="pi pi-check"
+				iconClass="text-[#53565A]"
+				:label="$t('確認')"
+				:loading="isLoading.save"
+				@click="handleSaveChange"
+			/>
+		</template>
 	</Dialog>
 </template>
 
 <script setup lang="ts">
 import "@/styles/customize.css";
 import "primeicons/primeicons.css";
-import { onMounted } from "vue";
-
+import { reactive, watch, ref, toRaw } from "vue";
+import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
+import { AdmissionAdminAPI } from "@/api/admission/admin/api";
+import { useQuery } from "@tanstack/vue-query";
+import { InvalidSessionError } from "@/api/error";
+import { AdmAdminGetApplicantMoredocResponses } from "@/api/admission/admin/types";
+import { useToast } from "primevue/usetoast";
 import SelectButton from "primevue/selectbutton";
-import MultiSelect from "primevue/multiselect";
 import InputText from "primevue/inputtext";
-import Checkbox from "primevue/checkbox";
 import Button from "primevue/button";
 import Dropdown from "primevue/dropdown";
 import Calendar from "primevue/calendar";
 import Dialog from "primevue/dialog";
 import ParagraphDivider from "../../../../../styles/paragraphDivider.vue";
-import { ref, watch } from "vue";
-import { useI18n } from "vue-i18n";
-const selectedCity = ref();
-const { t } = useI18n();
-const textChecked = ref(false);
-const fileChecked = ref(false);
-const date1 = ref();
-const date2 = ref();
-let today = new Date();
-let month = today.getMonth();
-let year = today.getFullYear();
-let prevMonth = month === 0 ? 11 : month - 1;
-let prevYear = prevMonth === 11 ? year - 1 : year;
-let nextMonth = month === 11 ? 0 : month + 1;
-let nextYear = nextMonth === 0 ? year + 1 : year;
-
-const inputvalue = ref();
-const translation = {
-	basicCol: t("Turn ON"),
-	attachmentCol: t("TurnOFF"),
-};
-const activeTab = ref({ name: translation.basicCol, value: 1 });
-const tabOptions = ref([
-	{ name: translation.basicCol, value: 1 },
-	{ name: translation.attachmentCol, value: 2 },
-]);
-const selectedCities1 = ref();
-const value8 = ref();
-const cities = ref([{ name: ".pdf", code: "pdf" }]);
 
 const props = defineProps(["userId"]);
-console.log(props.userId, "additional info tab");
-const emailNotification = ref(false);
-function displayEmail() {
-	emailNotification.value = true;
+const adminAuth = useAdmissionAdminAuthStore();
+const api = new AdmissionAdminAPI(adminAuth);
+
+const toast = useToast();
+
+let fetchResponse = reactive({
+	success: false,
+	message: "" as string | [],
+});
+
+const activeTab = ref({ name: "關閉", value: false });
+let date = reactive({
+	start: new Date(),
+	end: new Date(),
+});
+let docInfo = reactive({
+	category: "",
+	name: "",
+});
+
+let showRequire = reactive({
+	start: false,
+	end: false,
+	category: false,
+	name: false,
+});
+
+let isLoading = reactive({
+	save: false,
+	send: false,
+	fetch: false,
+});
+
+const tabOptions = ref([
+	{ name: "關閉", value: false },
+	{ name: "開啓", value: true },
+]);
+
+const categoryOptions = ref([
+	{ name: "就學經歷" },
+	{ name: "考試與檢定分數" },
+	{ name: "其他有利於審查資料" },
+]);
+
+let isModalVisible = reactive({
+	sendEmail: false,
+	saveChange: false,
+});
+
+const addHours = (numHrs: number, date = new Date()) => {
+	const dateCpy = new Date(date.getTime());
+
+	dateCpy.setTime(dateCpy.getTime() + numHrs * 60 * 60 * 1000);
+
+	return dateCpy;
+};
+
+const setInfo = (info: AdmAdminGetApplicantMoredocResponses) => {
+	activeTab.value = info.isMoredoc
+		? tabOptions.value[1]
+		: tabOptions.value[0];
+	date.start = info.moredoc_start_date;
+	date.end = info.moredoc_end_date;
+	docInfo.category = info.moredoc_category;
+	docInfo.name = info.moredoc_name;
+};
+
+const saveChange = async (body: object) => {
+	return await api.updateApplicantMoreDocState(props.userId, body);
+};
+
+function handleSendEmail() {
+	console.log("send email button onclicked");
 }
 
-function closeEmail() {
-	emailNotification.value = false;
+async function handleSaveChange() {
+	isLoading.save = true;
+
+	const body = {
+		isMoredoc: activeTab.value.value,
+		moredoc_start_date: addHours(8, new Date(date.start)),
+		moredoc_end_date: addHours(8, new Date(date.end)),
+		moredoc_category: docInfo.category,
+		moredoc_name: docInfo.name,
+	};
+
+	const res = await saveChange(body);
+
+	if (res?.success !== undefined && res?.message !== undefined) {
+		fetchResponse.success = toRaw(res.success);
+		fetchResponse.message = toRaw(res.message);
+	}
+
+	isLoading.save = false;
+	isModalVisible.saveChange = false;
+
+	if (fetchResponse.success) {
+		toast.add({
+			severity: "success",
+			summary: "Success",
+			detail: fetchResponse.message,
+			life: 3000,
+		});
+	} else {
+		toast.add({
+			severity: "error",
+			summary: "Error",
+			detail: fetchResponse.message,
+			life: 5000,
+		});
+	}
+
+	isLoading.fetch = true;
 }
+
+const resetRequireState = () => {
+	showRequire.start = false;
+	showRequire.end = false;
+	showRequire.category = false;
+	showRequire.name = false;
+};
+
+const saveOnclick = () => {
+	showRequire.start = date.start ? false : true;
+	showRequire.end = date.end ? false : true;
+	showRequire.category = docInfo.category ? false : true;
+	showRequire.name = docInfo.name ? false : true;
+
+	if (!activeTab.value.value) {
+		resetRequireState();
+		isModalVisible.saveChange = true;
+	} else if (
+		!showRequire.start &&
+		!showRequire.end &&
+		!showRequire.category &&
+		!showRequire.name
+	) {
+		resetRequireState();
+		isModalVisible.saveChange = true;
+	}
+};
+
+const { data } = useQuery(
+	["adminApplicantMoredocInfo"],
+	async () => {
+		return await api.getApplicantMoreDocRes(props.userId);
+	},
+	{
+		onSuccess: (data) => {
+			setInfo(data as AdmAdminGetApplicantMoredocResponses);
+		},
+	}
+);
+
+watch(
+	() => isLoading.fetch,
+	async () => {
+		const response = await api.getApplicantMoreDocRes(props.userId);
+
+		setInfo(response);
+
+		isLoading.fetch = false;
+	}
+);
 </script>
 
-<style setup lang="css">
-.selecttable {
-	height: 50%;
-	width: 25%;
-	/* background-color: powderblue; */
-}
-</style>
+<style setup lang="css"></style>

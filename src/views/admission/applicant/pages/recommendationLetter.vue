@@ -177,69 +177,6 @@
 							</div>
 						</div>
 					</div>
-					<!-- <div class="flex mt-32px">
-						<div class="w-1/2">
-							<div>{{ $t("簽名檔") }}</div>
-							<div class="mt-8px">
-								<div v-if="!uploadFile.isUploaded" class="flex">
-									<FileUpload
-										style="
-											background-color: #bdbdbd;
-											color: black;
-											border: #bdbdbd;
-										"
-										mode="basic"
-										:maxFileSize="1000000"
-										:customUpload="true"
-										:fileLimit="1"
-										:chooseLabel="t('選擇檔案')"
-										aria-describedby="upload-help"
-										@uploader="onUpload"
-									/>
-									<div
-										class="ml-8px mt-16px"
-										v-if="isModalValueBlank.sign"
-									>
-										<small id="upload-help" class="p-error">
-											{{ t("請上傳簽名檔") }}
-										</small>
-									</div>
-								</div>
-								<Button
-									v-else
-									style="
-										background-color: #bdbdbd;
-										color: black;
-										border: #bdbdbd;
-									"
-									disabled
-								>
-									{{ uploadFile.name }}
-								</Button>
-							</div>
-							<div class="mt-8px text-[15px]">
-								{{ $t("僅接受.pdf或.jpg檔") }}
-							</div>
-						</div>
-						<div class="w-1/2">
-							<div
-								v-if="modalShowErr"
-								style="
-									background-color: #ef9a9a;
-									width: 300px;
-									height: 80px;
-									border-radius: 8px;
-									border: 2px solid #c62828;
-									margin-top: 8px;
-									padding: 8px 8px;
-									color: #c62828;
-									text-align: center;
-								"
-							>
-								{{ fetchResponse.message }}
-							</div>
-						</div>
-					</div> -->
 				</div>
 				<div class="bigYellowDivider" style="margin-top: 40px"></div>
 			</template>
@@ -317,7 +254,7 @@
 					style="border-radius: 50%"
 				/>
 				<div class="text-center font-bold text-[24px] text-[#736028]">
-					{{ $t("暫時無推薦人") }}
+					{{ $t("暫無推薦人") }}
 				</div>
 			</div>
 		</div>
@@ -560,7 +497,6 @@ import { toRaw, ref, reactive, watch } from "vue";
 import { useAdmissionApplicantAuthStore } from "@/stores/universalAuth";
 import { AdmissionApplicantAPI } from "@/api/admission/applicant/api";
 import type { AdmissionApplicantRecLetListRes } from "@/api/admission/applicant/types";
-import { InvalidSessionError } from "@/api/error";
 import { useQuery } from "@tanstack/vue-query";
 import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
@@ -568,7 +504,6 @@ import { useToast } from "primevue/usetoast";
 import Button from "primevue/button";
 import Dialog from "primevue/dialog";
 import InputText from "primevue/inputtext";
-import FileUpload from "primevue/fileupload";
 import "primeicons/primeicons.css";
 
 const { t } = useI18n();
@@ -579,7 +514,7 @@ const api = new AdmissionApplicantAPI(applicantAuth);
 
 const toast = useToast();
 
-const isActionLoading = reactive({
+let isActionLoading = reactive({
 	request: false,
 	save: false,
 	delete: false,
@@ -588,13 +523,13 @@ const isActionLoading = reactive({
 
 const modalShowErr = ref(false);
 
-const isModalVisible = reactive({
+let isModalVisible = reactive({
 	fill: false,
 	delete: false,
 	request: false,
 });
 
-const modalValue = reactive({
+let modalValue = reactive({
 	name: "",
 	appellation: "",
 	relationship: "",
@@ -605,7 +540,7 @@ const modalValue = reactive({
 	sign: "",
 });
 
-const isModalValueBlank = reactive({
+let isModalValueBlank = reactive({
 	name: false,
 	appellation: false,
 	relationship: false,
@@ -616,33 +551,15 @@ const isModalValueBlank = reactive({
 	sign: false,
 });
 
-const fetchResponse = reactive({
+let fetchResponse = reactive({
 	success: false,
 	message: "" as string | [],
-});
-
-const uploadFile = reactive({
-	fileUrl: "",
-	name: "",
-	size: 0,
-	type: "",
-	isUploaded: false,
 });
 
 const { data } = useQuery(
 	["recommendLetterList"],
 	async () => {
-		try {
-			return await api.getRecommendLetterList();
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				console.error(
-					"Session has already expired while querying programList"
-				);
-				router.push("/");
-				return;
-			}
-		}
+		return await api.getRecommendLetterList();
 	},
 	{
 		onSuccess: (data) => {
@@ -656,7 +573,7 @@ const { data } = useQuery(
 	}
 );
 
-const letterList = reactive([
+let letterList = reactive([
 	data.value?.map((item) => {
 		return {
 			...item,
@@ -704,97 +621,42 @@ const clearFetchResponse = () => {
 	fetchResponse.message = "";
 };
 
-const onUpload = (e: any) => {
-	uploadFile.fileUrl = e.files[0].objectURL;
-	uploadFile.name = e.files[0].name;
-	uploadFile.size = e.files[0].size;
-	uploadFile.type = e.files[0].type;
-	uploadFile.isUploaded = true;
-	modalValue.sign = e.files[0].objectURL;
-	// 優化使用者體驗可能用到以下代碼
-	// const [file] = e.files;
-	// const objectURL = window.URL.createObjectURL(file);
-	// console.log(e, "upload clicked", uploadFile);
-};
-
 const openModal = () => {
-	uploadFile.isUploaded = false;
 	isModalVisible.fill = true;
 	resetIsModalValueBlank();
 	clearModalValue();
 };
 
-const deleteRecommendLetter = async (letterId: number) => {
-	try {
-		return await api.deleteRecommendLetter(letterId);
-	} catch (e: any) {
-		if (e instanceof InvalidSessionError) {
-			console.error(
-				"Session has already expired while changing password"
-			);
-			return;
-		}
-	}
-};
-
-const postRecommendLetter = async (body: object) => {
-	try {
-		return await api.saveRecommendLetter(body);
-	} catch (e: any) {
-		if (e instanceof InvalidSessionError) {
-			console.error(
-				"Session has already expired while changing password"
-			);
-			return;
-		}
-	}
-};
-
-const requestRecommendLetter = async (letterId: number) => {
-	try {
-		return await api.requestRecommendLetter(letterId);
-	} catch (e: any) {
-		if (e instanceof InvalidSessionError) {
-			console.error(
-				"Session has already expired while changing password"
-			);
-			return;
-		}
-	}
-};
-
 const handleDelete = async (letterId: number) => {
 	isActionLoading.delete = true;
-	const response = deleteRecommendLetter(letterId);
+	const response = await api.deleteRecommendLetter(letterId);
 
-	await response.then((res) => {
-		if (res?.success !== undefined && res?.message !== undefined) {
-			fetchResponse.success = toRaw(res.success);
-			fetchResponse.message = toRaw(res.message);
-		}
+	if (response?.success !== undefined && response?.message !== undefined) {
+		fetchResponse.success = toRaw(response.success);
+		fetchResponse.message = toRaw(response.message);
+	}
 
-		isActionLoading.delete = false;
-		isActionLoading.fetch = true;
+	isActionLoading.delete = false;
+	isActionLoading.fetch = true;
 
-		if (fetchResponse.success) {
-			toast.add({
-				severity: "success",
-				summary: "Success",
-				detail: fetchResponse.message,
-				life: 3000,
-			});
-		} else {
-			toast.add({
-				severity: "error",
-				summary: "Error",
-				detail: fetchResponse.message,
-				life: 5000,
-			});
-		}
+	if (fetchResponse.success) {
+		toast.add({
+			severity: "success",
+			summary: "Success",
+			detail: fetchResponse.message,
+			life: 3000,
+		});
+	} else {
+		toast.add({
+			severity: "error",
+			summary: "Error",
+			detail: fetchResponse.message,
+			life: 5000,
+		});
+	}
 
-		clearFetchResponse();
-		isModalVisible.delete = false;
-	});
+	clearFetchResponse();
+	isModalVisible.delete = false;
 };
 
 const handleSave = async () => {
@@ -834,50 +696,23 @@ const handleSave = async () => {
 			},
 		};
 
-		const response = postRecommendLetter(body);
+		const response = await api.saveRecommendLetter(body);
 
-		await response.then((res) => {
-			if (res?.success !== undefined && res?.message !== undefined) {
-				fetchResponse.success = toRaw(res.success);
-				fetchResponse.message = toRaw(res.message);
-			}
-
-			isActionLoading.save = false;
-
-			if (fetchResponse.success) {
-				resetIsModalValueBlank();
-				clearModalValue();
-				modalShowErr.value = false;
-				isModalVisible.fill = false;
-				toast.add({
-					severity: "success",
-					summary: "Success",
-					detail: fetchResponse.message,
-					life: 3000,
-				});
-			} else {
-				modalShowErr.value = true;
-			}
-
-			if (fetchResponse.success) clearFetchResponse();
-		});
-	}
-};
-
-const handleRequest = async (letterId: number) => {
-	isActionLoading.request = true;
-	const response = requestRecommendLetter(letterId);
-
-	await response.then((res) => {
-		if (res?.success !== undefined && res?.message !== undefined) {
-			fetchResponse.success = toRaw(res.success);
-			fetchResponse.message = toRaw(res.message);
+		if (
+			response?.success !== undefined &&
+			response?.message !== undefined
+		) {
+			fetchResponse.success = toRaw(response.success);
+			fetchResponse.message = toRaw(response.message);
 		}
 
-		isActionLoading.request = false;
-		isActionLoading.fetch = true;
+		isActionLoading.save = false;
 
 		if (fetchResponse.success) {
+			resetIsModalValueBlank();
+			clearModalValue();
+			modalShowErr.value = false;
+			isModalVisible.fill = false;
 			toast.add({
 				severity: "success",
 				summary: "Success",
@@ -885,17 +720,48 @@ const handleRequest = async (letterId: number) => {
 				life: 3000,
 			});
 		} else {
-			toast.add({
-				severity: "error",
-				summary: "Error",
-				detail: fetchResponse.message,
-				life: 5000,
-			});
+			modalShowErr.value = true;
 		}
 
-		clearFetchResponse();
-		isModalVisible.request = false;
+		if (fetchResponse.success) clearFetchResponse();
+	}
+};
+
+const handleRequest = async (letterId: number) => {
+	isActionLoading.request = true;
+
+	const url =
+		"https://admissions-frontend-staging.birkhoff.me/admission/recommenderAuthVerify";
+	const response = await api.requestRecommendLetter(letterId, {
+		params: { redirect_url: url },
 	});
+
+	if (response?.success !== undefined && response?.message !== undefined) {
+		fetchResponse.success = toRaw(response.success);
+		fetchResponse.message = toRaw(response.message);
+	}
+
+	isActionLoading.request = false;
+	isActionLoading.fetch = true;
+
+	if (fetchResponse.success) {
+		toast.add({
+			severity: "success",
+			summary: "Success",
+			detail: fetchResponse.message,
+			life: 3000,
+		});
+	} else {
+		toast.add({
+			severity: "error",
+			summary: "Error",
+			detail: fetchResponse.message,
+			life: 5000,
+		});
+	}
+
+	clearFetchResponse();
+	isModalVisible.request = false;
 };
 
 watch(

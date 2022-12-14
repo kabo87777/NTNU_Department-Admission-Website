@@ -9,8 +9,8 @@
 						$t("admissionApplicantSidebarTitle", {
 							year: currentYear,
 							roc: rocYear,
-							category: applicantProgram.category,
-							name: applicantProgram.name,
+							category: applicantProgram?.category,
+							name: applicantProgram?.name,
 						})
 					}}
 				</div>
@@ -25,17 +25,14 @@
 			v-slot="{ navigate }"
 		>
 			<Button
-				class="p-button-secondary p-button-text !ml-24px !mt-24px !w-336px !h-48px !hover:bg-[#ECEDED] !rounded-[8px]"
+				class="p-button-secondary p-button-text !ml-24px !mt-24px !w-[85%] !h-48px !hover:bg-[#ECEDED] !rounded-[8px]"
 				style="{ active: border: 1px solid #736028 !important }"
 				@click="navigate"
 				role="link"
 			>
-				<i
-					class="pi pi-bell"
-					style="font-size: 1.3rem; color: #101820"
-				/>
+				<i class="pi pi-bell" style="font-size: 1rem; color: #101820" />
 				<span
-					class="text-left tracking-3px ml-4 font-bold text-xl text-[#2D2926]"
+					class="text-left tracking-3px ml-4 font-bold text-18px text-[#2D2926]"
 				>
 					{{ $t("最新資訊") }}
 				</span>
@@ -46,7 +43,7 @@
 			<div class="flex mt-32px">
 				<div class="sidebarYellowDivider"></div>
 				<div
-					class="mt-[-8px] ml-8px text-[#736028] text-20px font-bold"
+					class="mt-[-8px] ml-8px text-[#736028] text-18px font-bold"
 				>
 					{{ $t("資料填寫、上傳") }}
 				</div>
@@ -60,26 +57,26 @@
 				v-slot="{ navigate }"
 			>
 				<Button
-					class="p-button-secondary p-button-text !ml-24px !mt-16px !w-336px !h-48px !hover:bg-[#ECEDED] !rounded-[8px]"
+					class="p-button-secondary p-button-text !ml-24px !mt-16px !w-[85%] !h-48px !hover:bg-[#ECEDED] !rounded-[8px]"
 					@click="navigate"
 					role="link"
 				>
 					<i
 						class="pi pi-user"
-						style="font-size: 1.3rem; color: #101820"
+						style="font-size: 1rem; color: #101820"
 					/>
 					<span
-						class="text-left tracking-3px ml-4 font-bold text-xl text-[#2D2926]"
+						class="text-left tracking-3px ml-4 font-bold text-18px text-[#2D2926]"
 					>
 						{{ $t("基本資料") }}
 					</span>
-					<div class="mb-28px">
+					<!-- <div class="mb-28px">
 						<CompletedTag v-if="tags.basicInfo === 'completed'" />
 						<IncompleteTag
 							v-else-if="tags.basicInfo === 'incompleted'"
 						/>
 						<UnableTag v-else-if="tags.basicInfo === 'unable'" />
-					</div>
+					</div> -->
 				</Button>
 			</router-link>
 
@@ -91,33 +88,33 @@
 				v-slot="{ navigate }"
 			>
 				<Button
-					class="p-button-secondary p-button-text !ml-24px !mt-8px !w-336px !h-48px !hover:bg-[#ECEDED] !rounded-[8px]"
+					class="p-button-secondary p-button-text !ml-24px !mt-8px !w-[85%] !h-48px !hover:bg-[#ECEDED] !rounded-[8px]"
 					@click="navigate"
 					role="link"
 				>
 					<i
 						class="pi pi-book"
-						style="font-size: 1.3rem; color: #101820"
+						style="font-size: 1rem; color: #101820"
 					/>
 					<span
-						class="text-left tracking-3px ml-4 font-bold text-xl text-[#2D2926]"
+						class="text-left tracking-3px ml-4 font-bold text-18px text-[#2D2926]"
 					>
 						{{ $t("附件資料") }}
 					</span>
-					<div class="mb-28px">
+					<!-- <div class="mb-28px">
 						<CompletedTag v-if="tags.attachment === 'completed'" />
 						<IncompleteTag
 							v-else-if="tags.attachment === 'incomplete'"
 						/>
 						<UnableTag v-else-if="tags.attachment === 'unable'" />
-					</div>
+					</div> -->
 				</Button>
 			</router-link>
 
 			<div class="flex mt-32px">
 				<div class="sidebarYellowDivider"></div>
 				<div
-					class="mt-[-8px] ml-8px text-[#736028] text-20px font-bold"
+					class="mt-[-8px] ml-8px text-[#736028] text-18px font-bold"
 				>
 					{{ $t("相關作業、系統") }}
 				</div>
@@ -131,20 +128,20 @@
 				v-slot="{ navigate }"
 			>
 				<Button
-					class="p-button-secondary p-button-text !ml-24px !mt-16px !w-336px !h-48px !hover:bg-[#ECEDED] !rounded-[8px]"
+					class="p-button-secondary p-button-text !ml-24px !mt-16px !w-[85%] !h-48px !hover:bg-[#ECEDED] !rounded-[8px]"
 					@click="navigate"
 					role="link"
 				>
 					<i
 						class="pi pi-envelope"
-						style="font-size: 1.3rem; color: #101820"
+						style="font-size: 1rem; color: #101820"
 					/>
 					<span
-						class="text-left tracking-3px ml-4 font-bold text-xl text-[#2D2926]"
+						class="text-left tracking-3px ml-4 font-bold text-18px text-[#2D2926]"
 					>
 						{{ $t("推薦信作業") }}
 					</span>
-					<div class="mb-28px">
+					<!-- <div class="mb-28px">
 						<CompletedTag
 							v-if="tags.recommendLetter === 'completed'"
 						/>
@@ -154,7 +151,7 @@
 						<UnableTag
 							v-else-if="tags.recommendLetter === 'unable'"
 						/>
-					</div>
+					</div> -->
 				</Button>
 			</router-link>
 
@@ -166,20 +163,20 @@
 				v-slot="{ navigate }"
 			>
 				<Button
-					class="p-button-secondary p-button-text !ml-24px !mt-8px !w-336px !h-48px !hover:bg-[#ECEDED] !rounded-[8px]"
+					class="p-button-secondary p-button-text !ml-24px !mt-8px !w-[85%] !h-48px !hover:bg-[#ECEDED] !rounded-[8px]"
 					@click="navigate"
 					role="link"
 				>
 					<i
 						class="pi pi-file"
-						style="font-size: 1.3rem; color: #101820"
+						style="font-size: 1rem; color: #101820"
 					/>
 					<span
-						class="text-left tracking-3px ml-4 font-bold text-xl text-[#2D2926]"
+						class="text-left tracking-3px ml-4 font-bold text-18px text-[#2D2926]"
 					>
 						{{ $t("補交文件系統") }}
 					</span>
-					<div class="mb-28px">
+					<!-- <div class="mb-28px">
 						<CompletedTag
 							v-if="tags.additionalDocs === 'completed'"
 						/>
@@ -189,12 +186,12 @@
 						<UnableTag
 							v-else-if="tags.additionalDocs === 'unable'"
 						/>
-					</div>
+					</div> -->
 				</Button>
 			</router-link>
 		</div>
 		<div
-			class="bg-gray-200 bg-opacity-50 h-160px w-[100%]"
+			class="bg-gray-200 bg-opacity-50 h-140px w-[100%]"
 			style="
 				position: absolute;
 				bottom: 0px;
@@ -202,14 +199,15 @@
 				padding-right: 8px;
 			"
 		>
-			<div class="mt-28px flex relative">
+			<div class="mt-24px flex relative">
 				<div
 					style="
 						background-color: #8a7b27;
 						border-radius: 50%;
 						width: 40px;
 						height: 40px;
-						margin-left: 24px;
+						margin-top: -4px;
+						margin-left: 16px;
 					"
 				>
 					<i
@@ -217,14 +215,14 @@
 						style="font-size: 1.7rem"
 					/>
 				</div>
-				<div class="mt-[-4px] ml-16px">
+				<div class="mt-[-4px] ml-12px">
 					<div
-						class="text-[15px] font-[500] font-bold text-[#736028]"
+						class="text-[14px] font-[500] font-bold text-[#736028]"
 					>
 						{{ $t("用戶名稱") }}
 					</div>
 					<div
-						class="text-[22px] font-[500] font-bold mt-[8px] tracking-wider"
+						class="text-[16px] font-[500] font-bold mt-[8px] tracking-wider"
 					>
 						{{ applicantName }}
 					</div>
@@ -238,25 +236,27 @@
 						v-slot="{ navigate }"
 					>
 						<Button
-							class="p-button-secondary p-button-text"
+							class="p-button-secondary p-button-text p-button-sm"
+							v-tooltip.top="t('使用者管理')"
 							@click="navigate"
 							role="link"
 						>
 							<img
 								alt="logo"
 								src="/assets/sidebar/Setting_alt_line.png"
-								class="w-28px h-28px"
+								class="w-18px h-18px"
 							/>
 						</Button>
 					</router-link>
 					<Button
-						class="p-button-secondary p-button-text"
+						class="p-button-secondary p-button-text p-button-sm"
+						v-tooltip.top="t('登出')"
 						@click="signOut"
 					>
 						<img
 							alt="logo"
 							src="/assets/sidebar/Sign_out_circle.png"
-							class="w-28px h-28px"
+							class="w-18px h-18px"
 						/>
 					</Button>
 				</div>
@@ -266,97 +266,77 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, toRaw, onMounted, ref } from "vue";
+import { computed } from "vue";
 import { useRouter } from "vue-router";
+import { useQuery } from "@tanstack/vue-query";
+import { useI18n } from "vue-i18n";
+import dayjs from "dayjs";
+
 import { useAdmissionApplicantAuthStore } from "@/stores/universalAuth";
 import { AdmissionApplicantAPI } from "@/api/admission/applicant/api";
-import { useUserInfoStore } from "@/stores/AdmissionApplicantStore";
-import { Tags } from "@/api/admission/applicant/types";
+
 import "primeicons/primeicons.css";
 import "primevue/resources/primevue.min.css";
 import Button from "primevue/button";
-import UnableTag from "@/styles/tags/unableTag.vue";
-import CompletedTag from "@/styles/tags/completedTag.vue";
-import IncompleteTag from "@/styles/tags/incompleteTag.vue";
+
+import "@/styles/customize.css";
 
 const router = useRouter();
 const applicantAuth = useAdmissionApplicantAuthStore();
-const applicantStore = useUserInfoStore();
-const applicantName = toRaw(applicantStore.userInfo.name);
+const applicantName = window.localStorage.getItem("AdmissionApplicantUsername");
+
+const { t } = useI18n();
 
 const api = new AdmissionApplicantAPI(applicantAuth);
 
-const currentYear = new Date().getFullYear();
+const now = dayjs();
+const currentYear = now.get("year");
 const rocYear = currentYear - 1911;
-const isProgramAvailable = ref(false);
 
-const applicantProgram = reactive({
-	id: 1,
-	category: "111年碩士班",
-	name: "A組",
-	start_date: "",
-	end_date: "",
+const isProgramAvailable = computed(() => {
+	if (!applicantProgram.value) return false;
+
+	const start = dayjs(applicantProgram.value.application_start_date);
+	const end = dayjs(applicantProgram.value.application_end_date);
+
+	return now.isAfter(start) && now.isBefore(end);
 });
 
-const tags: Tags = reactive({
-	basicInfo: "completed",
-	attachment: "incomplete",
-	recommendLetter: "unable",
-	additionalDocs: "unable",
-});
+// let tags: Tags = reactive({
+// 	basicInfo: "completed",
+// 	attachment: "incomplete",
+// 	recommendLetter: "unable",
+// 	additionalDocs: "unable",
+// });
 
-const checkProgramAvailably = () => {
-	const start = {
-		year: parseInt(applicantProgram.start_date.slice(0, 4)),
-		month: parseInt(applicantProgram.start_date.slice(5, 7)),
-		day: parseInt(applicantProgram.start_date.slice(8, 10)),
-		hour: parseInt(applicantProgram.start_date.slice(11, 13)),
-	};
-	const end = {
-		year: parseInt(applicantProgram.end_date.slice(0, 4)),
-		month: parseInt(applicantProgram.end_date.slice(5, 7)),
-		day: parseInt(applicantProgram.end_date.slice(8, 10)),
-		hour: parseInt(applicantProgram.end_date.slice(11, 13)),
-	};
+const { data: applicantProgram } = useQuery(
+	["admissionApplicantProgram"],
+	async () => {
+		const program = await api.getProgram();
 
-	const currentTime = new Date().toLocaleString("zh-TW"); //GET TAIWAN DATE
-	const current = {
-		year: parseInt(currentTime.slice(0, 4)),
-		month: parseInt(currentTime.slice(5, 7)),
-		day: parseInt(currentTime.slice(8, 10)),
-	};
+		Object.assign(applicantProgram, program);
 
-	if (
-		current.year < start.year ||
-		current.year > end.year ||
-		(current.year === start.year && current.month < start.month) ||
-		(current.year === end.year && current.month > end.month) ||
-		(current.year === start.year &&
-			current.month === start.month &&
-			current.day < start.day) ||
-		(current.year === end.year &&
-			current.month === end.month &&
-			current.day > end.day)
-	) {
-		isProgramAvailable.value = false;
-	} else isProgramAvailable.value = true;
-	console.log(isProgramAvailable.value);
-};
-
-onMounted(async () => {
-	await api.getProgram().then((res) => {
-		applicantProgram.id = res.id;
-		applicantProgram.category = res.category;
-		applicantProgram.name = res.name;
-		applicantProgram.start_date = res.application_start_date;
-		applicantProgram.end_date = res.application_end_date;
-		console.log(res, applicantProgram);
-		checkProgramAvailably();
-	});
-});
+		return program;
+	}
+);
 
 async function signOut() {
 	await api.invalidateSession();
+	window.localStorage.removeItem("AdmissionApplicantUsername");
 	router.push("/admission/applicant/signin");
 }
 </script>
+
+<style setup lang="css">
+.sidebarTitleBar {
+	border: 1px solid #736028;
+	border-radius: 8px;
+	font-weight: bold;
+	font-size: 20px;
+	letter-spacing: 0.1em;
+	height: 60px;
+	width: 93%;
+	padding-left: 10px;
+	padding-top: 14px;
+}
+</style>

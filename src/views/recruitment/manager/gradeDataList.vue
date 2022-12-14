@@ -1,22 +1,43 @@
 <template>
-	<div class="ml-128px mr-128px mt-62px">
+	<div>
 		<h1 class="text-4xl text-bold tracking-widest">
 			{{ $t("評分資料列表") }}
 		</h1>
 		<div class="bigRedDivider"></div>
 		<div>
 			<DataTable
-				:value="data_list"
+				:value="applicantGradeList.data.value"
 				responsiveLayout="scroll"
 				dataKey="id"
 				:scrollable="true"
 				scrollHeight="700px"
+				class="!h-700px"
 			>
-				<Column field="id" :header="ID"></Column>
 				<Column field="name" :header="applicantName"></Column>
-				<Column field="recommand" :header="recommand"></Column>
-				<Column field="result" :header="result"></Column>
-				<Column field="interviewTime" :header="interviewTime"></Column>
+				<Column field="revieweResult" :header="recommand">
+					<template #body="slotProps">
+						{{ slotProps.data.isRecommend }}/{{
+							slotProps.data.allReviewerNum -
+							slotProps.data.isRecommend
+						}}
+					</template>
+				</Column>
+				<Column field="revieweResult" :header="result">
+					<template #body="slotProps">
+						<i v-if="slotProps.data.revieweResult === null">{{
+							$t("待審核")
+						}}</i>
+						<p v-else>{{ slotProps.data.revieweResult }}</p>
+					</template>
+				</Column>
+				<Column field="interviewDate" :header="interviewTime">
+					<template #body="slotProps">
+						<i v-if="slotProps.data.interviewDate !== null">{{
+							dateTransform(slotProps.data.interviewDate)
+						}}</i>
+						<i v-else></i>
+					</template>
+				</Column>
 				<Column
 					:header="edit"
 					:exportable="false"
@@ -50,14 +71,14 @@
 					</div>
 				</div>
 				<DataTable
-					:value="scores"
+					:value="reviewers"
 					responsiveLayout="scroll"
 					dataKey="id"
-					class="text-base mt-56px"
+					class="text-base mt-56px !h-228px"
 				>
 					<Column field="name" :header="reviewer"></Column>
 					<Column
-						field="recommandOrNot"
+						field="isRecommend"
 						:header="recommandOrNot"
 						dataType="boolean"
 						bodyClass="text-center"
@@ -71,14 +92,16 @@
 							<p v-else>-</p>
 						</template>
 					</Column>
-					<Column field="note" :header="note"></Column>
+					<Column field="comment" :header="note"></Column>
 				</DataTable>
 				<div class="bigRedDivider"></div>
 				<div class="flex mt-15px ml-36px">
 					<div>
 						{{ recommand }}
 					</div>
-					<div class="ml-48px">2/1</div>
+					<div class="ml-48px">
+						{{ recommandCount }}/{{ notRecommandCount }}
+					</div>
 				</div>
 				<div class="mt-55px ml-52px">
 					{{ $t("書面審查結果") }}
@@ -92,21 +115,27 @@
 				<div class="mt-32px ml-52px">
 					{{ $t("面試時間") }}
 				</div>
-				<Dropdown
+				<Calendar
 					v-if="disable"
+					inputId="icon"
 					v-model="selectedInterviewTime"
-					:options="interviewTimes"
+					:showIcon="true"
+					:showTime="true"
 					class="mt-8px !w-576px !h-44px ml-52px"
-				>
-				</Dropdown>
-				<Dropdown
+					:baseZIndex="zIndex"
+					dateFormat="yy-mm-dd"
+				/>
+				<Calendar
 					v-else
+					inputId="icon"
 					v-model="selectedInterviewTime"
-					:options="interviewTimes"
+					:showIcon="true"
+					:showTime="true"
 					class="mt-8px !w-576px !h-44px ml-52px"
+					:baseZIndex="zIndex"
 					disabled
-				>
-				</Dropdown>
+					dateFormat="yy-mm-dd"
+				/>
 				<Button
 					class="w-140px h-44px !mt-48px !ml-200px p-button-outlined p-button-success"
 					@click="doneEdit"
@@ -134,13 +163,17 @@
 			</Dialog>
 			<div class="bigRedDivider !mt-50px"></div>
 			<div class="flex text-xl mt-20px">
-				<div>{{ $t("待審核") }} 3 {{ $t("位") }}</div>
+				<div>{{ $t("待審核") }} {{ pendingCount }} {{ $t("位") }}</div>
 				<Divider layout="vertical" class="!ml-30px" />
-				<div class="!ml-30px">{{ $t("通過") }} 1 {{ $t("位") }}</div>
+				<div class="!ml-30px">
+					{{ $t("通過") }} {{ passCount }} {{ $t("位") }}
+				</div>
 				<Divider layout="vertical" class="!ml-30px" />
-				<div class="!ml-30px">{{ $t("不通過") }} 1 {{ $t("位") }}</div>
+				<div class="!ml-30px">
+					{{ $t("不通過") }} {{ notPassCount }} {{ $t("位") }}
+				</div>
 				<Button
-					class="w-140px h-44px !ml-480px p-button-outlined p-button-help"
+					class="w-140px h-44px !ml-680px p-button-outlined p-button-help"
 				>
 					<img
 						alt="logo"
@@ -166,6 +199,20 @@ import Dialog from "primevue/dialog";
 import Divider from "primevue/divider";
 import Dropdown from "primevue/dropdown";
 import { useI18n } from "vue-i18n";
+import { useRouter } from "vue-router";
+import { useRecruitmentAdminAuthStore } from "@/stores/universalAuth";
+import { RecruitmentAdminAPI } from "@/api/recruitment/admin/api";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
+import { InvalidSessionError } from "@/api/error";
+import { useGlobalStore } from "@/stores/RecruitmentAdminStore";
+import { useToast } from "primevue/usetoast";
+import Calendar from "primevue/calendar";
+import { RecruitmentAdminSingleReviewerRecommendResponse } from "@/api/recruitment/admin/types";
+
+const adminAuth = useRecruitmentAdminAuthStore();
+const api = new RecruitmentAdminAPI(adminAuth);
+const store = useGlobalStore();
+const router = useRouter();
 
 const { t } = useI18n();
 const translation = {
@@ -174,112 +221,79 @@ const translation = {
 	pass: t("通過"),
 };
 
-// 連結API
-const data_list = ref([
-	{
-		id: "1000",
-		name: "Aaa",
-		recommand: "3/1",
-		result: translation.pass,
-		interviewTime: "2022/10/30",
-	},
-	{
-		id: "1001",
-		name: "Bbb",
-		recommand: "3/2",
-		result: translation.pending,
-		interviewTime: "",
-	},
-	{
-		id: "1002",
-		name: "Ccc",
-		recommand: "3/3",
-		result: translation.notPass,
-		interviewTime: "",
-	},
-	{
-		id: "1003",
-		name: "Ddd",
-		recommand: "3/4",
-		result: translation.pass,
-		interviewTime: "2022/10/30",
-	},
-	{
-		id: "1004",
-		name: "Eee",
-		recommand: "3/5",
-		result: translation.pending,
-		interviewTime: "",
-	},
-	{
-		id: "1005",
-		name: "Fff",
-		recommand: "3/6",
-		result: translation.pending,
-		interviewTime: "",
-	},
-	{
-		id: "1006",
-		name: "Ggg",
-		recommand: "3/7",
-		result: translation.notPass,
-		interviewTime: "",
-	},
-	{
-		id: "1007",
-		name: "Hhh",
-		recommand: "3/8",
-		result: translation.notPass,
-		interviewTime: "",
-	},
-	{
-		id: "1008",
-		name: "Iii",
-		recommand: "3/9",
-		result: translation.pass,
-		interviewTime: "2022/10/30",
-	},
-	{
-		id: "1009",
-		name: "Jjj",
-		recommand: "3/10",
-		result: translation.pending,
-		interviewTime: "",
-	},
-]);
-
-const scores = ref([
-	{
-		name: "Mike",
-		recommandOrNot: true,
-		note: "good",
-	},
-	{
-		name: "Amber",
-		recommandOrNot: false,
-		note: "bad",
-	},
-	{
-		name: "Peter",
-		recommandOrNot: true,
-		note: "good",
-	},
-]);
-
+const zIndex = ref(3000);
 const productDialog = ref(false);
 const name = ref("");
-const id = ref("");
+const id = ref();
 const selectedResult = ref(translation.pending);
 const results = ref([
 	translation.pending,
 	translation.notPass,
 	translation.pass,
 ]);
-const selectedInterviewTime = ref("2022/10/30");
-const interviewTimes = ref(["2022/10/30", "2022/10/31", "2022/11/01"]);
+const selectedInterviewTime = ref<Date>(new Date());
 const disable = computed(() => {
 	return selectedResult.value === translation.pass;
 });
+const pendingCount = ref(0);
+const passCount = ref(0);
+const notPassCount = ref(0);
+const applicantID = ref(1);
+const applicantGradeList = useQuery(
+	["recruitmentAdminGradeList"],
+	async () => {
+		return await api.getApplicantListWithDetail(store.program!.id!);
+	},
+	{
+		onSuccess: (data) => {
+			pendingCount.value =
+				data!.filter((item) => item.revieweResult === null).length +
+				data!.filter((item) => item.revieweResult === "待審核").length;
+			passCount.value = data!.filter(
+				(item) => item.revieweResult === "通過"
+			).length;
+			notPassCount.value = data!.filter(
+				(item) => item.revieweResult === "不通過"
+			).length;
+			applicantID.value = data![0].id;
+		},
+	}
+);
+const recommandCount = ref(0);
+const notRecommandCount = ref(0);
+const reviewers = ref<RecruitmentAdminSingleReviewerRecommendResponse[]>();
+const singleApplicantRecommand = useQuery(
+	["recruitmentAdminDocsGrade", applicantID],
+	async () => {
+		if (!applicantID.value)
+			throw new Error(
+				"recruitmentAdminDocsGrade: applicantID is undefined"
+			);
+
+		return await api.getSingleApplicantWithDetail(
+			store.program!.id!,
+			applicantID.value
+		);
+	},
+	{
+		onSuccess: (data) => {
+			name.value = data!.name;
+			id.value = data!.r_applicant_id;
+			if (data!.revieweResult === null) {
+				selectedResult.value = translation.pending;
+			} else {
+				selectedResult.value = data!.revieweResult;
+			}
+			if (data!.interviewDate) {
+				selectedInterviewTime.value = new Date(data!.interviewDate);
+			}
+			recommandCount.value = data!.isRecommendNum;
+			notRecommandCount.value =
+				data!.allReviewerNum - data!.isRecommendNum;
+			reviewers.value = data!.reviewers;
+		},
+	}
+);
 
 const ID = computed(() => t("帳號ID"));
 const applicantName = computed(() => t("申請人姓名"));
@@ -296,12 +310,58 @@ const editProduct = (prod: any) => {
 	name.value = prod.data.name;
 	id.value = prod.data.id;
 	productDialog.value = true;
+	applicantID.value = prod.data.id;
+	if (!singleApplicantRecommand.isFetched.value) {
+		singleApplicantRecommand.refetch({ throwOnError: true });
+	}
 };
 
-function doneEdit() {
-	// phase1_list.value[
-	// 	phase1_list.value.findIndex((obj) => obj.id == id.value)
-	// ].phase1_result = p1_result.value;
+const applicantStage = useMutation(async (newStage: any) => {
+	try {
+		return await api.updateSingleApplicantWithDetail(
+			store.program!.id!,
+			applicantID.value,
+			newStage
+		);
+	} catch (error) {
+		console.log(error);
+	}
+});
+async function doneEdit() {
+	if (selectedResult.value === translation.pass) {
+		applicantStage.mutate({
+			review_result: selectedResult.value,
+			interview_date: selectedInterviewTime.value,
+		});
+	} else {
+		applicantStage.mutate({
+			review_result: selectedResult.value,
+			interview_date: "",
+		});
+	}
+
 	productDialog.value = false;
+	await queryClient.invalidateQueries({
+		queryKey: ["recruitmentAdminGradeList"],
+	});
+	await queryClient.invalidateQueries({
+		queryKey: ["recruitmentAdminRecommand"],
+	});
+}
+const queryClient = useQueryClient();
+store.$subscribe(() => {
+	queryClient.invalidateQueries({ queryKey: ["recruitmentAdminGradeList"] });
+	queryClient.invalidateQueries({ queryKey: ["recruitmentAdminRecommand"] });
+});
+function dateTransform(date: string) {
+	return (
+		date.slice(0, 4) +
+		"-" +
+		date.slice(5, 7) +
+		"-" +
+		date.slice(8, 10) +
+		" " +
+		date.slice(11, 16)
+	);
 }
 </script>

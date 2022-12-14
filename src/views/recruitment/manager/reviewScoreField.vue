@@ -63,7 +63,7 @@ import SelectButton from "primevue/selectbutton";
 
 const enrollProver = ref();
 const selectStage = ref(true);
-const stage = reactive([
+let stage = reactive([
 	{ name: "第一階段（書面審查）" },
 	{ name: "第二階段（口試審查）" },
 ]);

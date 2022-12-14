@@ -1,10 +1,10 @@
 <template>
-	<div class="pt-62px pl-128px pr-128px">
-		<div class="text-32px font-medium">上傳資料列表</div>
+	<div>
+		<div class="text-32px font-bold">上傳資料列表</div>
 		<div class="bigRedDivider"></div>
 		<div class="mt-16px">
 			<DataTable :value="applicantList">
-				<Column field="uid">
+				<Column field="id">
 					<template #header>
 						<div class="m-auto">{{ $t("帳號") }}</div>
 					</template>
@@ -14,7 +14,7 @@
 						>
 							<router-link
 								:to="{
-									path: `/admission/manager/applicantsUploadList/${slotProps.data.uid}`,
+									path: `/admission/manager/applicantsUploadList/${slotProps.data.id}`,
 								}"
 							>
 								{{ slotProps.data.uid }}
@@ -32,7 +32,7 @@
 						>
 							<router-link
 								:to="{
-									path: `/admission/manager/applicantsUploadList/${slotProps.data.uid}`,
+									path: `/admission/manager/applicantsUploadList/${slotProps.data.id}`,
 								}"
 							>
 								{{ slotProps.data.name }}
@@ -46,9 +46,10 @@
 					</template>
 					<template #body="slotProps">
 						<div class="m-auto text-center">
-							<Tag
+							<!-- <Tag
 								v-if="
-									slotProps.data.application_stage === 'sent'
+									slotProps.data.application_stage ===
+									'已送審'
 								"
 								severity="success"
 							>
@@ -57,36 +58,38 @@
 							<Tag
 								v-else-if="
 									slotProps.data.application_stage ===
-									'unstart'
-								"
-								severity="danger"
-							>
-								{{ slotProps.data.application_stage }}
-							</Tag>
-							<Tag
-								v-else-if="
-									slotProps.data.application_stage === 'draft'
+									'未送審'
 								"
 								severity="warning"
 							>
 								{{ slotProps.data.application_stage }}
 							</Tag>
+							<Tag v-else severity="danger">
+								{{ slotProps.data.application_stage }}
+							</Tag> -->
+							{{ slotProps.data.docs_stage }}
 						</div>
 					</template>
 				</Column>
 				<Column field="oral_stage">
 					<template #header>
-						<div class="m-auto">{{ $t("補件狀態") }}</div>
+						<div class="m-auto">{{ $t("補件系統") }}</div>
 					</template>
 					<template #body="slotProps">
-						<div class="m-auto text-center">
-							{{ slotProps.data.oral_stage }}
+						<div
+							v-if="slotProps.data.isMoredoc"
+							class="m-auto text-center"
+						>
+							{{ $t("已開放") }}
+						</div>
+						<div v-else class="m-auto text-center">
+							{{ $t("未開放") }}
 						</div>
 					</template>
 				</Column>
 				<Column field="email">
 					<template #header>
-						<div class="m-auto">{{ $t("補件系統") }}</div>
+						<div class="m-auto">{{ $t("補件狀態") }}</div>
 					</template>
 					<template #body="slotProps">
 						<div class="m-auto text-center">
@@ -96,90 +99,55 @@
 							>
 								{{ slotProps.data.email }}
 							</Tag>
+							<Tag
+								v-else
+								style="background-color: #d9dada; color: black"
+							>
+								{{ $t("無") }}
+							</Tag>
 						</div>
 					</template>
 				</Column>
 			</DataTable>
 		</div>
-		<!-- <TableList
-			role="admin"
-			header="上傳資料列表"
-			:data="applicantList"
-			:items="items"
-		/> -->
 	</div>
 </template>
 
 <script setup lang="ts">
-import { toRaw } from "vue";
+import { reactive, toRaw } from "vue";
 import { router } from "@/router";
 import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
 import { AdmissionAdminAPI } from "@/api/admission/admin/api";
 import { useGlobalStore } from "@/stores/globalStore";
 import { useQuery } from "@tanstack/vue-query";
 import { InvalidSessionError } from "@/api/error";
+import { AdmissionAdminApplicantsListResponse } from "@/api/admission/admin/types";
 import DataTable from "primevue/datatable";
-// import TableList from "@/components/dataTable/AdmissionAdminApplicantListTable.vue";
 import Column from "primevue/column";
 import Tag from "primevue/tag";
 import "../../../../styles/customize.css";
-import applicantsList from "./uploadList.json";
 
 const adminAuth = useAdmissionAdminAuthStore();
 const store = useGlobalStore();
 const api = new AdmissionAdminAPI(adminAuth);
 
-const {
-	isLoading,
-	isError,
-	data: applicants,
-	error,
-} = useQuery(["applicantList"], async () => {
-	try {
-		if (store.program) return await api.getApplicantList(store.program.id);
-	} catch (e: any) {
-		if (e instanceof InvalidSessionError) {
-			console.error(
-				"Session has already expired while quering appliacntList"
-			);
-			router.push("/");
-			return;
-		}
+const applicantList: AdmissionAdminApplicantsListResponse[] = reactive<
+	AdmissionAdminApplicantsListResponse[]
+>([] as AdmissionAdminApplicantsListResponse[]);
+
+const { data } = useQuery(
+	["applicantListUpload"],
+	async () => {
+		return await api.getApplicantList(store.program!.id as number);
+	},
+	{
+		onSuccess: (data) => {
+			data!.map((item, index) => {
+				applicantList[index] = item;
+			});
+		},
 	}
-});
-
-const items = [
-	{
-		name: "帳號",
-		dataIndex: "uid",
-		width: "20%",
-	},
-	{
-		name: "姓名",
-		dataIndex: "name",
-		width: "20%",
-	},
-	{
-		name: "上傳狀態",
-		dataIndex: "applicantion_stage",
-		width: "20%",
-	},
-	{
-		name: "補件狀態",
-		// dataIndex: "",
-		width: "20%",
-	},
-	{
-		name: "補件狀態",
-		// dataIndex: "",
-		width: "20%",
-	},
-];
-
-const applicantList = toRaw(applicants.value);
-
-const applicantsData = applicantsList.applicants;
-console.log(applicantsData, applicantList);
+);
 </script>
 
 <style setup lang="css">

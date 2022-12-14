@@ -4,7 +4,7 @@
 		<div class="bigRedDivider"></div>
 		<div class="mt-16px">
 			<DataTable :value="applicantList">
-				<Column field="uid">
+				<Column field="id">
 					<template #header>
 						<div class="m-auto">{{ $t("帳號") }}</div>
 					</template>
@@ -14,10 +14,10 @@
 						>
 							<router-link
 								:to="{
-									path: `/recruitment/manager/applicantsUploadList/${slotProps.data.uid}`,
+									path: `/recruitment/manager/applicant/${slotProps.data.id}`,
 								}"
 							>
-								{{ slotProps.data.uid }}
+								{{ slotProps.data.id }}
 							</router-link>
 						</div>
 					</template>
@@ -32,7 +32,7 @@
 						>
 							<router-link
 								:to="{
-									path: `/recruitment/manager/applicantsUploadList/${slotProps.data.uid}`,
+									path: `/recruitment/manager/applicant/${slotProps.data.id}`,
 								}"
 							>
 								{{ slotProps.data.name }}
@@ -111,12 +111,14 @@
 </template>
 
 <script setup lang="ts">
-import { toRaw } from "vue";
+import { toRaw, reactive } from "vue";
 import { router } from "@/router";
 import { useRecruitmentAdminAuthStore } from "@/stores/universalAuth";
 import { RecruitmentAdminAPI } from "@/api/recruitment/admin/api";
+import { useGlobalStore } from "@/stores/RecruitmentAdminStore";
 import { useQuery } from "@tanstack/vue-query";
 import { InvalidSessionError } from "@/api/error";
+import { RecruitmentAdminApplicantsListResponse } from "@/api/recruitment/admin/types";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import Tag from "primevue/tag";
@@ -124,29 +126,27 @@ import "@/styles/customize.css";
 
 const adminAuth = useRecruitmentAdminAuthStore();
 const api = new RecruitmentAdminAPI(adminAuth);
+const store = useGlobalStore();
+const programId = store.program?.id;
 
-const {
-	isLoading,
-	isError,
-	data: applicants,
-	error,
-} = useQuery(["applicantList"], async () => {
-	try {
-		return await api.getApplicantList();
-	} catch (e: any) {
-		if (e instanceof InvalidSessionError) {
-			console.error(
-				"Session has already expired while quering appliacntList"
-			);
-			router.push("/");
-			return;
-		}
+const applicantList: RecruitmentAdminApplicantsListResponse[] = reactive<
+	RecruitmentAdminApplicantsListResponse[]
+>([] as RecruitmentAdminApplicantsListResponse[]);
+
+const { data } = useQuery(
+	["applicantList"],
+	async () => {
+		if (!programId) throw new Error("invalid programId");
+		return await api.getApplicantList(programId);
+	},
+	{
+		onSuccess: (data) => {
+			data!.map((item, index) => {
+				applicantList[index] = item;
+			});
+		},
 	}
-});
-
-const applicantList = toRaw(applicants.value);
-
-console.log(applicantList);
+);
 </script>
 
 <style setup lang="css">

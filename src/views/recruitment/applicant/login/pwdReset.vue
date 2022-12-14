@@ -1,8 +1,6 @@
 <template class="overflow-hidden">
+	<Toast position="top-right" />
 	<div class="flex">
-		<div class="flex-shrink-1">
-			<img src="/assets/login-page/Login-img.png" class="fill" />
-		</div>
 		<div class="flex-none w-150 px-6 pt-40 space-y-8">
 			<div class="px-8 space-y-2">
 				<div class="text-s text-gray-500">
@@ -16,7 +14,6 @@
 			<div class="px-8 pb-8 space-y-4">
 				<div class="flex items-end gap-2 applicantTextColor">
 					<div>歡迎</div>
-					<div class="text-4xl" v-text="userName" />
 				</div>
 				<div class="flex items-center gap-2 applicantTextColor">
 					<i class="pi pi-circle" style="font-size: 0.5rem" />
@@ -34,13 +31,19 @@
 					</div>
 					<InputText
 						name="password"
+						id="newPass"
 						type="password"
-						v-model="userNewPwd.password"
+						v-model="password.newPass"
 						class="p-inputtext-sm w-full"
 						required
 					/>
+					<div class="absolute" v-if="password.isNewPassBlank">
+						<small id="newPass-help" class="p-error">
+							{{ $t("請輸入新密碼") }}
+						</small>
+					</div>
 				</div>
-				<div class="flex-col px-4">
+				<div class="flex-col px-4 pt-4">
 					<div
 						class="flex items-center gap-2 pb-2"
 						text="sm gray-500"
@@ -50,26 +53,32 @@
 					</div>
 					<InputText
 						name="password"
+						id="confirmPass"
 						type="password"
-						v-model="userNewPwd.confirmPwd"
+						v-model="password.confirmPass"
 						class="p-inputtext-sm w-full"
 						required
 					/>
+					<div class="absolute" v-if="password.notMatch">
+						<small id="confirmPass-help" class="p-error">
+							{{ $t("密碼不符") }}
+						</small>
+					</div>
 				</div>
 			</div>
 			<div class="flex-col-inline px-4 gap-y-8">
 				<div class="flex justify-center">
-					<router-link to="/recruitment/applicant/signin">
-						<button
-							class="py-2 w-80 applicantButtonStyle"
-							border="2  rounded-lg"
-						>
-							<div class="flex justify-center gap-2 mx-auto">
-								<div>提交</div>
-								<div>Submit</div>
-							</div>
-						</button>
-					</router-link>
+					<Button
+						class="p-button-sm p-button-secondary p-button-outlined !mt-60px !text-[16px]"
+						type="submit"
+						:loading="isChangePassLoading"
+						@click="onSubmit()"
+					>
+						<div class="flex justify-center gap-2 mx-auto">
+							<div>提交</div>
+							<div>Submit</div>
+						</div>
+					</Button>
 				</div>
 				<div></div>
 			</div>
@@ -78,15 +87,111 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-import { reactive } from "vue";
+import { ref, toRaw, reactive } from "vue";
 import InputText from "primevue/inputtext";
+import { useToast } from "primevue/usetoast";
+import { useRecruitmentApplicantAuthStore } from "@/stores/universalAuth";
+import { RecruitmentApplicantAPI } from "@/api/recruitment/applicant/api";
+import { universalAuthResetPwdData } from "@/api/universalAuth";
+import Button from "primevue/button";
+import { useRouter } from "vue-router";
+const router = useRouter();
 
-const userName = ref("Chu-Ting");
-const userNewPwd = reactive({
-	password: "",
-	confirmPwd: "",
+const toast = useToast();
+const applicantAuth = useRecruitmentApplicantAuthStore();
+const api = new RecruitmentApplicantAPI(applicantAuth);
+const isChangePassLoading = ref(false);
+let changePassRes = reactive({
+	success: false,
+	message: "" as string | [],
 });
+const url = window.location;
+
+const access_token = new URLSearchParams(url.search).get("access-token");
+const client = new URLSearchParams(url.search).get("client");
+const uid = new URLSearchParams(url.search).get("uid");
+
+// console.log("access_token = ", access_token);
+// console.log("client = ", client);
+// console.log("uid = ", uid);
+
+let password = reactive({
+	isNewPassBlank: false,
+	notMatch: false,
+	newPass: "",
+	confirmPass: "",
+});
+
+function delay(ms: number) {
+	return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+const putResetPassword = async (data: universalAuthResetPwdData) => {
+	if (!access_token || !client || !uid)
+		throw new Error("Missing credentials");
+
+	return await api.requestResetPasswordSession(
+		data,
+		access_token,
+		client,
+		uid
+	);
+};
+
+const onSubmit = async () => {
+	if (password.newPass === "") {
+		password.isNewPassBlank = true;
+	} else {
+		password.isNewPassBlank = false;
+	}
+
+	if (password.newPass !== password.confirmPass) {
+		password.notMatch = true;
+	} else {
+		password.notMatch = false;
+	}
+
+	if (!password.notMatch) {
+		isChangePassLoading.value = true;
+
+		const body: universalAuthResetPwdData = {
+			password: password.newPass,
+			password_confirmation: password.confirmPass,
+		};
+
+		const res = await putResetPassword(body);
+
+		if (res?.error === false && res?.message !== undefined) {
+			changePassRes.success = toRaw(!res.error);
+			changePassRes.message = toRaw(res.message);
+		}
+
+		isChangePassLoading.value = false;
+
+		if (changePassRes.success) {
+			toast.add({
+				severity: "success",
+				summary: "Success",
+				detail: "變更密碼成功 ! (3 秒後為您導向登入畫面)。",
+				life: 3000,
+			});
+			setTimeout(() => {
+				router.replace({ name: "recruitmentApplicantSignin" });
+			}, 3000);
+		} else if (
+			!changePassRes.success &&
+			password.newPass !== "" &&
+			password.confirmPass !== ""
+		) {
+			toast.add({
+				severity: "error",
+				summary: "Error",
+				detail: changePassRes.message[changePassRes.message.length - 1],
+				life: 5000,
+			});
+		}
+	}
+};
 </script>
 
 <style setup lang="css">
