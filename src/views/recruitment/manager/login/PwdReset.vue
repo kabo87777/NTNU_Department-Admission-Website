@@ -164,24 +164,3 @@ const onSubmit = async () => {
 	}
 };
 </script>
-
-<style setup lang="css">
-.managerTextColor {
-	color: #79363c;
-}
-.managerButtonStyle {
-	background-color: #ffe4df;
-	border-color: #f3baae;
-	color: #4d3639;
-}
-.managerButtonStyle:hover {
-	background-color: #94282c;
-	border-color: #94282c;
-	color: white;
-}
-.managerButtonStyle:active {
-	background-color: #62373e;
-	border-color: #62373e;
-	color: white;
-}
-</style>

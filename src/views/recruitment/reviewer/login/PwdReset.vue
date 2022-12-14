@@ -70,7 +70,6 @@ import { useToast } from "primevue/usetoast";
 import { useRecruitmentReviewerAuthStore } from "@/stores/universalAuth";
 import { RecruitmentReviewerAPI } from "@/api/recruitment/reviewer/api";
 import { universalAuthResetPwdData } from "@/api/universalAuth";
-import Button from "primevue/button";
 import { useRouter } from "vue-router";
 const router = useRouter();
 

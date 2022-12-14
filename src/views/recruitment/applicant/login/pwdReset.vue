@@ -67,10 +67,10 @@ import Title from "@/styles/login/LoginTitle.vue";
 import Body from "@/styles/login/LoginBody.vue";
 import { ref, toRaw, reactive } from "vue";
 import { useToast } from "primevue/usetoast";
+import { useRouter } from "vue-router";
 import { useRecruitmentApplicantAuthStore } from "@/stores/universalAuth";
 import { RecruitmentApplicantAPI } from "@/api/recruitment/applicant/api";
 import { universalAuthResetPwdData } from "@/api/universalAuth";
-import { useRouter } from "vue-router";
 const router = useRouter();
 
 const toast = useToast();
@@ -169,24 +169,3 @@ const onSubmit = async () => {
 	}
 };
 </script>
-
-<style setup lang="css">
-.applicantTextColor {
-	color: #736028;
-}
-.applicantButtonStyle {
-	background-color: #fafac7;
-	border-color: #dbd379;
-	color: #544830;
-}
-.applicantButtonStyle:hover {
-	background-color: #8a7b27;
-	border-color: #8a7b27;
-	color: white;
-}
-.applicantButtonStyle:active {
-	background-color: #624f2a;
-	border-color: #624f2a;
-	color: white;
-}
-</style>
