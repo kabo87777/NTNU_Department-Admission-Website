@@ -1,5 +1,4 @@
 <template>
-	<Toast position="top-right" />
 	<!-- Return Button -->
 	<router-link :to="{ name: 'RecruitmentSignin' }">
 		<NButton type="White" size="sm" icon="pi pi-angle-left" p="2" my="6">
@@ -186,21 +185,17 @@ const onSubmit = handleSubmit(async function (values) {
 
 		router.replace({ name: "RecruitmentReviewerMainContainer" });
 	} catch (e: any) {
+		console.error(e.toString());
 		if (e?.response?.status === 401) {
 			return toast.add({
 				severity: "error",
-				summary: "Error",
-				detail: "Invalid email or password",
-				life: 5000,
+				group: "loginFailure",
+				summary: "「電郵地址」或「密碼」",
+				detail: "E-mail and Password",
+				closable: false,
+				life: 3000,
 			});
 		}
-
-		toast.add({
-			severity: "error",
-			summary: "Error",
-			detail: e.toString(),
-			life: 5000,
-		});
 	}
 });
 </script>

@@ -1,4 +1,22 @@
 <template>
+	<!-- Toast Message -->
+	<Toast position="top-right" group="loginFailure">
+		<template #message="slotprop">
+			<div flex="~ gap-4" text="danger">
+				<i class="pi pi-ban" style="font-size: 2rem" />
+				<div space="y-2">
+					<div text="xl" font="medium">登入失敗 Login Failure</div>
+					<div>
+						<div>請確認{{ slotprop.message.summary }}是否正確</div>
+						<div>
+							Please check your {{ slotprop.message.detail }}.
+						</div>
+					</div>
+				</div>
+			</div>
+		</template>
+	</Toast>
+
 	<div v-if="!isLoggedIn">
 		<!-- Background Image -->
 		<img
@@ -62,6 +80,7 @@
 </template>
 
 <script setup lang="ts">
+import Toast from "primevue/toast";
 import NButton from "@/styles/CustomButton.vue";
 import Title from "@/styles/login/LoginTitle.vue";
 import Body from "@/styles/login/LoginBody.vue";
