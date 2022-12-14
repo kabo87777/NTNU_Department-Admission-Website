@@ -42,7 +42,7 @@
 				<div class="w-1/3">
 					<div>{{ $t("中文姓氏") }}</div>
 					<div class="mt-4px text-12px text-[#8D9093]">
-						{{ "*" + $t("無則免填") }}
+						{{ $t("無則免填") }}
 					</div>
 					<div>
 						<InputText
@@ -56,7 +56,7 @@
 				<div class="w-1/3">
 					<div>{{ $t("中文名字") }}</div>
 					<div class="mt-4px text-12px text-[#8D9093]">
-						{{ "*" + $t("無則免填") }}
+						{{ $t("無則免填") }}
 					</div>
 					<div>
 						<InputText
@@ -272,7 +272,7 @@
 		<div class="px-12px py-24px">
 			<div class="flex">
 				<div class="text-[24px] font-[50] font-bold">
-					{{ $t("現居地址") }}
+					{{ $t("通訊地址") }}
 				</div>
 				<div class="mt-6px ml-40px text-[#8D9093] text-[14px]">
 					{{ $t('" * " 為必填欄位') }}
@@ -336,15 +336,15 @@
 				</div>
 			</div>
 			<div class="mt-24px">
-				<div>{{ "*" + $t("生理性別") }}</div>
+				<div>{{ "*" + $t("性別") }}</div>
 				<div class="mt-2px flex">
 					<div>
 						<RadioButton v-model="born.sex" value="male" />
-						<label class="ml-4px">{{ $t("生理男性") }}</label>
+						<label class="ml-4px">{{ $t("男性") }}</label>
 					</div>
 					<div class="ml-160px">
 						<RadioButton v-model="born.sex" value="female" />
-						<label class="ml-4px">{{ $t("生理女性") }}</label>
+						<label class="ml-4px">{{ $t("女性") }}</label>
 					</div>
 				</div>
 				<div v-show="required.sex" class="absolute mt-[-4px]">
@@ -375,7 +375,7 @@
 					<div>
 						<Calendar
 							v-model="born.birth"
-							dateFormat="yy-mm-dd"
+							dateFormat="yy/mm/dd"
 							class="w-[70%] h-36px !mt-4px"
 							style="
 								border: 1px solid #736028;
@@ -397,9 +397,6 @@
 				<div class="text-[24px] font-[50] font-bold">
 					{{ $t("聯絡方式") }}
 				</div>
-				<div class="mt-6px ml-40px text-[#8D9093] text-[14px]">
-					{{ $t('" * " 為必填欄位') }}
-				</div>
 			</div>
 			<div class="flex py-16px">
 				<!-- <div class="w-1/3">
@@ -419,7 +416,7 @@
 					</div>
 				</div> -->
 				<div class="w-1/3">
-					<div>{{ "*" + $t("行動電話") }}</div>
+					<div>{{ $t("行動電話") }}</div>
 					<div>
 						<InputText
 							class="w-[70%] h-36px !mt-4px"

@@ -59,7 +59,7 @@
 								hover="text-title bg-nBlue-200 border-nBlue-200"
 								active="text-white bg-nBlue-500"
 							>
-								<div>教師聘請系統 Recruitment System</div>
+								<div>教師徵聘系統 Recruitment System</div>
 							</button>
 						</router-link>
 					</div>

@@ -50,21 +50,6 @@
 				</Button>
 			</router-link>
 
-			<Button
-				class="p-button-secondary p-button-text !ml-24px !mt-8px !w-[85%] !h-48px"
-			>
-				<img
-					alt="logo"
-					src="/assets/sidebar/Chart_light.png"
-					style="width: 18px"
-				/>
-				<span
-					class="text-left tracking-3px ml-3 font-bold text-18px text-[#2D2926]"
-				>
-					{{ $t("專案狀態") }}
-				</span>
-			</Button>
-
 			<div class="flex mt-32px">
 				<div class="sidebarRedDivider"></div>
 				<div

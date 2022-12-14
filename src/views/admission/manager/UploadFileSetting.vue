@@ -2,7 +2,7 @@
 	<!-- Header -->
 	<div class="fixed bg-white top-15 left-1/4 right-0 z-50 <lg:left-60">
 		<div class="w-9/10 pt-6 m-auto">
-			<div class="font-medium text-3xl text-title">
+			<div class="font-medium text-4xl text-title">
 				{{ trans.uploadField.value }}
 			</div>
 			<div class="bigRedDivider"></div>
@@ -95,7 +95,7 @@
 				</div>
 				<ParagraphDivider />
 			</div>
-			<!-- 現居地址 -->
+			<!-- 通訊地址 -->
 			<div class="space-y-4">
 				<div class="flex content-center">
 					<Checkbox
@@ -293,7 +293,7 @@ const trans = {
 	nameInfo: computed(() => t("姓名資訊")),
 	admissionIdentity: computed(() => t("入學身分")),
 	registAddressInfo: computed(() => t("戶籍資訊")),
-	residentAddress: computed(() => t("現居地址")),
+	residentAddress: computed(() => t("通訊地址")),
 	identityInfo: computed(() => t("身份資料")),
 	contactInfo: computed(() => t("聯絡資料")),
 	schoolExp: computed(() => t("就學經歷")),
@@ -309,7 +309,7 @@ const trans = {
 		countryState: computed(() => t("※ 國家/州")),
 		cityPostNumber: computed(() => t("※ 郵遞區號")),
 		streetAddress: computed(() => t("※ 街道地址")),
-		legalGender: computed(() => t("※ 生理性別")),
+		legalGender: computed(() => t("※ 性別")),
 		bornCountry: computed(() => t("※ 出生國家")),
 		bornDate: computed(() => t("※ 出生日期")),
 		citizenship: computed(() => t("※ 主要國籍")),
@@ -341,7 +341,7 @@ let showedInfo = reactive([
 	{ id: "姓名資訊", checked: false },
 	{ id: "入學身分", checked: false },
 	{ id: "戶籍資訊", checked: false },
-	{ id: "現居地址", checked: false },
+	{ id: "通訊地址", checked: false },
 	{ id: "身份資料", checked: false },
 	{ id: "聯絡資料", checked: false },
 ]);

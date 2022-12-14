@@ -2,12 +2,6 @@
 	<div>
 		<h1 class="text-4xl text-bold tracking-widest">{{ $t("專案設定") }}</h1>
 		<div class="bigRedDivider"></div>
-		<h2 class="text-2xl text-bold tracking-widest inline-block mt-16px">
-			{{ oldProgramName }}
-		</h2>
-		<h3 class="text-s tracking-widest text-gray-500 mt-8px">
-			{{ programCreateDate }} · {{ $t("新增到專案") }}
-		</h3>
 		<h5 class="text-base tracking-widest mt-32px mb-10px">
 			{{ $t("專案名稱 (修改)") }} :
 		</h5>

@@ -1,13 +1,16 @@
 <template>
-	<div>
-		<h1 class="text-4xl text-bold tracking-widest">{{ $t("專案設定") }}</h1>
-		<div class="bigRedDivider"></div>
-		<h2 class="text-2xl text-bold tracking-widest inline-block mt-16px">
-			{{ oldProgramName }}
-		</h2>
-		<h3 class="text-s tracking-widest text-gray-500 mt-8px">
-			{{ programCreateDate }} · {{ $t("新增到專案") }}
-		</h3>
+	<!-- Header -->
+	<div class="fixed bg-white top-15 left-1/4 right-0 z-50 <lg:left-60">
+		<div class="w-9/10 pt-6 m-auto">
+			<h1 class="text-4xl text-bold tracking-widest">
+				{{ $t("專案設定") }}
+			</h1>
+			<div class="bigRedDivider"></div>
+		</div>
+	</div>
+
+	<!-- Body -->
+	<div class="py-20" text="body xl">
 		<h5 class="text-base tracking-widest mt-32px">
 			{{ $t("專案名稱 (修改)") }} :
 		</h5>
@@ -121,57 +124,43 @@
 				dateFormat="yy/mm/dd"
 			/>
 		</div>
-		<br />
-		<!-- <div>
-			<Checkbox
-				inputId="binary"
-				v-model="checked"
-				:binary="true"
-				class="!align-top mt-30px"
-			/>
-			<h5
-				class="text-base tracking-widest mt-30px ml-10px align-top inline-block"
-			>
-				{{ $t("專案詳細") }} :
-			</h5>
-			<Textarea
-				v-model="project_details"
-				rows="5"
-				cols="30"
-				class="w-950px h-320px !mt-30px !ml-10px"
-			/>
-		</div> -->
-		<div class="mt-100px">
-			<div class="bigRedDivider"></div>
-		</div>
-		<div class="flex mt-24px">
-			<div class="m-auto">
-				<div class="flex">
-					<Button
-						class="bg-white h-60px w-140px border-ntnuRed"
-						@click="deleteProject"
-					>
-						<i
-							class="pi pi-times ml-1 mr-2 box-border"
-							text="sm ntnuRed"
-						></i>
-						<div class="m-auto tracking-2" text="sm ntnuRed">
-							<div>{{ $t("刪除專案") }}</div>
-						</div>
-					</Button>
-					<div class="w-24px"></div>
-					<Button
-						class="bg-Green h-60px w-140px border-ntnuRed"
-						@click="update"
-					>
-						<i
-							class="pi pi-check ml-1 mr-2 box-border"
-							text="sm black"
-						></i>
-						<div class="m-auto tracking-2" text="sm black">
-							<div>{{ $t("儲存設定") }}</div>
-						</div>
-					</Button>
+	</div>
+
+	<!-- Footer -->
+	<div class="fixed bg-white bottom-0 left-1/4 right-0 z-50 <lg:left-60">
+		<div class="w-9/10 pt-2 m-auto space-y-2 pb-6">
+			<div>
+				<div class="bigRedDivider"></div>
+			</div>
+			<div class="flex mt-24px">
+				<div class="m-auto">
+					<div class="flex">
+						<Button
+							class="bg-white h-60px w-140px border-ntnuRed"
+							@click="deleteProject"
+						>
+							<i
+								class="pi pi-times ml-1 mr-2 box-border"
+								text="sm ntnuRed"
+							></i>
+							<div class="m-auto tracking-2" text="sm ntnuRed">
+								<div>{{ $t("刪除專案") }}</div>
+							</div>
+						</Button>
+						<div class="w-24px"></div>
+						<Button
+							class="bg-Green h-60px w-140px border-ntnuRed"
+							@click="update"
+						>
+							<i
+								class="pi pi-check ml-1 mr-2 box-border"
+								text="sm black"
+							></i>
+							<div class="m-auto tracking-2" text="sm black">
+								<div>{{ $t("儲存設定") }}</div>
+							</div>
+						</Button>
+					</div>
 				</div>
 			</div>
 		</div>

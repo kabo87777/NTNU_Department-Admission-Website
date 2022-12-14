@@ -18,12 +18,12 @@
 			<div text="secondary" font="light">
 				國立臺灣師範大學資訊工程學系
 			</div>
-			<div text="3xl title" font="medium">教師聘請系統</div>
+			<div text="3xl title" font="medium">教師徵聘系統</div>
 			<div text="lg title" font="medium">Teacher Recruitment System</div>
 		</div>
 		<!-- Divider -->
 		<Divider align="center">
-			<div p="4" text="sm pApplicant">申請者註冊 Applicant Regist</div>
+			<div p="4" text="sm pApplicant">申請者註冊 Applicant Register</div>
 		</Divider>
 		<!-- Regist Form -->
 		<div flex="~ col gap-6" w="3/4" mx="auto">

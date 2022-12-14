@@ -99,7 +99,7 @@
 		</div>
 		<ParagraphDivider v-show="userInfo?.isForeigner === false" />
 
-		<div class="mt-24px text-24px font-bold">{{ $t("現居地址") }}</div>
+		<div class="mt-24px text-24px font-bold">{{ $t("通訊地址") }}</div>
 		<div class="admApplicantBasicInfoCard">
 			<div style="color: #333333">
 				<div>{{ $t("地址") + $t(":") }}</div>
@@ -121,7 +121,7 @@
 		<div class="mt-24px text-24px font-bold">{{ $t("身份資料") }}</div>
 		<div class="admApplicantBasicInfoCard">
 			<div style="color: #333333">
-				<div>{{ $t("生理性別") + $t(":") }}</div>
+				<div>{{ $t("性別") + $t(":") }}</div>
 				<div>{{ $t("出生國家") + $t(":") }}</div>
 				<div>{{ $t("出生日期") + $t(":") }}</div>
 			</div>

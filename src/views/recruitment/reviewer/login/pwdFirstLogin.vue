@@ -6,7 +6,7 @@
 					國立台灣師範大學資訊工程學系 NTNU CSIE
 				</div>
 				<div class="flex items-end gap-2 font-medium text-gray-900">
-					<div class="text-4xl">教師聘請系統</div>
+					<div class="text-4xl">教師徵聘系統</div>
 					<div class="text-xl">Teacher Recruitment System</div>
 				</div>
 			</div>

@@ -123,7 +123,7 @@
 					:showTime="true"
 					class="mt-8px !w-576px !h-44px ml-52px"
 					:baseZIndex="zIndex"
-					dateFormat="yy-mm-dd"
+					dateFormat="yy/mm/dd"
 				/>
 				<Calendar
 					v-else
@@ -134,7 +134,7 @@
 					class="mt-8px !w-576px !h-44px ml-52px"
 					:baseZIndex="zIndex"
 					disabled
-					dateFormat="yy-mm-dd"
+					dateFormat="yy/mm/dd"
 				/>
 				<Button
 					class="w-140px h-44px !mt-48px !ml-200px p-button-outlined p-button-success"

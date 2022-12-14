@@ -1,10 +1,15 @@
 <template>
-	<div>
-		<div class="font-[500] text-[32px] font-bold">
-			{{ $t("基本資料") }}
+	<!-- Header -->
+	<div class="fixed bg-white top-15 left-1/5 right-0 z-50 <lg:left-60">
+		<div class="w-9/10 pt-6 m-auto">
+			<div class="font-medium text-4xl text-title">
+				{{ $t("基本資料") }}
+			</div>
+			<div class="bigYellowDivider"></div>
 		</div>
-		<div class="bigYellowDivider"></div>
-
+	</div>
+	<!-- Body -->
+	<div class="py-4" text="body xl">
 		<div class="px-12px py-24px">
 			<div class="flex">
 				<div class="text-[24px] font-[50] font-bold">
@@ -14,35 +19,11 @@
 					{{ $t('" * " 為必填欄位') }}
 				</div>
 			</div>
-			<div class="flex pt-24px">
-				<div class="w-1/3">
-					<div>{{ $t("稱謂") }}</div>
-					<div>
-						<InputText
-							class="w-[70%] h-36px !mt-4px"
-							style="border: 1px solid #736028"
-							type="text"
-							v-model="name.appellation"
-						/>
-					</div>
-				</div>
-				<div class="w-1/3">
-					<div>{{ $t("後綴") }}</div>
-					<div>
-						<InputText
-							class="w-[70%] h-36px !mt-4px"
-							style="border: 1px solid #736028"
-							type="text"
-							v-model="name.suffix"
-						/>
-					</div>
-				</div>
-			</div>
 			<div class="flex pt-16px">
 				<div class="w-1/3">
 					<div>{{ $t("中文姓氏") }}</div>
 					<div class="mt-4px text-12px text-[#8D9093]">
-						{{ "*" + $t("無則免填") }}
+						{{ $t("無則免填") }}
 					</div>
 					<div>
 						<InputText
@@ -56,7 +37,7 @@
 				<div class="w-1/3">
 					<div>{{ $t("中文名字") }}</div>
 					<div class="mt-4px text-12px text-[#8D9093]">
-						{{ "*" + $t("無則免填") }}
+						{{ $t("無則免填") }}
 					</div>
 					<div>
 						<InputText
@@ -181,25 +162,6 @@
 								</small>
 							</div>
 						</div>
-						<div class="w-1/3">
-							<div>{{ "*" + $t("居留證統一證號") }}</div>
-							<div>
-								<InputText
-									class="w-[70%] h-36px !mt-4px"
-									style="border: 1px solid #736028"
-									type="text"
-									v-model="identity.ui"
-								/>
-							</div>
-							<div
-								v-show="required.ui"
-								class="absolute mt-[-4px]"
-							>
-								<small class="p-error">
-									{{ $t("此為必填欄位") }}
-								</small>
-							</div>
-						</div>
 					</div>
 				</div>
 				<div class="pt-24px">
@@ -208,7 +170,7 @@
 				<div class="py-24px">
 					<div class="flex">
 						<div class="text-[24px] font-[50] font-bold">
-							{{ $t("現居地址") }}
+							{{ $t("通訊地址") }}
 						</div>
 						<div class="mt-6px ml-40px text-[#8D9093] text-[14px]">
 							{{ $t('" * " 為必填欄位') }}
@@ -216,7 +178,7 @@
 					</div>
 					<div class="flex py-16px">
 						<div class="w-2/3">
-							<div>{{ "*" + $t("地址") }}</div>
+							<div>{{ $t("地址") }}</div>
 							<div>
 								<InputText
 									class="w-[80%] h-36px !mt-4px"
@@ -259,25 +221,9 @@
 				</div>
 			</div>
 			<div v-else>
-				<div class="flex py-16px">
-					<div class="w-1/3">
-						<div>{{ "*" + $t("身份證字號") }}</div>
-						<div>
-							<InputText
-								class="w-[70%] h-36px !mt-4px"
-								style="border: 1px solid #736028"
-								type="text"
-								v-model="identity.ic"
-							/>
-						</div>
-						<div v-show="required.icNum" class="absolute mt-[-4px]">
-							<small class="p-error">
-								{{ $t("此為必填欄位") }}
-							</small>
-						</div>
-					</div>
+				<div class="pt-24px">
+					<ParagraphDivider />
 				</div>
-				<ParagraphDivider />
 			</div>
 		</div>
 
@@ -293,7 +239,7 @@
 				</div>
 				<div class="flex py-16px">
 					<div class="w-2/3">
-						<div>{{ "*" + $t("地址") }}</div>
+						<div>{{ $t("地址") }}</div>
 						<div>
 							<InputText
 								class="w-[80%] h-36px !mt-4px"
@@ -337,7 +283,7 @@
 			<div class="px-12px py-24px">
 				<div class="flex">
 					<div class="text-[24px] font-[50] font-bold">
-						{{ $t("現居地址") }}
+						{{ $t("通訊地址") }}
 					</div>
 					<div class="mt-6px ml-40px text-[#8D9093] text-[14px]">
 						{{ $t('" * " 為必填欄位') }}
@@ -353,7 +299,7 @@
 				</div>
 				<div class="flex py-16px">
 					<div class="w-2/3">
-						<div>{{ "*" + $t("地址") }}</div>
+						<div>{{ $t("地址") }}</div>
 						<div>
 							<InputText
 								class="w-[80%] h-36px !mt-4px"
@@ -407,15 +353,15 @@
 				</div>
 			</div>
 			<div class="mt-24px">
-				<div>{{ "*" + $t("生理性別") }}</div>
+				<div>{{ "*" + $t("性別") }}</div>
 				<div class="mt-2px flex">
 					<div>
 						<RadioButton v-model="born.sex" value="male" />
-						<label class="ml-4px">{{ $t("生理男性") }}</label>
+						<label class="ml-4px">{{ $t("男性") }}</label>
 					</div>
 					<div class="ml-160px">
 						<RadioButton v-model="born.sex" value="female" />
-						<label class="ml-4px">{{ $t("生理女性") }}</label>
+						<label class="ml-4px">{{ $t("女性") }}</label>
 					</div>
 				</div>
 				<div v-show="required.sex" class="absolute mt-[-4px]">
@@ -468,13 +414,10 @@
 				<div class="text-[24px] font-[50] font-bold">
 					{{ $t("聯絡方式") }}
 				</div>
-				<div class="mt-6px ml-40px text-[#8D9093] text-[14px]">
-					{{ $t('" * " 為必填欄位') }}
-				</div>
 			</div>
 			<div class="flex py-16px">
 				<div class="w-1/3">
-					<div>{{ "*" + $t("行動電話") }}</div>
+					<div>{{ $t("行動電話") }}</div>
 					<div>
 						<InputText
 							class="w-[70%] h-36px !mt-4px"
@@ -491,24 +434,29 @@
 				</div>
 			</div>
 		</div>
-		<div class="bigYellowDivider"></div>
-		<div>
-			<Button
-				class="p-button-secondary"
-				style="
-					margin-top: 32px;
-					margin-left: 100%;
-					transform: translateX(-100%);
-					width: 100px;
-					height: 44px;
-					background-color: #f0dfad;
-					border: 2px solid #a18b4a;
-					color: #736028;
-				"
-				icon="pi pi-save"
-				:label="$t('儲存')"
-				@click="handleSave()"
-			/>
+	</div>
+	<!-- Footer -->
+	<div class="fixed bg-white bottom-0 left-1/5 right-0 z-50 <lg:left-60">
+		<div class="w-9/10 pt-2 m-auto space-y-2 pb-6">
+			<div class="bigYellowDivider"></div>
+			<div class="flex justify-center gap-6 pt-2">
+				<Button
+					class="p-button-secondary"
+					style="
+						margin-top: 32px;
+						margin-left: 100%;
+						transform: translateX(-100%);
+						width: 100px;
+						height: 44px;
+						background-color: #f0dfad;
+						border: 2px solid #a18b4a;
+						color: #736028;
+					"
+					icon="pi pi-save"
+					:label="$t('儲存')"
+					@click="handleSave()"
+				/>
+			</div>
 		</div>
 	</div>
 </template>
