@@ -31,9 +31,10 @@
 					<Row>
 						<Column :header="oralOrder" :rowspan="2"></Column>
 						<Column :header="applicantName" :rowspan="2"></Column>
-						<Column :header="docGrade" :rowspan="2"></Column>
 						<Column :header="reviewerGrade" :colspan="scoreCount" />
-						<!-- <Column :header="totalscore" :rowspan="2"></Column> -->
+						<Column :header="OralGrade" :rowspan="2"></Column>
+						<Column :header="docGrade" :rowspan="2"></Column>
+						<Column :header="totalscore" :rowspan="2"></Column>
 					</Row>
 					<Row>
 						<Column
@@ -66,32 +67,77 @@
 				<div v-if="true">
 					<Column field="oral_order"></Column>
 					<Column field="name"></Column>
-					<Column>
-						<template #body="slotProps">
-							{{
-								(slotProps.data.docs_grade_1 *
-									score1Proportion) /
-									100 +
-								(slotProps.data.docs_grade_2 *
-									score2Proportion) /
-									100 +
-								(slotProps.data.docs_grade_3 *
-									score3Proportion) /
-									100 +
-								(slotProps.data.docs_grade_4 *
-									score4Proportion) /
-									100 +
-								(slotProps.data.docs_grade_5 *
-									score5Proportion) /
-									100
-							}}
-						</template>
-					</Column>
 					<Column v-if="score1Proportion > 0" field="oral_grade_1" />
 					<Column v-if="score2Proportion > 0" field="oral_grade_2" />
 					<Column v-if="score3Proportion > 0" field="oral_grade_3" />
 					<Column v-if="score4Proportion > 0" field="oral_grade_4" />
 					<Column v-if="score5Proportion > 0" field="oral_grade_5" />
+					<!-- oral grade -->
+					<Column>
+						<template #body="slotProps">
+							{{
+								(slotProps.data.oral_grade_1 *
+									score1Proportion +
+									slotProps.data.oral_grade_2 *
+										score2Proportion +
+									slotProps.data.oral_grade_3 *
+										score3Proportion +
+									slotProps.data.oral_grade_4 *
+										score4Proportion +
+									slotProps.data.oral_grade_5 *
+										score5Proportion) /
+								100
+							}}
+						</template>
+					</Column>
+					<!-- docs grade -->
+					<Column>
+						<template #body="slotProps">
+							{{
+								(slotProps.data.docs_grade_1 *
+									docsScore1Proportion +
+									slotProps.data.docs_grade_2 *
+										docsScore2Proportion +
+									slotProps.data.docs_grade_3 *
+										docsScore3Proportion +
+									slotProps.data.docs_grade_4 *
+										docsScore4Proportion +
+									slotProps.data.docs_grade_5 *
+										docsScore5Proportion) /
+								100
+							}}
+						</template>
+					</Column>
+					<!-- total grade -->
+					<Column>
+						<template #body="slotProps">
+							{{
+								((slotProps.data.oral_grade_1 *
+									score1Proportion +
+									slotProps.data.oral_grade_2 *
+										score2Proportion +
+									slotProps.data.oral_grade_3 *
+										score3Proportion +
+									slotProps.data.oral_grade_4 *
+										score4Proportion +
+									slotProps.data.oral_grade_5 *
+										score5Proportion) *
+									oralWeight +
+									(slotProps.data.docs_grade_1 *
+										docsScore1Proportion +
+										slotProps.data.docs_grade_2 *
+											docsScore2Proportion +
+										slotProps.data.docs_grade_3 *
+											docsScore3Proportion +
+										slotProps.data.docs_grade_4 *
+											docsScore4Proportion +
+										slotProps.data.docs_grade_5 *
+											docsScore5Proportion) *
+										docsWeight) /
+								10000
+							}}
+						</template>
+					</Column>
 					<!-- <Column
 					field="isImmediateEnroll"
 					dataType="boolean"
@@ -191,11 +237,18 @@ const {
 	}
 );
 
+const docsWeight = ref(0);
+const oralWeight = ref(0);
 const score1Proportion = ref(0);
 const score2Proportion = ref(0);
 const score3Proportion = ref(0);
 const score4Proportion = ref(0);
 const score5Proportion = ref(0);
+const docsScore1Proportion = ref(0);
+const docsScore2Proportion = ref(0);
+const docsScore3Proportion = ref(0);
+const docsScore4Proportion = ref(0);
+const docsScore5Proportion = ref(0);
 const score1Title = ref("");
 const score2Title = ref("");
 const score3Title = ref("");
@@ -259,16 +312,26 @@ const { data: programGrading } = useQuery(
 				score5FieldName.value =
 					score5Title.value + score5Proportion.value + "%";
 			}
-			if (
-				data!.oral_grade_weight_4 !== 0 &&
-				data!.oral_grade_weight_5 !== 0
-			) {
-				scoreCount.value = 5;
-			} else if (data!.oral_grade_weight_4 !== 0) {
-				scoreCount.value = 4;
-			} else {
-				scoreCount.value = 3;
+
+			//doc propotion
+			if (data!.docs_grade_weight_1 !== 0) {
+				docsScore1Proportion.value = data!.docs_grade_weight_1!;
 			}
+			if (data!.docs_grade_weight_2 !== 0) {
+				docsScore2Proportion.value = data!.docs_grade_weight_2!;
+			}
+			if (data!.docs_grade_weight_3 !== 0) {
+				docsScore3Proportion.value = data!.docs_grade_weight_3!;
+			}
+			if (data!.docs_grade_weight_4 !== 0) {
+				docsScore4Proportion.value = data!.docs_grade_weight_4!;
+			}
+			if (data!.docs_grade_weight_5 !== 0) {
+				docsScore5Proportion.value = data!.docs_grade_weight_5!;
+			}
+
+			docsWeight.value = data!.docs_weight;
+			oralWeight.value = data!.oral_weight;
 		},
 	}
 );
@@ -355,14 +418,15 @@ const { data: programs } = useQuery(
 // FIXME: logic may refactor
 
 const oralOrder = computed(() => t("口試順序"));
-const docGrade = computed(() => t("一階分數"));
+const docGrade = computed(() => t("書面分數") + docsWeight.value + "%");
+const OralGrade = computed(() => t("口試分數") + oralWeight.value + "%");
 const ID = computed(() => t("帳號ID"));
 const applicantName = computed(() => t("申請人姓名"));
 const reviewerGrade = computed(() => t("評分分數"));
 const learningExT = computed(() => t("學習歷程"));
 const devPotentialT = computed(() => t("發展潛能"));
 const learnPotentialT = computed(() => t("學習潛力"));
-// const totalscore = computed(() => t("分數合計"));
+const totalscore = computed(() => t("分數合計"));
 // const reason = computed(() => t("逕取理由"));
 const confirm = computed(() => t("確認"));
 const cancel = computed(() => t("取消"));
