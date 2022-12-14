@@ -32,29 +32,30 @@
 			</div>
 		</div>
 
-		<router-link
-			to="/admission/reviewer/applicationReview"
-			custom
-			v-slot="{ navigate }"
-		>
-			<Button
-				class="p-button-secondary p-button-text !ml-24px !mt-32px !w-[85%] !h-48px"
-				@click="navigate"
-				role="link"
+		<div v-if="isOralAvailable">
+			<router-link
+				to="/admission/reviewer/applicationReview"
+				custom
+				v-slot="{ navigate }"
 			>
-				<img
-					alt="logo"
-					src="/assets/reviewer-page/Arhive.png"
-					style="width: 18px"
-				/>
-				<span
-					class="text-left tracking-3px ml-3 font-bold text-[18px] text-[#2D2926]"
+				<Button
+					class="p-button-secondary p-button-text !ml-24px !mt-32px !w-[85%] !h-48px"
+					@click="navigate"
+					role="link"
 				>
-					{{ $t("書面資料評閱") }}
-				</span>
-			</Button>
-		</router-link>
-
+					<img
+						alt="logo"
+						src="/assets/reviewer-page/Arhive.png"
+						style="width: 18px"
+					/>
+					<span
+						class="text-left tracking-3px ml-3 font-bold text-[18px] text-[#2D2926]"
+					>
+						{{ $t("書面資料評閱") }}
+					</span>
+				</Button>
+			</router-link>
+		</div>
 		<router-link
 			to="/admission/reviewer/oralReview"
 			custom
@@ -136,14 +137,16 @@ import "primevue/resources/primevue.min.css";
 import Dropdown from "primevue/dropdown";
 import Button from "primevue/button";
 
-import { ref, watch, watchEffect } from "vue";
+import { ref, watch, watchEffect, computed } from "vue";
 import { RouterLink, useRouter } from "vue-router";
 import { useQuery } from "@tanstack/vue-query";
+import dayjs from "dayjs";
 
 import { AdmissionReviewerAPI } from "@/api/admission/reviewer/api";
 import { AdmissionReviewerProgramListResponse } from "@/api/admission/reviewer/types";
 import { useAdmissionReviewerAuthStore } from "@/stores/universalAuth";
 import { useGlobalStore } from "@/stores/AdmissionReviewerStore";
+import { now } from "@vueuse/core";
 
 const router = useRouter();
 
@@ -175,6 +178,17 @@ watch(selectedProgram, (selection) => {
 });
 
 const generateOptions = (data: any) => data.category + data.name;
+
+const now = dayjs();
+const isOralAvailable = computed(() => {
+	if(!selectedProgram.value) 
+		return false;
+	
+	const start = dayjs(selectedProgram.value.application_start_date);
+	const end = dayjs(selectedProgram.value.application_end_date);
+
+	return now.isAfter(start) && now.isBefore(end);
+});
 
 async function signOut() {
 	await api.invalidateSession();
