@@ -71,12 +71,12 @@ import NButton from "@/styles/CustomButton.vue";
 import Title from "@/styles/login/LoginTitle.vue";
 import Body from "@/styles/login/LoginBody.vue";
 import EmailSentMsg from "@/styles/login/EmailSentMsg.vue";
+import Turnstile from "@/components/Turnstile.vue";
 
-import { reactive, ref } from "vue";
+import { ref } from "vue";
 import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
 import { TurnstileComponentExposes } from "@/components/Turnstile.vue";
 import { AdmissionAdminAPI } from "@/api/admission/admin/api";
-import Turnstile from "@/components/Turnstile.vue";
 
 const forgetPwdEmail = ref("");
 const emailState = ref("Edit");

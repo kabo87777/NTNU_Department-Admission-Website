@@ -24,7 +24,7 @@
 				<!-- Account -->
 				<Field
 					name="username"
-					v-slot="{ field, errorMessage, meta }"
+					v-slot="{ field, errorMessage }"
 					v-model="username"
 				>
 					<div flex="~ col gap-1">
@@ -34,15 +34,19 @@
 							name="username"
 							type="text"
 							class="h-12"
+							:class="{ 'p-invalid': errorMessage }"
 							:disabled="isSubmitting"
 							required
 						/>
+						<div v-if="errorMessage" text="sm danger">
+							※ 准考證號碼不可為空白 Registration Number Required
+						</div>
 					</div>
 				</Field>
 				<!-- Password -->
 				<Field
 					name="password"
-					v-slot="{ field, errorMessage, meta }"
+					v-slot="{ field, errorMessage }"
 					v-model="password"
 				>
 					<div flex="~ col gap-1">
@@ -52,9 +56,13 @@
 							name="password"
 							type="password"
 							class="h-12"
+							:class="{ 'p-invalid': errorMessage }"
 							:disabled="isSubmitting"
 							required
 						/>
+						<div v-if="errorMessage" text="sm danger">
+							※ 密碼不可為空白 Password Required
+						</div>
 					</div>
 				</Field>
 				<!-- Remember Account -->
@@ -90,7 +98,7 @@
 
 <script setup lang="ts">
 import { useToast } from "primevue/usetoast";
-import { ref, watch, computed, toRaw } from "vue";
+import { ref, watch, computed } from "vue";
 import { useRouter } from "vue-router";
 import { Field, useForm } from "vee-validate";
 import * as yup from "yup";
@@ -101,8 +109,6 @@ import { useUserInfoStore } from "@/stores/AdmissionApplicantStore";
 
 import type { TurnstileComponentExposes } from "@/components/Turnstile.vue";
 import Turnstile from "@/components/Turnstile.vue";
-
-import type { AdmissionApplicantAuthResponse } from "@/api/admission/applicant/types";
 
 import Checkbox from "primevue/checkbox";
 import InputText from "primevue/inputtext";
@@ -154,7 +160,7 @@ const consumeTurnstileToken = () => {
 	return token;
 };
 
-const onSubmit = handleSubmit(async function (values, actions) {
+const onSubmit = handleSubmit(async function (values) {
 	window.localStorage.setItem(
 		"AdmissionApplicantSigninLastUsername",
 		username.value

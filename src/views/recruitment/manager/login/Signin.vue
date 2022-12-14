@@ -1,6 +1,5 @@
 <template>
 	<Toast position="top-right" />
-	<Toast position="top-right" />
 	<!-- Return Button -->
 	<router-link :to="{ name: 'RecruitmentSignin' }">
 		<NButton type="White" size="sm" icon="pi pi-angle-left" p="2" my="6">
@@ -25,7 +24,7 @@
 				<!-- Account -->
 				<Field
 					name="email"
-					v-slot="{ field, errorMessage, meta }"
+					v-slot="{ field, errorMessage }"
 					v-model="email"
 				>
 					<div flex="~ col gap-1">
@@ -35,15 +34,19 @@
 							name="email"
 							type="email"
 							class="h-12"
+							:class="{ 'p-invalid': errorMessage }"
 							:disabled="isSubmitting"
 							required
 						/>
+						<div v-if="errorMessage" text="sm danger">
+							※ 電郵地址不可為空白 E-mail Required
+						</div>
 					</div>
 				</Field>
 				<!-- Password -->
 				<Field
 					name="password"
-					v-slot="{ field, errorMessage, meta }"
+					v-slot="{ field, errorMessage }"
 					v-model="password"
 				>
 					<div flex="~ col gap-1">
@@ -53,9 +56,13 @@
 							name="password"
 							type="password"
 							class="h-12"
+							:class="{ 'p-invalid': errorMessage }"
 							:disabled="isSubmitting"
 							required
 						/>
+						<div v-if="errorMessage" text="sm danger">
+							※ 密碼不可為空白 Password Required
+						</div>
 					</div>
 				</Field>
 				<!-- Remember Account -->
@@ -156,7 +163,7 @@ const consumeTurnstileToken = () => {
 	return token;
 };
 
-const onSubmit = handleSubmit(async function (values, actions) {
+const onSubmit = handleSubmit(async function (values) {
 	window.localStorage.setItem("RecruitmentAdminSigninLastEmail", email.value);
 
 	try {

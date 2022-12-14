@@ -36,7 +36,7 @@
 			</div>
 			<!-- E-mail -->
 			<div space="y-1">
-				<div text="sm body">設置電郵 Setting E-mail</div>
+				<div text="sm body">設置電郵地址 Setting E-mail</div>
 				<InputText
 					name="email"
 					type="email"
@@ -46,10 +46,7 @@
 					required
 				/>
 				<div text="xs danger" v-if="password.isEmailBlank">
-					※ 必須輸入輸入電郵 E-mail is required.
-				</div>
-				<div text="xs danger" v-else-if="password.isEmailBlank">
-					※ 必須是電子郵件 Format has to be E-mail.
+					※ 電郵地址不可為空白 E-mail required.
 				</div>
 			</div>
 			<!-- Set new PWD -->
@@ -66,7 +63,7 @@
 					required
 				/>
 				<div text="xs danger" v-if="password.isCurrentPassBlank">
-					※ 請輸入新密碼 Please set your new password.
+					※ 密碼不可為空白 Password Required
 				</div>
 			</div>
 			<!-- Comfirm PWD -->
@@ -81,7 +78,7 @@
 					required
 				/>
 				<div text="xs danger" v-if="password.notMatch">
-					※ 密碼不符 Confirm password is not matched.
+					※ 密碼不符 Password not Matched
 				</div>
 			</div>
 		</template>
@@ -145,7 +142,6 @@ import { reactive, toRaw } from "vue";
 import { RecruitmentApplicantAPI } from "@/api/recruitment/applicant/api";
 import { useRecruitmentApplicantAuthStore } from "@/stores/universalAuth";
 import InputText from "primevue/inputtext";
-import { useRouter } from "vue-router";
 import { ref } from "vue";
 import type { TurnstileComponentExposes } from "@/components/Turnstile.vue";
 import Turnstile from "@/components/Turnstile.vue";

@@ -27,17 +27,29 @@
 						<template #Divider>請選擇系統</template>
 					</Title>
 					<!-- Body -->
-					<Body #Content>
-						<router-link :to="{ name: 'AdmissionSignin' }">
-							<NButton type="Applicant" size="lg" w="full" p="4">
-								招生系統 Admission System
-							</NButton>
-						</router-link>
-						<router-link :to="{ name: 'RecruitmentSignin' }">
-							<NButton type="Reviewer" size="lg" w="full" p="4">
-								教師聘請系統 Recruitment System
-							</NButton>
-						</router-link>
+					<Body>
+						<template #Content>
+							<router-link :to="{ name: 'AdmissionSignin' }">
+								<NButton
+									type="Applicant"
+									size="lg"
+									w="full"
+									p="4"
+								>
+									招生系統 Admission System
+								</NButton>
+							</router-link>
+							<router-link :to="{ name: 'RecruitmentSignin' }">
+								<NButton
+									type="Reviewer"
+									size="lg"
+									w="full"
+									p="4"
+								>
+									教師聘請系統 Recruitment System
+								</NButton>
+							</router-link>
+						</template>
 					</Body>
 				</div>
 				<!-- For other Login Pages -->

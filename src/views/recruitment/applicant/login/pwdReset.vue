@@ -98,9 +98,9 @@ let password = reactive({
 	confirmPass: "",
 });
 
-function delay(ms: number) {
-	return new Promise((resolve) => setTimeout(resolve, ms));
-}
+// function delay(ms: number) {
+// 	return new Promise((resolve) => setTimeout(resolve, ms));
+// }
 
 const putResetPassword = async (data: universalAuthResetPwdData) => {
 	if (!access_token || !client || !uid)

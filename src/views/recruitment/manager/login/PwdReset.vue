@@ -65,16 +65,17 @@ import Title from "@/styles/login/LoginTitle.vue";
 import Body from "@/styles/login/LoginBody.vue";
 import { ref, toRaw, reactive } from "vue";
 import { useToast } from "primevue/usetoast";
+import { useRouter } from "vue-router";
 import { useRecruitmentAdminAuthStore } from "@/stores/universalAuth";
 import { RecruitmentAdminAPI } from "@/api/recruitment/admin/api";
 import { universalAuthResetPwdData } from "@/api/universalAuth";
-import Button from "primevue/button";
-import { useRouter } from "vue-router";
-const router = useRouter();
 
 const toast = useToast();
+const router = useRouter();
+
 const adminAuth = useRecruitmentAdminAuthStore();
 const api = new RecruitmentAdminAPI(adminAuth);
+
 const isChangePassLoading = ref(false);
 let changePassRes = reactive({
 	success: false,

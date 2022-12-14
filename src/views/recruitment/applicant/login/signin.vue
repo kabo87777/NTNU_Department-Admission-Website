@@ -24,7 +24,7 @@
 				<!-- Account -->
 				<Field
 					name="email"
-					v-slot="{ field, errorMessage, meta }"
+					v-slot="{ field, errorMessage }"
 					v-model="email"
 				>
 					<div flex="~ col gap-1">
@@ -34,15 +34,19 @@
 							name="email"
 							type="email"
 							class="h-12"
+							:class="{ 'p-invalid': errorMessage }"
 							:disabled="isSubmitting"
 							required
 						/>
+						<div v-if="errorMessage" text="sm danger">
+							※ 電郵地址不可為空白 E-mail Required
+						</div>
 					</div>
 				</Field>
 				<!-- Password -->
 				<Field
 					name="password"
-					v-slot="{ field, errorMessage, meta }"
+					v-slot="{ field, errorMessage }"
 					v-model="password"
 				>
 					<div flex="~ col gap-1">
@@ -52,9 +56,13 @@
 							name="password"
 							type="password"
 							class="h-12"
+							:class="{ 'p-invalid': errorMessage }"
 							:disabled="isSubmitting"
 							required
 						/>
+						<div v-if="errorMessage" text="sm danger">
+							※ 密碼不可為空白 Password Required
+						</div>
 					</div>
 				</Field>
 				<!-- Remember Account -->
@@ -113,8 +121,6 @@ import { useUserInfoStore } from "@/stores/RecruitmentApplicantStore";
 import type { TurnstileComponentExposes } from "@/components/Turnstile.vue";
 import Turnstile from "@/components/Turnstile.vue";
 
-import type { RecruitmentApplicantAuthResponse } from "@/api/recruitment/applicant/types";
-
 import Checkbox from "primevue/checkbox";
 import InputText from "primevue/inputtext";
 
@@ -165,7 +171,7 @@ const consumeTurnstileToken = () => {
 	return token;
 };
 
-const onSubmit = handleSubmit(async function (values, actions) {
+const onSubmit = handleSubmit(async function (values) {
 	window.localStorage.setItem(
 		"RecruitmentApplicantSigninLastEmail",
 		email.value

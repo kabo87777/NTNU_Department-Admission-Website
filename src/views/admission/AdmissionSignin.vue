@@ -15,28 +15,30 @@
 		<template #Divider>選擇身份 Select your identity</template>
 	</Title>
 	<!-- Body -->
-	<Body #Content>
-		<router-link to="/admission/applicant/signin">
-			<NButton type="Applicant" size="lg" w="full" p="4">
-				申請者登入 Applicant Login
-			</NButton>
-		</router-link>
-		<router-link to="/admission/reviewer/signin">
-			<NButton type="Reviewer" size="lg" w="full" p="4">
-				審查委員登入 Reviewer Login
-			</NButton>
-		</router-link>
-		<router-link to="/admission/manager/signin">
-			<NButton type="Admin" size="lg" w="full" p="4">
-				行政人員登入 Manager Login
-			</NButton>
-		</router-link>
-		<!-- 通往推薦信作業身份驗證的神秘按鈕 -->
-		<!-- <div>
+	<Body>
+		<template #Content>
+			<router-link to="/admission/applicant/signin">
+				<NButton type="Applicant" size="lg" w="full" p="4">
+					申請者登入 Applicant Login
+				</NButton>
+			</router-link>
+			<router-link to="/admission/reviewer/signin">
+				<NButton type="Reviewer" size="lg" w="full" p="4">
+					審查委員登入 Reviewer Login
+				</NButton>
+			</router-link>
+			<router-link to="/admission/manager/signin">
+				<NButton type="Admin" size="lg" w="full" p="4">
+					行政人員登入 Manager Login
+				</NButton>
+			</router-link>
+			<!-- 通往推薦信作業身份驗證的神秘按鈕 -->
+			<!-- <div>
 			<router-link to="/admission/recommenderAuthVerify">
 				<Button>借放一下</Button>
 			</router-link>
 		</div> -->
+		</template>
 	</Body>
 </template>
 
