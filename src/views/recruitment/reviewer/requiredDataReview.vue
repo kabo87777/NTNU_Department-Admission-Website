@@ -29,6 +29,20 @@
 				class="p-datatable-lg !h-700px"
 			>
 				<Column field="name" :header="applicantName"></Column>
+				<Column :header="academic">
+					<template #body="slotProps">
+						<p v-if="slotProps.data.doctoral">
+							{{ slotProps.data.doctoral }}
+						</p>
+						<p v-else-if="slotProps.data.master">
+							{{ slotProps.data.master }}
+						</p>
+						<p v-else-if="slotProps.data.college">
+							{{ slotProps.data.college }}
+						</p>
+					</template>
+				</Column>
+				<Column field="publication" :header="publication" />
 				<Column field="isRecommend" :header="reviewerRating">
 					<template #body="slotProps">
 						<p v-if="slotProps.data.isRecommend === null">
@@ -40,7 +54,6 @@
 						<p v-else>{{ notRecommanded }}</p>
 					</template>
 				</Column>
-				<Column field="comment" :header="reason" />
 				<Column :header="recommanded">
 					<template #body="slotProps">
 						<Button
@@ -108,6 +121,8 @@ const progressValue = ref(0);
 const noRating = computed(() => t("未評比"));
 const notRecommanded = computed(() => t("不推薦"));
 const recommanded = computed(() => t("推薦"));
+const academic = computed(() => t("最高學歷"));
+const publication = computed(() => t("著作"));
 
 const {
 	isLoading,

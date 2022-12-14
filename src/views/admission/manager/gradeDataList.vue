@@ -484,9 +484,15 @@
 				:scrollable="true"
 				scrollHeight="700px"
 				class="p-datatable-lg !h-700px"
+				removableSort
 			>
 				<Column field="id" :header="ID"></Column>
 				<Column field="name" :header="applicantName"></Column>
+				<Column
+					field="grades"
+					:header="reviewerGrade"
+					:sortable="true"
+				></Column>
 			</DataTable>
 			<div class="bigRedDivider !mt-30px"></div>
 		</div>
@@ -1061,11 +1067,25 @@ const batchUpdateApplicantStages = useMutation(
 	},
 	{
 		onSuccess: () => {
+			toast.add({
+				severity: "success",
+				summary: "Success",
+				detail: "保存成功",
+				life: 3000,
+			});
 			queryClient.invalidateQueries({
 				queryKey: ["admissionAdminDocsGradeList"],
 			});
 			queryClient.invalidateQueries({
 				queryKey: ["admissionAdminOralGradeList"],
+			});
+		},
+		onError: () => {
+			toast.add({
+				severity: "error",
+				summary: "Error",
+				detail: "保存失敗",
+				life: 3000,
 			});
 		},
 	}

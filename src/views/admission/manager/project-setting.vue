@@ -150,7 +150,7 @@
 					<NButton
 						type="Admin"
 						class="bg-white h-60px w-140px"
-						@click="deleteProject"
+						@click="confirmDeleteProject()"
 						icon="pi pi-times"
 					>
 						<div>{{ $t("刪除專案") }}</div>
@@ -167,6 +167,7 @@
 				</div>
 			</div>
 		</div>
+		<ConfirmDialog />
 	</div>
 </template>
 
@@ -189,10 +190,13 @@ import { router } from "@/router";
 import { useToast } from "primevue/usetoast";
 import { useI18n } from "vue-i18n";
 import NButton from "@/styles/CustomButton.vue";
+import ConfirmDialog from "primevue/confirmdialog";
+import { useConfirm } from "primevue/useconfirm";
 
 const programName = ref<string>("");
 const oldProgramName = ref<string>("");
 const selected_type = ref();
+const { t: $t } = useI18n();
 const types = ref([
 	{ type_name: "特殊選才" },
 	{ type_name: "碩士班徵試入學" },
@@ -352,6 +356,20 @@ globalStore.$subscribe(() => {
 		queryKey: ["Aadminprogram"],
 	});
 });
+
+const confirm = useConfirm();
+const confirmDeleteProject = () => {
+	confirm.require({
+		header: $t("是否要刪除此專案？"),
+		message: $t("此動作不可回復，請謹慎操作"),
+		icon: "pi pi-exclamation-triangle",
+		accept: () => {
+			deleteProject();
+		},
+		acceptLabel: $t("確認"),
+		rejectLabel: $t("取消"),
+	});
+};
 
 function dateTransform(date?: Date) {
 	const result = new Date(date!.setHours(date!.getHours() + 8))

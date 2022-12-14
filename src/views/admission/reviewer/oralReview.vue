@@ -129,7 +129,7 @@
 				<NButton
 					type="Reviewer"
 					class="w-140px h-44px !ml-1200px"
-					@click="showTemplate"
+					@click="confirmGrading"
 				>
 					<img
 						alt="logo"
@@ -139,47 +139,12 @@
 					/>
 					<span class="tracking-1px">{{ $t("送出成績") }}</span>
 				</NButton>
-				<Toast position="bottom-center" group="bc" class="!w-400px">
-					<template #message="slotProps">
-						<div class="">
-							<div class="text-center">
-								<i
-									class="pi pi-exclamation-triangle"
-									style="font-size: 3rem"
-								></i>
-								<h4 class="text-2xl">
-									{{ slotProps.message.summary }}
-								</h4>
-								<p class="text-xl">
-									{{ slotProps.message.detail }}
-								</p>
-							</div>
-							<div class="flex">
-								<div class="ml-80px">
-									<NButton
-										type="Reviewer"
-										class="p-button-success"
-										:label="confirm"
-										@click="onConfirm"
-									></NButton>
-								</div>
-								<div class="ml-20px">
-									<NButton
-										type="Reviewer"
-										class="p-button-secondary"
-										:label="cancel"
-										@click="onReject"
-									></NButton>
-								</div>
-							</div>
-						</div>
-					</template>
-				</Toast>
 			</div>
 			<div class="ml-930px mt-12px text-red-500">
 				{{ $t("※成績送出即無法再次修改，煩請送出前再三確認成績無誤") }}
 			</div>
 		</div>
+		<ConfirmDialog />
 	</div>
 </template>
 
@@ -202,11 +167,14 @@ import { InvalidSessionError } from "@/api/error";
 import { useGlobalStore } from "@/stores/AdmissionReviewerStore";
 import { useToast } from "primevue/usetoast";
 import NButton from "@/styles/CustomButton.vue";
+import ConfirmDialog from "primevue/confirmdialog";
+import { useConfirm } from "primevue/useconfirm";
 
 const reviewerAuth = useAdmissionReviewerAuthStore();
 const api = new AdmissionReviewerAPI(reviewerAuth);
 const store = useGlobalStore();
 
+const { t: $t } = useI18n();
 const { t } = useI18n();
 
 const totalApplicant = ref(0);
@@ -321,26 +289,31 @@ const { data: programGrading } = useQuery(
 	}
 );
 
-const oralGrade = useMutation(["oralGrade"], async () => {
-	return await api.submitOralGrade(store.admissionReviewerProgram!.id);
-});
-
 const toast = useToast();
-const showTemplate = () => {
-	toast.add({
-		severity: "warn",
-		summary: "確認送出成績?",
-		detail: "成績送出即無法再次修改，煩請送出前再三確認成績無誤",
-		group: "bc",
-	});
-};
-const onConfirm = async () => {
-	await oralGrade.mutateAsync();
-	toast.removeGroup("bc");
-};
-const onReject = () => {
-	toast.removeGroup("bc");
-};
+const oralGrade = useMutation(
+	["oralGrade"],
+	async () => {
+		return await api.submitOralGrade(store.admissionReviewerProgram!.id);
+	},
+	{
+		onSuccess: () => {
+			toast.add({
+				severity: "success",
+				summary: $t("送出成功"),
+				detail: $t("送出成功"),
+				life: 3000,
+			});
+		},
+		onError: () => {
+			toast.add({
+				severity: "error",
+				summary: $t("送出失敗"),
+				detail: $t("送出失敗"),
+				life: 3000,
+			});
+		},
+	}
+);
 
 const reviewStartTime = ref("");
 const reviewEndTime = ref("");
@@ -432,4 +405,17 @@ store.$subscribe(() => {
 		queryKey: ["admissionReviewerProgramList"],
 	});
 });
+const confirm1 = useConfirm();
+const confirmGrading = () => {
+	confirm1.require({
+		header: $t("是否要刪除此專案？"),
+		message: $t("此動作不可回復，請謹慎操作"),
+		icon: "pi pi-exclamation-triangle",
+		accept: () => {
+			oralGrade.mutate();
+		},
+		acceptLabel: $t("確認"),
+		rejectLabel: $t("取消"),
+	});
+};
 </script>

@@ -81,7 +81,7 @@
 					<NButton
 						type="Admin"
 						class="bg-white h-60px w-140px"
-						@click="deleteProject"
+						@click="confirmDeleteProject()"
 						icon="pi pi-times"
 					>
 						<div>{{ $t("刪除專案") }}</div>
@@ -98,6 +98,7 @@
 				</div>
 			</div>
 		</div>
+		<ConfirmDialog />
 	</div>
 </template>
 
@@ -110,6 +111,9 @@ import Divider from "primevue/divider";
 import InputText from "primevue/inputtext";
 import Textarea from "primevue/textarea";
 import NButton from "@/styles/CustomButton.vue";
+import { useI18n } from "vue-i18n";
+import ConfirmDialog from "primevue/confirmdialog";
+import { useConfirm } from "primevue/useconfirm";
 
 import { ref } from "vue";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
@@ -127,6 +131,7 @@ const review_stage1_start_time = ref();
 const review_stage1_end_time = ref();
 const checked = ref(false);
 const programCreateDate = ref("");
+const { t: $t } = useI18n();
 
 // Get QueryClient from the context
 const queryClient = useQueryClient();
@@ -230,12 +235,28 @@ async function deleteProject() {
 		toast.add({ severity: "error", summary: "刪除失敗", life: 3000 });
 	}
 
-	await queryClient.invalidateQueries({ queryKey: ["programList"] });
+	await queryClient.invalidateQueries({
+		queryKey: ["recruitmentAdminprogramList"],
+	});
 }
 
 globalStore.$subscribe(() => {
 	queryClient.invalidateQueries({ queryKey: ["RAdminprogram"] });
 });
+
+const confirm = useConfirm();
+const confirmDeleteProject = () => {
+	confirm.require({
+		header: $t("是否要刪除此專案？"),
+		message: $t("此動作不可回復，請謹慎操作"),
+		icon: "pi pi-exclamation-triangle",
+		accept: () => {
+			deleteProject();
+		},
+		acceptLabel: $t("確認"),
+		rejectLabel: $t("取消"),
+	});
+};
 
 function dateTransform(date?: Date) {
 	const result = new Date(date!.setHours(date!.getHours() + 8))

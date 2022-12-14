@@ -557,7 +557,7 @@ function addNewProject() {
 
 				toast.add({
 					severity: "success",
-					summary: "更改成功",
+					summary: "新增成功",
 					life: 3000,
 				});
 			},
