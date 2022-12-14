@@ -2,5 +2,7 @@
   root * /app
   try_files {path}.html {path} /index.html
   file_server
-  -server
+  header {
+    -server
+  }
 }
