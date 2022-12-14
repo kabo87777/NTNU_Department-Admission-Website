@@ -301,6 +301,15 @@ async function update() {
 		});
 		return;
 	}
+	if (review_stage2_start_time.value < review_stage1_end_time.value!) {
+		toast.add({
+			severity: "error",
+			summary: "錯誤",
+			detail: "口試審查開始時間不得早於書面審查截止時間",
+			life: 3000,
+		});
+		return;
+	}
 	if (review_stage.value === translation.phase1) {
 		stage.value = "docs_stage";
 	} else if (review_stage.value === translation.phase2) {
@@ -325,7 +334,6 @@ async function update() {
 					dateTransform(review_stage2_start_time.value) + "+08:00",
 				review_end_date:
 					dateTransform(review_stage2_end_time.value) + "+08:00",
-				require_file: '["file1", "file2"]',
 			},
 			{
 				onSuccess: () => {

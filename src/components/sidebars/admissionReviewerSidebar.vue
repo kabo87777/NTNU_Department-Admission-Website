@@ -63,28 +63,28 @@
 		</div>
 
 		<div v-if="isOralAvailable">
-		<router-link
-			to="/admission/reviewer/oralReview"
-			custom
-			v-slot="{ navigate }"
-		>
-			<Button
-				class="p-button-secondary p-button-text !ml-24px !mt-32px !w-[85%] !h-48px"
-				@click="navigate"
-				role="link"
+			<router-link
+				to="/admission/reviewer/oralReview"
+				custom
+				v-slot="{ navigate }"
 			>
-				<img
-					alt="logo"
-					src="/assets/reviewer-page/Arhive-1.png"
-					style="width: 18px"
-				/>
-				<span
-					class="text-left tracking-3px ml-3 font-bold text-[18px] text-[#2D2926]"
+				<Button
+					class="p-button-secondary p-button-text !ml-24px !mt-32px !w-[85%] !h-48px"
+					@click="navigate"
+					role="link"
 				>
-					{{ $t("口試資料評閱") }}
-				</span>
-			</Button>
-		</router-link>
+					<img
+						alt="logo"
+						src="/assets/reviewer-page/Arhive-1.png"
+						style="width: 18px"
+					/>
+					<span
+						class="text-left tracking-3px ml-3 font-bold text-[18px] text-[#2D2926]"
+					>
+						{{ $t("口試資料評閱") }}
+					</span>
+				</Button>
+			</router-link>
 		</div>
 		<div v-else>
 			<Button
@@ -203,14 +203,13 @@ watchEffect(() => {
 
 watch(selectedProgram, (selection) => {
 	globalStore.updateadmissionReviewerProgramData(selectedProgram!.value!);
-	
+
 	start.value = dayjs(selectedProgram!.value!.oral_start_date);
 	end.value = dayjs(selectedProgram!.value!.review_end_date);
 
-	if(now.isAfter(start.value) && now.isBefore(end.value)){
+	if (now.isAfter(start.value) && now.isBefore(end.value)) {
 		isOralAvailable.value = true;
-	}
-	else{
+	} else {
 		isOralAvailable.value = false;
 	}
 
@@ -225,7 +224,7 @@ const oralNotOpen = () => {
 		summary: "It's not during the period of oral reviewing.",
 		life: 3000,
 	});
-}
+};
 
 async function signOut() {
 	await api.invalidateSession();
