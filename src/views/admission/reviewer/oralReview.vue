@@ -25,7 +25,7 @@
 				v-model:selection="selectedData"
 				selectionMode="single"
 				@rowSelect="onRowSelect"
-				class="p-datatable-lg"
+				class="p-datatable-lg !h-700px"
 			>
 				<ColumnGroup type="header">
 					<Row>
@@ -33,23 +33,7 @@
 						<Column :header="applicantName" :rowspan="2"></Column>
 						<Column :header="docGrade" :rowspan="2"></Column>
 						<Column :header="reviewerGrade" :colspan="scoreCount" />
-						<!-- <Column :header="totalscore" :rowspan="2"></Column>
-						<Column
-							:header="directAccess"
-							dataType="boolean"
-							bodyClass="text-center"
-							style="min-width: 8rem"
-							:rowspan="2"
-						>
-							<template #body="slotProps">
-								<i
-									v-if="slotProps.data.access"
-									class="pi pi-check"
-								></i>
-								<p v-else>-</p>
-							</template>
-						</Column>
-						<Column :header="reason" :rowspan="2"></Column> -->
+						<!-- <Column :header="totalscore" :rowspan="2"></Column> -->
 					</Row>
 					<Row>
 						<Column
