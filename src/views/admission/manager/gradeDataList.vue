@@ -1213,12 +1213,12 @@ const enrollPdfData = async () => {
 };
 </script>
 <style lang="scss">
-.custom-dialog{
+.custom-dialog {
 	.p-dialog-header {
-        pointer-events: none;
-		.p-dialog-header-icons{
-			pointer-events:fill ;
+		pointer-events: none;
+		.p-dialog-header-icons {
+			pointer-events: fill;
 		}
-    }
+	}
 }
 </style>
