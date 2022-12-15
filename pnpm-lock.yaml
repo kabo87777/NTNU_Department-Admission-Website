@@ -21,7 +21,7 @@ specifiers:
   pinia: ^2.0.28
   prettier: ^2.8.1
   primeicons: ^5.0.0
-  primevue: 3.20.0
+  primevue: ^3.21.0
   typescript: ^4.9.4
   unplugin-icons: ^0.14.14
   unplugin-vue-components: ^0.22.11
@@ -50,7 +50,7 @@ dependencies:
   pinia: 2.0.28_prq2uz4lho2pwp6irk4cfkrxwu
   prettier: 2.8.1
   primeicons: 5.0.0
-  primevue: 3.20.0_l6zcujbf7e6ml3ouhwgkvebppy
+  primevue: 3.21.0_l6zcujbf7e6ml3ouhwgkvebppy
   unplugin-icons: 0.14.14
   unplugin-vue-components: 0.22.11_vue@3.2.45
   url-join: 5.0.0
@@ -2422,8 +2422,8 @@ packages:
     resolution: {integrity: sha512-heygWF0X5HFI1otlZE62pp6ye7sZ8om78J9au2BRkg8O7Y8AHTZ9qKMRzchZUHLe8zUAvdi6hZzzm9XxgwIExw==}
     dev: false
 
-  /primevue/3.20.0_l6zcujbf7e6ml3ouhwgkvebppy:
-    resolution: {integrity: sha512-qLIp1Bwf7lk/ZAvQXqemkoUMh7WQwmVy/Cp8PR+uGGd6szxC0QZWAit/gSjSjD55gZJDtbsiHFVB2a78gN7tdA==}
+  /primevue/3.21.0_l6zcujbf7e6ml3ouhwgkvebppy:
+    resolution: {integrity: sha512-VqXMvigzz24JRPgG+i20Vj1AMS0AKiNdT9iFkmcWnO4EilntLS2I1yR2OE1hd9bMFV97ePsdaScIygW+bedN2g==}
     peerDependencies:
       primeicons: ^5.0.0 || ^6.0.0
       vue: ^3.0.0
