@@ -136,30 +136,24 @@
 					disabled
 					dateFormat="yy/mm/dd"
 				/>
-				<Button
-					class="w-140px h-44px !mt-48px !ml-200px p-button-outlined p-button-success"
-					@click="doneEdit"
-				>
-					<img
-						alt="logo"
-						src="/assets/gradeDataList/Done_round.png"
-						style="width: 1.5rem"
-						class="fill-green-500"
-					/>
-					<span class="tracking-1px">{{ $t("儲存變更") }}</span>
-				</Button>
-				<Button
-					class="w-100px h-44px !mt-48px !ml-49px p-button-outlined p-button-danger"
-					@click="doneEdit"
-				>
-					<img
-						alt="logo"
-						src="/assets/project-setting/Close_round.png"
-						style="width: 1.5rem"
-						class="fill-green-500"
-					/>
-					<span class="tracking-1px">{{ $t("取消") }}</span>
-				</Button>
+				<div class="flex mt-48px">
+					<NButton
+						type="Admin"
+						class="w-140px h-44px !ml-170px"
+						@click="doneEdit"
+						icon="pi pi-check"
+					>
+						<span class="tracking-1px">{{ $t("儲存變更") }}</span>
+					</NButton>
+					<NButton
+						type="Admin"
+						class="w-100px h-44px !ml-49px"
+						@click="cancelEdit"
+						icon="pi pi-times"
+					>
+						<span class="tracking-1px">{{ $t("取消") }}</span>
+					</NButton>
+				</div>
 			</Dialog>
 			<div class="bigRedDivider !mt-50px"></div>
 			<div class="flex text-xl mt-20px">
@@ -172,7 +166,8 @@
 				<div class="!ml-30px">
 					{{ $t("不通過") }} {{ notPassCount }} {{ $t("位") }}
 				</div>
-				<Button
+				<NButton
+					type="Admin"
 					class="w-140px h-44px !ml-680px p-button-outlined p-button-help"
 				>
 					<img
@@ -182,7 +177,7 @@
 						class="fill-green-500"
 					/>
 					<span class="tracking-1px">{{ $t("報表列印") }}</span>
-				</Button>
+				</NButton>
 			</div>
 		</div>
 	</div>
@@ -208,6 +203,7 @@ import { useGlobalStore } from "@/stores/RecruitmentAdminStore";
 import { useToast } from "primevue/usetoast";
 import Calendar from "primevue/calendar";
 import { RecruitmentAdminSingleReviewerRecommendResponse } from "@/api/recruitment/admin/types";
+import NButton from "@/styles/CustomButton.vue";
 
 const adminAuth = useRecruitmentAdminAuthStore();
 const api = new RecruitmentAdminAPI(adminAuth);
@@ -347,6 +343,9 @@ async function doneEdit() {
 	await queryClient.invalidateQueries({
 		queryKey: ["recruitmentAdminRecommand"],
 	});
+}
+function cancelEdit() {
+	productDialog.value = false;
 }
 const queryClient = useQueryClient();
 store.$subscribe(() => {

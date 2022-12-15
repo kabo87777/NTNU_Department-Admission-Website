@@ -29,6 +29,7 @@ export interface AdmissionReviewerProgramListResponse {
 	application_end_date: string;
 	review_start_date: string;
 	review_end_date: string;
+	oral_start_date: string;
 	require_file: string; // Array or string ??
 	stage: string;
 	created_at: string;
