@@ -62,7 +62,7 @@
 				v-model:visible="productDialog"
 				:header="gradeDataEdit"
 				:modal="true"
-				class="w-720px h-988px"
+				class="w-720px h-988px custom-dialog"
 			>
 				<Divider></Divider>
 				<div class="flex mt-24px">
@@ -1212,3 +1212,13 @@ const enrollPdfData = async () => {
 	return await api.getEnrollReport(store.program!.id!);
 };
 </script>
+<style lang="scss">
+.custom-dialog{
+	.p-dialog-header {
+        pointer-events: none;
+		.p-dialog-header-icons{
+			pointer-events:fill ;
+		}
+    }
+}
+</style>
