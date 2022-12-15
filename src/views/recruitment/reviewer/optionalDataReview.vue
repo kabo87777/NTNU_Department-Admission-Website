@@ -252,7 +252,7 @@ const notRecommend = (event: any) => {
 const onRowSelect = (event: any) => {
 	selectedData.value = "";
 	router.push(
-		"/recruitment/reviewer/singleRequiredDataReview/" + event.data.id
+		"/recruitment/reviewer/singleOptionalDataReview/" + event.data.id
 	);
 };
 const queryClient = useQueryClient();
