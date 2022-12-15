@@ -358,7 +358,6 @@ let programData: AdmissionAdminProgramListResponse = reactive({
 	application_end_date: "",
 	review_start_date: "",
 	review_end_date: "",
-	stage: "",
 	created_at: "",
 	updated_at: "",
 	applicant_required_info: "",
@@ -366,6 +365,8 @@ let programData: AdmissionAdminProgramListResponse = reactive({
 	reviewer_required_info: "",
 	reviewer_required_file: "",
 	detail: "",
+	oral_start_date: "",
+	docs_end_date: "",
 });
 const fieldList = {
 	infoChecked: [""],
@@ -394,7 +395,6 @@ const getInfoFileField = useQuery(
 				programData.application_end_date = data.application_end_date;
 				programData.review_start_date = data.review_start_date;
 				programData.review_end_date = data.review_end_date;
-				programData.stage = data.stage;
 				programData.created_at = data.created_at;
 				programData.updated_at = data.updated_at;
 				programData.detail = data.detail;
@@ -406,6 +406,8 @@ const getInfoFileField = useQuery(
 					data.reviewer_required_info;
 				programData.reviewer_required_file =
 					data.reviewer_required_file;
+				programData.oral_start_date = data.oral_start_date;
+				programData.docs_end_date = data.docs_end_date;
 			}
 			fieldList.infoChecked = JSON.parse(
 				programData.applicant_required_info
