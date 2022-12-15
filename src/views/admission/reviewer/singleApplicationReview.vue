@@ -36,30 +36,50 @@
 		</div>
 		<div class="mt-10px !h-1830px !ml-40px">
 			<vue-pdf-embed
-				v-if="data === '基本資料'"
+				v-if="data === '基本資料' && infoPDF !== ''"
 				:source="'data:application/pdf;base64,' + infoPDF"
 				class="!h-1600px"
 				:page="page"
 			/>
+			<i
+				v-if="data === '基本資料' && infoPDF === ''"
+				class="pi pi-spin pi-spinner"
+				style="font-size: 2rem"
+			></i>
 			<vue-pdf-embed
-				v-if="data === '檢附資料'"
+				v-if="data === '檢附資料' && uploadFilePDF !== ''"
 				:source="'data:application/pdf;base64,' + uploadFilePDF"
 				class="!h-1600px"
 				:page="page"
 			/>
+			<i
+				v-if="data === '檢附資料' && uploadFilePDF === ''"
+				class="pi pi-spin pi-spinner"
+				style="font-size: 2rem"
+			></i>
 			<vue-pdf-embed
-				v-if="data === '推薦信'"
+				v-if="data === '推薦信' && recommendLetterPDF !== ''"
 				:source="'data:application/pdf;base64,' + recommendLetterPDF"
 				class="!h-1600px"
 				:page="page"
 			/>
+			<i
+				v-if="data === '推薦信' && recommendLetterPDF === ''"
+				class="pi pi-spin pi-spinner"
+				style="font-size: 2rem"
+			></i>
 			<vue-pdf-embed
-				v-if="data === '整合pdf'"
+				v-if="data === '整合pdf' && combinePDF !== ''"
 				:source="'data:application/pdf;base64,' + combinePDF"
 				class="!h-1600px"
 				:page="page"
 			/>
-			<div class="flex !mt-120px justify-around">
+			<i
+				v-if="data === '整合pdf' && combinePDF === ''"
+				class="pi pi-spin pi-spinner"
+				style="font-size: 2rem"
+			></i>
+			<div class="flex !mt-250px justify-around">
 				<NButton
 					type="Reviewer"
 					icon="pi pi-chevron-left"
@@ -86,7 +106,7 @@
 				</NButton>
 			</div>
 		</div>
-		<div class="bigBlueDivider"></div>
+		<div class="bigBlueDivider !mt-100px"></div>
 		<div class="flex mt-10px">
 			<div class="text-xl mt-5px" v-if="score1Proportion !== 0">
 				{{ score1Title }} ({{ score1Proportion }}%)
@@ -181,7 +201,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, onUpdated, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import Button from "primevue/button";
 import InputNumber from "primevue/inputnumber";
@@ -330,7 +350,9 @@ useQuery(
 	},
 	{
 		onSuccess: (data) => {
-			infoPDF.value = data!;
+			if (infoPDF.value === "") {
+				infoPDF.value = data!;
+			}
 		},
 	}
 );
@@ -341,7 +363,9 @@ useQuery(
 	},
 	{
 		onSuccess: (data) => {
-			recommendLetterPDF.value = data!;
+			if (recommendLetterPDF.value === "") {
+				recommendLetterPDF.value = data!;
+			}
 		},
 	}
 );
@@ -352,7 +376,9 @@ useQuery(
 	},
 	{
 		onSuccess: (data) => {
-			combinePDF.value = data!;
+			if (combinePDF.value === "") {
+				combinePDF.value = data!;
+			}
 		},
 	}
 );
@@ -363,7 +389,9 @@ useQuery(
 	},
 	{
 		onSuccess: (data) => {
-			uploadFilePDF.value = data!;
+			if (uploadFilePDF.value === "") {
+				uploadFilePDF.value = data!;
+			}
 		},
 	}
 );

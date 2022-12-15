@@ -36,29 +36,49 @@
 		</div>
 		<div class="mt-10px !h-1830px !ml-40px">
 			<vue-pdf-embed
-				v-if="data === '基本資料'"
+				v-if="data === '基本資料' && infoPDF !== ''"
 				:source="'data:application/pdf;base64,' + infoPDF"
 				class="!h-1600px"
 				:page="page"
 			/>
+			<i
+				v-if="data === '基本資料' && infoPDF === ''"
+				class="pi pi-spin pi-spinner"
+				style="font-size: 2rem"
+			></i>
 			<vue-pdf-embed
-				v-if="data === '檢附資料'"
+				v-if="data === '檢附資料' && uploadFilePDF !== ''"
 				:source="'data:application/pdf;base64,' + uploadFilePDF"
 				class="!h-1600px"
 				:page="page"
 			/>
+			<i
+				v-if="data === '檢附資料' && uploadFilePDF === ''"
+				class="pi pi-spin pi-spinner"
+				style="font-size: 2rem"
+			></i>
 			<vue-pdf-embed
-				v-if="data === '推薦信'"
+				v-if="data === '推薦信' && recommendLetterPDF !== ''"
 				:source="'data:application/pdf;base64,' + recommendLetterPDF"
 				class="!h-1600px"
 				:page="page"
 			/>
+			<i
+				v-if="data === '推薦信' && recommendLetterPDF === ''"
+				class="pi pi-spin pi-spinner"
+				style="font-size: 2rem"
+			></i>
 			<vue-pdf-embed
-				v-if="data === '整合pdf'"
+				v-if="data === '整合pdf' && combinePDF !== ''"
 				:source="'data:application/pdf;base64,' + combinePDF"
 				class="!h-1600px"
 				:page="page"
 			/>
+			<i
+				v-if="data === '整合pdf' && combinePDF === ''"
+				class="pi pi-spin pi-spinner"
+				style="font-size: 2rem"
+			></i>
 			<div class="flex !mt-120px justify-around">
 				<NButton
 					type="Reviewer"
