@@ -169,7 +169,7 @@ watchEffect(() => {
 		store.$patch((state) => {
 			// state.program = temp;
 		});
-		// selectedProgram.value=toRaw(programs.value[0])
+		store.updaterecruitmentReviewerProgramData(programs.value[0]);
 		selectedProgram.value = programs.value[0];
 	}
 });

@@ -78,34 +78,27 @@
 		<div class="flex mt-24px">
 			<div class="m-auto">
 				<div class="flex">
-					<Button
-						class="bg-white h-60px w-140px border-ntnuRed"
-						@click="deleteProject"
+					<NButton
+						type="Admin"
+						class="bg-white h-60px w-140px"
+						@click="confirmDeleteProject()"
+						icon="pi pi-times"
 					>
-						<i
-							class="pi pi-times ml-1 mr-2 box-border"
-							text="sm ntnuRed"
-						></i>
-						<div class="m-auto tracking-2" text="sm ntnuRed">
-							<div>{{ $t("刪除專案") }}</div>
-						</div>
-					</Button>
+						<div>{{ $t("刪除專案") }}</div>
+					</NButton>
 					<div class="w-24px"></div>
-					<Button
-						class="bg-Green h-60px w-140px border-ntnuRed"
+					<NButton
+						type="Admin"
+						class="bg-Green h-60px w-140px"
 						@click="updateProgramData"
+						icon="pi pi-check"
 					>
-						<i
-							class="pi pi-check ml-1 mr-2 box-border"
-							text="sm black"
-						></i>
-						<div class="m-auto tracking-2" text="sm black">
-							<div>{{ $t("儲存設定") }}</div>
-						</div>
-					</Button>
+						<div>{{ $t("儲存設定") }}</div>
+					</NButton>
 				</div>
 			</div>
 		</div>
+		<ConfirmDialog />
 	</div>
 </template>
 
@@ -117,6 +110,10 @@ import Checkbox from "primevue/checkbox";
 import Divider from "primevue/divider";
 import InputText from "primevue/inputtext";
 import Textarea from "primevue/textarea";
+import NButton from "@/styles/CustomButton.vue";
+import { useI18n } from "vue-i18n";
+import ConfirmDialog from "primevue/confirmdialog";
+import { useConfirm } from "primevue/useconfirm";
 
 import { ref } from "vue";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
@@ -134,6 +131,7 @@ const review_stage1_start_time = ref();
 const review_stage1_end_time = ref();
 const checked = ref(false);
 const programCreateDate = ref("");
+const { t: $t } = useI18n();
 
 // Get QueryClient from the context
 const queryClient = useQueryClient();
@@ -237,12 +235,28 @@ async function deleteProject() {
 		toast.add({ severity: "error", summary: "刪除失敗", life: 3000 });
 	}
 
-	await queryClient.invalidateQueries({ queryKey: ["programList"] });
+	await queryClient.invalidateQueries({
+		queryKey: ["recruitmentAdminprogramList"],
+	});
 }
 
 globalStore.$subscribe(() => {
 	queryClient.invalidateQueries({ queryKey: ["RAdminprogram"] });
 });
+
+const confirm = useConfirm();
+const confirmDeleteProject = () => {
+	confirm.require({
+		header: $t("是否要刪除此專案？"),
+		message: $t("此動作不可回復，請謹慎操作"),
+		icon: "pi pi-exclamation-triangle",
+		accept: () => {
+			deleteProject();
+		},
+		acceptLabel: $t("確認"),
+		rejectLabel: $t("取消"),
+	});
+};
 
 function dateTransform(date?: Date) {
 	const result = new Date(date!.setHours(date!.getHours() + 8))
