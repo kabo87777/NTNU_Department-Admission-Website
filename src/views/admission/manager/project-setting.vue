@@ -136,22 +136,22 @@
 				<div class="m-auto">
 					<div class="flex">
 						<NButton
-						type="Admin"
-						class="bg-white h-60px w-140px"
-						@click="confirmDeleteProject()"
-						icon="pi pi-times"
-					>
-						<div>{{ $t("刪除專案") }}</div>
-					</NButton>
-					<div class="w-24px"></div>
-					<NButton
-						type="Admin"
-						class="bg-Green h-60px w-140px"
-						@click="update"
-						icon="pi pi-check"
-					>
-						<div>{{ $t("儲存設定") }}</div>
-					</NButton>
+							type="Admin"
+							class="bg-white h-60px w-140px"
+							@click="confirmDeleteProject()"
+							icon="pi pi-times"
+						>
+							<div>{{ $t("刪除專案") }}</div>
+						</NButton>
+						<div class="w-24px"></div>
+						<NButton
+							type="Admin"
+							class="bg-Green h-60px w-140px"
+							@click="update"
+							icon="pi pi-check"
+						>
+							<div>{{ $t("儲存設定") }}</div>
+						</NButton>
 					</div>
 				</div>
 			</div>
