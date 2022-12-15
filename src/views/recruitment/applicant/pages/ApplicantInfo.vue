@@ -643,31 +643,6 @@ useQuery(
 	}
 );
 
-useQuery(
-	["getRecruitmentApplicantProgramInfo_1"],
-	async () => {
-		return await api.getProgramList();
-	},
-	{
-		onSuccess: (data) => {
-			data.map((item) => {
-				if (item.id === project.project.pid)
-					requiredInputFields.value =
-						item.applicant_required_info as string;
-			});
-		},
-		onError: (data) => {
-			toast.add({
-				severity: "error",
-				summary: "Error",
-				detail: "Unable to fetch user require input",
-				life: 5000,
-			});
-			console.log(data);
-		},
-	}
-);
-
 watch(
 	() => loading.fetch,
 	async () => {
