@@ -5,7 +5,10 @@
 		</div>
 		<div class="bigYellowDivider"></div>
 
-		<div class="px-12px py-24px">
+		<div
+			class="px-12px py-24px"
+			v-if="requiredInputFields.includes('姓名資訊')"
+		>
 			<div class="flex">
 				<div class="text-[24px] font-[50] font-bold">
 					{{ $t("姓名資訊") }}
@@ -114,7 +117,7 @@
 				</div>
 			</div>
 		</div>
-		<ParagraphDivider v-if="1" />
+		<ParagraphDivider v-if="requiredInputFields.includes('姓名資訊')" />
 		<div class="px-12px py-24px">
 			<div class="flex">
 				<div class="text-[24px] font-[50] font-bold">
@@ -738,3 +741,11 @@ watch(
 	}
 );
 </script>
+
+<!-- v-if="requiredInputFields.includes('姓名資訊')" -->
+<!-- v-if="requiredInputFields.includes('入學身份')" -->
+<!-- v-if="requiredInputFields.includes('現居地址')" -->
+<!-- v-if="requiredInputFields.includes('身份資料')" -->
+<!-- v-if="requiredInputFields.includes('聯絡方式')" -->
+<!-- 可參考第十行怎麽使用 -->
+<!-- paragraph divider 也要記得做判斷 -->
