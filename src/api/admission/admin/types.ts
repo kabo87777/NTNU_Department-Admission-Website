@@ -297,8 +297,6 @@ export interface AdmissionAdminSingleOralGradeResponse {
 }
 
 export interface AdmissionAdminCreateReviewerRequest {
-	username: string;
-	password: string;
 	email: string;
 	name: string;
 	redirect_url: string;
