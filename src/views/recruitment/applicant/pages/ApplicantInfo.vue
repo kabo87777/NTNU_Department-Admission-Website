@@ -5,7 +5,10 @@
 		</div>
 		<div class="bigYellowDivider"></div>
 
-		<div class="px-12px py-24px">
+		<div
+			class="px-12px py-24px"
+			v-if="requiredInputFields.includes('姓名資訊')"
+		>
 			<div class="flex">
 				<div class="text-[24px] font-[50] font-bold">
 					{{ $t("姓名資訊") }}
@@ -114,8 +117,11 @@
 				</div>
 			</div>
 		</div>
-		<ParagraphDivider />
-		<div class="px-12px py-24px">
+		<ParagraphDivider v-if="requiredInputFields.includes('姓名資訊')" />
+		<div
+			class="px-12px py-24px"
+			v-if="requiredInputFields.includes('入學身份')"
+		>
 			<div class="flex">
 				<div class="text-[24px] font-[50] font-bold">
 					{{ $t("入職身份") }}
@@ -215,8 +221,11 @@
 				</div>
 			</div>
 		</div>
-		<ParagraphDivider />
-		<div class="px-12px py-24px">
+		<ParagraphDivider v-if="requiredInputFields.includes('入學身份')" />
+		<div
+			class="px-12px py-24px"
+			v-if="requiredInputFields.includes('現居地址')"
+		>
 			<div class="flex">
 				<div class="text-[24px] font-[50] font-bold">
 					{{ $t("現居地址") }}
@@ -266,8 +275,11 @@
 				</div>
 			</div>
 		</div>
-		<ParagraphDivider />
-		<div class="px-12px py-24px">
+		<ParagraphDivider v-if="requiredInputFields.includes('現居地址')" />
+		<div
+			class="px-12px py-24px"
+			v-if="requiredInputFields.includes('身份資料')"
+		>
 			<div class="flex">
 				<div class="text-[24px] font-[50] font-bold">
 					{{ $t("身份資料") }}
@@ -316,7 +328,7 @@
 					<div>
 						<Calendar
 							v-model="born.birth"
-							dateFormat="yy-mm-dd"
+							dateFormat="yy/mm/dd"
 							class="w-[70%] h-36px !mt-4px"
 							style="
 								border: 1px solid #736028;
@@ -332,8 +344,11 @@
 				</div>
 			</div>
 		</div>
-		<ParagraphDivider />
-		<div class="px-12px py-24px">
+		<ParagraphDivider v-if="requiredInputFields.includes('身份資料')" />
+		<div
+			class="px-12px py-24px"
+			v-if="requiredInputFields.includes('聯絡方式')"
+		>
 			<div class="flex">
 				<div class="text-[24px] font-[50] font-bold">
 					{{ $t("聯絡方式") }}

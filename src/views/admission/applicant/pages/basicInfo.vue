@@ -118,7 +118,10 @@
 			</div>
 		</div>
 		<ParagraphDivider v-if="requiredInputFields.includes('姓名資訊')" />
-		<div class="px-12px py-24px">
+		<div
+			class="px-12px py-24px"
+			v-if="requiredInputFields.includes('入學身份')"
+		>
 			<div class="flex">
 				<div class="text-[24px] font-[50] font-bold">
 					{{ $t("入學身份") }}
@@ -208,56 +211,6 @@
 				<div class="pt-24px">
 					<ParagraphDivider />
 				</div>
-				<div class="py-24px">
-					<div class="flex">
-						<div class="text-[24px] font-[50] font-bold">
-							{{ $t("現居地址") }}
-						</div>
-						<div class="mt-6px ml-40px text-[#8D9093] text-[14px]">
-							{{ $t('" * " 為必填欄位') }}
-						</div>
-					</div>
-					<div class="flex py-16px">
-						<div class="w-2/3">
-							<div>{{ "*" + $t("地址") }}</div>
-							<div>
-								<InputText
-									class="w-[80%] h-36px !mt-4px"
-									style="border: 1px solid #736028"
-									type="text"
-									v-model="currentAddr.addr"
-								/>
-							</div>
-							<div
-								v-show="required.currentAddr"
-								class="absolute mt-[-4px]"
-							>
-								<small class="p-error">
-									{{ $t("此為必填欄位") }}
-								</small>
-							</div>
-						</div>
-						<div class="w-1/3">
-							<div>{{ "*" + $t("郵遞區號") }}</div>
-							<div>
-								<InputText
-									class="w-[70%] h-36px !mt-4px"
-									style="border: 1px solid #736028"
-									type="text"
-									v-model="currentAddr.postcode"
-								/>
-							</div>
-							<div
-								v-show="required.currentPostcode"
-								class="absolute mt-[-4px]"
-							>
-								<small class="p-error">
-									{{ $t("此為必填欄位") }}
-								</small>
-							</div>
-						</div>
-					</div>
-				</div>
 			</div>
 			<div v-else>
 				<div class="flex py-16px">
@@ -278,12 +231,17 @@
 						</div>
 					</div>
 				</div>
-				<ParagraphDivider />
+				<ParagraphDivider
+					v-if="requiredInputFields.includes('入學身份')"
+				/>
 			</div>
 		</div>
 
 		<div>
-			<div class="px-12px py-24px">
+			<div
+				class="px-12px py-24px"
+				v-if="requiredInputFields.includes('現居地址')"
+			>
 				<div class="flex">
 					<div class="text-[24px] font-[50] font-bold">
 						{{ $t("現居地址") }}
@@ -335,8 +293,11 @@
 			</div>
 		</div>
 
-		<ParagraphDivider />
-		<div class="px-12px py-24px">
+		<ParagraphDivider v-if="requiredInputFields.includes('現居地址')" />
+		<div
+			class="px-12px py-24px"
+			v-if="requiredInputFields.includes('身份資料')"
+		>
 			<div class="flex">
 				<div class="text-[24px] font-[50] font-bold">
 					{{ $t("身份資料") }}
@@ -401,8 +362,11 @@
 				</div>
 			</div>
 		</div>
-		<ParagraphDivider />
-		<div class="px-12px py-24px">
+		<ParagraphDivider v-if="requiredInputFields.includes('身份資料')" />
+		<div
+			class="px-12px py-24px"
+			v-if="requiredInputFields.includes('聯絡方式')"
+		>
 			<div class="flex">
 				<div class="text-[24px] font-[50] font-bold">
 					{{ $t("聯絡方式") }}
@@ -704,11 +668,3 @@ watch(
 	}
 );
 </script>
-
-<!-- v-if="requiredInputFields.includes('姓名資訊')" -->
-<!-- v-if="requiredInputFields.includes('入學身份')" -->
-<!-- v-if="requiredInputFields.includes('現居地址')" -->
-<!-- v-if="requiredInputFields.includes('身份資料')" -->
-<!-- v-if="requiredInputFields.includes('聯絡方式')" -->
-<!-- 可參考第十行怎麽使用 -->
-<!-- paragraph divider 也要記得做判斷 -->
