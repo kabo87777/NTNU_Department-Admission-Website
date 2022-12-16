@@ -146,8 +146,6 @@ export interface AdmissionApplicantGetUserInfoResponse {
 	birth?: Date;
 	birthcountry?: string;
 	mobile_phone?: string;
-	household_address?: string;
-	household_zipcode?: number | string;
 	communicate_address?: string;
 	communicate_zipcode?: number | string;
 	isForeigner: boolean;

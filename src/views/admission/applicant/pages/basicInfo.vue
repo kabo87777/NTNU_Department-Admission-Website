@@ -226,7 +226,6 @@
 									style="border: 1px solid #736028"
 									type="text"
 									v-model="currentAddr.addr"
-									:disabled="currentAddr.isAddrSame"
 								/>
 							</div>
 							<div
@@ -246,7 +245,6 @@
 									style="border: 1px solid #736028"
 									type="text"
 									v-model="currentAddr.postcode"
-									:disabled="currentAddr.isAddrSame"
 								/>
 							</div>
 							<div
@@ -303,7 +301,6 @@
 								style="border: 1px solid #736028"
 								type="text"
 								v-model="currentAddr.addr"
-								:disabled="currentAddr.isAddrSame"
 							/>
 						</div>
 						<div
@@ -323,7 +320,6 @@
 								style="border: 1px solid #736028"
 								type="text"
 								v-model="currentAddr.postcode"
-								:disabled="currentAddr.isAddrSame"
 							/>
 						</div>
 						<div
@@ -463,7 +459,6 @@ import { useToast } from "primevue/usetoast";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
 import Dropdown from "primevue/dropdown";
 import InputText from "primevue/inputtext";
-import Checkbox from "primevue/checkbox";
 import RadioButton from "primevue/radiobutton";
 import Calendar from "primevue/calendar";
 import Button from "primevue/button";
@@ -510,13 +505,7 @@ let identity = reactive({
 	ui: "",
 });
 
-let householdAddr = reactive({
-	addr: "",
-	postcode: "",
-});
-
 let currentAddr = reactive({
-	isAddrSame: false,
 	addr: "",
 	postcode: "",
 });
@@ -575,27 +564,14 @@ const setBasicInfo = (res: AdmissionApplicantGetUserInfoResponse) => {
 		identity.nationality = res.nationality as string;
 	}
 
-	householdAddr.addr = res.household_address as string;
-	householdAddr.postcode = res.household_zipcode as string;
 	currentAddr.addr = res.communicate_address as string;
 	currentAddr.postcode = res.communicate_zipcode as string;
-	currentAddr.isAddrSame =
-		householdAddr.addr === currentAddr.addr && householdAddr.addr !== ""
-			? true
-			: false;
 
 	born.sex = res.sex as string;
 	born.country = res.birthcountry as string;
 	born.birth = res.birth as Date;
 
 	contact.phone = res.mobile_phone as string;
-};
-
-const address = (prod: any) => {
-	if (currentAddr.isAddrSame === false) {
-		currentAddr.addr = householdAddr.addr;
-		currentAddr.postcode = householdAddr.postcode;
-	}
 };
 
 const addHours = (numHrs: number, date = new Date()) => {
@@ -625,22 +601,9 @@ const handleSave = async () => {
 			identity.selectedIdentity === "本國人士"
 				? identity.ic
 				: identity.ui,
-		household_address:
-			// householdAddr.addr,
-			identity.selectedIdentity === "本國人士"
-				? householdAddr.addr
-				: null,
-		household_zipcode:
-			// householdAddr.postcode,
-			identity.selectedIdentity === "本國人士"
-				? householdAddr.postcode
-				: null,
-		communicate_address: currentAddr.isAddrSame
-			? householdAddr.addr
-			: currentAddr.addr,
-		communicate_zipcode: currentAddr.isAddrSame
-			? householdAddr.postcode
-			: currentAddr.postcode,
+
+		communicate_address: currentAddr.addr,
+		communicate_zipcode: currentAddr.postcode,
 		sex: born.sex,
 		birthcountry: born.country,
 		// birth: born.birth,
