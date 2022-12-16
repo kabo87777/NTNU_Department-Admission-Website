@@ -32,6 +32,7 @@
 				v-model="data"
 				:options="datas"
 				aria-labelledby="single"
+				:unselectable="false"
 			/>
 		</div>
 		<div class="mt-10px !h-1830px !ml-40px">

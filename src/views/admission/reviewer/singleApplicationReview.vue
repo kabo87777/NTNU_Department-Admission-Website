@@ -27,55 +27,54 @@
 			</div>
 		</div>
 		<div class="bigBlueDivider"></div>
-		<div class="p-fluid !mt-5px">
-			<SelectButton
-				v-model="data"
-				:options="datas"
-				aria-labelledby="single"
-			/>
+		<div class="flex !mt-5px justify-around">
+			<NButton
+				type="Reviewer"
+				@click="changeInfo"
+				class="!w-200px !h-40px"
+			>
+				<span class="text-base">
+					{{ $t("基本資料") }}
+				</span>
+			</NButton>
+			<NButton
+				type="Reviewer"
+				@click="changeUploadFile"
+				class="!w-200px !h-40px"
+			>
+				<span class="text-base">
+					{{ $t("檢附資料") }}
+				</span>
+			</NButton>
+			<NButton
+				type="Reviewer"
+				@click="changeRecommendLetter"
+				class="!w-200px !h-40px"
+			>
+				<span class="text-base">
+					{{ $t("推薦信") }}
+				</span>
+			</NButton>
+			<NButton
+				type="Reviewer"
+				@click="changeCombine"
+				class="!w-200px !h-40px"
+			>
+				<span class="text-base">
+					{{ $t("整合pdf") }}
+				</span>
+			</NButton>
 		</div>
 		<div class="mt-10px !h-1830px !ml-40px">
 			<vue-pdf-embed
-				v-if="data === '基本資料' && infoPDF !== ''"
-				:source="'data:application/pdf;base64,' + infoPDF"
+				ref="info"
+				v-if="infoPDF !== ''"
+				:source="'data:application/pdf;base64,' + PDF"
 				class="!h-1600px"
-				:page="page"
+				:page="Page"
 			/>
 			<i
-				v-if="data === '基本資料' && infoPDF === ''"
-				class="pi pi-spin pi-spinner"
-				style="font-size: 2rem"
-			></i>
-			<vue-pdf-embed
-				v-if="data === '檢附資料' && uploadFilePDF !== ''"
-				:source="'data:application/pdf;base64,' + uploadFilePDF"
-				class="!h-1600px"
-				:page="page"
-			/>
-			<i
-				v-if="data === '檢附資料' && uploadFilePDF === ''"
-				class="pi pi-spin pi-spinner"
-				style="font-size: 2rem"
-			></i>
-			<vue-pdf-embed
-				v-if="data === '推薦信' && recommendLetterPDF !== ''"
-				:source="'data:application/pdf;base64,' + recommendLetterPDF"
-				class="!h-1600px"
-				:page="page"
-			/>
-			<i
-				v-if="data === '推薦信' && recommendLetterPDF === ''"
-				class="pi pi-spin pi-spinner"
-				style="font-size: 2rem"
-			></i>
-			<vue-pdf-embed
-				v-if="data === '整合pdf' && combinePDF !== ''"
-				:source="'data:application/pdf;base64,' + combinePDF"
-				class="!h-1600px"
-				:page="page"
-			/>
-			<i
-				v-if="data === '整合pdf' && combinePDF === ''"
+				v-if="infoPDF === ''"
 				class="pi pi-spin pi-spinner"
 				style="font-size: 2rem"
 			></i>
@@ -84,8 +83,8 @@
 					type="Reviewer"
 					icon="pi pi-chevron-left"
 					iconPos="left"
-					@click="page--"
-					:disabled="page === 1"
+					@click="Page--"
+					:disabled="Page === 1"
 					class="!w-200px !h-40px"
 				>
 					<span class="text-base">
@@ -96,8 +95,8 @@
 					type="Reviewer"
 					icon="pi pi-chevron-right"
 					iconPos="right"
-					@click="page++"
-					:disabled="page === 4"
+					@click="nextPage"
+					:disabled="Page === maxPage"
 					class="!w-200px !h-40px"
 				>
 					<span class="text-base">
@@ -201,7 +200,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onUpdated, ref } from "vue";
+import { computed, onMounted, onUpdated, ref, toRaw } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import Button from "primevue/button";
 import InputNumber from "primevue/inputnumber";
@@ -225,10 +224,26 @@ const router = useRouter();
 const adminAuth = useAdmissionReviewerAuthStore();
 const store = useGlobalStore();
 const api = new AdmissionReviewerAPI(adminAuth);
+const info = ref(null);
+const uploadFile = ref(null);
+const recommendLetter = ref(null);
+const combine = ref(null);
+const PDF = ref();
+const Page = ref(1);
+const maxPage = ref(13);
+onMounted(() => {
+	console.log(info, "info");
+	console.log(uploadFile, "uploadFile");
+	console.log(recommendLetter, "recommendLetter");
+	console.log(combine, "combine");
+});
 
 // FIXME: logic may refactor
 
-const page = ref(1);
+const infoPage = ref(1);
+const uploadPage = ref(1);
+const recommendPage = ref(1);
+const combinePage = ref(1);
 const ID = computed(() => route.params.id);
 const newApplicantGrade = useMutation(async (newProgramData: any) => {
 	try {
@@ -352,6 +367,7 @@ useQuery(
 		onSuccess: (data) => {
 			if (infoPDF.value === "") {
 				infoPDF.value = data!;
+				PDF.value = data!;
 			}
 		},
 	}
@@ -395,6 +411,35 @@ useQuery(
 		},
 	}
 );
+
+function changeInfo() {
+	PDF.value = infoPDF.value;
+	Page.value = 1;
+	maxPage.value = 1;
+	data.value = "基本資料";
+}
+function changeRecommendLetter() {
+	PDF.value = recommendLetterPDF.value;
+	Page.value = 1;
+	maxPage.value = 1;
+	data.value = "推薦信";
+}
+function changeCombine() {
+	PDF.value = combinePDF.value;
+	Page.value = 1;
+	maxPage.value = 13;
+	data.value = "整合pdf";
+}
+function changeUploadFile() {
+	PDF.value = uploadFilePDF.value;
+	Page.value = 1;
+	maxPage.value = 11;
+	data.value = "檢附資料";
+}
+function nextPage() {
+	Page.value++;
+	window.scrollTo(0, 0);
+}
 
 const load = computed(() => {
 	if (isLoading.value) {
