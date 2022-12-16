@@ -1,7 +1,4 @@
 <template>
-	<div class="mt-16px pt-16px text-20px text-[#53565A]">
-		{{ $t(props.category) }}{{ " - " }}{{ props.order }}
-	</div>
 	<div :class="dynamicClass()">
 		<div class="p-[12px] w-9/10">
 			<Dialog
@@ -236,14 +233,14 @@ const handleCreate = () => {
 
 <style setup lang="css">
 .admissionManagerEditState {
-	margin-top: 8px;
+	margin-top: 24px;
 	border: 1px solid #874b52;
 	border-radius: 8px;
 	display: flex;
 }
 
 .admissionApplicantEditState {
-	margin-top: 8px;
+	margin-top: 24px;
 	border: 1px solid #736028;
 	border-radius: 8px;
 	display: flex;

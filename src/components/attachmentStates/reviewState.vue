@@ -54,7 +54,7 @@
 			</template>
 		</Dialog>
 		<div class="text-20px text-[#53565A] pt-16px">
-			{{ $t(props.category) }}{{ " - " }}{{ props.order }}
+			{{ props.itemName }}
 		</div>
 		<div
 			v-show="props.showActionButtons !== false"
@@ -99,9 +99,7 @@
 		</div>
 	</div>
 	<div class="normalDivider mt-16px"></div>
-	<div class="mt-16px font-medium text-16px">
-		{{ $t("項目名稱") }}{{ $t(":") }}{{ props.itemName }}
-	</div>
+	<div class="mt-16px"></div>
 	<div
 		v-if="props.category === '就學經歷' || props.category === '教學經歷'"
 		class="mt-8px font-medium text-16px"
@@ -114,15 +112,13 @@
 	>
 		{{ $t("考試與檢定分數") }}{{ $t(":") }}{{ props.score }}
 	</div>
-	<div class="mt-8px font-medium text-16px">【{{ $t("檔案名稱") }}】</div>
 	<div v-if="downloadFile" class="flex">
-		<div>【{{ $t("檔案") }}】</div>
+		<div>{{ $t("檔案") + $t(":") }}</div>
 		<div class="downloadFileText" @click="handleDownload">
 			{{ sliceFile() }}
 		</div>
 	</div>
-	<div v-else>【{{ $t("檔案") }}】{{ sliceFile() }}</div>
-	<div class="font-[350]">{{ $t("onlyPdf") }}</div>
+	<div v-else>{{ $t("檔案") + $t(":") }}{{ sliceFile() }}</div>
 </template>
 
 <script setup lang="ts">
