@@ -470,7 +470,7 @@ import InputText from "primevue/inputtext";
 import { useToast } from "primevue/usetoast";
 import { useRouter } from "vue-router";
 
-import { ref, watchEffect, watch, computed, toRaw } from "vue";
+import { ref, watchEffect, watch, computed, Ref } from "vue";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
 
 import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
@@ -481,7 +481,7 @@ import {
 	AdmissionAdminProgramListResponse,
 	AdmissionManagerAuthResponse,
 } from "@/api/admission/admin/types";
-import { useUserInfoStore } from "@/stores/AdmissionAdminStore";
+import { useAdminInfoStore } from "@/stores/AdmissionAdminStore";
 
 const router = useRouter();
 const toast = useToast();
@@ -490,8 +490,9 @@ const adminAuth = useAdmissionAdminAuthStore();
 const globalStore = useGlobalStore();
 
 const api = new AdmissionAdminAPI(adminAuth);
-const adminStore = useUserInfoStore();
-const adminInfo: AdmissionManagerAuthResponse = adminStore.userInfo;
+const adminStore = useAdminInfoStore();
+
+const adminInfo=ref(adminStore.userInfo);
 
 const programData = useMutation(async (newProgramData: any) => {
 	return await api.addNewProgram(newProgramData);
@@ -593,4 +594,9 @@ async function signOut() {
 	await api.invalidateSession();
 	router.push("/admission/manager/signin");
 }
+
+// Update admin userdata according respect change to admin store
+adminStore.$subscribe((mutation, state)=>{
+	adminInfo.value=state.userInfo
+})
 </script>
