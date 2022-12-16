@@ -95,28 +95,6 @@
 				</Button>
 			</router-link>
 			<router-link
-				to="/recruitment/manager/applicationUploadSetting"
-				custom
-				v-slot="{ navigate }"
-			>
-				<Button
-					class="p-button-secondary p-button-text !ml-24px !mt-16px !w-[85%] !h-48px"
-					@click="navigate"
-					role="link"
-				>
-					<img
-						alt="logo"
-						src="/assets/sidebar/Sort_alfa.png"
-						style="width: 18px"
-					/>
-					<span
-						class="text-left tracking-3px ml-3 font-bold text-18px text-[#2D2926]"
-					>
-						{{ $t("上傳欄位設置") }}
-					</span>
-				</Button>
-			</router-link>
-			<router-link
 				:to="{
 					name: 'recruitmentManagerApplicantUploadList',
 				}"
@@ -312,7 +290,7 @@
 							{{ $t("管理端帳戶") }}
 						</div>
 						<div class="text-16px mt-4px ml-8px tracking-wider">
-							{{ $t("系辦主管") }}
+							{{ adminInfo.name }}
 						</div>
 					</div>
 				</div>
@@ -500,14 +478,16 @@ import { useRecruitmentAdminAuthStore } from "@/stores/universalAuth";
 import { RecruitmentAdminAPI } from "@/api/recruitment/admin/api";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/vue-query";
 import { InvalidSessionError } from "@/api/error";
-import { useGlobalStore } from "@/stores/RecruitmentAdminStore";
+import {
+	useGlobalStore,
+	useUserInfoStore,
+} from "@/stores/RecruitmentAdminStore";
 import { RecruitmentAdminProgramListResponse } from "@/api/recruitment/admin/types";
-import { useAdminInfoStore } from "@/stores/RecruitmentAdminStore";
 import type { RecruitmentAdminAuthResponse } from "@/api/recruitment/admin/types";
 import { useToast } from "primevue/usetoast";
 
 const router = useRouter();
-const adminStore = useAdminInfoStore();
+const adminStore = useUserInfoStore();
 
 const adminInfo: RecruitmentAdminAuthResponse = toRaw(adminStore.userInfo);
 const adminAuth = useRecruitmentAdminAuthStore();

@@ -215,11 +215,13 @@ const onSubmit = handleSubmit(async function (values, actions) {
 		const api = new RecruitmentApplicantAPI(authStore);
 
 		userInfo.saveUserInfo(
-			await api.requestNewSession({
-				email: values.email,
-				password: values.password,
-				"cf-turnstile-response": turnstileResponse,
-			})
+			(
+				await api.requestNewSession({
+					email: values.email,
+					password: values.password,
+					"cf-turnstile-response": turnstileResponse,
+				})
+			).data
 		);
 
 		window.localStorage.removeItem("RecruitmentApplicantUsername");

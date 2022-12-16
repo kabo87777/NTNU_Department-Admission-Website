@@ -509,14 +509,6 @@ const routes: Array<RouteRecordRaw> = [
 						"@/views/recruitment/manager/pages/RecruitmentManagerSelfSetting.vue"
 					),
 			},
-			{
-				path: "applicationUploadSetting",
-				name: "recruitmentApplicationUpload",
-				component: () =>
-					import(
-						"@/views/recruitment/manager/pages/UploadFileSetting.vue"
-					),
-			},
 		],
 	},
 	{

@@ -18,7 +18,7 @@ const info = {
 	created_at: "",
 	updated_at: "",
 };
-export const useAdminInfoStore = defineStore({
+export const useUserInfoStore = defineStore({
 	id: "userInfo",
 	state: () => ({
 		userInfo: info,

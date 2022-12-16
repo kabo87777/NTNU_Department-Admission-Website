@@ -387,6 +387,7 @@
 							icon="pi pi-envelope"
 							iconClass="text-[#53565A]"
 							v-tooltip.top="t('發出邀請')"
+							:disabled="item.stage === '已寄出'"
 							@click="isModalVisible.request = true"
 						/>
 						<Button
@@ -399,6 +400,7 @@
 							icon="pi pi-trash"
 							iconClass="text-[#93282C]"
 							v-tooltip.top="t('刪除')"
+							:disabled="item.stage === '已寄出'"
 							@click="isModalVisible.delete = true"
 						/>
 					</div>
