@@ -24,6 +24,7 @@
     "prettier": "^2.8.1",
     "primeicons": "^5.0.0",
     "primevue": "^3.21.0",
+    "sass": "^1.56.2",
     "unplugin-icons": "^0.14.14",
     "unplugin-vue-components": "^0.22.11",
     "url-join": "^5.0.0",
