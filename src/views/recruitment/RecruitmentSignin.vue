@@ -18,17 +18,29 @@
 	<Body>
 		<template #Content>
 			<router-link to="/recruitment/applicant/signin">
-				<NButton type="Applicant" size="lg" w="full" p="4">
+				<NButton
+					type="Applicant"
+					size="lg"
+					w="full max-90"
+					mx="auto"
+					p="4"
+				>
 					申請者登入 Applicant Login
 				</NButton>
 			</router-link>
 			<router-link to="/recruitment/reviewer/signin">
-				<NButton type="Reviewer" size="lg" w="full" p="4">
+				<NButton
+					type="Reviewer"
+					size="lg"
+					w="full max-90"
+					mx="auto"
+					p="4"
+				>
 					審查委員登入 Reviewer Login
 				</NButton>
 			</router-link>
 			<router-link to="/recruitment/manager/signin">
-				<NButton type="Admin" size="lg" w="full" p="4">
+				<NButton type="Admin" size="lg" w="full max-90" mx="auto" p="4">
 					行政人員登入 Manager Login
 				</NButton>
 			</router-link>

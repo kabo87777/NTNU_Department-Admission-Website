@@ -51,7 +51,8 @@
 								<NButton
 									type="Applicant"
 									size="lg"
-									w="full"
+									mx="auto"
+									w="full max-90"
 									p="4"
 								>
 									招生系統 Admission System
@@ -61,7 +62,8 @@
 								<NButton
 									type="Reviewer"
 									size="lg"
-									w="full"
+									mx="auto"
+									w="full max-90"
 									p="4"
 								>
 									教師聘請系統 Recruitment System
