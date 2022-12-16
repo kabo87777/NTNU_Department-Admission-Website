@@ -7,7 +7,7 @@
 
 		<div
 			class="px-12px py-24px"
-			v-if="requiredInputFields.includes('姓名資訊')"
+			v-if="requiredInputFields.includes('name')"
 		>
 			<div class="flex">
 				<div class="text-[24px] font-[50] font-bold">
@@ -117,10 +117,10 @@
 				</div>
 			</div>
 		</div>
-		<ParagraphDivider v-if="requiredInputFields.includes('姓名資訊')" />
+		<ParagraphDivider v-if="requiredInputFields.includes('name')" />
 		<div
 			class="px-12px py-24px"
-			v-if="requiredInputFields.includes('入學身份')"
+			v-if="requiredInputFields.includes('admission_id')"
 		>
 			<div class="flex">
 				<div class="text-[24px] font-[50] font-bold">
@@ -232,7 +232,7 @@
 					</div>
 				</div>
 				<ParagraphDivider
-					v-if="requiredInputFields.includes('入學身份')"
+					v-if="requiredInputFields.includes('admission_id')"
 				/>
 			</div>
 		</div>
@@ -240,7 +240,7 @@
 		<div>
 			<div
 				class="px-12px py-24px"
-				v-if="requiredInputFields.includes('現居地址')"
+				v-if="requiredInputFields.includes('address')"
 			>
 				<div class="flex">
 					<div class="text-[24px] font-[50] font-bold">
@@ -293,10 +293,10 @@
 			</div>
 		</div>
 
-		<ParagraphDivider v-if="requiredInputFields.includes('現居地址')" />
+		<ParagraphDivider v-if="requiredInputFields.includes('address')" />
 		<div
 			class="px-12px py-24px"
-			v-if="requiredInputFields.includes('身份資料')"
+			v-if="requiredInputFields.includes('national_id')"
 		>
 			<div class="flex">
 				<div class="text-[24px] font-[50] font-bold">
@@ -362,10 +362,10 @@
 				</div>
 			</div>
 		</div>
-		<ParagraphDivider v-if="requiredInputFields.includes('身份資料')" />
+		<ParagraphDivider v-if="requiredInputFields.includes('national_id')" />
 		<div
 			class="px-12px py-24px"
-			v-if="requiredInputFields.includes('聯絡方式')"
+			v-if="requiredInputFields.includes('contact')"
 		>
 			<div class="flex">
 				<div class="text-[24px] font-[50] font-bold">
