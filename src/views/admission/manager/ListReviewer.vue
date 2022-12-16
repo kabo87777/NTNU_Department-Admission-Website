@@ -447,9 +447,15 @@ const { mutate: createReviewer } = useMutation({
 	},
 	onSettled: () => {
 		isProcessing.value = false;
+		refetch();
 	},
 	onSuccess: () => {
-		refetch();
+		toast.add({
+			severity: "success",
+			life: 3000,
+			summary: $t("操作成功"),
+			detail: $t("成功新增帳號"),
+		});
 	},
 });
 
