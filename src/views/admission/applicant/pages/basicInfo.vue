@@ -446,7 +446,7 @@
 					<div>
 						<Calendar
 							v-model="born.birth"
-							dateFormat="yy-mm-dd"
+							dateFormat="yy/mm/dd"
 							class="w-[70%] h-36px !mt-4px"
 							style="
 								border: 1px solid #736028;
