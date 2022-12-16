@@ -491,7 +491,7 @@ const globalStore = useGlobalStore();
 
 const api = new AdmissionAdminAPI(adminAuth);
 const adminStore = useUserInfoStore();
-const adminInfo: AdmissionManagerAuthResponse = toRaw(adminStore.userInfo);
+const adminInfo: AdmissionManagerAuthResponse = adminStore.userInfo;
 
 const programData = useMutation(async (newProgramData: any) => {
 	return await api.addNewProgram(newProgramData);
