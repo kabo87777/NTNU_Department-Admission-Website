@@ -104,6 +104,7 @@ export interface AdmissionApplicantRecLetListRes {
 	relation: string;
 	position: string;
 	institution: string;
+	stage: string;
 	status: string;
 	s_applicant_id: number;
 	created_at: string;
