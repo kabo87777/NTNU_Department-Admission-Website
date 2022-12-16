@@ -52,7 +52,7 @@
 									type="Applicant"
 									size="lg"
 									mx="auto"
-									w="full max-90"
+									w="full max-85"
 									p="4"
 								>
 									招生系統 Admission System
@@ -63,7 +63,7 @@
 									type="Reviewer"
 									size="lg"
 									mx="auto"
-									w="full max-90"
+									w="full max-85"
 									p="4"
 								>
 									教師聘請系統 Recruitment System

@@ -21,7 +21,7 @@
 				<NButton
 					type="Applicant"
 					size="lg"
-					w="full max-90"
+					w="full max-85"
 					mx="auto"
 					p="4"
 				>
@@ -32,7 +32,7 @@
 				<NButton
 					type="Reviewer"
 					size="lg"
-					w="full max-90"
+					w="full max-85"
 					mx="auto"
 					p="4"
 				>
@@ -40,7 +40,7 @@
 				</NButton>
 			</router-link>
 			<router-link to="/recruitment/manager/signin">
-				<NButton type="Admin" size="lg" w="full max-90" mx="auto" p="4">
+				<NButton type="Admin" size="lg" w="full max-85" mx="auto" p="4">
 					行政人員登入 Manager Login
 				</NButton>
 			</router-link>
