@@ -55,7 +55,7 @@
 				class="w-3/5 p-2 m-auto"
 				type="Reviewer"
 				size="lg"
-				@click="enterEmail"
+				@click="changeState"
 			>
 				提交 Submit
 			</NButton>
@@ -88,6 +88,13 @@ const consumeTurnstileToken = () => {
 	window.turnstile?.reset();
 	return token;
 };
+
+const changeState = () => {
+	console.log("Submit");
+	emailState.value = "Submit";
+	enterEmail();
+};
+
 // FIXME: this redirectUrl is hardcode. Need to FIX it before merge in main branch.
 const enterEmail = async () => {
 	try {
@@ -104,8 +111,6 @@ const enterEmail = async () => {
 	} catch (error) {
 		// TODO: show error message
 		console.log(error);
-	} finally {
-		emailState.value = "Submit";
 	}
 };
 </script>
