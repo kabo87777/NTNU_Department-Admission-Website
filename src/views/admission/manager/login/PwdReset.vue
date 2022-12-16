@@ -21,7 +21,7 @@
 				id="newPass"
 				type="password"
 				v-model="password.newPass"
-				class="h-12"
+				class="h-12 w-full"
 				:class="{ 'p-invalid': password.isNewPassBlank }"
 				required
 			/>
@@ -36,7 +36,7 @@
 					id="confirmPass"
 					type="password"
 					v-model="password.confirmPass"
-					class="h-12"
+					class="h-12 w-full"
 					:class="{ 'p-invalid': password.notMatch }"
 					required
 				/>
