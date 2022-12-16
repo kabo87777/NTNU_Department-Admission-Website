@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import { AdmissionManagerAuthResponse } from "@/api/admission/admin/types";
 import { ref } from "vue";
 
-export const useAdminInfoStore = defineStore("adminInfo", ()=>{
+export const useAdminInfoStore = defineStore("adminInfo", () => {
 	const userInfo = ref<AdmissionManagerAuthResponse>({
 		email: "",
 		username: "",
@@ -17,11 +17,11 @@ export const useAdminInfoStore = defineStore("adminInfo", ()=>{
 		image: null,
 		created_at: "",
 		updated_at: "",
-	})
+	});
 
-	const saveUserInfo=(data: AdmissionManagerAuthResponse)=>{
-		userInfo.value=data
-	}
+	const saveUserInfo = (data: AdmissionManagerAuthResponse) => {
+		userInfo.value = data;
+	};
 
-	return{ userInfo, saveUserInfo}
-})
+	return { userInfo, saveUserInfo };
+});

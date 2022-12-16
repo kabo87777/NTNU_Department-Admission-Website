@@ -243,8 +243,10 @@ export class AdmissionAdminAPI extends GenericAPI {
 			body
 		);
 
-		if (response.error === true)
-			throw new Error("An error occured while sending request.");
+		if (response.error === true) {
+			const msg = response.message.full_messages.join("\n");
+			throw new Error(msg);
+		}
 
 		return response;
 	}

@@ -492,7 +492,7 @@ const globalStore = useGlobalStore();
 const api = new AdmissionAdminAPI(adminAuth);
 const adminStore = useAdminInfoStore();
 
-const adminInfo=ref(adminStore.userInfo);
+const adminInfo = ref(adminStore.userInfo);
 
 const programData = useMutation(async (newProgramData: any) => {
 	return await api.addNewProgram(newProgramData);
@@ -596,7 +596,7 @@ async function signOut() {
 }
 
 // Update admin userdata according respect change to admin store
-adminStore.$subscribe((mutation, state)=>{
-	adminInfo.value=state.userInfo
-})
+adminStore.$subscribe((mutation, state) => {
+	adminInfo.value = state.userInfo;
+});
 </script>
