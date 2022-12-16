@@ -30,7 +30,7 @@
 					:class="{ 'p-invalid': password.isNameBlank }"
 					required
 				/>
-				<div text="xs danger" v-if="password.isNameBlank">
+				<div text="sm danger" v-if="password.isNameBlank">
 					※ 必須輸入使用者名稱 Username is required.
 				</div>
 			</div>
@@ -45,7 +45,7 @@
 					:class="{ 'p-invalid': password.isNameBlank }"
 					required
 				/>
-				<div text="xs danger" v-if="password.isEmailBlank">
+				<div text="sm danger" v-if="password.isEmailBlank">
 					※ 電郵地址不可為空白 E-mail required.
 				</div>
 			</div>
@@ -62,7 +62,7 @@
 					}"
 					required
 				/>
-				<div text="xs danger" v-if="password.isCurrentPassBlank">
+				<div text="sm danger" v-if="password.isCurrentPassBlank">
 					※ 密碼不可為空白 Password Required
 				</div>
 			</div>
@@ -77,7 +77,7 @@
 					:class="{ 'p-invalid': password.notMatch }"
 					required
 				/>
-				<div text="xs danger" v-if="password.notMatch">
+				<div text="sm danger" v-if="password.notMatch">
 					※ 密碼不符 Password not Matched
 				</div>
 			</div>

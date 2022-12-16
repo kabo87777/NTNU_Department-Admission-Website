@@ -37,9 +37,9 @@
 							:disabled="isSubmitting"
 							required
 						/>
-					</div>
-					<div v-if="errorMessage" text="sm danger">
-						※ 電郵地址不可為空白 E-mail Required
+						<div v-if="errorMessage" text="sm danger">
+							※ 電郵地址不可為空白 E-mail Required
+						</div>
 					</div>
 				</Field>
 				<!-- Password -->

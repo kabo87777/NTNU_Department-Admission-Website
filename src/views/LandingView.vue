@@ -1,19 +1,22 @@
 <template>
-	<!-- Toast Message -->
+	<!-- Toast Message: Login Failure -->
 	<Toast position="top-right" group="loginFailure">
 		<template #message="slotprop">
-			<div flex="~ gap-4" text="danger">
-				<i class="pi pi-ban" style="font-size: 2rem" />
-				<div space="y-2">
-					<div text="xl" font="medium">登入失敗 Login Failure</div>
-					<div>
-						<div>請確認{{ slotprop.message.summary }}是否正確</div>
-						<div>
-							Please check your {{ slotprop.message.detail }}.
-						</div>
-					</div>
-				</div>
-			</div>
+			<TMessage
+				type="loginFailure"
+				:zh="slotprop.message.summary"
+				:en="slotprop.message.detail"
+			/>
+		</template>
+	</Toast>
+	<!-- Toast Message: Password Reset Failure -->
+	<Toast position="top-right" group="resetFailure">
+		<template #message="slotprop">
+			<TMessage
+				type="resetFailure"
+				:zh="slotprop.message.summary"
+				:en="slotprop.message.detail"
+			/>
 		</template>
 	</Toast>
 
@@ -83,6 +86,7 @@
 
 <script setup lang="ts">
 import Toast from "primevue/toast";
+import TMessage from "@/styles/login/ToastMessage.vue";
 import NButton from "@/styles/CustomButton.vue";
 import Title from "@/styles/login/LoginTitle.vue";
 import Body from "@/styles/login/LoginBody.vue";
