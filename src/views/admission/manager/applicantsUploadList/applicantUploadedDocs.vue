@@ -19,6 +19,7 @@
 				:options="tabs"
 				optionLabel="name"
 				aria-labelledby="single"
+				:unselectable="false"
 			>
 				<template #option="slotProps">
 					<div class="m-auto text-20px font-bold">

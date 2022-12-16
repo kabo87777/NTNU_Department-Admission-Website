@@ -204,17 +204,18 @@
 					style="
 						background-color: #8a7b27;
 						border-radius: 50%;
-						width: 32px;
-						height: 32px;
-						margin-left: 18px;
+						width: 40px;
+						height: 40px;
+						margin-top: -4px;
+						margin-left: 16px;
 					"
 				>
 					<i
 						class="pi pi-user ml-6.5px mt-8px"
-						style="font-size: 1.2rem"
+						style="font-size: 1.7rem"
 					/>
 				</div>
-				<div class="mt-[-4px] ml-16px">
+				<div class="mt-[-4px] ml-12px">
 					<div
 						class="text-[14px] font-[500] font-bold text-[#736028]"
 					>
@@ -278,6 +279,8 @@ import "primeicons/primeicons.css";
 import "primevue/resources/primevue.min.css";
 import Button from "primevue/button";
 
+import "@/styles/customize.css";
+
 const router = useRouter();
 const applicantAuth = useAdmissionApplicantAuthStore();
 const applicantName = window.localStorage.getItem("AdmissionApplicantUsername");
@@ -323,3 +326,17 @@ async function signOut() {
 	router.push("/admission/applicant/signin");
 }
 </script>
+
+<style setup lang="css">
+.sidebarTitleBar {
+	border: 1px solid #736028;
+	border-radius: 8px;
+	font-weight: bold;
+	font-size: 20px;
+	letter-spacing: 0.1em;
+	height: 60px;
+	width: 93%;
+	padding-left: 10px;
+	padding-top: 14px;
+}
+</style>

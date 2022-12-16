@@ -28,8 +28,21 @@
 				@rowSelect="onRowSelect"
 				class="p-datatable-lg !h-700px"
 			>
-				<Column field="id" :header="ID"></Column>
 				<Column field="name" :header="applicantName"></Column>
+				<Column :header="academic">
+					<template #body="slotProps">
+						<p v-if="slotProps.data.doctoral">
+							{{ slotProps.data.doctoral }}
+						</p>
+						<p v-else-if="slotProps.data.master">
+							{{ slotProps.data.master }}
+						</p>
+						<p v-else-if="slotProps.data.college">
+							{{ slotProps.data.college }}
+						</p>
+					</template>
+				</Column>
+				<Column field="publication" :header="publication" />
 				<Column field="isRecommend" :header="reviewerRating">
 					<template #body="slotProps">
 						<p v-if="slotProps.data.isRecommend === null">
@@ -41,25 +54,27 @@
 						<p v-else>{{ notRecommanded }}</p>
 					</template>
 				</Column>
-				<Column field="comment" :header="reason" />
+				<Column :header="recommanded">
+					<template #body="slotProps">
+						<Button
+							v-if="slotProps.data.isRecommend"
+							icon="pi pi-check-circle"
+							class="p-button-rounded p-button-danger p-button-text"
+							@click="notRecommend(slotProps)"
+						/>
+						<Button
+							v-else
+							icon="pi pi-circle"
+							class="p-button-rounded p-button-danger p-button-text"
+							@click="recommend(slotProps)"
+						/>
+					</template>
+				</Column>
 			</DataTable>
 			<div class="bigBlueDivider !mt-50px"></div>
-			<div class="flex text-xl mt-20px">
-				<div>
-					{{ $t("評比進度") }}
-				</div>
-
-				<ProgressBar
-					:value="progressValue"
-					:showValue="false"
-					class="!w-439px ml-24px mt-5px"
-				/>
-				<div class="ml-24px">
-					{{ applicantGraded }} / {{ totalApplicant }} {{ $t("位") }}
-				</div>
-
+			<!-- <div class="flex text-xl mt-20px">
 				<Button
-					class="w-140px h-44px !ml-480px p-button-success"
+					class="w-140px h-44px !ml-1200px p-button-success"
 					disabled
 				>
 					<img
@@ -71,9 +86,9 @@
 					<span class="tracking-1px">{{ $t("送出評比") }}</span>
 				</Button>
 			</div>
-			<div class="ml-860px mt-12px text-red-500">
+			<div class="ml-930px mt-12px text-red-500">
 				{{ $t("※成績送出即無法再次修改，煩請送出前再三確認成績無誤") }}
-			</div>
+			</div> -->
 		</div>
 	</div>
 </template>
@@ -85,13 +100,11 @@ import { computed, ref } from "vue";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import Button from "primevue/button";
-import ProgressBar from "primevue/progressbar";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { useRecruitmentReviewerAuthStore } from "@/stores/universalAuth";
 import { RecruitmentReviewerAPI } from "@/api/recruitment/reviewer/api";
-import { useQuery } from "@tanstack/vue-query";
-import { InvalidSessionError } from "@/api/error";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
 import { useGlobalStore } from "@/stores/RecruitmentReviewerStore";
 import { useToast } from "primevue/usetoast";
 
@@ -108,33 +121,19 @@ const progressValue = ref(0);
 const noRating = computed(() => t("未評比"));
 const notRecommanded = computed(() => t("不推薦"));
 const recommanded = computed(() => t("推薦"));
+const academic = computed(() => t("最高學歷"));
+const publication = computed(() => t("著作"));
 
 const {
 	isLoading,
 	isError,
 	data: applicantList,
 	error,
-} = useQuery(
-	["recruitmenReviewerApplicantList"],
-	async () => {
-		return await api.getRequiredApplicantList(
-			store.recruitmentReviewerProgram!.id!
-		);
-	},
-	{
-		onSuccess: (data) => {
-			totalApplicant.value = data!.length;
-			applicantGraded.value = 0;
-			data!.forEach((applicant) => {
-				if (applicant.isRecommend != null) {
-					applicantGraded.value += 1;
-				}
-			});
-			progressValue.value =
-				(applicantGraded.value / totalApplicant.value) * 100;
-		},
-	}
-);
+} = useQuery(["recruitmenReviewerApplicantList"], async () => {
+	return await api.getRequiredApplicantList(
+		store.recruitmentReviewerProgram!.id!
+	);
+});
 
 const reviewStartTime = ref("");
 const reviewEndTime = ref("");
@@ -198,10 +197,54 @@ const reason = computed(() => t("理由/註記"));
 
 const selectedData = ref();
 const router = useRouter();
+const applicantID = ref();
+const newApplicantComment = useMutation(
+	async (newProgramData: any) => {
+		try {
+			return await api.updateApplicantComment(
+				store.recruitmentReviewerProgram!.id!,
+				applicantID.value,
+				newProgramData
+			);
+		} catch (error) {
+			toast.add({ severity: "error", summary: "無法保存", life: 3000 });
+			console.log(error);
+		}
+	},
+	{
+		onSuccess: () => {
+			queryClient.invalidateQueries({
+				queryKey: ["recruitmenReviewerApplicantList"],
+			});
+		},
+	}
+);
+const recommend = (event: any) => {
+	applicantID.value = event.data.id;
+	newApplicantComment.mutate({
+		isRecommend: true,
+	});
+};
+const notRecommend = (event: any) => {
+	applicantID.value = event.data.id;
+	newApplicantComment.mutate({
+		isRecommend: false,
+	});
+};
 const onRowSelect = (event: any) => {
 	selectedData.value = "";
 	router.push(
 		"/recruitment/reviewer/singleRequiredDataReview/" + event.data.id
 	);
 };
+const queryClient = useQueryClient();
+store.$subscribe(() => {
+	queryClient.invalidateQueries({
+		queryKey: ["recruitmenReviewerApplicantList"],
+	});
+	queryClient.invalidateQueries({
+		queryKey: ["recruitmentReviewerProgramList"],
+	});
+});
+const toast = useToast();
 </script>
