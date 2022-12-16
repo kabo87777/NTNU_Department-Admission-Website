@@ -543,7 +543,8 @@ function addNewProject() {
 			application_end_date: todayDateString,
 			review_start_date: todayDateString,
 			review_end_date: todayDateString,
-			stage: "application_stage",
+			docs_end_date: todayDateString,
+			oral_start_date: todayDateString,
 			applicant_required_info: '["file1", "file2"]',
 			applicant_required_file: '["file3", "file4"]',
 			reviewer_required_info: '["file1", "file2"]',
@@ -562,7 +563,7 @@ function addNewProject() {
 
 				toast.add({
 					severity: "success",
-					summary: "更改成功",
+					summary: "新增成功",
 					life: 3000,
 				});
 			},

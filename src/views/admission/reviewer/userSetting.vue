@@ -76,14 +76,15 @@
 					</div>
 				</div>
 			</div>
-			<Button
-				class="p-button-sm p-button-secondary p-button-outlined !mt-60px !text-[16px]"
-				type="submit"
+			<NButton
+				type="Reviewer"
+				class="w-140px h-44px p-button-sm p-button-secondary p-button-outlined !mt-60px"
 				icon="pi pi-pencil"
 				:loading="isChangePassLoading"
 				@click="handleSubmit"
-				:label="$t('修改送出')"
-			/>
+			>
+				<span class="tracking-1px">{{ $t("修改送出") }}</span>
+			</NButton>
 		</div>
 	</div>
 </template>
@@ -102,6 +103,7 @@ import { InvalidSessionError } from "@/api/error";
 import { useAdmissionReviewerAuthStore } from "@/stores/universalAuth";
 import { AdmissionReviewerAuthResponse } from "@/api/admission/reviewer/types";
 import { useUserInfoStore } from "@/stores/AdmissionReviewerStore";
+import NButton from "@/styles/CustomButton.vue";
 
 const route = useRoute();
 const toast = useToast();
