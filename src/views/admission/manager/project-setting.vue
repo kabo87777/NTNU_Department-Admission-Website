@@ -147,34 +147,27 @@
 		<div class="flex mt-24px">
 			<div class="m-auto">
 				<div class="flex">
-					<Button
-						class="bg-white h-60px w-140px border-ntnuRed"
-						@click="deleteProject"
+					<NButton
+						type="Admin"
+						class="bg-white h-60px w-140px"
+						@click="confirmDeleteProject()"
+						icon="pi pi-times"
 					>
-						<i
-							class="pi pi-times ml-1 mr-2 box-border"
-							text="sm ntnuRed"
-						></i>
-						<div class="m-auto tracking-2" text="sm ntnuRed">
-							<div>{{ $t("刪除專案") }}</div>
-						</div>
-					</Button>
+						<div>{{ $t("刪除專案") }}</div>
+					</NButton>
 					<div class="w-24px"></div>
-					<Button
-						class="bg-Green h-60px w-140px border-ntnuRed"
+					<NButton
+						type="Admin"
+						class="bg-Green h-60px w-140px"
 						@click="update"
+						icon="pi pi-check"
 					>
-						<i
-							class="pi pi-check ml-1 mr-2 box-border"
-							text="sm black"
-						></i>
-						<div class="m-auto tracking-2" text="sm black">
-							<div>{{ $t("儲存設定") }}</div>
-						</div>
-					</Button>
+						<div>{{ $t("儲存設定") }}</div>
+					</NButton>
 				</div>
 			</div>
 		</div>
+		<ConfirmDialog />
 	</div>
 </template>
 
@@ -196,10 +189,14 @@ import { InvalidSessionError } from "@/api/error";
 import { router } from "@/router";
 import { useToast } from "primevue/usetoast";
 import { useI18n } from "vue-i18n";
+import NButton from "@/styles/CustomButton.vue";
+import ConfirmDialog from "primevue/confirmdialog";
+import { useConfirm } from "primevue/useconfirm";
 
 const programName = ref<string>("");
 const oldProgramName = ref<string>("");
 const selected_type = ref();
+const { t: $t } = useI18n();
 const types = ref([
 	{ type_name: "特殊選才" },
 	{ type_name: "碩士班徵試入學" },
@@ -265,13 +262,9 @@ const {
 			);
 			application_end_time.value = new Date(data.application_end_date);
 			review_stage1_start_time.value = new Date(data.review_start_date);
-			review_stage1_end_time.value = new Date(data.review_end_date);
-			if (data.stage === "docs_stage") {
-				review_stage.value = translation.phase1;
-			}
-			if (data.stage === "oral_stage") {
-				review_stage.value = translation.phase2;
-			}
+			review_stage1_end_time.value = new Date(data.docs_end_date);
+			review_stage2_start_time.value = new Date(data.oral_start_date);
+			review_stage2_end_time.value = new Date(data.review_end_date);
 		},
 		// TODO: onError
 	}
@@ -308,6 +301,15 @@ async function update() {
 		});
 		return;
 	}
+	if (review_stage2_start_time.value < review_stage1_end_time.value!) {
+		toast.add({
+			severity: "error",
+			summary: "錯誤",
+			detail: "口試審查開始時間不得早於書面審查截止時間",
+			life: 3000,
+		});
+		return;
+	}
 	if (review_stage.value === translation.phase1) {
 		stage.value = "docs_stage";
 	} else if (review_stage.value === translation.phase2) {
@@ -326,9 +328,12 @@ async function update() {
 					dateTransform(application_end_time.value) + "+08:00",
 				review_start_date:
 					dateTransform(review_stage1_start_time.value) + "+08:00",
-				review_end_date:
+				docs_end_date:
 					dateTransform(review_stage1_end_time.value) + "+08:00",
-				stage: stage.value,
+				oral_start_date:
+					dateTransform(review_stage2_start_time.value) + "+08:00",
+				review_end_date:
+					dateTransform(review_stage2_end_time.value) + "+08:00",
 			},
 			{
 				onSuccess: () => {
@@ -359,6 +364,20 @@ globalStore.$subscribe(() => {
 		queryKey: ["Aadminprogram"],
 	});
 });
+
+const confirm = useConfirm();
+const confirmDeleteProject = () => {
+	confirm.require({
+		header: $t("是否要刪除此專案？"),
+		message: $t("此動作不可回復，請謹慎操作"),
+		icon: "pi pi-exclamation-triangle",
+		accept: () => {
+			deleteProject();
+		},
+		acceptLabel: $t("確認"),
+		rejectLabel: $t("取消"),
+	});
+};
 
 function dateTransform(date?: Date) {
 	const result = new Date(date!.setHours(date!.getHours() + 8))
