@@ -21,6 +21,15 @@ const routes: Array<RouteRecordRaw> = [
 				component: () =>
 					import("@/views/admission/AdmissionSignin.vue"),
 			},
+			// Admission - first signin change password
+			{
+				path: "/admission/firstSignin",
+				name: "AdmissionFirstSigninChangePassword",
+				meta: {
+					titleKey: "登入頁面",
+				},
+				component: () => import("@/views/admission/FirstSignin.vue"),
+			},
 			// Admission - Applicant
 			{
 				path: "admission/applicant/signin",
@@ -48,13 +57,13 @@ const routes: Array<RouteRecordRaw> = [
 					import("@/views/admission/reviewer/login/Signin.vue"),
 			},
 			{
-				path: "/admission/reviewer/forgetpassword",
+				path: "admission/reviewer/forgetpassword",
 				name: "AdmissionReviewerForgetpassword",
 				component: () =>
 					import("@/views/admission/reviewer/login/PwdForget.vue"),
 			},
 			{
-				path: "/admission/reviewer/password/reset",
+				path: "admission/reviewer/password/reset",
 				name: "AdmissionReviewerResetPassword",
 				component: () =>
 					import("@/views/admission/reviewer/login/PwdReset.vue"),
@@ -120,7 +129,6 @@ const routes: Array<RouteRecordRaw> = [
 				component: () =>
 					import("@/views/recruitment/reviewer/login/Signin.vue"),
 			},
-			// Recruitment - reviewer forget & reset password
 			{
 				path: "recruitment/reviewer/password/reset",
 				name: "recruitmenReviewerPasswordReset",
@@ -134,10 +142,12 @@ const routes: Array<RouteRecordRaw> = [
 					import("@/views/recruitment/reviewer/login/PwdForget.vue"),
 			},
 			{
-				path: "recruitment/reviewer/password/firstLogin",
-				name: "recruitmentReviewerPasswordFirstLogin",
+				path: "recruitment/reviewer/firstSignin",
+				name: "recruitmentReviewerFirstSigninChangePassword",
 				component: () =>
-					import("@/views/recruitment/reviewer/login/FirstLogin.vue"),
+					import(
+						"@/views/recruitment/reviewer/login/FirstSignin.vue"
+					),
 			},
 			// Recruitment - Manager
 			{
@@ -146,7 +156,6 @@ const routes: Array<RouteRecordRaw> = [
 				component: () =>
 					import("@/views/recruitment/manager/login/Signin.vue"),
 			},
-			// Recruitment - manager forget & reset password
 			{
 				path: "recruitment/manager/password/reset",
 				name: "recruitmentManagerPasswordReset",
@@ -158,6 +167,12 @@ const routes: Array<RouteRecordRaw> = [
 				name: "recruitmentManagerPasswordForget",
 				component: () =>
 					import("@/views/recruitment/manager/login/PwdForget.vue"),
+			},
+			{
+				path: "recruitment/manager/firstSignin",
+				name: "recruitmentManagerFirstSigninChangePassword",
+				component: () =>
+					import("@/views/recruitment/manager/login/FirstSignin.vue"),
 			},
 		],
 	},
