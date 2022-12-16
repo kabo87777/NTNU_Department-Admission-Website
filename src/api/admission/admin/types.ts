@@ -302,3 +302,9 @@ export interface AdmissionAdminCreateReviewerRequest {
 	name: string;
 	redirect_url: string;
 }
+
+export interface AdmAdminChangePasswordRequest {
+	current_password: string;
+	password: string;
+	password_confirmation: string;
+}
