@@ -25,7 +25,7 @@
 					class="h-12 w-full"
 					required
 				/>
-				<div text="xs danger" v-if="password.isNewPassBlank">
+				<div text="sm danger" v-if="password.isNewPassBlank">
 					※ 請輸入新密碼 Please Set your new Password.
 				</div>
 			</div>
@@ -40,7 +40,7 @@
 					class="h-12 w-full"
 					required
 				/>
-				<div text="xs danger" v-if="password.notMatch">
+				<div text="sm danger" v-if="password.notMatch">
 					※ 密碼不符 Confirm password is not matched.
 				</div>
 			</div>

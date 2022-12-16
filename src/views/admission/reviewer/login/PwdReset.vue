@@ -22,10 +22,11 @@
 					id="newPass"
 					type="password"
 					v-model="password.newPass"
-					class="h-12 w-full"
+					class="h-12"
+					:class="{ 'p-invalid': password.isNewPassBlank }"
 					required
 				/>
-				<div text="xs danger" v-if="password.isNewPassBlank">
+				<div text="sm danger" v-if="password.isNewPassBlank">
 					※ 請輸入新密碼 Please Set your new Password.
 				</div>
 			</div>
@@ -36,10 +37,11 @@
 					id="confirmPass"
 					type="password"
 					v-model="password.confirmPass"
-					class="h-12 w-full"
+					class="h-12"
+					:class="{ 'p-invalid': password.notMatch }"
 					required
 				/>
-				<div text="xs danger" v-if="password.notMatch">
+				<div text="sm danger" v-if="password.notMatch">
 					※ 密碼不符 Confirm password is not matched.
 				</div>
 			</div>
@@ -48,7 +50,7 @@
 			<!-- Submit Button -->
 			<NButton
 				class="w-3/5 p-2 m-auto"
-				type="Admin"
+				type="Reviewer"
 				size="lg"
 				:loading="isChangePassLoading"
 				@click="onSubmit()"
@@ -60,8 +62,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, toRaw, reactive } from "vue";
 import InputText from "primevue/inputtext";
+import NButton from "@/styles/CustomButton.vue";
+import Title from "@/styles/login/LoginTitle.vue";
+import Body from "@/styles/login/LoginBody.vue";
+import { ref, toRaw, reactive } from "vue";
 import { useToast } from "primevue/usetoast";
 import { useAdmissionReviewerAuthStore } from "@/stores/universalAuth";
 import { AdmissionReviewerAPI } from "@/api/admission/reviewer/api";
@@ -161,13 +166,3 @@ const onSubmit = async () => {
 	}
 };
 </script>
-
-<style setup lang="css">
-.bg-darkBlue {
-	background-color: #07385a;
-}
-.bg-darkBlue:hover {
-	background-color: #07385a !important;
-	opacity: 0.9;
-}
-</style>
