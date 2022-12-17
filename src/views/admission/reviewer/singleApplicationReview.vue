@@ -67,11 +67,12 @@
 		</div>
 		<div class="mt-10px !h-1830px !ml-40px">
 			<vue-pdf-embed
-				ref="info"
+				ref="pdfRef"
 				v-if="infoPDF !== ''"
 				:source="'data:application/pdf;base64,' + PDF"
 				class="!h-1600px"
 				:page="Page"
+				@rendered="handleDocumentRender"
 			/>
 			<i
 				v-if="infoPDF === ''"
@@ -224,26 +225,13 @@ const router = useRouter();
 const adminAuth = useAdmissionReviewerAuthStore();
 const store = useGlobalStore();
 const api = new AdmissionReviewerAPI(adminAuth);
-const info = ref(null);
-const uploadFile = ref(null);
-const recommendLetter = ref(null);
-const combine = ref(null);
+const pdfRef = ref(null);
 const PDF = ref();
 const Page = ref(1);
-const maxPage = ref(13);
-onMounted(() => {
-	console.log(info, "info");
-	console.log(uploadFile, "uploadFile");
-	console.log(recommendLetter, "recommendLetter");
-	console.log(combine, "combine");
-});
+const maxPage = ref(1);
 
 // FIXME: logic may refactor
 
-const infoPage = ref(1);
-const uploadPage = ref(1);
-const recommendPage = ref(1);
-const combinePage = ref(1);
 const ID = computed(() => route.params.id);
 const newApplicantGrade = useMutation(async (newProgramData: any) => {
 	try {
@@ -412,28 +400,29 @@ useQuery(
 	}
 );
 
+function handleDocumentRender() {
+	const target_copy = Object.assign({}, toRaw(pdfRef.value));
+	maxPage.value = target_copy["pageCount"];
+}
+
 function changeInfo() {
 	PDF.value = infoPDF.value;
 	Page.value = 1;
-	maxPage.value = 1;
 	data.value = "基本資料";
 }
 function changeRecommendLetter() {
 	PDF.value = recommendLetterPDF.value;
 	Page.value = 1;
-	maxPage.value = 1;
 	data.value = "推薦信";
 }
 function changeCombine() {
 	PDF.value = combinePDF.value;
 	Page.value = 1;
-	maxPage.value = 13;
 	data.value = "整合pdf";
 }
 function changeUploadFile() {
 	PDF.value = uploadFilePDF.value;
 	Page.value = 1;
-	maxPage.value = 11;
 	data.value = "檢附資料";
 }
 function nextPage() {

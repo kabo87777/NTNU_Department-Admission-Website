@@ -26,61 +26,56 @@
 			</div>
 		</div>
 		<div class="bigBlueDivider"></div>
-		<div class="p-fluid !mt-5px">
-			<SelectButton
-				v-model="data"
-				:options="datas"
-				aria-labelledby="single"
-				:unselectable="false"
-			/>
+		<div class="flex !mt-5px justify-around">
+			<NButton
+				type="Reviewer"
+				@click="changeInfo"
+				class="!w-200px !h-40px"
+			>
+				<span class="text-base">
+					{{ $t("基本資料") }}
+				</span>
+			</NButton>
+			<NButton
+				type="Reviewer"
+				@click="changeUploadFile"
+				class="!w-200px !h-40px"
+			>
+				<span class="text-base">
+					{{ $t("檢附資料") }}
+				</span>
+			</NButton>
+			<NButton
+				type="Reviewer"
+				@click="changeCombine"
+				class="!w-200px !h-40px"
+			>
+				<span class="text-base">
+					{{ $t("整合pdf") }}
+				</span>
+			</NButton>
 		</div>
 		<div class="mt-10px !h-1830px !ml-40px">
 			<vue-pdf-embed
-				ref="info"
-				v-if="data === '基本資料' && infoPDF !== ''"
-				:source="'data:application/pdf;base64,' + infoPDF"
+				ref="pdfRef"
+				v-if="infoPDF !== ''"
+				:source="'data:application/pdf;base64,' + PDF"
 				class="!h-1600px"
-				:page="infoPage"
+				:page="Page"
+				@rendered="handleDocumentRender"
 			/>
 			<i
-				v-if="data === '基本資料' && infoPDF === ''"
+				v-if="infoPDF === ''"
 				class="pi pi-spin pi-spinner"
 				style="font-size: 2rem"
 			></i>
-			<vue-pdf-embed
-				ref="uploadFile"
-				v-if="data === '檢附資料' && uploadFilePDF !== ''"
-				:source="'data:application/pdf;base64,' + uploadFilePDF"
-				class="!h-1600px"
-				:page="uploadPage"
-			/>
-			<i
-				v-if="data === '檢附資料' && uploadFilePDF === ''"
-				class="pi pi-spin pi-spinner"
-				style="font-size: 2rem"
-			></i>
-			<vue-pdf-embed
-				ref="combine"
-				v-if="data === '整合pdf' && combinePDF !== ''"
-				:source="'data:application/pdf;base64,' + combinePDF"
-				class="!h-1600px"
-				:page="combinePage"
-			/>
-			<i
-				v-if="data === '整合pdf' && combinePDF === ''"
-				class="pi pi-spin pi-spinner"
-				style="font-size: 2rem"
-			></i>
-			<div
-				class="flex !mt-250px justify-around"
-				v-if="data === '基本資料'"
-			>
+			<div class="flex !mt-250px justify-around">
 				<NButton
 					type="Reviewer"
 					icon="pi pi-chevron-left"
 					iconPos="left"
-					@click="infoPage--"
-					:disabled="infoPage === 1"
+					@click="Page--"
+					:disabled="Page === 1"
 					class="!w-200px !h-40px"
 				>
 					<span class="text-base">
@@ -91,66 +86,8 @@
 					type="Reviewer"
 					icon="pi pi-chevron-right"
 					iconPos="right"
-					@click="infoPage++"
-					:disabled="infoPage === 4"
-					class="!w-200px !h-40px"
-				>
-					<span class="text-base">
-						{{ $t("下一頁") }}
-					</span>
-				</NButton>
-			</div>
-			<div
-				class="flex !mt-250px justify-around"
-				v-if="data === '檢附資料'"
-			>
-				<NButton
-					type="Reviewer"
-					icon="pi pi-chevron-left"
-					iconPos="left"
-					@click="uploadPage--"
-					:disabled="uploadPage === 1"
-					class="!w-200px !h-40px"
-				>
-					<span class="text-base">
-						{{ $t("上一頁") }}
-					</span>
-				</NButton>
-				<NButton
-					type="Reviewer"
-					icon="pi pi-chevron-right"
-					iconPos="right"
-					@click="uploadPage++"
-					:disabled="uploadPage === 4"
-					class="!w-200px !h-40px"
-				>
-					<span class="text-base">
-						{{ $t("下一頁") }}
-					</span>
-				</NButton>
-			</div>
-			<div
-				class="flex !mt-250px justify-around"
-				v-if="data === '整合pdf'"
-			>
-				<NButton
-					type="Reviewer"
-					icon="pi pi-chevron-left"
-					iconPos="left"
-					@click="combinePage--"
-					:disabled="combinePage === 1"
-					class="!w-200px !h-40px"
-				>
-					<span class="text-base">
-						{{ $t("上一頁") }}
-					</span>
-				</NButton>
-				<NButton
-					type="Reviewer"
-					icon="pi pi-chevron-right"
-					iconPos="right"
-					@click="combinePage++"
-					:disabled="combinePage === 4"
+					@click="nextPage"
+					:disabled="Page === maxPage"
 					class="!w-200px !h-40px"
 				>
 					<span class="text-base">
@@ -159,7 +96,7 @@
 				</NButton>
 			</div>
 		</div>
-		<div class="bigBlueDivider"></div>
+		<div class="bigBlueDivider !mt-100px"></div>
 		<div class="flex mt-32px">
 			<div class="text-xl mt-5px !tracking-widest">
 				{{ $t("評比結果") }} :
@@ -192,7 +129,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, ref, toRaw } from "vue";
 import { useRoute } from "vue-router";
 import Button from "primevue/button";
 import Dropdown from "primevue/dropdown";
@@ -219,6 +156,10 @@ const store = useGlobalStore();
 const router = useRouter();
 const route = useRoute();
 const { t } = useI18n();
+const pdfRef = ref(null);
+const PDF = ref();
+const Page = ref(1);
+const maxPage = ref(1);
 
 const ID = computed(() => route.params.id);
 const name = ref("");
@@ -282,6 +223,31 @@ useQuery(
 		},
 	}
 );
+
+function handleDocumentRender() {
+	const target_copy = Object.assign({}, toRaw(pdfRef.value));
+	maxPage.value = target_copy["pageCount"];
+}
+
+function changeInfo() {
+	PDF.value = infoPDF.value;
+	Page.value = 1;
+	data.value = "基本資料";
+}
+function changeCombine() {
+	PDF.value = combinePDF.value;
+	Page.value = 1;
+	data.value = "整合pdf";
+}
+function changeUploadFile() {
+	PDF.value = uploadFilePDF.value;
+	Page.value = 1;
+	data.value = "檢附資料";
+}
+function nextPage() {
+	Page.value++;
+	window.scrollTo(0, 0);
+}
 
 // FIXME: logic may refactor
 
