@@ -1,59 +1,26 @@
 <template>
-	<div class="ml-128px mt-20 mb-20">
+	<div>
 		<h1 class="text-4xl text-bold tracking-widest">{{ $t("專案設定") }}</h1>
-		<Divider class="bg-ntnuRed" />
-		<h2 class="text-2xl text-bold tracking-widest inline-block">
+		<div class="bigRedDivider"></div>
+		<h2 class="text-2xl text-bold tracking-widest inline-block mt-16px">
 			{{ oldProgramName }}
 		</h2>
-		<Button
-			class="w-110px h-40px !ml-20px p-button-outlined p-button-success"
-			@click="updateProgramData"
-		>
-			<img
-				alt="logo"
-				src="/assets/project-setting/Check_fill.png"
-				style="width: 1.5rem"
-				class="fill-green-500"
-			/>
-			<span class="tracking-1px">{{ $t("保存") }}</span>
-		</Button>
-		<Button
-			class="w-110px h-40px !ml-20px p-button-outlined p-button-danger"
-			@click="deleteProject"
-		>
-			<img
-				alt="logo"
-				src="/assets/project-setting/Close_round.png"
-				style="width: 1.5rem"
-				class="fill-green-500"
-			/>
-			<span class="tracking-1px">{{ $t("刪除") }}</span>
-		</Button>
-		<h3 class="text-xs tracking-widest text-gray-500">
+		<h3 class="text-s tracking-widest text-gray-500 mt-8px">
 			{{ programCreateDate }} · {{ $t("新增到專案") }}
 		</h3>
-		<h5 class="text-base tracking-widest mt-30px mb-10px">
+		<h5 class="text-base tracking-widest mt-32px mb-10px">
 			{{ $t("專案名稱 (修改)") }} :
 		</h5>
 		<InputText
 			type="text"
 			v-model="programName"
-			class="w-960px h-44px mt-10px"
+			class="w-960px h-44px mt-16px"
 		/>
-		<div>
-			<!-- <h5 class="text-base tracking-widest mt-30px">
-				{{ $t("屬性") }} :
-			</h5>
-			<Dropdown
-				v-model="selected_type"
-				:options="types"
-				optionLabel="type_name"
-				optionValue="type_name"
-				class="!w-320px !h-44px mt-10px"
-			/> -->
+		<div class="text-lg tracking-widest font-bold mt-120px text-red-500">
+			{{ $t("請在申請端開放之前完成其他專案設定") }}
 		</div>
 		<div class="inline-block">
-			<h5 class="text-base tracking-widest mt-30px">
+			<h5 class="text-base tracking-widest mt-48px">
 				{{ $t("申請端開放時間/日期") }} :
 			</h5>
 			<Calendar
@@ -62,10 +29,11 @@
 				:showIcon="true"
 				:showTime="true"
 				class="w-320px h-44px mt-10px"
+				dateFormat="yy/mm/dd"
 			/>
 		</div>
 		<div class="inline-block ml-100px">
-			<h5 class="text-base tracking-widest mt-30px">
+			<h5 class="text-base tracking-widest mt-48px">
 				{{ $t("申請端關閉時間/日期") }} :
 			</h5>
 			<Calendar
@@ -74,6 +42,7 @@
 				:showIcon="true"
 				:showTime="true"
 				class="w-320px h-44px mt-10px"
+				dateFormat="yy/mm/dd"
 			/>
 		</div>
 		<br />
@@ -87,6 +56,7 @@
 				:showIcon="true"
 				:showTime="true"
 				class="w-320px h-44px mt-10px"
+				dateFormat="yy/mm/dd"
 			/>
 		</div>
 		<div class="inline-block ml-100px">
@@ -99,28 +69,36 @@
 				:showIcon="true"
 				:showTime="true"
 				class="w-320px h-44px mt-10px"
+				dateFormat="yy/mm/dd"
 			/>
 		</div>
-		<br />
-		<div>
-			<Checkbox
-				inputId="binary"
-				v-model="checked"
-				:binary="true"
-				class="!align-top mt-30px"
-			/>
-			<h5
-				class="text-base tracking-widest mt-30px ml-10px align-top inline-block"
-			>
-				{{ $t("專案詳細") }} :
-			</h5>
-			<Textarea
-				v-model="project_details"
-				rows="5"
-				cols="30"
-				class="w-950px h-320px !mt-30px !ml-10px"
-			/>
+		<div class="mt-200px">
+			<div class="bigRedDivider"></div>
 		</div>
+		<div class="flex mt-24px">
+			<div class="m-auto">
+				<div class="flex">
+					<NButton
+						type="Admin"
+						class="bg-white h-60px w-140px"
+						@click="confirmDeleteProject()"
+						icon="pi pi-times"
+					>
+						<div>{{ $t("刪除專案") }}</div>
+					</NButton>
+					<div class="w-24px"></div>
+					<NButton
+						type="Admin"
+						class="bg-Green h-60px w-140px"
+						@click="updateProgramData"
+						icon="pi pi-check"
+					>
+						<div>{{ $t("儲存設定") }}</div>
+					</NButton>
+				</div>
+			</div>
+		</div>
+		<ConfirmDialog />
 	</div>
 </template>
 
@@ -132,6 +110,10 @@ import Checkbox from "primevue/checkbox";
 import Divider from "primevue/divider";
 import InputText from "primevue/inputtext";
 import Textarea from "primevue/textarea";
+import NButton from "@/styles/CustomButton.vue";
+import { useI18n } from "vue-i18n";
+import ConfirmDialog from "primevue/confirmdialog";
+import { useConfirm } from "primevue/useconfirm";
 
 import { ref } from "vue";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
@@ -147,9 +129,9 @@ const recruit_start_time = ref();
 const recruit_end_time = ref();
 const review_stage1_start_time = ref();
 const review_stage1_end_time = ref();
-const project_details = ref("");
 const checked = ref(false);
 const programCreateDate = ref("");
+const { t: $t } = useI18n();
 
 // Get QueryClient from the context
 const queryClient = useQueryClient();
@@ -188,12 +170,29 @@ useQuery(
 			recruit_end_time.value = new Date(data.recruit_end_date);
 			review_stage1_start_time.value = new Date(data.review_start_date);
 			review_stage1_end_time.value = new Date(data.review_end_date);
-			project_details.value = data.detail;
 		},
 	}
 );
 
 function updateProgramData() {
+	if (recruit_end_time.value < recruit_start_time.value) {
+		toast.add({
+			severity: "error",
+			summary: "錯誤",
+			detail: "申請結束時間不得早於申請開始時間",
+			life: 3000,
+		});
+		return;
+	}
+	if (review_stage1_end_time.value < review_stage1_start_time.value) {
+		toast.add({
+			severity: "error",
+			summary: "錯誤",
+			detail: "審核結束時間不得早於審核開始時間",
+			life: 3000,
+		});
+		return;
+	}
 	programDataMutation.mutate(
 		{
 			category: selected_type.value,
@@ -205,8 +204,6 @@ function updateProgramData() {
 				dateTransform(review_stage1_start_time.value) + "+08:00",
 			review_end_date:
 				dateTransform(review_stage1_end_time.value) + "+08:00",
-			require_file: '["file1", "file2"]',
-			detail: project_details.value,
 		},
 		{
 			onError: (e: any) => {
@@ -238,8 +235,28 @@ async function deleteProject() {
 		toast.add({ severity: "error", summary: "刪除失敗", life: 3000 });
 	}
 
-	await queryClient.invalidateQueries({ queryKey: ["programList"] });
+	await queryClient.invalidateQueries({
+		queryKey: ["recruitmentAdminprogramList"],
+	});
 }
+
+globalStore.$subscribe(() => {
+	queryClient.invalidateQueries({ queryKey: ["RAdminprogram"] });
+});
+
+const confirm = useConfirm();
+const confirmDeleteProject = () => {
+	confirm.require({
+		header: $t("是否要刪除此專案？"),
+		message: $t("此動作不可回復，請謹慎操作"),
+		icon: "pi pi-exclamation-triangle",
+		accept: () => {
+			deleteProject();
+		},
+		acceptLabel: $t("確認"),
+		rejectLabel: $t("取消"),
+	});
+};
 
 function dateTransform(date?: Date) {
 	const result = new Date(date!.setHours(date!.getHours() + 8))

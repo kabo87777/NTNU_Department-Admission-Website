@@ -121,8 +121,8 @@
 				</label>
 			</div>
 			<div class="flex mx-10 gap-8 mb-4" text="gray-500">
-				<div>{{ trans.details.master.value }}</div>
-				<div>{{ trans.details.phD.value }}</div>
+				<div>{{ trans.details.locals.value }}</div>
+				<div>{{ trans.details.foreigner.value }}</div>
 			</div>
 		</div>
 		<!-- showInfo - checkbox 3 -->
@@ -351,8 +351,8 @@ const trans = {
 		suffix: computed(() => t("※ 稱謂/後綴")),
 		chineseName: computed(() => t("※ 中文姓氏/名字")),
 		englishName: computed(() => t("※ 英文姓氏/中間名/名字")),
-		master: computed(() => t("※ 碩士生")),
-		phD: computed(() => t("※ 博士生")),
+		locals: computed(() => t("※ 本國人士")),
+		foreigner: computed(() => t("※外籍人士")),
 		country: computed(() => t("※ 國家/州")),
 		city: computed(() => t("※ 城市/郵遞區號")),
 		streetAddr: computed(() => t("※ 街道地址")),
@@ -422,7 +422,6 @@ let programData: AdmissionAdminProgramListResponse = reactive({
 	application_end_date: "",
 	review_start_date: "",
 	review_end_date: "",
-	stage: "",
 	created_at: "",
 	updated_at: "",
 	applicant_required_info: "",
@@ -430,6 +429,8 @@ let programData: AdmissionAdminProgramListResponse = reactive({
 	reviewer_required_info: "",
 	reviewer_required_file: "",
 	detail: "",
+	oral_start_date: "",
+	docs_end_date: "",
 });
 
 // API: Get Score Data
@@ -516,7 +517,6 @@ const getInfoFileField = useQuery(
 			programData.application_end_date = data.application_end_date;
 			programData.review_start_date = data.review_start_date;
 			programData.review_end_date = data.review_end_date;
-			programData.stage = data.stage;
 			programData.created_at = data.created_at;
 			programData.updated_at = data.updated_at;
 			programData.detail = data.detail;
@@ -524,6 +524,8 @@ const getInfoFileField = useQuery(
 			programData.applicant_required_file = data.applicant_required_file;
 			programData.reviewer_required_info = data.reviewer_required_info;
 			programData.reviewer_required_file = data.reviewer_required_file;
+			programData.oral_start_date = data.oral_start_date;
+			programData.docs_end_date = data.docs_end_date;
 			fieldList.info = {
 				visible: JSON.parse(programData.applicant_required_info),
 				checked: JSON.parse(programData.reviewer_required_info),
