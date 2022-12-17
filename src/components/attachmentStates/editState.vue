@@ -55,11 +55,21 @@
 					/>
 				</template>
 			</Dialog>
-			<div class="font-[350]">{{ $t("項目名稱") }}{{ $t(":") }}</div>
-			<InputText
-				style="margin-top: 8px; border: 1px solid; width: 30%"
-				v-model="name"
-			/>
+			<div v-if="!itemName" class="font-[350]">
+				{{ $t("項目名稱") }}{{ $t(":") }}
+			</div>
+			<div
+				v-if="itemName"
+				class="font-[350] text-18px text-[#53565A] mt-8px"
+			>
+				{{ itemName }}
+			</div>
+			<div v-else>
+				<InputText
+					style="margin-top: 8px; border: 1px solid; width: 30%"
+					v-model="name"
+				/>
+			</div>
 			<div
 				v-if="
 					props.category === '就學經歷' ||
@@ -111,8 +121,7 @@
 					:maxFileSize="5000000"
 					:fileLimit="1"
 					accept=".pdf"
-				>
-				</FileUpload>
+				/>
 			</div>
 			<Button
 				v-else

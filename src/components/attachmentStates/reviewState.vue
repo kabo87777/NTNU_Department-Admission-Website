@@ -62,6 +62,7 @@
 			style="right: 0px"
 		>
 			<Button
+				v-show="props.enableEdit !== false"
 				class="p-button-outlined !h-40px"
 				style="border: 2px solid #a4bcc2"
 				@click="handleEdit"
@@ -79,7 +80,27 @@
 				</div>
 			</Button>
 			<Button
+				v-if="props.enableEdit !== false"
 				class="p-button-outlined !h-40px"
+				style="border: 2px solid #93282c; margin-left: 16px"
+				:loading="isDeleteLoading"
+				@click="isModalVisible = true"
+			>
+				<div>
+					<i
+						class="pi pi-times"
+						style="color: rgba(135, 75, 82, 1)"
+					/>
+				</div>
+				<div
+					class="mt-[-2px] ml-8px text-18px text-[#874B52] font-bold"
+				>
+					{{ $t("刪除") }}
+				</div>
+			</Button>
+			<Button
+				v-else
+				class="p-button-outlined !h-32px !mt-10px"
 				style="border: 2px solid #93282c; margin-left: 16px"
 				:loading="isDeleteLoading"
 				@click="isModalVisible = true"
@@ -139,6 +160,7 @@ const props = defineProps([
 	"score",
 	"isDeleteLoading",
 	"showActionButtons",
+	"enableEdit",
 ]);
 
 const emit = defineEmits(["edit", "delete", "download"]);

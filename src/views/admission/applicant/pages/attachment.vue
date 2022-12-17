@@ -423,6 +423,8 @@ useQuery(
 	},
 	{
 		onSuccess: (data) => {
+			clearAllList();
+
 			attachmentList = [...attachmentList, ...data];
 
 			splitThreeList(toRaw(attachmentList));
