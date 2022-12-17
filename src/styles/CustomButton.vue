@@ -139,12 +139,9 @@ const btnState = computed(() => {
 	const normal = designClass[type].normal;
 	const hover = props.disabled ? null : designClass[type].hover;
 	const active = props.disabled ? null : designClass[type].active;
-	const filled = appearance(type, fill, props.white, props.isSelected);
+	const appear = appearance(type, fill, props.white, props.isSelected);
 	const disabled = props.disabled ? "opacity-30 cursor-default" : null;
-	const output =
-		normal + " " + filled + " " + disabled + " " + hover + " " + active;
-	console.log(props.white, props.filled, props.isSelected);
-	return output;
+	return normal + " " + appear + " " + disabled + " " + hover + " " + active;
 });
 
 const btnText = props.size;
