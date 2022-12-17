@@ -24,10 +24,12 @@ const props = defineProps({
 	type: { type: String, default: "Secondary" },
 	size: { type: String, default: "base" },
 	icon: { type: String, default: "" },
-	filled: { type: Boolean, default: false, create: true },
-	white: { type: Boolean, default: false, create: true },
+	// Status
 	isSelected: { type: Boolean, default: false, created: true },
 	disabled: { type: Boolean, default: false, created: true },
+	// Appearance
+	filled: { type: Boolean, default: false, create: true },
+	white: { type: Boolean, default: false, create: true },
 	// Abbrivation
 	Applicant: { type: Boolean, default: false, created: true },
 	Admin: { type: Boolean, default: false, created: true },
@@ -36,54 +38,6 @@ const props = defineProps({
 	Success: { type: Boolean, default: false, created: true },
 	Danger: { type: Boolean, default: false, created: true },
 });
-
-// Deal with Props
-function propId(type: string) {
-	if (props.Applicant) return "Applicant";
-	if (props.Admin) return "Admin";
-	if (props.Reviewer) return "Reviewer";
-	if (props.Secondary) return "Secondary";
-	if (props.Success) return "Success";
-	if (props.Danger) return "Danger";
-	return type;
-}
-
-function appearance(
-	type: string,
-	isFilled: boolean,
-	isWhite: boolean,
-	isSelected: boolean
-) {
-	if (isWhite) {
-		if (isSelected) return "border-3 border-opacity-80 font-medium";
-		else return "";
-	} else if (isFilled) return designClass[type].fill;
-	else return "border-2 border-opacity-50";
-}
-
-// Size Translation ( WindiCSS to SCSS )
-const iconSize = (windiSize: string) => {
-	switch (windiSize) {
-		case "xs":
-			return "font-size: 0.75rem";
-		case "sm":
-			return "font-size: 0.875rem";
-		case "base":
-			return "font-size: 1rem";
-		case "lg":
-			return "font-size: 1.125rem";
-		case "xl":
-			return "font-size: 1.25rem";
-		case "2xl":
-			return "font-size: 1.5rem";
-		case "3xl":
-			return "font-size: 1.875rem";
-		case "4xl":
-			return "font-size: 2.25rem";
-		default:
-			return "font-size: 1rem";
-	}
-};
 
 // Preset Design Style
 const designClass: { [key: string]: any } = {
@@ -127,7 +81,7 @@ const designClass: { [key: string]: any } = {
 
 // Handle Button Style
 const btnState = computed(() => {
-	// Additional code to fit previous version.
+	// Deal with type "Grey", "White" on previous version
 	let type = props.type,
 		fill = props.filled;
 	if (type === "White") {
@@ -152,4 +106,53 @@ const btnIcon = computed(() => {
 	const type = props.icon;
 	return { show, size, type };
 });
+
+// Deal with Props
+function propId(type: string) {
+	if (props.Applicant) return "Applicant";
+	if (props.Admin) return "Admin";
+	if (props.Reviewer) return "Reviewer";
+	if (props.Secondary) return "Secondary";
+	if (props.Success) return "Success";
+	if (props.Danger) return "Danger";
+	return type;
+}
+
+// Deal with Appearance
+function appearance(
+	type: string,
+	isFilled: boolean,
+	isWhite: boolean,
+	isSelected: boolean
+) {
+	if (isWhite) {
+		if (isSelected) return "border-3 border-opacity-80 font-medium";
+		else return "";
+	} else if (isFilled) return designClass[type].fill;
+	else return "border-2 border-opacity-50";
+}
+
+// Size Translation ( WindiCSS to SCSS )
+function iconSize(windiSize: string) {
+	switch (windiSize) {
+		case "xs":
+			return "font-size: 0.75rem";
+		case "sm":
+			return "font-size: 0.875rem";
+		case "base":
+			return "font-size: 1rem";
+		case "lg":
+			return "font-size: 1.125rem";
+		case "xl":
+			return "font-size: 1.25rem";
+		case "2xl":
+			return "font-size: 1.5rem";
+		case "3xl":
+			return "font-size: 1.875rem";
+		case "4xl":
+			return "font-size: 2.25rem";
+		default:
+			return "font-size: 1rem";
+	}
+}
 </script>
