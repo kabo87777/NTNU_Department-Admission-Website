@@ -1,62 +1,19 @@
 <template>
 	<button
-		v-if="props.type === 'Reviewer'"
 		v-bind="$attrs"
-		class="flex items-center justify-center gap-2 text-pReviewer"
-		:class="btnSize"
-		border="2 opacity-30 nBlue-500 rounded-lg"
-		hover="text-title bg-nBlue-200 border-nBlue-200"
-		active="text-white bg-nBlue-500"
+		class="flex justify-center items-center gap-2 p-4"
+		:class="btnState.normal"
+		:hover="btnState.hover"
+		:active="btnState.active"
+		:text="btnText"
+		border="opacity-50 rounded-lg"
 	>
-		<i v-if="showIcon" :class="iconType" :style="iconSize" mt="2px" />
-		<slot />
-	</button>
-	<button
-		v-if="props.type === 'Admin'"
-		v-bind="$attrs"
-		class="flex items-center justify-center gap-2 text-pAdmin"
-		:class="btnSize"
-		border="2 opacity-30 nRed-600 rounded-lg"
-		hover="text-title bg-nRed-200 border-nRed-200"
-		active="text-white bg-nRed-600"
-	>
-		<i v-if="showIcon" :class="iconType" :style="iconSize" mt="2px" />
-		<slot />
-	</button>
-	<button
-		v-if="props.type === 'Applicant'"
-		v-bind="$attrs"
-		class="flex items-center justify-center gap-2 text-pApplicant"
-		:class="btnSize"
-		border="2 opacity-30 nGold-500 rounded-lg"
-		hover="text-title bg-nGold-300 border-nGold-300"
-		active="text-white bg-nGold-500"
-	>
-		<i v-if="showIcon" :class="iconType" :style="iconSize" mt="2px" />
-		<slot />
-	</button>
-	<button
-		v-if="props.type === 'White'"
-		v-bind="$attrs"
-		:class="btnSize"
-		class="flex items-center justify-center gap-2 text-secondary"
-		border="rounded-lg"
-		hover="bg-nGrey-200 text-title"
-		active="bg-nGrey-600 text-white"
-	>
-		<i v-if="showIcon" :class="iconType" :style="iconSize" mt="2px" />
-		<slot />
-	</button>
-	<button
-		v-if="props.type === 'Grey'"
-		v-bind="$attrs"
-		:class="btnSize"
-		class="flex items-center justify-center gap-2 text-body"
-		border="2 opacity-30 nGrey-600 rounded-lg"
-		hover="bg-nGrey-200 text-title border-nGrey-200"
-		active="bg-nGrey-600 text-white"
-	>
-		<i v-if="showIcon" :class="iconType" :style="iconSize" mt="2px" />
+		<i
+			v-if="btnIcon.show"
+			:class="btnIcon.type"
+			:style="btnIcon.size"
+			mt="0.5"
+		/>
 		<slot />
 	</button>
 </template>
@@ -64,31 +21,36 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import "primeicons/primeicons.css";
-const props = defineProps(["type", "size", "icon"]);
-const btnSize = computed(() => {
-	switch (props.size) {
-		case "xs":
-			return "text-xs";
-		case "sm":
-			return "text-sm";
-		case "base":
-			return "text-base";
-		case "lg":
-			return "text-lg";
-		case "xl":
-			return "text-xl";
-		case "2xl":
-			return "text-2xl";
-		case "3xl":
-			return "text-3xl";
-		case "4xl":
-			return "text-4xl";
-		default:
-			return "text-base";
-	}
+
+const props = defineProps({
+	type: { type: String, default: "Secondary" },
+	size: { type: String, default: "base" },
+	icon: { type: String, default: "" },
+	filled: { type: Boolean, default: false, create: true },
+	disabled: { type: Boolean, default: false, created: true },
+	// Abbrivation
+	Applicant: { type: Boolean, default: false, created: true },
+	Admin: { type: Boolean, default: false, created: true },
+	Reviewer: { type: Boolean, default: false, created: true },
+	Secondary: { type: Boolean, default: false, created: true },
+	Success: { type: Boolean, default: false, created: true },
+	Danger: { type: Boolean, default: false, created: true },
 });
-const iconSize = computed(() => {
-	switch (props.size) {
+
+// Deal with Props
+function propId(type: string) {
+	if (props.Applicant) return "Applicant";
+	if (props.Admin) return "Admin";
+	if (props.Reviewer) return "Reviewer";
+	if (props.Secondary) return "Secondary";
+	if (props.Success) return "Success";
+	if (props.Danger) return "Danger";
+	return type;
+}
+
+// Size Translation ( WindiCSS to SCSS )
+const iconSize = (windiSize: string) => {
+	switch (windiSize) {
 		case "xs":
 			return "font-size: 0.75rem";
 		case "sm":
@@ -108,12 +70,75 @@ const iconSize = computed(() => {
 		default:
 			return "font-size: 1rem";
 	}
+};
+
+// Preset Design Style
+const designClass: { [key: string]: any } = {
+	Reviewer: {
+		normal: "border-nBlue-500 text-pReviewer",
+		fill: "bg-white",
+		hover: "border-nBlue-200 bg-nBlue-200 text-title",
+		active: "bg-nBlue-500 text-white",
+	},
+	Admin: {
+		normal: "border-nRed-600 text-pAdmin",
+		fill: "bg-white",
+		hover: "border-nRed-200 bg-nRed-200 text-title",
+		active: "bg-nRed-600 text-white",
+	},
+	Applicant: {
+		normal: "border-nGold-500 text-pApplicant",
+		fill: "bg-white",
+		hover: "border-nGold-300 bg-nGold-300 text-title",
+		active: "bg-nGold-500 text-white",
+	},
+	Secondary: {
+		normal: "border-nGrey-600 text-secondary",
+		fill: "bg-white",
+		hover: "border-nGrey-200 bg-nGrey-200 text-title",
+		active: "bg-nGrey-600 text-white",
+	},
+	Success: {
+		normal: "border-success-600 text-success",
+		fill: "bg-white",
+		hover: "border-success-100 bg-success-100 text-title",
+		active: "bg-success-600 text-white",
+	},
+	Danger: {
+		normal: "border-danger-600 text-danger",
+		fill: "bg-white",
+		hover: "border-danger-100 bg-danger-100 text-title",
+		active: "bg-danger-600 text-white",
+	},
+};
+
+// Handle Button Style
+const btnState = computed(() => {
+	// Additional code to fit previous version.
+	let type = props.type,
+		fill = props.filled;
+	if (type === "White") {
+		type = "Secondary";
+		fill = true;
+	} else if (type === "Grey") type = "Secondary";
+
+	type = propId(type);
+	const nState = designClass[type].normal;
+	const hover = props.disabled ? null : designClass[type].hover;
+	const active = props.disabled ? null : designClass[type].active;
+	const filled = fill ? designClass[type].fill : "border-2";
+	const disabled = props.disabled ? "opacity-30 cursor-default" : null;
+	const normal = nState + " " + filled + " " + disabled;
+	console.log(props.Admin, props.Reviewer, props.Applicant);
+	return { normal, hover, active };
 });
-const showIcon = computed(() => {
-	if (props.icon) return true;
-	else return false;
-});
-const iconType = computed(() => {
-	return props.icon;
+
+const btnText = props.size;
+
+const btnIcon = computed(() => {
+	const show = props.size ? true : false;
+	const size = iconSize(props.size);
+	const type = props.icon;
+	return { show, size, type };
 });
 </script>
