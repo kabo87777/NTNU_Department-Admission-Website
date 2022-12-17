@@ -99,16 +99,16 @@ const designClass: { [key: string]: any } = {
 		active: "bg-nGrey-600 text-white",
 	},
 	Success: {
-		normal: "border-success-600 text-success",
+		normal: "border-success-700 text-success",
 		fill: "bg-white",
 		hover: "border-success-100 bg-success-100 text-title",
-		active: "bg-success-600 text-white",
+		active: "bg-success-700 text-white",
 	},
 	Danger: {
-		normal: "border-danger-600 text-danger",
+		normal: "border-danger-700 text-danger",
 		fill: "bg-white",
 		hover: "border-danger-100 bg-danger-100 text-title",
-		active: "bg-danger-600 text-white",
+		active: "bg-danger-700 text-white",
 	},
 };
 
