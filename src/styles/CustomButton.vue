@@ -2,11 +2,9 @@
 	<button
 		v-bind="$attrs"
 		class="flex justify-center items-center gap-2 p-4"
-		:class="btnState.normal"
-		:hover="btnState.hover"
-		:active="btnState.active"
+		:class="btnState"
 		:text="btnText"
-		border="opacity-50 rounded-lg"
+		border="rounded-lg"
 	>
 		<i
 			v-if="btnIcon.show"
@@ -27,6 +25,8 @@ const props = defineProps({
 	size: { type: String, default: "base" },
 	icon: { type: String, default: "" },
 	filled: { type: Boolean, default: false, create: true },
+	white: { type: Boolean, default: false, create: true },
+	isSelected: { type: Boolean, default: false, created: true },
 	disabled: { type: Boolean, default: false, created: true },
 	// Abbrivation
 	Applicant: { type: Boolean, default: false, created: true },
@@ -46,6 +46,19 @@ function propId(type: string) {
 	if (props.Success) return "Success";
 	if (props.Danger) return "Danger";
 	return type;
+}
+
+function appearance(
+	type: string,
+	isFilled: boolean,
+	isWhite: boolean,
+	isSelected: boolean
+) {
+	if (isWhite) {
+		if (isSelected) return "border-3 border-opacity-80 font-medium";
+		else return "";
+	} else if (isFilled) return designClass[type].fill;
+	else return "border-2 border-opacity-50";
 }
 
 // Size Translation ( WindiCSS to SCSS )
@@ -76,39 +89,39 @@ const iconSize = (windiSize: string) => {
 const designClass: { [key: string]: any } = {
 	Reviewer: {
 		normal: "border-nBlue-500 text-pReviewer",
-		fill: "bg-white",
-		hover: "border-nBlue-200 bg-nBlue-200 text-title",
-		active: "bg-nBlue-500 text-white",
+		fill: "bg-nBlue-200 text-title border-1",
+		hover: "hover:border-nBlue-500 hover:bg-nBlue-400 hover:text-white",
+		active: "active:bg-nBlue-600 active:text-white",
 	},
 	Admin: {
 		normal: "border-nRed-600 text-pAdmin",
-		fill: "bg-white",
-		hover: "border-nRed-200 bg-nRed-200 text-title",
-		active: "bg-nRed-600 text-white",
+		fill: "bg-nRed-200 text-title border-1",
+		hover: "hover:border-nRed-600 hover:bg-nRed-400 hover:text-white",
+		active: "active:bg-nRed-700 active:text-white",
 	},
 	Applicant: {
 		normal: "border-nGold-500 text-pApplicant",
-		fill: "bg-white",
-		hover: "border-nGold-300 bg-nGold-300 text-title",
-		active: "bg-nGold-500 text-white",
+		fill: "bg-nGold-300 text-title border-1",
+		hover: "hover:border-nGold-500 hover:bg-nGold-500 hover:text-white",
+		active: "active:bg-nGold-600 active:text-white",
 	},
 	Secondary: {
 		normal: "border-nGrey-600 text-secondary",
-		fill: "bg-white",
-		hover: "border-nGrey-200 bg-nGrey-200 text-title",
-		active: "bg-nGrey-600 text-white",
+		fill: "bg-nGrey-200 text-title border-1",
+		hover: "hover:border-nGrey-600 hover:bg-nGrey-400 hover:text-white",
+		active: "active:bg-nGrey-700 active:text-white",
 	},
 	Success: {
 		normal: "border-success-700 text-success",
-		fill: "bg-white",
-		hover: "border-success-100 bg-success-100 text-title",
-		active: "bg-success-700 text-white",
+		fill: "bg-success-100 text-title border-1",
+		hover: "hover:border-success-700 hover:bg-success hover:text-title",
+		active: "!active:bg-success-700 !active:text-white",
 	},
 	Danger: {
 		normal: "border-danger-700 text-danger",
-		fill: "bg-white",
-		hover: "border-danger-100 bg-danger-100 text-title",
-		active: "bg-danger-700 text-white",
+		fill: "bg-danger-100 text-title border-1",
+		hover: "hover:border-danger-700 hover:bg-danger hover:text-title",
+		active: "!active:bg-danger-700 !active:text-white",
 	},
 };
 
@@ -123,14 +136,15 @@ const btnState = computed(() => {
 	} else if (type === "Grey") type = "Secondary";
 
 	type = propId(type);
-	const nState = designClass[type].normal;
+	const normal = designClass[type].normal;
 	const hover = props.disabled ? null : designClass[type].hover;
 	const active = props.disabled ? null : designClass[type].active;
-	const filled = fill ? designClass[type].fill : "border-2";
+	const filled = appearance(type, fill, props.white, props.isSelected);
 	const disabled = props.disabled ? "opacity-30 cursor-default" : null;
-	const normal = nState + " " + filled + " " + disabled;
-	console.log(props.Admin, props.Reviewer, props.Applicant);
-	return { normal, hover, active };
+	const output =
+		normal + " " + filled + " " + disabled + " " + hover + " " + active;
+	console.log(props.white, props.filled, props.isSelected);
+	return output;
 });
 
 const btnText = props.size;
