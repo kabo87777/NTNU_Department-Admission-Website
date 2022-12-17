@@ -98,7 +98,7 @@ const btnState = computed(() => {
 	return normal + " " + appear + " " + disabled + " " + hover + " " + active;
 });
 
-const btnText = props.size;
+const btnText = computed(() => props.size);
 
 const btnIcon = computed(() => {
 	const show = props.size ? true : false;
