@@ -7,7 +7,7 @@
 
 		<div
 			class="px-12px py-24px"
-			v-if="requiredInputFields.includes('name')"
+			v-if="requiredInputFields.includes('姓名資訊')"
 		>
 			<div class="flex">
 				<div class="text-[24px] font-[50] font-bold">
@@ -117,14 +117,14 @@
 				</div>
 			</div>
 		</div>
-		<ParagraphDivider v-if="requiredInputFields.includes('name')" />
+		<ParagraphDivider v-if="requiredInputFields.includes('姓名資訊')" />
 		<div
 			class="px-12px py-24px"
-			v-if="requiredInputFields.includes('admission_id')"
+			v-if="requiredInputFields.includes('入學身分')"
 		>
 			<div class="flex">
 				<div class="text-[24px] font-[50] font-bold">
-					{{ $t("入學身份") }}
+					{{ $t("入學身分") }}
 				</div>
 				<div class="mt-6px ml-40px text-[#8D9093] text-[14px]">
 					{{ $t('" * " 為必填欄位') }}
@@ -132,13 +132,13 @@
 			</div>
 			<div class="flex pt-24px">
 				<div class="w-1/3">
-					<div>{{ "*" + $t("入學身份") }}</div>
+					<div>{{ "*" + $t("入學身分") }}</div>
 					<div>
 						<Dropdown
 							class="w-[70%] h-36px !mt-4px"
 							style="border: 1px solid #736028"
 							v-model="identity.selectedIdentity"
-							placeholder="請選擇身份"
+							placeholder="請選擇身分"
 							:options="identityOptions"
 							optionLabel="name"
 							optionValue="name"
@@ -232,7 +232,7 @@
 					</div>
 				</div>
 				<ParagraphDivider
-					v-if="requiredInputFields.includes('admission_id')"
+					v-if="requiredInputFields.includes('入學身分')"
 				/>
 			</div>
 		</div>
@@ -240,7 +240,7 @@
 		<div>
 			<div
 				class="px-12px py-24px"
-				v-if="requiredInputFields.includes('address')"
+				v-if="requiredInputFields.includes('現居地址')"
 			>
 				<div class="flex">
 					<div class="text-[24px] font-[50] font-bold">
@@ -293,10 +293,10 @@
 			</div>
 		</div>
 
-		<ParagraphDivider v-if="requiredInputFields.includes('address')" />
+		<ParagraphDivider v-if="requiredInputFields.includes('現居地址')" />
 		<div
 			class="px-12px py-24px"
-			v-if="requiredInputFields.includes('national_id')"
+			v-if="requiredInputFields.includes('身份資料')"
 		>
 			<div class="flex">
 				<div class="text-[24px] font-[50] font-bold">
@@ -362,10 +362,10 @@
 				</div>
 			</div>
 		</div>
-		<ParagraphDivider v-if="requiredInputFields.includes('national_id')" />
+		<ParagraphDivider v-if="requiredInputFields.includes('身份資料')" />
 		<div
 			class="px-12px py-24px"
-			v-if="requiredInputFields.includes('contact')"
+			v-if="requiredInputFields.includes('聯絡資料')"
 		>
 			<div class="flex">
 				<div class="text-[24px] font-[50] font-bold">

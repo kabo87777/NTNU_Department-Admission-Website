@@ -5,9 +5,7 @@
 		</div>
 		<div class="bigYellowDivider"></div>
 
-		<div
-			class="px-12px py-24px"
-		>
+		<div class="px-12px py-24px">
 			<div class="flex">
 				<div class="text-[24px] font-[50] font-bold">
 					{{ $t("姓名資訊") }}
@@ -117,9 +115,7 @@
 			</div>
 		</div>
 		<ParagraphDivider />
-		<div
-			class="px-12px py-24px"
-		>
+		<div class="px-12px py-24px">
 			<div class="flex">
 				<div class="text-[24px] font-[50] font-bold">
 					{{ $t("入職身份") }}
@@ -219,10 +215,8 @@
 				</div>
 			</div>
 		</div>
-		<ParagraphDivider  />
-		<div
-			class="px-12px py-24px"
-		>
+		<ParagraphDivider />
+		<div class="px-12px py-24px">
 			<div class="flex">
 				<div class="text-[24px] font-[50] font-bold">
 					{{ $t("現居地址") }}
@@ -273,9 +267,7 @@
 			</div>
 		</div>
 		<ParagraphDivider />
-		<div
-			class="px-12px py-24px"
-		>
+		<div class="px-12px py-24px">
 			<div class="flex">
 				<div class="text-[24px] font-[50] font-bold">
 					{{ $t("身份資料") }}
@@ -341,9 +333,7 @@
 			</div>
 		</div>
 		<ParagraphDivider />
-		<div
-			class="px-12px py-24px"
-		>
+		<div class="px-12px py-24px">
 			<div class="flex">
 				<div class="text-[24px] font-[50] font-bold">
 					{{ $t("聯絡方式") }}
