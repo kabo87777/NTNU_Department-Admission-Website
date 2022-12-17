@@ -23,27 +23,72 @@
 			<!-- Phase 1 - item 1 -->
 			<div class="flex content-center gap-6">
 				<InputText class="!w-300px" v-model="docsScore[1].name" />
-				<InputNumber class="!w-200px" v-model="docsScore[1].weight" />
+				<InputNumber
+					name="number"
+					v-model="docsScore[1].weight"
+					class="!w-200px"
+					:class="{ 'p-invalid': wrongScore.docsScore }"
+					required
+				/>
+				<div text="xs danger" v-if="wrongScore.docsScore">
+					※ 分數比例輸入錯誤，需要加總等於100
+				</div>
 			</div>
 			<!-- Phase 1 - item 2 -->
 			<div class="flex content-center gap-6">
 				<InputText class="!w-300px" v-model="docsScore[2].name" />
-				<InputNumber class="!w-200px" v-model="docsScore[2].weight" />
+				<InputNumber
+					name="number"
+					v-model="docsScore[2].weight"
+					class="!w-200px"
+					:class="{ 'p-invalid': wrongScore.docsScore }"
+					required
+				/>
+				<div text="xs danger" v-if="wrongScore.docsScore">
+					※ 分數比例輸入錯誤，需要加總等於100
+				</div>
 			</div>
 			<!-- Phase 1 - item 3 -->
 			<div class="flex content-center gap-6">
 				<InputText class="!w-300px" v-model="docsScore[3].name" />
-				<InputNumber class="!w-200px" v-model="docsScore[3].weight" />
+				<InputNumber
+					name="number"
+					v-model="docsScore[3].weight"
+					class="!w-200px"
+					:class="{ 'p-invalid': wrongScore.docsScore }"
+					required
+				/>
+				<div text="xs danger" v-if="wrongScore.docsScore">
+					※ 分數比例輸入錯誤，需要加總等於100
+				</div>
 			</div>
 			<!-- Phase 1 - item 4 -->
 			<div class="flex content-center gap-6">
 				<InputText class="!w-300px" v-model="docsScore[4].name" />
-				<InputNumber class="!w-200px" v-model="docsScore[4].weight" />
+				<InputNumber
+					name="number"
+					v-model="docsScore[4].weight"
+					class="!w-200px"
+					:class="{ 'p-invalid': wrongScore.docsScore }"
+					required
+				/>
+				<div text="xs danger" v-if="wrongScore.docsScore">
+					※ 分數比例輸入錯誤，需要加總等於100
+				</div>
 			</div>
 			<!-- Phase 1 - item 5 -->
 			<div class="flex content-center gap-6">
 				<InputText class="!w-300px" v-model="docsScore[5].name" />
-				<InputNumber class="!w-200px" v-model="docsScore[5].weight" />
+				<InputNumber
+					name="number"
+					v-model="docsScore[5].weight"
+					class="!w-200px"
+					:class="{ 'p-invalid': wrongScore.docsScore }"
+					required
+				/>
+				<div text="xs danger" v-if="wrongScore.docsScore">
+					※ 分數比例輸入錯誤，需要加總等於100
+				</div>
 			</div>
 		</div>
 		<ParagraphDivider />
@@ -63,27 +108,72 @@
 			<!-- Phase 2 - item 1 -->
 			<div class="flex content-center gap-6">
 				<InputText class="!w-300px" v-model="oralScore[1].name" />
-				<InputNumber class="!w-200px" v-model="oralScore[1].weight" />
+				<InputNumber
+					name="number"
+					v-model="oralScore[1].weight"
+					class="!w-200px"
+					:class="{ 'p-invalid': wrongScore.oralScore }"
+					required
+				/>
+				<div text="xs danger" v-if="wrongScore.oralScore">
+					※ 分數比例輸入錯誤，需要加總等於100
+				</div>
 			</div>
 			<!-- Phase 2 - item 2 -->
 			<div class="flex content-center gap-6">
 				<InputText class="!w-300px" v-model="oralScore[2].name" />
-				<InputNumber class="!w-200px" v-model="oralScore[2].weight" />
+				<InputNumber
+					name="number"
+					v-model="oralScore[2].weight"
+					class="!w-200px"
+					:class="{ 'p-invalid': wrongScore.oralScore }"
+					required
+				/>
+				<div text="xs danger" v-if="wrongScore.oralScore">
+					※ 分數比例輸入錯誤，需要加總等於100
+				</div>
 			</div>
 			<!-- Phase 2 - item 3 -->
 			<div class="flex content-center gap-6">
 				<InputText class="!w-300px" v-model="oralScore[3].name" />
-				<InputNumber class="!w-200px" v-model="oralScore[3].weight" />
+				<InputNumber
+					name="number"
+					v-model="oralScore[3].weight"
+					class="!w-200px"
+					:class="{ 'p-invalid': wrongScore.oralScore }"
+					required
+				/>
+				<div text="xs danger" v-if="wrongScore.oralScore">
+					※ 分數比例輸入錯誤，需要加總等於100
+				</div>
 			</div>
 			<!-- Phase 2 - item 4 -->
 			<div class="flex content-center gap-6">
 				<InputText class="!w-300px" v-model="oralScore[4].name" />
-				<InputNumber class="!w-200px" v-model="oralScore[4].weight" />
+				<InputNumber
+					name="number"
+					v-model="oralScore[4].weight"
+					class="!w-200px"
+					:class="{ 'p-invalid': wrongScore.oralScore }"
+					required
+				/>
+				<div text="xs danger" v-if="wrongScore.oralScore">
+					※ 分數比例輸入錯誤，需要加總等於100
+				</div>
 			</div>
 			<!-- Phase 2 - item 5 -->
 			<div class="flex content-center gap-6">
 				<InputText class="!w-300px" v-model="oralScore[5].name" />
-				<InputNumber class="!w-200px" v-model="oralScore[5].weight" />
+				<InputNumber
+					name="number"
+					v-model="oralScore[5].weight"
+					class="!w-200px"
+					:class="{ 'p-invalid': wrongScore.oralScore }"
+					required
+				/>
+				<div text="xs danger" v-if="wrongScore.oralScore">
+					※ 分數比例輸入錯誤，需要加總等於100
+				</div>
 			</div>
 		</div>
 		<ParagraphDivider />
@@ -422,7 +512,6 @@ let programData: AdmissionAdminProgramListResponse = reactive({
 	application_end_date: "",
 	review_start_date: "",
 	review_end_date: "",
-	stage: "",
 	created_at: "",
 	updated_at: "",
 	applicant_required_info: "",
@@ -430,6 +519,8 @@ let programData: AdmissionAdminProgramListResponse = reactive({
 	reviewer_required_info: "",
 	reviewer_required_file: "",
 	detail: "",
+	oral_start_date: "",
+	docs_end_date: "",
 });
 
 // API: Get Score Data
@@ -516,7 +607,6 @@ const getInfoFileField = useQuery(
 			programData.application_end_date = data.application_end_date;
 			programData.review_start_date = data.review_start_date;
 			programData.review_end_date = data.review_end_date;
-			programData.stage = data.stage;
 			programData.created_at = data.created_at;
 			programData.updated_at = data.updated_at;
 			programData.detail = data.detail;
@@ -524,6 +614,8 @@ const getInfoFileField = useQuery(
 			programData.applicant_required_file = data.applicant_required_file;
 			programData.reviewer_required_info = data.reviewer_required_info;
 			programData.reviewer_required_file = data.reviewer_required_file;
+			programData.oral_start_date = data.oral_start_date;
+			programData.docs_end_date = data.docs_end_date;
 			fieldList.info = {
 				visible: JSON.parse(programData.applicant_required_info),
 				checked: JSON.parse(programData.reviewer_required_info),
@@ -558,10 +650,14 @@ const patchInfoFileField = useMutation(
 		},
 	}
 );
-
+let wrongScore = reactive({
+	docsScore: false,
+	oralScore: false,
+});
 // ButtonFn: Save Changes and Patch Data
 async function saveChange() {
 	// Adjust and Check correctness of Data
+
 	try {
 		let docsSum = 0;
 		docsScore.forEach((element) => {
@@ -574,9 +670,10 @@ async function saveChange() {
 				throw { object: element, message: "Invalid Weight" };
 			if (element.index) docsSum += element.weight;
 		});
-		if (docsSum !== 100)
+		if (docsSum !== 100) {
+			wrongScore.docsScore = true;
 			throw { object: docsScore, message: "Invalid Sum" };
-
+		}
 		let oralSum = 0;
 		oralScore.forEach((element) => {
 			if (element.name === null && element.weight > 0)
@@ -588,8 +685,10 @@ async function saveChange() {
 				throw { object: element, message: "Invalid Weight" };
 			if (element.index) oralSum += element.weight;
 		});
-		if (oralSum !== 100)
+		if (oralSum !== 100) {
+			wrongScore.oralScore = true;
 			throw { object: oralScore, message: "Invalid Sum" };
+		}
 	} catch (e: any) {
 		console.error(e);
 		toast.add({
@@ -667,6 +766,7 @@ async function saveChange() {
 		summary: trans.changeSuccess.value,
 		life: 3000,
 	});
+	wrongScore.docsScore = false;
 }
 
 // ButtonFn: Discard Changes and Update Data
