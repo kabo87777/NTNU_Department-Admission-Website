@@ -309,7 +309,6 @@ const handleUpload = (event: FileUploadUploaderEvent) => {
 		: event.files;
 	formData.append("filepath", uploadedFile);
 	fileName.value = uploadedFile.name;
-	console.log(fileName.value);
 };
 
 const removeUploadedFile = () => {
