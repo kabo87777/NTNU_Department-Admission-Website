@@ -219,7 +219,7 @@
 		<div class="px-12px py-24px">
 			<div class="flex">
 				<div class="text-[24px] font-[50] font-bold">
-					{{ $t("現居地址") }}
+					{{ $t("通訊地址") }}
 				</div>
 				<div class="mt-6px ml-40px text-[#8D9093] text-[14px]">
 					{{ $t('" * " 為必填欄位') }}
@@ -227,7 +227,7 @@
 			</div>
 			<div class="flex py-16px">
 				<div class="w-2/3">
-					<div>{{ "*" + $t("地址") }}</div>
+					<div>{{ $t("地址") }}</div>
 					<div>
 						<InputText
 							class="w-[80%] h-36px !mt-4px"
@@ -246,7 +246,7 @@
 					</div>
 				</div>
 				<div class="w-1/3">
-					<div>{{ "*" + $t("郵遞區號") }}</div>
+					<div>{{ $t("郵遞區號") }}</div>
 					<div>
 						<InputText
 							class="w-[70%] h-36px !mt-4px"
@@ -257,6 +257,28 @@
 					</div>
 					<div
 						v-show="required.currentPostcode"
+						class="absolute mt-[-4px]"
+					>
+						<small class="p-error">
+							{{ $t("此為必填欄位") }}
+						</small>
+					</div>
+				</div>
+			</div>
+			<div class="flex py-16px">
+				<div class="w-2/3">
+					<div>{{ $t("電子郵件") }}</div>
+					<div>
+						<InputText
+							class="w-[80%] h-36px !mt-4px"
+							style="border: 1px solid #736028"
+							type="text"
+							v-model="email"
+							:disabled="true"
+						/>
+					</div>
+					<div
+						v-show="required.currentAddr"
 						class="absolute mt-[-4px]"
 					>
 						<small class="p-error">
@@ -316,7 +338,7 @@
 					<div>
 						<Calendar
 							v-model="born.birth"
-							dateFormat="yy-mm-dd"
+							dateFormat="yy/mm/dd"
 							class="w-[70%] h-36px !mt-4px"
 							style="
 								border: 1px solid #736028;
@@ -413,12 +435,18 @@ import InputText from "primevue/inputtext";
 import RadioButton from "primevue/radiobutton";
 import Calendar from "primevue/calendar";
 import Button from "primevue/button";
-
+import { RecruitmentApplicantAuthResponse } from "@/api/recruitment/applicant/types";
+import { useUserInfoStore } from "@/stores/RecruitmentApplicantStore";
 const applicantAuth = useRecruitmentApplicantAuthStore();
 const api = new RecruitmentApplicantAPI(applicantAuth);
 const project = useProjectIdStore();
 
 const toast = useToast();
+const applicantStore = useUserInfoStore();
+const applicantInfo: RecruitmentApplicantAuthResponse = toRaw(
+	applicantStore.userInfo
+);
+const email = ref(applicantInfo.email);
 
 const requiredInputFields = ref("");
 
@@ -517,7 +545,9 @@ const setBasicInfo = (res: RecruitmentApplicantUserInfoResponse) => {
 
 	born.sex = res.sex as string;
 	born.country = res.birthcountry as string;
-	born.birth = res.birth as Date;
+	if (res.birth) {
+		born.birth = new Date(res.birth);
+	}
 
 	contact.phone = res.mobile_phone as string;
 };
