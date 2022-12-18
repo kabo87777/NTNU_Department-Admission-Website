@@ -162,7 +162,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, toRaw, watch } from "vue";
+import { ref, reactive, toRaw, watch } from "vue";
 import { useToast } from "primevue/usetoast";
 
 import ReviewState from "@/components/attachmentStates/reviewState.vue";
@@ -189,6 +189,8 @@ let examCertificateList: AttachmentDetailData[] = reactive([]);
 let otherList: AttachmentDetailData[] = reactive([]);
 
 const toast = useToast();
+
+const requiredInputFields = ref("");
 
 let isLoading = reactive({
 	delete: false,
@@ -431,6 +433,27 @@ useQuery(
 				severity: "error",
 				summary: "Error",
 				detail: "Unable to fetch attachment list",
+				life: 5000,
+			});
+			console.log(data);
+		},
+	}
+);
+
+useQuery(
+	["getAdmApplicantProgramInfo_2"],
+	async () => {
+		return await api.getProgram();
+	},
+	{
+		onSuccess: (data) => {
+			requiredInputFields.value = data.applicant_required_info;
+		},
+		onError: (data) => {
+			toast.add({
+				severity: "error",
+				summary: "Error",
+				detail: "Unable to fetch user require input",
 				life: 5000,
 			});
 			console.log(data);

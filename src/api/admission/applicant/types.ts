@@ -90,10 +90,10 @@ export interface AdmissionApplicantGetProgramResponse {
 	stage: string;
 	created_at: string;
 	updated_at: string;
-	applicant_required_info: null; // ??
-	applicant_required_file: null;
-	reviewer_required_info: null;
-	reviewer_required_file: null;
+	applicant_required_info: string;
+	applicant_required_file: string;
+	reviewer_required_info: string;
+	reviewer_required_file: string;
 }
 
 export interface AdmissionApplicantRecLetListRes {
@@ -104,6 +104,7 @@ export interface AdmissionApplicantRecLetListRes {
 	relation: string;
 	position: string;
 	institution: string;
+	stage: string;
 	status: string;
 	s_applicant_id: number;
 	created_at: string;
@@ -146,8 +147,6 @@ export interface AdmissionApplicantGetUserInfoResponse {
 	birth?: Date;
 	birthcountry?: string;
 	mobile_phone?: string;
-	household_address?: string;
-	household_zipcode?: number | string;
 	communicate_address?: string;
 	communicate_zipcode?: number | string;
 	isForeigner: boolean;

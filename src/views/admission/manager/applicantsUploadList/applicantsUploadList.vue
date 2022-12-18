@@ -46,7 +46,7 @@
 					</template>
 					<template #body="slotProps">
 						<div class="m-auto text-center">
-							<!-- <Tag
+							<Tag
 								v-if="
 									slotProps.data.application_stage ===
 									'已送審'
@@ -66,8 +66,7 @@
 							</Tag>
 							<Tag v-else severity="danger">
 								{{ slotProps.data.application_stage }}
-							</Tag> -->
-							{{ slotProps.data.docs_stage }}
+							</Tag>
 						</div>
 					</template>
 				</Column>
