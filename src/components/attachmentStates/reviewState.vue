@@ -115,13 +115,7 @@
 		{{ $t("考試與檢定分數") }}{{ $t(":") }}{{ props.score }}
 	</div>
 	<div class="mt-8px font-medium text-16px">【{{ $t("檔案名稱") }}】</div>
-	<div v-if="downloadFile" class="flex">
-		<div>【{{ $t("檔案") }}】</div>
-		<div class="downloadFileText" @click="handleDownload">
-			{{ sliceFile() }}
-		</div>
-	</div>
-	<div v-else>【{{ $t("檔案") }}】{{ sliceFile() }}</div>
+	<div>【{{ $t("檔案") }}】{{ sliceFile() }}</div>
 	<div class="font-[350]">{{ $t("onlyPdf") }}</div>
 </template>
 
@@ -135,7 +129,6 @@ const props = defineProps([
 	"itemId",
 	"category",
 	"identity",
-	"downloadFile",
 	"itemName",
 	"fileUrl",
 	"order",
@@ -145,7 +138,7 @@ const props = defineProps([
 	"showActionButtons",
 ]);
 
-const emit = defineEmits(["edit", "delete", "download"]);
+const emit = defineEmits(["edit", "delete"]);
 
 const isModalVisible = ref(false);
 
@@ -165,20 +158,4 @@ const handleEdit = () => {
 const handleDelete = () => {
 	emit("delete", props.itemId);
 };
-
-const handleDownload = () => {
-	emit("download", props.itemId, props.itemName);
-};
 </script>
-
-<style setup lang="css">
-.downloadFileText {
-	font-weight: 700;
-	font-style: italic;
-	color: rgb(118, 118, 238);
-}
-.downloadFileText:hover {
-	opacity: 0.7;
-	cursor: pointer;
-}
-</style>

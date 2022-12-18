@@ -7,10 +7,7 @@
 		<div class="bigYellowDivider"></div>
 
 		<!-- SCHOOL EXPERIENCE -->
-		<div
-			class="px-12px py-24px"
-			v-if="requiredInputFields.includes('就學經歷')"
-		>
+		<div class="px-12px py-24px">
 			<div class="text-[24px] font-[50] font-bold">
 				{{ $t("就學經歷") }}
 			</div>
@@ -59,13 +56,10 @@
 				/>
 			</div>
 		</div>
-		<ParagraphDivider v-if="requiredInputFields.includes('就學經歷')" />
+		<ParagraphDivider />
 
 		<!-- EXAM AND QUALIFICATION TEST SCORE -->
-		<div
-			class="px-12px py-24px"
-			v-if="requiredInputFields.includes('考試與檢定分數')"
-		>
+		<div class="px-12px py-24px">
 			<div class="text-[24px] font-[50] font-bold">
 				{{ $t("考試與檢定分數") }}
 			</div>
@@ -114,15 +108,10 @@
 				/>
 			</div>
 		</div>
-		<ParagraphDivider
-			v-if="requiredInputFields.includes('考試與檢定分數')"
-		/>
+		<ParagraphDivider />
 
 		<!-- OTHER -->
-		<div
-			class="px-12px py-24px"
-			v-if="requiredInputFields.includes('其他有利於審查資料')"
-		>
+		<div class="px-12px py-24px">
 			<div class="text-[24px] font-[50] font-bold">
 				{{ $t("其他有利於審查資料") }}
 			</div>
@@ -173,7 +162,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, toRaw, watch } from "vue";
+import { reactive, toRaw, watch } from "vue";
 import { useToast } from "primevue/usetoast";
 
 import ReviewState from "@/components/attachmentStates/reviewState.vue";
@@ -200,8 +189,6 @@ let examCertificateList: AttachmentDetailData[] = reactive([]);
 let otherList: AttachmentDetailData[] = reactive([]);
 
 const toast = useToast();
-
-const requiredInputFields = ref("");
 
 let isLoading = reactive({
 	delete: false,
@@ -444,28 +431,6 @@ useQuery(
 				severity: "error",
 				summary: "Error",
 				detail: "Unable to fetch attachment list",
-				life: 5000,
-			});
-			console.log(data);
-		},
-	}
-);
-
-useQuery(
-	["getAdmApplicantProgramInfo_2"],
-	async () => {
-		return await api.getProgram();
-	},
-	{
-		onSuccess: (data) => {
-			requiredInputFields.value = data.applicant_required_file;
-		},
-
-		onError: (data) => {
-			toast.add({
-				severity: "error",
-				summary: "Error",
-				detail: "Unable to fetch user require input",
 				life: 5000,
 			});
 			console.log(data);

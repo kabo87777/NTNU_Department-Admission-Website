@@ -15,10 +15,11 @@ import type {
 	AdmissionAdminSingleOralGradeResponse,
 	AdmissionAdminCreateReviewerRequest,
 	AdmAdminGetApplicantMoredocResponses,
+	AdmAdminChangePasswordRequest,
 } from "./types";
 import type { APIGenericResponse } from "@/api/types";
 import { GenericAPI } from "@/api/api";
-
+import { Ref } from "vue";
 export class AdmissionAdminAPI extends GenericAPI {
 	constructor(auth: AuthStore) {
 		super(auth);
@@ -130,16 +131,6 @@ export class AdmissionAdminAPI extends GenericAPI {
 		};
 	}
 
-	async downloadApplicantFile(
-		applicantID: number,
-		fileId: number
-	): Promise<Blob> {
-		return await this.instance.get(
-			`admission/admin/applicant/${applicantID}/file/${fileId}/getfile`,
-			{ responseType: "blob" }
-		);
-	}
-
 	async getScoreField(
 		programID: number
 	): Promise<AdmissionAdminScoreFieldResponse> {
@@ -244,23 +235,20 @@ export class AdmissionAdminAPI extends GenericAPI {
 			throw new Error("Failed to delete program");
 	}
 
-	async changePassword(body: object): Promise<AdmissionAdminGenericResponse> {
-		const data: APIGenericResponse = await this.instance.patch(
+	async changePassword(
+		body: AdmAdminChangePasswordRequest
+	): Promise<AdmissionAdminGenericResponse> {
+		const response: APIGenericResponse = await this.instance.patch(
 			"/admission/auth/admin/password",
 			body
 		);
 
-		if (data.error !== false) {
-			return {
-				success: false,
-				message: data.message.full_messages,
-			};
+		if (response.error === true) {
+			const msg = response.message.full_messages.join("\n");
+			throw new Error(msg);
 		}
 
-		return {
-			success: true,
-			message: data.message,
-		};
+		return response;
 	}
 
 	async getDocsGradeList(

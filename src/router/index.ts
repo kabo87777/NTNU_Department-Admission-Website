@@ -21,71 +21,88 @@ const routes: Array<RouteRecordRaw> = [
 				component: () =>
 					import("@/views/admission/AdmissionSignin.vue"),
 			},
-			// Admission - first signin change password
-			{
-				path: "/admission/firstSignin",
-				name: "AdmissionFirstSigninChangePassword",
-				meta: {
-					titleKey: "登入頁面",
-				},
-				component: () => import("@/views/admission/FirstSignin.vue"),
-			},
 			// Admission - Applicant
 			{
 				path: "admission/applicant/signin",
 				name: "AdmissionApplicantSignin",
 				component: () =>
-					import("@/views/admission/applicant/login/Signin.vue"),
+					import(
+						"@/views/admission/applicant/login/ApplicantSignin.vue"
+					),
 			},
 			{
 				path: "admission/applicant/password/reset",
 				name: "AdmissionApplicantResetPassword",
 				component: () =>
-					import("@/views/admission/applicant/login/PwdReset.vue"),
+					import(
+						"@/views/admission/applicant/login/ResetPassword.vue"
+					),
+			},
+			{
+				path: "admission/applicant/forgetPassword/emailSent",
+				name: "AdmissionApplicantForgetPasswordEmailSent",
+				component: () =>
+					import(
+						"@/views/admission/applicant/login/PasswordRecvoerySentView.vue"
+					),
 			},
 			{
 				path: "admission/applicant/forgetPassword",
 				name: "AdmissionApplicantForgetPassword",
 				component: () =>
-					import("@/views/admission/applicant/login/PwdForget.vue"),
+					import(
+						"@/views/admission/applicant/login/ForgetPassword.vue"
+					),
 			},
 			// Admission - Reviewer
 			{
 				path: "admission/reviewer/signin",
 				name: "AdmissionReviewerSignin",
 				component: () =>
-					import("@/views/admission/reviewer/login/Signin.vue"),
+					import("@/views/admission/reviewer/ReviewerSignin.vue"),
 			},
 			{
-				path: "admission/reviewer/forgetpassword",
+				path: "/admission/reviewer/forgetpassword",
 				name: "AdmissionReviewerForgetpassword",
 				component: () =>
-					import("@/views/admission/reviewer/login/PwdForget.vue"),
+					import("@/views/admission/reviewer/ForgetPwd.vue"),
 			},
 			{
-				path: "admission/reviewer/password/reset",
+				path: "/admission/reviewer/password/reset",
 				name: "AdmissionReviewerResetPassword",
 				component: () =>
-					import("@/views/admission/reviewer/login/PwdReset.vue"),
+					import("@/views/admission/reviewer/ResetPassword.vue"),
+			},
+			{
+				path: "/admission/reviewer/forgetpassword/emailSent",
+				name: "AdmissionReviewerForgetPasswordEmailSent",
+				component: () =>
+					import("@/views/admission/reviewer/ForgetPwdEmailSent.vue"),
 			},
 			// Admission - Manager
 			{
 				path: "admission/manager/signin",
 				name: "AdmissionManagerSignin",
 				component: () =>
-					import("@/views/admission/manager/login/Signin.vue"),
+					import("@/views/admission/manager/ManagerSignin.vue"),
 			},
 			{
 				path: "admission/manager/forgetPassword",
 				name: "AdmissionManagerForgetPassword",
 				component: () =>
-					import("@/views/admission/manager/login/PwdForget.vue"),
+					import("@/views/admission/manager/ForgetPassword.vue"),
 			},
 			{
 				path: "admission/manager/password/reset",
 				name: "AdmissionManagerResetPassword",
 				component: () =>
-					import("@/views/admission/manager/login/PwdReset.vue"),
+					import("@/views/admission/manager/ResetPwd.vue"),
+			},
+			{
+				path: "admission/manager/forgetpassword/emailSent",
+				name: "AdmissionManagerForgetPasswordEmailSent",
+				component: () =>
+					import("@/views/admission/manager/ForgetPwdEmailSent.vue"),
 			},
 			// Recruitment - choose role
 			{
@@ -95,58 +112,83 @@ const routes: Array<RouteRecordRaw> = [
 					titleKey: "登入頁面",
 				},
 				component: () =>
-					import("@/views/recruitment/RecruitmentSignin.vue"),
+					import("@/views/recruitment/recruitmentSignin.vue"),
 			},
 			// Recruitment - Applicant
 			{
 				path: "recruitment/applicant/signin",
 				name: "RecruitmentApplicantSignin",
 				component: () =>
-					import("@/views/recruitment/applicant/login/Signin.vue"),
+					import("@/views/recruitment/applicant/login/signin.vue"),
 			},
 			{
 				path: "recruitment/applicant/regist",
 				name: "recruitmentApplicantRegist",
 				component: () =>
-					import("@/views/recruitment/applicant/login/Regist.vue"),
+					import("@/views/recruitment/applicant/login/regist.vue"),
+			},
+			{
+				path: "recruitment/applicant/regist/done",
+				name: "recruitmentApplicantRegistDone",
+				component: () =>
+					import(
+						"@/views/recruitment/applicant/login/registDone.vue"
+					),
 			},
 			{
 				path: "recruitment/applicant/password/reset",
 				name: "recruitmentApplicantPasswordReset",
 				component: () =>
-					import("@/views/recruitment/applicant/login/PwdReset.vue"),
+					import("@/views/recruitment/applicant/login/pwdReset.vue"),
 			},
 			{
 				path: "recruitment/applicant/forgetpassword",
 				name: "recruitmentApplicantPasswordForget",
 				component: () =>
-					import("@/views/recruitment/applicant/login/PwdForget.vue"),
+					import("@/views/recruitment/applicant/login/pwdForget.vue"),
+			},
+			{
+				path: "recruitment/applicant/forgetpassword/emailSent",
+				name: "recruitmentApplicantPasswordForgetEmailSent",
+				component: () =>
+					import(
+						"@/views/recruitment/applicant/login/pwdForgetEmailSent.vue"
+					),
 			},
 			// Recruitment - Reviewer
 			{
 				path: "recruitment/reviewer/signin",
 				name: "RecruitmentReviewerSignin",
 				component: () =>
-					import("@/views/recruitment/reviewer/login/Signin.vue"),
+					import("@/views/recruitment/reviewer/login/signin.vue"),
 			},
+			// Recruitment - reviewer forget & reset password
 			{
 				path: "recruitment/reviewer/password/reset",
 				name: "recruitmenReviewerPasswordReset",
 				component: () =>
-					import("@/views/recruitment/reviewer/login/PwdReset.vue"),
+					import("@/views/recruitment/reviewer/login/pwdReset.vue"),
 			},
 			{
 				path: "recruitment/reviewer/forgetpassword",
 				name: "recruitmentReviewerPasswordForget",
 				component: () =>
-					import("@/views/recruitment/reviewer/login/PwdForget.vue"),
+					import("@/views/recruitment/reviewer/login/pwdForget.vue"),
 			},
 			{
-				path: "recruitment/reviewer/firstSignin",
-				name: "recruitmentReviewerFirstSigninChangePassword",
+				path: "recruitment/reviewer/forgetpassword/emailSent",
+				name: "recruitmentReviewerPasswordForgetEmailSent",
 				component: () =>
 					import(
-						"@/views/recruitment/reviewer/login/FirstSignin.vue"
+						"@/views/recruitment/reviewer/login/pwdForgetEmailSent.vue"
+					),
+			},
+			{
+				path: "recruitment/reviewer/password/firstLogin",
+				name: "recruitmentReviewerPasswordFirstLogin",
+				component: () =>
+					import(
+						"@/views/recruitment/reviewer/login/pwdFirstLogin.vue"
 					),
 			},
 			// Recruitment - Manager
@@ -154,25 +196,28 @@ const routes: Array<RouteRecordRaw> = [
 				path: "recruitment/manager/signin",
 				name: "RecruitmentManagerSignin",
 				component: () =>
-					import("@/views/recruitment/manager/login/Signin.vue"),
+					import("@/views/recruitment/manager/login/signin.vue"),
 			},
+			// Recruitment - manager forget & reset password
 			{
 				path: "recruitment/manager/password/reset",
 				name: "recruitmentManagerPasswordReset",
 				component: () =>
-					import("@/views/recruitment/manager/login/PwdReset.vue"),
+					import("@/views/recruitment/manager/login/pwdReset.vue"),
 			},
 			{
 				path: "recruitment/manager/forgetpassword",
 				name: "recruitmentManagerPasswordForget",
 				component: () =>
-					import("@/views/recruitment/manager/login/PwdForget.vue"),
+					import("@/views/recruitment/manager/login/pwdForget.vue"),
 			},
 			{
-				path: "recruitment/manager/firstSignin",
-				name: "recruitmentManagerFirstSigninChangePassword",
+				path: "recruitment/manager/forgetpassword/emailSent",
+				name: "recruitmentManagerPasswordForgetEmailSent",
 				component: () =>
-					import("@/views/recruitment/manager/login/FirstSignin.vue"),
+					import(
+						"@/views/recruitment/manager/login/pwdForgetEmailSent.vue"
+					),
 			},
 		],
 	},
@@ -462,6 +507,14 @@ const routes: Array<RouteRecordRaw> = [
 				component: () =>
 					import(
 						"@/views/recruitment/manager/pages/RecruitmentManagerSelfSetting.vue"
+					),
+			},
+			{
+				path: "applicationUploadSetting",
+				name: "recruitmentApplicationUpload",
+				component: () =>
+					import(
+						"@/views/recruitment/manager/pages/UploadFileSetting.vue"
 					),
 			},
 		],

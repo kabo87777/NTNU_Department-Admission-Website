@@ -7,7 +7,9 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    AddReviewerDialog: typeof import('./src/components/AddReviewerDialog.vue')['default']
     AdmAddReviewerDialog: typeof import('./src/components/AdmAddReviewerDialog.vue')['default']
+    AdmAdminAddReviewer: typeof import('./src/components/forms/AdmAdminAddReviewer.vue')['default']
     AdmissionApplicantSidebar: typeof import('./src/components/sidebars/admissionApplicantSidebar.vue')['default']
     AdmissionManagerSideBar: typeof import('./src/components/sidebars/admissionManagerSideBar.vue')['default']
     AdmissionReviewerSidebar: typeof import('./src/components/sidebars/admissionReviewerSidebar.vue')['default']
@@ -15,11 +17,13 @@ declare module '@vue/runtime-core' {
     CreateState: typeof import('./src/components/attachmentStates/createState.vue')['default']
     EditState: typeof import('./src/components/attachmentStates/editState.vue')['default']
     NavBar: typeof import('./src/components/NavBar.vue')['default']
+    PasswordRecoveryEmailSent: typeof import('./src/components/PasswordRecoveryEmailSent.vue')['default']
     PdfPreview: typeof import('./src/components/pdfPreview.vue')['default']
     RecruitmentApplicantSidebar: typeof import('./src/components/sidebars/recruitmentApplicantSidebar.vue')['default']
     RecruitmentManagerSidebar: typeof import('./src/components/sidebars/recruitmentManagerSidebar.vue')['default']
     RecruitmentReviewerSidebar: typeof import('./src/components/sidebars/recruitmentReviewerSidebar.vue')['default']
     RefillState: typeof import('./src/components/attachmentStates/RefillState.vue')['default']
+    ResetPasswordForm: typeof import('./src/components/ResetPasswordForm.vue')['default']
     ReviewState: typeof import('./src/components/attachmentStates/reviewState.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

@@ -133,17 +133,6 @@ export class RecruitmentAdminAPI extends GenericAPI {
 		return data.data;
 	}
 
-	async downloadApplicantFile(
-		programID: number,
-		applicantID: number,
-		fileId: number
-	): Promise<Blob> {
-		return await this.instance.get(
-			`recruitment/admin/program/${programID}/applicant/${applicantID}/file/${fileId}/getfile`,
-			{ responseType: "blob" }
-		);
-	}
-
 	async getApplicantMoreDocRes(
 		programID: number,
 		userId: number
