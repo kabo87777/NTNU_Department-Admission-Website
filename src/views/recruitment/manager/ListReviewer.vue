@@ -32,13 +32,13 @@
 		</Column>
 
 		<Column>
-			<template #header>{{ $t("操作") }}</template>
+			<template #header>{{ $t("動作") }}</template>
 			<template #body="slotProp">
 				<div class="flex gap-x-1">
-					<!-- <Button
+					<Button
 						icon="pi pi-pencil"
 						class="p-button-outlined p-button-success"
-					/> -->
+					/>
 
 					<!-- Disable user button -->
 					<Button
@@ -63,7 +63,7 @@
 	</DataTable>
 
 	<!-- Modal for editting reviewer profile -->
-	<!-- <Dialog v-model:visible="modalVisible" :modal="true">
+	<Dialog v-model:visible="modalVisible" :modal="true">
 		<template #header>
 			<h3 class="font-extrabold text-lg">
 				{{ $t("編輯審查者帳號") }}
@@ -129,7 +129,7 @@
 				</div>
 			</div>
 		</template>
-	</Dialog> -->
+	</Dialog>
 
 	<!-- Modal for adding reviewer -->
 	<Dialog :modal="true" v-model:visible="addReviewerModal.visible">
@@ -139,14 +139,14 @@
 
 		<template #default>
 			<div class="w-lg grid gap-y-2">
-				<!-- <div>
+				<div>
 					<h3 font="font-black">{{ $t("審查者帳號") }}</h3>
 					<InputText
 						type="text"
 						class="w-full"
 						v-model:model-value="addReviewerModal.data.username"
 					/>
-				</div> -->
+				</div>
 
 				<div class="font-black">
 					<label class="block">{{ $t("姓名") }}</label>
@@ -172,7 +172,7 @@
 					>
 				</div>
 
-				<!-- <div>
+				<div>
 					<label for="" class="block font-black">
 						{{ $t("密碼") }}
 					</label>
@@ -183,7 +183,7 @@
 						:toggle-mask="true"
 						v-model:model-value="addReviewerModal.data.password"
 					/>
-				</div> -->
+				</div>
 			</div>
 		</template>
 
