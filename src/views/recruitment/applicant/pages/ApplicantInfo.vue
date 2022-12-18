@@ -227,7 +227,7 @@
 			</div>
 			<div class="flex py-16px">
 				<div class="w-2/3">
-					<div>{{ "*" + $t("地址") }}</div>
+					<div>{{$t("地址") }}</div>
 					<div>
 						<InputText
 							class="w-[80%] h-36px !mt-4px"
@@ -246,7 +246,7 @@
 					</div>
 				</div>
 				<div class="w-1/3">
-					<div>{{ "*" + $t("郵遞區號") }}</div>
+					<div>{{$t("郵遞區號") }}</div>
 					<div>
 						<InputText
 							class="w-[70%] h-36px !mt-4px"
@@ -257,6 +257,28 @@
 					</div>
 					<div
 						v-show="required.currentPostcode"
+						class="absolute mt-[-4px]"
+					>
+						<small class="p-error">
+							{{ $t("此為必填欄位") }}
+						</small>
+					</div>
+				</div>
+			</div>
+			<div class="flex py-16px">
+				<div class="w-2/3">
+					<div>{{ $t("email") }}</div>
+					<div>
+						<InputText
+							class="w-[80%] h-36px !mt-4px"
+							style="border: 1px solid #736028"
+							type="text"
+							v-model="email"
+							:disabled="true"
+						/>
+					</div>
+					<div
+						v-show="required.currentAddr"
 						class="absolute mt-[-4px]"
 					>
 						<small class="p-error">
@@ -413,12 +435,19 @@ import InputText from "primevue/inputtext";
 import RadioButton from "primevue/radiobutton";
 import Calendar from "primevue/calendar";
 import Button from "primevue/button";
-
+import { RecruitmentApplicantAuthResponse } from "@/api/recruitment/applicant/types";
+import { useUserInfoStore } from "@/stores/RecruitmentApplicantStore";
 const applicantAuth = useRecruitmentApplicantAuthStore();
 const api = new RecruitmentApplicantAPI(applicantAuth);
 const project = useProjectIdStore();
 
+
 const toast = useToast();
+const applicantStore = useUserInfoStore();
+const applicantInfo: RecruitmentApplicantAuthResponse = toRaw(
+	applicantStore.userInfo
+);
+const email = ref(applicantInfo.email);
 
 const requiredInputFields = ref("");
 

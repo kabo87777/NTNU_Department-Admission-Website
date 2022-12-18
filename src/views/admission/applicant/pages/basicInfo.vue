@@ -252,7 +252,7 @@
 				</div>
 				<div class="flex py-16px">
 					<div class="w-2/3">
-						<div>{{ "*" + $t("地址") }}</div>
+						<div>{{ $t("地址") }}</div>
 						<div>
 							<InputText
 								class="w-[80%] h-36px !mt-4px"
@@ -271,7 +271,7 @@
 						</div>
 					</div>
 					<div class="w-1/3">
-						<div>{{ "*" + $t("郵遞區號") }}</div>
+						<div>{{ $t("郵遞區號") }}</div>
 						<div>
 							<InputText
 								class="w-[70%] h-36px !mt-4px"
@@ -282,6 +282,28 @@
 						</div>
 						<div
 							v-show="required.currentPostcode"
+							class="absolute mt-[-4px]"
+						>
+							<small class="p-error">
+								{{ $t("此為必填欄位") }}
+							</small>
+						</div>
+					</div>
+				</div>
+				<div class="flex py-16px">
+					<div class="w-2/3">
+						<div>{{ $t("email") }}</div>
+						<div>
+							<InputText
+								class="w-[80%] h-36px !mt-4px"
+								style="border: 1px solid #736028"
+								type="text"
+								v-model="email"
+								:disabled="true"
+							/>
+						</div>
+						<div
+							v-show="required.currentAddr"
 							class="absolute mt-[-4px]"
 						>
 							<small class="p-error">
@@ -430,11 +452,17 @@ import dayjs from "dayjs";
 import { useAdmissionApplicantAuthStore } from "@/stores/universalAuth";
 import { AdmissionApplicantAPI } from "@/api/admission/applicant/api";
 import { AdmissionApplicantGetUserInfoResponse } from "@/api/admission/applicant/types";
+import { AdmissionApplicantAuthResponse } from "@/api/admission/applicant/types";
+import { useUserInfoStore } from "@/stores/AdmissionApplicantStore";
 
 const applicantAuth = useAdmissionApplicantAuthStore();
+const applicantStore = useUserInfoStore();
 const api = new AdmissionApplicantAPI(applicantAuth);
 // const project = useProjectIdStore();
-
+const applicantInfo: AdmissionApplicantAuthResponse = toRaw(
+	applicantStore.userInfo
+);
+const email = ref(applicantInfo.email);
 const toast = useToast();
 const now = dayjs();
 
@@ -482,7 +510,6 @@ let born = reactive({
 });
 
 let contact = reactive({
-	email: "",
 	phone: "",
 });
 
