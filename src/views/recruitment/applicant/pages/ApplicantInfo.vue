@@ -219,7 +219,7 @@
 		<div class="px-12px py-24px">
 			<div class="flex">
 				<div class="text-[24px] font-[50] font-bold">
-					{{ $t("現居地址") }}
+					{{ $t("通訊地址") }}
 				</div>
 				<div class="mt-6px ml-40px text-[#8D9093] text-[14px]">
 					{{ $t('" * " 為必填欄位') }}
@@ -267,7 +267,7 @@
 			</div>
 			<div class="flex py-16px">
 				<div class="w-2/3">
-					<div>{{ $t("email") }}</div>
+					<div>{{ $t("電子郵件") }}</div>
 					<div>
 						<InputText
 							class="w-[80%] h-36px !mt-4px"
