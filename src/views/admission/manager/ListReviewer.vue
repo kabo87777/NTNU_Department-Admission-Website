@@ -295,6 +295,14 @@ const { mutate: createReviewer } = useMutation({
 			detail: $t("成功新增帳號"),
 		});
 	},
+	onError: () => {
+		toast.add({
+			severity: "error",
+			life: 3000,
+			summary: $t("操作失敗"),
+			detail: $t("新增帳號時發生錯誤"),
+		});
+	},
 });
 
 const confirm = useConfirm();
