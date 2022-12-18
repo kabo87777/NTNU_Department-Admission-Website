@@ -1,26 +1,23 @@
 <template>
 	<div v-if="load"></div>
-	<div class="ml-128px mr-128px mt-62px" v-else>
+	<div v-else>
 		<div class="flex">
 			<router-link
 				to="/admission/reviewer/oralReview"
 				custom
 				v-slot="{ navigate }"
 			>
-				<Button
+				<NButton
+					type="Reviewer"
 					class="p-button-secondary p-button-text !w-164px !h-29px"
 					@click="navigate"
 					role="link"
+					icon="pi pi-angle-left"
 				>
-					<img
-						alt="logo"
-						src="/assets/reviewer-page/Expand_left.png"
-						style="width: 1.5rem"
-					/>
 					<span class="text-base">
 						{{ $t("口試資料評閱") }}
 					</span>
-				</Button>
+				</NButton>
 			</router-link>
 			<div class="text-[32px] ml-24px">
 				{{ ID }}
@@ -37,95 +34,126 @@
 				aria-labelledby="single"
 			/>
 		</div>
-		<div class="mt-10px !h-1800px">
+		<div class="mt-10px !h-1830px !ml-40px">
 			<vue-pdf-embed
-				:source="'data:application/pdf;base64,' + pdfData"
+				v-if="data === '基本資料'"
+				:source="'data:application/pdf;base64,' + infoPDF"
 				class="!h-1600px"
 				:page="page"
 			/>
-			<Button
-				label="上一頁"
-				icon="pi pi-chevron-left"
-				iconPos="left"
-				@click="page--"
-				:disabled="page === 1"
-				class="!mt-120px"
+			<vue-pdf-embed
+				v-if="data === '檢附資料'"
+				:source="'data:application/pdf;base64,' + uploadFilePDF"
+				class="!h-1600px"
+				:page="page"
 			/>
-			<Button
-				label="下一頁"
-				icon="pi pi-chevron-right"
-				iconPos="right"
-				@click="page++"
-				:disabled="page === 4"
-				class="!ml-1050px"
+			<vue-pdf-embed
+				v-if="data === '推薦信'"
+				:source="'data:application/pdf;base64,' + recommendLetterPDF"
+				class="!h-1600px"
+				:page="page"
 			/>
+			<vue-pdf-embed
+				v-if="data === '整合pdf'"
+				:source="'data:application/pdf;base64,' + combinePDF"
+				class="!h-1600px"
+				:page="page"
+			/>
+			<div class="flex !mt-120px justify-around">
+				<NButton
+					type="Reviewer"
+					icon="pi pi-chevron-left"
+					iconPos="left"
+					@click="page--"
+					:disabled="page === 1"
+					class="!w-200px !h-40px"
+				>
+					<span class="text-base">
+						{{ $t("上一頁") }}
+					</span>
+				</NButton>
+				<NButton
+					type="Reviewer"
+					icon="pi pi-chevron-right"
+					iconPos="right"
+					@click="page++"
+					:disabled="page === 4"
+					class="!w-200px !h-40px"
+				>
+					<span class="text-base">
+						{{ $t("下一頁") }}
+					</span>
+				</NButton>
+			</div>
 		</div>
 		<div class="bigBlueDivider"></div>
 		<div class="flex mt-16px">
-			<div class="text-xl mt-5px">
+			<div class="text-xl mt-5px" v-if="oscore1Proportion !== 0">
 				{{ oscore1Title }} ({{ oscore1Proportion }}%)
 			</div>
 			<InputNumber
 				inputId="integeronly"
 				v-model="oinputScore_1"
 				class="ml-34px !w-132px !h-44px"
+				v-if="oscore1Proportion !== 0"
 			/>
-			<div class="text-xl ml-125px mt-5px">
+			<div class="text-xl ml-125px mt-5px" v-if="oscore2Proportion !== 0">
 				{{ oscore2Title }} ({{ oscore2Proportion }}%)
 			</div>
 			<InputNumber
 				inputId="integeronly"
 				v-model="oinputScore_2"
 				class="ml-34px !w-132px !h-44px"
+				v-if="oscore2Proportion !== 0"
 			/>
-			<div class="text-xl ml-125px mt-5px">
+			<div class="text-xl ml-125px mt-5px" v-if="oscore3Proportion !== 0">
 				{{ oscore3Title }} ({{ oscore3Proportion }}%)
 			</div>
 			<InputNumber
 				inputId="integeronly"
 				v-model="oinputScore_3"
 				class="ml-34px !w-132px !h-44px"
+				v-if="oscore3Proportion !== 0"
 			/>
 		</div>
-		<div class="flex mt-16px" v-if="programGrading?.oral_grade_name_4">
-			<div class="text-xl mt-5px">
+		<div
+			class="flex mt-16px"
+			v-if="oscore4Proportion !== 0 || oscore5Proportion !== 0"
+		>
+			<div class="text-xl mt-5px" v-if="oscore4Proportion !== 0">
 				{{ oscore4Title }} ({{ oscore4Proportion }}%)
 			</div>
 			<InputNumber
 				inputId="integeronly"
 				v-model="oinputScore_4"
 				class="ml-34px !w-132px !h-44px"
+				v-if="oscore4Proportion !== 0"
 			/>
-			<div
-				class="text-xl ml-125px mt-5px"
-				v-if="programGrading?.oral_grade_name_5"
-			>
+			<div class="text-xl ml-125px mt-5px" v-if="oscore5Proportion !== 0">
 				{{ oscore5Title }} ({{ oscore5Proportion }}%)
 			</div>
 			<InputNumber
 				inputId="integeronly"
 				v-model="oinputScore_5"
 				class="ml-34px !w-132px !h-44px"
-				v-if="programGrading?.oral_grade_name_5"
+				v-if="oscore5Proportion !== 0"
 			/>
 		</div>
-		<div class="flex mt-24px">
-			<div>{{ $t("書面分數：") }} {{ total_score }} {{ $t("分") }}</div>
-			<div class="text-xl ml-180px mt-5px">
+		<div class="flex mt-24px ml-680px">
+			<div class="text-xl">
+				{{ $t("書面分數：") }} {{ total_score }} {{ $t("分") }}
+			</div>
+			<div class="text-xl ml-100px">
 				{{ $t("口試分數合計： ") }} {{ oral_score }} {{ $t("分") }}
 			</div>
-			<Button
+			<NButton
+				type="Reviewer"
 				class="w-100px h-40px !ml-20px p-button-success"
 				@click="saveScore"
+				icon="pi pi-check"
 			>
-				<img
-					alt="logo"
-					src="/assets/project-setting/Check_fill.png"
-					style="width: 1.5rem"
-					class="fill-green-500"
-				/>
 				<span class="tracking-1px">{{ $t("保存") }}</span>
-			</Button>
+			</NButton>
 		</div>
 	</div>
 </template>
@@ -148,6 +176,7 @@ import { useGlobalStore } from "@/stores/AdmissionReviewerStore";
 import { useToast } from "primevue/usetoast";
 import SelectButton from "primevue/selectbutton";
 import VuePdfEmbed from "vue-pdf-embed";
+import NButton from "@/styles/CustomButton.vue";
 
 const route = useRoute();
 const { t } = useI18n();
@@ -180,9 +209,9 @@ const score2Proportion = ref(30);
 const score3Proportion = ref(40);
 const score4Proportion = ref(0);
 const score5Proportion = ref(0);
-const oscore1Proportion = ref(30);
-const oscore2Proportion = ref(30);
-const oscore3Proportion = ref(40);
+const oscore1Proportion = ref(0);
+const oscore2Proportion = ref(0);
+const oscore3Proportion = ref(0);
 const oscore4Proportion = ref(0);
 const oscore5Proportion = ref(0);
 const score1Title = ref("");
@@ -282,14 +311,20 @@ const { data: programGrading } = useQuery(
 			if (data!.docs_grade_name_5) {
 				score5Title.value = data!.docs_grade_name_5;
 			}
-			score1Proportion.value = data!.docs_grade_weight_1;
-			score2Proportion.value = data!.docs_grade_weight_2;
-			score3Proportion.value = data!.docs_grade_weight_3;
-			if (data!.docs_grade_weight_4) {
-				score4Proportion.value = data!.docs_grade_weight_4;
+			if (data!.docs_grade_weight_1 !== 0) {
+				score1Proportion.value = data!.docs_grade_weight_1!;
 			}
-			if (data!.docs_grade_weight_5) {
-				score5Proportion.value = data!.docs_grade_weight_5;
+			if (data!.docs_grade_weight_2 !== 0) {
+				score2Proportion.value = data!.docs_grade_weight_2!;
+			}
+			if (data!.docs_grade_weight_3 !== 0) {
+				score3Proportion.value = data!.docs_grade_weight_3!;
+			}
+			if (data!.docs_grade_weight_4 !== 0) {
+				score4Proportion.value = data!.docs_grade_weight_4!;
+			}
+			if (data!.docs_grade_weight_5 !== 0) {
+				score5Proportion.value = data!.docs_grade_weight_5!;
 			}
 
 			//oral section
@@ -302,28 +337,70 @@ const { data: programGrading } = useQuery(
 			if (data!.oral_grade_name_5) {
 				oscore5Title.value = data!.oral_grade_name_5;
 			}
-			oscore1Proportion.value = data!.oral_grade_weight_1;
-			oscore2Proportion.value = data!.oral_grade_weight_2;
-			oscore3Proportion.value = data!.oral_grade_weight_3;
-			if (data!.oral_grade_weight_4) {
-				oscore4Proportion.value = data!.oral_grade_weight_4;
+			if (data!.oral_grade_weight_1 !== 0) {
+				oscore1Proportion.value = data!.oral_grade_weight_1!;
 			}
-			if (data!.oral_grade_weight_5) {
-				oscore5Proportion.value = data!.oral_grade_weight_5;
+			if (data!.oral_grade_weight_2 !== 0) {
+				oscore2Proportion.value = data!.oral_grade_weight_2!;
+			}
+			if (data!.oral_grade_weight_3 !== 0) {
+				oscore3Proportion.value = data!.oral_grade_weight_3!;
+			}
+			if (data!.oral_grade_weight_4 !== 0) {
+				oscore4Proportion.value = data!.oral_grade_weight_4!;
+			}
+			if (data!.oral_grade_weight_5 !== 0) {
+				oscore5Proportion.value = data!.oral_grade_weight_5!;
 			}
 		},
 	}
 );
 
-const pdfData = ref("JVBERi0xLjMKJcTl8uXrp/");
-const { data: pdfBase64 } = useQuery(
-	["pdfBase64"],
+const infoPDF = ref("");
+const recommendLetterPDF = ref("");
+const uploadFilePDF = ref("");
+const combinePDF = ref("");
+useQuery(
+	["infoPDF"],
 	async () => {
-		return await api.getApplicantSingleFile("1", 1);
+		return await api.getApplicantInfoFile(ID.value);
 	},
 	{
 		onSuccess: (data) => {
-			pdfData.value = data!;
+			infoPDF.value = data!;
+		},
+	}
+);
+useQuery(
+	["recommendLetterPDF"],
+	async () => {
+		return await api.getApplicantRecommendLetter(ID.value);
+	},
+	{
+		onSuccess: (data) => {
+			recommendLetterPDF.value = data!;
+		},
+	}
+);
+useQuery(
+	["combinePDF"],
+	async () => {
+		return await api.getApplicantCombineFile(ID.value);
+	},
+	{
+		onSuccess: (data) => {
+			combinePDF.value = data!;
+		},
+	}
+);
+useQuery(
+	["uploadFilePDF"],
+	async () => {
+		return await api.getApplicantCategoryCombineFile(ID.value);
+	},
+	{
+		onSuccess: (data) => {
+			uploadFilePDF.value = data!;
 		},
 	}
 );
@@ -376,6 +453,7 @@ function saveScore() {
 			// isImmediateEnroll: accessChecked.value,
 			// immediate_enroll_comment: accessReason.value,
 		});
+		toast.add({ severity: "success", summary: "保存成功", life: 3000 });
 	} catch (error) {
 		// console.log(error);
 	}

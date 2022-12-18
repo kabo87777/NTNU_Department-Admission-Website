@@ -125,6 +125,7 @@ watch(
 			res.map((item) => {
 				if (item.id === project.project.pid && item.isMoredoc)
 					isEnabled.value = true;
+				else isEnabled.value = false;
 			});
 		});
 	}

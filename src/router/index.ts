@@ -460,12 +460,10 @@ const routes: Array<RouteRecordRaw> = [
 					import("@/views/recruitment/manager/ListReviewer.vue"),
 			},
 			{
-				path: "applicationAccountSetting",
-				name: "recruitmentManagerApplicationAccountSetting",
+				path: "ListApplicant",
+				name: "recruitmentManagerListApplicant",
 				component: () =>
-					import(
-						"@/views/recruitment/manager/pages/ApplicationAccountSetting.vue"
-					),
+					import("@/views/recruitment/manager/ListApplicant.vue"),
 			},
 			{
 				path: "gradeDataList",
@@ -508,7 +506,7 @@ const routes: Array<RouteRecordRaw> = [
 				name: "recruitmentManagerUserSetting",
 				component: () =>
 					import(
-						"@/views/recruitment/manager/pages/ApplicantUploadList/Applicant.vue"
+						"@/views/recruitment/manager/pages/RecruitmentManagerSelfSetting.vue"
 					),
 			},
 			{

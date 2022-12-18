@@ -55,15 +55,41 @@
 			</Button>
 		</router-link>
 
-		<router-link
-			to="/admission/reviewer/oralReview"
-			custom
-			v-slot="{ navigate }"
-		>
+		<div class="flex mt-50px">
+			<div class="sidebarBlueDivider"></div>
+			<div class="mt-[-8px] ml-8px text-[#236192] text-18px font-bold">
+				{{ $t("第二階段審查") }}
+			</div>
+		</div>
+
+		<div v-if="isOralAvailable">
+			<router-link
+				to="/admission/reviewer/oralReview"
+				custom
+				v-slot="{ navigate }"
+			>
+				<Button
+					class="p-button-secondary p-button-text !ml-24px !mt-32px !w-[85%] !h-48px"
+					@click="navigate"
+					role="link"
+				>
+					<img
+						alt="logo"
+						src="/assets/reviewer-page/Arhive-1.png"
+						style="width: 18px"
+					/>
+					<span
+						class="text-left tracking-3px ml-3 font-bold text-[18px] text-[#2D2926]"
+					>
+						{{ $t("口試資料評閱") }}
+					</span>
+				</Button>
+			</router-link>
+		</div>
+		<div v-else>
 			<Button
 				class="p-button-secondary p-button-text !ml-24px !mt-32px !w-[85%] !h-48px"
-				@click="navigate"
-				role="link"
+				@click="oralNotOpen"
 			>
 				<img
 					alt="logo"
@@ -73,10 +99,10 @@
 				<span
 					class="text-left tracking-3px ml-3 font-bold text-[18px] text-[#2D2926]"
 				>
-					{{ $t("口試資料評閱") }}
+					{{ $t("口試審查尚未開放") }}
 				</span>
 			</Button>
-		</router-link>
+		</div>
 		<div
 			class="absolute bg-gray-200 bg-opacity-50 h-140px w-[100%]"
 			style="bottom: 0px"
@@ -86,7 +112,7 @@
 					<img
 						alt="logo"
 						src="/assets/sidebar/User_circle.png"
-						class="h-32px w-32px ml-24px"
+						class="h-40px w-40px ml-20px mt-[-3px]"
 					/>
 					<div class="ml-12px">
 						<div class="text-14px">
@@ -136,9 +162,11 @@ import "primevue/resources/primevue.min.css";
 import Dropdown from "primevue/dropdown";
 import Button from "primevue/button";
 
-import { ref, watch, watchEffect } from "vue";
+import { ref, watch, watchEffect, computed } from "vue";
 import { RouterLink, useRouter } from "vue-router";
 import { useQuery } from "@tanstack/vue-query";
+import { useToast } from "primevue/usetoast";
+import dayjs from "dayjs";
 
 import { AdmissionReviewerAPI } from "@/api/admission/reviewer/api";
 import { AdmissionReviewerProgramListResponse } from "@/api/admission/reviewer/types";
@@ -146,6 +174,7 @@ import { useAdmissionReviewerAuthStore } from "@/stores/universalAuth";
 import { useGlobalStore } from "@/stores/AdmissionReviewerStore";
 
 const router = useRouter();
+const toast = useToast();
 
 const reviewerAuth = useAdmissionReviewerAuthStore();
 const api = new AdmissionReviewerAPI(reviewerAuth);
@@ -159,6 +188,10 @@ const { data: programs } = useQuery(
 );
 
 const selectedProgram = ref<AdmissionReviewerProgramListResponse>();
+const now = dayjs();
+const start = ref();
+const end = ref();
+const isOralAvailable = ref(false);
 
 watchEffect(() => {
 	if (!programs.value) return;
@@ -171,10 +204,27 @@ watchEffect(() => {
 watch(selectedProgram, (selection) => {
 	globalStore.updateadmissionReviewerProgramData(selectedProgram!.value!);
 
+	start.value = dayjs(selectedProgram!.value!.oral_start_date);
+	end.value = dayjs(selectedProgram!.value!.review_end_date);
+
+	if (now.isAfter(start.value) && now.isBefore(end.value)) {
+		isOralAvailable.value = true;
+	} else {
+		isOralAvailable.value = false;
+	}
+
 	console.debug("Selected program:\n" + JSON.stringify(selection, null, 2));
 });
 
 const generateOptions = (data: any) => data.category + data.name;
+
+const oralNotOpen = () => {
+	toast.add({
+		severity: "error",
+		summary: "It's not during the period of oral reviewing.",
+		life: 3000,
+	});
+};
 
 async function signOut() {
 	await api.invalidateSession();

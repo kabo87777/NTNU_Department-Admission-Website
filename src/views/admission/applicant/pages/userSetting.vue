@@ -1,17 +1,55 @@
 <template>
-	<div class="mt-80px ml-50px">
+	<div>
 		<div class="font-[500] text-[32px] font-bold">
 			{{ $t("使用者管理") }}
 		</div>
 		<div class="bigYellowDivider"></div>
 		<div class="mt-8px px-12px py-24px">
 			<div class="text-[20px] font-[350]">
-				{{ $t("帳號名稱") }}{{ $t(":") }}{{ " "
-				}}{{ applicantInfo.username }}
+				{{ $t("帳號名稱") }}{{ $t(":") }}{{ applicantInfo.username }}
 			</div>
-			<div class="mt-36px text-[20px] font-[350]">
-				{{ $t("聯絡信箱") }}{{ $t(":") }}{{ " "
-				}}{{ applicantInfo.email }}
+			<div class="flex mt-36px text-[20px] font-[350]">
+				<div class="flex">
+					<div>{{ $t("聯絡信箱") }}{{ $t(":") }}</div>
+					<div v-if="email.isEdit">
+						<InputText
+							class="w-400px h-40px !mt-[-12px]"
+							v-model="email.email"
+						/>
+					</div>
+					<div v-else>{{ email.email }}</div>
+				</div>
+				<div class="ml-16px">
+					<Button
+						icon="pi pi-pencil"
+						class="p-button-rounded p-button-outlined p-button-secondary"
+						style="
+							color: #736028;
+							font-size: small;
+							width: 32px;
+							height: 32px;
+							margin-top: -8px;
+						"
+						v-tooltip.right="t('編輯電子郵件')"
+						@click="email.isEdit = !email.isEdit"
+					/>
+					<Button
+						v-if="email.isEdit"
+						icon="pi pi-check"
+						class="p-button-rounded p-button-outlined p-button-secondary"
+						style="
+							color: #736028;
+							font-size: small;
+							width: 32px;
+							height: 32px;
+							margin-top: -8px;
+							margin-left: 16px;
+						"
+						v-tooltip.right="t('確認')"
+						:loading="isLoading.editEmail"
+						@click="handleEditEmail"
+					/>
+				</div>
 			</div>
 			<!-- <div class="mt-36px text-[20px] font-[350]">
 				{{ $t("手機號碼") }}{{ $t(":") }}{{ " "
@@ -81,7 +119,7 @@
 				class="p-button-sm p-button-secondary p-button-outlined !mt-60px !text-[16px]"
 				type="submit"
 				icon="pi pi-pencil"
-				:loading="isChangePassLoading"
+				:loading="isLoading.changePass"
 				@click="handleSubmit()"
 				:label="$t('修改送出')"
 			/>
@@ -90,11 +128,12 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive, ref, toRaw } from "vue";
+import { reactive, toRaw } from "vue";
 import { AdmissionApplicantAuthResponse } from "@/api/admission/applicant/types";
 import { useAdmissionApplicantAuthStore } from "@/stores/universalAuth";
 import { useUserInfoStore } from "@/stores/AdmissionApplicantStore";
 import { AdmissionApplicantAPI } from "@/api/admission/applicant/api";
+import { useI18n } from "vue-i18n";
 import ParagraphDivider from "@/styles/paragraphDividerApplicant.vue";
 import { useToast } from "primevue/usetoast";
 import InputText from "primevue/inputtext";
@@ -105,6 +144,7 @@ const toast = useToast();
 const applicantAuth = useAdmissionApplicantAuthStore();
 const applicantStore = useUserInfoStore();
 const api = new AdmissionApplicantAPI(applicantAuth);
+const { t } = useI18n();
 
 const applicantInfo: AdmissionApplicantAuthResponse = toRaw(
 	applicantStore.userInfo
@@ -117,6 +157,11 @@ const applicantInfo: AdmissionApplicantAuthResponse = toRaw(
 // 	error,
 // } = useQuery(["userInfo"], async () => await api.getUserInfo());
 
+const email = reactive({
+	isEdit: false,
+	email: applicantStore.userInfo.email,
+});
+
 const initialPassValue = {
 	isCurrentPassBlank: false,
 	isNewPassBlank: false,
@@ -126,9 +171,17 @@ const initialPassValue = {
 	confirmPass: "",
 };
 
-const isChangePassLoading = ref(false);
+const isLoading = reactive({
+	changePass: false,
+	editEmail: false,
+});
 
 let changePassRes = reactive({
+	success: false,
+	message: "" as string | [],
+});
+
+const editEmailRes = reactive({
 	success: false,
 	message: "" as string | [],
 });
@@ -143,12 +196,62 @@ let password = reactive({
 });
 
 const resetPassValue = () => {
-	password.isCurrentPassBlank = initialPassValue.isCurrentPassBlank;
-	password.isNewPassBlank = initialPassValue.isNewPassBlank;
-	password.notMatch = initialPassValue.notMatch;
-	password.currentPass = initialPassValue.currentPass;
-	password.newPass = initialPassValue.newPass;
-	password.confirmPass = initialPassValue.confirmPass;
+	Object.assign(password, initialPassValue);
+};
+
+const handleEditEmail = async () => {
+	const showToast = (messages: string) => {
+		toast.add({
+			severity: "error",
+			summary: "Error",
+			detail: messages,
+			life: 5000,
+		});
+	};
+
+	const formatEmail = ["@", "."];
+	if (email.email.length === 0) {
+		showToast("This field is required");
+		return;
+	} else if (email.email.length <= 5) {
+		showToast("Too short");
+		return;
+	} else if (
+		!email.email.includes(formatEmail[0], 1) ||
+		!email.email.includes(formatEmail[1], 3)
+	) {
+		showToast("Invalid format");
+		return;
+	}
+
+	isLoading.editEmail = true;
+	const body = { email: email.email };
+	const response = await api.editEmail(body);
+
+	if (response?.success !== undefined && response?.message !== undefined) {
+		editEmailRes.success = toRaw(response.success);
+		editEmailRes.message = toRaw(response.message);
+	}
+
+	isLoading.editEmail = false;
+
+	if (editEmailRes.success) {
+		Object.assign(password, initialPassValue); //reset password input to initial value
+		toast.add({
+			severity: "success",
+			summary: "Success",
+			detail: editEmailRes.message,
+			life: 3000,
+		});
+		email.isEdit = false;
+	} else {
+		toast.add({
+			severity: "error",
+			summary: "Error",
+			detail: editEmailRes.message[editEmailRes.message.length - 1],
+			life: 5000,
+		});
+	}
 };
 
 const handleSubmit = async () => {
@@ -175,7 +278,7 @@ const handleSubmit = async () => {
 		!password.isNewPassBlank &&
 		!password.notMatch
 	) {
-		isChangePassLoading.value = true;
+		isLoading.changePass = true;
 
 		const body = {
 			current_password: password.currentPass,
@@ -190,10 +293,10 @@ const handleSubmit = async () => {
 			changePassRes.message = toRaw(res.message);
 		}
 
-		isChangePassLoading.value = false;
+		isLoading.changePass = false;
 
 		if (changePassRes.success) {
-			resetPassValue();
+			Object.assign(password, initialPassValue); //reset password input to initial value
 			toast.add({
 				severity: "success",
 				summary: "Success",
@@ -210,8 +313,4 @@ const handleSubmit = async () => {
 		}
 	}
 };
-
-onMounted(() => {
-	//console.log(route.params);
-});
 </script>

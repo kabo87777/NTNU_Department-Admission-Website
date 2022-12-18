@@ -5,16 +5,19 @@
 			<div class="sidebarVerticalSmallYellowDivider mt-32px"></div>
 			<div class="mt-32px ml-12px w-[100%]">
 				<div class="sidebarTitleBar">
-					{{
-						$t("sidebarTitleYear", {
-							year: currentYear,
-							roc: rocYear,
-						}) +
-						$t(project.project.category) +
-						$t("sidebarTitleGroup", {
-							group: project.project.name["0"],
-						})
-					}}
+					<div v-if="project.project.pid">
+						{{
+							$t("sidebarTitleYear", {
+								year: currentYear,
+								roc: rocYear,
+							}) +
+							$t(project.project.category) +
+							$t("sidebarTitleGroup", {
+								group: project.project.name["0"],
+							})
+						}}
+					</div>
+					<div v-else>{{ $t("暫無專案") }}</div>
 				</div>
 			</div>
 		</div>
@@ -211,6 +214,7 @@
 					</div>
 					<div class="ml-12px">
 						<Button
+							v-if="project.project.pid"
 							class="p-button-secondary p-button-outlined"
 							style="height: 40px; border: 2px solid #736028"
 							@click="isModalVisible = true"
@@ -235,17 +239,18 @@
 					style="
 						background-color: #8a7b27;
 						border-radius: 50%;
-						width: 32px;
-						height: 32px;
-						margin-left: 18px;
+						width: 40px;
+						height: 40px;
+						margin-top: -4px;
+						margin-left: 16px;
 					"
 				>
 					<i
 						class="pi pi-user ml-6.5px mt-8px"
-						style="font-size: 1.2rem"
+						style="font-size: 1.7rem"
 					/>
 				</div>
-				<div class="mt-[-4px] ml-16px">
+				<div class="mt-[-4px] ml-12px">
 					<div
 						class="text-[14px] font-[500] font-bold text-[#736028]"
 					>
@@ -314,6 +319,7 @@ import IncompleteTag from "@/styles/tags/incompleteTag.vue";
 import { useRouter } from "vue-router";
 import Dialog from "primevue/dialog";
 import "primeicons/primeicons.css";
+import "@/styles/customize.css";
 
 const { t } = useI18n();
 const router = useRouter();

@@ -403,7 +403,7 @@
 						<img
 							alt="logo"
 							src="/assets/sidebar/Close_round.png"
-							style="width: 18rem"
+							style="width: 1.25rem"
 							class="!ml-0px"
 						/>
 						<span class="text-left text-xl">{{ $t("取消") }}</span>
@@ -415,7 +415,7 @@
 					<img
 						alt="logo"
 						src="/assets/sidebar/User_circle.png"
-						class="h-32px w-32px ml-20px"
+						class="h-40px w-40px ml-20px"
 					/>
 					<div>
 						<div class="text-xs ml-8px">
@@ -537,7 +537,8 @@ function addNewProject() {
 			application_end_date: todayDateString,
 			review_start_date: todayDateString,
 			review_end_date: todayDateString,
-			stage: "application_stage",
+			docs_end_date: todayDateString,
+			oral_start_date: todayDateString,
 			applicant_required_info: '["file1", "file2"]',
 			applicant_required_file: '["file3", "file4"]',
 			reviewer_required_info: '["file1", "file2"]',
@@ -556,7 +557,7 @@ function addNewProject() {
 
 				toast.add({
 					severity: "success",
-					summary: "更改成功",
+					summary: "新增成功",
 					life: 3000,
 				});
 			},
