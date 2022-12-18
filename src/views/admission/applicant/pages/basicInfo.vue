@@ -533,7 +533,9 @@ const setBasicInfo = (res: AdmissionApplicantGetUserInfoResponse) => {
 
 	born.sex = res.sex as string;
 	born.country = res.birthcountry as string;
-	born.birth = new Date(res.birth) ;
+	if (res.birth) {
+		born.birth = new Date(res.birth);
+	}
 
 	contact.phone = res.mobile_phone as string;
 };

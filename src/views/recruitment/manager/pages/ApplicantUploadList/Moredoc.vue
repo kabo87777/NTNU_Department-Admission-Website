@@ -23,12 +23,12 @@
 		<div class="flex mt-16px">
 			<div class="w-1/3 pl-16px">
 				<div>
-					<Calendar 
+					<Calendar
 						inputId="icon"
 						:showIcon="true"
 						:showTime="true"
-						dateFormat="yy/mm/dd" 
-						v-model="date.start" 
+						dateFormat="yy/mm/dd"
+						v-model="date.start"
 					/>
 				</div>
 				<div v-show="showRequire.start" class="absolute">
@@ -37,11 +37,11 @@
 			</div>
 			<div class="w-1/3 pl-16px">
 				<div>
-					<Calendar 
+					<Calendar
 						inputId="icon"
 						:showIcon="true"
 						:showTime="true"
-						dateFormat="yy/mm/dd" 
+						dateFormat="yy/mm/dd"
 						v-model="date.end"
 					/>
 				</div>
