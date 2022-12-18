@@ -65,7 +65,7 @@
 					</div>
 					<div>
 						<Calendar
-							dateFormat="yy-mm-dd"
+							dateFormat="yy/mm/dd"
 							class="w-[70%] h-36px !mt-4px"
 							style="
 								border: 1px solid #736028;
@@ -246,7 +246,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, watch, toRaw } from "vue";
+import { reactive, watch, toRaw } from "vue";
 import { useRecruitmentApplicantAuthStore } from "@/stores/universalAuth";
 import { useUserInfoStore } from "@/stores/RecruitmentApplicantStore";
 import { RecruitmentApplicantAPI } from "@/api/recruitment/applicant/api";
@@ -268,8 +268,6 @@ const project = useProjectIdStore();
 
 const { t } = useI18n();
 const toast = useToast();
-
-const requiredInputFields = ref("");
 
 let fetchResponse = reactive({
 	success: false,

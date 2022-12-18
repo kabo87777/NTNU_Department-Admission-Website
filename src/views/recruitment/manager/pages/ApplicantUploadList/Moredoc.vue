@@ -23,7 +23,13 @@
 		<div class="flex mt-16px">
 			<div class="w-1/3 pl-16px">
 				<div>
-					<Calendar dateFormat="yy-mm-dd" v-model="date.start" />
+					<Calendar
+						inputId="icon"
+						:showIcon="true"
+						:showTime="true"
+						dateFormat="yy/mm/dd"
+						v-model="date.start"
+					/>
 				</div>
 				<div v-show="showRequire.start" class="absolute">
 					<small class="p-error">{{ $t("此為必填欄位") }}</small>
@@ -31,7 +37,13 @@
 			</div>
 			<div class="w-1/3 pl-16px">
 				<div>
-					<Calendar dateFormat="yy-mm-dd" v-model="date.end" />
+					<Calendar
+						inputId="icon"
+						:showIcon="true"
+						:showTime="true"
+						dateFormat="yy/mm/dd"
+						v-model="date.end"
+					/>
 				</div>
 				<div v-show="showRequire.end" class="absolute">
 					<small class="p-error">{{ $t("此為必填欄位") }}</small>
@@ -261,8 +273,8 @@ const setInfo = (info: RecruimentAdminGetApplicantMoredocResponses) => {
 	activeTab.value = info.isMoredoc
 		? tabOptions.value[1]
 		: tabOptions.value[0];
-	date.start = info.moredoc_start_date;
-	date.end = info.moredoc_end_date;
+	date.start = new Date(info.moredoc_start_date);
+	date.end = new Date(info.moredoc_end_date);
 	docInfo.category = info.moredoc_category;
 	docInfo.name = info.moredoc_name;
 };
