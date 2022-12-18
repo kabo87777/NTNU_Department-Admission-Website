@@ -1,7 +1,8 @@
 <template>
 	<h1 class="text-4xl font-bold">{{ $t("管理審查者") }}</h1>
+	<!-- <Button @click="getRelatedPrograms">Button</Button> -->
 	<Divider></Divider>
-	<Button @click="isOpenAddReviewer = true">{{ $t("建立帳號") }}</Button>
+	<Button @click="addReviewerModal.open">{{ $t("建立帳號") }}</Button>
 	<DataTable :value="tableData" :loading="getLoadingStatus">
 		<template #empty>
 			<h2>{{ $t("尚無審查者帳號") }}</h2>
@@ -24,9 +25,14 @@
 		</Column> -->
 
 		<Column>
-			<template #header>{{ $t("操作") }}</template>
+			<template #header>{{ $t("動作") }}</template>
 			<template #body="slotProp">
 				<div class="flex gap-x-1">
+					<Button
+						icon="pi pi-pencil"
+						class="p-button-outlined p-button-success"
+					/>
+
 					<!-- Disable user button -->
 					<Button
 						v-if="slotProp.data.isDisabled === false"
@@ -58,10 +64,146 @@
 		</Column>
 	</DataTable>
 
-	<AddReviewerDialog
-		v-model:show="isOpenAddReviewer"
-		@submit="createReviewer"
-	/>
+	<!-- Modal for editting reviewer profile -->
+	<Dialog v-model:visible="modalVisible" :modal="true">
+		<template #header>
+			<h3 class="font-extrabold text-lg">
+				{{ $t("編輯審查者帳號") }}
+			</h3>
+		</template>
+		<template #default>
+			<div class="w-xl">
+				<div class="grid grid-cols-2">
+					<div class="col-start-1">
+						<h3 font="font-black">{{ $t("審查者帳號") }}</h3>
+						<h4 class="">{{ modalData.id }}</h4>
+					</div>
+
+					<div class="col-start-2 font-black">
+						<label class="block">{{ $t("姓名") }}</label>
+						<InputText
+							type="text"
+							class=""
+							v-model="modalData.name"
+						>
+						</InputText>
+					</div>
+				</div>
+				<div>
+					<label for="" class="block font-black">{{
+						$t("電子信箱")
+					}}</label>
+					<InputText
+						type="email"
+						class="w-full"
+						v-model="modalData.email"
+					></InputText>
+				</div>
+
+				<div class="mt-5">
+					<h3 class="font-black">{{ $t("管理身份組") }}</h3>
+					<Divider class="!mt-0"></Divider>
+					<div
+						class="inline-flex items-center"
+						v-for="role in modalData.roles"
+						:key="role.id"
+					>
+						<Checkbox :binary="true" :value="true"></Checkbox>
+						<span class="mx-1">{{ role.name }}</span>
+					</div>
+				</div>
+			</div>
+		</template>
+		<template #footer>
+			<div class="flex justify-center">
+				<div class="space-x-2">
+					<Button
+						icon="pi pi-check"
+						:label="$t('儲存')"
+						class="p-button-outlined p-button-success"
+					></Button>
+					<Button
+						icon="pi pi-times"
+						:label="$t('取消')"
+						class="p-button-outlined p-button-danger"
+						@click="modalVisible = false"
+					></Button>
+				</div>
+			</div>
+		</template>
+	</Dialog>
+
+	<!-- Modal for adding reviewer -->
+	<Dialog :modal="true" v-model:visible="addReviewerModal.visible">
+		<template #header>
+			<h3 class="font-black text-lg">{{ $t("建立審查者帳號") }}</h3>
+		</template>
+
+		<template #default>
+			<div class="w-lg grid gap-y-2">
+				<div>
+					<h3 font="font-black">{{ $t("審查者帳號") }}</h3>
+					<InputText
+						type="text"
+						class="w-full"
+						v-model:model-value="addReviewerModal.data.username"
+					/>
+				</div>
+
+				<div class="font-black">
+					<label class="block">{{ $t("姓名") }}</label>
+					<InputText
+						type="text"
+						class="w-full"
+						v-model:model-value="addReviewerModal.data.name"
+					/>
+				</div>
+				<div>
+					<label for="" class="block font-black">{{
+						$t("電子信箱")
+					}}</label>
+					<InputText
+						type="email"
+						class="w-full"
+						v-model:model-value="addReviewerModal.data.email"
+					/>
+				</div>
+
+				<div>
+					<label for="" class="block font-black">
+						{{ $t("密碼") }}
+					</label>
+					<Password
+						class="w-full"
+						input-class="w-full"
+						:feedback="false"
+						:toggle-mask="true"
+						v-model:model-value="addReviewerModal.data.password"
+					/>
+				</div>
+			</div>
+		</template>
+
+		<template #footer>
+			<div class="flex justify-center">
+				<div class="space-x-2">
+					<Button
+						icon="pi pi-check"
+						:disabled="!addReviewerModal.allowSave"
+						:label="$t('送出')"
+						class="p-button-outlined p-button-success"
+						@click="addReviewerModal.submit"
+					></Button>
+					<Button
+						icon="pi pi-times"
+						:label="$t('取消')"
+						class="p-button-outlined p-button-danger"
+						@click="addReviewerModal.visible = false"
+					></Button>
+				</div>
+			</div>
+		</template>
+	</Dialog>
 
 	<Dialog :modal="true" v-model:visible="assignProgramModal.visible">
 		<template #header>
@@ -102,6 +244,7 @@ import Dialog from "primevue/dialog";
 import InputText from "primevue/inputtext";
 import Checkbox from "primevue/checkbox";
 import { useMutation, useQuery } from "@tanstack/vue-query";
+import { InvalidSessionError } from "@/api/error";
 import { useRouter } from "vue-router";
 import {
 	useAdmissionAdminAuthStore,
@@ -118,10 +261,9 @@ import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
 import ConfirmDialog from "primevue/confirmdialog";
 import MultiSelect from "primevue/multiselect";
-import AddReviewerDialog from "@/components/AdmAddReviewerDialog.vue";
-
 const { t: $t } = useI18n();
 
+const router = useRouter();
 const adminAuth = useAdmissionAdminAuthStore();
 
 const store = useGlobalStore();
@@ -209,15 +351,32 @@ const { isLoading: isLoadingRelatedPrograms, refetch: getRelatedPrograms } =
 		enabled: false,
 	});
 
-type AddReviewerModalData = {
-	name: string;
-	email: string;
-	redirect_url: string;
-};
+const addReviewerModal = ref({
+	data: {
+		username: "",
+		name: "",
+		email: "",
+		password: "",
+		redirect_url:
+			"https://admissions-frontend-staging.birkhoff.me/admission/reviewer/signin",
+	},
+	visible: false,
+	open: () => (addReviewerModal.value.visible = true),
+	close: () => (addReviewerModal.value.visible = false),
+	allowSave: computed(() => {
+		const ref: Ref = addReviewerModal;
+		const { username, name, email, password } = ref.value.data;
+		const result =
+			username.length && name.length && email.length && password.length;
+		return result;
+	}),
+	submit: () => {
+		addReviewerModal.value.close();
+		createReviewer();
+	},
+});
 
-const isOpenAddReviewer = ref(false);
-
-class AssignProgramModal {
+class assignProgramModalType {
 	data: {
 		id: number;
 		programs: Record<"id" | "category" | "name" | "fullname", any>[];
@@ -272,28 +431,25 @@ class AssignProgramModal {
 	}
 }
 
-const assignProgramModal = ref(new AssignProgramModal());
+const assignProgramModal = ref(new assignProgramModalType());
+
+const modalVisible = ref(false);
+const modalData = ref();
 
 const isProcessing = ref(false);
 
 const { mutate: createReviewer } = useMutation({
-	mutationFn: (data: AddReviewerModalData) => {
-		return api.createReviewer(data);
+	mutationFn: () => {
+		return api.createReviewer(addReviewerModal.value.data);
 	},
 	onMutate: () => {
 		isProcessing.value = true;
 	},
 	onSettled: () => {
 		isProcessing.value = false;
-		refetch();
 	},
 	onSuccess: () => {
-		toast.add({
-			severity: "success",
-			life: 3000,
-			summary: $t("操作成功"),
-			detail: $t("成功新增帳號"),
-		});
+		refetch();
 	},
 });
 
