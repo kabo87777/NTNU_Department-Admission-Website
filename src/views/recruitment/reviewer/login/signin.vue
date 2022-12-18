@@ -199,13 +199,11 @@ const onSubmit = handleSubmit(async function (values, actions) {
 		const api = new RecruitmentReviewerAPI(authStore);
 
 		userInfo.saveUserInfo(
-			(
-				await api.requestNewSession({
-					email: values.email,
-					password: values.password,
-					"cf-turnstile-response": turnstileResponse,
-				})
-			).data
+			await api.requestNewSession({
+				email: values.email,
+				password: values.password,
+				"cf-turnstile-response": turnstileResponse,
+			})
 		);
 
 		router.replace({ name: "RecruitmentReviewerMainContainer" });

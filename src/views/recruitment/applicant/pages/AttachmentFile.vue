@@ -254,13 +254,11 @@ watch(
 	() => isLoading.fetch,
 	async () => {
 		clearAllList();
-		console.log("check watch");
+
 		const res = await api.getFileList(project.project.pid);
 
 		if (res) attachmentList = [...attachmentList, ...res];
-
 		isLoading.fetch = false;
-
 		addDetail(toRaw(attachmentList));
 	}
 );

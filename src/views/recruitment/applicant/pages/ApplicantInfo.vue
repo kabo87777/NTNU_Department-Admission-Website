@@ -269,6 +269,8 @@ const project = useProjectIdStore();
 const { t } = useI18n();
 const toast = useToast();
 
+const requiredInputFields = ref("");
+
 let fetchResponse = reactive({
 	success: false,
 	message: "" as string | [],
