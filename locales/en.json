@@ -367,7 +367,6 @@
 	"至少需要一個數字": "At least one numeric",
 	"最短長度為8個字": "Minimum 8 characters",
 	"必須": "Must",
-	"※ 郵遞區號": "※ Postal Code",
-	"※ 生理性別": "※ Sex",
-	"※ 出生國家": "※ Country Of Birth"
+	"電子郵件": "Email",
+    "通訊地址": "Mailing Address"
 }

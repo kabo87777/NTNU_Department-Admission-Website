@@ -162,8 +162,8 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, toRaw, onMounted, watch } from "vue";
-import { InvalidSessionError } from "@/api/error";
+import { ref, reactive, toRaw, watch } from "vue";
+import { useQuery } from "@tanstack/vue-query";
 import ReviewState from "@/components/attachmentStates/reviewState.vue";
 import EditState from "@/components/attachmentStates/editState.vue";
 import CreateState from "@/components/attachmentStates/createState.vue";
@@ -188,6 +188,8 @@ let examCertificateList: AttachmentDetailData[] = reactive([]);
 let otherList: AttachmentDetailData[] = reactive([]);
 
 const toast = useToast();
+
+const requiredInputFields = ref("");
 
 let isLoading = reactive({
 	delete: false,
@@ -425,24 +427,34 @@ const clearAllList = () => {
 	otherList.splice(0, otherList.length);
 };
 
-const getFileList = async () => {
-	return await api.getFileList(project.project.pid);
-};
-
-onMounted(async () => {
-	const res = await getFileList();
-
-	if (res) attachmentList = [...attachmentList, ...res];
-
-	splitThreeList(toRaw(attachmentList));
-});
+useQuery(
+	["getRecruitmentApplicantAttachmentFileList"],
+	async () => {
+		return await api.getFileList(project.project.pid);
+	},
+	{
+		onSuccess: (data) => {
+			attachmentList = [...attachmentList, ...data];
+			splitThreeList(toRaw(attachmentList));
+		},
+		onError: (data) => {
+			toast.add({
+				severity: "error",
+				summary: "Error",
+				detail: "Unable to fetch user require input",
+				life: 5000,
+			});
+			console.log(data);
+		},
+	}
+);
 
 watch(
 	() => isLoading.fetch,
 	async () => {
 		clearAllList();
 
-		const res = await getFileList();
+		const res = await api.getFileList(project.project.pid);
 
 		if (res) attachmentList = [...attachmentList, ...res];
 
