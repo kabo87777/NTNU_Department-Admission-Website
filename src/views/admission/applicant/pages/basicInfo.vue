@@ -533,7 +533,7 @@ const setBasicInfo = (res: AdmissionApplicantGetUserInfoResponse) => {
 
 	born.sex = res.sex as string;
 	born.country = res.birthcountry as string;
-	born.birth = res.birth as Date;
+	born.birth = new Date(res.birth) ;
 
 	contact.phone = res.mobile_phone as string;
 };
@@ -570,8 +570,6 @@ const handleSave = async () => {
 		communicate_zipcode: currentAddr.postcode,
 		sex: born.sex,
 		birthcountry: born.country,
-		// birth: born.birth,
-		// birth: dayjs(born.birth).add(8, 'hour'),
 		birth: addHours(8, new Date(born.birth)),
 		mobile_phone: contact.phone,
 		isForeigner: identity.selectedIdentity === "本國人士" ? false : true,

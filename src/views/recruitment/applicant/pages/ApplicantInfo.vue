@@ -517,7 +517,7 @@ const setBasicInfo = (res: RecruitmentApplicantUserInfoResponse) => {
 
 	born.sex = res.sex as string;
 	born.country = res.birthcountry as string;
-	born.birth = res.birth as Date;
+	born.birth = new Date(res.birth);
 
 	contact.phone = res.mobile_phone as string;
 };
