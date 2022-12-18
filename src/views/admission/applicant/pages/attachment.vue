@@ -162,7 +162,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, toRaw, watch } from "vue";
+import { ref, reactive, toRaw, watch, onMounted } from "vue";
 import { useToast } from "primevue/usetoast";
 
 import ReviewState from "@/components/attachmentStates/reviewState.vue";
@@ -417,32 +417,6 @@ const clearAllList = () => {
 };
 
 useQuery(
-	["admApplicantGetAttachtmentList"],
-	async () => {
-		return await api.getFileList();
-	},
-	{
-		onSuccess: (data) => {
-			clearAllList();
-
-			attachmentList = [...attachmentList, ...data];
-
-			splitThreeList(toRaw(attachmentList));
-		},
-
-		onError: (data) => {
-			toast.add({
-				severity: "error",
-				summary: "Error",
-				detail: "Unable to fetch attachment list",
-				life: 5000,
-			});
-			console.log(data);
-		},
-	}
-);
-
-useQuery(
 	["getAdmApplicantProgramInfo_2"],
 	async () => {
 		return await api.getProgram();
@@ -462,6 +436,14 @@ useQuery(
 		},
 	}
 );
+
+onMounted(async () => {
+	const res = await api.getFileList();
+
+	clearAllList();
+	attachmentList = [...attachmentList, ...res];
+	splitThreeList(toRaw(attachmentList));
+});
 
 watch(
 	() => isLoading.fetch,

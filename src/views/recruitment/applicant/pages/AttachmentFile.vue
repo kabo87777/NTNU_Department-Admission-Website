@@ -8,6 +8,14 @@
 
 		<div class="px-12px pb-24px">
 			<div v-for="(item, index) in otherList" :key="index">
+				<div
+					class="bigYellowDivider !mt-24px"
+					v-if="
+						index !== 0 &&
+						otherList[index].id === undefined &&
+						otherList[index - 1].id
+					"
+				></div>
 				<ReviewState
 					v-if="item.state === 1"
 					category="其他有利於審查資料"
@@ -45,12 +53,12 @@
 				/>
 			</div>
 		</div>
+		<div class="bigYellowDivider"></div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, toRaw, watch, onMounted } from "vue";
-import { useQuery } from "@tanstack/vue-query";
+import { reactive, toRaw, watch, onMounted } from "vue";
 import ReviewState from "@/components/attachmentStates/reviewState.vue";
 import EditState from "@/components/attachmentStates/editState.vue";
 import CreateState from "@/components/attachmentStates/createState.vue";
@@ -62,7 +70,6 @@ import { useRecruitmentApplicantAuthStore } from "@/stores/universalAuth";
 import { RecruitmentApplicantAPI } from "@/api/recruitment/applicant/api";
 import { useProjectIdStore } from "@/stores/RecruitmentApplicantStore";
 import { useToast } from "primevue/usetoast";
-import ParagraphDivider from "@/styles/paragraphDividerApplicant.vue";
 
 const applicantAuth = useRecruitmentApplicantAuthStore();
 const api = new RecruitmentApplicantAPI(applicantAuth);
@@ -199,25 +206,6 @@ const handleEdit = async (body: object, fileId: number) => {
 	}
 
 	isLoading.fetch = true;
-};
-
-const splitThreeList = async (fullList: AttachmentData[]) => {
-	fullList.map((item) => {
-		switch (item.category) {
-			default: {
-				otherList.push({
-					...item,
-					order: otherList.length,
-					state: 1,
-				});
-			}
-		}
-	});
-
-	otherList.push({
-		order: otherList.length,
-		state: 3,
-	});
 };
 
 const addDetail = async (fullList: AttachmentData[]) => {
