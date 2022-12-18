@@ -227,7 +227,7 @@
 			</div>
 			<div class="flex py-16px">
 				<div class="w-2/3">
-					<div>{{$t("地址") }}</div>
+					<div>{{ $t("地址") }}</div>
 					<div>
 						<InputText
 							class="w-[80%] h-36px !mt-4px"
@@ -246,7 +246,7 @@
 					</div>
 				</div>
 				<div class="w-1/3">
-					<div>{{$t("郵遞區號") }}</div>
+					<div>{{ $t("郵遞區號") }}</div>
 					<div>
 						<InputText
 							class="w-[70%] h-36px !mt-4px"
@@ -441,15 +441,12 @@ const applicantAuth = useRecruitmentApplicantAuthStore();
 const api = new RecruitmentApplicantAPI(applicantAuth);
 const project = useProjectIdStore();
 
-
 const toast = useToast();
 const applicantStore = useUserInfoStore();
 const applicantInfo: RecruitmentApplicantAuthResponse = toRaw(
 	applicantStore.userInfo
 );
 const email = ref(applicantInfo.email);
-
-const requiredInputFields = ref("");
 
 const requiredInputFields = ref("");
 
