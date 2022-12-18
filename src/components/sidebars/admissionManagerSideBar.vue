@@ -286,7 +286,7 @@
 							{{ $t("管理端帳戶") }}
 						</div>
 						<div class="text-16px mt-4px ml-8px tracking-wider">
-							{{ adminInfo.name }}
+							{{ $t("系辦主管") }}
 						</div>
 					</div>
 				</div>
@@ -422,7 +422,7 @@
 							{{ $t("管理端帳戶") }}
 						</div>
 						<div class="text-16px mt-4px ml-8px tracking-wider">
-							{{ adminInfo.name }}
+							{{ $t("系辦主管") }}
 						</div>
 					</div>
 				</div>
@@ -470,18 +470,14 @@ import InputText from "primevue/inputtext";
 import { useToast } from "primevue/usetoast";
 import { useRouter } from "vue-router";
 
-import { ref, watchEffect, watch, computed, toRaw } from "vue";
+import { ref, watchEffect, watch, computed } from "vue";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
 
 import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
 import { useGlobalStore } from "@/stores/globalStore";
 
 import { AdmissionAdminAPI } from "@/api/admission/admin/api";
-import {
-	AdmissionAdminProgramListResponse,
-	AdmissionManagerAuthResponse,
-} from "@/api/admission/admin/types";
-import { useUserInfoStore } from "@/stores/AdmissionAdminStore";
+import { AdmissionAdminProgramListResponse } from "@/api/admission/admin/types";
 
 const router = useRouter();
 const toast = useToast();
@@ -490,8 +486,6 @@ const adminAuth = useAdmissionAdminAuthStore();
 const globalStore = useGlobalStore();
 
 const api = new AdmissionAdminAPI(adminAuth);
-const adminStore = useUserInfoStore();
-const adminInfo: AdmissionManagerAuthResponse = toRaw(adminStore.userInfo);
 
 const programData = useMutation(async (newProgramData: any) => {
 	return await api.addNewProgram(newProgramData);
