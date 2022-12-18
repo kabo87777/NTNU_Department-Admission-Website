@@ -80,12 +80,6 @@ const visible = computed({
 		return props.show;
 	},
 	set(state: boolean) {
-		if (state === true) {
-			// Reset form on open
-			data.value.name = "";
-			data.value.email = "";
-			isSubmitted.value = false;
-		}
 		emit("update:show", state);
 	},
 });
@@ -107,13 +101,19 @@ const v$ = useVuelidate(
 
 const close = () => {
 	visible.value = false;
+	// Reset form on close
+	data.value.name = "";
+	data.value.email = "";
+	isSubmitted.value = false;
 };
 
 const isSubmitted = ref(false);
 const submit = () => {
 	isSubmitted.value = true;
 	if (v$.value.$invalid === true) return;
-	emit("submit", toRaw(data.value));
+
+	const body = { ...toRaw(data.value) };
+	emit("submit", body);
 	close();
 };
 
