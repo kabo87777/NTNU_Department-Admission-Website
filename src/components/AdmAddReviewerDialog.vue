@@ -67,7 +67,7 @@ import { required, email } from "@vuelidate/validators";
 import Button from "primevue/button";
 import Dialog from "primevue/dialog";
 import InputText from "primevue/inputtext";
-import { ref, reactive, computed } from "vue";
+import { ref, computed, toRaw } from "vue";
 import { useI18n } from "vue-i18n";
 
 const props = defineProps(["show"]);
@@ -77,14 +77,15 @@ const { t: $t } = useI18n();
 
 const visible = computed({
 	get() {
-		// Reset form data on showup
-		if (props.show === true) {
-			(data.value.name = ""), (data.value.email = "");
-			isSubmitted.value = false;
-		}
 		return props.show;
 	},
 	set(state: boolean) {
+		if (state === true) {
+			// Reset form on open
+			data.value.name = "";
+			data.value.email = "";
+			isSubmitted.value = false;
+		}
 		emit("update:show", state);
 	},
 });
@@ -112,7 +113,7 @@ const isSubmitted = ref(false);
 const submit = () => {
 	isSubmitted.value = true;
 	if (v$.value.$invalid === true) return;
-	emit("submit", data.value);
+	emit("submit", toRaw(data.value));
 	close();
 };
 

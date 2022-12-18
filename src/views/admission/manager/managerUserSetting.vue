@@ -63,7 +63,7 @@
 							<ul class="list-disc list-inside mt-2">
 								<li
 									v-for="item in pwdHints"
-									key="item"
+									:key="item"
 									:class="
 										locale === 'zh'
 											? 'leading-1.85rem'
