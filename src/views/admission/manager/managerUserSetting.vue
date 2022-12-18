@@ -7,10 +7,10 @@
 
 		<div class="mt-8px px-12px py-24px">
 			<div class="text-[20px] font-[350]">
-				{{ $t("帳號名稱") }}：{{ adminInfo.name }}
+				{{ $t("帳號名稱") }}：{{ userId }}
 			</div>
 			<div class="mt-36px text-[20px] font-[350]">
-				{{ $t("聯絡信箱") }}：{{ adminInfo.email }}
+				{{ $t("聯絡信箱") }}：{{ email }}
 			</div>
 			<!-- <div class="mt-20px">{{ $t("手機號碼") }}：{{ phone }}</div> -->
 		</div>
@@ -41,26 +41,13 @@
 				<div class="w-[50%]">
 					<div>{{ $t("設定新密碼") }}{{ $t(":") }}</div>
 					<div>
-						<Password
+						<InputText
 							class="w-[70%] h-40px !mt-4px"
 							id="newPass"
+							type="password"
 							v-model="password.newPass"
 							aria-describedby="newPass-help"
-						>
-							<template #footer>
-								<Divider />
-								<p class="mt-2">{{ $t("必須") }}</p>
-								<ul
-									class="pl-2 ml-2 mt-0"
-									style="line-height: 1.5"
-								>
-									<li>{{ $t("至少一個大寫字母") }}</li>
-									<li>{{ $t("至少一個小寫字母") }}</li>
-									<li>{{ $t("至少需要一個數字") }}</li>
-									<li>{{ $t("最短長度為8個字") }}</li>
-								</ul>
-							</template>
-						</Password>
+						/>
 					</div>
 					<div class="absolute" v-if="password.isNewPassBlank">
 						<small id="newPass-help" class="p-error">
@@ -100,22 +87,20 @@
 <script setup lang="ts">
 import Button from "primevue/button";
 import InputText from "primevue/inputtext";
-import Password from "primevue/password";
 import { ref, reactive, toRaw } from "vue";
 import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
 import { AdmissionAdminAPI } from "@/api/admission/admin/api";
 import { InvalidSessionError } from "@/api/error";
 import { useToast } from "primevue/usetoast";
 import ParagraphDivider from "@/styles/paragraphDividerApplicant.vue";
-import { AdmissionManagerAuthResponse } from "@/api/admission/admin/types";
-import { useUserInfoStore } from "@/stores/AdmissionAdminStore";
 
 const toast = useToast();
+const userId = ref("系辦主管");
+const email = ref("csie_office@ntnu.edu.tw");
+const phone = ref("0912345678");
 const adminAuth = useAdmissionAdminAuthStore();
-const adminStore = useUserInfoStore();
 const api = new AdmissionAdminAPI(adminAuth);
-const adminInfo: AdmissionManagerAuthResponse = toRaw(adminStore.userInfo);
-// console.log("name: ",adminInfo.name,"username: ",adminInfo.username);
+
 const initialPassValue = {
 	isCurrentPassBlank: false,
 	isNewPassBlank: false,

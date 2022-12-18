@@ -695,3 +695,11 @@ watch(
 	}
 );
 </script>
+
+<!-- v-if="requiredInputFields.includes('姓名資訊')" -->
+<!-- v-if="requiredInputFields.includes('入學身份')" -->
+<!-- v-if="requiredInputFields.includes('現居地址')" -->
+<!-- v-if="requiredInputFields.includes('身份資料')" -->
+<!-- v-if="requiredInputFields.includes('聯絡方式')" -->
+<!-- 可參考第十行怎麽使用 -->
+<!-- paragraph divider 也要記得做判斷 -->

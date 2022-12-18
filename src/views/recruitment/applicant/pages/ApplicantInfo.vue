@@ -451,6 +451,8 @@ const email = ref(applicantInfo.email);
 
 const requiredInputFields = ref("");
 
+const requiredInputFields = ref("");
+
 let fetchResponse = reactive({
 	success: false,
 	message: "" as string | [],
