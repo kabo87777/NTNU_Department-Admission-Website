@@ -163,7 +163,8 @@ export class AdmissionReviewerAPI extends GenericAPI {
 		applicantID: string | string[]
 	): Promise<string> {
 		return await this.instance.get(
-			`/admission/reviewer/applicant/${applicantID}/get_category_file`
+			`/admission/reviewer/applicant/${applicantID}/get_category_file`,
+			{ params: { category: "file" } }
 		);
 	}
 
