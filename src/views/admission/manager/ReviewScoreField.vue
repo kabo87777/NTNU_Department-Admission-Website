@@ -767,6 +767,7 @@ async function saveChange() {
 		life: 3000,
 	});
 	wrongScore.docsScore = false;
+	wrongScore.oralScore = false;
 }
 
 // ButtonFn: Discard Changes and Update Data
