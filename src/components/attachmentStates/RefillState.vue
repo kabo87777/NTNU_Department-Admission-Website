@@ -58,33 +58,103 @@
 			<div class="text-20px font-bold">{{ $t("請上傳補交文件") }}</div>
 			<div v-if="fileName === ''" class="mt-16px" style="width: 85%">
 				<FileUpload
-					style="
-						background-color: #bdbdbd;
-						color: black;
-						border: #bdbdbd;
-					"
-					:chooseLabel="$t('選擇檔案')"
-					mode="basic"
 					:customUpload="true"
 					@uploader="onUpload"
 					:maxFileSize="5000000"
 					:fileLimit="1"
 					accept=".pdf"
 				>
+					<template
+						#header="{
+							chooseCallback,
+							uploadCallback,
+							clearCallback,
+						}"
+					>
+						<div class="flex gap-2">
+							<Button
+								class="p-button-secondary"
+								style="
+									background-color: #bdbdbd;
+									color: black;
+									border: #bdbdbd;
+								"
+								icon="pi pi-file"
+								:label="$t('選擇檔案')"
+								@click="chooseCallback()"
+							/>
+							<Button
+								class="p-button-secondary"
+								style="
+									background-color: #bdbdbd;
+									color: black;
+									border: #bdbdbd;
+								"
+								icon="pi pi-cloud-upload"
+								:label="$t('上傳')"
+								@click="uploadCallback"
+							/>
+							<Button
+								class="p-button-secondary"
+								style="
+									background-color: #bdbdbd;
+									color: black;
+									border: #bdbdbd;
+								"
+								icon="pi pi-times-circle"
+								:label="$t('取消')"
+								@click="clearCallback"
+							/>
+						</div>
+					</template>
+					<template #content="{ files }">
+						<div v-if="files.length">
+							<div class="flex flex-wrap sm:p-5 gap-5">
+								<div
+									class="flex"
+									v-for="file of files"
+									:key="file.name + file.type + file.size"
+								>
+									<img
+										src="/assets/pdf_icon.png"
+										alt="pdf"
+										style="width: 50px"
+									/>
+									<div class="ml-8px">
+										<span class="font-semibold">{{
+											file.name
+										}}</span>
+										<div>{{ formatSize(file.size) }}</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</template>
+					<template #empty>
+						<div>{{ $t("請上傳檔案") }}</div>
+					</template>
 				</FileUpload>
 			</div>
-			<Button
-				v-else
-				style="
-					background-color: #bdbdbd;
-					color: black;
-					border: #bdbdbd;
-					margin-top: 16px;
-				"
-				disabled
-			>
-				{{ fileName }}
-			</Button>
+			<div v-else>
+				<Button
+					style="
+						background-color: #bdbdbd;
+						color: black;
+						border: #bdbdbd;
+						margin-top: 16px;
+					"
+					disabled
+				>
+					{{ fileName }}
+				</Button>
+				<Button
+					icon="pi pi-times"
+					style="border: none; margin-left: 8px"
+					class="p-button-rounded p-button-danger p-button-outlined"
+					v-tooltip.right="t('重新上傳')"
+					@click="removeUploadedFile"
+				/>
+			</div>
 			<p class="mt-16px">{{ $t("onlyPdf") }}</p>
 		</div>
 		<div
@@ -128,6 +198,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+import { useI18n } from "vue-i18n";
 import Button from "primevue/button";
 import FileUpload, { FileUploadUploaderEvent } from "primevue/fileupload";
 import Dialog from "primevue/dialog";
@@ -135,6 +206,8 @@ import "primeicons/primeicons.css";
 
 const props = defineProps(["identity", "order", "isUploadLoading"]);
 const emit = defineEmits(["cancel", "upload"]);
+
+const { t } = useI18n();
 
 const isModalVisible = ref(false);
 const formData = new FormData();
@@ -150,12 +223,30 @@ const dynamicClass = (): string => {
 	return "";
 };
 
+const formatSize = (bytes: number) => {
+	if (bytes === 0) {
+		return "0 B";
+	}
+
+	let k = 1000,
+		dm = 3,
+		sizes = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"],
+		i = Math.floor(Math.log(bytes) / Math.log(k));
+
+	return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
+};
+
 const onUpload = (event: FileUploadUploaderEvent) => {
 	const uploadedFile = Array.isArray(event.files)
 		? event.files[0]
 		: event.files;
 	formData.append("filepath", uploadedFile);
 	fileName.value = uploadedFile.name;
+};
+
+const removeUploadedFile = () => {
+	fileName.value = "";
+	formData.delete("filepath");
 };
 
 const handleCancel = () => {

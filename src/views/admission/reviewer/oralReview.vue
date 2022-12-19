@@ -436,7 +436,6 @@ const selectedData = ref();
 const router = useRouter();
 const onRowSelect = (event: any) => {
 	if (event.data.oral_order) {
-		selectedData.value = "";
 		router.push("/admission/reviewer/singleOralReview/" + event.data.id);
 	}
 	// else{

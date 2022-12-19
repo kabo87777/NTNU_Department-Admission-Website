@@ -96,7 +96,6 @@ import { RecruitmentApplicantAuthResponse } from "@/api/recruitment/applicant/ty
 import { RecruitmentApplicantAPI } from "@/api/recruitment/applicant/api";
 import ParagraphDivider from "@/styles/paragraphDividerApplicant.vue";
 import { useUserInfoStore } from "@/stores/RecruitmentApplicantStore";
-import { InvalidSessionError } from "@/api/error";
 import { useToast } from "primevue/usetoast";
 import InputText from "primevue/inputtext";
 import Button from "primevue/button";
