@@ -202,6 +202,8 @@ let fetchResponse = reactive({
 	message: "" as string | [],
 });
 
+const requiredInputFields = ref("");
+
 const editToReview = (index: number, category: string) => {
 	switch (category) {
 		case "就學經歷":

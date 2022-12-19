@@ -255,7 +255,7 @@ watch(
 	async () => {
 		clearAllList();
 
-		const res = await getFileList();
+		const res = await api.getFileList(project.project.pid);
 
 		if (res) attachmentList = [...attachmentList, ...res];
 		isLoading.fetch = false;
