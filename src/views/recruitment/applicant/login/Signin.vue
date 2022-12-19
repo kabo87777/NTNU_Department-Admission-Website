@@ -1,7 +1,7 @@
 <template>
 	<!-- Return Button -->
 	<router-link :to="{ name: 'RecruitmentSignin' }">
-		<NButton type="White" size="sm" icon="pi pi-angle-left" p="2" my="6">
+		<NButton white size="sm" icon="pi pi-angle-left" p="2" my="6">
 			切換登入身份 Change your identity
 		</NButton>
 	</router-link>
@@ -87,13 +87,13 @@
 				<!-- Forget Password Button -->
 				<div flex="~" w="full" justify="center">
 					<router-link to="/recruitment/applicant/regist">
-						<NButton p="2" size="sm" type="White">
+						<NButton p="2" size="sm" white>
 							註冊 Register
 						</NButton>
 					</router-link>
 					<Divider layout="vertical" />
 					<router-link to="/recruitment/applicant/forgetpassword">
-						<NButton p="2" size="sm" type="White">
+						<NButton p="2" size="sm" white>
 							忘記密碼 Forget Password
 						</NButton>
 					</router-link>

@@ -1,7 +1,7 @@
 <template>
 	<button
 		v-bind="$attrs"
-		class="flex justify-center items-center gap-2 p-4"
+		class="flex justify-center items-center p-4"
 		:class="btnState"
 		:text="btnText"
 		border="rounded-lg"
@@ -10,7 +10,7 @@
 			v-if="btnIcon.show"
 			:class="btnIcon.type"
 			:style="btnIcon.size"
-			mt="0.5"
+			m="r-2 t-0.5"
 		/>
 		<slot />
 	</button>
