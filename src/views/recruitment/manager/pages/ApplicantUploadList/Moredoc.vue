@@ -60,36 +60,6 @@
 		</div>
 		<div class="flex mt-16px">
 			<div class="w-1/3 pl-16px">
-				<div>{{ $t("類別") }}:</div>
-				<div class="mt-8px">
-					<Dropdown
-						class="h-10 w-240px"
-						v-model="docInfo.category"
-						placeholder="請選擇類別"
-						:options="categoryOptions"
-						optionLabel="name"
-						optionValue="name"
-					>
-						<template #value="slotProps">
-							<div v-if="slotProps.value" class="mt-[-6px]">
-								{{ slotProps.value }}
-							</div>
-							<div v-else class="mt-[-6px]">
-								{{ $t(slotProps.placeholder) }}
-							</div>
-						</template>
-						<template #option="slotProps">
-							<div class="mt-[-6px] h-12px">
-								{{ $t(slotProps.option.name) }}
-							</div>
-						</template>
-					</Dropdown>
-				</div>
-				<div v-show="showRequire.category" class="absolute">
-					<small class="p-error">{{ $t("此為必填欄位") }}</small>
-				</div>
-			</div>
-			<div class="w-1/3 pl-16px">
 				<div>{{ $t("文件名稱") }}:</div>
 				<div class="mt-8px">
 					<InputText
@@ -324,9 +294,9 @@ async function handleSaveChange() {
 
 	const body = {
 		isMoredoc: activeTab.value.value,
-		moredoc_start_date: new Date(date.start),
-		moredoc_end_date: new Date(date.end),
-		moredoc_category: docInfo.category,
+		moredoc_start_date: addHours(8, new Date(date.start)),
+		moredoc_end_date: addHours(8, new Date(date.end)),
+		moredoc_category: "其他有利於審查資料",
 		moredoc_name: docInfo.name,
 	};
 
