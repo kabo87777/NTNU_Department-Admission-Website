@@ -281,4 +281,27 @@ export class RecruitmentAdminAPI extends GenericAPI {
 			message: data.message,
 		};
 	}
+
+	async addApplicantToReviewer(programID: number, body: any): Promise<any> {
+		const data: APIGenericResponse = await this.instance.post(
+			`/recruitment/admin/program/${programID}/addreviewer`,
+			body
+		);
+
+		if (data.error === true)
+			throw new Error("Failed to add applicant to reviewer");
+	}
+
+	async deleteApplicantFromReviewer(
+		programID: number,
+		body: any
+	): Promise<any> {
+		const data: APIGenericResponse = await this.instance.delete(
+			`/recruitment/admin/program/${programID}/deletereviewer`,
+			{ data: body }
+		);
+
+		if (data.error === true && !data.data.errors)
+			throw new Error("Failed to delete applicant from reviewer");
+	}
 }
