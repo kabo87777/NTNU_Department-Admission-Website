@@ -27,7 +27,7 @@
 					v-model="email"
 				>
 					<div flex="~ col gap-1">
-						<div text="sm body">電郵地址 E-mail</div>
+						<div text="sm body">電子郵件 Email</div>
 						<InputText
 							v-bind="field"
 							name="email"
@@ -38,7 +38,7 @@
 							required
 						/>
 						<div v-if="errorMessage" text="sm danger">
-							※ 電郵地址不可為空白 E-mail Required
+							※ 電子郵件不可為空白 Email Required
 						</div>
 					</div>
 				</Field>
@@ -206,8 +206,8 @@ const onSubmit = handleSubmit(async function (values) {
 			return toast.add({
 				severity: "error",
 				group: "loginFailure",
-				summary: "「電郵地址」或「密碼」",
-				detail: "E-mail and Password",
+				summary: "「電子郵件」或「密碼」",
+				detail: "Email and Password",
 				closable: false,
 				life: 3000,
 			});
