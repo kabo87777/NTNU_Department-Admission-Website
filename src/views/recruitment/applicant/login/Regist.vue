@@ -156,8 +156,7 @@ let userRegistData = reactive({
 	email: "",
 	password: "",
 	password_confirmation: "",
-	confirm_success_url:
-		"https://admissions-frontend-staging.birkhoff.me/recruitment/applicant/signin",
+	confirm_success_url: "http://127.0.0.1:5173/recruitment/applicant/signin",
 });
 
 let password = reactive({
