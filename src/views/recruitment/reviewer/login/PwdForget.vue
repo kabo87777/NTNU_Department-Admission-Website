@@ -99,7 +99,7 @@ const changeState = () => {
 const enterEmail = async () => {
 	try {
 		const redirectUrl =
-			"https://admissions-frontend-staging.birkhoff.me/recruitment/reviewer/password/reset";
+			"http://127.0.0.1:5173/recruitment/reviewer/password/reset";
 		const turnstileResponse = consumeTurnstileToken();
 		if (!turnstileResponse) throw new Error("Turnstile challenge failed");
 		const api = new RecruitmentReviewerAPI(authStore);

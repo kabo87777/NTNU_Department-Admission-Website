@@ -73,7 +73,7 @@ const tabs = ref([
 ]);
 
 const { data } = useQuery(
-	["adminApplicantBasicInfo"],
+	["adminApplicantUploadDocBasicInfo"],
 	async () => {
 		return await api.getApplicantBasicInfo(Number(route.params.userId));
 	},
