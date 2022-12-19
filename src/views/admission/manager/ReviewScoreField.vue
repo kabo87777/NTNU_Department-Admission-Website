@@ -23,72 +23,27 @@
 			<!-- Phase 1 - item 1 -->
 			<div class="flex content-center gap-6">
 				<InputText class="!w-300px" v-model="docsScore[1].name" />
-				<InputNumber
-					name="number"
-					v-model="docsScore[1].weight"
-					class="!w-200px"
-					:class="{ 'p-invalid': wrongScore.docsScore }"
-					required
-				/>
-				<div text="xs danger" v-if="wrongScore.docsScore">
-					※ 分數比例輸入錯誤，需要加總等於100
-				</div>
+				<InputNumber class="!w-200px" v-model="docsScore[1].weight" />
 			</div>
 			<!-- Phase 1 - item 2 -->
 			<div class="flex content-center gap-6">
 				<InputText class="!w-300px" v-model="docsScore[2].name" />
-				<InputNumber
-					name="number"
-					v-model="docsScore[2].weight"
-					class="!w-200px"
-					:class="{ 'p-invalid': wrongScore.docsScore }"
-					required
-				/>
-				<div text="xs danger" v-if="wrongScore.docsScore">
-					※ 分數比例輸入錯誤，需要加總等於100
-				</div>
+				<InputNumber class="!w-200px" v-model="docsScore[2].weight" />
 			</div>
 			<!-- Phase 1 - item 3 -->
 			<div class="flex content-center gap-6">
 				<InputText class="!w-300px" v-model="docsScore[3].name" />
-				<InputNumber
-					name="number"
-					v-model="docsScore[3].weight"
-					class="!w-200px"
-					:class="{ 'p-invalid': wrongScore.docsScore }"
-					required
-				/>
-				<div text="xs danger" v-if="wrongScore.docsScore">
-					※ 分數比例輸入錯誤，需要加總等於100
-				</div>
+				<InputNumber class="!w-200px" v-model="docsScore[3].weight" />
 			</div>
 			<!-- Phase 1 - item 4 -->
 			<div class="flex content-center gap-6">
 				<InputText class="!w-300px" v-model="docsScore[4].name" />
-				<InputNumber
-					name="number"
-					v-model="docsScore[4].weight"
-					class="!w-200px"
-					:class="{ 'p-invalid': wrongScore.docsScore }"
-					required
-				/>
-				<div text="xs danger" v-if="wrongScore.docsScore">
-					※ 分數比例輸入錯誤，需要加總等於100
-				</div>
+				<InputNumber class="!w-200px" v-model="docsScore[4].weight" />
 			</div>
 			<!-- Phase 1 - item 5 -->
 			<div class="flex content-center gap-6">
 				<InputText class="!w-300px" v-model="docsScore[5].name" />
-				<InputNumber
-					name="number"
-					v-model="docsScore[5].weight"
-					class="!w-200px"
-					:class="{ 'p-invalid': wrongScore.docsScore }"
-					required
-				/>
-				<div text="xs danger" v-if="wrongScore.docsScore">
-					※ 分數比例輸入錯誤，需要加總等於100
-				</div>
+				<InputNumber class="!w-200px" v-model="docsScore[5].weight" />
 			</div>
 		</div>
 		<ParagraphDivider />
@@ -108,72 +63,27 @@
 			<!-- Phase 2 - item 1 -->
 			<div class="flex content-center gap-6">
 				<InputText class="!w-300px" v-model="oralScore[1].name" />
-				<InputNumber
-					name="number"
-					v-model="oralScore[1].weight"
-					class="!w-200px"
-					:class="{ 'p-invalid': wrongScore.oralScore }"
-					required
-				/>
-				<div text="xs danger" v-if="wrongScore.oralScore">
-					※ 分數比例輸入錯誤，需要加總等於100
-				</div>
+				<InputNumber class="!w-200px" v-model="oralScore[1].weight" />
 			</div>
 			<!-- Phase 2 - item 2 -->
 			<div class="flex content-center gap-6">
 				<InputText class="!w-300px" v-model="oralScore[2].name" />
-				<InputNumber
-					name="number"
-					v-model="oralScore[2].weight"
-					class="!w-200px"
-					:class="{ 'p-invalid': wrongScore.oralScore }"
-					required
-				/>
-				<div text="xs danger" v-if="wrongScore.oralScore">
-					※ 分數比例輸入錯誤，需要加總等於100
-				</div>
+				<InputNumber class="!w-200px" v-model="oralScore[2].weight" />
 			</div>
 			<!-- Phase 2 - item 3 -->
 			<div class="flex content-center gap-6">
 				<InputText class="!w-300px" v-model="oralScore[3].name" />
-				<InputNumber
-					name="number"
-					v-model="oralScore[3].weight"
-					class="!w-200px"
-					:class="{ 'p-invalid': wrongScore.oralScore }"
-					required
-				/>
-				<div text="xs danger" v-if="wrongScore.oralScore">
-					※ 分數比例輸入錯誤，需要加總等於100
-				</div>
+				<InputNumber class="!w-200px" v-model="oralScore[3].weight" />
 			</div>
 			<!-- Phase 2 - item 4 -->
 			<div class="flex content-center gap-6">
 				<InputText class="!w-300px" v-model="oralScore[4].name" />
-				<InputNumber
-					name="number"
-					v-model="oralScore[4].weight"
-					class="!w-200px"
-					:class="{ 'p-invalid': wrongScore.oralScore }"
-					required
-				/>
-				<div text="xs danger" v-if="wrongScore.oralScore">
-					※ 分數比例輸入錯誤，需要加總等於100
-				</div>
+				<InputNumber class="!w-200px" v-model="oralScore[4].weight" />
 			</div>
 			<!-- Phase 2 - item 5 -->
 			<div class="flex content-center gap-6">
 				<InputText class="!w-300px" v-model="oralScore[5].name" />
-				<InputNumber
-					name="number"
-					v-model="oralScore[5].weight"
-					class="!w-200px"
-					:class="{ 'p-invalid': wrongScore.oralScore }"
-					required
-				/>
-				<div text="xs danger" v-if="wrongScore.oralScore">
-					※ 分數比例輸入錯誤，需要加總等於100
-				</div>
+				<InputNumber class="!w-200px" v-model="oralScore[5].weight" />
 			</div>
 		</div>
 		<ParagraphDivider />
@@ -650,14 +560,10 @@ const patchInfoFileField = useMutation(
 		},
 	}
 );
-let wrongScore = reactive({
-	docsScore: false,
-	oralScore: false,
-});
+
 // ButtonFn: Save Changes and Patch Data
 async function saveChange() {
 	// Adjust and Check correctness of Data
-
 	try {
 		let docsSum = 0;
 		docsScore.forEach((element) => {
@@ -671,9 +577,15 @@ async function saveChange() {
 			if (element.index) docsSum += element.weight;
 		});
 		if (docsSum !== 100) {
-			wrongScore.docsScore = true;
+			toast.add({
+				severity: "error",
+				summary:
+					"第一階段 (書面審查)評分項目比例需要加總等於100 The ratio of scoring items in the first stage (Docs review) needs to add up to 100",
+				life: 3000,
+			});
 			throw { object: docsScore, message: "Invalid Sum" };
 		}
+
 		let oralSum = 0;
 		oralScore.forEach((element) => {
 			if (element.name === null && element.weight > 0)
@@ -686,7 +598,12 @@ async function saveChange() {
 			if (element.index) oralSum += element.weight;
 		});
 		if (oralSum !== 100) {
-			wrongScore.oralScore = true;
+			toast.add({
+				severity: "error",
+				summary:
+					"第二階段 (口試審查)評分項目比例需要加總等於100 The ratio of the scoring items in the second stage (oral test review) needs to add up to 100",
+				life: 3000,
+			});
 			throw { object: oralScore, message: "Invalid Sum" };
 		}
 	} catch (e: any) {
@@ -766,8 +683,6 @@ async function saveChange() {
 		summary: trans.changeSuccess.value,
 		life: 3000,
 	});
-	wrongScore.docsScore = false;
-	wrongScore.oralScore = false;
 }
 
 // ButtonFn: Discard Changes and Update Data
