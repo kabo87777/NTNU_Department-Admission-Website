@@ -87,9 +87,7 @@
 				<!-- Forget Password Button -->
 				<div flex="~" w="full" justify="center">
 					<router-link to="/recruitment/applicant/regist">
-						<NButton p="2" size="sm" white>
-							註冊 Register
-						</NButton>
+						<NButton p="2" size="sm" white> 註冊 Register </NButton>
 					</router-link>
 					<Divider layout="vertical" />
 					<router-link to="/recruitment/applicant/forgetpassword">
