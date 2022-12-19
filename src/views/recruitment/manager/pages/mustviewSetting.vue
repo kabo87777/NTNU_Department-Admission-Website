@@ -13,7 +13,7 @@
 			class="!w-200px"
 		>
 			<Column selectionMode="multiple" headerStyle="width: 3em"></Column>
-			<Column field="name" header="name"></Column>
+			<Column field="name" :header="name"></Column>
 		</DataTable>
 		<DataTable
 			:value="applicantList2"
@@ -23,7 +23,7 @@
 			class="!w-200px"
 		>
 			<Column selectionMode="multiple" headerStyle="width: 3em"></Column>
-			<Column field="name" header="name"></Column>
+			<Column field="name" :header="name"></Column>
 		</DataTable>
 		<DataTable
 			:value="applicantList3"
@@ -33,7 +33,7 @@
 			class="!w-200px"
 		>
 			<Column selectionMode="multiple" headerStyle="width: 3em"></Column>
-			<Column field="name" header="name"></Column>
+			<Column field="name" :header="name"></Column>
 		</DataTable>
 	</div>
 	<div class="bigRedDivider"></div>
@@ -72,7 +72,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onUpdated } from "vue";
+import { ref, onUpdated, computed } from "vue";
 import { useToast } from "primevue/usetoast";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
@@ -97,6 +97,7 @@ const adminAuth = useRecruitmentAdminAuthStore();
 
 const api = new RecruitmentAdminAPI(adminAuth);
 const { t: $t } = useI18n();
+const { t } = useI18n();
 
 const selectedApplicant1 = ref();
 const selectedApplicant2 = ref();
@@ -116,6 +117,8 @@ interface Relation {
 const allRelations = ref<Relation[]>([]);
 const deleteRelations = ref<Relation[]>([]);
 const message = ref<string>("");
+
+const name = computed(() => t("申請人姓名"));
 
 useQuery(
 	["RAdminApplicantList"],
