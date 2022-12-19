@@ -162,7 +162,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, toRaw, watch } from "vue";
+import { ref, reactive, toRaw, watch, onMounted } from "vue";
 import { useToast } from "primevue/usetoast";
 
 import ReviewState from "@/components/attachmentStates/reviewState.vue";
@@ -415,28 +415,34 @@ const clearAllList = () => {
 };
 
 useQuery(
-	["admApplicantGetAttachtmentList"],
+	["getAdmApplicantProgramInfo_2"],
 	async () => {
-		return await api.getFileList();
+		return await api.getProgram();
 	},
 	{
 		onSuccess: (data) => {
-			attachmentList = [...attachmentList, ...data];
-
-			splitThreeList(toRaw(attachmentList));
+			requiredInputFields.value = data.applicant_required_file;
 		},
 
 		onError: (data) => {
 			toast.add({
 				severity: "error",
 				summary: "Error",
-				detail: "Unable to fetch attachment list",
+				detail: "Unable to fetch user require input",
 				life: 5000,
 			});
 			console.log(data);
 		},
 	}
 );
+
+onMounted(async () => {
+	const res = await api.getFileList();
+
+	clearAllList();
+	attachmentList = [...attachmentList, ...res];
+	splitThreeList(toRaw(attachmentList));
+});
 
 watch(
 	() => isLoading.fetch,
