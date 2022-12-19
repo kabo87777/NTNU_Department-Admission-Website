@@ -10,7 +10,6 @@
 			v-if="btnIcon.show"
 			:class="btnIcon.type"
 			:style="btnIcon.size"
-			m="r-2 t-0.5"
 		/>
 		<slot />
 	</button>
@@ -103,7 +102,7 @@ const btnText = computed(() => props.size);
 const btnIcon = computed(() => {
 	const show = props.size ? true : false;
 	const size = iconSize(props.size);
-	const type = props.icon;
+	const type = props.icon ? props.icon + " mr-2 mt-0.5" : null;
 	return { show, size, type };
 });
 
