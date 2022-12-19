@@ -235,6 +235,11 @@ const batchDeleteRelation = useMutation(
 	}
 );
 
+store.$subscribe(() => {
+	queryClient.invalidateQueries({ queryKey: ["RAdminApplicantList"] });
+	queryClient.invalidateQueries({ queryKey: ["RAdminReviewerList"] });
+});
+
 function save() {
 	allSelectedApplicants.value = [];
 	allRelations.value = [];
