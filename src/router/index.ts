@@ -50,7 +50,7 @@ const routes: Array<RouteRecordRaw> = [
 				path: "admission/applicant/forgetPassword",
 				name: "AdmissionApplicantForgetPassword",
 				component: () =>
-				import("@/views/admission/applicant/login/PwdForget.vue"),
+					import("@/views/admission/applicant/login/PwdForget.vue"),
 			},
 			// Admission - Reviewer
 			{
