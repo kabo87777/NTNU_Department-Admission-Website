@@ -97,7 +97,9 @@
 						:feedback="false"
 					/>
 					<small class="p-error block" v-if="isInvalid('confirm')">{{
-						$t("兩者不符")
+						v$.confirm.required.$invalid
+							? $t("此為必填欄位")
+							: $t("兩者不符")
 					}}</small>
 				</div>
 			</div>
@@ -168,6 +170,7 @@ const rules = computed(() => {
 		new: { pwdRegex, required },
 		confirm: {
 			sameAsNew: sameAs(password.value.new),
+			required: required,
 		},
 	};
 });
@@ -227,7 +230,6 @@ const { mutate: doChangePassword } = useMutation({
 
 const handleSubmit = () => {
 	isSubmitted.value = true;
-
 	if (v$.value.$invalid === false) {
 		const raw = password.value;
 		const data = {
