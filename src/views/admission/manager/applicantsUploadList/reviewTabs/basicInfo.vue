@@ -171,8 +171,9 @@ const props = defineProps(["userId"]);
 const userInfo = ref<AdmAdminGetApplicantInfo>();
 
 const { data } = useQuery(
-	["adminApplicantBasicInfo"],
+	["adminApplicantUploadBasicInfo"],
 	async () => {
+		console.log(props.userId);
 		return await api.getApplicantBasicInfo(props.userId);
 	},
 	{
