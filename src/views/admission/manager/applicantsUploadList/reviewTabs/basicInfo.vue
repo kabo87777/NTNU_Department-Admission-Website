@@ -172,6 +172,7 @@ const userInfo = ref<AdmAdminGetApplicantInfo>();
 useQuery(
 	["adminApplicantBasicInfo"],
 	async () => {
+		console.log(props.userId);
 		return await api.getApplicantBasicInfo(props.userId);
 	},
 	{

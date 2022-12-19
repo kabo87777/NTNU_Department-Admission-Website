@@ -8,7 +8,7 @@
 		<template #Chinese>招生系統</template>
 		<template #English>NTNU CSIE Admissions System</template>
 		<template #Divider>
-			<div text="pApplicant">申請者重設密碼 Reset Password</div>
+			<div text="pApplicant">申請者設置帳號 Setting Account</div>
 		</template>
 	</Title>
 	<!-- Body -->
@@ -51,7 +51,7 @@
 				class="w-3/5 p-2 m-auto"
 				type="Applicant"
 				size="lg"
-				:loading="isChangePassLoading"
+				:loading="isSettingPassLoading"
 				@click="onSubmit()"
 			>
 				提交 Submit
@@ -76,8 +76,8 @@ const toast = useToast();
 const router = useRouter();
 const applicantAuth = useAdmissionApplicantAuthStore();
 const api = new AdmissionApplicantAPI(applicantAuth);
-const isChangePassLoading = ref(false);
-let changePassRes = reactive({
+const isSettingPassLoading = ref(false);
+let settingPassRes = reactive({
 	success: false,
 	message: "" as string | [],
 });
@@ -115,7 +115,7 @@ const onSubmit = async () => {
 	password.notMatch = password.newPass !== password.confirmPass;
 
 	if (!password.notMatch) {
-		isChangePassLoading.value = true;
+		isSettingPassLoading.value = true;
 
 		const body: universalAuthResetPwdData = {
 			password: password.newPass,
@@ -125,17 +125,17 @@ const onSubmit = async () => {
 		const res = await putResetPassword(body);
 
 		if (res?.error === false && res?.message !== undefined) {
-			changePassRes.success = toRaw(!res.error);
-			changePassRes.message = toRaw(res.message);
+			settingPassRes.success = toRaw(!res.error);
+			settingPassRes.message = toRaw(res.message);
 		}
 
-		isChangePassLoading.value = false;
+		isSettingPassLoading.value = false;
 
-		if (changePassRes.success) {
+		if (settingPassRes.success) {
 			toast.add({
 				severity: "success",
 				summary: "Success",
-				detail: "變更密碼成功 ! (3 秒後為您導向登入畫面)。",
+				detail: "設定密碼成功 ! (3 秒後為您導向登入畫面)。",
 				life: 3000,
 			});
 
@@ -150,7 +150,9 @@ const onSubmit = async () => {
 			toast.add({
 				severity: "error",
 				summary: "Error",
-				detail: changePassRes.message[changePassRes.message.length - 1],
+				detail: settingPassRes.message[
+					settingPassRes.message.length - 1
+				],
 				life: 5000,
 			});
 		}
