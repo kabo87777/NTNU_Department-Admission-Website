@@ -261,7 +261,6 @@ import Textarea from "primevue/textarea";
 import Calendar from "primevue/calendar";
 import Button from "primevue/button";
 import { RecruitmentApplicantAuthResponse } from "@/api/recruitment/applicant/types";
-import { useUserInfoStore } from "@/stores/RecruitmentApplicantStore";
 const applicantAuth = useRecruitmentApplicantAuthStore();
 const applicantStore = useUserInfoStore();
 const api = new RecruitmentApplicantAPI(applicantAuth);
@@ -269,11 +268,9 @@ const project = useProjectIdStore();
 
 const { t } = useI18n();
 const toast = useToast();
-const applicantStore = useUserInfoStore();
 const applicantInfo: RecruitmentApplicantAuthResponse = toRaw(
 	applicantStore.userInfo
 );
-const email = ref(applicantInfo.email);
 
 let fetchResponse = reactive({
 	success: false,

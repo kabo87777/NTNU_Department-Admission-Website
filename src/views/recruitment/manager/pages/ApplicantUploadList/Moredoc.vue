@@ -51,8 +51,6 @@
 			</div>
 		</div>
 
-		<ParagraphDivider />
-
 		<div class="mt-24px">
 			<div>
 				<label class="text-24px font-bold">{{ $t("補件需求") }}</label>
@@ -199,7 +197,6 @@ import {
 	RecruitmentAdminGenericStatusResponse,
 	RecruimentAdminGetApplicantMoredocResponses,
 } from "@/api/recruitment/admin/types";
-import ParagraphDivider from "@/styles/paragraphDivider.vue";
 import { useToast } from "primevue/usetoast";
 import SelectButton from "primevue/selectbutton";
 import InputText from "primevue/inputtext";

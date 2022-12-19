@@ -34,7 +34,6 @@
 				<div v-else>-</div>
 			</div>
 		</div>
-		<ParagraphDivider />
 
 		<div class="mt-24px text-24px font-bold">
 			{{ $t("身分") }}
@@ -70,7 +69,6 @@
 				<div v-else>-</div>
 			</div>
 		</div>
-		<ParagraphDivider />
 
 		<div
 			v-show="userInfo?.isForeigner === false"
@@ -97,7 +95,6 @@
 				<div v-else>-</div>
 			</div>
 		</div>
-		<ParagraphDivider v-show="userInfo?.isForeigner === false" />
 
 		<div class="mt-24px text-24px font-bold">{{ $t("現居地址") }}</div>
 		<div class="admApplicantBasicInfoCard">
@@ -116,7 +113,6 @@
 				<div v-else>-</div>
 			</div>
 		</div>
-		<ParagraphDivider />
 
 		<div class="mt-24px text-24px font-bold">{{ $t("身份資料") }}</div>
 		<div class="admApplicantBasicInfoCard">
@@ -136,7 +132,6 @@
 				<div v-else>-</div>
 			</div>
 		</div>
-		<ParagraphDivider />
 		<div class="mt-24px text-24px font-bold">{{ $t("聯絡方式") }}</div>
 		<div class="admApplicantBasicInfoCard">
 			<div style="color: #333333">
@@ -161,7 +156,6 @@ import { useQuery } from "@tanstack/vue-query";
 import { useGlobalStore } from "@/stores/RecruitmentAdminStore";
 import { InvalidSessionError } from "@/api/error";
 import { RecruitmentAdminApplicantResponse } from "@/api/recruitment/admin/types";
-import ParagraphDivider from "@/styles/paragraphDivider.vue";
 
 const adminAuth = useRecruitmentAdminAuthStore();
 const api = new RecruitmentAdminAPI(adminAuth);

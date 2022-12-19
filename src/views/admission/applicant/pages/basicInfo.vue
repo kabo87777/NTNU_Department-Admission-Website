@@ -13,9 +13,6 @@
 				<div class="text-[24px] font-[50] font-bold">
 					{{ $t("姓名資訊") }}
 				</div>
-				<div class="mt-6px ml-40px text-[#8D9093] text-[14px]">
-					{{ $t('" * " 為必填欄位') }}
-				</div>
 			</div>
 			<div class="flex pt-24px">
 				<div class="w-1/3">
@@ -44,9 +41,7 @@
 			<div class="flex pt-16px">
 				<div class="w-1/3">
 					<div>{{ $t("中文姓氏") }}</div>
-					<div class="mt-4px text-12px text-[#8D9093]">
-						{{ "*" + $t("無則免填") }}
-					</div>
+					<div class="mt-4px text-12px text-[#8D9093]"></div>
 					<div>
 						<InputText
 							class="w-[70%] h-36px !mt-4px"
@@ -58,9 +53,6 @@
 				</div>
 				<div class="w-1/3">
 					<div>{{ $t("中文名字") }}</div>
-					<div class="mt-4px text-12px text-[#8D9093]">
-						{{ "*" + $t("無則免填") }}
-					</div>
 					<div>
 						<InputText
 							class="w-[70%] h-36px !mt-4px"
@@ -73,7 +65,7 @@
 			</div>
 			<div class="flex py-16px">
 				<div class="w-1/3">
-					<div>{{ "*" + $t("英文姓氏") }}</div>
+					<div>{{ $t("英文姓氏") }}</div>
 					<div>
 						<InputText
 							class="w-[70%] h-36px !mt-4px"
@@ -89,7 +81,7 @@
 					</div>
 				</div>
 				<div class="w-1/3">
-					<div>{{ "*" + $t("英文名字") }}</div>
+					<div>{{ $t("英文名字") }}</div>
 					<div>
 						<InputText
 							class="w-[70%] h-36px !mt-4px"
@@ -117,7 +109,6 @@
 				</div>
 			</div>
 		</div>
-		<ParagraphDivider v-if="requiredInputFields.includes('姓名資訊')" />
 		<div
 			class="px-12px py-24px"
 			v-if="requiredInputFields.includes('入學身分')"
@@ -126,13 +117,10 @@
 				<div class="text-[24px] font-[50] font-bold">
 					{{ $t("入學身分") }}
 				</div>
-				<div class="mt-6px ml-40px text-[#8D9093] text-[14px]">
-					{{ $t('" * " 為必填欄位') }}
-				</div>
 			</div>
 			<div class="flex pt-24px">
 				<div class="w-1/3">
-					<div>{{ "*" + $t("入學身分") }}</div>
+					<div>{{ $t("入學身分") }}</div>
 					<div>
 						<Dropdown
 							class="w-[70%] h-36px !mt-4px"
@@ -169,7 +157,7 @@
 				<div>
 					<div class="flex pt-16px">
 						<div class="w-1/3">
-							<div>{{ "*" + $t("國籍") }}</div>
+							<div>{{ $t("國籍") }}</div>
 							<div>
 								<InputText
 									class="w-[70%] h-36px !mt-4px"
@@ -188,7 +176,7 @@
 							</div>
 						</div>
 						<div class="w-1/3">
-							<div>{{ "*" + $t("居留證統一證號") }}</div>
+							<div>{{ $t("居留證統一證號") }}</div>
 							<div>
 								<InputText
 									class="w-[70%] h-36px !mt-4px"
@@ -208,14 +196,12 @@
 						</div>
 					</div>
 				</div>
-				<div class="pt-24px">
-					<ParagraphDivider />
-				</div>
+				<div class="pt-24px"></div>
 			</div>
 			<div v-else>
 				<div class="flex py-16px">
 					<div class="w-1/3">
-						<div>{{ "*" + $t("身份證字號") }}</div>
+						<div>{{ $t("身份證字號") }}</div>
 						<div>
 							<InputText
 								class="w-[70%] h-36px !mt-4px"
@@ -231,9 +217,6 @@
 						</div>
 					</div>
 				</div>
-				<ParagraphDivider
-					v-if="requiredInputFields.includes('入學身分')"
-				/>
 			</div>
 		</div>
 
@@ -245,9 +228,6 @@
 				<div class="flex">
 					<div class="text-[24px] font-[50] font-bold">
 						{{ $t("通訊地址") }}
-					</div>
-					<div class="mt-6px ml-40px text-[#8D9093] text-[14px]">
-						{{ $t('" * " 為必填欄位') }}
 					</div>
 				</div>
 				<div class="flex py-16px">
@@ -314,8 +294,6 @@
 				</div>
 			</div>
 		</div>
-
-		<ParagraphDivider v-if="requiredInputFields.includes('現居地址')" />
 		<div
 			class="px-12px py-24px"
 			v-if="requiredInputFields.includes('身份資料')"
@@ -324,12 +302,9 @@
 				<div class="text-[24px] font-[50] font-bold">
 					{{ $t("身份資料") }}
 				</div>
-				<div class="mt-6px ml-40px text-[#8D9093] text-[14px]">
-					{{ $t('" * " 為必填欄位') }}
-				</div>
 			</div>
 			<div class="mt-24px">
-				<div>{{ "*" + $t("生理性別") }}</div>
+				<div>{{ $t("生理性別") }}</div>
 				<div class="mt-2px flex">
 					<div>
 						<RadioButton v-model="born.sex" value="male" />
@@ -348,7 +323,7 @@
 			</div>
 			<div class="flex py-16px">
 				<div class="w-1/3">
-					<div>{{ "*" + $t("出生國家") }}</div>
+					<div>{{ $t("出生國家") }}</div>
 					<div>
 						<InputText
 							class="w-[70%] h-36px !mt-4px"
@@ -364,7 +339,7 @@
 					</div>
 				</div>
 				<div class="w-1/3">
-					<div>{{ "*" + $t("出生日期") }}</div>
+					<div>{{ $t("出生日期") }}</div>
 					<div>
 						<Calendar
 							v-model="born.birth"
@@ -384,7 +359,6 @@
 				</div>
 			</div>
 		</div>
-		<ParagraphDivider v-if="requiredInputFields.includes('身份資料')" />
 		<div
 			class="px-12px py-24px"
 			v-if="requiredInputFields.includes('聯絡資料')"
@@ -392,9 +366,6 @@
 			<div class="flex">
 				<div class="text-[24px] font-[50] font-bold">
 					{{ $t("聯絡方式") }}
-				</div>
-				<div class="mt-6px ml-40px text-[#8D9093] text-[14px]">
-					{{ $t('" * " 為必填欄位') }}
 				</div>
 			</div>
 			<div class="flex py-16px">
@@ -440,7 +411,6 @@
 
 <script setup lang="ts">
 import { ref, reactive, watch, toRaw } from "vue";
-import ParagraphDivider from "@/styles/paragraphDividerApplicant.vue";
 import { useToast } from "primevue/usetoast";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
 import Dropdown from "primevue/dropdown";
@@ -695,11 +665,3 @@ watch(
 	}
 );
 </script>
-
-<!-- v-if="requiredInputFields.includes('姓名資訊')" -->
-<!-- v-if="requiredInputFields.includes('入學身份')" -->
-<!-- v-if="requiredInputFields.includes('現居地址')" -->
-<!-- v-if="requiredInputFields.includes('身份資料')" -->
-<!-- v-if="requiredInputFields.includes('聯絡方式')" -->
-<!-- 可參考第十行怎麽使用 -->
-<!-- paragraph divider 也要記得做判斷 -->
