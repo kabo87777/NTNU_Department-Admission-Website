@@ -113,13 +113,11 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, toRaw } from "vue";
-import { router } from "@/router";
+import { reactive } from "vue";
 import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
 import { AdmissionAdminAPI } from "@/api/admission/admin/api";
 import { useGlobalStore } from "@/stores/globalStore";
 import { useQuery } from "@tanstack/vue-query";
-import { InvalidSessionError } from "@/api/error";
 import { AdmissionAdminApplicantsListResponse } from "@/api/admission/admin/types";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
@@ -134,7 +132,7 @@ const applicantList: AdmissionAdminApplicantsListResponse[] = reactive<
 	AdmissionAdminApplicantsListResponse[]
 >([] as AdmissionAdminApplicantsListResponse[]);
 
-const { data } = useQuery(
+useQuery(
 	["applicantListUpload"],
 	async () => {
 		return await api.getApplicantList(store.program!.id as number);

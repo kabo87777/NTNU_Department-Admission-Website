@@ -26,7 +26,6 @@
 					<Calendar
 						inputId="icon"
 						:showIcon="true"
-						:showTime="true"
 						dateFormat="yy/mm/dd"
 						v-model="date.start"
 					/>
@@ -40,7 +39,6 @@
 					<Calendar
 						inputId="icon"
 						:showIcon="true"
-						:showTime="true"
 						dateFormat="yy/mm/dd"
 						v-model="date.end"
 					/>
@@ -225,7 +223,6 @@ import { reactive, watch, ref, toRaw } from "vue";
 import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
 import { AdmissionAdminAPI } from "@/api/admission/admin/api";
 import { useQuery } from "@tanstack/vue-query";
-import { InvalidSessionError } from "@/api/error";
 import { AdmAdminGetApplicantMoredocResponses } from "@/api/admission/admin/types";
 import { useToast } from "primevue/usetoast";
 import SelectButton from "primevue/selectbutton";
@@ -298,8 +295,8 @@ const setInfo = (info: AdmAdminGetApplicantMoredocResponses) => {
 	activeTab.value = info.isMoredoc
 		? tabOptions.value[1]
 		: tabOptions.value[0];
-	date.start = info.moredoc_start_date;
-	date.end = info.moredoc_end_date;
+	date.start = new Date(info.moredoc_start_date);
+	date.end = new Date(info.moredoc_end_date);
 	docInfo.category = info.moredoc_category;
 	docInfo.name = info.moredoc_name;
 };
@@ -317,8 +314,8 @@ async function handleSaveChange() {
 
 	const body = {
 		isMoredoc: activeTab.value.value,
-		moredoc_start_date: addHours(8, new Date(date.start)),
-		moredoc_end_date: addHours(8, new Date(date.end)),
+		moredoc_start_date: new Date(date.start),
+		moredoc_end_date: new Date(date.end),
 		moredoc_category: docInfo.category,
 		moredoc_name: docInfo.name,
 	};
@@ -379,7 +376,7 @@ const saveOnclick = () => {
 	}
 };
 
-const { data } = useQuery(
+useQuery(
 	["adminApplicantMoredocInfo"],
 	async () => {
 		return await api.getApplicantMoreDocRes(props.userId);

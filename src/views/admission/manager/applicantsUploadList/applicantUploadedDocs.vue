@@ -41,12 +41,11 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, reactive } from "vue";
+import { ref, reactive } from "vue";
 import { useRoute } from "vue-router";
 import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
 import { AdmissionAdminAPI } from "@/api/admission/admin/api";
 import { useQuery } from "@tanstack/vue-query";
-import { InvalidSessionError } from "@/api/error";
 import { AdmAdminGetApplicantInfoHeader } from "@/api/admission/admin/types";
 import BasicInfo from "./reviewTabs/basicInfo.vue";
 import AttachmentInfo from "./reviewTabs/attachmentInfo.vue";
@@ -59,7 +58,7 @@ const adminAuth = useAdmissionAdminAuthStore();
 const api = new AdmissionAdminAPI(adminAuth);
 
 const route = useRoute();
-
+console.log(route.params);
 const userInfo: AdmAdminGetApplicantInfoHeader =
 	reactive<AdmAdminGetApplicantInfoHeader>(
 		{} as AdmAdminGetApplicantInfoHeader
@@ -72,7 +71,7 @@ const tabs = ref([
 	{ name: "補件系統欄位", value: 3 },
 ]);
 
-const { data } = useQuery(
+useQuery(
 	["adminApplicantBasicInfo"],
 	async () => {
 		return await api.getApplicantBasicInfo(Number(route.params.userId));

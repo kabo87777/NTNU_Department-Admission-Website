@@ -26,7 +26,6 @@
 					<Calendar
 						inputId="icon"
 						:showIcon="true"
-						:showTime="true"
 						dateFormat="yy/mm/dd"
 						v-model="date.start"
 					/>
@@ -40,7 +39,6 @@
 					<Calendar
 						inputId="icon"
 						:showIcon="true"
-						:showTime="true"
 						dateFormat="yy/mm/dd"
 						v-model="date.end"
 					/>
@@ -189,22 +187,17 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, onMounted, toRaw, watch, ref } from "vue";
+import { reactive, toRaw, watch, ref } from "vue";
 import { useRecruitmentAdminAuthStore } from "@/stores/universalAuth";
 import { RecruitmentAdminAPI } from "@/api/recruitment/admin/api";
 import { useGlobalStore } from "@/stores/RecruitmentAdminStore";
 import { useQuery } from "@tanstack/vue-query";
-import { InvalidSessionError } from "@/api/error";
-import {
-	RecruitmentAdminGenericStatusResponse,
-	RecruimentAdminGetApplicantMoredocResponses,
-} from "@/api/recruitment/admin/types";
+import { RecruimentAdminGetApplicantMoredocResponses } from "@/api/recruitment/admin/types";
 import ParagraphDivider from "@/styles/paragraphDivider.vue";
 import { useToast } from "primevue/usetoast";
 import SelectButton from "primevue/selectbutton";
 import InputText from "primevue/inputtext";
 import Button from "primevue/button";
-import Dropdown from "primevue/dropdown";
 import Calendar from "primevue/calendar";
 import Dialog from "primevue/dialog";
 
@@ -250,12 +243,6 @@ const tabOptions = ref([
 	{ name: "開啓", value: true },
 ]);
 
-const categoryOptions = ref([
-	{ name: "教學經歷" },
-	{ name: "考試與檢定分數" },
-	{ name: "其他有利於審查資料" },
-]);
-
 let isModalVisible = reactive({
 	sendEmail: false,
 	saveChange: false,
@@ -294,8 +281,8 @@ async function handleSaveChange() {
 
 	const body = {
 		isMoredoc: activeTab.value.value,
-		moredoc_start_date: addHours(8, new Date(date.start)),
-		moredoc_end_date: addHours(8, new Date(date.end)),
+		moredoc_start_date: new Date(date.start),
+		moredoc_end_date: new Date(date.end),
 		moredoc_category: "其他有利於審查資料",
 		moredoc_name: docInfo.name,
 	};
@@ -356,7 +343,7 @@ const saveOnclick = () => {
 	}
 };
 
-const { data } = useQuery(
+useQuery(
 	["recruitmentApplicantMoredocInfo"],
 	async () => {
 		if (!programId) throw new Error("invalid programId");
