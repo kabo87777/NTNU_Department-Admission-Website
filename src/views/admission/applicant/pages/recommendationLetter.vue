@@ -11,7 +11,7 @@
 			<template #header>
 				<div class="flex">
 					<div class="font-bold text-[24px]">
-						{{ $t("新增推薦人") }}
+						{{ t("新增推薦人") }}
 					</div>
 					<div
 						v-if="modalShowErr"
@@ -29,7 +29,7 @@
 							text-align: center;
 						"
 					>
-						{{ $t("error") + $t("!") + " "
+						{{ t("error") + t("!") + " "
 						}}{{ fetchResponse.message }}
 					</div>
 				</div>
@@ -39,7 +39,7 @@
 				<div class="text-[17px]">
 					<div class="flex mt-32px">
 						<div class="w-1/2">
-							<div>{{ $t("推薦人姓名") }}</div>
+							<div>{{ t("推薦人姓名") }}</div>
 							<div>
 								<InputText
 									class="w-[70%] h-40px !mt-8px"
@@ -51,12 +51,12 @@
 							</div>
 							<div class="absolute" v-if="isModalValueBlank.name">
 								<small id="name-help" class="p-error">
-									{{ $t("此為必填欄位") }}
+									{{ t("此為必填欄位") }}
 								</small>
 							</div>
 						</div>
 						<div class="w-1/2">
-							<div>{{ $t("推薦人稱謂") }}</div>
+							<div>{{ t("推薦人稱謂") }}</div>
 							<div>
 								<InputText
 									class="w-[70%] h-40px !mt-8px"
@@ -71,14 +71,14 @@
 								v-if="isModalValueBlank.appellation"
 							>
 								<small id="appellation-help" class="p-error">
-									{{ $t("此為必填欄位") }}
+									{{ t("此為必填欄位") }}
 								</small>
 							</div>
 						</div>
 					</div>
 					<div class="flex mt-32px">
 						<div class="w-1/2">
-							<div>{{ $t("關係") }}</div>
+							<div>{{ t("關係") }}</div>
 							<div>
 								<InputText
 									class="w-[70%] h-40px !mt-8px"
@@ -93,12 +93,12 @@
 								v-if="isModalValueBlank.relationship"
 							>
 								<small id="relationship-help" class="p-error">
-									{{ $t("此為必填欄位") }}
+									{{ t("此為必填欄位") }}
 								</small>
 							</div>
 						</div>
 						<div class="w-1/2">
-							<div>{{ $t("電話") }}</div>
+							<div>{{ t("電話") }}</div>
 							<div>
 								<InputText
 									class="w-[70%] h-40px !mt-8px"
@@ -113,13 +113,13 @@
 								v-if="isModalValueBlank.phone"
 							>
 								<small id="phone-help" class="p-error">
-									{{ $t("此為必填欄位") }}
+									{{ t("此為必填欄位") }}
 								</small>
 							</div>
 						</div>
 					</div>
 					<div class="w-1/2 mt-32px">
-						<div>{{ $t("電郵") }}</div>
+						<div>{{ t("電郵") }}</div>
 						<div>
 							<InputText
 								class="w-[70%] h-40px !mt-8px"
@@ -131,13 +131,13 @@
 						</div>
 						<div class="absolute" v-if="isModalValueBlank.email">
 							<small id="email-help" class="p-error">
-								{{ $t("此為必填欄位") }}
+								{{ t("此為必填欄位") }}
 							</small>
 						</div>
 					</div>
 					<div class="flex mt-32px">
 						<div class="w-1/2">
-							<div>{{ $t("單位") }}</div>
+							<div>{{ t("單位") }}</div>
 							<div>
 								<InputText
 									class="w-[70%] h-40px !mt-8px"
@@ -152,12 +152,12 @@
 								v-if="isModalValueBlank.organization"
 							>
 								<small id="organization-help" class="p-error">
-									{{ $t("此為必填欄位") }}
+									{{ t("此為必填欄位") }}
 								</small>
 							</div>
 						</div>
 						<div class="w-1/2">
-							<div>{{ $t("職稱") }}</div>
+							<div>{{ t("職稱") }}</div>
 							<div>
 								<InputText
 									class="w-[70%] h-40px !mt-8px"
@@ -172,7 +172,7 @@
 								v-if="isModalValueBlank.position"
 							>
 								<small id="position-help" class="p-error">
-									{{ $t("此為必填欄位") }}
+									{{ t("此為必填欄位") }}
 								</small>
 							</div>
 						</div>
@@ -191,7 +191,7 @@
 					"
 					icon="pi pi-times"
 					iconClass="text-[#736028]"
-					:label="$t('取消')"
+					:label="t('取消')"
 					@click="
 						() => {
 							isModalVisible.fill = false;
@@ -210,7 +210,7 @@
 					"
 					icon="pi pi-save"
 					iconClass="text-[#53565A]"
-					:label="$t('儲存')"
+					:label="t('儲存')"
 					:loading="isActionLoading.save"
 					@click="handleSave()"
 				/>
@@ -218,7 +218,7 @@
 		</Dialog>
 		<!-- 頁面大標題 -->
 		<div class="font-[500] text-[32px] font-bold">
-			{{ $t("推薦信作業") }}
+			{{ t("推薦信作業") }}
 		</div>
 		<div class="bigYellowDivider"></div>
 		<!-- 新增推薦人按鈕 -->
@@ -232,7 +232,7 @@
 				color: #736028;
 			"
 			icon="pi pi-plus"
-			:label="$t('新增推薦人')"
+			:label="t('新增推薦人')"
 			@click="openModal()"
 		/>
 		<!-- 推薦信列表頭(有資料時) -->
@@ -240,10 +240,10 @@
 			v-if="letterList[0]?.length"
 			class="flex mt-24px font-bold text-[18px]"
 		>
-			<div class="recTableTitleCol">{{ $t("上傳時間") }}</div>
-			<div class="recTableTitleCol">{{ $t("推薦人姓名") }}</div>
-			<div class="recTableTitleCol">{{ $t("作業狀態") }}</div>
-			<div class="recTableTitleCol">{{ $t("操作") }}</div>
+			<div class="recTableTitleCol">{{ t("上傳時間") }}</div>
+			<div class="recTableTitleCol">{{ t("推薦人姓名") }}</div>
+			<div class="recTableTitleCol">{{ t("作業狀態") }}</div>
+			<div class="recTableTitleCol">{{ t("操作") }}</div>
 		</div>
 		<!-- 畫面顯示(無資料時) -->
 		<div v-else class="relative h-150">
@@ -254,7 +254,7 @@
 					style="border-radius: 50%"
 				/>
 				<div class="text-center font-bold text-[24px] text-[#736028]">
-					{{ $t("暫無推薦人") }}
+					{{ t("暫無推薦人") }}
 				</div>
 			</div>
 		</div>
@@ -271,7 +271,7 @@
 				>
 					<template #header>
 						<div class="font-bold text-[24px]">
-							{{ $t("發出邀請") }}
+							{{ t("發出邀請") }}
 						</div>
 					</template>
 					<template #default>
@@ -283,7 +283,7 @@
 								/>
 							</div>
 							<div class="ml-4px">
-								{{ $t("確認送出") + $t("?") }}
+								{{ t("確認送出") + t("?") }}
 							</div>
 						</div>
 					</template>
@@ -297,7 +297,7 @@
 							"
 							icon="pi pi-times"
 							iconClass="text-[#736028]"
-							:label="$t('取消')"
+							:label="t('取消')"
 							@click="isModalVisible.request = false"
 						/>
 						<Button
@@ -310,7 +310,7 @@
 							"
 							icon="pi pi-check"
 							iconClass="text-[#53565A]"
-							:label="$t('確認')"
+							:label="t('確認')"
 							:loading="isActionLoading.request"
 							@click="handleRequest(item.id)"
 						/>
@@ -326,7 +326,7 @@
 				>
 					<template #header>
 						<div class="font-bold text-[24px]">
-							{{ $t("刪除") }}
+							{{ t("刪除") }}
 						</div>
 					</template>
 					<template #default>
@@ -338,7 +338,7 @@
 								/>
 							</div>
 							<div class="ml-4px">
-								{{ $t("確認刪除") + $t("?") }}
+								{{ t("確認刪除") + t("?") }}
 							</div>
 						</div>
 					</template>
@@ -352,7 +352,7 @@
 							"
 							icon="pi pi-times"
 							iconClass="text-[#736028]"
-							:label="$t('取消')"
+							:label="t('取消')"
 							@click="isModalVisible.delete = false"
 						/>
 						<Button
@@ -365,7 +365,7 @@
 							"
 							icon="pi pi-check"
 							iconClass="text-[#93282C]"
-							:label="$t('確認')"
+							:label="t('確認')"
 							@click="handleDelete(item.id)"
 						/>
 					</template>
@@ -376,7 +376,7 @@
 						{{ convertTime(item.created_at) }}
 					</div>
 					<div class="recTableCol">{{ item.name }}</div>
-					<div class="recTableCol">{{ $t(item.status) }}</div>
+					<div class="recTableCol">{{ t(item.status) }}</div>
 					<div class="recTableButtonCol">
 						<Button
 							class="p-button-outlined p-button-secondary"
@@ -387,6 +387,7 @@
 							icon="pi pi-envelope"
 							iconClass="text-[#53565A]"
 							v-tooltip.top="t('發出邀請')"
+							:disabled="item.stage === '已寄出'"
 							@click="isModalVisible.request = true"
 						/>
 						<Button
@@ -399,6 +400,7 @@
 							icon="pi pi-trash"
 							iconClass="text-[#93282C]"
 							v-tooltip.top="t('刪除')"
+							:disabled="item.stage === '已寄出'"
 							@click="isModalVisible.delete = true"
 						/>
 					</div>
@@ -414,7 +416,7 @@
 							{{ convertTime(item.created_at) }}
 						</div>
 						<div class="recTableCol">{{ item.name }}</div>
-						<div class="recTableCol">{{ $t(item.status) }}</div>
+						<div class="recTableCol">{{ t(item.status) }}</div>
 						<div class="recTableButtonCol">
 							<Button
 								class="p-button-outlined p-button-secondary"
@@ -446,44 +448,44 @@
 					</div>
 					<div class="recTableRowCollapseItem">
 						<div class="recTableSemiCol">
-							{{ $t("推薦人姓名") + $t(":") }}
+							{{ t("推薦人姓名") + t(":") }}
 							{{ item.name }}
 						</div>
 						<div class="recTableSemiCol">
-							{{ $t("推薦人稱謂") + $t(":") }}
+							{{ t("推薦人稱謂") + t(":") }}
 							{{ item.title }}
 						</div>
 					</div>
 					<div class="recTableRowCollapseItem">
 						<div class="recTableSemiCol">
-							{{ $t("關係") + $t(":") }}
+							{{ t("關係") + t(":") }}
 							{{ item.relation }}
 						</div>
 						<div class="recTableSemiCol">
-							{{ $t("電話") + $t(":") }}
+							{{ t("電話") + t(":") }}
 							{{ item.phone }}
 						</div>
 					</div>
 					<div class="recTableRowCollapseItem">
 						<div class="recTableSemiCol">
-							{{ $t("電郵") + $t(":") }}
+							{{ t("電郵") + t(":") }}
 							{{ item.email }}
 						</div>
 					</div>
 					<div class="recTableRowCollapseItem">
 						<div class="recTableSemiCol">
-							{{ $t("單位") + $t(":") }}
+							{{ t("單位") + t(":") }}
 							{{ item.institution }}
 						</div>
 						<div class="recTableSemiCol">
-							{{ $t("職稱") + $t(":") }}
+							{{ t("職稱") + t(":") }}
 							{{ item.position }}
 						</div>
 					</div>
 					<div class="recTableRowCollapseItem">
 						<div class="recTableSemiCol flex">
-							<div class="font-bold">{{ $t("簽名檔") }}</div>
-							<div class="ml-24px">{{ $t("限制") }}</div>
+							<div class="font-bold">{{ t("簽名檔") }}</div>
+							<div class="ml-24px">{{ t("限制") }}</div>
 						</div>
 					</div>
 				</div>
@@ -730,8 +732,7 @@ const handleSave = async () => {
 const handleRequest = async (letterId: number) => {
 	isActionLoading.request = true;
 
-	const url =
-		"https://admissions-frontend-staging.birkhoff.me/admission/recommenderAuthVerify";
+	const url = "http://127.0.0.1:5173/admission/recommenderAuthVerify";
 	const response = await api.requestRecommendLetter(letterId, {
 		params: { redirect_url: url },
 	});
