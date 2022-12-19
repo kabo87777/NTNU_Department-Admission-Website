@@ -305,9 +305,36 @@ const saveChange = async (body: object) => {
 	return await api.updateApplicantMoreDocState(props.userId, body);
 };
 
-function handleSendEmail() {
-	console.log("send email button onclicked");
-}
+const handleSendEmail = async () => {
+	isLoading.send = true;
+
+	const res = await api.sendNotifyApplicantMoreDoc(props.userId);
+
+	if (res?.success !== undefined && res?.message !== undefined) {
+		fetchResponse.success = toRaw(res.success);
+		fetchResponse.message = toRaw(res.message);
+	}
+
+	isModalVisible.sendEmail = false;
+
+	if (fetchResponse.success) {
+		toast.add({
+			severity: "success",
+			summary: "Success",
+			detail: fetchResponse.message,
+			life: 3000,
+		});
+	} else {
+		toast.add({
+			severity: "error",
+			summary: "Error",
+			detail: fetchResponse.message,
+			life: 5000,
+		});
+	}
+
+	isLoading.send = false;
+};
 
 async function handleSaveChange() {
 	isLoading.save = true;
@@ -363,6 +390,7 @@ const saveOnclick = () => {
 	showRequire.name = docInfo.name ? false : true;
 
 	if (!activeTab.value.value) {
+		console.log("check here");
 		resetRequireState();
 		isModalVisible.saveChange = true;
 	} else if (

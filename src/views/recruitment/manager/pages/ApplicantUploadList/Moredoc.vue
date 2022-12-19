@@ -272,9 +272,39 @@ const saveChange = async (body: object) => {
 	return await api.updateApplicantMoreDocState(programId, props.userId, body);
 };
 
-function handleSendEmail() {
-	console.log("send email button onclicked");
-}
+const handleSendEmail = async () => {
+	isLoading.send = true;
+
+	const res = await api.sendNotifyApplicantMoreDoc(
+		programId as number,
+		props.userId
+	);
+
+	if (res?.success !== undefined && res?.message !== undefined) {
+		fetchResponse.success = toRaw(res.success);
+		fetchResponse.message = toRaw(res.message);
+	}
+
+	isModalVisible.sendEmail = false;
+
+	if (fetchResponse.success) {
+		toast.add({
+			severity: "success",
+			summary: "Success",
+			detail: fetchResponse.message,
+			life: 3000,
+		});
+	} else {
+		toast.add({
+			severity: "error",
+			summary: "Error",
+			detail: fetchResponse.message,
+			life: 5000,
+		});
+	}
+
+	isLoading.send = false;
+};
 
 async function handleSaveChange() {
 	isLoading.save = true;
