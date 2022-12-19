@@ -365,7 +365,6 @@ const cancel = computed(() => t("取消"));
 const selectedData = ref();
 const router = useRouter();
 const onRowSelect = (event: any) => {
-	selectedData.value = "";
 	router.push("/admission/reviewer/singleApplicationReview/" + event.data.id);
 };
 const queryClient = useQueryClient();

@@ -23,7 +23,13 @@
 		<div class="flex mt-16px">
 			<div class="w-1/3 pl-16px">
 				<div>
-					<Calendar dateFormat="yy-mm-dd" v-model="date.start" />
+					<Calendar
+						inputId="icon"
+						:showIcon="true"
+						:showTime="true"
+						dateFormat="yy/mm/dd"
+						v-model="date.start"
+					/>
 				</div>
 				<div v-show="showRequire.start" class="absolute">
 					<small class="p-error">{{ $t("此為必填欄位") }}</small>
@@ -31,7 +37,13 @@
 			</div>
 			<div class="w-1/3 pl-16px">
 				<div>
-					<Calendar dateFormat="yy-mm-dd" v-model="date.end" />
+					<Calendar
+						inputId="icon"
+						:showIcon="true"
+						:showTime="true"
+						dateFormat="yy/mm/dd"
+						v-model="date.end"
+					/>
 				</div>
 				<div v-show="showRequire.end" class="absolute">
 					<small class="p-error">{{ $t("此為必填欄位") }}</small>

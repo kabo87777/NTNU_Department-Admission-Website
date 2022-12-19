@@ -115,6 +115,10 @@ export default defineConfig({
 					900: "#0C0C0D",
 				},
 			},
+			fontFamily: {
+				sans: '"Noto Sans TC", "Helvetica Neue", sans-serif',
+				// mono: '"Fira Code", monospace',
+			},
 		},
 	},
 });
