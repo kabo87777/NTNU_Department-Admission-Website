@@ -730,8 +730,7 @@ const handleSave = async () => {
 const handleRequest = async (letterId: number) => {
 	isActionLoading.request = true;
 
-	const url =
-		"https://admissions-frontend-staging.birkhoff.me/admission/recommenderAuthVerify";
+	const url = "http://127.0.0.1:5173/admission/recommenderAuthVerify";
 	const response = await api.requestRecommendLetter(letterId, {
 		params: { redirect_url: url },
 	});
