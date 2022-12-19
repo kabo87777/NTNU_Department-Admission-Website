@@ -92,20 +92,17 @@ export interface RecruitmentApplicantFileListResponse {
 }
 
 export interface RecruitmentApplicantUserInfoResponse {
-	id: number;
-	title?: string;
-	suffix?: string;
-	cn_surname?: string;
-	name?: string;
-	en_givenname?: string;
-	en_midname?: string;
-	en_surname?: string;
-	nationality?: string;
-	national_id?: string;
-	sex?: string;
-	birth?: Date;
-	birthcountry?: string;
-	mobile_phone?: string;
-	communicate_address?: string;
-	communicate_zipcode?: number | string;
+	birth: Date;
+	college: string;
+	college_year: number;
+	current_job: string;
+	doctoral: string;
+	doctoral_paper: string;
+	doctoral_year: number;
+	email?: string;
+	master: string;
+	master_year: number;
+	name: string;
+	publication: string;
+	remark: string;
 }
