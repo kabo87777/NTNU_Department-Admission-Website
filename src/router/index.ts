@@ -52,6 +52,14 @@ const routes: Array<RouteRecordRaw> = [
 				component: () =>
 					import("@/views/admission/applicant/login/PwdForget.vue"),
 			},
+			{
+				path: "admission/applicant/setupaccount",
+				name: "AdmissionApplicantFirstLoginSetupAccount",
+				component: () =>
+					import(
+						"@/views/admission/applicant/login/FirstLoginSetupAccount.vue"
+					),
+			},
 			// Admission - Reviewer
 			{
 				path: "admission/reviewer/signin",
