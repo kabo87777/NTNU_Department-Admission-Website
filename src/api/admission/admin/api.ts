@@ -18,7 +18,7 @@ import type {
 } from "./types";
 import type { APIGenericResponse } from "@/api/types";
 import { GenericAPI } from "@/api/api";
-import { Ref } from "vue";
+
 export class AdmissionAdminAPI extends GenericAPI {
 	constructor(auth: AuthStore) {
 		super(auth);
@@ -128,6 +128,16 @@ export class AdmissionAdminAPI extends GenericAPI {
 			success: true,
 			message: data.message,
 		};
+	}
+
+	async downloadApplicantFile(
+		applicantID: number,
+		fileId: number
+	): Promise<Blob> {
+		return await this.instance.get(
+			`admission/admin/applicant/${applicantID}/file/${fileId}/getfile`,
+			{ responseType: "blob" }
+		);
 	}
 
 	async getScoreField(

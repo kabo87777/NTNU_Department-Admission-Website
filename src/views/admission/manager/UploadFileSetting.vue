@@ -72,36 +72,13 @@
 				</div>
 			</div>
 			<ParagraphDivider />
-			<!-- 戶籍資訊 -->
-			<div class="space-y-4">
-				<div class="flex content-center">
-					<Checkbox
-						inputId="permanentAd"
-						class="pt-1"
-						v-model="showedInfo[2].checked"
-						:binary="true"
-					/>
-					<label for="permanentAd" class="ml-2">
-						{{ trans.registAddressInfo.value }}
-					</label>
-				</div>
-				<div class="flex font-light gap-4 ml-6" text="secondary sm">
-					<div class="pr-10">
-						{{ trans.details.countryState.value }}
-					</div>
-					<div class="pr-10">
-						{{ trans.details.cityPostNumber.value }}
-					</div>
-				</div>
-				<ParagraphDivider />
-			</div>
 			<!-- 現居地址 -->
 			<div class="space-y-4">
 				<div class="flex content-center">
 					<Checkbox
 						inputId="mailingAd"
 						class="pt-1"
-						v-model="showedInfo[3].checked"
+						v-model="showedInfo[2].checked"
 						:binary="true"
 					/>
 					<label for="mailingAd" class="ml-2">
@@ -124,7 +101,7 @@
 					<Checkbox
 						inputId="basicIdentityInfo"
 						class="pt-1"
-						v-model="showedInfo[4].checked"
+						v-model="showedInfo[3].checked"
 						:binary="true"
 					/>
 					<label for="basicIdentityInfo" class="ml-2">{{
@@ -153,7 +130,7 @@
 					<Checkbox
 						inputId="contactInfo"
 						class="pt-1"
-						v-model="showedInfo[5].checked"
+						v-model="showedInfo[4].checked"
 						:binary="true"
 					/>
 					<label for="contactInfo" class="ml-2">{{
@@ -278,7 +255,6 @@ import { useI18n } from "vue-i18n";
 import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
 import { AdmissionAdminAPI } from "@/api/admission/admin/api";
 import { useGlobalStore } from "@/stores/globalStore";
-import { InvalidSessionError } from "@/api/error";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
 import { AdmissionAdminProgramListResponse } from "@/api/admission/admin/types";
 
@@ -340,7 +316,6 @@ const queryClient = useQueryClient();
 let showedInfo = reactive([
 	{ id: "姓名資訊", checked: false },
 	{ id: "入學身分", checked: false },
-	{ id: "戶籍資訊", checked: false },
 	{ id: "現居地址", checked: false },
 	{ id: "身份資料", checked: false },
 	{ id: "聯絡資料", checked: false },
@@ -358,7 +333,6 @@ let programData: AdmissionAdminProgramListResponse = reactive({
 	application_end_date: "",
 	review_start_date: "",
 	review_end_date: "",
-	stage: "",
 	created_at: "",
 	updated_at: "",
 	applicant_required_info: "",
@@ -366,6 +340,8 @@ let programData: AdmissionAdminProgramListResponse = reactive({
 	reviewer_required_info: "",
 	reviewer_required_file: "",
 	detail: "",
+	oral_start_date: "",
+	docs_end_date: "",
 });
 const fieldList = {
 	infoChecked: [""],
@@ -394,7 +370,6 @@ const getInfoFileField = useQuery(
 				programData.application_end_date = data.application_end_date;
 				programData.review_start_date = data.review_start_date;
 				programData.review_end_date = data.review_end_date;
-				programData.stage = data.stage;
 				programData.created_at = data.created_at;
 				programData.updated_at = data.updated_at;
 				programData.detail = data.detail;
@@ -406,6 +381,8 @@ const getInfoFileField = useQuery(
 					data.reviewer_required_info;
 				programData.reviewer_required_file =
 					data.reviewer_required_file;
+				programData.oral_start_date = data.oral_start_date;
+				programData.docs_end_date = data.docs_end_date;
 			}
 			fieldList.infoChecked = JSON.parse(
 				programData.applicant_required_info

@@ -64,16 +64,16 @@ export interface RecruitmentApplicantProgramResponse {
 	category: string;
 	name: string;
 	isMoredoc?: boolean;
-	applicant_required_file?: {} | [];
-	applicant_required_info?: {} | [];
+	applicant_required_file?: string;
+	applicant_required_info?: string;
 	created_at?: string;
 	recruit_end_date: string;
 	recruit_start_date: string;
 	require_file?: [];
 	review_end_date?: string;
 	review_start_date?: string;
-	reviewer_required_file?: {} | [];
-	reviewer_required_info?: {} | [];
+	reviewer_required_file?: string;
+	reviewer_required_info?: string;
 	updated_at: string;
 }
 
@@ -106,8 +106,6 @@ export interface RecruitmentApplicantUserInfoResponse {
 	birth?: Date;
 	birthcountry?: string;
 	mobile_phone?: string;
-	household_address?: string;
-	household_zipcode?: number | string;
 	communicate_address?: string;
 	communicate_zipcode?: number | string;
 }

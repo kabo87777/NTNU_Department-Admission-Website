@@ -95,28 +95,6 @@
 				</Button>
 			</router-link>
 			<router-link
-				to="/recruitment/manager/applicationUploadSetting"
-				custom
-				v-slot="{ navigate }"
-			>
-				<Button
-					class="p-button-secondary p-button-text !ml-24px !mt-16px !w-[85%] !h-48px"
-					@click="navigate"
-					role="link"
-				>
-					<img
-						alt="logo"
-						src="/assets/sidebar/Sort_alfa.png"
-						style="width: 18px"
-					/>
-					<span
-						class="text-left tracking-3px ml-3 font-bold text-18px text-[#2D2926]"
-					>
-						{{ $t("上傳欄位設置") }}
-					</span>
-				</Button>
-			</router-link>
-			<router-link
 				:to="{
 					name: 'recruitmentManagerApplicantUploadList',
 				}"
@@ -504,6 +482,7 @@ import { useGlobalStore } from "@/stores/RecruitmentAdminStore";
 import { RecruitmentAdminProgramListResponse } from "@/api/recruitment/admin/types";
 import { useAdminInfoStore } from "@/stores/RecruitmentAdminStore";
 import type { RecruitmentAdminAuthResponse } from "@/api/recruitment/admin/types";
+import { useToast } from "primevue/usetoast";
 
 const router = useRouter();
 const adminStore = useAdminInfoStore();
@@ -521,9 +500,12 @@ const programData = useMutation(async (newProgramData: any) => {
 	}
 });
 
-const { isLoading, data: programs } = useQuery(["programList"], async () => {
-	return await api.getProgramList();
-});
+const { isLoading, data: programs } = useQuery(
+	["recruitmentAdminprogramList"],
+	async () => {
+		return await api.getProgramList();
+	}
+);
 
 const noProgram = computed(() => {
 	return programs.value! === undefined || programs.value!.length === 0;
@@ -558,30 +540,58 @@ function newProject() {
 
 const newProgram = ref(false);
 const queryClient = useQueryClient();
+const toast = useToast();
 async function addNewProject() {
 	const today = new Date();
 	try {
-		programData.mutate({
-			category: "",
-			name: newProjectName.value,
-			recruit_start_date: dateTransform(today) + "+08:00",
-			recruit_end_date: dateTransform(today) + "+08:00",
-			review_start_date: dateTransform(today) + "+08:00",
-			review_end_date: dateTransform(today) + "+08:00",
-			created_at: dateTransform(today) + "+08:00",
-			updated_at: dateTransform(today) + "+08:00",
-			applicant_required_info: '["file1", "file2"]',
-			applicant_required_file: '["file3", "file4"]',
-			reviewer_required_info: '["file1", "file2"]',
-			reviewer_required_file: '["file3", "file4"]',
-		});
+		programData.mutate(
+			{
+				category: "",
+				name: newProjectName.value,
+				recruit_start_date: dateTransform(today) + "+08:00",
+				recruit_end_date: dateTransform(today) + "+08:00",
+				review_start_date: dateTransform(today) + "+08:00",
+				review_end_date: dateTransform(today) + "+08:00",
+				created_at: dateTransform(today) + "+08:00",
+				updated_at: dateTransform(today) + "+08:00",
+				applicant_required_info: '["file1", "file2"]',
+				applicant_required_file: '["file3", "file4"]',
+				reviewer_required_info: '["file1", "file2"]',
+				reviewer_required_file: '["file3", "file4"]',
+			},
+			{
+				onError: (e: any) => {
+					toast.add({
+						severity: "error",
+						summary: e.toString(),
+						life: 3000,
+					});
+				},
+				onSuccess: () => {
+					newProgram.value = true;
+
+					toast.add({
+						severity: "success",
+						summary: "新增成功",
+						life: 3000,
+					});
+				},
+				onSettled: async () => {
+					await queryClient.invalidateQueries({
+						queryKey: ["recruitmentAdminprogramList"],
+					});
+				},
+			}
+		);
 		newProgram.value = true;
 		// toast.add({severity:'success', summary: '更改成功', life: 3000});
 	} catch (error) {
 		// toast.add({severity:'error', summary: '資料錯誤', life: 3000});
 	}
 	displayNewProject.value = false;
-	await queryClient.invalidateQueries({ queryKey: ["programList"] });
+	await queryClient.invalidateQueries({
+		queryKey: ["recruitmentAdminprogramList"],
+	});
 }
 
 function closeDisplayNewProject() {

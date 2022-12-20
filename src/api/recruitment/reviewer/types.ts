@@ -65,6 +65,14 @@ export interface RecruitmentReviewerApplicantListResponse {
 	email: string;
 	created_at: string;
 	updated_at: string;
+	college: string;
+	college_year: string | number;
+	master: string;
+	master_year: string | number;
+	doctoral: string;
+	doctoral_year: string | number;
+	current_job: string;
+	publication: string;
 	comment: string | null;
 	isRecommend: boolean | null;
 }
