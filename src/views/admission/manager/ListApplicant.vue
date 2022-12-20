@@ -263,7 +263,6 @@ const getTableItemQty = computed(() => {
 const { mutate: uploadApplicantImport } = useMutation({
 	mutationFn: (data: FormData) => {
 		if (!globalStore.program) throw new Error("Invalid state: program");
-		console.log("mutate");
 		isImporting.value = true;
 		return api.postApplicantsXlsx(globalStore.program.id, data);
 	},
@@ -318,7 +317,6 @@ const { mutate: deleteApplicant } = useMutation({
 });
 
 const importApplicantCallback = (event: FileUploadUploaderEvent) => {
-	console.log(toRaw(event.files));
 	const file = Array.isArray(event.files) ? event.files[0] : event.files;
 	const formdata = new FormData();
 	formdata.append("file", file);
