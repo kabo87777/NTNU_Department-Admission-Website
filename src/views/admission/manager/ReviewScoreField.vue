@@ -298,19 +298,19 @@
 		<template #Footer>
 			<div flex="~" justify="center" gap="4">
 				<NButton
-					class="p-2 w-32"
-					icon="pi pi-times"
-					@click="refreshData()"
-				>
-					{{ trans.cancel.value }}
-				</NButton>
-				<NButton
-					Success
+					Admin
 					class="p-2 w-32"
 					icon="pi pi-check"
 					@click="saveChange()"
 				>
 					{{ trans.save.value }}
+				</NButton>
+				<NButton
+					class="p-2 w-32"
+					icon="pi pi-times"
+					@click="refreshData()"
+				>
+					{{ trans.cancel.value }}
 				</NButton>
 			</div>
 		</template>

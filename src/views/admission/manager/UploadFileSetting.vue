@@ -206,19 +206,19 @@
 		<template #Footer>
 			<div flex="~" justify="center" gap="4">
 				<NButton
-					class="p-2 w-32"
-					icon="pi pi-times"
-					@click="refreshData"
-				>
-					{{ $t("取消變更") }}
-				</NButton>
-				<NButton
-					Success
+					Admin
 					class="p-2 w-32"
 					icon="pi pi-check"
 					@click="saveChange"
 				>
 					{{ $t("儲存設定") }}
+				</NButton>
+				<NButton
+					class="p-2 w-32"
+					icon="pi pi-times"
+					@click="refreshData"
+				>
+					{{ $t("取消變更") }}
 				</NButton>
 			</div>
 		</template>
