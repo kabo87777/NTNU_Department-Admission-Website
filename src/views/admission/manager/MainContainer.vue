@@ -6,7 +6,7 @@
 		<SideBar flex="none" w="80" bg="white" border="r-2 nGrey-100" />
 		<!-- Page Content -->
 		<div flex="grow">
-			<div w="9/10 max-300" h="[calc(100%-4rem)]" m="x-auto y-8">
+			<div w="9/10 max-300" h="[calc(100%-3rem)]" m="x-auto y-6">
 				<router-view />
 			</div>
 		</div>

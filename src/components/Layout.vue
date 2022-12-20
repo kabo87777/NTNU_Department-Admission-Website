@@ -7,7 +7,9 @@
 		</div>
 		<!-- Body -->
 		<div flex="grow" overflow="scroll" text="body">
-			<slot name="Body" />
+			<div flex="~ col gap-6">
+				<slot name="Body" />
+			</div>
 		</div>
 		<!-- Footer -->
 		<div>
@@ -18,7 +20,6 @@
 </template>
 
 <script setup lang="ts">
-import ParagraphDivider from "@/styles/paragraphDivider.vue";
 import { computed } from "vue";
 
 const props = defineProps({

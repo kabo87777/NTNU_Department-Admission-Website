@@ -4,376 +4,294 @@
 			{{ trans.reviewScoreField.value }}
 		</template>
 		<template #Body>
-			<div flex="~ col gap-6">
-				<Message severity="warn" pos="sticky top-0" m="!0">
-					各個評分項目與佔比同時填 0 表示關閉該評分項目
-				</Message>
-				<!-- Body - Score Field: Phase 1 -->
-				<div flex="~ col gap-4">
-					<div text="2xl title" pb="2">
-						{{ trans.scoreOptionSetting.value }}
-						{{ trans.colon.value }}
-						{{ trans.phase[1].value }}
-					</div>
-					<div flex="~ col gap-2" text="body">
-						<div>{{ trans.phaseWeight[1].value }}</div>
-						<InputNumber
-							class="!w-300px"
-							v-model="docsScore[0].weight"
-						/>
-					</div>
-					<div flex="~ col gap-2" text="body">
-						<div>{{ trans.scoreOption.value }}</div>
-						<!-- Phase 1 - item 1 -->
-						<div class="flex gap-6">
-							<InputText
-								class="!w-300px"
-								v-model="docsScore[1].name"
-							/>
-							<InputNumber
-								class="!w-200px"
-								v-model="docsScore[1].weight"
-							/>
-						</div>
-						<!-- Phase 1 - item 2 -->
-						<div class="flex gap-6">
-							<InputText
-								class="!w-300px"
-								v-model="docsScore[2].name"
-							/>
-							<InputNumber
-								class="!w-200px"
-								v-model="docsScore[2].weight"
-							/>
-						</div>
-						<!-- Phase 1 - item 3 -->
-						<div class="flex gap-6">
-							<InputText
-								class="!w-300px"
-								v-model="docsScore[3].name"
-							/>
-							<InputNumber
-								class="!w-200px"
-								v-model="docsScore[3].weight"
-							/>
-						</div>
-						<!-- Phase 1 - item 4 -->
-						<div class="flex gap-6">
-							<InputText
-								class="!w-300px"
-								v-model="docsScore[4].name"
-							/>
-							<InputNumber
-								class="!w-200px"
-								v-model="docsScore[4].weight"
-							/>
-						</div>
-						<!-- Phase 1 - item 5 -->
-						<div class="flex gap-6">
-							<InputText
-								class="!w-300px"
-								v-model="docsScore[5].name"
-							/>
-							<InputNumber
-								class="!w-200px"
-								v-model="docsScore[5].weight"
-							/>
-						</div>
-					</div>
+			<Message severity="warn" pos="sticky top-0" m="!0">
+				各個評分項目與佔比同時填 0 表示關閉該評分項目
+			</Message>
+			<!-- Body - Score Field: Phase 1 -->
+			<div text="2xl title" pb="2">
+				{{ trans.scoreOptionSetting.value }}
+				{{ trans.colon.value }}
+				{{ trans.phase[1].value }}
+			</div>
+			<div flex="~ col gap-2" text="body">
+				<div>{{ trans.phaseWeight[1].value }}</div>
+				<InputNumber class="!w-300px" v-model="docsScore[0].weight" />
+			</div>
+			<div flex="~ col gap-2" text="body">
+				<div>{{ trans.scoreOption.value }}</div>
+				<!-- Phase 1 - item 1 -->
+				<div class="flex gap-6">
+					<InputText class="!w-300px" v-model="docsScore[1].name" />
+					<InputNumber
+						class="!w-200px"
+						v-model="docsScore[1].weight"
+					/>
 				</div>
-				<ParagraphDivider />
-				<!-- Body - Score Field: Phase 2 -->
-				<div flex="~ col gap-4">
-					<div text="2xl title" pb="2">
-						{{ trans.scoreOptionSetting.value }}
-						{{ trans.colon.value }}
-						{{ trans.phase[2].value }}
-					</div>
-					<div flex="~ col gap-2" text="body">
-						<div>{{ trans.phaseWeight[2].value }}</div>
-						<InputNumber
-							class="!w-300px"
-							v-model="oralScore[0].weight"
-						/>
-					</div>
-					<div flex="~ col gap-2" text="body">
-						<div>{{ trans.scoreOption.value }}</div>
-						<!-- Phase 2 - item 1 -->
-						<div class="flex gap-6">
-							<InputText
-								class="!w-300px"
-								v-model="oralScore[1].name"
-							/>
-							<InputNumber
-								class="!w-200px"
-								v-model="oralScore[1].weight"
-							/>
-						</div>
-						<!-- Phase 2 - item 2 -->
-						<div class="flex gap-6">
-							<InputText
-								class="!w-300px"
-								v-model="oralScore[2].name"
-							/>
-							<InputNumber
-								class="!w-200px"
-								v-model="oralScore[2].weight"
-							/>
-						</div>
-						<!-- Phase 2 - item 3 -->
-						<div class="flex gap-6">
-							<InputText
-								class="!w-300px"
-								v-model="oralScore[3].name"
-							/>
-							<InputNumber
-								class="!w-200px"
-								v-model="oralScore[3].weight"
-							/>
-						</div>
-						<!-- Phase 2 - item 4 -->
-						<div class="flex gap-6">
-							<InputText
-								class="!w-300px"
-								v-model="oralScore[4].name"
-							/>
-							<InputNumber
-								class="!w-200px"
-								v-model="oralScore[4].weight"
-							/>
-						</div>
-						<!-- Phase 2 - item 5 -->
-						<div class="flex gap-6">
-							<InputText
-								class="!w-300px"
-								v-model="oralScore[5].name"
-							/>
-							<InputNumber
-								class="!w-200px"
-								v-model="oralScore[5].weight"
-							/>
-						</div>
-					</div>
+				<!-- Phase 1 - item 2 -->
+				<div class="flex gap-6">
+					<InputText class="!w-300px" v-model="docsScore[2].name" />
+					<InputNumber
+						class="!w-200px"
+						v-model="docsScore[2].weight"
+					/>
 				</div>
-				<ParagraphDivider />
-				<!-- Body - Show Information Data -->
-				<div flex="~ col gap-4">
-					<div text="2xl title" pb="2">
-						{{ trans.showInfo.value }}
-					</div>
-					<!-- showInfo - checkbox 1 -->
-					<div v-if="showedInfo[0].visible">
-						<div flex="~ gap-2" justify="items-center">
-							<Checkbox
-								m="!t-1 l-1"
-								v-model="showedInfo[0].checked"
-								:input-id="showedInfo[0].id"
-								:binary="true"
-							/>
-							<label
-								for="showedInfo[0].id"
-								text="lg body"
-								pb="!1"
-							>
-								{{ trans.nameInfo.value }}
-							</label>
-						</div>
-						<div class="flex mx-10 gap-8" text="secondary">
-							<div>{{ trans.details.suffix.value }}</div>
-							<div>{{ trans.details.chineseName.value }}</div>
-							<div>{{ trans.details.englishName.value }}</div>
-						</div>
-					</div>
-					<!-- showInfo - checkbox 2 -->
-					<div v-if="showedInfo[1].visible">
-						<div flex="~ gap-2" justify="items-center">
-							<Checkbox
-								m="!t-1 l-1"
-								v-model="showedInfo[1].checked"
-								:input-id="showedInfo[1].id"
-								:binary="true"
-							/>
-							<label
-								:for="showedInfo[1].id"
-								text="lg body"
-								mb="1"
-							>
-								{{ trans.admissionId.value }}
-							</label>
-						</div>
-						<div class="flex mx-10 gap-8" text="secondary">
-							<div>{{ trans.details.locals.value }}</div>
-							<div>{{ trans.details.foreigner.value }}</div>
-						</div>
-					</div>
-					<!-- showInfo - checkbox 3 -->
-					<div v-if="showedInfo[2].visible">
-						<div flex="~ gap-2" justify="items-center">
-							<Checkbox
-								m="!t-1 l-1"
-								v-model="showedInfo[2].checked"
-								:input-id="showedInfo[2].id"
-								:binary="true"
-							/>
-							<label
-								:for="showedInfo[2].id"
-								text="lg body"
-								mb="1"
-							>
-								{{ trans.residentAddr.value }}
-							</label>
-						</div>
-						<div class="flex mx-10 gap-8" text="secondary">
-							<div>{{ trans.details.country.value }}</div>
-							<div>{{ trans.details.city.value }}</div>
-							<div>{{ trans.details.streetAddr.value }}</div>
-						</div>
-					</div>
-					<!-- showInfo - checkbox 4 -->
-					<div v-if="showedInfo[3].visible">
-						<div flex="~ gap-2" justify="items-center">
-							<Checkbox
-								m="!t-1 l-1"
-								v-model="showedInfo[3].checked"
-								:input-id="showedInfo[3].id"
-								:binary="true"
-							/>
-							<label
-								:for="showedInfo[3].id"
-								text="lg body"
-								mb="1"
-							>
-								{{ trans.currentAddr.value }}
-							</label>
-						</div>
-						<div class="flex mx-10 gap-8" text="secondary">
-							<div>{{ trans.details.country.value }}</div>
-							<div>{{ trans.details.city.value }}</div>
-							<div>{{ trans.details.streetAddr.value }}</div>
-						</div>
-					</div>
-					<!-- showInfo - checkbox 5 -->
-					<div v-if="showedInfo[4].visible">
-						<div flex="~ gap-2" justify="items-center">
-							<Checkbox
-								m="!t-1 l-1"
-								v-model="showedInfo[4].checked"
-								:input-id="showedInfo[4].id"
-								:binary="true"
-							/>
-							<label
-								:for="showedInfo[4].id"
-								text="lg body"
-								mb="1"
-							>
-								{{ trans.nationalId.value }}
-							</label>
-						</div>
-						<div class="flex mx-10 gap-8" text="secondary">
-							<div>{{ trans.details.gender.value }}</div>
-							<div>{{ trans.details.bornCountry.value }}</div>
-							<div>{{ trans.details.mainNation.value }}</div>
-							<div>{{ trans.details.bornDate.value }}</div>
-							<div>{{ trans.details.mainNation.value }}</div>
-						</div>
-					</div>
-					<!-- showInfo - checkbox 6 -->
-					<div v-if="showedInfo[5].visible">
-						<div flex="~ gap-2" justify="items-center">
-							<Checkbox
-								m="!t-1 l-1"
-								v-model="showedInfo[5].checked"
-								:input-id="showedInfo[5].id"
-								:binary="true"
-							/>
-							<label
-								:for="showedInfo[5].id"
-								text="lg body"
-								mb="1"
-							>
-								{{ trans.contactInfo.value }}
-							</label>
-						</div>
-						<div class="flex mx-10 gap-8" text="secondary">
-							<div>{{ trans.details.email.value }}</div>
-							<div>{{ trans.details.primePhone.value }}</div>
-							<div>{{ trans.details.secondPhone.value }}</div>
-							<div>{{ trans.details.mobilePhone.value }}</div>
-						</div>
-					</div>
+				<!-- Phase 1 - item 3 -->
+				<div class="flex gap-6">
+					<InputText class="!w-300px" v-model="docsScore[3].name" />
+					<InputNumber
+						class="!w-200px"
+						v-model="docsScore[3].weight"
+					/>
 				</div>
-				<ParagraphDivider />
-				<!-- Body - Show Uploaded File Data -->
-				<div flex="~ col gap-4">
-					<div text="2xl title" pb="2">
-						{{ trans.showFile.value }}
-					</div>
-					<!-- showFile - checkbox 1 -->
-					<div v-if="showedFile[0].visible">
-						<div flex="~ gap-2" justify="items-center">
-							<Checkbox
-								m="!t-1 l-1"
-								v-model="showedFile[0].checked"
-								:input-id="showedFile[0].id"
-								:binary="true"
-							/>
-							<label
-								:for="showedFile[0].id"
-								text="lg body"
-								pb="!1"
-							>
-								{{ trans.schoolExp.value }}
-							</label>
-						</div>
-						<div class="flex mx-10 gap-8" text="secondary">
-							<div>{{ trans.details.fileName.value }}</div>
-							<div>{{ trans.details.fileUpload.value }}</div>
-						</div>
-					</div>
-					<!-- showFile - checkbox 2 -->
-					<div v-if="showedFile[1].visible">
-						<div flex="~ gap-2" justify="items-center">
-							<Checkbox
-								m="!t-1 l-1"
-								v-model="showedFile[1].checked"
-								:input-id="showedFile[1].id"
-								:binary="true"
-							/>
-							<label
-								:for="showedFile[1].id"
-								text="lg body"
-								pb="!1"
-							>
-								{{ trans.testScore.value }}
-							</label>
-						</div>
-						<div class="flex mx-10 gap-8" text="secondary">
-							<div>{{ trans.details.fileName.value }}</div>
-							<div>{{ trans.details.fileUpload.value }}</div>
-						</div>
-					</div>
-					<!-- showFile - checkbox 3 -->
-					<div v-if="showedFile[2].visible">
-						<div flex="~ gap-2" justify="items-center">
-							<Checkbox
-								m="!t-1 l-1"
-								v-model="showedFile[2].checked"
-								:input-id="showedFile[2].id"
-								:binary="true"
-							/>
-							<label
-								:for="showedFile[2].id"
-								text="lg body"
-								pb="!1"
-							>
-								{{ trans.otherFile.value }}
-							</label>
-						</div>
-						<div class="flex mx-10 gap-8" text="secondary">
-							<div>{{ trans.details.fileName.value }}</div>
-							<div>{{ trans.details.fileUpload.value }}</div>
-						</div>
-					</div>
+				<!-- Phase 1 - item 4 -->
+				<div class="flex gap-6">
+					<InputText class="!w-300px" v-model="docsScore[4].name" />
+					<InputNumber
+						class="!w-200px"
+						v-model="docsScore[4].weight"
+					/>
+				</div>
+				<!-- Phase 1 - item 5 -->
+				<div class="flex gap-6">
+					<InputText class="!w-300px" v-model="docsScore[5].name" />
+					<InputNumber
+						class="!w-200px"
+						v-model="docsScore[5].weight"
+					/>
+				</div>
+			</div>
+			<PDivider Admin />
+			<!-- Body - Score Field: Phase 2 -->
+			<div text="2xl title" pb="2">
+				{{ trans.scoreOptionSetting.value }}
+				{{ trans.colon.value }}
+				{{ trans.phase[2].value }}
+			</div>
+			<div flex="~ col gap-2" text="body">
+				<div>{{ trans.phaseWeight[2].value }}</div>
+				<InputNumber class="!w-300px" v-model="oralScore[0].weight" />
+			</div>
+			<div flex="~ col gap-2" text="body">
+				<div>{{ trans.scoreOption.value }}</div>
+				<!-- Phase 2 - item 1 -->
+				<div class="flex gap-6">
+					<InputText class="!w-300px" v-model="oralScore[1].name" />
+					<InputNumber
+						class="!w-200px"
+						v-model="oralScore[1].weight"
+					/>
+				</div>
+				<!-- Phase 2 - item 2 -->
+				<div class="flex gap-6">
+					<InputText class="!w-300px" v-model="oralScore[2].name" />
+					<InputNumber
+						class="!w-200px"
+						v-model="oralScore[2].weight"
+					/>
+				</div>
+				<!-- Phase 2 - item 3 -->
+				<div class="flex gap-6">
+					<InputText class="!w-300px" v-model="oralScore[3].name" />
+					<InputNumber
+						class="!w-200px"
+						v-model="oralScore[3].weight"
+					/>
+				</div>
+				<!-- Phase 2 - item 4 -->
+				<div class="flex gap-6">
+					<InputText class="!w-300px" v-model="oralScore[4].name" />
+					<InputNumber
+						class="!w-200px"
+						v-model="oralScore[4].weight"
+					/>
+				</div>
+				<!-- Phase 2 - item 5 -->
+				<div class="flex gap-6">
+					<InputText class="!w-300px" v-model="oralScore[5].name" />
+					<InputNumber
+						class="!w-200px"
+						v-model="oralScore[5].weight"
+					/>
+				</div>
+			</div>
+			<PDivider Admin />
+			<!-- Body - Show Information Data -->
+			<div text="2xl title" pb="2">
+				{{ trans.showInfo.value }}
+			</div>
+			<!-- showInfo - checkbox 1 -->
+			<div v-if="showedInfo[0].visible">
+				<div flex="~ gap-2" justify="items-center">
+					<Checkbox
+						m="!t-1 l-1"
+						v-model="showedInfo[0].checked"
+						:input-id="showedInfo[0].id"
+						:binary="true"
+					/>
+					<label for="showedInfo[0].id" text="lg body" pb="!1">
+						{{ trans.nameInfo.value }}
+					</label>
+				</div>
+				<div class="flex mx-10 gap-8" text="secondary">
+					<div>{{ trans.details.suffix.value }}</div>
+					<div>{{ trans.details.chineseName.value }}</div>
+					<div>{{ trans.details.englishName.value }}</div>
+				</div>
+			</div>
+			<!-- showInfo - checkbox 2 -->
+			<div v-if="showedInfo[1].visible">
+				<div flex="~ gap-2" justify="items-center">
+					<Checkbox
+						m="!t-1 l-1"
+						v-model="showedInfo[1].checked"
+						:input-id="showedInfo[1].id"
+						:binary="true"
+					/>
+					<label :for="showedInfo[1].id" text="lg body" mb="1">
+						{{ trans.admissionId.value }}
+					</label>
+				</div>
+				<div class="flex mx-10 gap-8" text="secondary">
+					<div>{{ trans.details.locals.value }}</div>
+					<div>{{ trans.details.foreigner.value }}</div>
+				</div>
+			</div>
+			<!-- showInfo - checkbox 3 -->
+			<div v-if="showedInfo[2].visible">
+				<div flex="~ gap-2" justify="items-center">
+					<Checkbox
+						m="!t-1 l-1"
+						v-model="showedInfo[2].checked"
+						:input-id="showedInfo[2].id"
+						:binary="true"
+					/>
+					<label :for="showedInfo[2].id" text="lg body" mb="1">
+						{{ trans.residentAddr.value }}
+					</label>
+				</div>
+				<div class="flex mx-10 gap-8" text="secondary">
+					<div>{{ trans.details.country.value }}</div>
+					<div>{{ trans.details.city.value }}</div>
+					<div>{{ trans.details.streetAddr.value }}</div>
+				</div>
+			</div>
+			<!-- showInfo - checkbox 4 -->
+			<div v-if="showedInfo[3].visible">
+				<div flex="~ gap-2" justify="items-center">
+					<Checkbox
+						m="!t-1 l-1"
+						v-model="showedInfo[3].checked"
+						:input-id="showedInfo[3].id"
+						:binary="true"
+					/>
+					<label :for="showedInfo[3].id" text="lg body" mb="1">
+						{{ trans.currentAddr.value }}
+					</label>
+				</div>
+				<div class="flex mx-10 gap-8" text="secondary">
+					<div>{{ trans.details.country.value }}</div>
+					<div>{{ trans.details.city.value }}</div>
+					<div>{{ trans.details.streetAddr.value }}</div>
+				</div>
+			</div>
+			<!-- showInfo - checkbox 5 -->
+			<div v-if="showedInfo[4].visible">
+				<div flex="~ gap-2" justify="items-center">
+					<Checkbox
+						m="!t-1 l-1"
+						v-model="showedInfo[4].checked"
+						:input-id="showedInfo[4].id"
+						:binary="true"
+					/>
+					<label :for="showedInfo[4].id" text="lg body" mb="1">
+						{{ trans.nationalId.value }}
+					</label>
+				</div>
+				<div class="flex mx-10 gap-8" text="secondary">
+					<div>{{ trans.details.gender.value }}</div>
+					<div>{{ trans.details.bornCountry.value }}</div>
+					<div>{{ trans.details.mainNation.value }}</div>
+					<div>{{ trans.details.bornDate.value }}</div>
+					<div>{{ trans.details.mainNation.value }}</div>
+				</div>
+			</div>
+			<!-- showInfo - checkbox 6 -->
+			<div v-if="showedInfo[5].visible">
+				<div flex="~ gap-2" justify="items-center">
+					<Checkbox
+						m="!t-1 l-1"
+						v-model="showedInfo[5].checked"
+						:input-id="showedInfo[5].id"
+						:binary="true"
+					/>
+					<label :for="showedInfo[5].id" text="lg body" mb="1">
+						{{ trans.contactInfo.value }}
+					</label>
+				</div>
+				<div class="flex mx-10 gap-8" text="secondary">
+					<div>{{ trans.details.email.value }}</div>
+					<div>{{ trans.details.primePhone.value }}</div>
+					<div>{{ trans.details.secondPhone.value }}</div>
+					<div>{{ trans.details.mobilePhone.value }}</div>
+				</div>
+			</div>
+			<PDivider Admin />
+			<!-- Body - Show Uploaded File Data -->
+			<div text="2xl title" pb="2">
+				{{ trans.showFile.value }}
+			</div>
+			<!-- showFile - checkbox 1 -->
+			<div v-if="showedFile[0].visible">
+				<div flex="~ gap-2" justify="items-center">
+					<Checkbox
+						m="!t-1 l-1"
+						v-model="showedFile[0].checked"
+						:input-id="showedFile[0].id"
+						:binary="true"
+					/>
+					<label :for="showedFile[0].id" text="lg body" pb="!1">
+						{{ trans.schoolExp.value }}
+					</label>
+				</div>
+				<div class="flex mx-10 gap-8" text="secondary">
+					<div>{{ trans.details.fileName.value }}</div>
+					<div>{{ trans.details.fileUpload.value }}</div>
+				</div>
+			</div>
+			<!-- showFile - checkbox 2 -->
+			<div v-if="showedFile[1].visible">
+				<div flex="~ gap-2" justify="items-center">
+					<Checkbox
+						m="!t-1 l-1"
+						v-model="showedFile[1].checked"
+						:input-id="showedFile[1].id"
+						:binary="true"
+					/>
+					<label :for="showedFile[1].id" text="lg body" pb="!1">
+						{{ trans.testScore.value }}
+					</label>
+				</div>
+				<div class="flex mx-10 gap-8" text="secondary">
+					<div>{{ trans.details.fileName.value }}</div>
+					<div>{{ trans.details.fileUpload.value }}</div>
+				</div>
+			</div>
+			<!-- showFile - checkbox 3 -->
+			<div v-if="showedFile[2].visible">
+				<div flex="~ gap-2" justify="items-center">
+					<Checkbox
+						m="!t-1 l-1"
+						v-model="showedFile[2].checked"
+						:input-id="showedFile[2].id"
+						:binary="true"
+					/>
+					<label :for="showedFile[2].id" text="lg body" pb="!1">
+						{{ trans.otherFile.value }}
+					</label>
+				</div>
+				<div class="flex mx-10 gap-8" text="secondary">
+					<div>{{ trans.details.fileName.value }}</div>
+					<div>{{ trans.details.fileUpload.value }}</div>
 				</div>
 			</div>
 		</template>
@@ -407,6 +325,7 @@ import InputText from "primevue/inputtext";
 import InputNumber from "primevue/inputnumber";
 import Checkbox from "primevue/checkbox";
 import ParagraphDivider from "@/styles/paragraphDivider.vue";
+import PDivider from "@/styles/PrDivider.vue";
 
 import { useToast } from "primevue/usetoast";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
