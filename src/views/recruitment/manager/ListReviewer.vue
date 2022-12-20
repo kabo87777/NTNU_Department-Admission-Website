@@ -304,20 +304,7 @@ const {
 } = useQuery(
 	["reviewerList"],
 	async () => {
-		try {
-			return await api.getReviewerList();
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				// FIXME: show session expiry notification??
-				// Why are we even here in the first place?
-				// MainContainer should have checked already.
-				console.error(
-					"Session has already expired while querying reviewerList"
-				);
-				router.push("/");
-				return;
-			}
-		}
+		return await api.getReviewerList();
 	},
 	{
 		onSuccess: (data) => {
@@ -337,8 +324,7 @@ const addReviewerModal = ref({
 		name: "",
 		email: "",
 		password: "",
-		redirect_url:
-			"https://admissions-frontend-staging.birkhoff.me/recruitment/reviewer/signin",
+		redirect_url: "http://127.0.0.1:5173/recruitment/reviewer/setupaccount",
 	},
 	visible: false,
 	open: () => (addReviewerModal.value.visible = true),

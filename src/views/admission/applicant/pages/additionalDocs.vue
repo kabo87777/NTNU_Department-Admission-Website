@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<!-- 畫面顯示(開放補件時) -->
-		<div v-if="isEnabled" class="px-12px py-24px">
+		<div v-if="isEnabled">
 			<div class="font-[500] text-[32px] font-bold">
 				{{ $t("補交文件系統") }}
 			</div>
@@ -68,15 +68,15 @@ const applicantInfo: AdmissionApplicantAuthResponse = toRaw(
 
 const toast = useToast();
 
-const isEnabled = applicantInfo.isMoredoc;
+const isEnabled = ref(applicantInfo.isMoredoc);
 
-const refillFile = reactive({
+let refillFile = reactive({
 	state: 3,
 	loading: false,
 	order: 1,
 });
 
-const fetchResponse = reactive({
+let fetchResponse = reactive({
 	success: false,
 	message: "" as string | [],
 });
@@ -89,48 +89,34 @@ const createToEdit = () => {
 	refillFile.state = 4;
 };
 
-const uploadFile = async (body: object) => {
-	try {
-		return await api.uploadRefillFile(body);
-	} catch (e: any) {
-		if (e instanceof InvalidSessionError) {
-			console.error(
-				"Session has already expired while changing password"
-			);
-			return;
-		}
-	}
-};
-
 const handleUpload = async (body: object) => {
 	refillFile.loading = true;
 
-	const response = uploadFile(body);
+	const res = await api.uploadRefillFile(body);
 
-	await response.then((res) => {
-		if (res?.success !== undefined && res?.message !== undefined) {
-			fetchResponse.success = toRaw(res.success);
-			fetchResponse.message = toRaw(res.message);
-		}
+	if (res?.success !== undefined && res?.message !== undefined) {
+		fetchResponse.success = toRaw(res.success);
+		fetchResponse.message = toRaw(res.message);
+	}
 
-		refillFile.loading = false;
+	refillFile.loading = false;
 
-		if (fetchResponse.success) {
-			toast.add({
-				severity: "success",
-				summary: "Success",
-				detail: fetchResponse.message,
-				life: 3000,
-			});
-		} else {
-			toast.add({
-				severity: "error",
-				summary: "Error",
-				detail: fetchResponse.message,
-				life: 5000,
-			});
-		}
-	});
+	if (fetchResponse.success) {
+		toast.add({
+			severity: "success",
+			summary: "Success",
+			detail: fetchResponse.message,
+			life: 3000,
+		});
+		isEnabled.value = false;
+	} else {
+		toast.add({
+			severity: "error",
+			summary: "Error",
+			detail: fetchResponse.message,
+			life: 5000,
+		});
+	}
 };
 </script>
 

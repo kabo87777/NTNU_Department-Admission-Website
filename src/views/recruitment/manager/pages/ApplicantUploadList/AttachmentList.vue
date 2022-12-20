@@ -12,10 +12,14 @@
 			<ReviewState
 				v-if="item.state === 1"
 				category="教學經歷"
-				identity="admissionManager"
+				identity="recruitmentManager"
+				:downloadFile="true"
 				:itemName="item.name"
+				:itemId="item.id"
+				:fileUrl="item.filepath?.url"
 				:order="index + 1"
 				:showActionButtons="false"
+				@download="handleDownload"
 			/>
 		</div>
 		<div v-show="examCertificateList.length === 0" class="emptyContainer">
@@ -39,10 +43,14 @@
 			<ReviewState
 				v-if="item.state === 1"
 				category="考試與檢定分數"
-				identity="admissionManager"
+				identity="recruitmentManager"
+				:downloadFile="true"
 				:itemName="item.name"
+				:itemId="item.id"
+				:fileUrl="item.filepath?.url"
 				:order="index + 1"
 				:showActionButtons="false"
+				@download="handleDownload"
 			/>
 		</div>
 		<div v-show="examCertificateList.length === 0" class="emptyContainer">
@@ -66,10 +74,14 @@
 			<ReviewState
 				v-if="item.state === 1"
 				category="其他有利於審查資料"
-				identity="admissionManager"
+				identity="recruitmentManager"
+				:downloadFile="true"
 				:itemName="item.name"
+				:itemId="item.id"
+				:fileUrl="item.filepath?.url"
 				:order="index + 1"
 				:showActionButtons="false"
+				@download="handleDownload"
 			/>
 		</div>
 		<div v-show="otherList.length === 0" class="emptyContainer">
@@ -101,14 +113,12 @@ const programId = store.program?.id;
 
 const props = defineProps(["userId"]);
 
-const attachmentList: RecruitmentAdminGetApplicantAttachmentList[] = reactive(
-	[]
-);
-const teachingExpList: RecruitmentAdminGetApplicantAttachmentListDetail[] =
+let attachmentList: RecruitmentAdminGetApplicantAttachmentList[] = reactive([]);
+let teachingExpList: RecruitmentAdminGetApplicantAttachmentListDetail[] =
 	reactive([]);
-const examCertificateList: RecruitmentAdminGetApplicantAttachmentListDetail[] =
+let examCertificateList: RecruitmentAdminGetApplicantAttachmentListDetail[] =
 	reactive([]);
-const otherList: RecruitmentAdminGetApplicantAttachmentListDetail[] = reactive(
+let otherList: RecruitmentAdminGetApplicantAttachmentListDetail[] = reactive(
 	[]
 );
 
@@ -148,20 +158,50 @@ const getFileList = async () => {
 	return await api.getApplicantFileList(programId as number, props.userId);
 };
 
+const handleDownload = async (fileId: number, fileName: string) => {
+	const res = await api.downloadApplicantFile(
+		programId as number,
+		props.userId,
+		fileId
+	);
+
+	const file = new Blob([res], { type: "application/pdf" });
+
+	const fileURL = URL.createObjectURL(file);
+	// window.open(fileURL);
+	const link = document.createElement("a");
+	link.href = fileURL;
+	link.download = fileName + ".pdf";
+	link.click();
+};
+
 onMounted(async () => {
-	const response = getFileList();
-	await response.then((res) => {
-		res.map((item) => {
-			if (item) attachmentList.push(item);
-		});
-	});
+	const res = await getFileList();
+
+	attachmentList = [...attachmentList, ...res];
 
 	splitThreeList(toRaw(attachmentList));
-	console.log(
-		attachmentList,
-		teachingExpList,
-		examCertificateList,
-		otherList
-	);
 });
 </script>
+
+<style setup lang="css">
+.listContainer {
+	margin-top: 16px;
+	padding: 0 32px 24px 32px;
+	border: 3px dashed rgb(174, 174, 174);
+	border-radius: 16px;
+	background-color: rgb(244, 244, 244);
+}
+
+.emptyContainer {
+	text-align: center;
+	color: #333333;
+	font-size: 20px;
+	font-weight: bold;
+	margin-top: 16px;
+	padding: 24px 32px;
+	border: 3px dashed rgb(174, 174, 174);
+	border-radius: 16px;
+	background-color: rgb(244, 244, 244);
+}
+</style>

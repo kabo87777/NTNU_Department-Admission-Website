@@ -1,64 +1,49 @@
 <template>
 	<div>
-		<div style="position: fixed; top: 0; width: 100%; z-index: 10">
+		<div class="fixed w-full top-0 z-100">
 			<NavBar />
 		</div>
-		<div style="display: flex; margin-top: 60px; position: relative">
+		<div class="flex mt-15 relative">
 			<div
-				style="
-					position: fixed;
-					float: left;
-					width: 360px;
-					border-right: 1px solid gray;
-					height: 100%;
-				"
+				class="fixed w-1/4 h-full float-left <lg:w-60"
+				border="r-1 solid gray-200"
+				bg="white"
 			>
 				<SideBar />
 			</div>
-			<div style="margin-left: 360px; width: 100%; padding: 60px 6%">
-				<router-view />
+			<div class="ml-1/4 w-full <lg:ml-60">
+				<div class="relative w-9/10 m-auto max-w-800">
+					<router-view />
+				</div>
 			</div>
 		</div>
 	</div>
+	<ScrollTop target="parent" :threshold="100" icon="pi pi-arrow-up" />
+	<ScrollTop />
 </template>
 
 <script setup lang="ts">
-import NavBar from "@/components/NavBar.vue";
-import SideBar from "@/components/sidebars/SideBar.vue";
 import { useQuery } from "@tanstack/vue-query";
-import { useToast } from "primevue/usetoast";
+import { useRouter } from "vue-router";
 
 import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
 import { doUniversalAuthSessionValidation } from "@/api/universalAuth";
 
-const toast = useToast();
+import NavBar from "@/components/NavBar.vue";
+import SideBar from "@/components/sidebars/admissionManagerSideBar.vue";
+import ScrollTop from "primevue/scrolltop";
 
-const adminAuth = useAdmissionAdminAuthStore();
+const router = useRouter();
 
-const authorizationStatusQuery = useQuery(
-	["admissionAdminAuthorizationStatus"],
-	async () => {
-		const status = await doUniversalAuthSessionValidation(adminAuth);
+const auth = useAdmissionAdminAuthStore();
 
-		if (status) return true;
+useQuery(["admissionAdminAuthorizationStatus"], async () => {
+	const status = await doUniversalAuthSessionValidation(auth);
 
-		console.log("MainContainer: We are unauthorized!");
+	if (status) return true;
 
-		// TODO: i18n
-		toast.add({
-			severity: "error",
-			summary: "錯誤",
-			detail: "您的登入階段已經失效，請重新登入",
-			life: 100000,
-		});
-
-		return false;
-
-		// TODO: return to sign in page
-
-		// router.replace({ name: "AdmissionManagerSignin" });
-	}
-);
+	return router.replace({ name: "AdmissionManagerSignin" });
+});
 </script>
 
 <style scoped></style>

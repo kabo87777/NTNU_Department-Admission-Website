@@ -9,6 +9,7 @@
 				:options="tabOptions"
 				optionLabel="name"
 				aria-labelledby="single"
+				:unselectable="false"
 			>
 			</SelectButton>
 		</div>
@@ -49,15 +50,15 @@
 					<label
 						for="permanentAd"
 						class="ml-8px text-24px font-medium"
-						>{{ trans.admissionIdentity.value }}</label
+						>{{ trans.recruitmentIdentity.value }}</label
 					>
 				</div>
 				<div class="flex mt-40px">
 					<div class="w-1/2 pl-16px">
-						{{ trans.details.phdDegree.value }}
+						{{ trans.details.locals.value }}
 					</div>
 					<div class="w-1/2 pl-16px">
-						{{ trans.details.masterDegree.value }}
+						{{ trans.details.foreigner.value }}
 					</div>
 				</div>
 				<ParagraphDivider />
@@ -157,15 +158,6 @@
 					>
 				</div>
 				<div class="flex mt-40px">
-					<div class="w-1/4 pl-16px">
-						{{ trans.details.email.value }}
-					</div>
-					<div class="w-1/4 pl-16px">
-						{{ trans.details.mainNumber.value }}
-					</div>
-					<div class="w-1/4 pl-16px">
-						{{ trans.details.secondaryNumber.value }}
-					</div>
 					<div class="w-1/4 pl-16px">
 						{{ trans.details.mobileNumber.value }}
 					</div>
@@ -301,7 +293,7 @@ const trans = {
 	basicCol: computed(() => t("基本資料欄位")),
 	attachmentCol: computed(() => t("檢附資料欄位")),
 	nameInfo: computed(() => t("姓名資訊")),
-	admissionIdentity: computed(() => t("入學身分")),
+	recruitmentIdentity: computed(() => t("入學身分")),
 	registAddressInfo: computed(() => t("戶籍資訊")),
 	residentAddress: computed(() => t("現居地址")),
 	identityInfo: computed(() => t("身份資料")),
@@ -314,13 +306,13 @@ const trans = {
 		prefixSuffix: computed(() => t("※ 稱謂/後綴")),
 		chineseName: computed(() => t("※ 中文姓氏/名字")),
 		englishName: computed(() => t("※ 英文姓氏/中間名/名字")),
-		phdDegree: computed(() => t("※ 博士生")),
-		masterDegree: computed(() => t("※ 碩士生")),
+		locals: computed(() => t("※ 本國人士")),
+		foreigner: computed(() => t("※ 外籍人士")),
 		countryState: computed(() => t("※ 國家/州")),
 		cityPostNumber: computed(() => t("※ 城市/郵遞區號")),
 		streetAddress: computed(() => t("※ 街道地址")),
-		legalGender: computed(() => t("※ 法定性別/ 性別認同")),
-		bornCountry: computed(() => t("※ 出生國")),
+		legalGender: computed(() => t("※ 生理性別")),
+		bornCountry: computed(() => t("※ 出生國家")),
 		bornDate: computed(() => t("※ 出生日期")),
 		citizenship: computed(() => t("※ 主要國籍")),
 		email: computed(() => t("※ 電子郵件")),
@@ -347,7 +339,7 @@ const store = useGlobalStore();
 const queryClient = useQueryClient();
 
 // Field Data
-const showedInfo = reactive([
+let showedInfo = reactive([
 	{ id: "姓名資訊", checked: false },
 	{ id: "入職身分", checked: false },
 	{ id: "戶籍資訊", checked: false },
@@ -355,7 +347,7 @@ const showedInfo = reactive([
 	{ id: "身份資料", checked: false },
 	{ id: "聯絡資料", checked: false },
 ]);
-const showedFile = reactive([
+let showedFile = reactive([
 	{ id: "教學經歷", checked: false },
 	{ id: "考試與檢定分數", checked: false },
 	{ id: "其他有利於審查資料", checked: false },
@@ -364,7 +356,7 @@ const fieldList = {
 	infoChecked: [""],
 	fileChecked: [""],
 };
-const programData: RecruitmentAdminProgramListResponse = reactive({
+let programData: RecruitmentAdminProgramListResponse = reactive({
 	id: 0,
 	category: "",
 	name: "",
@@ -385,18 +377,13 @@ const programData: RecruitmentAdminProgramListResponse = reactive({
 
 // API: Get Info/File Data
 const getInfoFileField = useQuery(
-	["infoFileField"],
+	["recruitmentInfoFileField"],
 	async () => {
-		try {
-			if (store.program) {
-				const allData = await api.getProgramList();
-				return allData[store.program.id - 1];
-			}
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				console.error("Invalid Session Error");
-			}
-		}
+		if (!store.program)
+			throw new Error("recruitmentInfoFileField: no program selected");
+
+		const allData = await api.getProgramList();
+		return allData[store.program.id - 1];
 	},
 	{
 		refetchOnWindowFocus: false,
@@ -447,19 +434,14 @@ const getInfoFileField = useQuery(
 // API: Patch Info/File Data
 const patchInfoFileField = useMutation(
 	async (newData: RecruitmentAdminProgramListResponse) => {
-		try {
-			if (store.program) {
-				return await api.updateProgramData(store.program.id, newData);
-			}
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				console.error("Invalid Session Error");
-			}
-		}
+		if (!store.program)
+			throw new Error("patchInfoFileField: no program selected");
+
+		return await api.updateProgramData(store.program.id, newData);
 	},
 	{
 		onSuccess: () => {
-			queryClient.invalidateQueries(["infoFileField"]);
+			queryClient.invalidateQueries(["recruitmentInfoFileField"]);
 		},
 	}
 );
@@ -501,7 +483,7 @@ function saveChange() {
 }
 
 function refreshData() {
-	queryClient.invalidateQueries(["infoFileField"]);
+	queryClient.invalidateQueries(["recruitmentInfoFileField"]);
 }
 
 watch(activeTab, () => {

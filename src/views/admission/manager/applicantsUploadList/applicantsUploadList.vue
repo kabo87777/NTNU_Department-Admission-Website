@@ -76,7 +76,7 @@
 					</template>
 					<template #body="slotProps">
 						<div
-							v-if="slotProps.data.isMoreDoc"
+							v-if="slotProps.data.isMoredoc"
 							class="m-auto text-center"
 						>
 							{{ $t("已開放") }}
@@ -137,17 +137,7 @@ const applicantList: AdmissionAdminApplicantsListResponse[] = reactive<
 const { data } = useQuery(
 	["applicantListUpload"],
 	async () => {
-		try {
-			return await api.getApplicantList(store.program!.id as number);
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				console.error(
-					"Session has already expired while quering appliacntList"
-				);
-				router.push("/");
-				return;
-			}
-		}
+		return await api.getApplicantList(store.program!.id as number);
 	},
 	{
 		onSuccess: (data) => {

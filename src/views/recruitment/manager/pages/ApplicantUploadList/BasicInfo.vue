@@ -173,21 +173,12 @@ const props = defineProps(["userId"]);
 const userInfo = ref<RecruitmentAdminApplicantResponse>();
 
 const { data } = useQuery(
-	["adminApplicantBasicInfo"],
+	["RadminApplicantBasicInfo"],
 	async () => {
-		try {
-			return await api.getApplicantBasicInfo(
-				programId as number,
-				props.userId
-			);
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				console.error(
-					"Session has already expired while quering appliacntList"
-				);
-				return;
-			}
-		}
+		return await api.getApplicantBasicInfo(
+			programId as number,
+			props.userId
+		);
 	},
 	{
 		onSuccess: (data) => {

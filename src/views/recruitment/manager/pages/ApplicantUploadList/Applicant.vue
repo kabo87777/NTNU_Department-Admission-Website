@@ -2,7 +2,7 @@
 	<div>
 		<div class="flex">
 			<div class="prevPage">
-				<router-link to="/admission/manager/applicantsUploadList"
+				<router-link to="/recruitment/manager/attachmentList"
 					><i class="pi pi-chevron-left"></i
 					>{{ $t("上傳資料列表") }}</router-link
 				>
@@ -22,6 +22,7 @@
 				:options="tabs"
 				optionLabel="name"
 				aria-labelledby="single"
+				:unselectable="false"
 			>
 				<template #option="slotProps">
 					<div class="m-auto text-20px font-bold">
@@ -77,19 +78,12 @@ const tabs = ref([
 const { data } = useQuery(
 	["adminApplicantBasisInfo"],
 	async () => {
-		try {
-			return await api.getApplicantBasicInfo(
-				programId as number,
-				Number(route.params.userId)
-			);
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				console.error(
-					"Session has already expired while quering appliacntList"
-				);
-				return;
-			}
-		}
+		if (!programId) throw new Error("invalid programId");
+
+		return await api.getApplicantBasicInfo(
+			programId,
+			Number(route.params.userId)
+		);
 	},
 	{
 		onSuccess: (data) => {

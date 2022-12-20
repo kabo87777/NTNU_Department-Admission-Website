@@ -1,7 +1,4 @@
 <template>
-	<div class="mt-16px pt-16px text-20px text-[#53565A]">
-		{{ $t(props.category) }}
-	</div>
 	<div :class="dynamicClass()">
 		<div style="padding: 16px; margin: auto">
 			<Button
@@ -51,14 +48,14 @@ const handleEdit = () => {
 
 <style setup lang="css">
 .admissionManagerCreateState {
-	margin-top: 8px;
+	margin-top: 24px;
 	border: 2px dashed #874b52;
 	border-radius: 8px;
 	display: flex;
 }
 
 .admissionApplicantCreateState {
-	margin-top: 8px;
+	margin-top: 24px;
 	border: 2px dashed #736028;
 	border-radius: 8px;
 	display: flex;

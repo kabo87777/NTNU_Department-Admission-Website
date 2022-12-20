@@ -6,7 +6,6 @@ import type {
 	RecruitmentReviewerApplicantListResponse,
 	RecruitmentReviewerApplicantCommentResponse,
 	RecruitmentReviewerApplicantInfoResponse,
-	RecruitmentReviewerProgramResponse,
 	RecruitmentReviewerGenericResponse,
 } from "./types";
 import type { APIGenericResponse } from "@/api/types";
@@ -31,7 +30,7 @@ export class RecruitmentReviewerAPI extends GenericAPI {
 		body: object
 	): Promise<RecruitmentReviewerGenericResponse> {
 		const data: APIGenericResponse = await this.instance.patch(
-			"recruitment/auth/reviewer/password",
+			"/recruitment/auth/reviewer/password",
 			body
 		);
 
@@ -120,5 +119,33 @@ export class RecruitmentReviewerAPI extends GenericAPI {
 
 		if (data.error === true || typeof data.data === "undefined")
 			throw new Error("Failed to fetch applicant comment");
+	}
+
+	async getApplicantInfoFile(
+		programID: number,
+		applicantID: string | string[]
+	): Promise<string> {
+		return await this.instance.get(
+			`/recruitment/reviewer/program/${programID}/applicant/${applicantID}/get_info_file`
+		);
+	}
+
+	async getApplicantCombineFile(
+		programID: number,
+		applicantID: string | string[]
+	): Promise<string> {
+		return await this.instance.get(
+			`/recruitment/reviewer/program/${programID}/applicant/${applicantID}/get_combine_pdf_file`
+		);
+	}
+
+	async getApplicantCategoryCombineFile(
+		programID: number,
+		applicantID: string | string[]
+	): Promise<string> {
+		return await this.instance.get(
+			`/recruitment/reviewer/program/${programID}/applicant/${applicantID}/get_category_file`,
+			{ params: { category: "file" } }
+		);
 	}
 }

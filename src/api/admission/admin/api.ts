@@ -18,7 +18,7 @@ import type {
 } from "./types";
 import type { APIGenericResponse } from "@/api/types";
 import { GenericAPI } from "@/api/api";
-import { Ref } from "vue";
+
 export class AdmissionAdminAPI extends GenericAPI {
 	constructor(auth: AuthStore) {
 		super(auth);
@@ -128,6 +128,16 @@ export class AdmissionAdminAPI extends GenericAPI {
 			success: true,
 			message: data.message,
 		};
+	}
+
+	async downloadApplicantFile(
+		applicantID: number,
+		fileId: number
+	): Promise<Blob> {
+		return await this.instance.get(
+			`admission/admin/applicant/${applicantID}/file/${fileId}/getfile`,
+			{ responseType: "blob" }
+		);
 	}
 
 	async getScoreField(
@@ -280,10 +290,10 @@ export class AdmissionAdminAPI extends GenericAPI {
 	}
 
 	async getSingleDocsGrade(
-		applicantID: Ref<number>
+		applicantID: number
 	): Promise<AdmissionAdminSingleDocsGradeResponse> {
 		const data: APIGenericResponse = await this.instance.get(
-			`/admission/admin/applicant/${applicantID.value}/docs_grading`
+			`/admission/admin/applicant/${applicantID}/docs_grading`
 		);
 
 		if (data.error === true || typeof data.data === "undefined")
@@ -293,10 +303,10 @@ export class AdmissionAdminAPI extends GenericAPI {
 	}
 
 	async getSingleOralGrade(
-		applicantID: Ref<number>
+		applicantID: number
 	): Promise<AdmissionAdminSingleOralGradeResponse> {
 		const data: APIGenericResponse = await this.instance.get(
-			`/admission/admin/applicant/${applicantID.value}/oral_grading`
+			`/admission/admin/applicant/${applicantID}/oral_grading`
 		);
 
 		if (data.error === true || typeof data.data === "undefined")

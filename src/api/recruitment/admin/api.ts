@@ -26,7 +26,6 @@ export class RecruitmentAdminAPI extends GenericAPI {
 		pid: number
 	): Promise<RecruitmentAdminApplicantListResponse[]> {
 		const data: APIGenericResponse = await this.instance.get(
-			// @PT FIXME: This should not be hardcode
 			`/recruitment/admin/program/${pid}/file`
 		);
 
@@ -36,7 +35,6 @@ export class RecruitmentAdminAPI extends GenericAPI {
 		return data.data;
 	}
 
-	// TODO: disannotation while backend finished admin get program API
 	async getProgramList(): Promise<RecruitmentAdminProgramListResponse[]> {
 		const data: APIGenericResponse = await this.instance.get(
 			"/recruitment/admin/program"
@@ -135,6 +133,17 @@ export class RecruitmentAdminAPI extends GenericAPI {
 		return data.data;
 	}
 
+	async downloadApplicantFile(
+		programID: number,
+		applicantID: number,
+		fileId: number
+	): Promise<Blob> {
+		return await this.instance.get(
+			`recruitment/admin/program/${programID}/applicant/${applicantID}/file/${fileId}/getfile`,
+			{ responseType: "blob" }
+		);
+	}
+
 	async getApplicantMoreDocRes(
 		programID: number,
 		userId: number
@@ -154,7 +163,7 @@ export class RecruitmentAdminAPI extends GenericAPI {
 		userId: number,
 		body: object
 	): Promise<RecruitmentAdminGenericStatusResponse> {
-		const data: APIGenericResponse = await this.instance.post(
+		const data: APIGenericResponse = await this.instance.patch(
 			`recruitment/admin/program/${programID}/applicant/${userId}/moredoc`,
 			body
 		);
@@ -236,10 +245,10 @@ export class RecruitmentAdminAPI extends GenericAPI {
 
 	async getSingleApplicantWithDetail(
 		programID: number,
-		applicantID: Ref<number>
+		applicantID: number
 	): Promise<RecruitmentAdminSingleApplicantWithDetailResponse> {
 		const data: APIGenericResponse = await this.instance.get(
-			`/recruitment/admin/program/${programID}/applicant/${applicantID.value}/reviewstate`
+			`/recruitment/admin/program/${programID}/applicant/${applicantID}/reviewstate`
 		);
 
 		if (data.error === true || typeof data.data === "undefined")

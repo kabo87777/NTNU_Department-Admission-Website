@@ -5,7 +5,10 @@
 		</div>
 		<div class="bigYellowDivider"></div>
 
-		<div class="px-12px py-24px">
+		<div
+			class="px-12px py-24px"
+			v-if="requiredInputFields.includes('姓名資訊')"
+		>
 			<div class="flex">
 				<div class="text-[24px] font-[50] font-bold">
 					{{ $t("姓名資訊") }}
@@ -114,11 +117,14 @@
 				</div>
 			</div>
 		</div>
-		<ParagraphDivider />
-		<div class="px-12px py-24px">
+		<ParagraphDivider v-if="requiredInputFields.includes('姓名資訊')" />
+		<div
+			class="px-12px py-24px"
+			v-if="requiredInputFields.includes('入學身分')"
+		>
 			<div class="flex">
 				<div class="text-[24px] font-[50] font-bold">
-					{{ $t("入職身份") }}
+					{{ $t("入學身分") }}
 				</div>
 				<div class="mt-6px ml-40px text-[#8D9093] text-[14px]">
 					{{ $t('" * " 為必填欄位') }}
@@ -126,13 +132,13 @@
 			</div>
 			<div class="flex pt-24px">
 				<div class="w-1/3">
-					<div>{{ "*" + $t("入職身份") }}</div>
+					<div>{{ "*" + $t("入學身分") }}</div>
 					<div>
 						<Dropdown
 							class="w-[70%] h-36px !mt-4px"
 							style="border: 1px solid #736028"
 							v-model="identity.selectedIdentity"
-							placeholder="請選擇身份"
+							placeholder="請選擇身分"
 							:options="identityOptions"
 							optionLabel="name"
 							optionValue="name"
@@ -160,8 +166,8 @@
 				</div>
 			</div>
 			<div v-if="identity.selectedIdentity === '外籍人士'">
-				<div class="px-12px py-24px">
-					<div class="flex">
+				<div>
+					<div class="flex pt-16px">
 						<div class="w-1/3">
 							<div>{{ "*" + $t("國籍") }}</div>
 							<div>
@@ -202,58 +208,8 @@
 						</div>
 					</div>
 				</div>
-				<ParagraphDivider />
-				<div class="px-12px py-24px">
-					<div class="flex">
-						<div class="text-[24px] font-[50] font-bold">
-							{{ $t("現居地址") }}
-						</div>
-						<div class="mt-6px ml-40px text-[#8D9093] text-[14px]">
-							{{ $t('" * " 為必填欄位') }}
-						</div>
-					</div>
-					<div class="flex py-16px">
-						<div class="w-2/3">
-							<div>{{ "*" + $t("地址") }}</div>
-							<div>
-								<InputText
-									class="w-[80%] h-36px !mt-4px"
-									style="border: 1px solid #736028"
-									type="text"
-									v-model="currentAddr.addr"
-									:disabled="currentAddr.isAddrSame"
-								/>
-							</div>
-							<div
-								v-show="required.currentAddr"
-								class="absolute mt-[-4px]"
-							>
-								<small class="p-error">
-									{{ $t("此為必填欄位") }}
-								</small>
-							</div>
-						</div>
-						<div class="w-1/3">
-							<div>{{ "*" + $t("郵遞區號") }}</div>
-							<div>
-								<InputText
-									class="w-[70%] h-36px !mt-4px"
-									style="border: 1px solid #736028"
-									type="text"
-									v-model="currentAddr.postcode"
-									:disabled="currentAddr.isAddrSame"
-								/>
-							</div>
-							<div
-								v-show="required.currentPostcode"
-								class="absolute mt-[-4px]"
-							>
-								<small class="p-error">
-									{{ $t("此為必填欄位") }}
-								</small>
-							</div>
-						</div>
-					</div>
+				<div class="pt-24px">
+					<ParagraphDivider />
 				</div>
 			</div>
 			<div v-else>
@@ -275,15 +231,20 @@
 						</div>
 					</div>
 				</div>
-				<ParagraphDivider />
+				<ParagraphDivider
+					v-if="requiredInputFields.includes('入學身分')"
+				/>
 			</div>
 		</div>
 
-		<div v-if="identity.selectedIdentity !== '外籍人士'">
-			<div class="px-12px py-24px">
+		<div>
+			<div
+				class="px-12px py-24px"
+				v-if="requiredInputFields.includes('現居地址')"
+			>
 				<div class="flex">
 					<div class="text-[24px] font-[50] font-bold">
-						{{ $t("戶籍地址") }}
+						{{ $t("通訊地址") }}
 					</div>
 					<div class="mt-6px ml-40px text-[#8D9093] text-[14px]">
 						{{ $t('" * " 為必填欄位') }}
@@ -291,74 +252,13 @@
 				</div>
 				<div class="flex py-16px">
 					<div class="w-2/3">
-						<div>{{ "*" + $t("地址") }}</div>
-						<div>
-							<InputText
-								class="w-[80%] h-36px !mt-4px"
-								style="border: 1px solid #736028"
-								type="text"
-								v-model="householdAddr.addr"
-							/>
-						</div>
-						<div
-							v-show="required.householdAddr"
-							class="absolute mt-[-4px]"
-						>
-							<small class="p-error">
-								{{ $t("此為必填欄位") }}
-							</small>
-						</div>
-					</div>
-					<div class="w-1/3">
-						<div>{{ "*" + $t("郵遞區號") }}</div>
-						<div>
-							<InputText
-								class="w-[70%] h-36px !mt-4px"
-								style="border: 1px solid #736028"
-								type="text"
-								v-model="householdAddr.postcode"
-							/>
-						</div>
-						<div
-							v-show="required.householdpostcode"
-							class="absolute mt-[-4px]"
-						>
-							<small class="p-error">
-								{{ $t("此為必填欄位") }}
-							</small>
-						</div>
-					</div>
-				</div>
-			</div>
-			<ParagraphDivider />
-
-			<div class="px-12px py-24px">
-				<div class="flex">
-					<div class="text-[24px] font-[50] font-bold">
-						{{ $t("現居地址") }}
-					</div>
-					<div class="mt-6px ml-40px text-[#8D9093] text-[14px]">
-						{{ $t('" * " 為必填欄位') }}
-					</div>
-				</div>
-				<div class="mt-16px">
-					<Checkbox
-						v-model="currentAddr.isAddrSame"
-						:binary="true"
-						v-on:click="address"
-					/>
-					<label class="ml-4px">{{ $t("住址相同") }}</label>
-				</div>
-				<div class="flex py-16px">
-					<div class="w-2/3">
-						<div>{{ "*" + $t("地址") }}</div>
+						<div>{{ $t("地址") }}</div>
 						<div>
 							<InputText
 								class="w-[80%] h-36px !mt-4px"
 								style="border: 1px solid #736028"
 								type="text"
 								v-model="currentAddr.addr"
-								:disabled="currentAddr.isAddrSame"
 							/>
 						</div>
 						<div
@@ -371,14 +271,13 @@
 						</div>
 					</div>
 					<div class="w-1/3">
-						<div>{{ "*" + $t("郵遞區號") }}</div>
+						<div>{{ $t("郵遞區號") }}</div>
 						<div>
 							<InputText
 								class="w-[70%] h-36px !mt-4px"
 								style="border: 1px solid #736028"
 								type="text"
 								v-model="currentAddr.postcode"
-								:disabled="currentAddr.isAddrSame"
 							/>
 						</div>
 						<div
@@ -391,11 +290,36 @@
 						</div>
 					</div>
 				</div>
+				<div class="flex py-16px">
+					<div class="w-2/3">
+						<div>{{ $t("電子郵件") }}</div>
+						<div>
+							<InputText
+								class="w-[80%] h-36px !mt-4px"
+								style="border: 1px solid #736028"
+								type="text"
+								v-model="email"
+								:disabled="true"
+							/>
+						</div>
+						<div
+							v-show="required.currentAddr"
+							class="absolute mt-[-4px]"
+						>
+							<small class="p-error">
+								{{ $t("此為必填欄位") }}
+							</small>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 
-		<ParagraphDivider />
-		<div class="px-12px py-24px">
+		<ParagraphDivider v-if="requiredInputFields.includes('現居地址')" />
+		<div
+			class="px-12px py-24px"
+			v-if="requiredInputFields.includes('身份資料')"
+		>
 			<div class="flex">
 				<div class="text-[24px] font-[50] font-bold">
 					{{ $t("身份資料") }}
@@ -444,7 +368,7 @@
 					<div>
 						<Calendar
 							v-model="born.birth"
-							dateFormat="yy-mm-dd"
+							dateFormat="yy/mm/dd"
 							class="w-[70%] h-36px !mt-4px"
 							style="
 								border: 1px solid #736028;
@@ -460,8 +384,11 @@
 				</div>
 			</div>
 		</div>
-		<ParagraphDivider />
-		<div class="px-12px py-24px">
+		<ParagraphDivider v-if="requiredInputFields.includes('身份資料')" />
+		<div
+			class="px-12px py-24px"
+			v-if="requiredInputFields.includes('聯絡資料')"
+		>
 			<div class="flex">
 				<div class="text-[24px] font-[50] font-bold">
 					{{ $t("聯絡方式") }}
@@ -512,38 +439,46 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted, watch, toRaw } from "vue";
-import { InvalidSessionError } from "@/api/error";
+import { ref, reactive, watch, toRaw } from "vue";
 import ParagraphDivider from "@/styles/paragraphDividerApplicant.vue";
 import { useToast } from "primevue/usetoast";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
 import Dropdown from "primevue/dropdown";
 import InputText from "primevue/inputtext";
-import Checkbox from "primevue/checkbox";
 import RadioButton from "primevue/radiobutton";
 import Calendar from "primevue/calendar";
 import Button from "primevue/button";
-
+import dayjs from "dayjs";
 import { useAdmissionApplicantAuthStore } from "@/stores/universalAuth";
 import { AdmissionApplicantAPI } from "@/api/admission/applicant/api";
 import { AdmissionApplicantGetUserInfoResponse } from "@/api/admission/applicant/types";
-import { log } from "console";
+import { AdmissionApplicantAuthResponse } from "@/api/admission/applicant/types";
+import { useUserInfoStore } from "@/stores/AdmissionApplicantStore";
+
 const applicantAuth = useAdmissionApplicantAuthStore();
+const applicantStore = useUserInfoStore();
 const api = new AdmissionApplicantAPI(applicantAuth);
 // const project = useProjectIdStore();
-
+const applicantInfo: AdmissionApplicantAuthResponse = toRaw(
+	applicantStore.userInfo
+);
+const email = ref(applicantInfo.email);
 const toast = useToast();
+const now = dayjs();
 
-const fetchResponse = reactive({
+const requiredInputFields = ref("");
+
+let fetchResponse = reactive({
 	success: false,
 	message: "" as string | [],
 });
 
-const loading = reactive({
+let loading = reactive({
 	fetch: false,
 	save: false,
 });
 
-const name = reactive({
+let name = reactive({
 	id: 0,
 	admission_id: 0,
 	appellation: "",
@@ -555,36 +490,30 @@ const name = reactive({
 	enMidName: "",
 });
 
-const identity = reactive({
+let identity = reactive({
 	selectedIdentity: "",
 	ic: "",
 	nationality: "",
 	ui: "",
 });
 
-const householdAddr = reactive({
+let currentAddr = reactive({
 	addr: "",
 	postcode: "",
 });
 
-const currentAddr = reactive({
-	isAddrSame: false,
-	addr: "",
-	postcode: "",
-});
-
-const born = reactive({
+let born = reactive({
 	sex: "",
 	country: "",
 	birth: new Date(),
+	// birth: dayjs(new Date()),
 });
 
-const contact = reactive({
-	email: "",
+let contact = reactive({
 	phone: "",
 });
 
-const required = reactive({
+let required = reactive({
 	enFamName: false,
 	enName: false,
 	identity: false,
@@ -603,12 +532,7 @@ const required = reactive({
 	phone: false,
 });
 
-const identityOptions = ref([{ name: "本地人士" }, { name: "外籍人士" }]);
-
-const basicInfo: AdmissionApplicantGetUserInfoResponse =
-	reactive<AdmissionApplicantGetUserInfoResponse>(
-		{} as AdmissionApplicantGetUserInfoResponse
-	);
+const identityOptions = ref([{ name: "本國人士" }, { name: "外籍人士" }]);
 
 const setBasicInfo = (res: AdmissionApplicantGetUserInfoResponse) => {
 	name.id = res.id as number;
@@ -631,40 +555,16 @@ const setBasicInfo = (res: AdmissionApplicantGetUserInfoResponse) => {
 		identity.nationality = res.nationality as string;
 	}
 
-	householdAddr.addr = res.household_address as string;
-	householdAddr.postcode = res.household_zipcode as string;
 	currentAddr.addr = res.communicate_address as string;
 	currentAddr.postcode = res.communicate_zipcode as string;
-	currentAddr.isAddrSame =
-		householdAddr.addr === currentAddr.addr && householdAddr.addr !== ""
-			? true
-			: false;
 
 	born.sex = res.sex as string;
 	born.country = res.birthcountry as string;
-	born.birth = res.birth as Date;
+	if (res.birth) {
+		born.birth = new Date(res.birth);
+	}
 
 	contact.phone = res.mobile_phone as string;
-};
-
-const saveInfo = async (body: object) => {
-	try {
-		return await api.patchBasicInfo(body);
-	} catch (e: any) {
-		if (e instanceof InvalidSessionError) {
-			console.error(
-				"Session has already expired while changing password"
-			);
-			return;
-		}
-	}
-};
-
-const address = (prod: any) => {
-	if (currentAddr.isAddrSame === false) {
-		currentAddr.addr = householdAddr.addr;
-		currentAddr.postcode = householdAddr.postcode;
-	}
 };
 
 const addHours = (numHrs: number, date = new Date()) => {
@@ -687,25 +587,21 @@ const handleSave = async () => {
 		en_midname: name.enMidName,
 		en_givenname: name.enName,
 		nationality:
-			identity.selectedIdentity === "本地人士"
+			identity.selectedIdentity === "本國人士"
 				? "台灣"
 				: identity.nationality,
 		national_id:
-			identity.selectedIdentity === "本地人士"
+			identity.selectedIdentity === "本國人士"
 				? identity.ic
 				: identity.ui,
-		household_address: householdAddr.addr,
-		household_zipcode: householdAddr.postcode,
-		communicate_address: currentAddr.isAddrSame
-			? householdAddr.addr
-			: currentAddr.addr,
-		communicate_zipcode: currentAddr.isAddrSame
-			? householdAddr.postcode
-			: currentAddr.postcode,
+
+		communicate_address: currentAddr.addr,
+		communicate_zipcode: currentAddr.postcode,
 		sex: born.sex,
 		birthcountry: born.country,
 		birth: addHours(8, new Date(born.birth)),
 		mobile_phone: contact.phone,
+		isForeigner: identity.selectedIdentity === "本國人士" ? false : true,
 	};
 
 	const keys = Object.keys(body);
@@ -721,59 +617,89 @@ const handleSave = async () => {
 
 	loading.save = true;
 
-	const response = saveInfo(body);
+	const res = await api.patchBasicInfo(body);
 
-	await response.then((res) => {
-		if (res?.success !== undefined && res?.message !== undefined) {
-			fetchResponse.success = toRaw(res.success);
-			fetchResponse.message = toRaw(res.message);
-		}
+	if (res?.success !== undefined && res?.message !== undefined) {
+		fetchResponse.success = toRaw(res.success);
+		fetchResponse.message = toRaw(res.message);
+	}
 
-		loading.save = false;
+	loading.save = false;
 
-		if (fetchResponse.success) {
-			toast.add({
-				severity: "success",
-				summary: "Success",
-				detail: fetchResponse.message,
-				life: 3000,
-			});
-		} else {
-			toast.add({
-				severity: "error",
-				summary: "Error",
-				detail: fetchResponse.message,
-				life: 5000,
-			});
-		}
-	});
+	if (fetchResponse.success) {
+		toast.add({
+			severity: "success",
+			summary: "Success",
+			detail: fetchResponse.message,
+			life: 3000,
+		});
+	} else {
+		toast.add({
+			severity: "error",
+			summary: "Error",
+			detail: fetchResponse.message,
+			life: 5000,
+		});
+	}
 
 	loading.fetch = true;
 };
 
-const getUserInfo = async () => {
-	return await api.getUserInfo();
-};
+useQuery(
+	["getAdmApplicantBasicInfo"],
+	async () => {
+		return await api.getUserInfo();
+	},
+	{
+		onSuccess: (data) => {
+			setBasicInfo(data);
+		},
+		onError: (data) => {
+			toast.add({
+				severity: "error",
+				summary: "Error",
+				detail: "Unable to fetch user basic info",
+				life: 5000,
+			});
+			console.log(data);
+		},
+	}
+);
 
-onMounted(async () => {
-	const response = getUserInfo();
-
-	await response.then((res) => {
-		// console.log(res);
-		if (Object.keys(res).length) setBasicInfo(res);
-	});
-});
+useQuery(
+	["getAdmApplicantProgramInfo_1"],
+	async () => {
+		return await api.getProgram();
+	},
+	{
+		onSuccess: (data) => {
+			requiredInputFields.value = data.applicant_required_info;
+		},
+		onError: (data) => {
+			toast.add({
+				severity: "error",
+				summary: "Error",
+				detail: "Unable to fetch user require input",
+				life: 5000,
+			});
+			console.log(data);
+		},
+	}
+);
 
 watch(
 	() => loading.fetch,
 	async () => {
-		const response = getUserInfo();
-
-		await response.then((res) => {
-			if (Object.keys(res).length) setBasicInfo(res);
-		});
-
-		loading.fetch = false;
+		const response = await api.getUserInfo();
+		setBasicInfo(response);
 	}
 );
 </script>
+
+<!-- v-if="requiredInputFields.includes('姓名資訊')" -->
+<!-- v-if="requiredInputFields.includes('入學身份')" -->
+<!-- v-if="requiredInputFields.includes('現居地址')" -->
+<!-- v-if="requiredInputFields.includes('身份資料')" -->
+<!-- v-if="requiredInputFields.includes('聯絡方式')" -->
+<!-- 可參考第十行怎麽使用 -->
+<!-- paragraph divider 也要記得做判斷 -->

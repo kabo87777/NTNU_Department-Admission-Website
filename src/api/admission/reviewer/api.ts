@@ -10,8 +10,6 @@ import type {
 	AdmissionReviewerApplicantFileListResponse,
 } from "./types";
 import type { APIGenericResponse } from "@/api/types";
-import { Blob } from "buffer";
-import { Ref } from "vue";
 
 export class AdmissionReviewerAPI extends GenericAPI {
 	constructor(auth: AuthStore) {
@@ -137,13 +135,36 @@ export class AdmissionReviewerAPI extends GenericAPI {
 		return data.data;
 	}
 
-	///FIX while backend is ready
-	async getApplicantSingleFile(
-		applicantID: string | string[],
-		fileID: number
+	async getApplicantInfoFile(
+		applicantID: string | string[]
 	): Promise<string> {
 		return await this.instance.get(
-			`/admission/reviewer/applicant/${applicantID}/file/${fileID}/getfile`
+			`/admission/reviewer/applicant/${applicantID}/get_info_file`
+		);
+	}
+
+	async getApplicantRecommendLetter(
+		applicantID: string | string[]
+	): Promise<string> {
+		return await this.instance.get(
+			`/admission/reviewer/applicant/${applicantID}/get_recommend_letter_file`
+		);
+	}
+
+	async getApplicantCombineFile(
+		applicantID: string | string[]
+	): Promise<string> {
+		return await this.instance.get(
+			`/admission/reviewer/applicant/${applicantID}/get_combine_pdf_file`
+		);
+	}
+
+	async getApplicantCategoryCombineFile(
+		applicantID: string | string[]
+	): Promise<string> {
+		return await this.instance.get(
+			`/admission/reviewer/applicant/${applicantID}/get_category_file`,
+			{ params: { category: "file" } }
 		);
 	}
 

@@ -1,275 +1,243 @@
 <template>
-	<div>
-		<div class="font-bold text-32px">{{ trans.uploadField.value }}</div>
-		<div class="bigRedDivider"></div>
-		<div class="p-fluid">
-			<SelectButton
-				class="mt-8px"
-				v-model="activeTab"
-				:options="tabOptions"
-				optionLabel="name"
-				aria-labelledby="single"
-			>
-			</SelectButton>
+	<!-- Header -->
+	<div class="fixed bg-white top-15 left-1/4 right-0 z-50 <lg:left-60">
+		<div class="w-9/10 pt-6 m-auto">
+			<div class="font-medium text-3xl text-title">
+				{{ trans.uploadField.value }}
+			</div>
+			<div class="bigRedDivider"></div>
+			<div class="p-fluid">
+				<SelectButton
+					class="mt-8px"
+					v-model="activeTab"
+					:options="tabOptions"
+					optionLabel="name"
+					aria-labelledby="single"
+					:unselectable="false"
+				>
+				</SelectButton>
+			</div>
 		</div>
-		<div v-if="activeTab.value === 1">
-			<div class="mt-16px">
-				<div>
+	</div>
+	<!-- Body -->
+	<div class="py-36" text="body xl">
+		<!-- 基本資料欄位 -->
+		<div v-if="activeTab.value === 1" class="space-y-8">
+			<!-- 姓名資訊 -->
+			<div class="space-y-4">
+				<div class="flex content-center">
 					<Checkbox
 						inputId="nameInfo"
+						class="pt-1"
 						v-model="showedInfo[0].checked"
 						:binary="true"
 					/>
-					<label
-						for="nameInfo"
-						class="ml-8px text-24px font-medium"
-						>{{ trans.nameInfo.value }}</label
-					>
+					<label for="nameInfo" class="ml-2">
+						{{ trans.nameInfo.value }}
+					</label>
 				</div>
-				<div class="flex mt-40px">
-					<div class="w-1/3 pl-16px">
+				<div class="flex font-light gap-4 ml-6" text="secondary sm">
+					<div class="pr-10">
 						{{ trans.details.prefixSuffix.value }}
 					</div>
-					<div class="w-1/3 pl-16px">
+					<div class="pr-10">
 						{{ trans.details.chineseName.value }}
 					</div>
-					<div class="w-1/3 pl-16px">
+					<div class="pr-10">
 						{{ trans.details.englishName.value }}
 					</div>
 				</div>
-				<ParagraphDivider />
 			</div>
-			<div class="mt-16px">
-				<div>
+			<ParagraphDivider />
+			<!-- 入學身份 -->
+			<div class="space-y-4">
+				<div class="flex content-center">
 					<Checkbox
 						inputId="enrollment"
+						class="pt-1"
 						v-model="showedInfo[1].checked"
 						:binary="true"
 					/>
-					<label
-						for="enrollment"
-						class="ml-8px text-24px font-medium"
-						>{{ trans.admissionIdentity.value }}</label
-					>
+					<label for="enrollment" class="ml-2">
+						{{ trans.admissionIdentity.value }}
+					</label>
 				</div>
-				<div class="flex mt-40px">
-					<div class="w-1/2 pl-16px">
-						{{ trans.details.phdDegree.value }}
+				<div class="flex font-light gap-4 ml-6" text="secondary sm">
+					<div class="pr-10">
+						{{ trans.details.locals.value }}
 					</div>
-					<div class="w-1/2 pl-16px">
-						{{ trans.details.masterDegree.value }}
+					<div class="pr-10">
+						{{ trans.details.foreigner.value }}
 					</div>
 				</div>
-				<ParagraphDivider />
 			</div>
-			<div class="mt-16px">
-				<div>
+			<ParagraphDivider />
+			<!-- 現居地址 -->
+			<div class="space-y-4">
+				<div class="flex content-center">
 					<Checkbox
-						inputId="permanentAd"
+						inputId="mailingAd"
+						class="pt-1"
 						v-model="showedInfo[2].checked"
 						:binary="true"
 					/>
-					<label
-						for="permanentAd"
-						class="ml-8px text-24px font-medium"
-						>{{ trans.registAddressInfo.value }}</label
-					>
+					<label for="mailingAd" class="ml-2">
+						{{ trans.residentAddress.value }}
+					</label>
 				</div>
-				<div class="flex mt-40px">
-					<div class="w-1/3 pl-16px">
+				<div class="flex font-light gap-4 ml-6" text="secondary sm">
+					<div class="pr-10">
 						{{ trans.details.countryState.value }}
 					</div>
-					<div class="w-1/3 pl-16px">
+					<div class="pr-10">
 						{{ trans.details.cityPostNumber.value }}
-					</div>
-					<div class="w-1/3 pl-16px">
-						{{ trans.details.streetAddress.value }}
 					</div>
 				</div>
 				<ParagraphDivider />
 			</div>
-			<div class="mt-16px">
-				<div>
+			<!-- 身份資料 -->
+			<div class="space-y-4">
+				<div class="flex content-center">
 					<Checkbox
-						inputId="mailingAd"
+						inputId="basicIdentityInfo"
+						class="pt-1"
 						v-model="showedInfo[3].checked"
 						:binary="true"
 					/>
-					<label
-						for="mailingAd"
-						class="ml-8px text-24px font-medium"
-						>{{ trans.residentAddress.value }}</label
-					>
+					<label for="basicIdentityInfo" class="ml-2">{{
+						trans.identityInfo.value
+					}}</label>
 				</div>
-				<div class="flex mt-40px">
-					<div class="w-1/3 pl-16px">
-						{{ trans.details.countryState.value }}
-					</div>
-					<div class="w-1/3 pl-16px">
-						{{ trans.details.cityPostNumber.value }}
-					</div>
-					<div class="w-1/3 pl-16px">
-						{{ trans.details.streetAddress.value }}
-					</div>
-				</div>
-				<ParagraphDivider />
-			</div>
-			<div class="mt-16px">
-				<div>
-					<Checkbox
-						inputId="basicIdentityInfo"
-						v-model="showedInfo[4].checked"
-						:binary="true"
-					/>
-					<label
-						for="basicIdentityInfo"
-						class="ml-8px text-24px font-medium"
-						>{{ trans.identityInfo.value }}</label
-					>
-				</div>
-				<div class="flex mt-40px">
-					<div class="w-1/4 pl-16px">
+				<div class="flex font-light gap-4 ml-6" text="secondary sm">
+					<div class="pr-10">
 						{{ trans.details.legalGender.value }}
 					</div>
-					<div class="w-1/4 pl-16px">
+					<div class="pr-10">
 						{{ trans.details.bornCountry.value }}
 					</div>
-					<div class="w-1/4 pl-16px">
+					<div class="pr-10">
 						{{ trans.details.citizenship.value }}
 					</div>
-					<div class="w-1/4 pl-16px">
+					<div class="pr-10">
 						{{ trans.details.bornDate.value }}
 					</div>
 				</div>
 				<ParagraphDivider />
 			</div>
-			<div class="mt-16px">
-				<div>
+			<!-- 聯絡資料 -->
+			<div class="space-y-4">
+				<div class="flex content-center">
 					<Checkbox
 						inputId="contactInfo"
-						v-model="showedInfo[5].checked"
+						class="pt-1"
+						v-model="showedInfo[4].checked"
 						:binary="true"
 					/>
-					<label
-						for="contactInfo"
-						class="ml-8px text-24px font-medium"
-						>{{ trans.contactInfo.value }}</label
-					>
+					<label for="contactInfo" class="ml-2">{{
+						trans.contactInfo.value
+					}}</label>
 				</div>
-				<div class="flex mt-40px">
-					<div class="w-1/4 pl-16px">
-						{{ trans.details.email.value }}
-					</div>
-					<div class="w-1/4 pl-16px">
-						{{ trans.details.mainNumber.value }}
-					</div>
-					<div class="w-1/4 pl-16px">
-						{{ trans.details.secondaryNumber.value }}
-					</div>
-					<div class="w-1/4 pl-16px">
+				<div class="flex font-light gap-4 ml-6" text="secondary sm">
+					<div class="pr-10">
 						{{ trans.details.mobileNumber.value }}
 					</div>
 				</div>
 			</div>
 		</div>
-		<div v-else-if="activeTab.value === 2">
-			<div class="mt-16px">
-				<div>
+		<!-- 檢附資料欄位 -->
+		<div v-else class="space-y-8">
+			<!-- 就學經歷 -->
+			<div class="space-y-4">
+				<div class="flex content-center">
 					<Checkbox
 						inputId="schoolExp"
+						class="pt-1"
 						v-model="showedFile[0].checked"
 						:binary="true"
 					/>
-					<label
-						for="schoolExp"
-						class="ml-8px text-24px font-medium"
-						>{{ trans.schoolExp.value }}</label
-					>
+					<label for="schoolExp" class="ml-2">{{
+						trans.schoolExp.value
+					}}</label>
 				</div>
-				<div class="flex mt-40px">
-					<div class="pl-16px">
+				<div class="flex font-light gap-4 ml-6" text="secondary sm">
+					<div class="pr-10">
 						{{ trans.details.fileName.value }}
 					</div>
-					<div class="pl-16px">
+					<div class="pr-10">
 						{{ trans.details.fileUpload.value }}
 					</div>
 				</div>
-				<ParagraphDivider />
 			</div>
-			<div class="mt-16px">
-				<div>
+			<ParagraphDivider />
+			<!-- 考試與檢定分數 -->
+			<div class="space-y-4">
+				<div class="flex content-center">
 					<Checkbox
 						inputId="score"
+						class="pt-1"
 						v-model="showedFile[1].checked"
 						:binary="true"
 					/>
-					<label for="score" class="ml-8px text-24px font-medium">{{
+					<label for="score" class="ml-2">{{
 						trans.examScore.value
 					}}</label>
 				</div>
-				<div class="flex mt-40px">
-					<div class="pl-16px">
+				<div class="flex font-light gap-4 ml-6" text="secondary sm">
+					<div class="pr-10">
 						{{ trans.details.fileName.value }}
 					</div>
-					<div class="pl-16px">
+					<div class="pr-10">
 						{{ trans.details.fileUpload.value }}
 					</div>
 				</div>
-				<ParagraphDivider />
 			</div>
-			<div class="mt-16px">
-				<div>
+			<ParagraphDivider />
+			<!-- 其他有利於審查資料 -->
+			<div class="space-y-4">
+				<div class="flex content-center">
 					<Checkbox
 						inputId="other"
+						class="pt-1"
 						v-model="showedFile[2].checked"
 						:binary="true"
 					/>
-					<label for="other" class="ml-8px text-24px font-medium">{{
+					<label for="other" class="ml-2">{{
 						trans.advantageFile.value
 					}}</label>
 				</div>
-				<div class="flex mt-40px">
-					<div class="pl-16px">
+				<div class="flex font-light gap-4 ml-6" text="secondary sm">
+					<div class="pr-10">
 						{{ trans.details.fileName.value }}
 					</div>
-					<div class="pl-16px">
+					<div class="pr-10">
 						{{ trans.details.fileUpload.value }}
 					</div>
 				</div>
 			</div>
 		</div>
-		<div class="mt-100px">
+	</div>
+	<!-- Footer -->
+	<div class="fixed bg-white bottom-0 left-1/4 right-0 z-50 <lg:left-60">
+		<div class="w-9/10 pt-2 m-auto space-y-2 pb-6">
 			<div class="bigRedDivider"></div>
-		</div>
-		<div class="flex mt-24px">
-			<div class="m-auto">
-				<div class="flex">
-					<Button
-						class="bg-white h-60px w-140px border-ntnuRed"
-						@click="refreshData"
-					>
-						<i
-							class="pi pi-times ml-1 mr-2 box-border"
-							text="sm ntnuRed"
-						></i>
-						<div class="m-auto tracking-2" text="sm ntnuRed">
-							<div>{{ $t("取消變更") }}</div>
-						</div>
-					</Button>
-					<div class="w-24px"></div>
-					<Button
-						class="bg-Green h-60px w-140px border-ntnuRed"
-						@click="saveChange"
-					>
-						<i
-							class="pi pi-check ml-1 mr-2 box-border"
-							text="sm black"
-						></i>
-						<div class="m-auto tracking-2" text="sm black">
-							<div>{{ $t("儲存設定") }}</div>
-						</div>
-					</Button>
-				</div>
+			<div class="flex justify-center gap-6 pt-2">
+				<!-- 取消變更 -->
+				<Button class="bg-White border-Red" @click="refreshData">
+					<i
+						class="pi pi-times ml-1 mr-2 box-border"
+						text="sm ntnuRed"
+					></i>
+					<div class="m-auto tracking-2" text="sm nRed-500">
+						<div>{{ $t("取消變更") }}</div>
+					</div>
+				</Button>
+				<!-- 儲存設定 -->
+				<Button class="bg-Green border-ntnuRed" @click="saveChange">
+					<i class="pi pi-check ml-1 mr-2 box-border" text="sm"></i>
+					<div class="m-auto tracking-2" text="sm">
+						<div>{{ $t("儲存設定") }}</div>
+					</div>
+				</Button>
 			</div>
 		</div>
 	</div>
@@ -287,7 +255,6 @@ import { useI18n } from "vue-i18n";
 import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
 import { AdmissionAdminAPI } from "@/api/admission/admin/api";
 import { useGlobalStore } from "@/stores/globalStore";
-import { InvalidSessionError } from "@/api/error";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
 import { AdmissionAdminProgramListResponse } from "@/api/admission/admin/types";
 
@@ -313,13 +280,13 @@ const trans = {
 		prefixSuffix: computed(() => t("※ 稱謂/後綴")),
 		chineseName: computed(() => t("※ 中文姓氏/名字")),
 		englishName: computed(() => t("※ 英文姓氏/中間名/名字")),
-		phdDegree: computed(() => t("※ 博士生")),
-		masterDegree: computed(() => t("※ 碩士生")),
+		locals: computed(() => t("※ 本國人士")),
+		foreigner: computed(() => t("※ 外籍人士")),
 		countryState: computed(() => t("※ 國家/州")),
-		cityPostNumber: computed(() => t("※ 城市/郵遞區號")),
+		cityPostNumber: computed(() => t("※ 郵遞區號")),
 		streetAddress: computed(() => t("※ 街道地址")),
-		legalGender: computed(() => t("※ 法定性別/ 性別認同")),
-		bornCountry: computed(() => t("※ 出生國")),
+		legalGender: computed(() => t("※ 生理性別")),
+		bornCountry: computed(() => t("※ 出生國家")),
 		bornDate: computed(() => t("※ 出生日期")),
 		citizenship: computed(() => t("※ 主要國籍")),
 		email: computed(() => t("※ 電子郵件")),
@@ -346,20 +313,19 @@ const store = useGlobalStore();
 const queryClient = useQueryClient();
 
 // Field Data
-const showedInfo = reactive([
+let showedInfo = reactive([
 	{ id: "姓名資訊", checked: false },
 	{ id: "入學身分", checked: false },
-	{ id: "戶籍資訊", checked: false },
 	{ id: "現居地址", checked: false },
 	{ id: "身份資料", checked: false },
 	{ id: "聯絡資料", checked: false },
 ]);
-const showedFile = reactive([
+let showedFile = reactive([
 	{ id: "就學經歷", checked: false },
 	{ id: "考試與檢定分數", checked: false },
 	{ id: "其他有利於審查資料", checked: false },
 ]);
-const programData: AdmissionAdminProgramListResponse = reactive({
+let programData: AdmissionAdminProgramListResponse = reactive({
 	id: 0,
 	category: "",
 	name: "",
@@ -367,7 +333,6 @@ const programData: AdmissionAdminProgramListResponse = reactive({
 	application_end_date: "",
 	review_start_date: "",
 	review_end_date: "",
-	stage: "",
 	created_at: "",
 	updated_at: "",
 	applicant_required_info: "",
@@ -375,6 +340,8 @@ const programData: AdmissionAdminProgramListResponse = reactive({
 	reviewer_required_info: "",
 	reviewer_required_file: "",
 	detail: "",
+	oral_start_date: "",
+	docs_end_date: "",
 });
 const fieldList = {
 	infoChecked: [""],
@@ -385,16 +352,11 @@ const fieldList = {
 const getInfoFileField = useQuery(
 	["infoFileField"],
 	async () => {
-		try {
-			if (store.program) {
-				const allData = await api.getProgramList();
-				return allData[store.program.id - 1];
-			}
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				console.error("Invalid Session Error");
-			}
-		}
+		if (!store.program)
+			throw new Error("infoFileField: no program selected");
+
+		const allData = await api.getProgramList();
+		return allData[store.program.id - 1];
 	},
 	{
 		refetchOnWindowFocus: false,
@@ -408,7 +370,6 @@ const getInfoFileField = useQuery(
 				programData.application_end_date = data.application_end_date;
 				programData.review_start_date = data.review_start_date;
 				programData.review_end_date = data.review_end_date;
-				programData.stage = data.stage;
 				programData.created_at = data.created_at;
 				programData.updated_at = data.updated_at;
 				programData.detail = data.detail;
@@ -420,6 +381,8 @@ const getInfoFileField = useQuery(
 					data.reviewer_required_info;
 				programData.reviewer_required_file =
 					data.reviewer_required_file;
+				programData.oral_start_date = data.oral_start_date;
+				programData.docs_end_date = data.docs_end_date;
 			}
 			fieldList.infoChecked = JSON.parse(
 				programData.applicant_required_info
@@ -445,14 +408,8 @@ const getInfoFileField = useQuery(
 // API: Patch Info/File Data
 const patchInfoFileField = useMutation(
 	async (newData: AdmissionAdminProgramListResponse) => {
-		try {
-			if (store.program) {
-				return await api.updateProgramData(store.program.id, newData);
-			}
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				console.error("Invalid Session Error");
-			}
+		if (store.program) {
+			return await api.updateProgramData(store.program.id, newData);
 		}
 	},
 	{

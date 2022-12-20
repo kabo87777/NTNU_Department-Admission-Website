@@ -23,7 +23,13 @@
 		<div class="flex mt-16px">
 			<div class="w-1/3 pl-16px">
 				<div>
-					<Calendar dateFormat="yy-mm-dd" v-model="date.start" />
+					<Calendar
+						inputId="icon"
+						:showIcon="true"
+						:showTime="true"
+						dateFormat="yy/mm/dd"
+						v-model="date.start"
+					/>
 				</div>
 				<div v-show="showRequire.start" class="absolute">
 					<small class="p-error">{{ $t("此為必填欄位") }}</small>
@@ -31,7 +37,13 @@
 			</div>
 			<div class="w-1/3 pl-16px">
 				<div>
-					<Calendar dateFormat="yy-mm-dd" v-model="date.end" />
+					<Calendar
+						inputId="icon"
+						:showIcon="true"
+						:showTime="true"
+						dateFormat="yy/mm/dd"
+						v-model="date.end"
+					/>
 				</div>
 				<div v-show="showRequire.end" class="absolute">
 					<small class="p-error">{{ $t("此為必填欄位") }}</small>
@@ -47,36 +59,6 @@
 			</div>
 		</div>
 		<div class="flex mt-16px">
-			<div class="w-1/3 pl-16px">
-				<div>{{ $t("類別") }}:</div>
-				<div class="mt-8px">
-					<Dropdown
-						class="h-10 w-240px"
-						v-model="docInfo.category"
-						placeholder="請選擇類別"
-						:options="categoryOptions"
-						optionLabel="name"
-						optionValue="name"
-					>
-						<template #value="slotProps">
-							<div v-if="slotProps.value" class="mt-[-6px]">
-								{{ slotProps.value }}
-							</div>
-							<div v-else class="mt-[-6px]">
-								{{ $t(slotProps.placeholder) }}
-							</div>
-						</template>
-						<template #option="slotProps">
-							<div class="mt-[-6px] h-12px">
-								{{ $t(slotProps.option.name) }}
-							</div>
-						</template>
-					</Dropdown>
-				</div>
-				<div v-show="showRequire.category" class="absolute">
-					<small class="p-error">{{ $t("此為必填欄位") }}</small>
-				</div>
-			</div>
 			<div class="w-1/3 pl-16px">
 				<div>{{ $t("文件名稱") }}:</div>
 				<div class="mt-8px">
@@ -235,29 +217,29 @@ const props = defineProps(["userId"]);
 
 const toast = useToast();
 
-const fetchResponse = reactive({
+let fetchResponse = reactive({
 	success: false,
 	message: "" as string | [],
 });
 
 const activeTab = ref({ name: "關閉", value: false });
-const date = reactive({
+let date = reactive({
 	start: new Date(),
 	end: new Date(),
 });
-const docInfo = reactive({
+let docInfo = reactive({
 	category: "",
 	name: "",
 });
 
-const showRequire = reactive({
+let showRequire = reactive({
 	start: false,
 	end: false,
 	category: false,
 	name: false,
 });
 
-const isLoading = reactive({
+let isLoading = reactive({
 	save: false,
 	send: false,
 	fetch: false,
@@ -274,7 +256,7 @@ const categoryOptions = ref([
 	{ name: "其他有利於審查資料" },
 ]);
 
-const isModalVisible = reactive({
+let isModalVisible = reactive({
 	sendEmail: false,
 	saveChange: false,
 });
@@ -291,27 +273,16 @@ const setInfo = (info: RecruimentAdminGetApplicantMoredocResponses) => {
 	activeTab.value = info.isMoredoc
 		? tabOptions.value[1]
 		: tabOptions.value[0];
-	date.start = info.moredoc_start_date;
-	date.end = info.moredoc_end_date;
+	date.start = new Date(info.moredoc_start_date);
+	date.end = new Date(info.moredoc_end_date);
 	docInfo.category = info.moredoc_category;
 	docInfo.name = info.moredoc_name;
 };
 
 const saveChange = async (body: object) => {
-	try {
-		return await api.updateApplicantMoreDocState(
-			programId as number,
-			props.userId,
-			body
-		);
-	} catch (e: any) {
-		if (e instanceof InvalidSessionError) {
-			console.error(
-				"Session has already expired while changing password"
-			);
-			return;
-		}
-	}
+	if (!programId) throw new Error("invalid programId");
+
+	return await api.updateApplicantMoreDocState(programId, props.userId, body);
 };
 
 function handleSendEmail() {
@@ -325,37 +296,35 @@ async function handleSaveChange() {
 		isMoredoc: activeTab.value.value,
 		moredoc_start_date: addHours(8, new Date(date.start)),
 		moredoc_end_date: addHours(8, new Date(date.end)),
-		moredoc_category: docInfo.category,
+		moredoc_category: "其他有利於審查資料",
 		moredoc_name: docInfo.name,
 	};
 
-	const response = saveChange(body);
+	const res = await saveChange(body);
 
-	await response.then((res) => {
-		if (res?.success !== undefined && res?.message !== undefined) {
-			fetchResponse.success = toRaw(res.success);
-			fetchResponse.message = toRaw(res.message);
-		}
+	if (res?.success !== undefined && res?.message !== undefined) {
+		fetchResponse.success = toRaw(res.success);
+		fetchResponse.message = toRaw(res.message);
+	}
 
-		isLoading.save = false;
-		isModalVisible.saveChange = false;
+	isLoading.save = false;
+	isModalVisible.saveChange = false;
 
-		if (fetchResponse.success) {
-			toast.add({
-				severity: "success",
-				summary: "Success",
-				detail: fetchResponse.message,
-				life: 3000,
-			});
-		} else {
-			toast.add({
-				severity: "error",
-				summary: "Error",
-				detail: fetchResponse.message,
-				life: 5000,
-			});
-		}
-	});
+	if (fetchResponse.success) {
+		toast.add({
+			severity: "success",
+			summary: "Success",
+			detail: fetchResponse.message,
+			life: 3000,
+		});
+	} else {
+		toast.add({
+			severity: "error",
+			summary: "Error",
+			detail: fetchResponse.message,
+			life: 5000,
+		});
+	}
 
 	isLoading.fetch = true;
 }
@@ -390,19 +359,9 @@ const saveOnclick = () => {
 const { data } = useQuery(
 	["recruitmentApplicantMoredocInfo"],
 	async () => {
-		try {
-			return await api.getApplicantMoreDocRes(
-				programId as number,
-				props.userId
-			);
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				console.error(
-					"Session has already expired while quering appliacntList"
-				);
-				return;
-			}
-		}
+		if (!programId) throw new Error("invalid programId");
+
+		return await api.getApplicantMoreDocRes(programId, props.userId);
 	},
 	{
 		onSuccess: (data) => {

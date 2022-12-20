@@ -19,6 +19,7 @@
 				:options="tabs"
 				optionLabel="name"
 				aria-labelledby="single"
+				:unselectable="false"
 			>
 				<template #option="slotProps">
 					<div class="m-auto text-20px font-bold">
@@ -72,18 +73,9 @@ const tabs = ref([
 ]);
 
 const { data } = useQuery(
-	["adminApplicantBasicInfo"],
+	["adminApplicantUploadDocBasicInfo"],
 	async () => {
-		try {
-			return await api.getApplicantBasicInfo(Number(route.params.userId));
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				console.error(
-					"Session has already expired while quering appliacntList"
-				);
-				return;
-			}
-		}
+		return await api.getApplicantBasicInfo(Number(route.params.userId));
 	},
 	{
 		onSuccess: (data) => {

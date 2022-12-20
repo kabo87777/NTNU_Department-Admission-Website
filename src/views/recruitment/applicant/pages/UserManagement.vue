@@ -1,5 +1,5 @@
 <template>
-	<div class="mt-80px ml-50px">
+	<div>
 		<div class="font-[500] text-[32px] font-bold">
 			{{ $t("使用者管理") }}
 		</div>
@@ -96,7 +96,6 @@ import { RecruitmentApplicantAuthResponse } from "@/api/recruitment/applicant/ty
 import { RecruitmentApplicantAPI } from "@/api/recruitment/applicant/api";
 import ParagraphDivider from "@/styles/paragraphDividerApplicant.vue";
 import { useUserInfoStore } from "@/stores/RecruitmentApplicantStore";
-import { InvalidSessionError } from "@/api/error";
 import { useToast } from "primevue/usetoast";
 import InputText from "primevue/inputtext";
 import Button from "primevue/button";
@@ -122,12 +121,12 @@ const initialPassValue = {
 
 const isChangePassLoading = ref(false);
 
-const changePassRes = reactive({
+let changePassRes = reactive({
 	success: false,
 	message: "" as string | [],
 });
 
-const password = reactive({
+let password = reactive({
 	isCurrentPassBlank: false,
 	isNewPassBlank: false,
 	notMatch: false,
@@ -146,17 +145,7 @@ const resetPassValue = () => {
 };
 
 const patchChangePassword = async (body: object) => {
-	try {
-		return await api.changePassword(body);
-	} catch (e: any) {
-		if (e instanceof InvalidSessionError) {
-			console.error(
-				"Session has already expired while changing password"
-			);
-
-			return;
-		}
-	}
+	return await api.changePassword(body);
 };
 
 const handleSubmit = async () => {
@@ -191,35 +180,31 @@ const handleSubmit = async () => {
 			password_confirmation: password.confirmPass,
 		};
 
-		const response = patchChangePassword(body);
+		const res = await patchChangePassword(body);
 
-		await response.then((res) => {
-			if (res?.success !== undefined && res?.message !== undefined) {
-				changePassRes.success = toRaw(res.success);
-				changePassRes.message = toRaw(res.message);
-			}
+		if (res?.success !== undefined && res?.message !== undefined) {
+			changePassRes.success = toRaw(res.success);
+			changePassRes.message = toRaw(res.message);
+		}
 
-			isChangePassLoading.value = false;
+		isChangePassLoading.value = false;
 
-			if (changePassRes.success) {
-				resetPassValue();
-				toast.add({
-					severity: "success",
-					summary: "Success",
-					detail: changePassRes.message,
-					life: 3000,
-				});
-			} else {
-				toast.add({
-					severity: "error",
-					summary: "Error",
-					detail: changePassRes.message[
-						changePassRes.message.length - 1
-					],
-					life: 5000,
-				});
-			}
-		});
+		if (changePassRes.success) {
+			resetPassValue();
+			toast.add({
+				severity: "success",
+				summary: "Success",
+				detail: changePassRes.message,
+				life: 3000,
+			});
+		} else {
+			toast.add({
+				severity: "error",
+				summary: "Error",
+				detail: changePassRes.message[changePassRes.message.length - 1],
+				life: 5000,
+			});
+		}
 	}
 };
 

@@ -82,18 +82,18 @@ export interface AdmissionApplicantGetProgramResponse {
 	id: number;
 	category: string;
 	name: string;
-	application_start_date: string;
-	application_end_date: string;
-	review_start_date: string;
-	review_end_date: string;
+	application_start_date: Date;
+	application_end_date: Date;
+	review_start_date: Date;
+	review_end_date: Date;
 	require_file: [];
 	stage: string;
 	created_at: string;
 	updated_at: string;
-	applicant_required_info: null; // ??
-	applicant_required_file: null;
-	reviewer_required_info: null;
-	reviewer_required_file: null;
+	applicant_required_info: string;
+	applicant_required_file: string;
+	reviewer_required_info: string;
+	reviewer_required_file: string;
 }
 
 export interface AdmissionApplicantRecLetListRes {
@@ -104,6 +104,7 @@ export interface AdmissionApplicantRecLetListRes {
 	relation: string;
 	position: string;
 	institution: string;
+	stage: string;
 	status: string;
 	s_applicant_id: number;
 	created_at: string;
@@ -146,8 +147,7 @@ export interface AdmissionApplicantGetUserInfoResponse {
 	birth?: Date;
 	birthcountry?: string;
 	mobile_phone?: string;
-	household_address?: string;
-	household_zipcode?: number | string;
 	communicate_address?: string;
 	communicate_zipcode?: number | string;
+	isForeigner: boolean;
 }

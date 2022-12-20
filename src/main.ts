@@ -18,6 +18,7 @@ import Toast from "primevue/toast";
 import ToastService from "primevue/toastservice";
 import Tooltip from "primevue/tooltip";
 import ConfirmationService from "primevue/confirmationservice";
+import ScrollTop from "primevue/scrolltop";
 
 import App from "@/App.vue";
 import { router } from "./router/index";

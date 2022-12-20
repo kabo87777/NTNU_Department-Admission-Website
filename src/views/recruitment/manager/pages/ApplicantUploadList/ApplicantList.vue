@@ -136,17 +136,8 @@ const applicantList: RecruitmentAdminApplicantsListResponse[] = reactive<
 const { data } = useQuery(
 	["applicantList"],
 	async () => {
-		try {
-			return await api.getApplicantList(programId as number);
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				console.error(
-					"Session has already expired while quering appliacntList"
-				);
-				router.push("/");
-				return;
-			}
-		}
+		if (!programId) throw new Error("invalid programId");
+		return await api.getApplicantList(programId);
 	},
 	{
 		onSuccess: (data) => {

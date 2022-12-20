@@ -13,9 +13,13 @@
 				v-if="item.state === 1"
 				category="就學經歷"
 				identity="admissionManager"
+				:downloadFile="true"
 				:itemName="item.name"
+				:itemId="item.id"
+				:fileUrl="item.filepath?.url"
 				:order="index + 1"
 				:showActionButtons="false"
+				@download="handleDownload"
 			/>
 		</div>
 		<div v-show="examCertificateList.length === 0" class="emptyContainer">
@@ -40,9 +44,13 @@
 				v-if="item.state === 1"
 				category="考試與檢定分數"
 				identity="admissionManager"
+				:downloadFile="true"
 				:itemName="item.name"
+				:itemId="item.id"
+				:fileUrl="item.filepath?.url"
 				:order="index + 1"
 				:showActionButtons="false"
+				@download="handleDownload"
 			/>
 		</div>
 		<div v-show="examCertificateList.length === 0" class="emptyContainer">
@@ -67,9 +75,13 @@
 				v-if="item.state === 1"
 				category="其他有利於審查資料"
 				identity="admissionManager"
+				:downloadFile="true"
 				:itemName="item.name"
+				:itemId="item.id"
+				:fileUrl="item.filepath?.url"
 				:order="index + 1"
 				:showActionButtons="false"
+				@download="handleDownload"
 			/>
 		</div>
 		<div v-show="otherList.length === 0" class="emptyContainer">
@@ -100,11 +112,12 @@ const api = new AdmissionAdminAPI(adminAuth);
 
 const props = defineProps(["userId"]);
 
-const attachmentList: AdmAdminGetApplicantAttachmentData[] = reactive([]);
-const schoolExpList: AdmAdminGetApplicantAttachmentDataDetail[] = reactive([]);
-const examCertificateList: AdmAdminGetApplicantAttachmentDataDetail[] =
-	reactive([]);
-const otherList: AdmAdminGetApplicantAttachmentDataDetail[] = reactive([]);
+let attachmentList: AdmAdminGetApplicantAttachmentData[] = reactive([]);
+let schoolExpList: AdmAdminGetApplicantAttachmentDataDetail[] = reactive([]);
+let examCertificateList: AdmAdminGetApplicantAttachmentDataDetail[] = reactive(
+	[]
+);
+let otherList: AdmAdminGetApplicantAttachmentDataDetail[] = reactive([]);
 
 const splitThreeList = async (
 	fullList: AdmAdminGetApplicantAttachmentData[]
@@ -138,17 +151,23 @@ const splitThreeList = async (
 	});
 };
 
-const getFileList = async () => {
-	return await api.getApplicantFile(props.userId);
+const handleDownload = async (fileId: number, fileName: string) => {
+	const res = await api.downloadApplicantFile(props.userId, fileId);
+
+	const file = new Blob([res], { type: "application/pdf" });
+
+	const fileURL = URL.createObjectURL(file);
+	// window.open(fileURL);
+	const link = document.createElement("a");
+	link.href = fileURL;
+	link.download = fileName + ".pdf";
+	link.click();
 };
 
 onMounted(async () => {
-	const response = getFileList();
-	await response.then((res) => {
-		res.map((item) => {
-			if (item) attachmentList.push(item);
-		});
-	});
+	const res = await api.getApplicantFile(props.userId);
+
+	attachmentList = [...attachmentList, ...res];
 
 	splitThreeList(toRaw(attachmentList));
 });

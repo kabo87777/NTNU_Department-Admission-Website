@@ -8,7 +8,7 @@ export interface AdmissionReviewerSignInInput {
 	"cf-turnstile-response": string;
 }
 
-export interface AdmissionManagerAuthResponse {
+export interface AdmissionReviewerAuthResponse {
 	email: string;
 	provider: string;
 	uid: string;
@@ -29,6 +29,7 @@ export interface AdmissionReviewerProgramListResponse {
 	application_end_date: string;
 	review_start_date: string;
 	review_end_date: string;
+	oral_start_date: string;
 	require_file: string; // Array or string ??
 	stage: string;
 	created_at: string;
