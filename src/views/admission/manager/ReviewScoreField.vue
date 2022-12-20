@@ -324,7 +324,6 @@ import Message from "primevue/message";
 import InputText from "primevue/inputtext";
 import InputNumber from "primevue/inputnumber";
 import Checkbox from "primevue/checkbox";
-import ParagraphDivider from "@/styles/paragraphDivider.vue";
 import PDivider from "@/styles/PrDivider.vue";
 
 import { useToast } from "primevue/usetoast";
