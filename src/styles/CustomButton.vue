@@ -6,11 +6,7 @@
 		:text="btnText"
 		border="rounded-lg"
 	>
-		<i
-			v-if="btnIcon.show"
-			:class="btnIcon.type"
-			:style="btnIcon.size"
-		/>
+		<i v-if="btnIcon.show" :class="btnIcon.type" :style="btnIcon.size" />
 		<slot />
 	</button>
 </template>
@@ -67,13 +63,13 @@ const designClass: { [key: string]: any } = {
 	Success: {
 		normal: "border-success-700 text-success",
 		fill: "bg-success-100 text-title border-1",
-		hover: "hover:border-success-700 hover:bg-success hover:text-title",
+		hover: "hover:border-success-700 hover:bg-success-100 hover:text-title",
 		active: "!active:bg-success-700 !active:text-white",
 	},
 	Danger: {
 		normal: "border-danger-700 text-danger",
 		fill: "bg-danger-100 text-title border-1",
-		hover: "hover:border-danger-700 hover:bg-danger hover:text-title",
+		hover: "hover:border-danger-700 hover:bg-danger-100 hover:text-title",
 		active: "!active:bg-danger-700 !active:text-white",
 	},
 };

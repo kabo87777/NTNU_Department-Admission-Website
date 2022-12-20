@@ -42,5 +42,6 @@ const colorStyle = computed(() => {
 	if (props.Admin) return "bg-nRed-500 text-pAdmin";
 	if (props.Applicant) return "bg-nGold-500 text-pApplicant";
 	if (props.Reviewer) return "bg-nBlue-500 text-pReviewer";
+	else return "bg-nGrey-700 text-body";
 });
 </script>
