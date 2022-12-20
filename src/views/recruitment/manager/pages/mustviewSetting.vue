@@ -1,10 +1,11 @@
 <template>
 	<h1 class="text-4xl text-bold tracking-widest">{{ $t("必看名單設置") }}</h1>
 	<div class="bigRedDivider"></div>
+	<div class="text-2xl text-bold tracking-widest mt-5px">{{ hint }}</div>
 	<div class="newsCard h-80px">
 		{{ message }}
 	</div>
-	<div class="flex justify-around !h-700px mt-10px">
+	<div class="flex justify-around !h-620px mt-10px">
 		<DataTable
 			:value="applicantList1"
 			responsiveLayout="scroll"
@@ -119,6 +120,7 @@ const deleteRelations = ref<Relation[]>([]);
 const message = ref<string>("");
 
 const name = computed(() => t("申請人姓名"));
+const hint = computed(() => t("若沒勾選，則會設置為選看名單"));
 
 useQuery(
 	["RAdminApplicantList"],
@@ -302,21 +304,12 @@ const confirmGrading = () => {
 </script>
 
 <style setup lang="css">
-.newsNoData {
-	position: absolute;
-	left: 50%;
-	top: 63%;
-	transform: translate(-50%, -50%);
-	height: 400px;
-	width: 500px;
-}
-
 .newsCard {
 	border-radius: 16px;
 	border: 2px solid #d4b862;
 	padding: 24px;
 	background-color: #fcefcb;
-	margin-top: 24px;
+	margin-top: 5px;
 	font-weight: bold;
 	font-size: 18px;
 }

@@ -13,6 +13,7 @@ import type {
 	RecruitmentAdminGetApplicantAttachmentList,
 	RecruimentAdminGetApplicantMoredocResponses,
 	RecruitmentAdminGenericStatusResponse,
+	RecruitmentAdminReviewersListResponseWithDetail,
 } from "./types";
 import type { APIGenericResponse } from "@/api/types";
 import { Ref } from "vue";
@@ -303,5 +304,18 @@ export class RecruitmentAdminAPI extends GenericAPI {
 
 		if (data.error === true && !data.data.errors)
 			throw new Error("Failed to delete applicant from reviewer");
+	}
+
+	async getReviewerListWithDetail(
+		programID: number
+	): Promise<RecruitmentAdminReviewersListResponseWithDetail[]> {
+		const data: APIGenericResponse = await this.instance.get(
+			`/recruitment/admin/program/${programID}/reviewer`
+		);
+
+		if (data.error === true || typeof data.data === "undefined")
+			throw new Error("Failed to fetch reviewer list");
+
+		return data.data;
 	}
 }
