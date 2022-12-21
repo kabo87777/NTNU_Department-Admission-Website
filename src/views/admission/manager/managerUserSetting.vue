@@ -64,7 +64,7 @@
 				</div>
 				<div flex="~ col gap-1" text="body">
 					<div>{{ $t("驗證新密碼") }}</div>
-					<InputText
+					<Password
 						class="!w-100"
 						:input-class="invalidClass('confirm')"
 						v-model="password.confirm"
