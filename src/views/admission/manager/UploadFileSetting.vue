@@ -2,7 +2,7 @@
 	<Layout Admin>
 		<template #Header> {{ trans.uploadField.value }} </template>
 		<template #Body>
-			<div w="full">
+			<div class="p-fluid" pos="sticky top-0">
 				<SelectButton
 					v-model="activeTab"
 					:options="tabOptions"

@@ -1,7 +1,7 @@
 <template>
 	<button
 		v-bind="$attrs"
-		class="flex justify-center items-center p-4"
+		class="flex justify-center items-center p-4 gap-2"
 		:class="btnState"
 		:text="btnText"
 		border="rounded-lg"
@@ -98,7 +98,7 @@ const btnText = computed(() => props.size);
 const btnIcon = computed(() => {
 	const show = props.size ? true : false;
 	const size = iconSize(props.size);
-	const type = props.icon ? props.icon + " mr-2 mt-0.5" : null;
+	const type = props.icon ? props.icon + " mt-0.5" : null;
 	return { show, size, type };
 });
 

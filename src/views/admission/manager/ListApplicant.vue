@@ -1,80 +1,83 @@
 <template>
-	<h1 class="text-4xl font-bold">{{ $t("申請者帳號設定") }}</h1>
-	<Divider />
-
-	<div>
-		<h3 class="inline font-black">匯入申請者帳號</h3>
-		<FileUpload
-			mode="basic"
-			:choose-label="$t('選擇檔案')"
-			accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-			:custom-upload="true"
-			@uploader="importApplicantCallback"
-		>
-		</FileUpload>
-	</div>
-	<TransitionGroup name="p-message" tag="div">
-		<Message :closable="false" severity="warn" v-if="isImporting">{{
-			$t("正在處理中，請勿離開此頁面")
-		}}</Message>
-	</TransitionGroup>
-
-	<DataTable :value="tableData" :loading="isTableLoading">
-		<template #empty>
-			<h2>{{ $t("尚無申請者帳號") }}</h2>
+	<Layout Admin>
+		<template #Header>
+			{{ $t("申請者帳號設定") }}
 		</template>
+		<template #Body>
+			<div>
+				<h3 class="inline font-black">匯入申請者帳號</h3>
+				<FileUpload
+					mode="basic"
+					:choose-label="$t('選擇檔案')"
+					accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+					:custom-upload="true"
+					@uploader="importApplicantCallback"
+				>
+				</FileUpload>
+			</div>
+			<TransitionGroup name="p-message" tag="div">
+				<Message :closable="false" severity="warn" v-if="isImporting">{{
+					$t("正在處理中，請勿離開此頁面")
+				}}</Message>
+			</TransitionGroup>
+			<DataTable :value="tableData" :loading="isTableLoading">
+				<template #empty>
+					<h2>{{ $t("尚無申請者帳號") }}</h2>
+				</template>
 
-		<Column field="id">
-			<template #header>{{ $t("ID") }}</template>
-		</Column>
+				<Column field="id">
+					<template #header>{{ $t("ID") }}</template>
+				</Column>
 
-		<Column field="name">
-			<template #header>{{ $t("姓名") }}</template>
-		</Column>
+				<Column field="name">
+					<template #header>{{ $t("姓名") }}</template>
+				</Column>
 
-		<Column field="email">
-			<template #header>{{ $t("電子信箱") }}</template>
-		</Column>
+				<Column field="email">
+					<template #header>{{ $t("電子信箱") }}</template>
+				</Column>
 
-		<Column>
-			<template #header>{{ $t("操作") }}</template>
-			<template #body="slotProps">
-				<span class="flex gap-x-3">
-					<!-- Edit button -->
-					<Button
-						icon="pi pi-pencil"
-						class="p-button-outlined p-button-success"
-						@click="openModal(slotProps.data)"
-					></Button>
-					<!-- Delete button -->
-					<Button
-						icon="pi pi-times"
-						class="p-button-outlined p-button-danger"
-						@click="confirmDeleteAccount(slotProps.data.id)"
-					/>
-				</span>
-			</template>
-		</Column>
+				<Column>
+					<template #header>{{ $t("操作") }}</template>
+					<template #body="slotProps">
+						<span class="flex gap-x-3">
+							<!-- Edit button -->
+							<NButton
+								Admin
+								icon="pi pi-pencil"
+								@click="openModal(slotProps.data)"
+							/>
+							<!-- Delete button -->
+							<NButton
+								Danger
+								icon="pi pi-trash"
+								@click="confirmDeleteAccount(slotProps.data.id)"
+							/>
+						</span>
+					</template>
+				</Column>
 
-		<template #footer>
-			<p>{{ $t("applicant_table_items_count", getTableItemQty) }}</p>
+				<template #footer>
+					<p>
+						{{ $t("applicant_table_items_count", getTableItemQty) }}
+					</p>
+				</template>
+			</DataTable>
 		</template>
-	</DataTable>
-
+	</Layout>
+	<!-- 編輯彈跳視窗 -->
 	<Dialog v-model:visible="modalVisible" :modal="true">
 		<template #header>
 			<h3 class="font-extrabold text-lg">
 				{{ $t("編輯申請者帳號") }}
 			</h3>
 		</template>
-
 		<template #default>
 			<div class="w-md">
 				<label for="" class="block font-black">{{
 					$t("帳號 ID")
 				}}</label>
 				<div>{{ modalData.id }}</div>
-
 				<div class="mt-3">
 					<label for="" class="block font-black">{{
 						$t("姓名")
@@ -86,7 +89,6 @@
 						disabled="true"
 					></InputText>
 				</div>
-
 				<div class="mt-3">
 					<label for="" class="block font-black">{{
 						$t("電子信箱")
@@ -103,7 +105,6 @@
 					<label for="password" class="block font-black">{{
 						$t("密碼")
 					}}</label>
-
 					<Password
 						class="mt-1 w-full"
 						v-model="modalData.password"
@@ -116,7 +117,6 @@
 				</div>
 			</div>
 		</template>
-
 		<template #footer>
 			<div class="flex justify-center">
 				<div class="space-x-2">
@@ -141,7 +141,8 @@
 
 <script setup lang="ts">
 import Button from "primevue/button";
-import Checkbox from "primevue/checkbox";
+import NButton from "@/styles/CustomButton.vue";
+import Layout from "@/components/Layout.vue";
 import Column from "primevue/column";
 import DataTable from "primevue/datatable";
 import Dialog from "primevue/dialog";
@@ -149,10 +150,7 @@ import Divider from "primevue/divider";
 import InputText from "primevue/inputtext";
 import Password from "primevue/password";
 import { computed, Ref, ref, toRaw, watch, watchEffect } from "vue";
-import {
-	useAdmissionAdminAuthStore,
-	useAdmissionReviewerAuthStore,
-} from "@/stores/universalAuth";
+import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
 import { AdmissionAdminAPI } from "@/api/admission/admin/api";
 import { useMutation, useQuery } from "@tanstack/vue-query";
 import { InvalidSessionError } from "@/api/error";

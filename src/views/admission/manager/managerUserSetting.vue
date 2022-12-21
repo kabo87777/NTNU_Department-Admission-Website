@@ -1,92 +1,69 @@
 <template>
-	<div class="mt-80px ml-50px">
-		<div class="font-[500] text-[32px] font-bold">
+	<Layout Admin>
+		<template #Header>
 			{{ $t("使用者管理") }}
-		</div>
-		<div class="bigRedDivider"></div>
-
-		<div class="mt-8px px-12px py-24px">
-			<div class="text-[20px] font-[350]">
-				{{ $t("帳號名稱") }}：{{ userId }}
+		</template>
+		<template #Body>
+			<div flex="~ col gap-4" p="4" border="rounded-lg nGrey-100 2">
+				<div>{{ $t("帳號名稱") }}：{{ userId }}</div>
+				<div>{{ $t("電子信箱") }}：{{ email }}</div>
+				<!-- <div class="mt-20px">{{ $t("手機號碼") }}：{{ phone }}</div> -->
 			</div>
-			<div class="mt-36px text-[20px] font-[350]">
-				{{ $t("聯絡信箱") }}：{{ email }}
+			<div text="2xl title" pb="2">{{ $t("修改密碼") }}</div>
+			<div flex="~ col gap-1" text="body">
+				<div>{{ $t("舊密碼") }}</div>
+				<InputText
+					class="!w-100"
+					id="currentPass"
+					type="password"
+					v-model="password.currentPass"
+				/>
+				<div v-if="password.isCurrentPassBlank" text="sm danger">
+					{{ $t("請輸入舊密碼") }}
+				</div>
 			</div>
-			<!-- <div class="mt-20px">{{ $t("手機號碼") }}：{{ phone }}</div> -->
-		</div>
-		<ParagraphDivider class="mt-12px" />
-		<div class="mt-20px font-[500] font-bold text-[24px] flex">
-			<div>{{ $t("修改密碼") }}</div>
-			<i class="pi pi-lock ml-16px mt-4px text-[#C6BCD0]" />
-		</div>
-		<div class="mt-8px px-12px py-24px">
-			<div class="w-[50%]">
-				<div>{{ $t("舊密碼") }}{{ $t(":") }}</div>
-				<div>
+			<div flex="~ gap-8">
+				<div flex="~ col gap-1" text="body">
+					<div>{{ $t("設定新密碼") }}</div>
 					<InputText
-						class="w-[70%] h-40px !mt-4px"
-						id="currentPass"
+						class="!w-100"
+						id="newPass"
 						type="password"
-						v-model="password.currentPass"
-						aria-describedby="currentPass-help"
+						v-model="password.newPass"
 					/>
-				</div>
-				<div class="absolute" v-if="password.isCurrentPassBlank">
-					<small id="currentPass-help" class="p-error">
-						{{ $t("請輸入舊密碼") }}
-					</small>
-				</div>
-			</div>
-			<div class="flex mt-40px">
-				<div class="w-[50%]">
-					<div>{{ $t("設定新密碼") }}{{ $t(":") }}</div>
-					<div>
-						<InputText
-							class="w-[70%] h-40px !mt-4px"
-							id="newPass"
-							type="password"
-							v-model="password.newPass"
-							aria-describedby="newPass-help"
-						/>
-					</div>
-					<div class="absolute" v-if="password.isNewPassBlank">
-						<small id="newPass-help" class="p-error">
-							{{ $t("請輸入新密碼") }}
-						</small>
+					<div v-if="password.isCurrentPassBlank" text="sm danger">
+						{{ $t("請輸入新密碼") }}
 					</div>
 				</div>
-				<div class="w-[50%]">
-					<div>{{ $t("驗證新密碼") }}{{ $t(":") }}</div>
-					<div>
-						<InputText
-							class="w-[70%] h-40px !mt-4px"
-							id="confirmPass"
-							type="password"
-							v-model="password.confirmPass"
-							aria-describedby="confirmPass-help"
-						/>
-					</div>
-					<div class="absolute" v-if="password.notMatch">
-						<small id="confirmPass-help" class="p-error">
-							{{ $t("密碼不符") }}
-						</small>
+				<div flex="~ col gap-1" text="body">
+					<div>{{ $t("驗證新密碼") }}</div>
+					<InputText
+						class="!w-100"
+						id="confirmPass"
+						type="password"
+						v-model="password.confirmPass"
+					/>
+					<div v-if="password.isCurrentPassBlank" text="sm danger">
+						{{ $t("密碼不符") }}
 					</div>
 				</div>
 			</div>
-			<Button
-				class="p-button-sm p-button-secondary p-button-outlined !mt-60px !text-[16px]"
-				type="submit"
+			<NButton
+				Admin
+				class="p-2 w-32 mt-8"
 				icon="pi pi-pencil"
 				:loading="isChangePassLoading"
 				@click="handleSubmit()"
-				:label="$t('修改送出')"
-			/>
-		</div>
-	</div>
+				>{{ $t("修改送出") }}</NButton
+			>
+		</template>
+	</Layout>
 </template>
 <script setup lang="ts">
 import Button from "primevue/button";
+import NButton from "@/styles/CustomButton.vue";
 import InputText from "primevue/inputtext";
+import Layout from "@/components/Layout.vue";
 import { ref, reactive, toRaw } from "vue";
 import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
 import { AdmissionAdminAPI } from "@/api/admission/admin/api";

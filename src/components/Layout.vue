@@ -7,7 +7,7 @@
 		</div>
 		<!-- Body -->
 		<div flex="grow" overflow="scroll" text="body">
-			<div flex="~ col gap-6" my="4">
+			<div flex="~ col gap-6" mt="4" mb="1/3">
 				<slot name="Body" />
 			</div>
 		</div>
