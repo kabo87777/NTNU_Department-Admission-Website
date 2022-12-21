@@ -1,8 +1,7 @@
 <template>
-	<div>
-		<div class="text-32px font-bold">上傳資料列表</div>
-		<div class="bigRedDivider"></div>
-		<div class="mt-16px">
+	<Layout Admin>
+		<template #Header>{{ $t("上傳資料列表") }}</template>
+		<template #Body>
 			<DataTable :value="applicantList">
 				<Column field="id">
 					<template #header>
@@ -108,8 +107,8 @@
 					</template>
 				</Column>
 			</DataTable>
-		</div>
-	</div>
+		</template>
+	</Layout>
 </template>
 
 <script setup lang="ts">
@@ -120,6 +119,7 @@ import { useGlobalStore } from "@/stores/globalStore";
 import { useQuery } from "@tanstack/vue-query";
 import { AdmissionAdminApplicantsListResponse } from "@/api/admission/admin/types";
 import DataTable from "primevue/datatable";
+import Layout from "@/components/Layout.vue";
 import Column from "primevue/column";
 import Tag from "primevue/tag";
 import "../../../../styles/customize.css";

@@ -1,7 +1,7 @@
 <template>
 	<!-- Return Button -->
 	<router-link to="/admission">
-		<NButton type="White" size="sm" icon="pi pi-angle-left" p="2" my="6">
+		<NButton white size="sm" icon="pi pi-angle-left" p="2" my="6">
 			切換登入身份 Change your identity
 		</NButton>
 	</router-link>
@@ -27,7 +27,7 @@
 					v-model="email"
 				>
 					<div flex="~ col gap-1">
-						<div text="sm body">電郵地址 E-mail</div>
+						<div text="sm body">電子郵件 Email</div>
 						<InputText
 							v-bind="field"
 							name="email"
@@ -38,7 +38,7 @@
 							required
 						/>
 						<div v-if="errorMessage" text="sm danger">
-							※ 電郵地址不可為空白 E-mail Required
+							※ 電子郵件不可為空白 Email Required
 						</div>
 					</div>
 				</Field>
@@ -86,7 +86,7 @@
 				</NButton>
 				<!-- Forget Password -->
 				<router-link to="/admission/manager/forgetpassword">
-					<NButton w="3/5" p="2" m="auto" size="sm" type="White">
+					<NButton w="3/5" p="2" m="auto" size="sm" white>
 						忘記密碼 Forget Password
 					</NButton>
 				</router-link>
@@ -104,7 +104,7 @@ import * as yup from "yup";
 
 import { AdmissionAdminAPI } from "@/api/admission/admin/api";
 import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
-import { useUserInfoStore } from "@/stores/AdmissionAdminStore";
+import { useAdminInfoStore } from "@/stores/AdmissionAdminStore";
 
 import type { TurnstileComponentExposes } from "@/components/Turnstile.vue";
 import Turnstile from "@/components/Turnstile.vue";
@@ -119,7 +119,7 @@ const toast = useToast();
 const router = useRouter();
 
 const authStore = useAdmissionAdminAuthStore();
-const userInfo = useUserInfoStore();
+const userInfo = useAdminInfoStore();
 
 // Login Form
 const turnstileRef = ref<TurnstileComponentExposes>();
@@ -186,8 +186,8 @@ const onSubmit = handleSubmit(async function (values) {
 			return toast.add({
 				severity: "error",
 				group: "loginFailure",
-				summary: "「電郵地址」或「密碼」",
-				detail: "E-mail and Password",
+				summary: "「電子郵件」或「密碼」",
+				detail: "Email and Password",
 				closable: false,
 				life: 3000,
 			});
