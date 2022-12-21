@@ -158,7 +158,6 @@ import "@/styles/customize.css";
 import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
 import { AdmissionAdminAPI } from "@/api/admission/admin/api";
 import { useQuery } from "@tanstack/vue-query";
-import { InvalidSessionError } from "@/api/error";
 import { AdmAdminGetApplicantInfo } from "@/api/admission/admin/types";
 import ParagraphDivider from "../../../../../styles/paragraphDivider.vue";
 import { ref } from "vue";
@@ -167,11 +166,11 @@ const adminAuth = useAdmissionAdminAuthStore();
 const api = new AdmissionAdminAPI(adminAuth);
 
 const props = defineProps(["userId"]);
-
+console.log(props.userId, "check id");
 const userInfo = ref<AdmAdminGetApplicantInfo>();
 
-const { data } = useQuery(
-	["adminApplicantUploadBasicInfo"],
+useQuery(
+	["adminApplicantBasicInfo"],
 	async () => {
 		console.log(props.userId);
 		return await api.getApplicantBasicInfo(props.userId);

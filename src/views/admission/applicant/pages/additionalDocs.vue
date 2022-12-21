@@ -42,17 +42,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted, toRaw, watch } from "vue";
-import { InvalidSessionError } from "@/api/error";
+import { ref, reactive, toRaw } from "vue";
 import { AdmissionApplicantAuthResponse } from "@/api/admission/applicant/types";
 import { useUserInfoStore } from "@/stores/AdmissionApplicantStore";
 import CreateState from "@/components/attachmentStates/createState.vue";
 import ParagraphDivider from "@/styles/paragraphDividerApplicant.vue";
 import RefillState from "@/components/attachmentStates/RefillState.vue";
-import {
-	AttachmentData,
-	AttachmentDetailData,
-} from "@/api/admission/applicant/types";
 import { useAdmissionApplicantAuthStore } from "@/stores/universalAuth";
 import { AdmissionApplicantAPI } from "@/api/admission/applicant/api";
 import { useToast } from "primevue/usetoast";
