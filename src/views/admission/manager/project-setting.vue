@@ -1,169 +1,50 @@
 <template>
-	<div>
-		<h1 class="text-4xl text-bold tracking-widest">{{ $t("專案設定") }}</h1>
-		<div class="bigRedDivider"></div>
-		<h2 class="text-2xl text-bold tracking-widest inline-block mt-16px">
-			{{ oldProgramName }}
-		</h2>
-		<h3 class="text-s tracking-widest text-gray-500 mt-8px">
-			{{ programCreateDate }} · {{ $t("新增到專案") }}
-		</h3>
-		<h5 class="text-base tracking-widest mt-32px">
-			{{ $t("專案名稱 (修改)") }} :
-		</h5>
-		<InputText
-			type="text"
-			v-model="programName"
-			class="w-960px h-44px !mt-16px"
-		/>
-		<div>
-			<h5 class="text-base tracking-widest mt-32px">
-				{{ $t("屬性") }} :
-			</h5>
-			<Dropdown
-				v-model="selected_type"
-				:options="types"
-				optionLabel="type_name"
-				optionValue="type_name"
-				class="!w-320px !h-44px mt-16px"
-			/>
-		</div>
-		<div class="text-lg tracking-widest font-bold mt-36px text-red-500">
-			{{ $t("請在申請端開放之前完成其他專案設定") }}
-		</div>
-		<div class="inline-block">
-			<h5 class="text-base tracking-widest mt-48px">
-				{{ $t("申請端開放時間/日期") }} :
-			</h5>
-			<div>
-				<Calendar
-					inputId="icon"
-					v-model="application_start_time"
-					:showIcon="true"
-					:showTime="true"
-					class="w-320px h-44px mt-16px customDatePicker"
-					:baseZIndex="zIndex"
-					dateFormat="yy/mm/dd"
+	<ConfirmDialog />
+	<Layout Admin>
+		<template #Header>
+			{{ $t("專案設定") }}
+		</template>
+		<template #Body>
+			<!-- 專案名稱 -->
+			<div pos="sticky top-0" bg="white" pb="2" z="50">
+				<div text="sm secondary">
+					{{ $t("當前專案") }}
+				</div>
+				<div flex="~ gap-4" p="4" border="rounded-lg nGrey-100 2">
+					<div text="3xl pAdmin" font="medium tracking-widest">
+						{{ oldProgramName }}
+					</div>
+					<div text="sm secondary" mt="auto">
+						{{ programCreateDate }} · {{ $t("新增到專案") }}
+					</div>
+				</div>
+			</div>
+			<!-- 基本設定 -->
+			<div text="2xl title" pb="2">
+				{{ $t("基本屬性") }}
+			</div>
+			<!-- 修改專案名稱 -->
+			<div flex="~ col gap-1" text="body">
+				<div>{{ $t("修改專案名稱") }} :</div>
+				<InputText w="!300px" type="text" v-model="programName" />
+			</div>
+			<!-- 設定專案屬性 -->
+			<div flex="~ col gap-1" text="body">
+				<div>{{ $t("設定專案屬性") }} :</div>
+				<Dropdown
+					v-model="selected_type"
+					:options="types"
+					optionLabel="type_name"
+					optionValue="type_name"
+					w="!300px"
 				/>
 			</div>
-		</div>
-		<div class="inline-block ml-100px">
-			<h5 class="text-base tracking-widest mt-48px">
-				{{ $t("申請端關閉時間/日期") }} :
-			</h5>
-			<div>
-				<Calendar
-					inputId="icon"
-					v-model="application_end_time"
-					:showIcon="true"
-					:showTime="true"
-					class="w-320px h-44px mt-16px customDatePicker"
-					:baseZIndex="zIndex"
-					dateFormat="yy/mm/dd"
-				/>
-			</div>
-		</div>
-		<br />
-		<div class="inline-block">
-			<h5 class="text-base tracking-widest mt-32px">
-				{{ $t("書面審查開放時間/日期") }} :
-			</h5>
-			<Calendar
-				inputId="icon"
-				v-model="review_stage1_start_time"
-				:showIcon="true"
-				:showTime="true"
-				class="w-320px h-44px mt-16px customDatePicker"
-				:baseZIndex="zIndex"
-				dateFormat="yy/mm/dd"
-			/>
-		</div>
-		<div class="inline-block ml-100px">
-			<h5 class="text-base tracking-widest mt-32px">
-				{{ $t("書面審查關閉時間/日期") }} :
-			</h5>
-			<Calendar
-				inputId="icon"
-				v-model="review_stage1_end_time"
-				:showIcon="true"
-				:showTime="true"
-				class="w-320px h-44px mt-16px customDatePicker"
-				:baseZIndex="zIndex"
-				dateFormat="yy/mm/dd"
-			/>
-		</div>
-		<br />
-		<div class="inline-block">
-			<h5 class="text-base tracking-widest mt-32px">
-				{{ $t("口試審查開放時間/日期") }} :
-			</h5>
-			<Calendar
-				inputId="icon"
-				v-model="review_stage2_start_time"
-				:showIcon="true"
-				:showTime="true"
-				class="w-320px h-44px mt-16px customDatePicker"
-				:baseZIndex="zIndex"
-				dateFormat="yy/mm/dd"
-			/>
-		</div>
-		<div class="inline-block ml-100px">
-			<h5 class="text-base tracking-widest mt-32px">
-				{{ $t("口試審查關閉時間/日期") }} :
-			</h5>
-			<Calendar
-				inputId="icon"
-				v-model="review_stage2_end_time"
-				:showIcon="true"
-				:showTime="true"
-				class="w-320px h-44px mt-16px customDatePicker"
-				:baseZIndex="zIndex"
-				dateFormat="yy/mm/dd"
-			/>
-		</div>
-		<br />
-		<!-- <div>
-			<Checkbox
-				inputId="binary"
-				v-model="checked"
-				:binary="true"
-				class="!align-top mt-30px"
-			/>
-			<h5
-				class="text-base tracking-widest mt-30px ml-10px align-top inline-block"
-			>
-				{{ $t("專案詳細") }} :
-			</h5>
-			<Textarea
-				v-model="project_details"
-				rows="5"
-				cols="30"
-				class="w-950px h-320px !mt-30px !ml-10px"
-			/>
-		</div> -->
-		<div class="mt-100px">
-			<div class="bigRedDivider"></div>
-		</div>
-		<div class="flex mt-24px">
-			<div class="m-auto">
-				<div class="flex">
-					<NButton
-						type="Admin"
-						class="bg-white h-60px w-140px"
-						@click="confirmDeleteProject()"
-						icon="pi pi-times"
-					>
-						<div>{{ $t("刪除專案") }}</div>
-					</NButton>
-					<div class="w-24px"></div>
-					<NButton
-						type="Admin"
-						class="bg-Green h-60px w-140px"
-						@click="update"
-						icon="pi pi-check"
-					>
-						<div>{{ $t("儲存設定") }}</div>
-					</NButton>
+			<PDivider Admin />
+			<!-- 開放時間 -->
+			<div flex="~ gap-2" pb="2">
+				<div text="2xl title">{{ $t("開放時間") }}</div>
+				<div text="sm warning" mt="auto">
+					※ {{ $t("請在申請端開放之前完成其他專案設定") }}
 				</div>
 			</div>
 			<div text="xl pApplicant">{{ $t("申請端") }}</div>
