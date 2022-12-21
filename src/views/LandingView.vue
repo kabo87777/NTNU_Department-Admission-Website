@@ -69,7 +69,7 @@
 									w="full max-85"
 									p="4"
 								>
-									教師聘請系統 Recruitment System
+									教師徵聘系統 Recruitment System
 								</NButton>
 							</router-link>
 						</template>
