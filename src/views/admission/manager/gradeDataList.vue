@@ -1,107 +1,32 @@
 <template>
-	<div>
-		<h1 class="text-4xl text-bold tracking-widest">
+	<Layout Admin>
+		<template #Header>
 			{{ $t("評分資料列表") }}
-		</h1>
-		<div class="bigRedDivider"></div>
-		<div class="p-fluid">
-			<SelectButton
-				class="mt-10px h-45px"
-				v-model="currentTab"
-				:options="tabOptions"
-				aria-labelledby="single"
-				:unselectable="false"
-			/>
-		</div>
-		<div v-if="currentTab === translation.phase1">
-			<DataTable
-				:value="applicantDocsGradeList.data.value"
-				responsiveLayout="scroll"
-				dataKey="id"
-				:scrollable="true"
-				scrollHeight="700px"
-				class="p-datatable-lg !h-700px"
-			>
-				<Column field="id" :header="ID"></Column>
-				<Column field="name" :header="applicantName"></Column>
-				<Column field="grades" :header="reviewerGrade"></Column>
-				<Column
-					field="isImmediateEnroll"
-					:header="directedAdmitted"
-					dataType="boolean"
-					bodyClass="text-center"
-					style="min-width: 8rem"
-				>
-					<template #body="slotProps">
-						<i
-							v-if="slotProps.data.isImmediateEnroll"
-							class="pi pi-check"
-						></i>
-						<p v-else>-</p>
-					</template>
-				</Column>
-				<Column field="application_stage" :header="phaseResult">
-					<template #body="slotProps">
-						<i v-if="slotProps.data.application_stage === null">{{
-							$t("待審核")
-						}}</i>
-						<p v-else>{{ slotProps.data.application_stage }}</p>
-					</template>
-				</Column>
-				<Column :exportable="false" style="min-width: 8rem">
-					<template #body="slotProps">
-						<Button
-							icon="pi pi-pencil"
-							class="p-button-outlined p-button-success"
-							@click="editProduct(slotProps)"
-						/>
-					</template>
-				</Column>
-			</DataTable>
-			<Dialog
-				v-model:visible="productDialog"
-				:header="gradeDataEdit"
-				:modal="true"
-				class="w-720px h-988px"
-			>
-				<Divider></Divider>
-				<div class="flex mt-24px">
-					<div class="text-lg">{{ $t("帳號ID") }} :</div>
-					<div class="text-lg ml-266px">{{ $t("帳號名稱") }} :</div>
-				</div>
-				<div class="flex mt-18.5px">
-					<div>
-						{{ id }}
-					</div>
-					<div class="text-base ml-300px">
-						{{ name }}
-					</div>
-				</div>
-				<div class="p-fluid">
-					<SelectButton
-						v-if="disable1"
-						class="h-39px mt-32px !w-664px"
-						v-model="dialogCurrentTab"
-						:options="dialogTabOptions"
-					/>
-					<SelectButton
-						v-else
-						class="h-39px mt-32px !w-664px"
-						v-model="dialogCurrentTab"
-						:options="dialogTabOptions"
-						disabled
-					/>
-				</div>
+		</template>
+		<template #Body>
+			<div class="p-fluid" pos="sticky top-0" z="50">
+				<SelectButton
+					class="mt-10px h-45px"
+					v-model="currentTab"
+					:options="tabOptions"
+					aria-labelledby="single"
+					:unselectable="false"
+				/>
+			</div>
+			<div v-if="currentTab === translation.phase1">
 				<DataTable
-					v-if="dialogCurrentTab === translation.phase1"
-					:value="docsReviewerScore"
+					:value="applicantDocsGradeList.data.value"
 					responsiveLayout="scroll"
 					dataKey="id"
-					class="text-base mt-24px !h-286px"
+					:scrollable="true"
+					scrollHeight="700px"
+					class="p-datatable-lg !h-700px"
 				>
-					<Column field="name" :header="reviewer"></Column>
+					<Column field="id" :header="ID"></Column>
+					<Column field="name" :header="applicantName"></Column>
+					<Column field="grades" :header="reviewerGrade"></Column>
 					<Column
-						field="isimmendiateenroll"
+						field="isImmediateEnroll"
 						:header="directedAdmitted"
 						dataType="boolean"
 						bodyClass="text-center"
@@ -109,605 +34,577 @@
 					>
 						<template #body="slotProps">
 							<i
-								v-if="slotProps.data.isimmendiateenroll"
+								v-if="slotProps.data.isImmediateEnroll"
 								class="pi pi-check"
 							></i>
 							<p v-else>-</p>
 						</template>
 					</Column>
-					<Column field="grades" :header="totalScore"></Column>
-				</DataTable>
-				<DataTable
-					v-if="dialogCurrentTab === translation.phase2"
-					:value="oralReviewerScore"
-					responsiveLayout="scroll"
-					dataKey="id"
-					class="text-base mt-24px !h-286px"
-				>
-					<Column field="name" :header="reviewer"></Column>
-					<Column field="grades" :header="totalScore"></Column>
-				</DataTable>
-				<div
-					v-if="dialogCurrentTab === translation.phase1"
-					class="flex mt-20px ml-15px"
-				>
-					<div>{{ $t("平均分數") }}</div>
-					<div class="ml-330px">{{ docsAverageGrade }}</div>
-				</div>
-				<div
-					v-if="dialogCurrentTab === translation.phase2"
-					class="flex mt-20px ml-15px"
-				>
-					<div>{{ $t("平均分數") }}</div>
-					<div class="ml-188px">{{ oralAverageGrade }}</div>
-				</div>
-				<div class="flex mt-100px ml-53px" v-if="disable2">
-					<div>
-						<div>{{ $t("一階審查結果") }}</div>
-						<Dropdown
-							v-if="disable"
-							v-model="p1_result"
-							:options="p1_result_option"
-							disabled
-							class="w-228px h-44px mt-8px"
-						/>
-						<Dropdown
-							v-else
-							v-model="p1_result"
-							:options="p1_result_option"
-							class="w-228px h-44px mt-8px"
-						/>
-					</div>
-					<div class="ml-120px">
-						<div>{{ $t("口試順序") }}</div>
-						<InputText
-							v-if="disable1"
-							type="text"
-							v-model="oral_order"
-							class="w-148px h-44px !mt-8px"
-						/>
-						<InputText
-							v-else
-							type="text"
-							v-model="oral_order"
-							disabled
-							class="w-148px h-44px !mt-8px"
-						/>
-					</div>
-				</div>
-				<div class="flex mt-100px ml-52px" v-else>
-					<div>
-						<div>{{ $t("二階審查結果") }}</div>
-						<Dropdown
-							v-if="disable1"
-							v-model="p2_result"
-							:options="p2_result_option"
-							class="w-228px h-44px mt-8px"
-						/>
-						<Dropdown
-							v-else
-							v-model="p2_result"
-							:options="p2_result_option"
-							disabled
-							class="w-228px h-44px mt-8px"
-						/>
-					</div>
-					<div class="ml-120px">
-						<div>{{ $t("錄取順序") }}</div>
-						<InputText
-							v-if="disable1"
-							type="text"
-							v-model="admitted_order"
-							class="w-148px h-44px !mt-8px"
-						/>
-						<InputText
-							v-else-if="!disable1"
-							type="text"
-							v-model="admitted_order"
-							disabled
-							class="w-148px h-44px !mt-8px"
-						/>
-					</div>
-				</div>
-				<div class="flex !mt-100px">
-					<NButton
-						type="Admin"
-						class="w-140px h-44px !ml-170px"
-						@click="doneEdit"
-						icon="pi pi-check"
-					>
-						<span class="tracking-1px">{{ $t("儲存變更") }}</span>
-					</NButton>
-					<NButton
-						type="Admin"
-						class="w-100px h-44px !ml-49px"
-						@click="cancelEdit"
-						icon="pi pi-times"
-					>
-						<span class="tracking-1px">{{ $t("取消") }}</span>
-					</NButton>
-				</div>
-			</Dialog>
-			<div class="bigRedDivider !mt-30px"></div>
-			<div class="flex text-xl mt-20px">
-				<div>
-					{{ $t("待審核") }} {{ docsStage1Count }} {{ $t("位") }}
-				</div>
-				<Divider layout="vertical" class="!ml-30px" />
-				<div class="!ml-30px">
-					{{ $t("進赴二階") }} {{ docsStage2Count }} {{ $t("位") }}
-				</div>
-				<Divider layout="vertical" class="!ml-30px" />
-				<div class="!ml-30px">
-					{{ $t("逕取") }} {{ docsStage3Count }} {{ $t("位") }}
-				</div>
-				<Divider layout="vertical" class="!ml-30px" />
-				<div class="!ml-30px">
-					{{ $t("不通過") }} {{ docsStage4Count }} {{ $t("位") }}
-				</div>
-				<Divider layout="vertical" class="!ml-30px" />
-				<div class="!ml-30px">
-					{{ $t("未送審") }} {{ docsStage5Count }} {{ $t("位") }}
-				</div>
-			</div>
-		</div>
-		<div v-if="currentTab === translation.phase2">
-			<DataTable
-				:value="oralGradeList"
-				responsiveLayout="scroll"
-				dataKey="id"
-				:scrollable="true"
-				scrollHeight="700px"
-				@rowReorder="onRowReorder2"
-				class="p-datatable-lg !h-700px"
-				removableSort
-			>
-				<Column
-					:rowReorder="true"
-					headerStyle="width: 3rem"
-					:reorderableColumn="false"
-				/>
-				<Column
-					field="oral_order"
-					:header="oralOrder"
-					:sortable="true"
-				></Column>
-				<Column field="id" :header="ID"></Column>
-				<Column field="name" :header="applicantName"></Column>
-				<Column field="docs_grades" :header="docsScore"></Column>
-				<Column field="oral_grades" :header="oralScore"></Column>
-				<Column field="total_grades" :header="final_score"></Column>
-				<Column field="enroll_stage" :header="finalResult">
-					<template #body="slotProps">
-						<i v-if="slotProps.data.enroll_stage === null">{{
-							$t("待審核")
-						}}</i>
-						<p v-else>{{ slotProps.data.enroll_stage }}</p>
-					</template>
-				</Column>
-				<Column :exportable="false" style="min-width: 8rem">
-					<template #body="slotProps">
-						<Button
-							icon="pi pi-pencil"
-							class="p-button-outlined p-button-success"
-							@click="editProduct(slotProps)"
-						/>
-					</template>
-				</Column>
-			</DataTable>
-			<Dialog
-				v-model:visible="productDialog"
-				header="評分資料編輯"
-				:modal="true"
-				class="w-720px h-988px"
-			>
-				<Divider></Divider>
-				<div class="flex mt-24px">
-					<div class="text-lg">{{ $t("帳號ID") }} :</div>
-					<div class="text-lg ml-266px">{{ $t("帳號名稱") }} :</div>
-				</div>
-				<div class="flex mt-18.5px">
-					<div>
-						{{ id }}
-					</div>
-					<div class="text-base ml-300px">
-						{{ name }}
-					</div>
-				</div>
-				<div class="p-fluid">
-					<SelectButton
-						class="h-39px mt-32px !w-664px"
-						v-model="dialogCurrentTab2"
-						:options="dialogTabOptions"
-					/>
-				</div>
-				<DataTable
-					v-if="dialogCurrentTab2 === translation.phase1"
-					:value="docsReviewerScore"
-					responsiveLayout="scroll"
-					dataKey="id"
-					class="text-base mt-24px !h-286px"
-				>
-					<Column field="name" :header="reviewer"></Column>
-					<Column
-						field="isimmendiateenroll"
-						:header="directedAdmitted"
-						dataType="boolean"
-						bodyClass="text-center"
-						style="min-width: 8rem"
-					>
+					<Column field="application_stage" :header="phaseResult">
 						<template #body="slotProps">
 							<i
-								v-if="slotProps.data.access"
-								class="pi pi-check"
-							></i>
-							<p v-else>-</p>
+								v-if="slotProps.data.application_stage === null"
+								>{{ $t("待審核") }}</i
+							>
+							<p v-else>
+								{{ slotProps.data.application_stage }}
+							</p>
 						</template>
 					</Column>
-					<Column field="grades" :header="totalScore"></Column>
+					<Column :exportable="false" style="min-width: 8rem">
+						<template #body="slotProps">
+							<Button
+								icon="pi pi-pencil"
+								class="p-button-outlined p-button-success"
+								@click="editProduct(slotProps)"
+							/>
+						</template>
+					</Column>
 				</DataTable>
+				<Dialog
+					v-model:visible="productDialog"
+					:header="gradeDataEdit"
+					:modal="true"
+					class="w-720px h-988px"
+				>
+					<Divider></Divider>
+					<div class="flex mt-24px">
+						<div class="text-lg">{{ $t("帳號ID") }} :</div>
+						<div class="text-lg ml-266px">
+							{{ $t("帳號名稱") }} :
+						</div>
+					</div>
+					<div class="flex mt-18.5px">
+						<div>
+							{{ id }}
+						</div>
+						<div class="text-base ml-300px">
+							{{ name }}
+						</div>
+					</div>
+					<div class="p-fluid">
+						<SelectButton
+							v-if="disable1"
+							class="h-39px mt-32px !w-664px"
+							v-model="dialogCurrentTab"
+							:options="dialogTabOptions"
+						/>
+						<SelectButton
+							v-else
+							class="h-39px mt-32px !w-664px"
+							v-model="dialogCurrentTab"
+							:options="dialogTabOptions"
+							disabled
+						/>
+					</div>
+					<DataTable
+						v-if="dialogCurrentTab === translation.phase1"
+						:value="docsReviewerScore"
+						responsiveLayout="scroll"
+						dataKey="id"
+						class="text-base mt-24px !h-286px"
+					>
+						<Column field="name" :header="reviewer"></Column>
+						<Column
+							field="isimmendiateenroll"
+							:header="directedAdmitted"
+							dataType="boolean"
+							bodyClass="text-center"
+							style="min-width: 8rem"
+						>
+							<template #body="slotProps">
+								<i
+									v-if="slotProps.data.isimmendiateenroll"
+									class="pi pi-check"
+								></i>
+								<p v-else>-</p>
+							</template>
+						</Column>
+						<Column field="grades" :header="totalScore"></Column>
+					</DataTable>
+					<DataTable
+						v-if="dialogCurrentTab === translation.phase2"
+						:value="oralReviewerScore"
+						responsiveLayout="scroll"
+						dataKey="id"
+						class="text-base mt-24px !h-286px"
+					>
+						<Column field="name" :header="reviewer"></Column>
+						<Column field="grades" :header="totalScore"></Column>
+					</DataTable>
+					<div
+						v-if="dialogCurrentTab === translation.phase1"
+						class="flex mt-20px ml-15px"
+					>
+						<div>{{ $t("平均分數") }}</div>
+						<div class="ml-330px">{{ docsAverageGrade }}</div>
+					</div>
+					<div
+						v-if="dialogCurrentTab === translation.phase2"
+						class="flex mt-20px ml-15px"
+					>
+						<div>{{ $t("平均分數") }}</div>
+						<div class="ml-188px">{{ oralAverageGrade }}</div>
+					</div>
+					<div class="flex mt-100px ml-53px" v-if="disable2">
+						<div>
+							<div>{{ $t("一階審查結果") }}</div>
+							<Dropdown
+								v-if="disable"
+								v-model="p1_result"
+								:options="p1_result_option"
+								disabled
+								class="w-228px h-44px mt-8px"
+							/>
+							<Dropdown
+								v-else
+								v-model="p1_result"
+								:options="p1_result_option"
+								class="w-228px h-44px mt-8px"
+							/>
+						</div>
+						<div class="ml-120px">
+							<div>{{ $t("口試順序") }}</div>
+							<InputText
+								v-if="disable1"
+								type="text"
+								v-model="oral_order"
+								class="w-148px h-44px !mt-8px"
+							/>
+							<InputText
+								v-else
+								type="text"
+								v-model="oral_order"
+								disabled
+								class="w-148px h-44px !mt-8px"
+							/>
+						</div>
+					</div>
+					<div class="flex mt-100px ml-52px" v-else>
+						<div>
+							<div>{{ $t("二階審查結果") }}</div>
+							<Dropdown
+								v-if="disable1"
+								v-model="p2_result"
+								:options="p2_result_option"
+								class="w-228px h-44px mt-8px"
+							/>
+							<Dropdown
+								v-else
+								v-model="p2_result"
+								:options="p2_result_option"
+								disabled
+								class="w-228px h-44px mt-8px"
+							/>
+						</div>
+						<div class="ml-120px">
+							<div>{{ $t("錄取順序") }}</div>
+							<InputText
+								v-if="disable1"
+								type="text"
+								v-model="admitted_order"
+								class="w-148px h-44px !mt-8px"
+							/>
+							<InputText
+								v-else-if="!disable1"
+								type="text"
+								v-model="admitted_order"
+								disabled
+								class="w-148px h-44px !mt-8px"
+							/>
+						</div>
+					</div>
+					<div class="flex !mt-100px">
+						<NButton
+							type="Admin"
+							class="w-140px h-44px !ml-170px"
+							@click="doneEdit"
+							icon="pi pi-check"
+						>
+							<span class="tracking-1px">{{
+								$t("儲存變更")
+							}}</span>
+						</NButton>
+						<NButton
+							type="Admin"
+							class="w-100px h-44px !ml-49px"
+							@click="cancelEdit"
+							icon="pi pi-times"
+						>
+							<span class="tracking-1px">{{ $t("取消") }}</span>
+						</NButton>
+					</div>
+				</Dialog>
+			</div>
+			<div v-if="currentTab === translation.phase2">
 				<DataTable
-					v-if="dialogCurrentTab2 === translation.phase2"
-					:value="oralReviewerScore"
+					:value="oralGradeList"
 					responsiveLayout="scroll"
 					dataKey="id"
-					class="text-base mt-24px !h-286px"
+					:scrollable="true"
+					scrollHeight="700px"
+					@rowReorder="onRowReorder2"
+					class="p-datatable-lg !h-700px"
+					removableSort
 				>
-					<Column field="name" :header="reviewer"></Column>
-					<Column field="grades" :header="totalScore"></Column>
+					<Column
+						:rowReorder="true"
+						headerStyle="width: 3rem"
+						:reorderableColumn="false"
+					/>
+					<Column
+						field="oral_order"
+						:header="oralOrder"
+						:sortable="true"
+					></Column>
+					<Column field="id" :header="ID"></Column>
+					<Column field="name" :header="applicantName"></Column>
+					<Column field="docs_grades" :header="docsScore"></Column>
+					<Column field="oral_grades" :header="oralScore"></Column>
+					<Column field="total_grades" :header="final_score"></Column>
+					<Column field="enroll_stage" :header="finalResult">
+						<template #body="slotProps">
+							<i v-if="slotProps.data.enroll_stage === null">{{
+								$t("待審核")
+							}}</i>
+							<p v-else>{{ slotProps.data.enroll_stage }}</p>
+						</template>
+					</Column>
+					<Column :exportable="false" style="min-width: 8rem">
+						<template #body="slotProps">
+							<Button
+								icon="pi pi-pencil"
+								class="p-button-outlined p-button-success"
+								@click="editProduct(slotProps)"
+							/>
+						</template>
+					</Column>
 				</DataTable>
-				<div
-					v-if="dialogCurrentTab2 === translation.phase1"
-					class="flex mt-20px ml-15px"
+				<Dialog
+					v-model:visible="productDialog"
+					header="評分資料編輯"
+					:modal="true"
+					class="w-720px h-988px"
 				>
-					<div>{{ $t("平均分數") }}</div>
-					<div class="!ml-330px">{{ docsAverageGrade }}</div>
-				</div>
-				<div
-					v-if="dialogCurrentTab2 === translation.phase2"
-					class="flex mt-20px ml-15px"
-				>
-					<div>{{ $t("平均分數") }}</div>
-					<div class="ml-188px">{{ oralAverageGrade }}</div>
-				</div>
-				<div class="flex mt-100px ml-53px" v-if="disable3">
-					<div>
-						<div>{{ $t("一階審查結果") }}</div>
-						<Dropdown
-							v-model="p1_result"
-							:options="p1_result_option"
-							class="w-228px h-44px mt-8px"
+					<Divider></Divider>
+					<div class="flex mt-24px">
+						<div class="text-lg">{{ $t("帳號ID") }} :</div>
+						<div class="text-lg ml-266px">
+							{{ $t("帳號名稱") }} :
+						</div>
+					</div>
+					<div class="flex mt-18.5px">
+						<div>
+							{{ id }}
+						</div>
+						<div class="text-base ml-300px">
+							{{ name }}
+						</div>
+					</div>
+					<div class="p-fluid">
+						<SelectButton
+							class="h-39px mt-32px !w-664px"
+							v-model="dialogCurrentTab2"
+							:options="dialogTabOptions"
 						/>
 					</div>
-					<div class="ml-120px">
-						<div>{{ $t("口試順序") }}</div>
-						<InputText
-							v-if="disable1"
-							type="text"
-							v-model="oral_order"
-							class="w-148px h-44px !mt-8px"
-						/>
-						<InputText
-							v-else
-							type="text"
-							v-model="oral_order"
-							disabled
-							class="w-148px h-44px !mt-8px"
-						/>
-					</div>
-				</div>
-				<div class="flex mt-100px ml-52px" v-else>
-					<div>
-						<div>{{ $t("二階審查結果") }}</div>
-						<Dropdown
-							v-if="disable1"
-							v-model="p2_result"
-							:options="p2_result_option"
-							class="w-228px h-44px mt-8px"
-						/>
-						<Dropdown
-							v-else
-							v-model="p2_result"
-							:options="p2_result_option"
-							disabled
-							class="w-228px h-44px mt-8px"
-						/>
-					</div>
-					<div class="ml-120px">
-						<div>{{ $t("錄取順序") }}</div>
-						<InputText
-							v-if="disable1"
-							type="text"
-							v-model="admitted_order"
-							class="w-148px h-44px !mt-8px"
-						/>
-						<InputText
-							v-else-if="!disable1"
-							type="text"
-							v-model="admitted_order"
-							disabled
-							class="w-148px h-44px !mt-8px"
-						/>
-					</div>
-				</div>
-				<div class="flex !mt-100px">
-					<NButton
-						type="Admin"
-						class="w-140px h-44px !ml-170px"
-						@click="doneEdit"
-						icon="pi pi-check"
+					<DataTable
+						v-if="dialogCurrentTab2 === translation.phase1"
+						:value="docsReviewerScore"
+						responsiveLayout="scroll"
+						dataKey="id"
+						class="text-base mt-24px !h-286px"
 					>
-						<span class="tracking-1px">{{ $t("儲存變更") }}</span>
-					</NButton>
-					<NButton
-						type="Admin"
-						class="w-100px h-44px !ml-49px"
-						@click="cancelEdit"
-						icon="pi pi-times"
+						<Column field="name" :header="reviewer"></Column>
+						<Column
+							field="isimmendiateenroll"
+							:header="directedAdmitted"
+							dataType="boolean"
+							bodyClass="text-center"
+							style="min-width: 8rem"
+						>
+							<template #body="slotProps">
+								<i
+									v-if="slotProps.data.access"
+									class="pi pi-check"
+								></i>
+								<p v-else>-</p>
+							</template>
+						</Column>
+						<Column field="grades" :header="totalScore"></Column>
+					</DataTable>
+					<DataTable
+						v-if="dialogCurrentTab2 === translation.phase2"
+						:value="oralReviewerScore"
+						responsiveLayout="scroll"
+						dataKey="id"
+						class="text-base mt-24px !h-286px"
 					>
-						<span class="tracking-1px">{{ $t("取消") }}</span>
-					</NButton>
-				</div>
-			</Dialog>
-			<div class="bigRedDivider !mt-30px"></div>
-			<div class="flex text-xl mt-20px">
-				<div>
-					{{ $t("待審核") }} {{ oralStage1Count }} {{ $t("位") }}
-				</div>
-				<Divider layout="vertical" class="!ml-30px" />
-				<div class="!ml-30px">
-					{{ $t("正取") }} {{ oralStage2Count }} {{ $t("位") }}
-				</div>
-				<Divider layout="vertical" class="!ml-30px" />
-				<div class="!ml-30px">
-					{{ $t("備取") }} {{ oralStage3Count }} {{ $t("位") }}
-				</div>
-				<Divider layout="vertical" class="!ml-30px" />
-				<div class="!ml-30px">
-					{{ $t("不通過") }} {{ oralStage4Count }} {{ $t("位") }}
-				</div>
-				<NButton
-					type="Admin"
-					class="w-140px h-44px !ml-500px"
-					@click="saveOralOrder"
-					icon="pi pi-check"
-				>
-					<span class="tracking-1px">{{ $t("保存順序") }}</span>
-				</NButton>
+						<Column field="name" :header="reviewer"></Column>
+						<Column field="grades" :header="totalScore"></Column>
+					</DataTable>
+					<div
+						v-if="dialogCurrentTab2 === translation.phase1"
+						class="flex mt-20px ml-15px"
+					>
+						<div>{{ $t("平均分數") }}</div>
+						<div class="!ml-330px">{{ docsAverageGrade }}</div>
+					</div>
+					<div
+						v-if="dialogCurrentTab2 === translation.phase2"
+						class="flex mt-20px ml-15px"
+					>
+						<div>{{ $t("平均分數") }}</div>
+						<div class="ml-188px">{{ oralAverageGrade }}</div>
+					</div>
+					<div class="flex mt-100px ml-53px" v-if="disable3">
+						<div>
+							<div>{{ $t("一階審查結果") }}</div>
+							<Dropdown
+								v-model="p1_result"
+								:options="p1_result_option"
+								class="w-228px h-44px mt-8px"
+							/>
+						</div>
+						<div class="ml-120px">
+							<div>{{ $t("口試順序") }}</div>
+							<InputText
+								v-if="disable1"
+								type="text"
+								v-model="oral_order"
+								class="w-148px h-44px !mt-8px"
+							/>
+							<InputText
+								v-else
+								type="text"
+								v-model="oral_order"
+								disabled
+								class="w-148px h-44px !mt-8px"
+							/>
+						</div>
+					</div>
+					<div class="flex mt-100px ml-52px" v-else>
+						<div>
+							<div>{{ $t("二階審查結果") }}</div>
+							<Dropdown
+								v-if="disable1"
+								v-model="p2_result"
+								:options="p2_result_option"
+								class="w-228px h-44px mt-8px"
+							/>
+							<Dropdown
+								v-else
+								v-model="p2_result"
+								:options="p2_result_option"
+								disabled
+								class="w-228px h-44px mt-8px"
+							/>
+						</div>
+						<div class="ml-120px">
+							<div>{{ $t("錄取順序") }}</div>
+							<InputText
+								v-if="disable1"
+								type="text"
+								v-model="admitted_order"
+								class="w-148px h-44px !mt-8px"
+							/>
+							<InputText
+								v-else-if="!disable1"
+								type="text"
+								v-model="admitted_order"
+								disabled
+								class="w-148px h-44px !mt-8px"
+							/>
+						</div>
+					</div>
+					<div class="flex !mt-100px">
+						<NButton
+							type="Admin"
+							class="w-140px h-44px !ml-170px"
+							@click="doneEdit"
+							icon="pi pi-check"
+						>
+							<span class="tracking-1px">{{
+								$t("儲存變更")
+							}}</span>
+						</NButton>
+						<NButton
+							type="Admin"
+							class="w-100px h-44px !ml-49px"
+							@click="cancelEdit"
+							icon="pi pi-times"
+						>
+							<span class="tracking-1px">{{ $t("取消") }}</span>
+						</NButton>
+					</div>
+				</Dialog>
 			</div>
-		</div>
-		<div v-if="currentTab === translation.iEnrollList">
-			<DataTable
-				:value="iEnrollList"
-				responsiveLayout="scroll"
-				dataKey="id"
-				:scrollable="true"
-				scrollHeight="700px"
-				class="p-datatable-lg !h-700px"
-				removableSort
-			>
-				<Column field="id" :header="ID"></Column>
-				<Column field="name" :header="applicantName"></Column>
-				<Column
-					field="grades"
-					:header="reviewerGrade"
-					:sortable="true"
-				></Column>
-			</DataTable>
-			<div class="bigRedDivider !mt-30px"></div>
-		</div>
-		<div v-if="currentTab === translation.admissionList">
-			<DataTable
-				:value="admittedList"
-				responsiveLayout="scroll"
-				dataKey="id"
-				:scrollable="true"
-				scrollHeight="700px"
-				@rowReorder="onRowReorder3"
-				class="p-datatable-lg !h-700px"
-				removableSort
-			>
-				<Column
-					:rowReorder="true"
-					headerStyle="width: 3rem"
-					:reorderableColumn="false"
-				/>
-				<Column field="enroll_stage" :header="reviewResult">
-					<template #body="slotProps">
-						<i v-if="slotProps.data.enroll_stage === null">{{
-							$t("待審核")
-						}}</i>
-						<p v-else>{{ slotProps.data.enroll_stage }}</p>
-					</template>
-				</Column>
-				<Column
-					field="enroll_order"
-					:header="admissionOrder"
-					:sortable="true"
-				></Column>
-				<Column field="id" :header="ID"></Column>
-				<Column field="name" :header="applicantName"></Column>
-				<Column field="docs_grades" :header="docsScore"></Column>
-				<Column field="oral_grades" :header="oralScore"></Column>
-				<Column field="total_grades" :header="final_score"></Column>
-			</DataTable>
-			<div class="bigRedDivider !mt-30px"></div>
-			<div class="flex text-xl mt-20px">
-				<NButton
-					type="Admin"
-					class="w-140px h-44px !ml-570px"
-					@click="saveEnrollOrder"
-					icon="pi pi-check"
+			<div v-if="currentTab === translation.iEnrollList">
+				<DataTable
+					:value="iEnrollList"
+					responsiveLayout="scroll"
+					dataKey="id"
+					:scrollable="true"
+					scrollHeight="700px"
+					class="p-datatable-lg !h-700px"
+					removableSort
 				>
-					<span class="tracking-1px">{{ $t("保存順序") }}</span>
-				</NButton>
+					<Column field="id" :header="ID"></Column>
+					<Column field="name" :header="applicantName"></Column>
+					<Column
+						field="grades"
+						:header="reviewerGrade"
+						:sortable="true"
+					></Column>
+				</DataTable>
 			</div>
-		</div>
-		<div v-if="currentTab === translation.reserveList">
-			<DataTable
-				:value="reserveList"
-				responsiveLayout="scroll"
-				dataKey="id"
-				:scrollable="true"
-				scrollHeight="700px"
-				@rowReorder="onRowReorder4"
-				class="p-datatable-lg !h-700px"
-				removableSort
-			>
-				<Column
-					:rowReorder="true"
-					headerStyle="width: 3rem"
-					:reorderableColumn="false"
-				/>
-				<Column field="enroll_stage" :header="reviewResult">
-					<template #body="slotProps">
-						<i v-if="slotProps.data.enroll_stage === null">{{
-							$t("待審核")
-						}}</i>
-						<p v-else>{{ slotProps.data.enroll_stage }}</p>
-					</template>
-				</Column>
-				<Column
-					field="enroll_order"
-					:header="admissionOrder"
-					:sortable="true"
-				></Column>
-				<Column field="id" :header="ID"></Column>
-				<Column field="name" :header="applicantName"></Column>
-				<Column field="docs_grades" :header="docsScore"></Column>
-				<Column field="oral_grades" :header="oralScore"></Column>
-				<Column field="total_grades" :header="final_score"></Column>
-			</DataTable>
-			<div class="bigRedDivider !mt-30px"></div>
-			<div class="flex text-xl mt-20px">
-				<NButton
-					type="Admin"
-					class="w-140px h-44px !ml-570px"
-					@click="saveReserveOrder"
-					icon="pi pi-check"
+			<div v-if="currentTab === translation.admissionList">
+				<DataTable
+					:value="admittedList"
+					responsiveLayout="scroll"
+					dataKey="id"
+					:scrollable="true"
+					scrollHeight="700px"
+					@rowReorder="onRowReorder3"
+					class="p-datatable-lg !h-700px"
+					removableSort
 				>
-					<span class="tracking-1px">{{ $t("保存順序") }}</span>
-				</NButton>
+					<Column
+						:rowReorder="true"
+						headerStyle="width: 3rem"
+						:reorderableColumn="false"
+					/>
+					<Column field="enroll_stage" :header="reviewResult">
+						<template #body="slotProps">
+							<i v-if="slotProps.data.enroll_stage === null">{{
+								$t("待審核")
+							}}</i>
+							<p v-else>{{ slotProps.data.enroll_stage }}</p>
+						</template>
+					</Column>
+					<Column
+						field="enroll_order"
+						:header="admissionOrder"
+						:sortable="true"
+					></Column>
+					<Column field="id" :header="ID"></Column>
+					<Column field="name" :header="applicantName"></Column>
+					<Column field="docs_grades" :header="docsScore"></Column>
+					<Column field="oral_grades" :header="oralScore"></Column>
+					<Column field="total_grades" :header="final_score"></Column>
+				</DataTable>
 			</div>
-		</div>
-		<div v-if="currentTab === translation.printReport">
-			<div
-				class="flex items-center mx-auto h-144px w-[100%] justify-around bg-gray-500/10 rounded-md my-4"
-			>
-				<div
-					class="flex w-[50%] h-[80%] m-4px justify-around items-center"
+			<div v-if="currentTab === translation.reserveList">
+				<DataTable
+					:value="reserveList"
+					responsiveLayout="scroll"
+					dataKey="id"
+					:scrollable="true"
+					scrollHeight="700px"
+					@rowReorder="onRowReorder4"
+					class="p-datatable-lg !h-700px"
+					removableSort
 				>
-					<div class="text-2xl">
+					<Column
+						:rowReorder="true"
+						headerStyle="width: 3rem"
+						:reorderableColumn="false"
+					/>
+					<Column field="enroll_stage" :header="reviewResult">
+						<template #body="slotProps">
+							<i v-if="slotProps.data.enroll_stage === null">{{
+								$t("待審核")
+							}}</i>
+							<p v-else>{{ slotProps.data.enroll_stage }}</p>
+						</template>
+					</Column>
+					<Column
+						field="enroll_order"
+						:header="admissionOrder"
+						:sortable="true"
+					></Column>
+					<Column field="id" :header="ID"></Column>
+					<Column field="name" :header="applicantName"></Column>
+					<Column field="docs_grades" :header="docsScore"></Column>
+					<Column field="oral_grades" :header="oralScore"></Column>
+					<Column field="total_grades" :header="final_score"></Column>
+				</DataTable>
+			</div>
+			<div v-if="currentTab === translation.printReport">
+				<div flex="~ gap-8" p="8" bg="nGrey-50">
+					<div text="xl title center" font="medium" my="auto" w="80">
 						{{ $t("審查書面評分") }}
 					</div>
+					<NButton
+						Applicant
+						icon="pi pi-print"
+						size="lg"
+						@click="
+							downloadPDFFile(docPdfData, 'doc_report', false)
+						"
+					>
+						{{ $t("報表列印") }}
+					</NButton>
+					<NButton
+						Admin
+						icon="pi pi-eye-slash"
+						size="lg"
+						@click="
+							downloadPDFFile(docAnonyPdfData, 'doc_report', true)
+						"
+					>
+						{{ $t("匿名報表列印") }}
+					</NButton>
 				</div>
-				<NButton
-					type="Admin"
-					class="w-[20%] h-[60%] !bg-purple-500/10 m-4px"
-					@click="downloadPDFFile(docPdfData, 'doc_report', false)"
-				>
-					<img
-						alt="logo"
-						src="/assets/gradeDataList/Paper.png"
-						style="width: 1.5rem"
-						class="fill-green-500"
-					/>
-					<span class="tracking-1px text-lg">{{
-						$t("報表列印")
-					}}</span>
-				</NButton>
-				<NButton
-					type="Admin"
-					class="w-[20%] h-[60%] !bg-blue-500/10 m-4px"
-					@click="
-						downloadPDFFile(docAnonyPdfData, 'doc_report', true)
-					"
-				>
-					<img
-						alt="logo"
-						src="/assets/gradeDataList/Paper.png"
-						style="width: 1.5rem"
-						class="fill-green-500"
-					/>
-					<span class="tracking-1px text-lg">{{
-						$t("匿名報表列印")
-					}}</span>
-				</NButton>
-			</div>
-			<div
-				class="flex items-center mx-auto h-144px w-[100%] justify-around bg-gray-500/10 rounded-md my-4"
-			>
-				<div
-					class="flex w-[50%] h-[80%] m-4px justify-around items-center"
-				>
-					<div class="text-2xl">
+				<div flex="~ gap-8" p="8" border="2 nGrey-50">
+					<div text="xl title center" font="medium" my="auto" w="80">
 						{{ $t("審查總評分") }}
 					</div>
+					<NButton
+						Applicant
+						icon="pi pi-print"
+						size="lg"
+						@click="
+							downloadPDFFile(genPdfData, 'general_report', false)
+						"
+					>
+						{{ $t("報表列印") }}
+					</NButton>
+					<NButton
+						Admin
+						icon="pi pi-eye-slash"
+						size="lg"
+						@click="
+							downloadPDFFile(
+								genAnonyPdfData,
+								'general_report',
+								true
+							)
+						"
+					>
+						{{ $t("匿名報表列印") }}
+					</NButton>
 				</div>
-				<NButton
-					type="Admin"
-					class="w-[20%] h-[60%] !bg-purple-500/10 m-4px"
-					@click="
-						downloadPDFFile(genPdfData, 'general_report', false)
-					"
-				>
-					<img
-						alt="logo"
-						src="/assets/gradeDataList/Paper.png"
-						style="width: 1.5rem"
-						class="fill-green-500"
-					/>
-					<span class="tracking-1px text-lg">{{
-						$t("報表列印")
-					}}</span>
-				</NButton>
-				<NButton
-					type="Admin"
-					class="w-[20%] h-[60%] !bg-blue-500/10 m-4px"
-					@click="
-						downloadPDFFile(genAnonyPdfData, 'general_report', true)
-					"
-				>
-					<img
-						alt="logo"
-						src="/assets/gradeDataList/Paper.png"
-						style="width: 1.5rem"
-						class="fill-green-500"
-					/>
-					<span class="tracking-1px text-lg">{{
-						$t("匿名報表列印")
-					}}</span>
-				</NButton>
-			</div>
-			<div
-				class="flex items-center mx-auto h-144px w-[100%] justify-around bg-gray-500/10 rounded-md my-4"
-			>
-				<div
-					class="flex w-[50%] h-[80%] m-4px justify-around items-center"
-				>
-					<div class="text-2xl">
+				<div flex="~ gap-8" p="8" bg="nGrey-50">
+					<div text="xl title center" font="medium" my="auto" w="80">
 						{{ $t("錄取名單") }}
 					</div>
+					<NButton
+						Applicant
+						icon="pi pi-print"
+						size="lg"
+						@click="
+							downloadPDFFile(
+								enrollPdfData,
+								'enroll_report',
+								false
+							)
+						"
+					>
+						{{ $t("報表列印") }}
+					</NButton>
 				</div>
-				<NButton
-					type="Admin"
-					class="w-[20%] h-[60%] !bg-purple-500/10 m-4px"
-					@click="
-						downloadPDFFile(enrollPdfData, 'enroll_report', false)
-					"
-				>
-					<img
-						alt="logo"
-						src="/assets/gradeDataList/Paper.png"
-						style="width: 1.5rem"
-						class="fill-green-500"
-					/>
-					<span class="tracking-1px text-lg">{{
-						$t("報表列印")
-					}}</span>
-				</NButton>
-			</div>
-			<!-- 
+				<!--
 			<div class="flex items-center justify-around bg-teal-100 rounded-md py-[40%] w-[80%] mx-auto">
 				<div class="w-[10%] h-12 bg-red-400 rounded-md m-4px"></div>
 				<div class="w-[10%] h-12 bg-green-400 rounded-md m-4px"></div>
@@ -715,16 +612,102 @@
 				<div class="w-[10%] h-12 bg-yellow-400 rounded-md m-4px"></div>
 				<div class="w-[10%] h-12 bg-pink-400 rounded-md m-4px"></div>
 			</div> -->
-		</div>
-	</div>
+			</div>
+		</template>
+		<template #Footer>
+			<div v-if="currentTab === translation.phase1">
+				<div flex="~ gap-4" justify="items-center" text="body" mx="4">
+					<div my="auto">
+						{{ $t("待審核") }} {{ docsStage1Count }}
+						{{ $t("位") }}
+					</div>
+					<Divider layout="vertical" />
+					<div my="auto">
+						{{ $t("進赴二階") }} {{ docsStage2Count }}
+						{{ $t("位") }}
+					</div>
+					<Divider layout="vertical" />
+					<div my="auto">
+						{{ $t("逕取") }} {{ docsStage3Count }}
+						{{ $t("位") }}
+					</div>
+					<Divider layout="vertical" />
+					<div my="auto">
+						{{ $t("不通過") }} {{ docsStage4Count }}
+						{{ $t("位") }}
+					</div>
+					<Divider layout="vertical" />
+					<div my="auto">
+						{{ $t("未送審") }} {{ docsStage5Count }}
+						{{ $t("位") }}
+					</div>
+				</div>
+			</div>
+			<div v-if="currentTab === translation.phase2">
+				<div flex="~ gap-4" text="body" mx="4">
+					<div my="auto">
+						{{ $t("待審核") }} {{ oralStage1Count }}
+						{{ $t("位") }}
+					</div>
+					<Divider layout="vertical" />
+					<div my="auto">
+						{{ $t("正取") }} {{ oralStage2Count }}
+						{{ $t("位") }}
+					</div>
+					<Divider layout="vertical" />
+					<div my="auto">
+						{{ $t("備取") }} {{ oralStage3Count }}
+						{{ $t("位") }}
+					</div>
+					<Divider layout="vertical" />
+					<div my="auto">
+						{{ $t("不通過") }} {{ oralStage4Count }}
+						{{ $t("位") }}
+					</div>
+					<NButton
+						Admin
+						class="p-2 w-32 ml-auto"
+						@click="saveOralOrder"
+						icon="pi pi-save"
+					>
+						<span class="tracking-1px">{{ $t("保存順序") }}</span>
+					</NButton>
+				</div>
+			</div>
+			<div v-if="currentTab === translation.admissionList">
+				<div flex="~" justify="center" text="body" mx="4">
+					<NButton
+						Admin
+						class="p-2 w-32"
+						@click="saveEnrollOrder"
+						icon="pi pi-save"
+					>
+						<span class="tracking-1px">{{ $t("保存順序") }}</span>
+					</NButton>
+				</div>
+			</div>
+			<div v-if="currentTab === translation.reserveList">
+				<div flex="~" justify="center" text="body" mx="4">
+					<NButton
+						Admin
+						class="p-2 w-32"
+						@click="saveReserveOrder"
+						icon="pi pi-save"
+					>
+						<span class="tracking-1px">{{ $t("保存順序") }}</span>
+					</NButton>
+				</div>
+			</div>
+		</template>
+	</Layout>
 </template>
 
 <script setup lang="ts">
 import "@/styles/customize.css";
 import "primeicons/primeicons.css";
 import SelectButton from "primevue/selectbutton";
-import { computed, ref } from "vue";
 import DataTable from "primevue/datatable";
+import Layout from "@/components/Layout.vue";
 import Column from "primevue/column";
 import Button from "primevue/button";
 import Dialog from "primevue/dialog";
@@ -733,6 +716,7 @@ import Dropdown from "primevue/dropdown";
 import InputText from "primevue/inputtext";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
+import { computed, ref } from "vue";
 import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
 import { AdmissionAdminAPI } from "@/api/admission/admin/api";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";

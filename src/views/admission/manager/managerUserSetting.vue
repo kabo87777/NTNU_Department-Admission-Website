@@ -1,51 +1,34 @@
 <template>
-	<div class="mt-80px ml-50px">
-		<div class="font-[500] text-[32px] font-bold">
+	<Layout Admin>
+		<template #Header>
 			{{ $t("使用者管理") }}
-		</div>
-		<div class="bigRedDivider"></div>
-
-		<div class="mt-8px px-12px py-24px">
-			<div class="text-[20px] font-[350]">
-				{{ $t("帳號名稱") }}：{{ adminInfo?.name }}
+		</template>
+		<template #Body>
+			<div flex="~ col gap-4" p="4" border="rounded-lg nGrey-100 2">
+				<div>{{ $t("帳號名稱") }}：{{ adminInfo?.name }}</div>
+				<div>{{ $t("聯絡信箱") }}：{{ adminInfo.email }}</div>
+				<!-- <div class="mt-20px">{{ $t("手機號碼") }}：{{ phone }}</div> -->
 			</div>
-			<div class="mt-36px text-[20px] font-[350]">
-				{{ $t("聯絡信箱") }}：{{ adminInfo.email }}
-			</div>
-		</div>
-		<ParagraphDivider class="mt-12px" />
-
-		<form class="flex flex-col gap-y-2">
-			<div class="flex items-center gap-x-8 w-3/5">
-				<label
-					for=""
-					class="block font-normal text-xl text-right align-middle flex-grow w-1/3"
-					>{{ $t("舊密碼") }}</label
-				>
-				<div class="w-2/3">
-					<Password
-						class="w-full"
-						:input-class="invalidClass('old')"
-						v-model="password.old"
-						:toggle-mask="true"
-						:feedback="false"
-					/>
-					<small v-if="isInvalid('old')" class="block p-error">{{
-						$t("此為必填欄位")
-					}}</small>
+			<div text="2xl title" pb="2">{{ $t("修改密碼") }}</div>
+			<div flex="~ col gap-1" text="body">
+				<div>{{ $t("舊密碼") }}</div>
+				<Password
+					class="!w-100"
+					:input-class="invalidClass('old')"
+					v-model="password.old"
+					:toggle-mask="true"
+					:feedback="false"
+				/>
+				<div v-if="isInvalid('old')" text="sm danger">
+					{{ $t("請輸入舊密碼") }}
 				</div>
 			</div>
-
-			<div class="flex items-center gap-x-8 w-3/5">
-				<label
-					for=""
-					class="block font-normal text-xl text-right align-middle flex-grow w-1/3"
-					>{{ $t("新密碼") }}</label
-				>
-				<div class="w-2/3 mt-2">
+			<div flex="~ gap-8">
+				<div flex="~ col gap-1" text="body">
+					<div>{{ $t("設定新密碼") }}</div>
 					<Password
+						class="!w-100"
 						:input-class="invalidClass('new')"
-						class="w-full"
 						v-model="password.new"
 						:toggle-mask="true"
 					>
@@ -75,56 +58,50 @@
 							</ul>
 						</template>
 					</Password>
-					<small v-if="isInvalid('new')" class="block p-error">{{
-						$t("格式不符合要求")
-					}}</small>
+					<div v-if="isInvalid('new')" text="sm danger">
+						{{ $t("格式不符合要求") }}
+					</div>
 				</div>
-			</div>
-
-			<div class="flex items-center gap-x-8 w-3/5">
-				<label
-					for=""
-					class="block font-normal text-xl text-right align-middle flex-grow w-1/3"
-					>{{ $t("確認密碼") }}</label
-				>
-
-				<div class="w-2/3">
-					<Password
+				<div flex="~ col gap-1" text="body">
+					<div>{{ $t("驗證新密碼") }}</div>
+					<InputText
+						class="!w-100"
 						:input-class="invalidClass('confirm')"
-						class="w-full"
 						v-model="password.confirm"
 						:toggle-mask="true"
 						:feedback="false"
 					/>
-					<small class="p-error block" v-if="isInvalid('confirm')">{{
-						v$.confirm.required.$invalid
-							? $t("此為必填欄位")
-							: $t("兩者不符")
-					}}</small>
+					<div v-if="isInvalid('confirm')" text="sm danger">
+						{{
+							v$.confirm.required.$invalid
+								? $t("此為必填欄位")
+								: $t("兩者不符")
+						}}
+					</div>
 				</div>
 			</div>
-
-			<div class="flex gap-x-2 w-3/5">
-				<div class="flex-grow"></div>
-				<Button
-					class=""
-					icon="pi pi-pencil"
-					:loading="isProcessing"
-					@click="handleSubmit()"
-					:label="$t('送出變更')"
-				/>
-
-				<Button
-					class=""
-					icon="pi pi-undo"
-					@click="resetPassValue()"
-					:label="$t('重置表單')"
-				/>
-			</div>
-		</form>
-	</div>
+			<NButton
+				Admin
+				class="p-2 w-32 mt-8"
+				icon="pi pi-pencil"
+				:loading="isProcessing"
+				@click="handleSubmit()"
+				>{{ $t("修改送出") }}</NButton
+			>
+			<NButton
+				Admin
+				class="p-2 w-32 mt-8"
+				icon="pi pi-undo"
+				@click="resetPassValue()"
+				>{{ $t("重置表單") }}</NButton
+			>
+		</template>
+	</Layout>
 </template>
 <script setup lang="ts">
+import NButton from "@/styles/CustomButton.vue";
+import InputText from "primevue/inputtext";
+import Layout from "@/components/Layout.vue";
 import Button from "primevue/button";
 import Password from "primevue/password";
 import { ref, reactive, toRaw, toRef, computed } from "vue";
