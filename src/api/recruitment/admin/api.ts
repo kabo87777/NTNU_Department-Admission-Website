@@ -182,6 +182,27 @@ export class RecruitmentAdminAPI extends GenericAPI {
 		};
 	}
 
+	async sendNotifyApplicantMoreDoc(
+		programId: number,
+		userId: number
+	): Promise<RecruitmentAdminGenericStatusResponse> {
+		const data: APIGenericResponse = await this.instance.get(
+			`recruitment/admin/program/${programId}/applicant/${userId}/moredoc/notify`
+		);
+
+		if (data.error !== false) {
+			return {
+				success: false,
+				message: data.message,
+			};
+		}
+
+		return {
+			success: true,
+			message: data.message,
+		};
+	}
+
 	async deleteApplicant(id: number) {
 		const response: APIGenericResponse = await this.instance.delete(
 			`/recruitment/admin/applicant/${id}`
