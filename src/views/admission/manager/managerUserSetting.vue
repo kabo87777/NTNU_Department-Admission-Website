@@ -5,46 +5,78 @@
 		</template>
 		<template #Body>
 			<div flex="~ col gap-4" p="4" border="rounded-lg nGrey-100 2">
-				<div>{{ $t("帳號名稱") }}：{{ userId }}</div>
-				<div>{{ $t("電子信箱") }}：{{ email }}</div>
+				<div>{{ $t("帳號名稱") }}：{{ adminInfo?.name }}</div>
+				<div>{{ $t("聯絡信箱") }}：{{ adminInfo.email }}</div>
 				<!-- <div class="mt-20px">{{ $t("手機號碼") }}：{{ phone }}</div> -->
 			</div>
 			<div text="2xl title" pb="2">{{ $t("修改密碼") }}</div>
 			<div flex="~ col gap-1" text="body">
 				<div>{{ $t("舊密碼") }}</div>
-				<InputText
+				<Password
 					class="!w-100"
-					id="currentPass"
-					type="password"
-					v-model="password.currentPass"
+					:input-class="invalidClass('old')"
+					v-model="password.old"
+					:toggle-mask="true"
+					:feedback="false"
 				/>
-				<div v-if="password.isCurrentPassBlank" text="sm danger">
+				<div v-if="isInvalid('old')" text="sm danger">
 					{{ $t("請輸入舊密碼") }}
 				</div>
 			</div>
 			<div flex="~ gap-8">
 				<div flex="~ col gap-1" text="body">
 					<div>{{ $t("設定新密碼") }}</div>
-					<InputText
+					<Password
 						class="!w-100"
-						id="newPass"
-						type="password"
-						v-model="password.newPass"
-					/>
-					<div v-if="password.isCurrentPassBlank" text="sm danger">
-						{{ $t("請輸入新密碼") }}
+						:input-class="invalidClass('new')"
+						v-model="password.new"
+						:toggle-mask="true"
+					>
+						<template #header>
+							<!-- To overrride PrimeVue's panel header -->
+							<div></div>
+						</template>
+						<template #content>
+							<!-- To overrride PrimeVue's password strength meter -->
+							<div></div>
+						</template>
+						<template #footer>
+							<p>{{ $t("密碼原則") }}</p>
+
+							<ul class="list-disc list-inside mt-2">
+								<li
+									v-for="item in pwdHints"
+									:key="item"
+									:class="
+										locale === 'zh'
+											? 'leading-1.85rem'
+											: 'leading-normal'
+									"
+								>
+									{{ item }}
+								</li>
+							</ul>
+						</template>
+					</Password>
+					<div v-if="isInvalid('new')" text="sm danger">
+						{{ $t("格式不符合要求") }}
 					</div>
 				</div>
 				<div flex="~ col gap-1" text="body">
 					<div>{{ $t("驗證新密碼") }}</div>
 					<InputText
 						class="!w-100"
-						id="confirmPass"
-						type="password"
-						v-model="password.confirmPass"
+						:input-class="invalidClass('confirm')"
+						v-model="password.confirm"
+						:toggle-mask="true"
+						:feedback="false"
 					/>
-					<div v-if="password.isCurrentPassBlank" text="sm danger">
-						{{ $t("密碼不符") }}
+					<div v-if="isInvalid('confirm')" text="sm danger">
+						{{
+							v$.confirm.required.$invalid
+								? $t("此為必填欄位")
+								: $t("兩者不符")
+						}}
 					</div>
 				</div>
 			</div>
@@ -52,127 +84,150 @@
 				Admin
 				class="p-2 w-32 mt-8"
 				icon="pi pi-pencil"
-				:loading="isChangePassLoading"
+				:loading="isProcessing"
 				@click="handleSubmit()"
 				>{{ $t("修改送出") }}</NButton
+			>
+			<NButton
+				Admin
+				class="p-2 w-32 mt-8"
+				icon="pi pi-undo"
+				@click="resetPassValue()"
+				>{{ $t("重置表單") }}</NButton
 			>
 		</template>
 	</Layout>
 </template>
 <script setup lang="ts">
-import Button from "primevue/button";
 import NButton from "@/styles/CustomButton.vue";
 import InputText from "primevue/inputtext";
 import Layout from "@/components/Layout.vue";
-import { ref, reactive, toRaw } from "vue";
+import Button from "primevue/button";
+import Password from "primevue/password";
+import { ref, reactive, toRaw, toRef, computed } from "vue";
 import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
 import { AdmissionAdminAPI } from "@/api/admission/admin/api";
-import { InvalidSessionError } from "@/api/error";
 import { useToast } from "primevue/usetoast";
 import ParagraphDivider from "@/styles/paragraphDividerApplicant.vue";
+import { AdmissionManagerAuthResponse } from "@/api/admission/admin/types";
+import { useAdminInfoStore } from "@/stores/AdmissionAdminStore";
+import { useMutation } from "@tanstack/vue-query";
+import type { AdmAdminChangePasswordRequest } from "@/api/admission/admin/types";
+import { useI18n } from "vue-i18n";
+import useVuelidate from "@vuelidate/core";
+import { sameAs, helpers, required } from "@vuelidate/validators";
 
+const { t: $t, locale } = useI18n();
 const toast = useToast();
-const userId = ref("系辦主管");
-const email = ref("csie_office@ntnu.edu.tw");
-const phone = ref("0912345678");
 const adminAuth = useAdmissionAdminAuthStore();
+const adminStore = useAdminInfoStore();
 const api = new AdmissionAdminAPI(adminAuth);
+const adminInfo = ref(adminStore.userInfo);
 
-const initialPassValue = {
-	isCurrentPassBlank: false,
-	isNewPassBlank: false,
-	notMatch: false,
-	currentPass: "",
-	newPass: "",
-	confirmPass: "",
-};
-
-const isChangePassLoading = ref(false);
-
-let changePassRes = reactive({
-	success: false,
-	message: "" as string | [],
+adminStore.$subscribe((mutation, state) => {
+	adminInfo.value = state.userInfo;
 });
 
-let password = reactive({
-	isCurrentPassBlank: false,
-	isNewPassBlank: false,
-	notMatch: false,
-	currentPass: "",
-	newPass: "",
-	confirmPass: "",
+const isProcessing = ref(false);
+
+const password = ref({
+	old: "",
+	new: "",
+	confirm: "",
 });
+
+const pwdRegex = helpers.regex(
+	/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,128}$/
+);
+
+// Must wrap validation rules in computed in order to be reactive
+const rules = computed(() => {
+	return {
+		old: { required },
+		new: { pwdRegex, required },
+		confirm: {
+			sameAsNew: sameAs(password.value.new),
+			required: required,
+		},
+	};
+});
+
+const v$ = useVuelidate(rules, password, { $lazy: false });
+
+const isSubmitted = ref(false);
 
 const resetPassValue = () => {
-	password.isCurrentPassBlank = initialPassValue.isCurrentPassBlank;
-	password.isNewPassBlank = initialPassValue.isNewPassBlank;
-	password.notMatch = initialPassValue.notMatch;
-	password.currentPass = initialPassValue.currentPass;
-	password.newPass = initialPassValue.newPass;
-	password.confirmPass = initialPassValue.confirmPass;
+	password.value = {
+		old: "",
+		new: "",
+		confirm: "",
+	};
+	isSubmitted.value = false;
 };
 
-const patchChangePassword = async (body: object) => {
-	return await api.changePassword(body);
-};
+const pwdHints = computed(() => {
+	locale; // this line is meant to be the target reference tracked by computed
+	return [
+		$t("長度須大於八個字元"),
+		$t("須有小寫字母"),
+		$t("須有大寫字母"),
+		$t("須有數字"),
+		$t("不可包含特殊符號"),
+	];
+});
 
-const handleSubmit = async () => {
-	if (password.currentPass === "") {
-		password.isCurrentPassBlank = true;
-	} else {
-		password.isCurrentPassBlank = false;
-	}
+const { mutate: doChangePassword } = useMutation({
+	mutationFn: (data: AdmAdminChangePasswordRequest) => {
+		return api.changePassword(data);
+	},
+	onMutate: () => {
+		isProcessing.value = true;
+	},
+	onSuccess: () => {
+		toast.add({
+			severity: "success",
+			life: 3000,
+			summary: $t("操作成功"),
+			detail: $t("成功變更密碼"),
+		});
+		resetPassValue();
+	},
+	onError: (err) => {
+		toast.add({
+			severity: "error",
+			life: 3000,
+			summary: $t("操作失敗"),
+			detail: err,
+		});
+	},
+	onSettled: () => {
+		isProcessing.value = false;
+	},
+});
 
-	if (password.newPass === "") {
-		password.isNewPassBlank = true;
-	} else {
-		password.isNewPassBlank = false;
-	}
-
-	if (password.newPass !== password.confirmPass) {
-		password.notMatch = true;
-	} else {
-		password.notMatch = false;
-	}
-
-	if (
-		!password.isCurrentPassBlank &&
-		!password.isNewPassBlank &&
-		!password.notMatch
-	) {
-		isChangePassLoading.value = true;
-
-		const body = {
-			current_password: password.currentPass,
-			password: password.newPass,
-			password_confirmation: password.confirmPass,
+const handleSubmit = () => {
+	isSubmitted.value = true;
+	if (v$.value.$invalid === false) {
+		const raw = password.value;
+		const data = {
+			current_password: raw.old,
+			password: raw.new,
+			password_confirmation: raw.confirm,
 		};
 
-		const res = await patchChangePassword(body);
-
-		if (res?.success !== undefined && res?.message !== undefined) {
-			changePassRes.success = toRaw(res.success);
-			changePassRes.message = toRaw(res.message);
-		}
-
-		isChangePassLoading.value = false;
-
-		if (changePassRes.success) {
-			resetPassValue();
-			toast.add({
-				severity: "success",
-				summary: "Success",
-				detail: changePassRes.message,
-				life: 3000,
-			});
-		} else {
-			toast.add({
-				severity: "error",
-				summary: "Error",
-				detail: changePassRes.message[changePassRes.message.length - 1],
-				life: 5000,
-			});
-		}
+		doChangePassword(data);
 	}
+};
+
+const isInvalid = (field: string) => {
+	if (typeof v$.value[field] === "undefined")
+		throw new Error(`Field ${field} is undefined`);
+
+	return v$.value[field].$invalid && isSubmitted.value;
+};
+
+const invalidClass = (field: string) => {
+	if (isInvalid(field)) return "w-full p-invalid";
+	else return "w-full";
 };
 </script>

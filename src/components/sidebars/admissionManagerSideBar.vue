@@ -286,13 +286,18 @@ import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
 import { useGlobalStore } from "@/stores/globalStore";
 
 import { AdmissionAdminAPI } from "@/api/admission/admin/api";
-import { AdmissionAdminProgramListResponse } from "@/api/admission/admin/types";
+import {
+	AdmissionAdminProgramListResponse,
+	AdmissionManagerAuthResponse,
+} from "@/api/admission/admin/types";
+import { useAdminInfoStore } from "@/stores/AdmissionAdminStore";
 
 const router = useRouter();
 const toast = useToast();
 const queryClient = useQueryClient();
 const adminAuth = useAdmissionAdminAuthStore();
 const globalStore = useGlobalStore();
+const adminStore = useAdminInfoStore();
 
 const api = new AdmissionAdminAPI(adminAuth);
 

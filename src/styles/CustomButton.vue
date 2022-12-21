@@ -7,6 +7,7 @@
 		border="2 rounded-lg"
 	>
 		<i v-if="btnIcon.show" :class="btnIcon.type" :style="btnIcon.size" />
+		<i v-if="btnIcon.show" :class="btnIcon.type" :style="btnIcon.size" />
 		<slot />
 	</button>
 </template>

@@ -27,13 +27,9 @@ import { doUniversalAuthSessionValidation } from "@/api/universalAuth";
 import NavBar from "@/components/NavBar.vue";
 import SideBar from "@/components/sidebars/admissionManagerSideBar.vue";
 import ScrollTop from "primevue/scrolltop";
-import NButton from "@/styles/CustomButton.vue";
-import { ref } from "vue";
 
 const router = useRouter();
 const auth = useAdmissionAdminAuthStore();
-
-const showContent = ref(false);
 
 useQuery(["admissionAdminAuthorizationStatus"], async () => {
 	const status = await doUniversalAuthSessionValidation(auth);
@@ -44,6 +40,11 @@ useQuery(["admissionAdminAuthorizationStatus"], async () => {
 });
 </script>
 
+<style scoped="scss">
+.pi-chevron-right {
+	font-size: 12px;
+}
+</style>
 <style scoped="scss">
 .pi-chevron-right {
 	font-size: 12px;
