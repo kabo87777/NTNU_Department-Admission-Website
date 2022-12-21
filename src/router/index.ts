@@ -287,33 +287,33 @@ const routes: Array<RouteRecordRaw> = [
 		children: [
 			// Admission - manager project settings
 			{
-				path: "projectSettings",
-				name: "AdmissionManagerProjectSettings",
+				path: "uploadFileSetting",
+				name: "AdmissionAdminUploadFileSetting",
 				component: () =>
 					import("@/views/admission/manager/UploadFileSetting.vue"),
 			},
 			{
 				path: "projectSetting",
-				name: "projectSetting",
+				name: "AdmissionAdminProjectSetting",
 				component: () =>
 					import("@/views/admission/manager/project-setting.vue"),
 			},
 			{
 				path: "reviewScoreField",
-				name: "reviewScoreField",
+				name: "AdmissionAdminReviewScoreField",
 				component: () =>
 					import("@/views/admission/manager/ReviewScoreField.vue"),
 			},
 			{
 				path: "gradeDataList",
-				name: "gradeDataList",
+				name: "AdmissionAdminGradeDataList",
 				component: () =>
 					import("@/views/admission/manager/gradeDataList.vue"),
 			},
 			// Admission - applicants uploaded documents setting
 			{
 				path: "applicantsUploadList",
-				name: "ApplicantsUploadList",
+				name: "AdmissionAdminApplicantsUploadList",
 				component: () =>
 					import(
 						"@/views/admission/manager/applicantsUploadList/applicantsUploadList.vue"
@@ -321,7 +321,7 @@ const routes: Array<RouteRecordRaw> = [
 			},
 			{
 				path: "applicantsUploadList/:userId",
-				name: "ApplicantUploadedDocs",
+				name: "AdmissionAdminApplicantUploadedDocs",
 				component: () =>
 					import(
 						"@/views/admission/manager/applicantsUploadList/applicantUploadedDocs.vue"
@@ -329,19 +329,19 @@ const routes: Array<RouteRecordRaw> = [
 			},
 			{
 				path: "userSetting",
-				name: "AdmissionManagerUserSetting",
+				name: "AdmissionAdminUserSetting",
 				component: () =>
 					import("@/views/admission/manager/managerUserSetting.vue"),
 			},
 			{
 				path: "reviewerSettings",
-				name: "reviewerSettings",
+				name: "AdmissionAdminReviewerSettings",
 				component: () =>
 					import("@/views/admission/manager/ListReviewer.vue"),
 			},
 			{
 				path: "manageApplicants",
-				name: "manageApplicants",
+				name: "AdmissionAdminManageApplicants",
 				component: () =>
 					import("@/views/admission/manager/ListApplicant.vue"),
 			},
