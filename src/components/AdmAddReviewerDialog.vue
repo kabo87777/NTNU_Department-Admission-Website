@@ -87,8 +87,7 @@ const visible = computed({
 const data = ref({
 	name: "",
 	email: "",
-	redirect_url:
-		"https://admissions-frontend-staging.birkhoff.me/admission/reviewer/signin",
+	redirect_url: "http://127.0.0.1:5173/admission/reviewer/setupaccount",
 });
 const v$ = useVuelidate(
 	{
