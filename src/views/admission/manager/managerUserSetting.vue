@@ -13,7 +13,10 @@
 				{{ $t("聯絡信箱") }}：{{ adminInfo.email }}
 			</div>
 		</div>
-		<ParagraphDivider class="mt-12px" />
+		<div class="mt-20px font-[500] font-bold text-[24px] flex">
+			<div>{{ $t("修改密碼") }}</div>
+			<i class="pi pi-lock ml-16px mt-4px text-[#C6BCD0]" />
+		</div>
 
 		<form class="flex flex-col gap-y-2">
 			<div class="flex items-center gap-x-8 w-3/5">

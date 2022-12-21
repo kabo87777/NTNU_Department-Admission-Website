@@ -369,5 +369,19 @@
 	"必須": "Must",
 	"※ 郵遞區號": "※ Postal Code",
 	"※ 生理性別": "※ Sex",
-	"※ 出生國家": "※ Country Of Birth"
+	"※ 出生國家": "※ Country Of Birth",
+	"密碼原則": "Password Principles",
+	"格式不符合要求": "The format does not meet the requirement.",
+	"確認密碼": "Confirm password",
+	"兩者不符": "new and confirm passwords do not match.",
+	"送出變更": "Send the changes",
+	"重置表單": "Reset the form",
+	"長度須大於八個字元": "At least 8 characters",
+	"須有小寫字母": "At least one lowercase",
+	"須有大寫字母": "At least one uppercase",
+	"須有數字": "At least one numeric",
+	"不可包含特殊符號": "Cannot include special characters",
+	"操作成功": "Success",
+	"成功變更密碼": "Succecfully changed your password",
+	"操作失敗": "Failed"
 }

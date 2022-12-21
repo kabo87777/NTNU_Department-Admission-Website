@@ -236,3 +236,9 @@ export interface RecruitmentAdminSingleApplicantWithDetailResponse {
 	revieweResult: string;
 	interviewDate: string;
 }
+
+export interface RecruitAdminChangePasswordRequest {
+	current_password: string;
+	password: string;
+	password_confirmation: string;
+}

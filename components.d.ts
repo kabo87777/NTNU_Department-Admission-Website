@@ -7,9 +7,7 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    AddReviewerDialog: typeof import('./src/components/AddReviewerDialog.vue')['default']
     AdmAddReviewerDialog: typeof import('./src/components/AdmAddReviewerDialog.vue')['default']
-    AdmAdminAddReviewer: typeof import('./src/components/forms/AdmAdminAddReviewer.vue')['default']
     AdmissionApplicantSidebar: typeof import('./src/components/sidebars/admissionApplicantSidebar.vue')['default']
     AdmissionManagerSideBar: typeof import('./src/components/sidebars/admissionManagerSideBar.vue')['default']
     AdmissionReviewerSidebar: typeof import('./src/components/sidebars/admissionReviewerSidebar.vue')['default']

@@ -152,3 +152,9 @@ export interface AdmissionApplicantGetUserInfoResponse {
 	communicate_zipcode?: number | string;
 	isForeigner: boolean;
 }
+
+export interface AdmApplicantChangePasswordRequest {
+	current_password: string;
+	password: string;
+	password_confirmation: string;
+}

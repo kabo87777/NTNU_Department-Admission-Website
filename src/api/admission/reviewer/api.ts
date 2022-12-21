@@ -8,6 +8,7 @@ import type {
 	AdmissionReviewerApplicantListResponse,
 	AdmissionReviewerGenericResponse,
 	AdmissionReviewerApplicantFileListResponse,
+	AdmReviewerChangePasswordRequest,
 } from "./types";
 import type { APIGenericResponse } from "@/api/types";
 
@@ -28,24 +29,19 @@ export class AdmissionReviewerAPI extends GenericAPI {
 	}
 
 	async changePassword(
-		body: object
+		body: AdmReviewerChangePasswordRequest
 	): Promise<AdmissionReviewerGenericResponse> {
-		const data: APIGenericResponse = await this.instance.patch(
-			"admission/auth/reviewer/password",
+		const response: APIGenericResponse = await this.instance.patch(
+			"/admission/auth/reviewer/password",
 			body
 		);
 
-		if (data.error !== false) {
-			return {
-				success: false,
-				message: data.message.full_messages,
-			};
+		if (response.error === true) {
+			const msg = response.message.full_messages.join("\n");
+			throw new Error(msg);
 		}
 
-		return {
-			success: true,
-			message: data.message,
-		};
+		return response;
 	}
 
 	async getSingleApplicantGrade(

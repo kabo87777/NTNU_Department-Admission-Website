@@ -5,6 +5,7 @@ import type {
 	RecruitmentApplicantUserInfoResponse,
 	RecruitmentApplicantProgramResponse,
 	RecruitmentApplicantFileListResponse,
+	RecruitApplicantChangePasswordRequest,
 } from "./types";
 import type { APIGenericResponse } from "@/api/types";
 
@@ -181,22 +182,18 @@ export class RecruitmentApplicantAPI extends GenericAPI {
 	}
 
 	async changePassword(
-		body: object
+		body: RecruitApplicantChangePasswordRequest
 	): Promise<RecruitmentApplicantGenericResponse> {
-		const data: APIGenericResponse = await this.instance.patch(
-			"recruitment/auth/applicant/password",
+		const response: APIGenericResponse = await this.instance.patch(
+			"/recruitment/auth/applicant/password",
 			body
 		);
 
-		if (data.error !== false) {
-			return {
-				success: false,
-				message: data.message.full_messages,
-			};
+		if (response.error === true) {
+			const msg = response.message.full_messages.join("\n");
+			throw new Error(msg);
 		}
-		return {
-			success: true,
-			message: data.message,
-		};
+
+		return response;
 	}
 }

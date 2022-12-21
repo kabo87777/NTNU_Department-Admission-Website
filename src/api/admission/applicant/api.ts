@@ -5,6 +5,7 @@ import type {
 	AdmissionApplicantGenericResponse,
 	AdmissionApplicantRecLetListRes,
 	AdmissionApplicantGetUserInfoResponse,
+	AdmApplicantChangePasswordRequest,
 } from "./types";
 import type { APIGenericResponse } from "@/api/types";
 import { GenericAPI } from "@/api/api";
@@ -146,26 +147,26 @@ export class AdmissionApplicantAPI extends GenericAPI {
 		};
 	}
 
-	async changePassword(
-		body: object
-	): Promise<AdmissionApplicantGenericResponse> {
-		const data: APIGenericResponse = await this.instance.patch(
-			"admission/auth/applicant/password",
-			body
-		);
+	// async changePassword(
+	// 	body: object
+	// ): Promise<AdmissionApplicantGenericResponse> {
+	// 	const data: APIGenericResponse = await this.instance.patch(
+	// 		"admission/auth/applicant/password",
+	// 		body
+	// 	);
 
-		if (data.error !== false) {
-			return {
-				success: false,
-				message: data.message.full_messages,
-			};
-		}
+	// 	if (data.error !== false) {
+	// 		return {
+	// 			success: false,
+	// 			message: data.message.full_messages,
+	// 		};
+	// 	}
 
-		return {
-			success: true,
-			message: data.message,
-		};
-	}
+	// 	return {
+	// 		success: true,
+	// 		message: data.message,
+	// 	};
+	// }
 
 	async getRecommendLetterList(): Promise<AdmissionApplicantRecLetListRes[]> {
 		const data: APIGenericResponse = await this.instance.get(
@@ -257,5 +258,21 @@ export class AdmissionApplicantAPI extends GenericAPI {
 			success: true,
 			message: data.message,
 		};
+	}
+
+	async changePassword(
+		body: AdmApplicantChangePasswordRequest
+	): Promise<AdmissionApplicantGenericResponse> {
+		const response: APIGenericResponse = await this.instance.patch(
+			"/admission/auth/applicant/password",
+			body
+		);
+
+		if (response.error === true) {
+			const msg = response.message.full_messages.join("\n");
+			throw new Error(msg);
+		}
+
+		return response;
 	}
 }

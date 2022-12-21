@@ -118,8 +118,8 @@
 						<div class="text-14px">
 							{{ $t("審查端帳戶") }}
 						</div>
-						<div class="mt-4px ml-[-2px] text-16px">
-							{{ $t("系辦主管") }}
+						<div class="text-16px mt-4px ml-8px tracking-wider">
+							{{ reviewerInfo.name }}
 						</div>
 					</div>
 				</div>
@@ -171,7 +171,10 @@ import dayjs from "dayjs";
 import { AdmissionReviewerAPI } from "@/api/admission/reviewer/api";
 import { AdmissionReviewerProgramListResponse } from "@/api/admission/reviewer/types";
 import { useAdmissionReviewerAuthStore } from "@/stores/universalAuth";
-import { useGlobalStore } from "@/stores/AdmissionReviewerStore";
+import {
+	useGlobalStore,
+	useUserInfoStore,
+} from "@/stores/AdmissionReviewerStore";
 
 const router = useRouter();
 const toast = useToast();
@@ -179,6 +182,9 @@ const toast = useToast();
 const reviewerAuth = useAdmissionReviewerAuthStore();
 const api = new AdmissionReviewerAPI(reviewerAuth);
 const globalStore = useGlobalStore();
+
+const reviewerStore = useUserInfoStore();
+const reviewerInfo = ref(reviewerStore.userInfo);
 
 const { data: programs } = useQuery(
 	["admissionReviewerProgramList"],
