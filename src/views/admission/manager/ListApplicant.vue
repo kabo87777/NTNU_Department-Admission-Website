@@ -4,22 +4,71 @@
 			{{ $t("申請者帳號設定") }}
 		</template>
 		<template #Body>
-			<div>
-				<h3 class="inline font-black">匯入申請者帳號</h3>
-				<FileUpload
-					mode="basic"
-					:choose-label="$t('選擇檔案')"
-					accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-					:custom-upload="true"
-					@uploader="importApplicantCallback"
-				>
-				</FileUpload>
-			</div>
 			<TransitionGroup name="p-message" tag="div">
 				<Message :closable="false" severity="warn" v-if="isImporting">{{
 					$t("正在處理中，請勿離開此頁面")
 				}}</Message>
 			</TransitionGroup>
+			<h3 class="block font-black text-xl">匯入申請者帳號</h3>
+			<FileUpload
+				mode="advanced"
+				:choose-label="$t('選擇檔案')"
+				accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+				:custom-upload="true"
+				@uploader="importApplicantCallback"
+			>
+				<template #header="{ files, chooseCallback, uploadCallback }">
+					<div class="flex gap-x-2">
+						<NButton
+							Admin
+							icon="pi pi-file"
+							:label="
+								files.length == 0
+									? $t('選擇檔案')
+									: $t('重新選擇')
+							"
+							@click="chooseCallback"
+							>{{
+								files.length == 0
+									? $t("選擇檔案")
+									: $t("重新選擇")
+							}}</NButton
+						>
+						<NButton
+							Success
+							icon="pi pi-cloud-upload"
+							:label="$t('上傳')"
+							@click="uploadCallback"
+							:disabled="files.length == 0"
+							>{{ $t("上傳") }}</NButton
+						>
+					</div>
+				</template>
+				<template #content="{ files }">
+					<div
+						v-for="file of files"
+						:key="
+							file.name +
+							file.type +
+							file.size +
+							file.lastModified
+						"
+						class="flex items-center"
+					>
+						<img
+							src="/assets/xlsx.png"
+							alt=""
+							class="max-h-16 select-none pointer-events-none filter drop-shadow-xl"
+						/>
+						<div class="ml-4">
+							{{ file.name }}
+						</div>
+					</div>
+				</template>
+				<template #empty>
+					<div>{{ $t("請上傳檔案") }}</div>
+				</template>
+			</FileUpload>
 			<DataTable :value="tableData" :loading="isTableLoading">
 				<template #empty>
 					<h2>{{ $t("尚無申請者帳號") }}</h2>
