@@ -131,6 +131,26 @@ export class AdmissionAdminAPI extends GenericAPI {
 		};
 	}
 
+	async sendNotifyApplicantMoreDoc(
+		userId: number
+	): Promise<AdmissionAdminGenericResponse> {
+		const data: APIGenericResponse = await this.instance.get(
+			`admission/admin/applicant/${userId}/moredoc/notify`
+		);
+
+		if (data.error !== false) {
+			return {
+				success: false,
+				message: data.message,
+			};
+		}
+
+		return {
+			success: true,
+			message: data.message,
+		};
+	}
+
 	async downloadApplicantFile(
 		applicantID: number,
 		fileId: number
