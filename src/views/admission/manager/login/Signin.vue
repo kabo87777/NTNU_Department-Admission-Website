@@ -104,7 +104,7 @@ import * as yup from "yup";
 
 import { AdmissionAdminAPI } from "@/api/admission/admin/api";
 import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
-import { useUserInfoStore } from "@/stores/AdmissionAdminStore";
+import { useAdminInfoStore } from "@/stores/AdmissionAdminStore";
 
 import type { TurnstileComponentExposes } from "@/components/Turnstile.vue";
 import Turnstile from "@/components/Turnstile.vue";
@@ -119,7 +119,7 @@ const toast = useToast();
 const router = useRouter();
 
 const authStore = useAdmissionAdminAuthStore();
-const userInfo = useUserInfoStore();
+const userInfo = useAdminInfoStore();
 
 // Login Form
 const turnstileRef = ref<TurnstileComponentExposes>();
