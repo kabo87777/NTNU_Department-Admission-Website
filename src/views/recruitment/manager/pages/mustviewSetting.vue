@@ -272,6 +272,15 @@ function save() {
 			});
 		}
 	}
+	if (allRelations.value.length == 0) {
+		toast.add({
+			severity: "error",
+			summary: "Error",
+			detail: "請選擇至少一位申請人",
+			life: 3000,
+		});
+		return;
+	}
 	batchUpdateRelation.mutate(allRelations.value);
 }
 
