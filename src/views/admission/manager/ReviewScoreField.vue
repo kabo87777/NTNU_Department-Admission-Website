@@ -279,6 +279,8 @@
 			</Button>
 		</div>
 	</div>
+	<ScrollTop target="parent" :threshold="100" icon="pi pi-arrow-up" />
+	<ScrollTop />
 </template>
 
 <script setup lang="ts">
@@ -288,6 +290,7 @@ import InputNumber from "primevue/inputnumber";
 import Button from "primevue/button";
 import Checkbox from "primevue/checkbox";
 import { useToast } from "primevue/usetoast";
+import ScrollTop from "primevue/scrolltop";
 
 import ParagraphDivider from "@/styles/paragraphDivider.vue";
 
@@ -370,6 +373,12 @@ const trans = {
 	failed: {
 		getScore: computed(() => t("無法取得分數資料")),
 		getInfoFile: computed(() => t("無法取得顯示欄位資料")),
+		docsError: computed(() =>
+			t("第一階段 (書面審查)評分項目比例需要加總等於100")
+		),
+		oralError: computed(() =>
+			t("第一階段 (書面審查)評分項目比例需要加總等於100")
+		),
 	},
 };
 
@@ -579,8 +588,7 @@ async function saveChange() {
 		if (docsSum !== 100) {
 			toast.add({
 				severity: "error",
-				summary:
-					"第一階段 (書面審查)評分項目比例需要加總等於100 The ratio of scoring items in the first stage (Docs review) needs to add up to 100",
+				summary: "第一階段 (書面審查)評分項目比例需要加總等於100",
 				life: 3000,
 			});
 			throw { object: docsScore, message: "Invalid Sum" };
