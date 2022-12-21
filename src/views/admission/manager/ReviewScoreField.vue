@@ -619,7 +619,7 @@ async function saveChange() {
 					"第一階段 (書面審查)評分項目比例需要加總等於100 The ratio of scoring items in the first stage (Docs review) needs to add up to 100",
 				life: 3000,
 			});
-			throw { object: docsScore, message: "Invalid Sum" };
+			return;
 		}
 
 		let oralSum = 0;
@@ -640,15 +640,10 @@ async function saveChange() {
 					"第二階段 (口試審查)評分項目比例需要加總等於100 The ratio of the scoring items in the second stage (oral test review) needs to add up to 100",
 				life: 3000,
 			});
-			throw { object: oralScore, message: "Invalid Sum" };
+			return;
 		}
 	} catch (e: any) {
 		console.error(e);
-		toast.add({
-			severity: "error",
-			summary: "check developer tools",
-			life: 3000,
-		});
 	}
 
 	// Patch Score Data
