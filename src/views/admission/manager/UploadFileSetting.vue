@@ -1,284 +1,243 @@
 <template>
-	<!-- Header -->
-	<div class="fixed bg-white top-15 left-1/4 right-0 z-50 <lg:left-60">
-		<div class="w-9/10 pt-6 m-auto">
-			<div class="font-medium text-3xl text-title">
-				{{ trans.uploadField.value }}
-			</div>
-			<div class="bigRedDivider"></div>
-			<div class="p-fluid">
+	<Layout Admin>
+		<template #Header> {{ trans.uploadField.value }} </template>
+		<template #Body>
+			<div class="p-fluid" pos="sticky top-0">
 				<SelectButton
-					class="mt-8px"
 					v-model="activeTab"
 					:options="tabOptions"
 					optionLabel="name"
 					aria-labelledby="single"
 					:unselectable="false"
-				>
-				</SelectButton>
+				/>
 			</div>
-		</div>
-	</div>
-	<!-- Body -->
-	<div class="py-36" text="body xl">
-		<!-- 基本資料欄位 -->
-		<div v-if="activeTab.value === 1" class="space-y-8">
+			<!-- 基本資料欄位 -->
 			<!-- 姓名資訊 -->
-			<div class="space-y-4">
-				<div class="flex content-center">
+			<div v-if="activeTab.value === 1">
+				<div flex="~ gap-2" justify="items-center">
 					<Checkbox
 						inputId="nameInfo"
 						class="pt-1"
 						v-model="showedInfo[0].checked"
 						:binary="true"
 					/>
-					<label for="nameInfo" class="ml-2">
+					<label for="nameInfo" text="lg body" pb="!1">
 						{{ trans.nameInfo.value }}
 					</label>
 				</div>
-				<div class="flex font-light gap-4 ml-6" text="secondary sm">
-					<div class="pr-10">
+				<div class="flex mx-10 gap-8" text="secondary">
+					<div>
 						{{ trans.details.prefixSuffix.value }}
 					</div>
-					<div class="pr-10">
+					<div>
 						{{ trans.details.chineseName.value }}
 					</div>
-					<div class="pr-10">
+					<div>
 						{{ trans.details.englishName.value }}
 					</div>
 				</div>
 			</div>
-			<ParagraphDivider />
+			<PDivider Admin v-if="activeTab.value === 1" />
 			<!-- 入學身份 -->
-			<div class="space-y-4">
-				<div class="flex content-center">
+			<div v-if="activeTab.value === 1">
+				<div flex="~ gap-2" justify="items-center">
 					<Checkbox
 						inputId="enrollment"
 						class="pt-1"
 						v-model="showedInfo[1].checked"
 						:binary="true"
 					/>
-					<label for="enrollment" class="ml-2">
+					<label for="enrollment" text="lg body" pb="!1">
 						{{ trans.admissionIdentity.value }}
 					</label>
 				</div>
-				<div class="flex font-light gap-4 ml-6" text="secondary sm">
-					<div class="pr-10">
+				<div class="flex mx-10 gap-8" text="secondary">
+					<div>
 						{{ trans.details.locals.value }}
 					</div>
-					<div class="pr-10">
+					<div>
 						{{ trans.details.foreigner.value }}
 					</div>
 				</div>
 			</div>
-			<ParagraphDivider />
-			<!-- 戶籍資訊 -->
-			<div class="space-y-4">
-				<div class="flex content-center">
+			<PDivider Admin v-if="activeTab.value === 1" />
+			<!-- 現居地址 -->
+			<div v-if="activeTab.value === 1">
+				<div flex="~ gap-2" justify="items-center">
 					<Checkbox
-						inputId="permanentAd"
+						inputId="mailingAd"
 						class="pt-1"
 						v-model="showedInfo[2].checked"
 						:binary="true"
 					/>
-					<label for="permanentAd" class="ml-2">
-						{{ trans.registAddressInfo.value }}
+					<label for="mailingAd" text="lg body" pb="!1">
+						{{ trans.residentAddress.value }}
 					</label>
 				</div>
-				<div class="flex font-light gap-4 ml-6" text="secondary sm">
-					<div class="pr-10">
+				<div class="flex mx-10 gap-8" text="secondary">
+					<div>
 						{{ trans.details.countryState.value }}
 					</div>
-					<div class="pr-10">
+					<div>
 						{{ trans.details.cityPostNumber.value }}
 					</div>
 				</div>
-				<ParagraphDivider />
 			</div>
-			<!-- 現居地址 -->
-			<div class="space-y-4">
-				<div class="flex content-center">
+			<PDivider Admin v-if="activeTab.value === 1" />
+			<!-- 身份資料 -->
+			<div v-if="activeTab.value === 1">
+				<div flex="~ gap-2" justify="items-center">
 					<Checkbox
-						inputId="mailingAd"
+						inputId="basicIdentityInfo"
 						class="pt-1"
 						v-model="showedInfo[3].checked"
 						:binary="true"
 					/>
-					<label for="mailingAd" class="ml-2">
-						{{ trans.residentAddress.value }}
-					</label>
+					<label for="basicIdentityInfo" text="lg body" pb="!1">{{
+						trans.identityInfo.value
+					}}</label>
 				</div>
-				<div class="flex font-light gap-4 ml-6" text="secondary sm">
-					<div class="pr-10">
-						{{ trans.details.countryState.value }}
+				<div class="flex mx-10 gap-8" text="secondary">
+					<div>
+						{{ trans.details.legalGender.value }}
 					</div>
-					<div class="pr-10">
-						{{ trans.details.cityPostNumber.value }}
+					<div>
+						{{ trans.details.bornCountry.value }}
+					</div>
+					<div>
+						{{ trans.details.citizenship.value }}
+					</div>
+					<div>
+						{{ trans.details.bornDate.value }}
 					</div>
 				</div>
-				<ParagraphDivider />
 			</div>
-			<!-- 身份資料 -->
-			<div class="space-y-4">
-				<div class="flex content-center">
+			<PDivider Admin v-if="activeTab.value === 1" />
+			<!-- 聯絡資料 -->
+			<div v-if="activeTab.value === 1">
+				<div flex="~ gap-2" justify="items-center">
 					<Checkbox
-						inputId="basicIdentityInfo"
+						inputId="contactInfo"
 						class="pt-1"
 						v-model="showedInfo[4].checked"
 						:binary="true"
 					/>
-					<label for="basicIdentityInfo" class="ml-2">{{
-						trans.identityInfo.value
-					}}</label>
-				</div>
-				<div class="flex font-light gap-4 ml-6" text="secondary sm">
-					<div class="pr-10">
-						{{ trans.details.legalGender.value }}
-					</div>
-					<div class="pr-10">
-						{{ trans.details.bornCountry.value }}
-					</div>
-					<div class="pr-10">
-						{{ trans.details.citizenship.value }}
-					</div>
-					<div class="pr-10">
-						{{ trans.details.bornDate.value }}
-					</div>
-				</div>
-				<ParagraphDivider />
-			</div>
-			<!-- 聯絡資料 -->
-			<div class="space-y-4">
-				<div class="flex content-center">
-					<Checkbox
-						inputId="contactInfo"
-						class="pt-1"
-						v-model="showedInfo[5].checked"
-						:binary="true"
-					/>
-					<label for="contactInfo" class="ml-2">{{
+					<label for="contactInfo" text="lg body" pb="!1">{{
 						trans.contactInfo.value
 					}}</label>
 				</div>
-				<div class="flex font-light gap-4 ml-6" text="secondary sm">
-					<div class="pr-10">
+				<div class="flex mx-10 gap-8" text="secondary">
+					<div>
 						{{ trans.details.mobileNumber.value }}
 					</div>
 				</div>
 			</div>
-		</div>
-		<!-- 檢附資料欄位 -->
-		<div v-else class="space-y-8">
+
+			<!-- 檢附資料欄位 -->
 			<!-- 就學經歷 -->
-			<div class="space-y-4">
-				<div class="flex content-center">
+			<div v-if="activeTab.value === 2">
+				<div flex="~ gap-2" justify="items-center">
 					<Checkbox
 						inputId="schoolExp"
 						class="pt-1"
 						v-model="showedFile[0].checked"
 						:binary="true"
 					/>
-					<label for="schoolExp" class="ml-2">{{
+					<label for="schoolExp" text="lg body" pb="!1">{{
 						trans.schoolExp.value
 					}}</label>
 				</div>
-				<div class="flex font-light gap-4 ml-6" text="secondary sm">
-					<div class="pr-10">
+				<div class="flex mx-10 gap-8" text="secondary">
+					<div>
 						{{ trans.details.fileName.value }}
 					</div>
-					<div class="pr-10">
+					<div>
 						{{ trans.details.fileUpload.value }}
 					</div>
 				</div>
 			</div>
-			<ParagraphDivider />
+			<PDivider Admin v-if="activeTab.value === 2" />
 			<!-- 考試與檢定分數 -->
-			<div class="space-y-4">
-				<div class="flex content-center">
+			<div v-if="activeTab.value === 2">
+				<div flex="~ gap-2" justify="items-center">
 					<Checkbox
 						inputId="score"
 						class="pt-1"
 						v-model="showedFile[1].checked"
 						:binary="true"
 					/>
-					<label for="score" class="ml-2">{{
+					<label for="score" text="lg body" pb="!1">{{
 						trans.examScore.value
 					}}</label>
 				</div>
-				<div class="flex font-light gap-4 ml-6" text="secondary sm">
-					<div class="pr-10">
+				<div class="flex mx-10 gap-8" text="secondary">
+					<div>
 						{{ trans.details.fileName.value }}
 					</div>
-					<div class="pr-10">
+					<div>
 						{{ trans.details.fileUpload.value }}
 					</div>
 				</div>
 			</div>
-			<ParagraphDivider />
+			<PDivider Admin v-if="activeTab.value === 2" />
 			<!-- 其他有利於審查資料 -->
-			<div class="space-y-4">
-				<div class="flex content-center">
+			<div v-if="activeTab.value === 2">
+				<div flex="~ gap-2" justify="items-center">
 					<Checkbox
 						inputId="other"
 						class="pt-1"
 						v-model="showedFile[2].checked"
 						:binary="true"
 					/>
-					<label for="other" class="ml-2">{{
+					<label for="other" text="lg body" pb="!1">{{
 						trans.advantageFile.value
 					}}</label>
 				</div>
-				<div class="flex font-light gap-4 ml-6" text="secondary sm">
-					<div class="pr-10">
+				<div class="flex mx-10 gap-8" text="secondary">
+					<div>
 						{{ trans.details.fileName.value }}
 					</div>
-					<div class="pr-10">
+					<div>
 						{{ trans.details.fileUpload.value }}
 					</div>
 				</div>
 			</div>
-		</div>
-	</div>
-	<!-- Footer -->
-	<div class="fixed bg-white bottom-0 left-1/4 right-0 z-50 <lg:left-60">
-		<div class="w-9/10 pt-2 m-auto space-y-2 pb-6">
-			<div class="bigRedDivider"></div>
-			<div class="flex justify-center gap-6 pt-2">
-				<!-- 取消變更 -->
-				<Button class="bg-White border-Red" @click="refreshData">
-					<i
-						class="pi pi-times ml-1 mr-2 box-border"
-						text="sm ntnuRed"
-					></i>
-					<div class="m-auto tracking-2" text="sm nRed-500">
-						<div>{{ $t("取消變更") }}</div>
-					</div>
-				</Button>
-				<!-- 儲存設定 -->
-				<Button class="bg-Green border-ntnuRed" @click="saveChange">
-					<i class="pi pi-check ml-1 mr-2 box-border" text="sm"></i>
-					<div class="m-auto tracking-2" text="sm">
-						<div>{{ $t("儲存設定") }}</div>
-					</div>
-				</Button>
+		</template>
+		<template #Footer>
+			<div flex="~" justify="center" gap="4">
+				<NButton
+					Admin
+					class="p-2 w-32"
+					icon="pi pi-check"
+					@click="saveChange"
+				>
+					{{ $t("儲存設定") }}
+				</NButton>
+				<NButton
+					class="p-2 w-32"
+					icon="pi pi-times"
+					@click="refreshData"
+				>
+					{{ $t("取消變更") }}
+				</NButton>
 			</div>
-		</div>
-	</div>
+		</template>
+	</Layout>
 </template>
 
 <script setup lang="ts">
-import ParagraphDivider from "@/styles/paragraphDivider.vue";
-import "primeicons/primeicons.css";
+import Layout from "@/components/Layout.vue";
+import NButton from "@/styles/CustomButton.vue";
 import SelectButton from "primevue/selectbutton";
 import Checkbox from "primevue/checkbox";
-import Button from "primevue/button";
+import PDivider from "@/styles/PrDivider.vue";
+import "primeicons/primeicons.css";
 import { useToast } from "primevue/usetoast";
 import { reactive, ref, computed, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
 import { AdmissionAdminAPI } from "@/api/admission/admin/api";
 import { useGlobalStore } from "@/stores/globalStore";
-import { InvalidSessionError } from "@/api/error";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
 import { AdmissionAdminProgramListResponse } from "@/api/admission/admin/types";
 
@@ -340,7 +299,6 @@ const queryClient = useQueryClient();
 let showedInfo = reactive([
 	{ id: "姓名資訊", checked: false },
 	{ id: "入學身分", checked: false },
-	{ id: "戶籍資訊", checked: false },
 	{ id: "現居地址", checked: false },
 	{ id: "身份資料", checked: false },
 	{ id: "聯絡資料", checked: false },

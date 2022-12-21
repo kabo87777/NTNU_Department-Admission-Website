@@ -1,8 +1,7 @@
 <template>
-	<div>
-		<div class="text-32px font-bold">上傳資料列表</div>
-		<div class="bigRedDivider"></div>
-		<div class="mt-16px">
+	<Layout Admin>
+		<template #Header>{{ $t("上傳資料列表") }}</template>
+		<template #Body>
 			<DataTable :value="applicantList">
 				<Column field="id">
 					<template #header>
@@ -46,7 +45,7 @@
 					</template>
 					<template #body="slotProps">
 						<div class="m-auto text-center">
-							<!-- <Tag
+							<Tag
 								v-if="
 									slotProps.data.application_stage ===
 									'已送審'
@@ -66,8 +65,7 @@
 							</Tag>
 							<Tag v-else severity="danger">
 								{{ slotProps.data.application_stage }}
-							</Tag> -->
-							{{ slotProps.data.docs_stage }}
+							</Tag>
 						</div>
 					</template>
 				</Column>
@@ -109,8 +107,8 @@
 					</template>
 				</Column>
 			</DataTable>
-		</div>
-	</div>
+		</template>
+	</Layout>
 </template>
 
 <script setup lang="ts">
@@ -123,6 +121,7 @@ import { useQuery } from "@tanstack/vue-query";
 import { InvalidSessionError } from "@/api/error";
 import { AdmissionAdminApplicantsListResponse } from "@/api/admission/admin/types";
 import DataTable from "primevue/datatable";
+import Layout from "@/components/Layout.vue";
 import Column from "primevue/column";
 import Tag from "primevue/tag";
 import "../../../../styles/customize.css";

@@ -28,7 +28,7 @@
 				v-model="recruit_start_time"
 				:showIcon="true"
 				:showTime="true"
-				class="w-320px h-44px mt-10px"
+				class="w-320px h-44px mt-10px customDatePicker"
 				dateFormat="yy/mm/dd"
 			/>
 		</div>
@@ -41,7 +41,7 @@
 				v-model="recruit_end_time"
 				:showIcon="true"
 				:showTime="true"
-				class="w-320px h-44px mt-10px"
+				class="w-320px h-44px mt-10px customDatePicker"
 				dateFormat="yy/mm/dd"
 			/>
 		</div>
@@ -55,7 +55,7 @@
 				v-model="review_stage1_start_time"
 				:showIcon="true"
 				:showTime="true"
-				class="w-320px h-44px mt-10px"
+				class="w-320px h-44px mt-10px customDatePicker"
 				dateFormat="yy/mm/dd"
 			/>
 		</div>
@@ -68,7 +68,7 @@
 				v-model="review_stage1_end_time"
 				:showIcon="true"
 				:showTime="true"
-				class="w-320px h-44px mt-10px"
+				class="w-320px h-44px mt-10px customDatePicker"
 				dateFormat="yy/mm/dd"
 			/>
 		</div>
@@ -265,3 +265,11 @@ function dateTransform(date?: Date) {
 	return result;
 }
 </script>
+
+<style lang="scss">
+.customDatePicker {
+	.p-datepicker {
+		z-index: 101;
+	}
+}
+</style>

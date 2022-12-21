@@ -1,76 +1,61 @@
 <template>
-	<div my="auto">
-		<!-- Button: Back to MainPage -->
-		<router-link :to="{ name: 'LandingView' }">
-			<button
-				class="flex items-center gap-2 p-2 my-4"
-				text="sm secondary"
-				border="rounded-lg"
-				hover="bg-nGrey-200 text-title"
-				active="bg-nGrey-600 text-white"
-			>
-				<i class="pi pi-angle-left" />
-				<div>選擇其他系統</div>
-				<div>Select other system</div>
-			</button>
-		</router-link>
-		<!-- Title -->
-		<div mx="8" space="y-2">
-			<div text="secondary" font="light">
-				國立臺灣師範大學資訊工程學系
-			</div>
-			<div text="3xl title" font="medium">招生系統</div>
-			<div text="xl title" font="medium">NTNU CSIE Admissions System</div>
-		</div>
-		<!-- Divider -->
-		<Divider align="center">
-			<div p="8" text="sm body" font="light">
-				選擇身份 Select your identity
-			</div>
-		</Divider>
-		<!-- Buttons -->
-		<div flex="~ col gap-8" w="80" mx="auto">
+	<!-- Return Button -->
+	<router-link :to="{ name: 'LandingView' }">
+		<NButton white size="sm" icon="pi pi-angle-left" p="2" my="4">
+			選擇其他系統 Choose other system
+		</NButton>
+	</router-link>
+	<!-- Title -->
+	<Title>
+		<template #Subtitle>
+			<div class="<md:hidden">國立臺灣師範大學資訊工程學系</div>
+		</template>
+		<template #Chinese>招生系統</template>
+		<template #English>NTNU CSIE Admissions System</template>
+		<template #Divider>選擇身份 Select your identity</template>
+	</Title>
+	<!-- Body -->
+	<Body>
+		<template #Content>
 			<router-link to="/admission/applicant/signin">
-				<button
-					class="p-4 w-full border-2 text-pApplicant"
-					border="2 opacity-30 nGold-500 rounded-lg"
-					hover="text-title bg-nGold-300 border-nGold-300"
-					active="text-white bg-nGold-500"
+				<NButton
+					type="Applicant"
+					size="lg"
+					w="full max-85"
+					mx="auto"
+					p="4"
 				>
-					<div>申請者登入 Applicant Login</div>
-				</button>
+					申請者登入 Applicant Login
+				</NButton>
 			</router-link>
 			<router-link to="/admission/reviewer/signin">
-				<button
-					class="p-4 w-full border-2 text-pReviewer"
-					border="2 opacity-30 nBlue-500 rounded-lg"
-					hover="text-title bg-nBlue-200 border-nBlue-200"
-					active="text-white bg-nBlue-500"
+				<NButton
+					type="Reviewer"
+					size="lg"
+					w="full max-85"
+					mx="auto"
+					p="4"
 				>
-					<div>審查委員登入 Reviewer Login</div>
-				</button>
+					審查委員登入 Reviewer Login
+				</NButton>
 			</router-link>
 			<router-link to="/admission/manager/signin">
-				<button
-					class="p-4 w-full border-2 text-pAdmin"
-					border="2 opacity-30 nRed-600 rounded-lg"
-					hover="text-title bg-nRed-200 border-nRed-200"
-					active="text-white bg-nRed-600"
-				>
-					<div>行政人員登入 Manager Login</div>
-				</button>
+				<NButton type="Admin" size="lg" w="full max-85" mx="auto" p="4">
+					行政人員登入 Manager Login
+				</NButton>
 			</router-link>
-		</div>
-		<!-- 通往推薦信作業身份驗證的神秘按鈕 -->
-		<!-- <div>
-				<router-link to="/admission/recommenderAuthVerify">
-					<Button>借放一下</Button>
-				</router-link>
-			</div> -->
-	</div>
+			<!-- 通往推薦信作業身份驗證的神秘按鈕 -->
+			<!-- <div>
+			<router-link to="/admission/recommenderAuthVerify">
+				<Button>借放一下</Button>
+			</router-link>
+		</div> -->
+		</template>
+	</Body>
 </template>
 
 <script setup lang="ts">
-import Button from "primevue/button";
-import Divider from "primevue/divider";
+import NButton from "@/styles/CustomButton.vue";
+import Title from "@/styles/login/LoginTitle.vue";
+import Body from "@/styles/login/LoginBody.vue";
 </script>
