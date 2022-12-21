@@ -8,7 +8,7 @@
 		</div>
 		<!-- Page Content -->
 		<div flex="grow">
-			<div w="9/10 max-300" h="[calc(100%-4rem)]" m="x-auto y-8">
+			<div w="9/10 max-300" h="[calc(100%-3rem)]" m="x-auto t-8">
 				<router-view />
 			</div>
 		</div>

@@ -6,8 +6,9 @@
 			<div w="full" h="1" my="1" :class="colorStyle" />
 		</div>
 		<!-- Body -->
-		<div flex="grow" overflow="scroll" text="body">
-			<div flex="~ col gap-6" mt="4" mb="1/3">
+		<div flex="grow" overflow="scroll" text="body" pos="relative">
+			<div h="4" v-if="margin" />
+			<div flex="~ col gap-6">
 				<slot name="Body" />
 			</div>
 		</div>
@@ -26,6 +27,7 @@ const props = defineProps({
 	Admin: { type: Boolean, default: false, create: true },
 	Reviewer: { type: Boolean, default: false, create: true },
 	Applicant: { type: Boolean, default: false, create: true },
+	noMargin: { type: Boolean, default: false, create: true },
 });
 
 const colorStyle = computed(() => {
@@ -33,5 +35,10 @@ const colorStyle = computed(() => {
 	if (props.Applicant) return "bg-nGold-500 text-pApplicant";
 	if (props.Reviewer) return "bg-nBlue-500 text-pReviewer";
 	else return "bg-nGrey-700 text-body";
+});
+
+const margin = computed(() => {
+	if (props.noMargin) return false;
+	else return true;
 });
 </script>
