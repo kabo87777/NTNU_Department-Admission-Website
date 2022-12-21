@@ -1,7 +1,7 @@
 <template>
 	<!-- Return Button -->
 	<router-link :to="{ name: 'RecruitmentSignin' }">
-		<NButton type="White" size="sm" icon="pi pi-angle-left" p="2" my="6">
+		<NButton white size="sm" icon="pi pi-angle-left" p="2" my="6">
 			切換登入身份 Change your identity
 		</NButton>
 	</router-link>
@@ -27,7 +27,7 @@
 					v-model="email"
 				>
 					<div flex="~ col gap-1">
-						<div text="sm body">電郵地址 E-mail</div>
+						<div text="sm body">電子郵件 Email</div>
 						<InputText
 							v-bind="field"
 							name="email"
@@ -38,7 +38,7 @@
 							required
 						/>
 						<div v-if="errorMessage" text="sm danger">
-							※ 電郵地址不可為空白 E-mail Required
+							※ 電子郵件不可為空白 Email Required
 						</div>
 					</div>
 				</Field>
@@ -87,13 +87,11 @@
 				<!-- Forget Password Button -->
 				<div flex="~" w="full" justify="center">
 					<router-link to="/recruitment/applicant/regist">
-						<NButton p="2" size="sm" type="White">
-							註冊 Register
-						</NButton>
+						<NButton p="2" size="sm" white> 註冊 Register </NButton>
 					</router-link>
 					<Divider layout="vertical" />
 					<router-link to="/recruitment/applicant/forgetpassword">
-						<NButton p="2" size="sm" type="White">
+						<NButton p="2" size="sm" white>
 							忘記密碼 Forget Password
 						</NButton>
 					</router-link>
@@ -184,11 +182,13 @@ const onSubmit = handleSubmit(async function (values) {
 		const api = new RecruitmentApplicantAPI(authStore);
 
 		userInfo.saveUserInfo(
-			await api.requestNewSession({
-				email: values.email,
-				password: values.password,
-				"cf-turnstile-response": turnstileResponse,
-			})
+			(
+				await api.requestNewSession({
+					email: values.email,
+					password: values.password,
+					"cf-turnstile-response": turnstileResponse,
+				})
+			).data
 		);
 
 		window.localStorage.removeItem("RecruitmentApplicantUsername");
@@ -204,8 +204,8 @@ const onSubmit = handleSubmit(async function (values) {
 			return toast.add({
 				severity: "error",
 				group: "loginFailure",
-				summary: "「電郵地址」或「密碼」",
-				detail: "E-mail and Password",
+				summary: "「電子郵件」或「密碼」",
+				detail: "Email and Password",
 				closable: false,
 				life: 3000,
 			});

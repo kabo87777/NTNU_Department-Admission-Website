@@ -166,27 +166,124 @@
 					</NButton>
 				</div>
 			</div>
-		</div>
-		<ConfirmDialog />
-	</div>
+			<div text="xl pApplicant">{{ $t("申請端") }}</div>
+			<div flex="~ gap-12" ml="4" text="secondary">
+				<div flex="~ col gap-1">
+					<div>{{ $t("開放日期與時間") }} :</div>
+					<Calendar
+						inputId="icon"
+						v-model="application_start_time"
+						:showIcon="true"
+						:showTime="true"
+						class="!w-300px customDatePicker"
+						:baseZIndex="zIndex"
+						dateFormat="yy/mm/dd"
+					/>
+				</div>
+				<div flex="~ col gap-1">
+					<div>{{ $t("關閉日期與時間") }} :</div>
+					<Calendar
+						inputId="icon"
+						v-model="application_end_time"
+						:showIcon="true"
+						:showTime="true"
+						class="!w-300px customDatePicker"
+						:baseZIndex="zIndex"
+						dateFormat="yy/mm/dd"
+					/>
+				</div>
+			</div>
+			<div pt="6" text="xl pReviewer">{{ $t("審查端 - 書面審查") }}</div>
+			<div flex="~ gap-12" ml="4" text="secondary">
+				<div flex="~ col gap-1">
+					<div>{{ $t("開放日期與時間") }} :</div>
+					<Calendar
+						inputId="icon"
+						v-model="review_stage1_start_time"
+						:showIcon="true"
+						:showTime="true"
+						class="!w-300px customDatePicker"
+						:baseZIndex="zIndex"
+						dateFormat="yy/mm/dd"
+					/>
+				</div>
+				<div flex="~ col gap-1">
+					<div>{{ $t("關閉日期與時間") }} :</div>
+					<Calendar
+						inputId="icon"
+						v-model="review_stage1_end_time"
+						:showIcon="true"
+						:showTime="true"
+						class="!w-300px customDatePicker"
+						:baseZIndex="zIndex"
+						dateFormat="yy/mm/dd"
+					/>
+				</div>
+			</div>
+
+			<div pt="6" text="xl pReviewer">{{ $t("審查端 - 口試審查") }}</div>
+			<div flex="~ gap-12" ml="4" text="secondary">
+				<div flex="~ col gap-1">
+					<div>{{ $t("開放日期與時間") }} :</div>
+					<Calendar
+						inputId="icon"
+						v-model="review_stage2_start_time"
+						:showIcon="true"
+						:showTime="true"
+						class="!w-300px customDatePicker"
+						:baseZIndex="zIndex"
+						dateFormat="yy/mm/dd"
+					/>
+				</div>
+				<div flex="~ col gap-1">
+					<div>{{ $t("關閉日期與時間") }} :</div>
+					<Calendar
+						inputId="icon"
+						v-model="review_stage2_end_time"
+						:showIcon="true"
+						:showTime="true"
+						class="!w-300px customDatePicker"
+						:baseZIndex="zIndex"
+						dateFormat="yy/mm/dd"
+					/>
+				</div>
+			</div>
+		</template>
+		<template #Footer>
+			<div class="flex" justify="end">
+				<NButton
+					Admin
+					class="p-2 w-32 mx-auto"
+					@click="update"
+					icon="pi pi-save"
+				>
+					<div>{{ $t("儲存設定") }}</div>
+				</NButton>
+				<NButton
+					Danger
+					class="p-2 w-32 absolute"
+					@click="confirmDeleteProject()"
+					icon="pi pi-trash"
+				>
+					<div>{{ $t("刪除專案") }}</div>
+				</NButton>
+			</div>
+		</template>
+	</Layout>
 </template>
 
 <script setup lang="ts">
-import Divider from "primevue/divider";
-import Button from "primevue/button";
 import InputText from "primevue/inputtext";
+import Layout from "@/components/Layout.vue";
 import { ref, watch } from "vue";
 import Dropdown from "primevue/dropdown";
 import Calendar from "primevue/calendar";
-import Textarea from "primevue/textarea";
-import Checkbox from "primevue/checkbox";
-import SelectButton from "primevue/selectbutton";
+import PDivider from "@/styles/PrDivider.vue";
 import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
 import { useGlobalStore } from "@/stores/globalStore";
 import { AdmissionAdminAPI } from "@/api/admission/admin/api";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
 import { InvalidSessionError } from "@/api/error";
-import { router } from "@/router";
 import { useToast } from "primevue/usetoast";
 import { useI18n } from "vue-i18n";
 import NButton from "@/styles/CustomButton.vue";
