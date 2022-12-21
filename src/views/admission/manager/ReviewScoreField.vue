@@ -612,8 +612,15 @@ async function saveChange() {
 				throw { object: element, message: "Invalid Weight" };
 			if (element.index) docsSum += element.weight;
 		});
-		if (docsSum !== 100)
-			throw { object: docsScore, message: "Invalid Sum" };
+		if (docsSum !== 100) {
+			toast.add({
+				severity: "error",
+				summary:
+					"第一階段 (書面審查)評分項目比例需要加總等於100 The ratio of scoring items in the first stage (Docs review) needs to add up to 100",
+				life: 3000,
+			});
+			return;
+		}
 
 		let oralSum = 0;
 		oralScore.forEach((element) => {
@@ -626,15 +633,17 @@ async function saveChange() {
 				throw { object: element, message: "Invalid Weight" };
 			if (element.index) oralSum += element.weight;
 		});
-		if (oralSum !== 100)
-			throw { object: oralScore, message: "Invalid Sum" };
+		if (oralSum !== 100) {
+			toast.add({
+				severity: "error",
+				summary:
+					"第二階段 (口試審查)評分項目比例需要加總等於100 The ratio of the scoring items in the second stage (oral test review) needs to add up to 100",
+				life: 3000,
+			});
+			return;
+		}
 	} catch (e: any) {
 		console.error(e);
-		toast.add({
-			severity: "error",
-			summary: "check developer tools",
-			life: 3000,
-		});
 	}
 
 	// Patch Score Data
