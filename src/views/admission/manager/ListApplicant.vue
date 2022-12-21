@@ -2,13 +2,12 @@
 	<h1 class="text-4xl font-bold">{{ $t("申請者帳號設定") }}</h1>
 	<Divider />
 
-	<h3 class="block font-black text-lg">匯入申請者帳號</h3>
-
 	<TransitionGroup name="p-message" tag="div">
 		<Message :closable="false" severity="warn" v-if="isImporting">{{
 			$t("正在處理中，請勿離開此頁面")
 		}}</Message>
 	</TransitionGroup>
+	<h3 class="block font-black text-lg">匯入申請者帳號</h3>
 	<FileUpload
 		mode="advanced"
 		:choose-label="$t('選擇檔案')"
