@@ -305,16 +305,8 @@ import {
 } from "@/api/admission/admin/types";
 import { useAdminInfoStore } from "@/stores/AdmissionAdminStore";
 import { useI18n } from "vue-i18n";
+
 const { locale } = useI18n();
-
-const letterSpace = computed(() => {
-	if (locale.value == "zh") return "tracking-widest";
-	if (locale.value == "en") return "tracking-tighter";
-	else return "";
-});
-
-console.log(locale.value);
-
 const router = useRouter();
 const toast = useToast();
 const queryClient = useQueryClient();
@@ -337,6 +329,12 @@ const noProgram = computed(() => {
 });
 
 const selectedProgram = ref<AdmissionAdminProgramListResponse>();
+
+const letterSpace = computed(() => {
+	if (locale.value == "zh") return "tracking-[.125em]";
+	if (locale.value == "en") return "tracking-tighter";
+	else return "";
+});
 
 watchEffect(() => {
 	if (!programs.value) return;
