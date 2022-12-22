@@ -15,6 +15,7 @@ import type {
 	AdmissionAdminSingleOralGradeResponse,
 	AdmissionAdminCreateReviewerRequest,
 	AdmAdminGetApplicantMoredocResponses,
+	AdmAdminChangePasswordRequest,
 } from "./types";
 import type { APIGenericResponse } from "@/api/types";
 import { GenericAPI } from "@/api/api";
@@ -115,6 +116,26 @@ export class AdmissionAdminAPI extends GenericAPI {
 		const data: APIGenericResponse = await this.instance.patch(
 			`admission/admin/applicant/${userId}/moredoc`,
 			body
+		);
+
+		if (data.error !== false) {
+			return {
+				success: false,
+				message: data.message,
+			};
+		}
+
+		return {
+			success: true,
+			message: data.message,
+		};
+	}
+
+	async sendNotifyApplicantMoreDoc(
+		userId: number
+	): Promise<AdmissionAdminGenericResponse> {
+		const data: APIGenericResponse = await this.instance.get(
+			`admission/admin/applicant/${userId}/moredoc/notify`
 		);
 
 		if (data.error !== false) {
@@ -244,23 +265,20 @@ export class AdmissionAdminAPI extends GenericAPI {
 			throw new Error("Failed to delete program");
 	}
 
-	async changePassword(body: object): Promise<AdmissionAdminGenericResponse> {
-		const data: APIGenericResponse = await this.instance.patch(
+	async changePassword(
+		body: AdmAdminChangePasswordRequest
+	): Promise<AdmissionAdminGenericResponse> {
+		const response: APIGenericResponse = await this.instance.patch(
 			"/admission/auth/admin/password",
 			body
 		);
 
-		if (data.error !== false) {
-			return {
-				success: false,
-				message: data.message.full_messages,
-			};
+		if (response.error === true) {
+			const msg = response.message.full_messages.join("\n");
+			throw new Error(msg);
 		}
 
-		return {
-			success: true,
-			message: data.message,
-		};
+		return response;
 	}
 
 	async getDocsGradeList(
@@ -337,6 +355,7 @@ export class AdmissionAdminAPI extends GenericAPI {
 
 		return response;
 	}
+
 	async changeReviewerAccountState(
 		id: number,
 		action: "activate" | "disable"

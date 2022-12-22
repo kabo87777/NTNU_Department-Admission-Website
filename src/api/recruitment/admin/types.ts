@@ -236,3 +236,23 @@ export interface RecruitmentAdminSingleApplicantWithDetailResponse {
 	revieweResult: string;
 	interviewDate: string;
 }
+
+export interface RecruitmentAdminReviewersListResponseWithDetail {
+	id: number;
+	provider: string;
+	uid: string;
+	allow_password_change: boolean;
+	isInit: boolean | null;
+	lang: string | null;
+	name: string;
+	nickname: string | null;
+	image: string | null;
+	email: string;
+	created_at: string;
+	updated_at: string;
+	isDisabled: boolean;
+	requiredSeen: number;
+	requiredTotal: number;
+	optionalSeen: number;
+	optionalTotal: number;
+}

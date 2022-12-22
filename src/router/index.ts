@@ -457,6 +457,14 @@ const routes: Array<RouteRecordRaw> = [
 					),
 			},
 			{
+				path: "mustviewSetting",
+				name: "recruitmentManagerMustviewSetting",
+				component: () =>
+					import(
+						"@/views/recruitment/manager/pages/mustviewSetting.vue"
+					),
+			},
+			{
 				path: "attachmentList",
 				name: "recruitmentManagerApplicantUploadList",
 				component: () =>

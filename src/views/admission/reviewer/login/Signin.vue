@@ -1,7 +1,7 @@
 <template>
 	<!-- Return Button -->
 	<router-link to="/admission">
-		<NButton type="White" size="sm" icon="pi pi-angle-left" p="2" my="6">
+		<NButton white size="sm" icon="pi pi-angle-left" p="2" my="6">
 			切換登入身份 Change your identity
 		</NButton>
 	</router-link>
@@ -27,7 +27,7 @@
 					v-model="email"
 				>
 					<div flex="~ col gap-1">
-						<div text="sm body">電郵地址 E-mail</div>
+						<div text="sm body">電子郵件 Email</div>
 						<InputText
 							v-bind="field"
 							name="email"
@@ -38,7 +38,7 @@
 							required
 						/>
 						<div v-if="errorMessage" text="sm danger">
-							※ 電郵地址不可為空白 E-mail Required
+							※ 電子郵件不可為空白 Email Required
 						</div>
 					</div>
 				</Field>
@@ -86,7 +86,7 @@
 				</NButton>
 				<!-- Forget Password Button -->
 				<router-link to="/admission/reviewer/forgetpassword">
-					<NButton w="3/5" p="2" m="auto" size="sm" type="White">
+					<NButton w="3/5" p="2" m="auto" size="sm" white>
 						忘記密碼 Forget Password
 					</NButton>
 				</router-link>
@@ -124,8 +124,8 @@ const userInfo = useUserInfoStore();
 // Login Form
 const turnstileRef = ref<TurnstileComponentExposes>();
 const isRememberAccount = ref(false);
-const email = ref("ntnuareviewer1@yopmail.com");
-const password = ref("Example123");
+const email = ref(import.meta.env.VITE_ADMISSION_REVIEWER_USERNAME);
+const password = ref(import.meta.env.VITE_ADMISSION_REVIEWER_PASSWORD);
 const isTurnstileRunning = computed(() => !turnstileRef.value?.turnstileToken);
 
 // TODO: i18n error message
@@ -193,8 +193,8 @@ const onSubmit = handleSubmit(async function (values) {
 			return toast.add({
 				severity: "error",
 				group: "loginFailure",
-				summary: "「電郵地址」或「密碼」",
-				detail: "E-mail and Password",
+				summary: "「電子郵件」或「密碼」",
+				detail: "Email and Password",
 				closable: false,
 				life: 3000,
 			});

@@ -1,7 +1,7 @@
 <template>
 	<!-- Return Button -->
 	<router-link to="/recruitment/applicant/signin">
-		<NButton type="White" size="sm" icon="pi pi-angle-left" p="2" my="6">
+		<NButton white size="sm" icon="pi pi-angle-left" p="2" my="6">
 			回到登入畫面 Back to login page
 		</NButton>
 	</router-link>
@@ -10,7 +10,7 @@
 		<template #Subtitle>
 			<div class="<md:hidden">國立臺灣師範大學資訊工程學系</div>
 		</template>
-		<template #Chinese>教師聘請系統</template>
+		<template #Chinese>教師徵聘系統</template>
 		<template #English>Teacher Recruitment System</template>
 		<template #Divider>
 			<div text="pApplicant">申請者註冊 Applicant Regist</div>
@@ -34,9 +34,9 @@
 					※ 必須輸入使用者名稱 Username is required.
 				</div>
 			</div>
-			<!-- E-mail -->
+			<!-- Email -->
 			<div space="y-1">
-				<div text="sm body">設置電郵地址 Setting E-mail</div>
+				<div text="sm body">設置電子郵件 Setting Email</div>
 				<InputText
 					name="email"
 					type="email"
@@ -46,7 +46,7 @@
 					required
 				/>
 				<div text="sm danger" v-if="password.isEmailBlank">
-					※ 電郵地址不可為空白 E-mail required.
+					※ 電子郵件不可為空白 Email required.
 				</div>
 			</div>
 			<!-- Set new PWD -->
@@ -114,7 +114,7 @@
 			</div>
 		</template>
 		<template #Footer>
-			<!-- Info: Check E-mail -->
+			<!-- Info: Check Email -->
 			<div
 				class="flex justify-center items-center p-6 gap-6 my-6 w-full"
 				text="sm secondary"

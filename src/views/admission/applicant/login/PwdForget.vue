@@ -1,7 +1,7 @@
 <template>
 	<!-- Return Button -->
 	<router-link to="/admission/applicant/signin">
-		<NButton type="White" size="sm" icon="pi pi-angle-left" p="2" my="6">
+		<NButton white size="sm" icon="pi pi-angle-left" p="2" my="6">
 			回到登入畫面 Back to login page
 		</NButton>
 	</router-link>
@@ -16,7 +16,7 @@
 			<div text="pApplicant">申請者忘記密碼 Forget Password</div>
 		</template>
 	</Title>
-	<!-- Body: Edit E-mail Form -->
+	<!-- Body: Edit Email Form -->
 	<Body v-if="emailState === 'Edit'">
 		<template #Content>
 			<!-- User Name -->
@@ -38,11 +38,11 @@
 				border="rounded-xl"
 			>
 				<div>
-					我們將寄出一封重設密碼郵件至您的電子信箱。請確認郵箱地址是否正確，
-					郵件寄出過程將不判別電子信箱之正確性。
+					我們將寄出一封重設密碼郵件至您的電子郵件。請確認郵箱地址是否正確，
+					郵件寄出過程將不判別電子郵件之正確性。
 				</div>
 				<div>
-					We would send a reset password link to your e-mail. Please
+					We would send a reset password link to your email. Please
 					make sure check your mail correctly by yourself, we won't
 					check for you.
 				</div>
@@ -61,7 +61,7 @@
 			</NButton>
 		</template>
 	</Body>
-	<!-- Body: E-mail Sent -->
+	<!-- Body: Email Sent -->
 	<EmailSentMsg v-if="emailState === 'Submit'" />
 </template>
 

@@ -13,6 +13,7 @@ import type {
 	RecruitmentAdminGetApplicantAttachmentList,
 	RecruimentAdminGetApplicantMoredocResponses,
 	RecruitmentAdminGenericStatusResponse,
+	RecruitmentAdminReviewersListResponseWithDetail,
 } from "./types";
 import type { APIGenericResponse } from "@/api/types";
 import { Ref } from "vue";
@@ -181,6 +182,27 @@ export class RecruitmentAdminAPI extends GenericAPI {
 		};
 	}
 
+	async sendNotifyApplicantMoreDoc(
+		programId: number,
+		userId: number
+	): Promise<RecruitmentAdminGenericStatusResponse> {
+		const data: APIGenericResponse = await this.instance.get(
+			`recruitment/admin/program/${programId}/applicant/${userId}/moredoc/notify`
+		);
+
+		if (data.error !== false) {
+			return {
+				success: false,
+				message: data.message,
+			};
+		}
+
+		return {
+			success: true,
+			message: data.message,
+		};
+	}
+
 	async deleteApplicant(id: number) {
 		const response: APIGenericResponse = await this.instance.delete(
 			`/recruitment/admin/applicant/${id}`
@@ -280,5 +302,41 @@ export class RecruitmentAdminAPI extends GenericAPI {
 			success: true,
 			message: data.message,
 		};
+	}
+
+	async addApplicantToReviewer(programID: number, body: any): Promise<any> {
+		const data: APIGenericResponse = await this.instance.post(
+			`/recruitment/admin/program/${programID}/addreviewer`,
+			body
+		);
+
+		if (data.error === true)
+			throw new Error("Failed to add applicant to reviewer");
+	}
+
+	async deleteApplicantFromReviewer(
+		programID: number,
+		body: any
+	): Promise<any> {
+		const data: APIGenericResponse = await this.instance.delete(
+			`/recruitment/admin/program/${programID}/deletereviewer`,
+			{ data: body }
+		);
+
+		if (data.error === true && !data.data.errors)
+			throw new Error("Failed to delete applicant from reviewer");
+	}
+
+	async getReviewerListWithDetail(
+		programID: number
+	): Promise<RecruitmentAdminReviewersListResponseWithDetail[]> {
+		const data: APIGenericResponse = await this.instance.get(
+			`/recruitment/admin/program/${programID}/reviewer`
+		);
+
+		if (data.error === true || typeof data.data === "undefined")
+			throw new Error("Failed to fetch reviewer list");
+
+		return data.data;
 	}
 }

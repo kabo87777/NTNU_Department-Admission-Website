@@ -1,7 +1,7 @@
 <template>
 	<!-- Return Button -->
 	<router-link to="/admission">
-		<NButton type="White" size="sm" icon="pi pi-angle-left" p="2" my="6">
+		<NButton white size="sm" icon="pi pi-angle-left" p="2" my="6">
 			切換登入身份 Change your identity
 		</NButton>
 	</router-link>
@@ -86,7 +86,7 @@
 				</NButton>
 				<!-- Forget Password Button -->
 				<router-link to="/admission/applicant/forgetpassword">
-					<NButton w="3/5" p="2" m="auto" size="sm" type="White">
+					<NButton w="3/5" p="2" m="auto" size="sm" white>
 						忘記密碼 Forget Password
 					</NButton>
 				</router-link>
@@ -124,8 +124,8 @@ const userInfo = useUserInfoStore();
 // Login Form
 const turnstileRef = ref<TurnstileComponentExposes>();
 const isRememberAccount = ref(false);
-const username = ref("1110101");
-const password = ref("Example123");
+const username = ref(import.meta.env.VITE_ADMISSION_APPLICANT_USERNAME);
+const password = ref(import.meta.env.VITE_ADMISSION_APPLICANT_PASSWORD);
 const isTurnstileRunning = computed(() => !turnstileRef.value?.turnstileToken);
 
 // TODO: i18n error message

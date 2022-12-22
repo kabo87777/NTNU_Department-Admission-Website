@@ -26,7 +26,6 @@
 					<Calendar
 						inputId="icon"
 						:showIcon="true"
-						:showTime="true"
 						dateFormat="yy/mm/dd"
 						v-model="date.start"
 					/>
@@ -40,7 +39,6 @@
 					<Calendar
 						inputId="icon"
 						:showIcon="true"
-						:showTime="true"
 						dateFormat="yy/mm/dd"
 						v-model="date.end"
 					/>
@@ -223,7 +221,6 @@ import { reactive, watch, ref, toRaw } from "vue";
 import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
 import { AdmissionAdminAPI } from "@/api/admission/admin/api";
 import { useQuery } from "@tanstack/vue-query";
-import { InvalidSessionError } from "@/api/error";
 import { AdmAdminGetApplicantMoredocResponses } from "@/api/admission/admin/types";
 import { useToast } from "primevue/usetoast";
 import SelectButton from "primevue/selectbutton";
@@ -295,8 +292,8 @@ const setInfo = (info: AdmAdminGetApplicantMoredocResponses) => {
 	activeTab.value = info.isMoredoc
 		? tabOptions.value[1]
 		: tabOptions.value[0];
-	date.start = info.moredoc_start_date;
-	date.end = info.moredoc_end_date;
+	date.start = new Date(info.moredoc_start_date);
+	date.end = new Date(info.moredoc_end_date);
 	docInfo.category = info.moredoc_category;
 	docInfo.name = info.moredoc_name;
 };
@@ -305,17 +302,44 @@ const saveChange = async (body: object) => {
 	return await api.updateApplicantMoreDocState(props.userId, body);
 };
 
-function handleSendEmail() {
-	console.log("send email button onclicked");
-}
+const handleSendEmail = async () => {
+	isLoading.send = true;
+
+	const res = await api.sendNotifyApplicantMoreDoc(props.userId);
+
+	if (res?.success !== undefined && res?.message !== undefined) {
+		fetchResponse.success = toRaw(res.success);
+		fetchResponse.message = toRaw(res.message);
+	}
+
+	isModalVisible.sendEmail = false;
+
+	if (fetchResponse.success) {
+		toast.add({
+			severity: "success",
+			summary: "Success",
+			detail: fetchResponse.message,
+			life: 3000,
+		});
+	} else {
+		toast.add({
+			severity: "error",
+			summary: "Error",
+			detail: fetchResponse.message,
+			life: 5000,
+		});
+	}
+
+	isLoading.send = false;
+};
 
 async function handleSaveChange() {
 	isLoading.save = true;
 
 	const body = {
 		isMoredoc: activeTab.value.value,
-		moredoc_start_date: addHours(8, new Date(date.start)),
-		moredoc_end_date: addHours(8, new Date(date.end)),
+		moredoc_start_date: new Date(date.start),
+		moredoc_end_date: new Date(date.end),
 		moredoc_category: docInfo.category,
 		moredoc_name: docInfo.name,
 	};
@@ -363,6 +387,7 @@ const saveOnclick = () => {
 	showRequire.name = docInfo.name ? false : true;
 
 	if (!activeTab.value.value) {
+		console.log("check here");
 		resetRequireState();
 		isModalVisible.saveChange = true;
 	} else if (
@@ -376,7 +401,7 @@ const saveOnclick = () => {
 	}
 };
 
-const { data } = useQuery(
+useQuery(
 	["adminApplicantMoredocInfo"],
 	async () => {
 		return await api.getApplicantMoreDocRes(props.userId);
