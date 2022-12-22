@@ -194,7 +194,7 @@
 							Admin
 							@click="navigate"
 							icon="pi pi-user-edit"
-							class="p-2 w-2/5 h-11 bg-white"
+							class="p-2 w-2/5 h-11 bg-white whitespace-nowrap"
 							:class="letterSpace"
 						>
 							{{ $t("管理審查者") }}
@@ -204,7 +204,7 @@
 						Success
 						@click="isDisplayNewProjectPrompt = true"
 						icon="pi pi-plus"
-						class="p-2 w-2/5 h-11 bg-white"
+						class="p-2 w-2/5 h-11 bg-white whitespace-nowrap"
 						:class="letterSpace"
 					>
 						{{ $t("新增專案") }}
