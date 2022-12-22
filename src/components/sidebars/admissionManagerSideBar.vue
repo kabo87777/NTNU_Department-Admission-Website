@@ -41,6 +41,7 @@
 					icon="pi pi-cog"
 					size="lg"
 					class="py-3 px-6 mx-6 gap-4 !justify-start"
+					:class="letterSpace"
 					@click="navigate"
 					:isSelected="gateway === 'AdmissionAdminProjectSetting'"
 					>{{ $t("專案設定") }}
@@ -62,8 +63,8 @@
 				</span>
 			</Button> -->
 			<!-- Divider -->
-			<div flex="~ gap-4" class="items-center">
-				<div w="1/10" h="!1px" bg="nRed"></div>
+			<div flex="~ gap-4" class="items-center" :class="letterSpace">
+				<div w="1/10" h="!1px" bg="nRed" />
 				<div my="auto" text="lg pAdmin">{{ $t("申請端設定") }}</div>
 			</div>
 			<!-- 3.申請帳號設置 -->
@@ -77,7 +78,8 @@
 					white
 					icon="pi pi-user-plus"
 					size="lg"
-					class="py-3 px-6 mx-6 gap-4 !justify-start whitespace-nowrap"
+					class="py-3 px-6 mx-6 gap-4 !justify-start"
+					:class="letterSpace"
 					@click="navigate"
 					:isSelected="gateway === 'AdmissionAdminManageApplicants'"
 					>{{ $t("申請帳號設置") }}
@@ -95,6 +97,7 @@
 					icon="pi pi-inbox"
 					size="lg"
 					class="py-3 px-6 mx-6 gap-4 !justify-start"
+					:class="letterSpace"
 					@click="navigate"
 					:isSelected="gateway === 'AdmissionAdminUploadFileSetting'"
 					>{{ $t("上傳欄位設置") }}
@@ -112,6 +115,7 @@
 					icon="pi pi-file"
 					size="lg"
 					class="py-3 px-6 mx-6 gap-4 !justify-start"
+					:class="letterSpace"
 					@click="navigate"
 					:isSelected="
 						gateway ===
@@ -122,8 +126,8 @@
 				</NButton>
 			</router-link>
 			<!-- Divider -->
-			<div flex="~ gap-4" class="items-center">
-				<div w="1/10" h="!1px" bg="nRed"></div>
+			<div flex="~ gap-4" class="items-center" :class="letterSpace">
+				<div w="1/10" h="!1px" bg="nRed" />
 				<div my="auto" text="lg pAdmin">{{ $t("審查端設定") }}</div>
 			</div>
 			<!-- 6.審查評分設置 -->
@@ -138,6 +142,7 @@
 					icon="pi pi-pencil"
 					size="lg"
 					class="py-3 px-6 mx-6 gap-4 !justify-start"
+					:class="letterSpace"
 					@click="navigate"
 					:isSelected="gateway === 'AdmissionAdminReviewScoreField'"
 					>{{ $t("審查評分設置") }}
@@ -155,6 +160,7 @@
 					icon="pi pi-chart-bar"
 					size="lg"
 					class="py-3 px-6 mx-6 gap-4 !justify-start"
+					:class="letterSpace"
 					@click="navigate"
 					:isSelected="gateway === 'AdmissionAdminGradeDataList'"
 					>{{ $t("評分資料列表") }}
@@ -175,6 +181,8 @@
 							Admin
 							@click="navigate"
 							icon="pi pi-user-edit"
+							class="h-11"
+							:class="letterSpace"
 							p="2"
 							w="2/5"
 							bg="white"
@@ -186,9 +194,8 @@
 						Success
 						@click="isDisplayNewProjectPrompt = true"
 						icon="pi pi-plus"
-						p="2"
-						w="2/5"
-						bg="white"
+						class="p-2 w-2/5 bg-white"
+						:class="letterSpace"
 					>
 						{{ $t("新增專案") }}
 					</NButton>
@@ -202,7 +209,13 @@
 					<!-- Heading -->
 					<div>
 						<div text="sm pAdmin">{{ $t("管理端帳戶") }}</div>
-						<div text="title">{{ $t("系辦主管") }}</div>
+						<div
+							text="title"
+							class="whitespace-nowrap"
+							:class="letterSpace"
+						>
+							{{ $t("系辦主管") }}
+						</div>
 					</div>
 					<!-- Button -->
 					<div flex="~ gap-1" ml="auto">
@@ -291,6 +304,16 @@ import {
 	AdmissionManagerAuthResponse,
 } from "@/api/admission/admin/types";
 import { useAdminInfoStore } from "@/stores/AdmissionAdminStore";
+import { useI18n } from "vue-i18n";
+const { locale } = useI18n();
+
+const letterSpace = computed(() => {
+	if (locale.value == "zh") return "tracking-widest";
+	if (locale.value == "en") return "tracking-tighter";
+	else return "";
+});
+
+console.log(locale.value);
 
 const router = useRouter();
 const toast = useToast();

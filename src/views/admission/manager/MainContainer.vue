@@ -1,6 +1,8 @@
 <template>
 	<!-- Navbar -->
-	<NavBar pos="fixed inset-0 h-15" h="full" w="screen" />
+	<div pos="fixed inset-0 h-15" h="full" w="screen">
+		<NavBar />
+	</div>
 	<!-- Sidebar -->
 	<div pos="fixed top-15 bottom-0 inset-x-0" flex="~">
 		<div flex="none" w="90" bg="white" border="r-2 nGrey-100">

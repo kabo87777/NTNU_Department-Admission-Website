@@ -1,8 +1,8 @@
 <template>
 	<div pos="relative inset-0" h="full" flex="~ col gap-0">
 		<!-- Header -->
-		<div pos="inset-x-0" text="4xl title" font="tracking-widest medium">
-			<div mb="3"><slot name="Header" /></div>
+		<div pos="inset-x-0" text="4xl title" font="medium">
+			<div mb="3" :class="letterSpace"><slot name="Header" /></div>
 			<div w="full" h="1" my="1" :class="colorStyle" />
 		</div>
 		<!-- Body -->
@@ -22,6 +22,15 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
+import { useI18n } from "vue-i18n";
+
+const { locale } = useI18n();
+
+const letterSpace = computed(() => {
+	if (locale.value == "zh") return "tracking-[.125em]";
+	if (locale.value == "en") return "";
+	else return "";
+});
 
 const props = defineProps({
 	Admin: { type: Boolean, default: false, create: true },
