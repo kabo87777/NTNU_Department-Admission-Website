@@ -28,8 +28,13 @@
 			</div>
 		</div>
 		<!-- 頁面按鈕 -->
-		<div v-if="!noProgram || newProgram" h="full" overflow="scroll">
-			<div flex="~ col gap-6" m="t-6 b-60">
+		<div
+			v-if="!noProgram || newProgram"
+			h="[calc(100%-14rem)]"
+			overflow="y-auto"
+			scrollbar="thin thumb-nRed-100 thumb-rounded-full"
+		>
+			<div flex="~ col gap-6" mt="6">
 				<!-- 1.專案設定 -->
 				<router-link
 					to="/admission/manager/projectSetting"
@@ -189,11 +194,8 @@
 							Admin
 							@click="navigate"
 							icon="pi pi-user-edit"
-							class="h-11"
+							class="p-2 w-2/5 h-11 bg-white"
 							:class="letterSpace"
-							p="2"
-							w="2/5"
-							bg="white"
 						>
 							{{ $t("管理審查者") }}
 						</NButton>
@@ -202,7 +204,7 @@
 						Success
 						@click="isDisplayNewProjectPrompt = true"
 						icon="pi pi-plus"
-						class="p-2 w-2/5 bg-white"
+						class="p-2 w-2/5 h-11 bg-white"
 						:class="letterSpace"
 					>
 						{{ $t("新增專案") }}

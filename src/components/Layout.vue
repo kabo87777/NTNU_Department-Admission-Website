@@ -6,7 +6,13 @@
 			<div w="full" h="1" my="1" :class="colorStyle" />
 		</div>
 		<!-- Body -->
-		<div flex="grow" overflow="scroll" text="body" pos="relative">
+		<div
+			text="body"
+			flex="grow"
+			pos="relative"
+			overflow="y-auto"
+			:scrollbar="scrollbarStyle"
+		>
 			<div h="4" v-if="margin" />
 			<div flex="~ col gap-6">
 				<slot name="Body" />
@@ -44,6 +50,13 @@ const colorStyle = computed(() => {
 	if (props.Applicant) return "bg-nGold-500 text-pApplicant";
 	if (props.Reviewer) return "bg-nBlue-500 text-pReviewer";
 	else return "bg-nGrey-700 text-body";
+});
+
+const scrollbarStyle = computed(() => {
+	if (props.Admin) return "thin thumb-nRed-100 thumb-rounded-full";
+	if (props.Applicant) return "thin thumb-nGold-100 thumb-rounded-full";
+	if (props.Reviewer) return "thin thumb-nBlue-100 thumb-rounded-full";
+	else return "thin thumb-nGrey-100 thumb-rounded-full";
 });
 
 const margin = computed(() => {
