@@ -28,27 +28,28 @@
 			</div>
 		</div>
 		<!-- 頁面按鈕 -->
-		<div v-if="!noProgram || newProgram" flex="~ col gap-6" my="6">
-			<!-- 1.專案設定 -->
-			<router-link
-				to="/admission/manager/projectSetting"
-				custom
-				v-slot="{ navigate }"
-			>
-				<NButton
-					Admin
-					white
-					icon="pi pi-cog"
-					size="lg"
-					class="py-3 px-6 mx-6 gap-4 !justify-start"
-					:class="letterSpace"
-					@click="navigate"
-					:isSelected="gateway === 'AdmissionAdminProjectSetting'"
-					>{{ $t("專案設定") }}
-				</NButton>
-			</router-link>
-			<!-- 2.專案狀態 -->
-			<!-- <Button
+		<div v-if="!noProgram || newProgram" h="full" overflow="scroll">
+			<div flex="~ col gap-6" m="t-6 b-60">
+				<!-- 1.專案設定 -->
+				<router-link
+					to="/admission/manager/projectSetting"
+					custom
+					v-slot="{ navigate }"
+				>
+					<NButton
+						Admin
+						white
+						icon="pi pi-cog"
+						size="lg"
+						class="py-3 px-6 mx-6 gap-4 !justify-start"
+						:class="letterSpace"
+						@click="navigate"
+						:isSelected="gateway === 'AdmissionAdminProjectSetting'"
+						>{{ $t("專案設定") }}
+					</NButton>
+				</router-link>
+				<!-- 2.專案狀態 -->
+				<!-- <Button
 				class="p-button-secondary p-button-text !ml-24px !mt-8px !w-[85%] !h-48px"
 			>
 				<img
@@ -62,110 +63,117 @@
 					{{ $t("專案狀態") }}
 				</span>
 			</Button> -->
-			<!-- Divider -->
-			<div flex="~ gap-4" class="items-center" :class="letterSpace">
-				<div w="1/10" h="!1px" bg="nRed" />
-				<div my="auto" text="lg pAdmin">{{ $t("申請端設定") }}</div>
+				<!-- Divider -->
+				<div flex="~ gap-4" class="items-center" :class="letterSpace">
+					<div w="1/10" h="!1px" bg="nRed" />
+					<div my="auto" text="lg pAdmin">{{ $t("申請端設定") }}</div>
+				</div>
+				<!-- 3.申請帳號設置 -->
+				<RouterLink
+					to="/admission/manager/manageApplicants"
+					custom
+					v-slot="{ navigate }"
+				>
+					<NButton
+						Admin
+						white
+						icon="pi pi-user-plus"
+						size="lg"
+						class="py-3 px-6 mx-6 gap-4 !justify-start"
+						:class="letterSpace"
+						@click="navigate"
+						:isSelected="
+							gateway === 'AdmissionAdminManageApplicants'
+						"
+						>{{ $t("申請帳號設置") }}
+					</NButton>
+				</RouterLink>
+				<!-- 4.上傳欄位設置 -->
+				<router-link
+					to="/admission/manager/uploadFileSetting"
+					custom
+					v-slot="{ navigate }"
+				>
+					<NButton
+						Admin
+						white
+						icon="pi pi-inbox"
+						size="lg"
+						class="py-3 px-6 mx-6 gap-4 !justify-start"
+						:class="letterSpace"
+						@click="navigate"
+						:isSelected="
+							gateway === 'AdmissionAdminUploadFileSetting'
+						"
+						>{{ $t("上傳欄位設置") }}
+					</NButton>
+				</router-link>
+				<!-- 5.上傳資料列表 -->
+				<router-link
+					to="/admission/manager/applicantsUploadList"
+					custom
+					v-slot="{ navigate }"
+				>
+					<NButton
+						Admin
+						white
+						icon="pi pi-file"
+						size="lg"
+						class="py-3 px-6 mx-6 gap-4 !justify-start"
+						:class="letterSpace"
+						@click="navigate"
+						:isSelected="
+							gateway ===
+							('AdmissionAdminApplicantsUploadList' ||
+								'AdmissionAdminApplicantUploadedDocs')
+						"
+						>{{ $t("上傳資料列表") }}
+					</NButton>
+				</router-link>
+				<!-- Divider -->
+				<div flex="~ gap-4" class="items-center" :class="letterSpace">
+					<div w="1/10" h="!1px" bg="nRed" />
+					<div my="auto" text="lg pAdmin">{{ $t("審查端設定") }}</div>
+				</div>
+				<!-- 6.審查評分設置 -->
+				<router-link
+					to="/admission/manager/reviewScoreField"
+					custom
+					v-slot="{ navigate }"
+				>
+					<NButton
+						Admin
+						white
+						icon="pi pi-pencil"
+						size="lg"
+						class="py-3 px-6 mx-6 gap-4 !justify-start"
+						:class="letterSpace"
+						@click="navigate"
+						:isSelected="
+							gateway === 'AdmissionAdminReviewScoreField'
+						"
+						>{{ $t("審查評分設置") }}
+					</NButton>
+				</router-link>
+				<!-- 7.評分資料列表 -->
+				<router-link
+					to="/admission/manager/gradeDataList"
+					custom
+					v-slot="{ navigate }"
+				>
+					<NButton
+						Admin
+						white
+						icon="pi pi-chart-bar"
+						size="lg"
+						class="py-3 px-6 mx-6 gap-4 !justify-start"
+						:class="letterSpace"
+						@click="navigate"
+						:isSelected="gateway === 'AdmissionAdminGradeDataList'"
+						>{{ $t("評分資料列表") }}
+					</NButton>
+				</router-link>
 			</div>
-			<!-- 3.申請帳號設置 -->
-			<RouterLink
-				to="/admission/manager/manageApplicants"
-				custom
-				v-slot="{ navigate }"
-			>
-				<NButton
-					Admin
-					white
-					icon="pi pi-user-plus"
-					size="lg"
-					class="py-3 px-6 mx-6 gap-4 !justify-start"
-					:class="letterSpace"
-					@click="navigate"
-					:isSelected="gateway === 'AdmissionAdminManageApplicants'"
-					>{{ $t("申請帳號設置") }}
-				</NButton>
-			</RouterLink>
-			<!-- 4.上傳欄位設置 -->
-			<router-link
-				to="/admission/manager/uploadFileSetting"
-				custom
-				v-slot="{ navigate }"
-			>
-				<NButton
-					Admin
-					white
-					icon="pi pi-inbox"
-					size="lg"
-					class="py-3 px-6 mx-6 gap-4 !justify-start"
-					:class="letterSpace"
-					@click="navigate"
-					:isSelected="gateway === 'AdmissionAdminUploadFileSetting'"
-					>{{ $t("上傳欄位設置") }}
-				</NButton>
-			</router-link>
-			<!-- 5.上傳資料列表 -->
-			<router-link
-				to="/admission/manager/applicantsUploadList"
-				custom
-				v-slot="{ navigate }"
-			>
-				<NButton
-					Admin
-					white
-					icon="pi pi-file"
-					size="lg"
-					class="py-3 px-6 mx-6 gap-4 !justify-start"
-					:class="letterSpace"
-					@click="navigate"
-					:isSelected="
-						gateway ===
-						('AdmissionAdminApplicantsUploadList' ||
-							'AdmissionAdminApplicantUploadedDocs')
-					"
-					>{{ $t("上傳資料列表") }}
-				</NButton>
-			</router-link>
-			<!-- Divider -->
-			<div flex="~ gap-4" class="items-center" :class="letterSpace">
-				<div w="1/10" h="!1px" bg="nRed" />
-				<div my="auto" text="lg pAdmin">{{ $t("審查端設定") }}</div>
-			</div>
-			<!-- 6.審查評分設置 -->
-			<router-link
-				to="/admission/manager/reviewScoreField"
-				custom
-				v-slot="{ navigate }"
-			>
-				<NButton
-					Admin
-					white
-					icon="pi pi-pencil"
-					size="lg"
-					class="py-3 px-6 mx-6 gap-4 !justify-start"
-					:class="letterSpace"
-					@click="navigate"
-					:isSelected="gateway === 'AdmissionAdminReviewScoreField'"
-					>{{ $t("審查評分設置") }}
-				</NButton>
-			</router-link>
-			<!-- 7.評分資料列表 -->
-			<router-link
-				to="/admission/manager/gradeDataList"
-				custom
-				v-slot="{ navigate }"
-			>
-				<NButton
-					Admin
-					white
-					icon="pi pi-chart-bar"
-					size="lg"
-					class="py-3 px-6 mx-6 gap-4 !justify-start"
-					:class="letterSpace"
-					@click="navigate"
-					:isSelected="gateway === 'AdmissionAdminGradeDataList'"
-					>{{ $t("評分資料列表") }}
-				</NButton>
-			</router-link>
 		</div>
 		<!-- 頁面底部操作項目 -->
 		<div pos="absolute bottom-0" bg="nGrey-50" w="full">
