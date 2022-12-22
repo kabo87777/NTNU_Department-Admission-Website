@@ -192,6 +192,28 @@
 					</span>
 				</Button>
 			</router-link>
+			<router-link
+				to="/recruitment/manager/mustviewSetting"
+				custom
+				v-slot="{ navigate }"
+			>
+				<Button
+					class="p-button-secondary p-button-text !ml-24px !mt-16px !w-[85%] !h-48px"
+					@click="navigate"
+					role="link"
+				>
+					<img
+						alt="logo"
+						src="/assets/sidebar/User_light.png"
+						style="width: 18px"
+					/>
+					<span
+						class="text-left tracking-3px ml-3 font-bold text-18px text-[#2D2926]"
+					>
+						{{ $t("必看名單設置") }}
+					</span>
+				</Button>
+			</router-link>
 		</div>
 		<div
 			v-if="noProgram && !newProgram"
