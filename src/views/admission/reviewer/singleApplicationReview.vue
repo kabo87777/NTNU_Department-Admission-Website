@@ -160,9 +160,7 @@
 			/>
 		</div>
 		<div class="flex mt-10px">
-			<div class="text-xl mt-5px">
-				{{ $t("備註：") }}
-			</div>
+			<div class="text-xl mt-5px">{{ $t("備註") }}:</div>
 			<InputText
 				type="text"
 				v-model="remark"
