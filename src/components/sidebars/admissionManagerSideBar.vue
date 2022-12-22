@@ -39,7 +39,7 @@
 					Admin
 					white
 					icon="pi pi-cog"
-					size="xl"
+					size="lg"
 					class="py-3 px-6 mx-6 gap-4 !justify-start"
 					@click="navigate"
 					:isSelected="gateway === 'AdmissionAdminProjectSetting'"
@@ -76,8 +76,8 @@
 					Admin
 					white
 					icon="pi pi-user-plus"
-					size="xl"
-					class="py-3 px-6 mx-6 gap-4 !justify-start"
+					size="lg"
+					class="py-3 px-6 mx-6 gap-4 !justify-start whitespace-nowrap"
 					@click="navigate"
 					:isSelected="gateway === 'AdmissionAdminManageApplicants'"
 					>{{ $t("申請帳號設置") }}
@@ -93,7 +93,7 @@
 					Admin
 					white
 					icon="pi pi-inbox"
-					size="xl"
+					size="lg"
 					class="py-3 px-6 mx-6 gap-4 !justify-start"
 					@click="navigate"
 					:isSelected="gateway === 'AdmissionAdminUploadFileSetting'"
@@ -110,7 +110,7 @@
 					Admin
 					white
 					icon="pi pi-file"
-					size="xl"
+					size="lg"
 					class="py-3 px-6 mx-6 gap-4 !justify-start"
 					@click="navigate"
 					:isSelected="
@@ -136,7 +136,7 @@
 					Admin
 					white
 					icon="pi pi-pencil"
-					size="xl"
+					size="lg"
 					class="py-3 px-6 mx-6 gap-4 !justify-start"
 					@click="navigate"
 					:isSelected="gateway === 'AdmissionAdminReviewScoreField'"
@@ -153,7 +153,7 @@
 					Admin
 					white
 					icon="pi pi-chart-bar"
-					size="xl"
+					size="lg"
 					class="py-3 px-6 mx-6 gap-4 !justify-start"
 					@click="navigate"
 					:isSelected="gateway === 'AdmissionAdminGradeDataList'"
