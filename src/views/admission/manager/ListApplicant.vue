@@ -9,6 +9,43 @@
 					$t("正在處理中，請勿離開此頁面")
 				}}</Message>
 			</TransitionGroup>
+			<DataTable :value="tableData" :loading="isTableLoading">
+				<template #empty>
+					<h2>{{ $t("尚無申請者帳號") }}</h2>
+				</template>
+
+				<Column field="id">
+					<template #header>{{ $t("ID") }}</template>
+				</Column>
+
+				<Column field="name">
+					<template #header>{{ $t("姓名") }}</template>
+				</Column>
+
+				<Column field="email">
+					<template #header>{{ $t("電子信箱") }}</template>
+				</Column>
+
+				<Column>
+					<template #header>{{ $t("操作") }}</template>
+					<template #body="slotProps">
+						<span class="flex gap-x-3">
+							<!-- Delete button -->
+							<NButton
+								Danger
+								icon="pi pi-trash"
+								@click="confirmDeleteAccount(slotProps.data.id)"
+							/>
+						</span>
+					</template>
+				</Column>
+
+				<template #footer>
+					<p>
+						{{ $t("applicant_table_items_count", getTableItemQty) }}
+					</p>
+				</template>
+			</DataTable>
 			<h3 class="block font-black text-xl">匯入申請者帳號</h3>
 			<FileUpload
 				mode="advanced"
@@ -69,46 +106,9 @@
 					<div>{{ $t("請上傳檔案") }}</div>
 				</template>
 			</FileUpload>
-			<DataTable :value="tableData" :loading="isTableLoading">
-				<template #empty>
-					<h2>{{ $t("尚無申請者帳號") }}</h2>
-				</template>
-
-				<Column field="id">
-					<template #header>{{ $t("ID") }}</template>
-				</Column>
-
-				<Column field="name">
-					<template #header>{{ $t("姓名") }}</template>
-				</Column>
-
-				<Column field="email">
-					<template #header>{{ $t("電子信箱") }}</template>
-				</Column>
-
-				<Column>
-					<template #header>{{ $t("操作") }}</template>
-					<template #body="slotProps">
-						<span class="flex gap-x-3">
-							<!-- Delete button -->
-							<NButton
-								Danger
-								icon="pi pi-trash"
-								@click="confirmDeleteAccount(slotProps.data.id)"
-							/>
-						</span>
-					</template>
-				</Column>
-
-				<template #footer>
-					<p>
-						{{ $t("applicant_table_items_count", getTableItemQty) }}
-					</p>
-				</template>
-			</DataTable>
 		</template>
 	</Layout>
-	<ConfirmDialog />
+	<ConfirmDialog :draggable="false" />
 </template>
 
 <script setup lang="ts">

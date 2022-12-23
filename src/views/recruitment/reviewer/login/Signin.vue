@@ -10,7 +10,7 @@
 		<template #Subtitle>
 			<div class="<md:hidden">國立臺灣師範大學資訊工程學系</div>
 		</template>
-		<template #Chinese>教師聘請系統</template>
+		<template #Chinese>教師徵聘系統</template>
 		<template #English>Teacher Recruitment System</template>
 		<template #Divider>
 			<div text="pReviewer">審查委員登入 Reviewer Login</div>
@@ -124,8 +124,8 @@ const userInfo = useUserInfoStore();
 // Login Form
 const turnstileRef = ref<TurnstileComponentExposes>();
 const isRememberAccount = ref(false);
-const email = ref("ntnurreviewer1@yopmail.com");
-const password = ref("Example123");
+const email = ref(import.meta.env.VITE_RECRUITMENT_REVIEWER_USERNAME);
+const password = ref(import.meta.env.VITE_RECRUITMENT_REVIEWER_PASSWORD);
 const isTurnstileRunning = computed(() => !turnstileRef.value?.turnstileToken);
 
 // TODO: i18n error message

@@ -1,12 +1,11 @@
 <template>
-	<Layout Admin>
+	<Layout Admin noMargin>
 		<template #Header>
 			{{ $t("評分資料列表") }}
 		</template>
 		<template #Body>
-			<div class="p-fluid" pos="sticky top-0" z="50">
+			<div class="p-fluid" pos="sticky top-0" text="!sm" z="50">
 				<SelectButton
-					class="mt-10px h-45px"
 					v-model="currentTab"
 					:options="tabOptions"
 					aria-labelledby="single"
@@ -64,6 +63,7 @@
 				<Dialog
 					v-model:visible="productDialog"
 					:header="gradeDataEdit"
+					:draggable="false"
 					:modal="true"
 					class="w-720px h-988px"
 				>
@@ -283,6 +283,7 @@
 				<Dialog
 					v-model:visible="productDialog"
 					header="評分資料編輯"
+					:draggable="false"
 					:modal="true"
 					class="w-720px h-988px"
 				>

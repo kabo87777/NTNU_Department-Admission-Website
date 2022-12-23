@@ -79,8 +79,8 @@ deploy to production:
     - main
   script:
     - vercel pull --yes --environment=production --token=$VERCEL_TOKEN
-    - vercel build --token=$VERCEL_TOKEN
-    - export DEPLOYMENT_URL=$(vercel deploy --prebuilt --token=$VERCEL_TOKEN)
+    - vercel build --prod --token=$VERCEL_TOKEN
+    - export DEPLOYMENT_URL=$(vercel deploy --prod  --prebuilt --token=$VERCEL_TOKEN)
     - timeout 300 bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' '"$DEPLOYMENT_URL"')" != "200" ]]; do sleep 5; done' || false
     - vercel alias set -d --token="$VERCEL_TOKEN" --scope "ntnu-csie-admissions" "$DEPLOYMENT_URL" "admissions.birkhoff.me"
   environment:

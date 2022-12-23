@@ -98,7 +98,7 @@
 				</div>
 			</div>
 		</div>
-		<ConfirmDialog />
+		<ConfirmDialog :draggable="false" />
 	</div>
 </template>
 
