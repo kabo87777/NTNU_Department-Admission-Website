@@ -1,8 +1,7 @@
 <template>
-	<div>
-		<div>
-			<div class="mt-24px text-24px font-bold">{{ $t("姓名資訊") }}</div>
-
+	<div class="mt-24px">
+		<div v-if="requiredInputFields.includes('姓名資訊')">
+			<div class="text-24px font-bold">{{ $t("姓名資訊") }}</div>
 			<div class="admApplicantBasicInfoCard">
 				<div style="color: #333333">
 					<div>{{ $t("中文姓氏") + $t(":") }}</div>
@@ -33,7 +32,7 @@
 				</div>
 			</div>
 		</div>
-		<div>
+		<div v-if="requiredInputFields.includes('入學身分')">
 			<div class="mt-24px text-24px font-bold">
 				{{ $t("入學身分") }}
 			</div>
@@ -70,7 +69,8 @@
 				</div>
 			</div>
 		</div>
-		<div>
+
+		<div v-if="requiredInputFields.includes('現居地址')">
 			<div class="mt-24px text-24px font-bold">{{ $t("通訊地址") }}</div>
 			<div class="admApplicantBasicInfoCard">
 				<div style="color: #333333">
@@ -89,7 +89,7 @@
 				</div>
 			</div>
 		</div>
-		<div>
+		<div v-if="requiredInputFields.includes('身份資料')">
 			<div class="mt-24px text-24px font-bold">{{ $t("身份資料") }}</div>
 			<div class="admApplicantBasicInfoCard">
 				<div style="color: #333333">
@@ -109,7 +109,7 @@
 				</div>
 			</div>
 		</div>
-		<div>
+		<div v-if="requiredInputFields.includes('聯絡資料')">
 			<div class="mt-24px text-24px font-bold">{{ $t("聯絡方式") }}</div>
 			<div class="admApplicantBasicInfoCard">
 				<div style="color: #333333">
@@ -131,16 +131,17 @@ import "@/styles/customize.css";
 import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
 import { AdmissionAdminAPI } from "@/api/admission/admin/api";
 import { useQuery } from "@tanstack/vue-query";
+import { useToast } from "primevue/usetoast";
 import { AdmAdminGetApplicantInfo } from "@/api/admission/admin/types";
 import { ref } from "vue";
-
+import { useGlobalStore } from "@/stores/globalStore";
 const adminAuth = useAdmissionAdminAuthStore();
 const api = new AdmissionAdminAPI(adminAuth);
-
+const store = useGlobalStore();
 const props = defineProps(["userId"]);
-
+const toast = useToast();
 const userInfo = ref<AdmAdminGetApplicantInfo>();
-
+const requiredInputFields = ref("");
 useQuery(
 	["adminApplicantBasicInfo"],
 	async () => {
@@ -149,6 +150,35 @@ useQuery(
 	{
 		onSuccess: (data) => {
 			userInfo.value = data;
+		},
+	}
+);
+
+useQuery(
+	["getAdmApplicantProgramInfo_basicInfo"],
+	async () => {
+		if (!store.program)
+			throw new Error(
+				"getAdmApplicantProgramInfo_basicInfo: no program selected"
+			);
+
+		const allData = await api.getProgramList();
+		return allData[store.program.id - 1];
+	},
+	{
+		onSuccess: (data) => {
+			if (data) {
+				requiredInputFields.value = data.applicant_required_info;
+			}
+			console.log(data);
+		},
+		onError: (data) => {
+			toast.add({
+				severity: "error",
+				summary: "Error",
+				detail: "Unable to fetch user require input",
+				life: 5000,
+			});
 		},
 	}
 );
