@@ -1,5 +1,5 @@
 <template>
-	<ConfirmDialog />
+	<ConfirmDialog :draggable="false" />
 	<Layout Admin>
 		<template #Header>
 			{{ $t("專案設定") }}

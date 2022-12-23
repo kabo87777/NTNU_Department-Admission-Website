@@ -1,94 +1,123 @@
 <template>
-	<h1 class="text-4xl font-bold">{{ $t("管理審查者") }}</h1>
-	<Divider></Divider>
-	<Button @click="isOpenAddReviewer = true">{{ $t("建立帳號") }}</Button>
-	<DataTable :value="tableData" :loading="getLoadingStatus">
-		<template #empty>
-			<h2>{{ $t("尚無審查者帳號") }}</h2>
+	<Layout Admin>
+		<template #Header>
+			{{ $t("管理審查者") }}
 		</template>
+		<!-- <h1 class="text-4xl font-bold">{{ $t("管理審查者") }}</h1>
+		<Divider></Divider> -->
+		<template #Body>
+			<DataTable :value="tableData" :loading="getLoadingStatus">
+				<template #empty>
+					<h2>{{ $t("尚無審查者帳號") }}</h2>
+				</template>
 
-		<Column field="id">
-			<template #header>{{ $t("審查者帳號") }}</template>
-		</Column>
+				<Column field="id">
+					<template #header>{{ $t("審查者帳號") }}</template>
+				</Column>
 
-		<Column field="name">
-			<template #header>{{ $t("姓名") }}</template>
-		</Column>
+				<Column field="name">
+					<template #header>{{ $t("姓名") }}</template>
+				</Column>
 
-		<Column field="email">
-			<template #header>{{ $t("電子信箱") }}</template>
-		</Column>
+				<Column field="email">
+					<template #header>{{ $t("電子信箱") }}</template>
+				</Column>
 
-		<!-- <Column field="roles">
-			<template #header>{{ $t("身份組") }}</template>
-		</Column> -->
+				<!-- <Column field="roles">
+					<template #header>{{ $t("身份組") }}</template>
+				</Column> -->
 
-		<Column>
-			<template #header>{{ $t("操作") }}</template>
-			<template #body="slotProp">
-				<div class="flex gap-x-1">
-					<!-- Disable user button -->
-					<Button
-						v-if="slotProp.data.isDisabled === false"
-						icon="pi pi-ban"
-						class="p-button-outlined p-button-warning"
-						@click="confirmDisableReviewer(slotProp.data)"
-						v-tooltip="$t('停用帳號')"
-					/>
+				<Column>
+					<template #header>{{ $t("操作") }}</template>
+					<template #body="slotProp">
+						<div class="flex gap-x-1">
+							<!-- Disable user button -->
+							<Button
+								v-if="slotProp.data.isDisabled === false"
+								icon="pi pi-ban"
+								class="p-button-outlined p-button-warning"
+								@click="confirmDisableReviewer(slotProp.data)"
+								v-tooltip="$t('停用帳號')"
+							/>
 
-					<!-- Activate user button -->
-					<Button
-						v-else
-						icon="pi pi-chevron-circle-up"
-						class="p-button-outlined"
-						@click="confirmActivateReviewer(slotProp.data)"
-						v-tooltip="$t('啟用帳號')"
-					/>
+							<!-- Activate user button -->
+							<Button
+								v-else
+								icon="pi pi-chevron-circle-up"
+								class="p-button-outlined"
+								@click="confirmActivateReviewer(slotProp.data)"
+								v-tooltip="$t('啟用帳號')"
+							/>
 
-					<!-- Assign to program -->
-					<Button
-						icon="pi pi-user-plus"
-						class="p-button-outlined"
-						@click="assignProgramModal.open(slotProp.data)"
-						v-tooltip="$t('指派至專案')"
-						:disabled="slotProp.data.isDisabled"
-					/>
-				</div>
-			</template>
-		</Column>
-	</DataTable>
+							<!-- Assign to program -->
+							<Button
+								icon="pi pi-user-plus"
+								class="p-button-outlined"
+								@click="assignProgramModal.open(slotProp.data)"
+								v-tooltip="$t('指派至專案')"
+								:disabled="slotProp.data.isDisabled"
+							/>
+						</div>
+					</template>
+				</Column>
+			</DataTable>
 
-	<AddReviewerDialog
-		v-model:show="isOpenAddReviewer"
-		@submit="createReviewer"
-	/>
-
-	<Dialog :modal="true" v-model:visible="assignProgramModal.visible">
-		<template #header>
-			<h3 class="font-black text-lg">{{ $t("指派審查者至專案") }}</h3>
-		</template>
-
-		<template #default>
-			<div class="font-bold">{{ $t("選擇的專案") }}</div>
-			<MultiSelect
-				:placeholder="$t('選擇專案')"
-				:show-toggle-all="false"
-				v-model:model-value="assignProgramModal.data.selected"
-				:options="assignProgramModal.data.programs"
-				option-label="fullname"
-				:loading="isLoadingRelatedPrograms || isLoadingAllPrograms"
-				class="w-md"
+			<AddReviewerDialog
+				v-model:show="isOpenAddReviewer"
+				@submit="createReviewer"
 			/>
-		</template>
 
-		<template #footer>
-			<Button :label="$t('完成')" @click="assignProgramModal.submit()" />
+			<Dialog
+				:modal="true"
+				v-model:visible="assignProgramModal.visible"
+				:draggable="false"
+			>
+				<template #header>
+					<h3 class="font-black text-lg">
+						{{ $t("指派審查者至專案") }}
+					</h3>
+				</template>
+
+				<template #default>
+					<div class="font-bold">{{ $t("選擇的專案") }}</div>
+					<MultiSelect
+						:placeholder="$t('選擇專案')"
+						:show-toggle-all="false"
+						v-model:model-value="assignProgramModal.data.selected"
+						:options="assignProgramModal.data.programs"
+						option-label="fullname"
+						:loading="
+							isLoadingRelatedPrograms || isLoadingAllPrograms
+						"
+						class="w-md"
+					/>
+				</template>
+
+				<template #footer>
+					<Button
+						:label="$t('完成')"
+						@click="assignProgramModal.submit()"
+					/>
+				</template>
+			</Dialog>
+			<ConfirmDialog :draggable="false" />
 		</template>
-	</Dialog>
-	<ConfirmDialog />
+		<template #Footer>
+			<div flex="~" justify="center" gap="4">
+				<NButton
+					Admin
+					class="p-2 w-32"
+					@click="isOpenAddReviewer = true"
+				>
+					{{ $t("建立帳號") }}
+				</NButton>
+			</div>
+		</template>
+	</Layout>
 </template>
 
 <script setup lang="ts">
+import NButton from "@/styles/CustomButton.vue";
 import DataTable from "primevue/datatable";
 import Row from "primevue/row";
 import Column from "primevue/column";

@@ -14,30 +14,6 @@
 					{{ $t("姓名資訊") }}
 				</div>
 			</div>
-			<div class="flex pt-24px">
-				<div class="w-1/3">
-					<div>{{ $t("稱謂") }}</div>
-					<div>
-						<InputText
-							class="w-[70%] h-36px !mt-4px"
-							style="border: 1px solid #736028"
-							type="text"
-							v-model="name.appellation"
-						/>
-					</div>
-				</div>
-				<div class="w-1/3">
-					<div>{{ $t("後綴") }}</div>
-					<div>
-						<InputText
-							class="w-[70%] h-36px !mt-4px"
-							style="border: 1px solid #736028"
-							type="text"
-							v-model="name.suffix"
-						/>
-					</div>
-				</div>
-			</div>
 			<div class="flex pt-16px">
 				<div class="w-1/3">
 					<div>{{ $t("中文姓氏") }}</div>
@@ -304,15 +280,15 @@
 				</div>
 			</div>
 			<div class="mt-24px">
-				<div>{{ $t("生理性別") }}</div>
+				<div>{{ "*" + $t("性別") }}</div>
 				<div class="mt-2px flex">
 					<div>
 						<RadioButton v-model="born.sex" value="male" />
-						<label class="ml-4px">{{ $t("生理男性") }}</label>
+						<label class="ml-4px">{{ $t("男性") }}</label>
 					</div>
 					<div class="ml-160px">
 						<RadioButton v-model="born.sex" value="female" />
-						<label class="ml-4px">{{ $t("生理女性") }}</label>
+						<label class="ml-4px">{{ $t("女性") }}</label>
 					</div>
 				</div>
 				<div v-show="required.sex" class="absolute mt-[-4px]">

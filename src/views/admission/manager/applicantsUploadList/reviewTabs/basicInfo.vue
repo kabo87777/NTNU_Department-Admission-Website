@@ -1,9 +1,25 @@
 <template>
 	<div class="mt-24px">
-		<div class="grid">
-			<div>
-				<div class="mt-24px text-24px font-bold">
-					{{ $t("姓名資訊") }}
+		<div class="text-24px font-bold">{{ $t("姓名資訊") }}</div>
+		<div class="admApplicantBasicInfoCard">
+			<div style="color: #333333">
+				<div>{{ $t("中文姓氏") + $t(":") }}</div>
+				<div>{{ $t("中文名字") + $t(":") }}</div>
+				<div>{{ $t("英文姓氏") + $t(":") }}</div>
+				<div>{{ $t("英文中間名字") + $t(":") }}</div>
+				<div>{{ $t("英文名字") + $t(":") }}</div>
+			</div>
+			<div class="font-bold ml-12px">
+				<div v-if="userInfo?.cn_surname">{{ userInfo.cn_surname }}</div>
+				<div v-else>-</div>
+				<div v-if="userInfo?.name">{{ userInfo?.name }}</div>
+				<div v-else>-</div>
+				<div v-if="userInfo?.en_surname">
+					{{ userInfo?.en_surname }}
+				</div>
+				<div v-else>-</div>
+				<div v-if="userInfo?.en_midname">
+					{{ userInfo?.en_midname }}
 				</div>
 				<div class="admApplicantBasicInfoCard">
 					<div style="color: #333333">
@@ -156,6 +172,16 @@
 						<div v-else>-</div>
 					</div>
 				</div>
+			</div>
+		</div>
+		<ParagraphDivider />
+
+		<div class="mt-24px text-24px font-bold">{{ $t("身份資料") }}</div>
+		<div class="admApplicantBasicInfoCard">
+			<div style="color: #333333">
+				<div>{{ $t("性別") + $t(":") }}</div>
+				<div>{{ $t("出生國家") + $t(":") }}</div>
+				<div>{{ $t("出生日期") + $t(":") }}</div>
 			</div>
 			<div>
 				<div class="mt-24px text-24px font-bold">
