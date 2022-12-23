@@ -5,9 +5,11 @@ import {
 	createWebHistory,
 } from "vue-router";
 
-const loadModulesGlob = (modules: Record<string, unknown>) =>
+const loadModulesGlob = (module: Record<string, unknown>) =>
 	Object.fromEntries(
-		Object.entries(modules).map(([k, v]: [string, any]) => [k, v.default])
+		Object.entries(module).map(([k, v]: [string, any]) =>
+			v.default ? [k, v.default] : [k, v]
+		)
 	);
 
 const LandingModules = loadModulesGlob(
@@ -25,6 +27,60 @@ const LandingModules = loadModulesGlob(
 		],
 		{ eager: true }
 	)
+);
+
+const AdmissionReviewerModules = loadModulesGlob(
+	import.meta.glob(["@/views/admission/reviewer/*.vue"], { eager: true })
+);
+
+const AdmissionApplicantModules = loadModulesGlob(
+	import.meta.glob(
+		[
+			"@/views/admission/applicant/*.vue",
+			"@/views/admission/applicant/pages/*.vue",
+		],
+		{ eager: true }
+	)
+);
+
+const AdmissionManagerModules = loadModulesGlob(
+	import.meta.glob(
+		[
+			"@/views/admission/manager/*.vue",
+			"@/views/admission/manager/applicantsUploadList/*.vue",
+		],
+		{ eager: true }
+	)
+);
+
+const AdmissionRecommenderModules = loadModulesGlob(
+	import.meta.glob(["@/views/admission/recommender/*.vue"], { eager: true })
+);
+
+const RecruitmentApplicantModules = loadModulesGlob(
+	import.meta.glob(
+		[
+			"@/views/recruitment/applicant/*.vue",
+			"@/views/recruitment/applicant/pages/*.vue",
+		],
+		{ eager: true }
+	)
+);
+
+const RecruitmentManagerModules = loadModulesGlob(
+	import.meta.glob(
+		[
+			"@/views/recruitment/manager/*.vue",
+			"@/views/recruitment/manager/pages/*.vue",
+		],
+		{ eager: true }
+	)
+);
+
+const RecruitmentReviewerModules = loadModulesGlob(
+	import.meta.glob(["@/views/recruitment/reviewer/*.vue"], {
+		eager: true,
+	})
 );
 
 const routes: Array<RouteRecordRaw> = [
@@ -257,158 +313,198 @@ const routes: Array<RouteRecordRaw> = [
 			},
 		],
 	},
+	// /admission/reviewer
 	{
 		path: "/admission/reviewer",
 		name: "AdmissionReviewerMainContainer",
-		component: () => import("@/views/admission/reviewer/MainContainer.vue"),
+		component:
+			AdmissionReviewerModules[
+				"/src/views/admission/reviewer/MainContainer.vue"
+			],
 		children: [
 			{
 				path: "applicationReview",
 				name: "applicationReview",
-				component: () =>
-					import("@/views/admission/reviewer/applicationReview.vue"),
+				component:
+					AdmissionReviewerModules[
+						"/src/views/admission/reviewer/applicationReview.vue"
+					],
 			},
 			{
 				path: "oralReview",
 				name: "oralReview",
-				component: () =>
-					import("@/views/admission/reviewer/oralReview.vue"),
+				component:
+					AdmissionReviewerModules[
+						"/src/views/admission/reviewer/oralReview.vue"
+					],
 			},
 			{
 				path: "singleApplicationReview/:id",
 				name: "singleApplicationReview",
-				component: () =>
-					import(
-						"@/views/admission/reviewer/singleApplicationReview.vue"
-					),
+				component:
+					AdmissionReviewerModules[
+						"/src/views/admission/reviewer/singleApplicationReview.vue"
+					],
 			},
 			{
 				path: "singleOralReview/:id",
 				name: "singleOralReview",
-				component: () =>
-					import("@/views/admission/reviewer/singleOralReview.vue"),
+				component:
+					AdmissionReviewerModules[
+						"/src/views/admission/reviewer/singleOralReview.vue"
+					],
 			},
 			{
 				path: "reviewerUserSetting",
 				name: "AdmissionReviewerUserSetting",
-				component: () =>
-					import("@/views/admission/reviewer/userSetting.vue"),
+				component:
+					AdmissionReviewerModules[
+						"/src/views/admission/reviewer/userSetting.vue"
+					],
 			},
 		],
 	},
+	// /admission/applicant
 	{
 		path: "/admission/applicant",
 		name: "AdmissionApplicantMainContainer",
-		component: () =>
-			import("@/views/admission/applicant/MainContainer.vue"),
+		component:
+			AdmissionApplicantModules[
+				"/src/views/admission/applicant/MainContainer.vue"
+			],
 		children: [
 			// Admission - applicant info pages
 			{
 				path: "latestNews",
 				name: "AdmissionApplicantLatestNews",
-				component: () =>
-					import("@/views/admission/applicant/pages/latestNews.vue"),
+				component:
+					AdmissionApplicantModules[
+						"/src/views/admission/applicant/pages/latestNews.vue"
+					],
 			},
 			{
 				path: "basicInfo",
 				name: "AdmissionApplicantBasicInfo",
-				component: () =>
-					import("@/views/admission/applicant/pages/basicInfo.vue"),
+				component:
+					AdmissionApplicantModules[
+						"/src/views/admission/applicant/pages/basicInfo.vue"
+					],
 			},
 			{
 				path: "attachment",
 				name: "AdmissionApplicantAttachment",
-				component: () =>
-					import("@/views/admission/applicant/pages/attachment.vue"),
+				component:
+					AdmissionApplicantModules[
+						"/src/views/admission/applicant/pages/attachment.vue"
+					],
 			},
 			{
 				path: "recommendationLetter",
 				name: "AdmissionApplicantRecommendationLetter",
-				component: () =>
-					import(
-						"@/views/admission/applicant/pages/recommendationLetter.vue"
-					),
+				component:
+					AdmissionApplicantModules[
+						"/src/views/admission/applicant/pages/recommendationLetter.vue"
+					],
 			},
 			{
 				path: "additionalDocs",
 				name: "AdmissionApplicantAdditionalDocs",
-				component: () =>
-					import(
-						"@/views/admission/applicant/pages/additionalDocs.vue"
-					),
+				component:
+					AdmissionApplicantModules[
+						"/src/views/admission/applicant/pages/additionalDocs.vue"
+					],
 			},
 			{
 				path: "userSetting",
 				name: "AdmissionApplicantUserSetting",
-				component: () =>
-					import("@/views/admission/applicant/pages/userSetting.vue"),
+				component:
+					AdmissionApplicantModules[
+						"/src/views/admission/applicant/pages/userSetting.vue"
+					],
 			},
 		],
 	},
 	{
 		path: "/admission/manager",
 		name: "AdmissionManagerMainContainer",
-		component: () => import("@/views/admission/manager/MainContainer.vue"),
+		component:
+			AdmissionManagerModules[
+				"/src/views/admission/manager/MainContainer.vue"
+			],
 		children: [
 			// Admission - manager project settings
 			{
 				path: "projectSettings",
 				name: "AdmissionManagerProjectSettings",
-				component: () =>
-					import("@/views/admission/manager/UploadFileSetting.vue"),
+				component:
+					AdmissionManagerModules[
+						"/src/views/admission/manager/UploadFileSetting.vue"
+					],
 			},
 			{
 				path: "projectSetting",
 				name: "projectSetting",
-				component: () =>
-					import("@/views/admission/manager/project-setting.vue"),
+				component:
+					AdmissionManagerModules[
+						"/src/views/admission/manager/project-setting.vue"
+					],
 			},
 			{
 				path: "reviewScoreField",
 				name: "reviewScoreField",
-				component: () =>
-					import("@/views/admission/manager/ReviewScoreField.vue"),
+				component:
+					AdmissionManagerModules[
+						"/src/views/admission/manager/ReviewScoreField.vue"
+					],
 			},
 			{
 				path: "gradeDataList",
 				name: "gradeDataList",
-				component: () =>
-					import("@/views/admission/manager/gradeDataList.vue"),
+				component:
+					AdmissionManagerModules[
+						"/src/views/admission/manager/gradeDataList.vue"
+					],
 			},
 			// Admission - applicants uploaded documents setting
 			{
 				path: "applicantsUploadList",
 				name: "ApplicantsUploadList",
-				component: () =>
-					import(
-						"@/views/admission/manager/applicantsUploadList/applicantsUploadList.vue"
-					),
+				component:
+					AdmissionManagerModules[
+						"/src/views/admission/manager/applicantsUploadList/applicantsUploadList.vue"
+					],
 			},
 			{
 				path: "applicantsUploadList/:userId",
 				name: "ApplicantUploadedDocs",
-				component: () =>
-					import(
-						"@/views/admission/manager/applicantsUploadList/applicantUploadedDocs.vue"
-					),
+				component:
+					AdmissionManagerModules[
+						"/src/views/admission/manager/applicantsUploadList/applicantUploadedDocs.vue"
+					],
 			},
 			{
 				path: "userSetting",
 				name: "AdmissionManagerUserSetting",
-				component: () =>
-					import("@/views/admission/manager/managerUserSetting.vue"),
+				component:
+					AdmissionManagerModules[
+						"/src/views/admission/manager/managerUserSetting.vue"
+					],
 			},
 			{
 				path: "reviewerSettings",
 				name: "reviewerSettings",
-				component: () =>
-					import("@/views/admission/manager/ListReviewer.vue"),
+				component:
+					AdmissionManagerModules[
+						"/src/views/admission/manager/ListReviewer.vue"
+					],
 			},
 			{
 				path: "manageApplicants",
 				name: "manageApplicants",
-				component: () =>
-					import("@/views/admission/manager/ListApplicant.vue"),
+				component:
+					AdmissionManagerModules[
+						"/src/views/admission/manager/ListApplicant.vue"
+					],
 			},
 		],
 	},
@@ -416,61 +512,67 @@ const routes: Array<RouteRecordRaw> = [
 	{
 		path: "/admission/recommenderAuthVerify",
 		name: "RecommenderAuthVerify",
-		component: () =>
-			import("@/views/admission/recommender/AuthVerification.vue"),
+		component:
+			AdmissionRecommenderModules[
+				"/src/views/admission/recommender/AuthVerification.vue"
+			],
 	},
 	{
 		path: "/admission/recommendLetterFillIn",
 		name: "RecommendLetterFillIn",
-		component: () =>
-			import("@/views/admission/recommender/FillRecommendLetter.vue"),
+		component:
+			AdmissionRecommenderModules[
+				"/src/views/admission/recommender/FillRecommendLetter.vue"
+			],
 	},
 	{
 		path: "/recruitment/applicant",
 		name: "RecruitmentApplicantMainContainer",
-		component: () =>
-			import("@/views/recruitment/applicant/MainContainer.vue"),
+		component:
+			RecruitmentApplicantModules[
+				"/src/views/recruitment/applicant/MainContainer.vue"
+			],
 		children: [
 			//Recruitment - applicant info pages
 			{
 				path: "applicantInfo",
 				name: "recruitmentApplicantUserInfo",
-				component: () =>
-					import(
-						"@/views/recruitment/applicant/pages/ApplicantInfo.vue"
-					),
+				component:
+					RecruitmentApplicantModules[
+						"/src/views/recruitment/applicant/pages/ApplicantInfo.vue"
+					],
 			},
 			{
 				path: "attachmentFile",
 				name: "recruitmentApplicantAttachmentFile",
-				component: () =>
-					import(
-						"@/views/recruitment/applicant/pages/AttachmentFile.vue"
-					),
+				component:
+					RecruitmentApplicantModules[
+						"/src/views/recruitment/applicant/pages/AttachmentFile.vue"
+					],
 			},
 			{
 				path: "refillFile",
 				name: "recruitmentApplicantRefillFile",
-				component: () =>
-					import(
-						"@/views/recruitment/applicant/pages/RefillFile.vue"
-					),
+				component:
+					RecruitmentApplicantModules[
+						"/src/views/recruitment/applicant/pages/RefillFile.vue"
+					],
 			},
 			{
 				path: "switchProject",
 				name: "recruitmentApplicantSwitchProject",
-				component: () =>
-					import(
-						"@/views/recruitment/applicant/pages/SwitchProject.vue"
-					),
+				component:
+					RecruitmentApplicantModules[
+						"/src/views/recruitment/applicant/pages/SwitchProject.vue"
+					],
 			},
 			{
 				path: "userManagement",
 				name: "recruitmentApplicantUserManagement",
-				component: () =>
-					import(
-						"@/views/recruitment/applicant/pages/UserManagement.vue"
-					),
+				component:
+					RecruitmentApplicantModules[
+						"/src/views/recruitment/applicant/pages/UserManagement.vue"
+					],
 			},
 		],
 	},
@@ -478,126 +580,140 @@ const routes: Array<RouteRecordRaw> = [
 	{
 		path: "/recruitment/manager",
 		name: "RecruitmentAdminMainContainer",
-		component: () =>
-			import("@/views/recruitment/manager/MainContainer.vue"),
+		component:
+			RecruitmentManagerModules[
+				"/src/views/recruitment/manager/MainContainer.vue"
+			],
 		children: [
 			{
 				path: "projectSetting",
 				name: "recruitmentProjectSetting",
-				component: () =>
-					import(
-						"@/views/recruitment/manager/pages/ProjectSetting.vue"
-					),
+				component:
+					RecruitmentManagerModules[
+						"/src/views/recruitment/manager/pages/ProjectSetting.vue"
+					],
 			},
 			{
 				path: "reviewerSettings",
 				name: "recruitmentManagerManageReviewers",
-				component: () =>
-					import("@/views/recruitment/manager/ListReviewer.vue"),
+				component:
+					RecruitmentManagerModules[
+						"/src/views/recruitment/manager/ListReviewer.vue"
+					],
 			},
 			{
 				path: "ListApplicant",
 				name: "recruitmentManagerListApplicant",
-				component: () =>
-					import("@/views/recruitment/manager/ListApplicant.vue"),
+				component:
+					RecruitmentManagerModules[
+						"/src/views/recruitment/manager/ListApplicant.vue"
+					],
 			},
 			{
 				path: "gradeDataList",
 				name: "recruitmentGradeDataList",
-				component: () =>
-					import("@/views/recruitment/manager/gradeDataList.vue"),
+				component:
+					RecruitmentManagerModules[
+						"/src/views/recruitment/manager/gradeDataList.vue"
+					],
 			},
 			{
 				path: "reviewScoreField",
 				name: "recruitmentReviewScoreField",
-				component: () =>
-					import("@/views/recruitment/manager/reviewScoreField.vue"),
+				component:
+					RecruitmentManagerModules[
+						"/src/views/recruitment/manager/reviewScoreField.vue"
+					],
 			},
 			{
 				path: "reviewProgress",
 				name: "recruitmentManagerReviewProgress",
-				component: () =>
-					import(
-						"@/views/recruitment/manager/pages/ReviewProgress.vue"
-					),
+				component:
+					RecruitmentManagerModules[
+						"/src/views/recruitment/manager/pages/ReviewProgress.vue"
+					],
 			},
 			{
 				path: "mustviewSetting",
 				name: "recruitmentManagerMustviewSetting",
-				component: () =>
-					import(
-						"@/views/recruitment/manager/pages/mustviewSetting.vue"
-					),
+				component:
+					RecruitmentManagerModules[
+						"/src/views/recruitment/manager/pages/mustviewSetting.vue"
+					],
 			},
 			{
 				path: "attachmentList",
 				name: "recruitmentManagerApplicantUploadList",
-				component: () =>
-					import(
-						"@/views/recruitment/manager/pages/ApplicantUploadList/ApplicantList.vue"
-					),
+				component:
+					RecruitmentManagerModules[
+						"/src/views/recruitment/manager/pages/ApplicantUploadList/ApplicantList.vue"
+					],
 			},
 			{
 				path: "applicant/:userId",
 				name: "recruitmentManagerApplicant",
-				component: () =>
-					import(
-						"@/views/recruitment/manager/pages/ApplicantUploadList/Applicant.vue"
-					),
+				component:
+					RecruitmentManagerModules[
+						"/src/views/recruitment/manager/pages/ApplicantUploadList/Applicant.vue"
+					],
 			},
 			{
 				path: "userSetting",
 				name: "recruitmentManagerUserSetting",
-				component: () =>
-					import(
-						"@/views/recruitment/manager/pages/RecruitmentManagerSelfSetting.vue"
-					),
+				component:
+					RecruitmentManagerModules[
+						"/src/views/recruitment/manager/pages/RecruitmentManagerSelfSetting.vue"
+					],
 			},
 		],
 	},
 	{
 		path: "/recruitment/reviewer",
 		name: "RecruitmentReviewerMainContainer",
-		component: () =>
-			import("@/views/recruitment/reviewer/MainContainer.vue"),
+		component:
+			RecruitmentReviewerModules[
+				"/src/views/recruitment/reviewer/MainContainer.vue"
+			],
 		children: [
 			{
 				path: "requiredDataReview",
 				name: "requiredDataReview",
-				component: () =>
-					import(
-						"@/views/recruitment/reviewer/requiredDataReview.vue"
-					),
+				component:
+					RecruitmentReviewerModules[
+						"/src/views/recruitment/reviewer/requiredDataReview.vue"
+					],
 			},
 			{
 				path: "optionalDataReview",
 				name: "optionalDataReview",
-				component: () =>
-					import(
-						"@/views/recruitment/reviewer/optionalDataReview.vue"
-					),
+				component:
+					RecruitmentReviewerModules[
+						"/src/views/recruitment/reviewer/optionalDataReview.vue"
+					],
 			},
 			{
 				path: "singleRequiredDataReview/:id",
 				name: "singleRequiredDataReview",
-				component: () =>
-					import(
-						"@/views/recruitment/reviewer/singleRequiredDataReview.vue"
-					),
+				component:
+					RecruitmentReviewerModules[
+						"/src/views/recruitment/reviewer/singleRequiredDataReview.vue"
+					],
 			},
 			{
 				path: "singleOptionalDataReview/:id",
 				name: "singleOptionalDataReview",
-				component: () =>
-					import(
-						"@/views/recruitment/reviewer/singleOptionalDataReview.vue"
-					),
+				component:
+					RecruitmentReviewerModules[
+						"/src/views/recruitment/reviewer/singleOptionalDataReview.vue"
+					],
 			},
 			{
 				path: "userSetting",
 				name: "recruitmentReviewerUserSetting",
-				component: () =>
-					import("@/views/recruitment/reviewer/userSetting.vue"),
+				component:
+					RecruitmentReviewerModules[
+						"/src/views/recruitment/reviewer/userSetting.vue"
+					],
 			},
 		],
 	},
