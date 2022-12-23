@@ -207,7 +207,7 @@ const routes: Array<RouteRecordRaw> = [
 			},
 			{
 				path: "oralReview",
-				name: "oralReview",
+				name: "AdmissionReviewerOralReview",
 				component: () =>
 					import("@/views/admission/reviewer/oralReview.vue"),
 			},
