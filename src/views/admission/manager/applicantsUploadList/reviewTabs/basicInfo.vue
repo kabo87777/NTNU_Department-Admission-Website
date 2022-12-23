@@ -3,8 +3,6 @@
 		<div class="text-24px font-bold">{{ $t("姓名資訊") }}</div>
 		<div class="admApplicantBasicInfoCard">
 			<div style="color: #333333">
-				<div>{{ $t("稱謂") + $t(":") }}</div>
-				<div>{{ $t("後綴") + $t(":") }}</div>
 				<div>{{ $t("中文姓氏") + $t(":") }}</div>
 				<div>{{ $t("中文名字") + $t(":") }}</div>
 				<div>{{ $t("英文姓氏") + $t(":") }}</div>
@@ -12,10 +10,6 @@
 				<div>{{ $t("英文名字") + $t(":") }}</div>
 			</div>
 			<div class="font-bold ml-12px">
-				<div v-if="userInfo?.title">{{ userInfo?.title }}</div>
-				<div v-else>-</div>
-				<div v-if="userInfo?.suffix">{{ userInfo?.suffix }}</div>
-				<div v-else>-</div>
 				<div v-if="userInfo?.cn_surname">{{ userInfo.cn_surname }}</div>
 				<div v-else>-</div>
 				<div v-if="userInfo?.name">{{ userInfo?.name }}</div>
@@ -121,7 +115,7 @@
 		<div class="mt-24px text-24px font-bold">{{ $t("身份資料") }}</div>
 		<div class="admApplicantBasicInfoCard">
 			<div style="color: #333333">
-				<div>{{ $t("生理性別") + $t(":") }}</div>
+				<div>{{ $t("性別") + $t(":") }}</div>
 				<div>{{ $t("出生國家") + $t(":") }}</div>
 				<div>{{ $t("出生日期") + $t(":") }}</div>
 			</div>
@@ -149,7 +143,6 @@
 				<div v-else>-</div>
 			</div>
 		</div>
-		<div class="bigRedDivider !mt-32px" />
 	</div>
 </template>
 
@@ -166,13 +159,12 @@ const adminAuth = useAdmissionAdminAuthStore();
 const api = new AdmissionAdminAPI(adminAuth);
 
 const props = defineProps(["userId"]);
-console.log(props.userId, "check id");
+
 const userInfo = ref<AdmAdminGetApplicantInfo>();
 
 useQuery(
 	["adminApplicantBasicInfo"],
 	async () => {
-		console.log(props.userId);
 		return await api.getApplicantBasicInfo(props.userId);
 	},
 	{

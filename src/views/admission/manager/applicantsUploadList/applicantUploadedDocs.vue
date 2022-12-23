@@ -1,43 +1,46 @@
 <template>
-	<div>
-		<div class="flex">
-			<div class="prevPage">
-				<router-link to="/admission/manager/applicantsUploadList"
-					><i class="pi pi-chevron-left"></i
-					>{{ $t("上傳資料列表") }}</router-link
+	<Layout Admin noMargin noFooter>
+		<template #Header>
+			<div class="flex">
+				<div class="prevPage">
+					<router-link to="/admission/manager/applicantsUploadList"
+						><i class="pi pi-chevron-left"></i
+						>{{ $t("上傳資料列表") }}</router-link
+					>
+				</div>
+				<div class="ml-32px font-bold text-32px">
+					{{ userInfo.admission_id + " " + userInfo.name }}
+				</div>
+			</div>
+		</template>
+		<template #Body>
+			<div class="p-fluid">
+				<SelectButton
+					class="mt-16px"
+					v-model="activeTab"
+					:options="tabs"
+					optionLabel="name"
+					aria-labelledby="single"
+					:unselectable="false"
 				>
+					<template #option="slotProps">
+						<div class="m-auto text-20px font-bold">
+							{{ $t(slotProps.option.name) }}
+						</div>
+					</template>
+				</SelectButton>
 			</div>
-			<div class="ml-32px font-bold text-32px">
-				{{ userInfo.admission_id + " " + userInfo.name }}
+			<div class="mt-8px" v-if="activeTab.value === 1">
+				<BasicInfo :userId="Number(route.params.userId)" />
 			</div>
-		</div>
-		<div class="bigRedDivider" style="margin-top: 12px"></div>
-		<div class="p-fluid">
-			<SelectButton
-				class="mt-16px"
-				v-model="activeTab"
-				:options="tabs"
-				optionLabel="name"
-				aria-labelledby="single"
-				:unselectable="false"
-			>
-				<template #option="slotProps">
-					<div class="m-auto text-20px font-bold">
-						{{ $t(slotProps.option.name) }}
-					</div>
-				</template>
-			</SelectButton>
-		</div>
-		<div class="mt-8px" v-if="activeTab.value === 1">
-			<BasicInfo :userId="userInfo.id" />
-		</div>
-		<div class="mt-8px" v-if="activeTab.value === 2">
-			<AttachmentInfo :userId="userInfo.id" />
-		</div>
-		<div class="mt-8px" v-if="activeTab.value === 3">
-			<AdditionalInfo :userId="userInfo.id" />
-		</div>
-	</div>
+			<div class="mt-8px" v-if="activeTab.value === 2">
+				<AttachmentInfo :userId="Number(route.params.userId)" />
+			</div>
+			<div class="mt-8px" v-if="activeTab.value === 3">
+				<AdditionalInfo :userId="Number(route.params.userId)" />
+			</div>
+		</template>
+	</Layout>
 </template>
 
 <script setup lang="ts">
@@ -58,7 +61,7 @@ const adminAuth = useAdmissionAdminAuthStore();
 const api = new AdmissionAdminAPI(adminAuth);
 
 const route = useRoute();
-console.log(route.params);
+
 const userInfo: AdmAdminGetApplicantInfoHeader =
 	reactive<AdmAdminGetApplicantInfoHeader>(
 		{} as AdmAdminGetApplicantInfoHeader

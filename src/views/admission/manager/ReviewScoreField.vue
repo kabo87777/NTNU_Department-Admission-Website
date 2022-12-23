@@ -133,7 +133,6 @@
 					</label>
 				</div>
 				<div class="flex mx-10 gap-8" text="secondary">
-					<div>{{ trans.details.suffix.value }}</div>
 					<div>{{ trans.details.chineseName.value }}</div>
 					<div>{{ trans.details.englishName.value }}</div>
 				</div>
@@ -384,7 +383,6 @@ const trans = {
 		5: computed(() => t("項目五")),
 	},
 	details: {
-		suffix: computed(() => t("※ 稱謂/後綴")),
 		chineseName: computed(() => t("※ 中文姓氏/名字")),
 		englishName: computed(() => t("※ 英文姓氏/中間名/名字")),
 		locals: computed(() => t("※ 本國人士")),
