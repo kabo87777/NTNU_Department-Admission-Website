@@ -29,13 +29,13 @@
 			</SelectButton>
 		</div>
 		<div class="mt-8px" v-if="activeTab.value === 1">
-			<BasicInfo :userId="userInfo.id" />
+			<BasicInfo :userId="Number(route.params.userId)" />
 		</div>
 		<div class="mt-8px" v-if="activeTab.value === 2">
-			<AttachmentInfo :userId="userInfo.id" />
+			<AttachmentInfo :userId="Number(route.params.userId)" />
 		</div>
 		<div class="mt-8px" v-if="activeTab.value === 3">
-			<AdditionalInfo :userId="userInfo.id" />
+			<AdditionalInfo :userId="Number(route.params.userId)" />
 		</div>
 	</div>
 </template>
@@ -58,7 +58,7 @@ const adminAuth = useAdmissionAdminAuthStore();
 const api = new AdmissionAdminAPI(adminAuth);
 
 const route = useRoute();
-console.log(route.params);
+
 const userInfo: AdmAdminGetApplicantInfoHeader =
 	reactive<AdmAdminGetApplicantInfoHeader>(
 		{} as AdmAdminGetApplicantInfoHeader
