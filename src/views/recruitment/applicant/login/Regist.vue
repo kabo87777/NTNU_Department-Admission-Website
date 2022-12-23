@@ -104,10 +104,10 @@
 		<template #Content>
 			<!-- Regist Successful -->
 			<div flex="~ col" text="success xl" class="items-center py-10">
-				<i
-					class="pi pi-check-circle"
-					m="b-4 r-2"
-					style="font-size: 4rem"
+				<img
+					src="/assets/recruit-manger-page/success.gif"
+					width="100"
+					height="100"
 				/>
 				<div>註冊成功</div>
 				<div>Successfull</div>

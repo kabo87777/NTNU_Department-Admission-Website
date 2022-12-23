@@ -216,6 +216,7 @@ onMounted(async () => {
 	border: 3px dashed rgb(174, 174, 174);
 	border-radius: 16px;
 	background-color: rgb(244, 244, 244);
+	/* width:; */
 }
 
 .emptyContainer {
@@ -224,9 +225,14 @@ onMounted(async () => {
 	font-size: 20px;
 	font-weight: bold;
 	margin-top: 16px;
-	padding: 24px 32px;
+	padding: 0 32px 24px 32px;
+	/* padding: 24px 32px; */
 	border: 3px dashed rgb(174, 174, 174);
 	border-radius: 16px;
 	background-color: rgb(244, 244, 244);
+}
+.grid {
+	display: grid;
+	grid-template-columns: auto auto;
 }
 </style>

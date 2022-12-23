@@ -133,7 +133,6 @@ import { AdmissionAdminAPI } from "@/api/admission/admin/api";
 import { useQuery } from "@tanstack/vue-query";
 import { useToast } from "primevue/usetoast";
 import { AdmAdminGetApplicantInfo } from "@/api/admission/admin/types";
-import ParagraphDivider from "../../../../../styles/paragraphDivider.vue";
 import { ref } from "vue";
 import { useGlobalStore } from "@/stores/globalStore";
 const adminAuth = useAdmissionAdminAuthStore();
@@ -193,5 +192,10 @@ useQuery(
 	border: 3px dashed rgb(174, 174, 174);
 	border-radius: 16px;
 	background-color: rgb(244, 244, 244);
+}
+.grid {
+	display: grid;
+	grid-template-columns: auto auto;
+	column-gap: 20px;
 }
 </style>
