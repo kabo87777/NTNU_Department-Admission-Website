@@ -2,6 +2,7 @@
 	<div class="grid">
 		<div>
 			<div class="mt-24px text-24px font-bold">{{ $t("姓名資訊") }}</div>
+
 			<div class="admApplicantBasicInfoCard">
 				<div style="color: #333333">
 					<div>{{ $t("中文姓氏") + $t(":") }}</div>
@@ -70,7 +71,7 @@
 			</div>
 		</div>
 		<div>
-			<div class="mt-24px text-24px font-bold">{{ $t("現居地址") }}</div>
+			<div class="mt-24px text-24px font-bold">{{ $t("通訊地址") }}</div>
 			<div class="admApplicantBasicInfoCard">
 				<div style="color: #333333">
 					<div>{{ $t("地址") + $t(":") }}</div>
