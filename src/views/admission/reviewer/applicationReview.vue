@@ -124,7 +124,7 @@
 			<div class="flex text-xl mt-20px">
 				<NButton
 					type="Reviewer"
-					class="w-140px h-44px !ml-1200px"
+					class="w-150px h-44px !ml-1200px"
 					@click="confirmGrading"
 				>
 					<img
