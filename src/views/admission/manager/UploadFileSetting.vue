@@ -1,8 +1,8 @@
 <template>
-	<Layout Admin>
+	<Layout Admin noMargin>
 		<template #Header> {{ trans.uploadField.value }} </template>
 		<template #Body>
-			<div class="p-fluid" pos="sticky top-0">
+			<div class="p-fluid" pos="sticky top-0" z="50">
 				<SelectButton
 					v-model="activeTab"
 					:options="tabOptions"
