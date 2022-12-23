@@ -111,13 +111,11 @@
 </template>
 
 <script setup lang="ts">
-import { toRaw, reactive } from "vue";
-import { router } from "@/router";
+import { reactive } from "vue";
 import { useRecruitmentAdminAuthStore } from "@/stores/universalAuth";
 import { RecruitmentAdminAPI } from "@/api/recruitment/admin/api";
 import { useGlobalStore } from "@/stores/RecruitmentAdminStore";
 import { useQuery } from "@tanstack/vue-query";
-import { InvalidSessionError } from "@/api/error";
 import { RecruitmentAdminApplicantsListResponse } from "@/api/recruitment/admin/types";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
@@ -133,7 +131,7 @@ const applicantList: RecruitmentAdminApplicantsListResponse[] = reactive<
 	RecruitmentAdminApplicantsListResponse[]
 >([] as RecruitmentAdminApplicantsListResponse[]);
 
-const { data } = useQuery(
+useQuery(
 	["applicantList"],
 	async () => {
 		if (!programId) throw new Error("invalid programId");
