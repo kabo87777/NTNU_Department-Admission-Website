@@ -156,10 +156,12 @@ useQuery(
 );
 
 useQuery(
-	["getAdmApplicantProgramInfo"],
+	["getAdmApplicantProgramInfo_basicInfo"],
 	async () => {
 		if (!store.program)
-			throw new Error("getAdmApplicantProgramInfo: no program selected");
+			throw new Error(
+				"getAdmApplicantProgramInfo_basicInfo: no program selected"
+			);
 
 		const allData = await api.getProgramList();
 		return allData[store.program.id - 1];
@@ -178,7 +180,6 @@ useQuery(
 				detail: "Unable to fetch user require input",
 				life: 5000,
 			});
-			console.log(data);
 		},
 	}
 );

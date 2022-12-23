@@ -159,10 +159,12 @@ const splitThreeList = async (
 };
 
 useQuery(
-	["getAdmApplicantProgramInfo"],
+	["getAdmApplicantProgramInfo_attachment"],
 	async () => {
 		if (!store.program)
-			throw new Error("getAdmApplicantProgramInfo: no program selected");
+			throw new Error(
+				"getAdmApplicantProgramInfo_attachment: no program selected"
+			);
 
 		const allData = await api.getProgramList();
 		return allData[store.program.id - 1];
@@ -181,7 +183,6 @@ useQuery(
 				detail: "Unable to fetch user require input",
 				life: 5000,
 			});
-			console.log(data);
 		},
 	}
 );
