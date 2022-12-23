@@ -117,10 +117,6 @@ export default defineConfig({
         manualChunks(id, { getModuleInfo, getModuleIds }) {
           const relativePath = id.replace(__dirname, "");
 
-          if (relativePath.startsWith('/node_modules/')) {
-            return 'vendor';
-          }
-
           for (const [moduleName, globs] of Object.entries(moduleChunks)) {
             if (globs.some(g => minimatch(relativePath, g.replace(/^@\//, "/src/")))) {
               return moduleName;
