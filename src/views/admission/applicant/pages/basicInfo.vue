@@ -492,7 +492,7 @@ const setBasicInfo = (res: AdmissionApplicantGetUserInfoResponse) => {
 	name.enName = res.en_givenname as string;
 
 	if (res.nationality === "台灣") {
-		identity.selectedIdentity = "本地人士";
+		identity.selectedIdentity = "本國人士";
 		identity.ic = res.national_id as string;
 		identity.nationality = res.nationality as string;
 	} else if (res.nationality !== null) {
