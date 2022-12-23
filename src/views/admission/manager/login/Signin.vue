@@ -124,8 +124,8 @@ const userInfo = useAdminInfoStore();
 // Login Form
 const turnstileRef = ref<TurnstileComponentExposes>();
 const isRememberAccount = ref(false);
-const email = ref("ntnuaadmin1@yopmail.com");
-const password = ref("Example123");
+const email = ref(import.meta.env.VITE_ADMISSION_MANAGER_USERNAME);
+const password = ref(import.meta.env.VITE_ADMISSION_MANAGER_PASSWORD);
 const isTurnstileRunning = computed(() => !turnstileRef.value?.turnstileToken);
 
 // TODO: i18n error message

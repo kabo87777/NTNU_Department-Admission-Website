@@ -124,8 +124,8 @@ const userInfo = useUserInfoStore();
 // Login Form
 const turnstileRef = ref<TurnstileComponentExposes>();
 const isRememberAccount = ref(false);
-const username = ref("1110101");
-const password = ref("Example123");
+const username = ref(import.meta.env.VITE_ADMISSION_APPLICANT_USERNAME);
+const password = ref(import.meta.env.VITE_ADMISSION_APPLICANT_PASSWORD);
 const isTurnstileRunning = computed(() => !turnstileRef.value?.turnstileToken);
 
 // TODO: i18n error message
