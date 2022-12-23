@@ -5,11 +5,33 @@ import {
 	createWebHistory,
 } from "vue-router";
 
+const loadModulesGlob = (modules: Record<string, unknown>) =>
+	Object.fromEntries(
+		Object.entries(modules).map(([k, v]: [string, any]) => [k, v.default])
+	);
+
+const LandingModules = loadModulesGlob(
+	import.meta.glob(
+		[
+			"@/views/*.vue",
+			"@/views/admission/*.vue",
+			"@/views/admission/applicant/login/*.vue",
+			"@/views/admission/reviewer/login/*.vue",
+			"@/views/admission/manager/login/*.vue",
+			"@/views/recruitment/*.vue",
+			"@/views/recruitment/applicant/login/*.vue",
+			"@/views/recruitment/reviewer/login/*.vue",
+			"@/views/recruitment/manager/login/*.vue",
+		],
+		{ eager: true }
+	)
+);
+
 const routes: Array<RouteRecordRaw> = [
 	{
 		path: "/",
 		name: "LandingView",
-		component: () => import("@/views/LandingView.vue"),
+		component: LandingModules["/src/views/LandingView.vue"],
 		children: [
 			// Admission - choose role
 			{
@@ -18,8 +40,8 @@ const routes: Array<RouteRecordRaw> = [
 				meta: {
 					titleKey: "登入頁面",
 				},
-				component: () =>
-					import("@/views/admission/AdmissionSignin.vue"),
+				component:
+					LandingModules["/src/views/admission/AdmissionSignin.vue"],
 			},
 			// Admission - first signin change password
 			{
@@ -28,80 +50,99 @@ const routes: Array<RouteRecordRaw> = [
 				meta: {
 					titleKey: "登入頁面",
 				},
-				component: () => import("@/views/admission/FirstSignin.vue"),
+				component:
+					LandingModules["/src/views/admission/FirstSignin.vue"],
 			},
 			// Admission - Applicant
 			{
 				path: "admission/applicant/signin",
 				name: "AdmissionApplicantSignin",
-				component: () =>
-					import("@/views/admission/applicant/login/Signin.vue"),
+				component:
+					LandingModules[
+						"/src/views/admission/applicant/login/Signin.vue"
+					],
 			},
 			{
 				path: "admission/applicant/password/reset",
 				name: "AdmissionApplicantResetPassword",
-				component: () =>
-					import("@/views/admission/applicant/login/PwdReset.vue"),
+				component:
+					LandingModules[
+						"/src/views/admission/applicant/login/PwdReset.vue"
+					],
 			},
 			{
 				path: "admission/applicant/forgetPassword",
 				name: "AdmissionApplicantForgetPassword",
-				component: () =>
-					import("@/views/admission/applicant/login/PwdForget.vue"),
+				component:
+					LandingModules[
+						"/src/views/admission/applicant/login/PwdForget.vue"
+					],
 			},
 			{
 				path: "admission/applicant/setupaccount",
 				name: "AdmissionApplicantFirstLoginSetupAccount",
-				component: () =>
-					import(
-						"@/views/admission/applicant/login/FirstLoginSetupAccount.vue"
-					),
+				component:
+					LandingModules[
+						"/src/views/admission/applicant/login/FirstLoginSetupAccount.vue"
+					],
 			},
 			// Admission - Reviewer
 			{
 				path: "admission/reviewer/signin",
 				name: "AdmissionReviewerSignin",
-				component: () =>
-					import("@/views/admission/reviewer/login/Signin.vue"),
+				component:
+					LandingModules[
+						"/src/views/admission/reviewer/login/Signin.vue"
+					],
 			},
 			{
 				path: "admission/reviewer/forgetpassword",
 				name: "AdmissionReviewerForgetpassword",
-				component: () =>
-					import("@/views/admission/reviewer/login/PwdForget.vue"),
+				component:
+					LandingModules[
+						"/src/views/admission/reviewer/login/PwdForget.vue"
+					],
 			},
 			{
 				path: "admission/reviewer/password/reset",
 				name: "AdmissionReviewerResetPassword",
-				component: () =>
-					import("@/views/admission/reviewer/login/PwdReset.vue"),
+				component:
+					LandingModules[
+						"/src/views/admission/reviewer/login/PwdReset.vue"
+					],
 			},
 			{
 				path: "admission/reviewer/setupaccount",
 				name: "AdmissionReviewerFirstLoginSetupAccount",
-				component: () =>
-					import(
-						"@/views/admission/reviewer/login/FirstLoginSetupAccount.vue"
-					),
+				component:
+					LandingModules[
+						"/src/views/admission/reviewer/login/FirstLoginSetupAccount.vue"
+					],
 			},
 			// Admission - Manager
 			{
 				path: "admission/manager/signin",
 				name: "AdmissionManagerSignin",
-				component: () =>
-					import("@/views/admission/manager/login/Signin.vue"),
+				component:
+					LandingModules[
+						"/src/views/admission/manager/login/Signin.vue"
+					],
 			},
 			{
 				path: "admission/manager/forgetPassword",
 				name: "AdmissionManagerForgetPassword",
-				component: () =>
-					import("@/views/admission/manager/login/PwdForget.vue"),
+				component:
+					LandingModules[
+						"/src/views/admission/manager/login/PwdForget.vue"
+					],
 			},
 			{
 				path: "admission/manager/password/reset",
 				name: "AdmissionManagerResetPassword",
-				component: () =>
-					import("@/views/admission/manager/login/PwdReset.vue"),
+				component:
+					LandingModules[
+						"/src/views/admission/manager/login/PwdReset.vue"
+					],
 			},
 			// Recruitment - choose role
 			{
@@ -110,85 +151,109 @@ const routes: Array<RouteRecordRaw> = [
 				meta: {
 					titleKey: "登入頁面",
 				},
-				component: () =>
-					import("@/views/recruitment/RecruitmentSignin.vue"),
+				component:
+					LandingModules[
+						"/src/views/recruitment/RecruitmentSignin.vue"
+					],
 			},
 			// Recruitment - Applicant
 			{
 				path: "recruitment/applicant/signin",
 				name: "RecruitmentApplicantSignin",
-				component: () =>
-					import("@/views/recruitment/applicant/login/Signin.vue"),
+				component:
+					LandingModules[
+						"/src/views/recruitment/applicant/login/Signin.vue"
+					],
 			},
 			{
 				path: "recruitment/applicant/regist",
 				name: "recruitmentApplicantRegist",
-				component: () =>
-					import("@/views/recruitment/applicant/login/Regist.vue"),
+				component:
+					LandingModules[
+						"/src/views/recruitment/applicant/login/Regist.vue"
+					],
 			},
 			{
 				path: "recruitment/applicant/password/reset",
 				name: "recruitmentApplicantPasswordReset",
-				component: () =>
-					import("@/views/recruitment/applicant/login/PwdReset.vue"),
+				component:
+					LandingModules[
+						"/src/views/recruitment/applicant/login/PwdReset.vue"
+					],
 			},
 			{
 				path: "recruitment/applicant/forgetpassword",
 				name: "recruitmentApplicantPasswordForget",
-				component: () =>
-					import("@/views/recruitment/applicant/login/PwdForget.vue"),
+				component:
+					LandingModules[
+						"/src/views/recruitment/applicant/login/PwdForget.vue"
+					],
 			},
 			// Recruitment - Reviewer
 			{
 				path: "recruitment/reviewer/signin",
 				name: "RecruitmentReviewerSignin",
-				component: () =>
-					import("@/views/recruitment/reviewer/login/Signin.vue"),
+				component:
+					LandingModules[
+						"/src/views/recruitment/reviewer/login/Signin.vue"
+					],
 			},
 			{
 				path: "recruitment/reviewer/password/reset",
 				name: "recruitmenReviewerPasswordReset",
-				component: () =>
-					import("@/views/recruitment/reviewer/login/PwdReset.vue"),
+				component:
+					LandingModules[
+						"/src/views/recruitment/reviewer/login/PwdReset.vue"
+					],
 			},
 			{
 				path: "recruitment/reviewer/forgetpassword",
 				name: "recruitmentReviewerPasswordForget",
-				component: () =>
-					import("@/views/recruitment/reviewer/login/PwdForget.vue"),
+				component:
+					LandingModules[
+						"/src/views/recruitment/reviewer/login/PwdForget.vue"
+					],
 			},
 			{
 				path: "recruitment/reviewer/setupaccount",
 				name: "recruitmentReviewerFirstLoginSetupAccount",
-				component: () =>
-					import(
-						"@/views/recruitment/reviewer/login/FirstLoginSetupAccount.vue"
-					),
+				component:
+					LandingModules[
+						"/src/views/recruitment/reviewer/login/FirstLoginSetupAccount.vue"
+					],
 			},
 			// Recruitment - Manager
 			{
 				path: "recruitment/manager/signin",
 				name: "RecruitmentManagerSignin",
-				component: () =>
-					import("@/views/recruitment/manager/login/Signin.vue"),
+				component:
+					LandingModules[
+						"/src/views/recruitment/manager/login/Signin.vue"
+					],
 			},
 			{
 				path: "recruitment/manager/password/reset",
 				name: "recruitmentManagerPasswordReset",
-				component: () =>
-					import("@/views/recruitment/manager/login/PwdReset.vue"),
+				component:
+					LandingModules[
+						"/src/views/recruitment/manager/login/PwdReset.vue"
+					],
 			},
 			{
 				path: "recruitment/manager/forgetpassword",
 				name: "recruitmentManagerPasswordForget",
-				component: () =>
-					import("@/views/recruitment/manager/login/PwdForget.vue"),
+				component:
+					LandingModules[
+						"/src/views/recruitment/manager/login/PwdForget.vue"
+					],
 			},
 			{
 				path: "recruitment/manager/firstSignin",
 				name: "recruitmentManagerFirstSigninChangePassword",
-				component: () =>
-					import("@/views/recruitment/manager/login/FirstSignin.vue"),
+				component:
+					LandingModules[
+						"/src/views/recruitment/manager/login/FirstSignin.vue"
+					],
 			},
 		],
 	},

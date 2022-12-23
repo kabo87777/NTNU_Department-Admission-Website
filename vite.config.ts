@@ -24,7 +24,6 @@ process.env.VITE_RECRUITMENT_MANAGER_USERNAME = "ntnuradmin1@yopmail.com"
 process.env.VITE_RECRUITMENT_MANAGER_PASSWORD = "Example123"
 
 if (!process.env.VITE_ADMISSIONS_API_ENDPOINT) {
-  console.log(process.env.VERCEL_ENV)
   if (process.env.VERCEL_ENV) {
     // project being built on Vercel
     if (process.env.VERCEL_ENV === "production") {
