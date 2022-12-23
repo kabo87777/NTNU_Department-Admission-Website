@@ -24,6 +24,7 @@ process.env.VITE_RECRUITMENT_MANAGER_USERNAME = "ntnuradmin1@yopmail.com"
 process.env.VITE_RECRUITMENT_MANAGER_PASSWORD = "Example123"
 
 if (!process.env.VITE_ADMISSIONS_API_ENDPOINT) {
+  console.log(process.env.VERCEL_ENV)
   if (process.env.VERCEL_ENV) {
     // project being built on Vercel
     if (process.env.VERCEL_ENV === "production") {
@@ -61,17 +62,13 @@ if (!process.env.VITE_ADMISSIONS_API_ENDPOINT) {
     else process.env.VITE_ADMISSIONS_API_ENDPOINT = "http://127.0.0.1:3000";
   }
 }
-
 if (!process.env.VITE_IS_SKIP_CAPTCHA) {
   // by default, we only enable CAPTCHA for Vercel production environment
   process.env.VITE_IS_SKIP_CAPTCHA =
     process.env.VERCEL_ENV === "production" ? "false" : "true";
 }
 
-console.log(
-  "VITE_ADMISSIONS_API_ENDPOINT =",
-  process.env.VITE_ADMISSIONS_API_ENDPOINT
-);
+console.log(Object.keys(process.env).filter(e => e.startsWith("VITE_")).map(e => `${e}=${process.env[e]}`))
 
 // https://vitejs.dev/config/
 export default defineConfig({
