@@ -2,9 +2,13 @@
 	<h1 class="text-4xl text-bold tracking-widest">{{ $t("必看名單設置") }}</h1>
 	<div class="bigRedDivider"></div>
 	<div class="text-2xl text-bold tracking-widest mt-5px">{{ hint }}</div>
-	<div class="newsCard h-80px">
-		{{ message }}
+	<div class="newsCard h-80px" v-if="assign">
+		{{ $t("已將") }} {{ message }} {{ $t("指派給") }} {{ message2 }}
 	</div>
+	<div class="newsCard h-80px" v-else-if="del">
+		{{ $t("已刪除") }} {{ message }} {{ $t("的所有必看名單刪除") }}
+	</div>
+	<div class="newsCard h-80px" v-else></div>
 	<div class="flex justify-around !h-620px mt-10px">
 		<DataTable
 			:value="applicantList1"
@@ -109,7 +113,7 @@ const applicantList = ref<RecruitmentAdminApplicantsListResponse[]>([]);
 const applicantList1 = ref<RecruitmentAdminApplicantsListResponse[]>([]);
 const applicantList2 = ref<RecruitmentAdminApplicantsListResponse[]>([]);
 const applicantList3 = ref<RecruitmentAdminApplicantsListResponse[]>([]);
-const allSelectedApplicants = ref<number[]>();
+const allSelectedApplicants = ref<string[]>();
 
 interface Relation {
 	applicant_id: number;
@@ -118,6 +122,10 @@ interface Relation {
 const allRelations = ref<Relation[]>([]);
 const deleteRelations = ref<Relation[]>([]);
 const message = ref<string>("");
+const message2 = ref<string>("");
+
+const assign = ref(false);
+const del = ref(false);
 
 const name = computed(() => t("申請人姓名"));
 const hint = computed(() => t("若沒勾選，則會設置為選看名單"));
@@ -178,17 +186,16 @@ const batchUpdateRelation = useMutation(
 	},
 	{
 		onSuccess: () => {
+			del.value = false;
+			assign.value = true;
 			toast.add({
 				severity: "success",
 				summary: "Success",
 				detail: "保存成功",
 				life: 3000,
 			});
-			message.value =
-				"已將" +
-				allSelectedApplicants.value +
-				"指派給" +
-				selectedReviewer.value.name;
+			message.value = "" + allSelectedApplicants!.value!;
+			message2.value = selectedReviewer.value.name;
 		},
 		onError: () => {
 			toast.add({
@@ -217,14 +224,15 @@ const batchDeleteRelation = useMutation(
 	},
 	{
 		onSuccess: () => {
+			assign.value = false;
+			del.value = true;
 			toast.add({
 				severity: "success",
 				summary: "Success",
 				detail: "刪除成功",
 				life: 3000,
 			});
-			message.value =
-				"已將" + selectedReviewer.value.name + "的所有必看名單刪除";
+			message.value = selectedReviewer.value.name;
 		},
 		onError: () => {
 			toast.add({
@@ -243,6 +251,29 @@ store.$subscribe(() => {
 });
 
 function save() {
+	if (
+		!selectedReviewer.value &&
+		!selectedApplicant1.value &&
+		!selectedApplicant2.value &&
+		!selectedApplicant3.value
+	) {
+		toast.add({
+			severity: "error",
+			summary: "Error",
+			detail: "請選擇審查委員和申請人",
+			life: 3000,
+		});
+		return;
+	}
+	if (!selectedReviewer.value) {
+		toast.add({
+			severity: "error",
+			summary: "Error",
+			detail: "請選擇審查委員",
+			life: 3000,
+		});
+		return;
+	}
 	allSelectedApplicants.value = [];
 	allRelations.value = [];
 	if (selectedApplicant1.value) {

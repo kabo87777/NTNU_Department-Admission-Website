@@ -390,5 +390,9 @@
   "是否要刪除此審查委員的所有必看名單？": "Do you want to delete all required list of this reviewer?",
   "此動作不可回復，請謹慎操作": "This action cannot be undone, please be careful",
   "最高學歷": "Highest Education",
-  "著作": "Publication"
+  "著作": "Publication",
+  "已將": "",
+  "指派給": " is assigned to",
+  "已刪除": "Already deleted",
+  "的所有必看名單刪除": " required view list"
 }
