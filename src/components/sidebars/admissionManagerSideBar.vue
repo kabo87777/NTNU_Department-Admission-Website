@@ -266,6 +266,8 @@
 		header="新增專案"
 		v-model:visible="isDisplayNewProjectPrompt"
 		:closable="false"
+		:draggable="false"
+		:modal="true"
 	>
 		<div space="y-1">
 			<div text="body">{{ $t("專案名稱") }}</div>

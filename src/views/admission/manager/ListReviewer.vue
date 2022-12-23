@@ -67,7 +67,11 @@
 				@submit="createReviewer"
 			/>
 
-			<Dialog :modal="true" v-model:visible="assignProgramModal.visible">
+			<Dialog
+				:modal="true"
+				v-model:visible="assignProgramModal.visible"
+				:draggable="false"
+			>
 				<template #header>
 					<h3 class="font-black text-lg">
 						{{ $t("指派審查者至專案") }}
@@ -96,7 +100,7 @@
 					/>
 				</template>
 			</Dialog>
-			<ConfirmDialog />
+			<ConfirmDialog :draggable="false" />
 		</template>
 		<template #Footer>
 			<div flex="~" justify="center" gap="4">
