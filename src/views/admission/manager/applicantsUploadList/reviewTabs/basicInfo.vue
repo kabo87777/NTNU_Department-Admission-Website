@@ -143,7 +143,6 @@
 				<div v-else>-</div>
 			</div>
 		</div>
-		<div class="bigRedDivider !mt-32px" />
 	</div>
 </template>
 
@@ -160,13 +159,12 @@ const adminAuth = useAdmissionAdminAuthStore();
 const api = new AdmissionAdminAPI(adminAuth);
 
 const props = defineProps(["userId"]);
-console.log(props.userId, "check id");
+
 const userInfo = ref<AdmAdminGetApplicantInfo>();
 
 useQuery(
 	["adminApplicantBasicInfo"],
 	async () => {
-		console.log(props.userId);
 		return await api.getApplicantBasicInfo(props.userId);
 	},
 	{
