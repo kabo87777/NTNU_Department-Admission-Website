@@ -1,5 +1,5 @@
 <template>
-	<div class="grid">
+	<div >
 		<div>
 			<div class="mt-24px text-24px font-bold">{{ $t("姓名資訊") }}</div>
 
