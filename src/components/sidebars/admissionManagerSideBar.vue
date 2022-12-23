@@ -1,15 +1,17 @@
 <template>
-	<div class="relative" style="height: 100%">
-		<div class="flex mt-32px">
-			<div class="sidebarVerticalBigRedDivider"></div>
-			<div class="sidebarVerticalSmallRedDivider"></div>
-			<div class="ml-12px w-[100%]">
+	<div p="t-8" w="full" h="full" pos="relative">
+		<!-- 專案選單 -->
+		<div flex="~">
+			<div w="2" h="15" mr="1" bg="nRed-500" />
+			<div w="1" h="15" bg="nRed-500" />
+			<div flex="grow" mx="4">
 				<Dropdown
 					v-model="selectedProgram"
 					:options="programs"
 					:optionLabel="generateOptions"
 					:loading="isLoading"
-					class="h-60px w-[93%]"
+					class="h-15 w-full"
+					border="rounded-lg 1 nGrey-800"
 					style="border-radius: 8px; border: 1px solid black"
 				>
 					<template #value="slotProps">
@@ -25,32 +27,34 @@
 				</Dropdown>
 			</div>
 		</div>
-
-		<div v-if="!noProgram || newProgram">
-			<router-link
-				to="/admission/manager/projectSetting"
-				custom
-				v-slot="{ navigate }"
-			>
-				<Button
-					class="p-button-secondary p-button-text !ml-24px !mt-32px !w-[85%] !h-48px"
-					@click="navigate"
-					role="link"
+		<!-- 頁面按鈕 -->
+		<div
+			v-if="!noProgram || newProgram"
+			h="[calc(100%-14rem)]"
+			overflow="y-auto"
+			scrollbar="thin thumb-nRed-100 thumb-rounded-full"
+		>
+			<div flex="~ col gap-6" mt="6">
+				<!-- 1.專案設定 -->
+				<router-link
+					to="/admission/manager/projectSetting"
+					custom
+					v-slot="{ navigate }"
 				>
-					<img
-						alt="logo"
-						src="/assets/sidebar/Setting_line.png"
-						style="width: 18px"
-					/>
-					<span
-						class="text-left tracking-3px ml-3 font-bold text-[18px] text-[#2D2926]"
-					>
-						{{ $t("專案設定") }}
-					</span>
-				</Button>
-			</router-link>
-
-			<Button
+					<NButton
+						Admin
+						white
+						icon="pi pi-cog"
+						size="lg"
+						class="py-3 px-6 mx-6 gap-4 !justify-start"
+						:class="letterSpace"
+						@click="navigate"
+						:isSelected="gateway === 'AdmissionAdminProjectSetting'"
+						>{{ $t("專案設定") }}
+					</NButton>
+				</router-link>
+				<!-- 2.專案狀態 -->
+				<!-- <Button
 				class="p-button-secondary p-button-text !ml-24px !mt-8px !w-[85%] !h-48px"
 			>
 				<img
@@ -63,412 +67,240 @@
 				>
 					{{ $t("專案狀態") }}
 				</span>
-			</Button>
-
-			<div class="flex mt-32px">
-				<div class="sidebarRedDivider"></div>
-				<div
-					class="mt-[-8px] ml-8px text-[#874B52] text-18px font-bold"
-				>
-					{{ $t("申請端設定") }}
+			</Button> -->
+				<!-- Divider -->
+				<div flex="~ gap-4" class="items-center" :class="letterSpace">
+					<div w="1/10" h="!1px" bg="nRed" />
+					<div my="auto" text="lg pAdmin">{{ $t("申請端設定") }}</div>
 				</div>
-			</div>
-			<RouterLink
-				to="/admission/manager/manageApplicants"
-				custom
-				v-slot="{ navigate }"
-			>
-				<Button
-					class="p-button-secondary p-button-text !ml-24px !mt-18px !w-[85%] !h-48px"
-					@click="navigate"
+				<!-- 3.申請帳號設置 -->
+				<RouterLink
+					to="/admission/manager/manageApplicants"
+					custom
+					v-slot="{ navigate }"
 				>
-					<img
-						alt="logo"
-						src="/assets/sidebar/User_add_alt.png"
-						style="width: 18px"
-					/>
-					<span
-						class="text-left tracking-3px ml-3 font-bold text-18px text-[#2D2926]"
-					>
-						{{ $t("申請帳號設置") }}
-					</span>
-				</Button>
-			</RouterLink>
-			<router-link
-				to="/admission/manager/projectSettings"
-				custom
-				v-slot="{ navigate }"
-			>
-				<Button
-					class="p-button-secondary p-button-text !ml-24px !mt-8px !w-[85%] !h-48px"
-					@click="navigate"
-					role="link"
+					<NButton
+						Admin
+						white
+						icon="pi pi-user-plus"
+						size="lg"
+						class="py-3 px-6 mx-6 gap-4 !justify-start"
+						:class="letterSpace"
+						@click="navigate"
+						:isSelected="
+							gateway === 'AdmissionAdminManageApplicants'
+						"
+						>{{ $t("申請帳號設置") }}
+					</NButton>
+				</RouterLink>
+				<!-- 4.上傳欄位設置 -->
+				<router-link
+					to="/admission/manager/uploadFileSetting"
+					custom
+					v-slot="{ navigate }"
 				>
-					<img
-						alt="logo"
-						src="/assets/sidebar/Sort_alfa.png"
-						style="width: 18px"
-					/>
-					<span
-						class="text-left tracking-3px ml-3 font-bold text-18px text-[#2D2926]"
-					>
-						{{ $t("上傳欄位設置") }}
-					</span>
-				</Button>
-			</router-link>
-			<router-link to="/admission/manager/applicantsUploadList">
-				<Button
-					class="p-button-secondary p-button-text !ml-24px !mt-8px !w-[85%] !h-48px"
+					<NButton
+						Admin
+						white
+						icon="pi pi-inbox"
+						size="lg"
+						class="py-3 px-6 mx-6 gap-4 !justify-start"
+						:class="letterSpace"
+						@click="navigate"
+						:isSelected="
+							gateway === 'AdmissionAdminUploadFileSetting'
+						"
+						>{{ $t("上傳欄位設置") }}
+					</NButton>
+				</router-link>
+				<!-- 5.上傳資料列表 -->
+				<router-link
+					to="/admission/manager/applicantsUploadList"
+					custom
+					v-slot="{ navigate }"
 				>
-					<img
-						alt="logo"
-						src="/assets/sidebar/File_dock_search.png"
-						style="width: 18px"
-					/>
-					<span
-						class="text-left tracking-3px ml-3 font-bold text-18px text-[#2D2926]"
-					>
-						{{ $t("上傳資料列表") }}
-					</span>
-				</Button>
-			</router-link>
-			<div class="flex mt-32px">
-				<div class="sidebarRedDivider"></div>
-				<div
-					class="mt-[-8px] ml-8px text-[#874B52] text-18px font-bold"
-				>
-					{{ $t("審查端設定") }}
+					<NButton
+						Admin
+						white
+						icon="pi pi-file"
+						size="lg"
+						class="py-3 px-6 mx-6 gap-4 !justify-start"
+						:class="letterSpace"
+						@click="navigate"
+						:isSelected="
+							gateway ===
+							('AdmissionAdminApplicantsUploadList' ||
+								'AdmissionAdminApplicantUploadedDocs')
+						"
+						>{{ $t("上傳資料列表") }}
+					</NButton>
+				</router-link>
+				<!-- Divider -->
+				<div flex="~ gap-4" class="items-center" :class="letterSpace">
+					<div w="1/10" h="!1px" bg="nRed" />
+					<div my="auto" text="lg pAdmin">{{ $t("審查端設定") }}</div>
 				</div>
+				<!-- 6.審查評分設置 -->
+				<router-link
+					to="/admission/manager/reviewScoreField"
+					custom
+					v-slot="{ navigate }"
+				>
+					<NButton
+						Admin
+						white
+						icon="pi pi-pencil"
+						size="lg"
+						class="py-3 px-6 mx-6 gap-4 !justify-start"
+						:class="letterSpace"
+						@click="navigate"
+						:isSelected="
+							gateway === 'AdmissionAdminReviewScoreField'
+						"
+						>{{ $t("審查評分設置") }}
+					</NButton>
+				</router-link>
+				<!-- 7.評分資料列表 -->
+				<router-link
+					to="/admission/manager/gradeDataList"
+					custom
+					v-slot="{ navigate }"
+				>
+					<NButton
+						Admin
+						white
+						icon="pi pi-chart-bar"
+						size="lg"
+						class="py-3 px-6 mx-6 gap-4 !justify-start"
+						:class="letterSpace"
+						@click="navigate"
+						:isSelected="gateway === 'AdmissionAdminGradeDataList'"
+						>{{ $t("評分資料列表") }}
+					</NButton>
+				</router-link>
 			</div>
-			<router-link
-				to="/admission/manager/reviewScoreField"
-				custom
-				v-slot="{ navigate }"
-			>
-				<Button
-					class="p-button-secondary p-button-text !ml-24px !mt-16px !w-[85%] !h-48px"
-					@click="navigate"
-					role="link"
-				>
-					<img
-						alt="logo"
-						src="/assets/sidebar/Eye_light.png"
-						style="width: 18px"
-					/>
-					<span
-						class="text-left tracking-3px ml-3 font-bold text-18px text-[#2D2926]"
-					>
-						{{ $t("審查評分設置") }}
-					</span>
-				</Button>
-			</router-link>
-			<router-link
-				to="/admission/manager/gradeDataList"
-				custom
-				v-slot="{ navigate }"
-			>
-				<Button
-					class="p-button-secondary p-button-text !ml-24px !mt-8px !w-[85%] !h-48px"
-					@click="navigate"
-					role="link"
-				>
-					<img
-						alt="logo"
-						src="/assets/sidebar/Flag_finish.png"
-						style="width: 18px"
-					/>
-					<span
-						class="text-left tracking-3px ml-3 font-bold text-18px text-[#2D2926]"
-					>
-						{{ $t("評分資料列表") }}
-					</span>
-				</Button>
-			</router-link>
 		</div>
-		<div
-			v-if="noProgram && !newProgram"
-			class="absolute bg-gray-200 bg-opacity-50 h-220px w-[100%]"
-			style="bottom: 0px"
-		>
-			<div class="relative flex mt-16px">
-				<div class="flex m-auto">
-					<div>
-						<router-link
-							to="/admission/manager/reviewerSettings"
-							custom
-							v-slot="{ navigate }"
-						>
-							<Button
-								class="h-36px p-button-outlined !bg-white"
-								@click="navigate"
-								role="link"
-							>
-								<img
-									alt="logo"
-									src="/assets/sidebar/User_box.png"
-									style="width: 18px"
-								/>
-								<h1 class="ml-8px text-16px text-gray-900">
-									{{ $t("管理審查者") }}
-								</h1>
-							</Button>
-						</router-link>
-					</div>
-					<div class="ml-8px">
-						<Button
-							@click="isDisplayNewProjectPrompt = true"
-							class="h-36px p-button-outlined p-button-success !bg-white"
-						>
-							<img
-								alt="logo"
-								src="/assets/sidebar/Add_round.png"
-								style="width: 18px"
-							/>
-							<h1 class="ml-8px text-16px text-gray-900">
-								{{ $t("新增專案") }}
-							</h1>
-						</Button>
-					</div>
-				</div>
-			</div>
-			<Dialog
-				header="新增專案"
-				v-model:visible="isDisplayNewProjectPrompt"
-				class="w-484px h-282px"
-			>
-				<divider class="!mt-0px" />
-				<p class="mt-24px text-base tracking-2px">
-					{{ $t("專案名稱") }}
-				</p>
-				<InputText
-					type="text"
-					v-model="newProjectName"
-					class="!w-428px !h-44px !mt-5px"
-				/>
-				<div class="flex">
-					<Button
-						@click="addNewProject"
-						class="p-button-outlined p-button-success !ml-70px !mt-26px !w-142px !h-44px"
-					>
-						<img
-							alt="logo"
-							src="/assets/sidebar/Done_round.png"
-							style="width: 1.25rem"
-							class="!ml-0px"
-						/>
-						<span class="text-left text-xl">{{
-							$t("建立專案")
-						}}</span>
-					</Button>
-					<Button
-						@click="closeDisplayNewProjectPrompt"
-						class="p-button-outlined p-button-danger !ml-32px !mt-26px !w-105px !h-44px"
-					>
-						<img
-							alt="logo"
-							src="/assets/sidebar/Close_round.png"
-							style="width: 1.25rem"
-							class="!ml-0px"
-						/>
-						<span class="text-left text-xl">{{ $t("取消") }}</span>
-					</Button>
-				</div>
-			</Dialog>
-			<div class="relative flex mt-16px">
-				<div class="flex">
-					<img
-						alt="logo"
-						src="/assets/sidebar/User_circle.png"
-						class="h-32px w-32px ml-20px mt-4px"
-					/>
-					<div>
-						<div class="text-xs ml-8px">
-							{{ $t("管理端帳戶") }}
-						</div>
-						<div class="text-16px mt-4px ml-8px tracking-wider">
-							{{ $t("系辦主管") }}
-						</div>
-					</div>
-				</div>
-				<div class="absolute mt-[-4px]" style="right: 8px">
+		<!-- 頁面底部操作項目 -->
+		<div pos="absolute bottom-0" bg="nGrey-50" w="full">
+			<div flex="~ col gap-6" m="t-4 b-6">
+				<!-- 管理按鈕 -->
+				<div flex="~ gap-4" justify="center">
 					<router-link
-						to="/admission/manager/userSetting"
+						to="/admission/manager/reviewerSettings"
 						custom
 						v-slot="{ navigate }"
 					>
-						<Button
-							class="p-button-text p-button-text p-button-sm"
+						<NButton
+							Admin
 							@click="navigate"
-							role="link"
+							icon="pi pi-user-edit"
+							class="p-2 w-2/5 h-11 bg-white whitespace-nowrap"
+							:class="letterSpace"
 						>
-							<img
-								alt="logo"
-								src="/assets/sidebar/Setting_alt_line.png"
-								class="w-18px h-18px"
-							/>
-						</Button>
+							{{ $t("管理審查者") }}
+						</NButton>
 					</router-link>
-					<Button
-						class="p-button-text p-button-text p-button-sm"
-						@click="signOut"
+					<NButton
+						Success
+						@click="isDisplayNewProjectPrompt = true"
+						icon="pi pi-plus"
+						class="p-2 w-2/5 h-11 bg-white whitespace-nowrap"
+						:class="letterSpace"
 					>
-						<img
-							alt="logo"
-							src="/assets/sidebar/Sign_out_circle.png"
-							class="w-18px h-18px"
-						/>
-					</Button>
+						{{ $t("新增專案") }}
+					</NButton>
 				</div>
-			</div>
-		</div>
-		<div
-			v-else
-			class="absolute bg-gray-200 bg-opacity-50 h-220px w-[100%]"
-			style="bottom: 0px"
-		>
-			<div class="relative flex mt-16px">
-				<div class="flex m-auto">
-					<div>
-						<router-link
-							to="/admission/manager/reviewerSettings"
-							custom
-							v-slot="{ navigate }"
-						>
-							<Button
-								class="h-36px p-button-outlined !bg-white"
-								@click="navigate"
-								role="link"
-							>
-								<img
-									alt="logo"
-									src="/assets/sidebar/User_box.png"
-									style="width: 18px"
-								/>
-								<h1 class="ml-8px text-16px text-gray-900">
-									{{ $t("管理審查者") }}
-								</h1>
-							</Button>
-						</router-link>
+				<!-- 使用者操作 -->
+				<div flex="~ gap-4" mx="6" class="items-center">
+					<!-- Icon -->
+					<div w="10" h="10" bg="nRed-600" border="rounded-full">
+						<i class="pi pi-user" text="!2xl white" mx="2" my="1" />
 					</div>
-					<div class="ml-8px">
-						<Button
-							@click="isDisplayNewProjectPrompt = true"
-							class="h-36px p-button-outlined p-button-success !bg-white"
-						>
-							<img
-								alt="logo"
-								src="/assets/sidebar/Add_round.png"
-								style="width: 18px"
-							/>
-							<h1 class="ml-8px text-16px text-gray-900">
-								{{ $t("新增專案") }}
-							</h1>
-						</Button>
-					</div>
-				</div>
-			</div>
-			<Dialog
-				header="新增專案"
-				v-model:visible="isDisplayNewProjectPrompt"
-				class="w-484px h-282px"
-			>
-				<divider class="!mt-0px" />
-				<p class="mt-24px text-base tracking-2px">
-					{{ $t("專案名稱") }}
-				</p>
-				<InputText
-					type="text"
-					v-model="newProjectName"
-					class="!w-428px !h-44px !mt-5px"
-				/>
-				<div class="flex">
-					<Button
-						@click="addNewProject"
-						class="p-button-outlined p-button-success !ml-70px !mt-26px !w-142px !h-44px"
-					>
-						<img
-							alt="logo"
-							src="/assets/sidebar/Done_round.png"
-							style="width: 1.25rem"
-							class="!ml-0px"
-						/>
-						<span class="text-left text-xl">{{
-							$t("建立專案")
-						}}</span>
-					</Button>
-					<Button
-						@click="closeDisplayNewProjectPrompt"
-						class="p-button-outlined p-button-danger !ml-32px !mt-26px !w-105px !h-44px"
-					>
-						<img
-							alt="logo"
-							src="/assets/sidebar/Close_round.png"
-							style="width: 1.25rem"
-							class="!ml-0px"
-						/>
-						<span class="text-left text-xl">{{ $t("取消") }}</span>
-					</Button>
-				</div>
-			</Dialog>
-			<div class="relative flex mt-16px">
-				<div class="flex">
-					<img
-						alt="logo"
-						src="/assets/sidebar/User_circle.png"
-						class="h-40px w-40px ml-20px"
-					/>
+					<!-- Heading -->
 					<div>
-						<div class="text-xs ml-8px">
-							{{ $t("管理端帳戶") }}
-						</div>
-						<div class="text-16px mt-4px ml-8px tracking-wider">
+						<div text="sm pAdmin">{{ $t("管理端帳戶") }}</div>
+						<div
+							text="title"
+							class="whitespace-nowrap"
+							:class="letterSpace"
+						>
 							{{ $t("系辦主管") }}
 						</div>
 					</div>
-				</div>
-				<div class="absolute mt-[-4px]" style="right: 8px">
-					<router-link
-						to="/admission/manager/userSetting"
-						custom
-						v-slot="{ navigate }"
-					>
-						<Button
-							class="p-button-text p-button-text p-button-sm"
-							@click="navigate"
-							role="link"
+					<!-- Button -->
+					<div flex="~ gap-1" ml="auto">
+						<!-- 使用者設定 -->
+						<router-link
+							to="/admission/manager/userSetting"
+							custom
+							v-slot="{ navigate }"
 						>
-							<img
-								alt="logo"
-								src="/assets/sidebar/Setting_alt_line.png"
-								class="w-18px h-18px"
+							<NButton
+								Admin
+								white
+								icon="pi pi-cog"
+								@click="navigate"
+								size="lg"
+								class="w-12 h-12 m-auto"
+								:isSelected="
+									gateway === 'AdmissionAdminUserSetting'
+								"
 							/>
-						</Button>
-					</router-link>
-					<Button
-						class="p-button-text p-button-text p-button-sm"
-						@click="signOut"
-					>
-						<img
-							alt="logo"
-							src="/assets/sidebar/Sign_out_circle.png"
-							class="w-18px h-18px"
+						</router-link>
+						<!-- 登出 -->
+						<NButton
+							Admin
+							white
+							icon="pi pi-sign-out"
+							size="lg"
+							class="w-12 h-12 m-auto"
+							@click="signOut"
 						/>
-					</Button>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+	<!-- 新增專案彈窗 -->
+	<Dialog
+		header="新增專案"
+		v-model:visible="isDisplayNewProjectPrompt"
+		:closable="false"
+	>
+		<div space="y-1">
+			<div text="body">{{ $t("專案名稱") }}</div>
+			<InputText type="text" v-model="newProjectName" w="!100" />
+		</div>
+		<div flex="~ gap-8" justify="center" mt="12">
+			<NButton
+				Admin
+				@click="addNewProject"
+				icon="pi pi-check"
+				w="32"
+				h="11"
+			>
+				{{ $t("建立專案") }}
+			</NButton>
+			<NButton
+				@click="closeDisplayNewProjectPrompt"
+				icon="pi pi-times"
+				w="32"
+				h="11"
+			>
+				{{ $t("取消") }}
+			</NButton>
+		</div>
+	</Dialog>
 </template>
 
 <script setup lang="ts">
 import "primevue/resources/primevue.min.css";
 import Dropdown from "primevue/dropdown";
-import Button from "primevue/button";
-import Divider from "primevue/divider";
+import NButton from "@/styles/CustomButton.vue";
 import Dialog from "primevue/dialog";
 import InputText from "primevue/inputtext";
 import { useToast } from "primevue/usetoast";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 import { ref, watchEffect, watch, computed } from "vue";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
@@ -482,7 +314,9 @@ import {
 	AdmissionManagerAuthResponse,
 } from "@/api/admission/admin/types";
 import { useAdminInfoStore } from "@/stores/AdmissionAdminStore";
+import { useI18n } from "vue-i18n";
 
+const { locale } = useI18n();
 const router = useRouter();
 const toast = useToast();
 const queryClient = useQueryClient();
@@ -505,6 +339,12 @@ const noProgram = computed(() => {
 });
 
 const selectedProgram = ref<AdmissionAdminProgramListResponse>();
+
+const letterSpace = computed(() => {
+	if (locale.value == "zh") return "tracking-[.125em]";
+	if (locale.value == "en") return "tracking-tighter";
+	else return "";
+});
 
 watchEffect(() => {
 	if (!programs.value) return;
@@ -530,6 +370,9 @@ const generateOptions = (data: AdmissionAdminProgramListResponse) => {
 };
 
 const newProgram = ref(false);
+
+const route = useRoute();
+const gateway = computed(() => route.name);
 
 function addNewProject() {
 	const todayDateString = dateTransform(new Date()) + "+08:00";
