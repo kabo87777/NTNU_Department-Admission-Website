@@ -27,9 +27,6 @@
 				</div>
 				<div class="flex mx-10 gap-8" text="secondary">
 					<div>
-						{{ trans.details.prefixSuffix.value }}
-					</div>
-					<div>
 						{{ trans.details.chineseName.value }}
 					</div>
 					<div>
@@ -260,7 +257,6 @@ const trans = {
 	advantageFile: computed(() => t("其他有利於審查資料")),
 	changeSuccess: computed(() => t("儲存成功")),
 	details: {
-		prefixSuffix: computed(() => t("※ 稱謂/後綴")),
 		chineseName: computed(() => t("※ 中文姓氏/名字")),
 		englishName: computed(() => t("※ 英文姓氏/中間名/名字")),
 		locals: computed(() => t("※ 本國人士")),
@@ -268,7 +264,7 @@ const trans = {
 		countryState: computed(() => t("※ 國家/州")),
 		cityPostNumber: computed(() => t("※ 郵遞區號")),
 		streetAddress: computed(() => t("※ 街道地址")),
-		legalGender: computed(() => t("※ 生理性別")),
+		legalGender: computed(() => t("※ 性別")),
 		bornCountry: computed(() => t("※ 出生國家")),
 		bornDate: computed(() => t("※ 出生日期")),
 		citizenship: computed(() => t("※ 主要國籍")),
