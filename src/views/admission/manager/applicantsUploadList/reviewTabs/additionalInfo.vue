@@ -49,8 +49,6 @@
 			</div>
 		</div>
 
-		<ParagraphDivider />
-
 		<div class="mt-24px">
 			<div>
 				<label class="text-24px font-bold">{{ $t("補件需求") }}</label>
@@ -232,7 +230,6 @@ import Button from "primevue/button";
 import Dropdown from "primevue/dropdown";
 import Calendar from "primevue/calendar";
 import Dialog from "primevue/dialog";
-import ParagraphDivider from "../../../../../styles/paragraphDivider.vue";
 
 const props = defineProps(["userId"]);
 const adminAuth = useAdmissionAdminAuthStore();

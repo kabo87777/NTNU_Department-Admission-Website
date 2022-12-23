@@ -2,92 +2,94 @@
 	<div>
 		<!-- TITLE -->
 		<div class="mt-24px text-24px font-bold">{{ $t("就學經歷") }}</div>
-
-		<!-- SCHOOL EXPERIENCE -->
-		<div
-			v-for="(item, index) in schoolExpList"
-			:key="index"
-			class="listContainer"
-		>
-			<ReviewState
-				v-if="item.state === 1"
-				category="就學經歷"
-				identity="admissionManager"
-				:downloadFile="true"
-				:itemName="item.name"
-				:itemId="item.id"
-				:fileUrl="item.filepath?.url"
-				:order="index + 1"
-				:showActionButtons="false"
-				@download="handleDownload"
-			/>
+		<div class="grid">
+			<!-- SCHOOL EXPERIENCE -->
+			<div
+				v-for="(item, index) in schoolExpList"
+				:key="index"
+				class="listContainer"
+			>
+				<ReviewState
+					v-if="item.state === 1"
+					category="就學經歷"
+					identity="admissionManager"
+					:downloadFile="true"
+					:itemName="item.name"
+					:itemId="item.id"
+					:fileUrl="item.filepath?.url"
+					:order="index + 1"
+					:showActionButtons="false"
+					@download="handleDownload"
+				/>
+			</div>
+			<div
+				v-show="examCertificateList.length === 0"
+				class="emptyContainer"
+			>
+				{{ $t("暫無資訊") }}
+			</div>
 		</div>
-		<div v-show="examCertificateList.length === 0" class="emptyContainer">
-			{{ $t("暫無資訊") }}
-		</div>
-
-		<!-- DIVIDER -->
-		<ParagraphDivider />
 
 		<!-- TITLE -->
 		<div class="mt-24px text-24px font-bold">
 			{{ $t("考試與檢定分數") }}
 		</div>
-
-		<!-- EXAM AND QUALIFICATION TEST SCORE -->
-		<div
-			v-for="(item, index) in examCertificateList"
-			:key="index"
-			class="listContainer"
-		>
-			<ReviewState
-				v-if="item.state === 1"
-				category="考試與檢定分數"
-				identity="admissionManager"
-				:downloadFile="true"
-				:itemName="item.name"
-				:itemId="item.id"
-				:fileUrl="item.filepath?.url"
-				:order="index + 1"
-				:showActionButtons="false"
-				@download="handleDownload"
-			/>
+		<div class="grid">
+			<!-- EXAM AND QUALIFICATION TEST SCORE -->
+			<div
+				v-for="(item, index) in examCertificateList"
+				:key="index"
+				class="listContainer"
+			>
+				<ReviewState
+					v-if="item.state === 1"
+					category="考試與檢定分數"
+					identity="admissionManager"
+					:downloadFile="true"
+					:itemName="item.name"
+					:itemId="item.id"
+					:fileUrl="item.filepath?.url"
+					:order="index + 1"
+					:showActionButtons="false"
+					@download="handleDownload"
+				/>
+			</div>
+			<div
+				v-show="examCertificateList.length === 0"
+				class="emptyContainer"
+			>
+				{{ $t("暫無資訊") }}
+			</div>
 		</div>
-		<div v-show="examCertificateList.length === 0" class="emptyContainer">
-			{{ $t("暫無資訊") }}
-		</div>
-
-		<!-- DIVIDER -->
-		<ParagraphDivider />
 
 		<!-- TITLE -->
 		<div class="mt-24px text-24px font-bold">
 			{{ $t("其他有利於審查資料") }}
 		</div>
-
-		<!-- OTHER -->
-		<div
-			v-for="(item, index) in otherList"
-			:key="index"
-			class="listContainer"
-		>
-			<ReviewState
-				v-if="item.state === 1"
-				category="其他有利於審查資料"
-				identity="admissionManager"
-				:downloadFile="true"
-				:itemName="item.name"
-				:itemId="item.id"
-				:fileUrl="item.filepath?.url"
-				:order="index + 1"
-				:showActionButtons="false"
-				@download="handleDownload"
-			/>
+		<div class="grid">
+			<!-- OTHER -->
+			<div
+				v-for="(item, index) in otherList"
+				:key="index"
+				class="listContainer"
+			>
+				<ReviewState
+					v-if="item.state === 1"
+					category="其他有利於審查資料"
+					identity="admissionManager"
+					:downloadFile="true"
+					:itemName="item.name"
+					:itemId="item.id"
+					:fileUrl="item.filepath?.url"
+					:order="index + 1"
+					:showActionButtons="false"
+					@download="handleDownload"
+				/>
+			</div>
+			<div v-show="otherList.length === 0" class="emptyContainer">
+				{{ $t("暫無資訊") }}
+			</div>
 		</div>
-		<div v-show="otherList.length === 0" class="emptyContainer">
-			{{ $t("暫無資訊") }}
-		</div>
-
 		<!-- DIVIDER -->
 
 		<div class="mt-32px"></div>
@@ -179,6 +181,7 @@ onMounted(async () => {
 	border: 3px dashed rgb(174, 174, 174);
 	border-radius: 16px;
 	background-color: rgb(244, 244, 244);
+	/* width:; */
 }
 
 .emptyContainer {
@@ -187,9 +190,14 @@ onMounted(async () => {
 	font-size: 20px;
 	font-weight: bold;
 	margin-top: 16px;
-	padding: 24px 32px;
+	padding: 0 32px 24px 32px;
+	/* padding: 24px 32px; */
 	border: 3px dashed rgb(174, 174, 174);
 	border-radius: 16px;
 	background-color: rgb(244, 244, 244);
+}
+.grid {
+	display: grid;
+	grid-template-columns: auto auto;
 }
 </style>

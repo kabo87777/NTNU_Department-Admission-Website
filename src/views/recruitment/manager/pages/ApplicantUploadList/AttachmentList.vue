@@ -26,9 +26,6 @@
 			{{ $t("暫無資訊") }}
 		</div>
 
-		<!-- DIVIDER -->
-		<ParagraphDivider />
-
 		<!-- TITLE -->
 		<div class="mt-24px text-24px font-bold">
 			{{ $t("考試與檢定分數") }}
@@ -56,9 +53,6 @@
 		<div v-show="examCertificateList.length === 0" class="emptyContainer">
 			{{ $t("暫無資訊") }}
 		</div>
-
-		<!-- DIVIDER -->
-		<ParagraphDivider />
 
 		<!-- TITLE -->
 		<div class="mt-24px text-24px font-bold">
@@ -104,7 +98,6 @@ import {
 	RecruitmentAdminGetApplicantAttachmentListDetail,
 	RecruitmentAdminGetApplicantAttachmentList,
 } from "@/api/recruitment/admin/types";
-import ParagraphDivider from "@/styles/paragraphDivider.vue";
 
 const adminAuth = useRecruitmentAdminAuthStore();
 const api = new RecruitmentAdminAPI(adminAuth);
