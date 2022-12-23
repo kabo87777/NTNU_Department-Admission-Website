@@ -7,8 +7,17 @@
 		border="2 rounded-lg"
 		:disabled="disabled"
 	>
-		<i v-if="btnIcon.show" :class="btnIcon.type" :style="btnIcon.size" />
+		<i
+			v-if="btnIcon.showLeft"
+			:class="btnIcon.type"
+			:style="btnIcon.size"
+		/>
 		<slot />
+		<i
+			v-if="btnIcon.showRight"
+			:class="btnIcon.type"
+			:style="btnIcon.size"
+		/>
 	</button>
 </template>
 
@@ -20,6 +29,7 @@ const props = defineProps({
 	type: { type: String, default: "Secondary" },
 	size: { type: String, default: "base" },
 	icon: { type: String, default: "" },
+	iconPos: { type: String, default: "left" },
 	// Status
 	isSelected: { type: Boolean, default: false, created: true },
 	disabled: { type: Boolean, default: false, created: true },
@@ -103,11 +113,17 @@ const btnState = computed(() => {
 const btnText = computed(() => props.size);
 
 const btnIcon = computed(() => {
-	const show = props.size ? true : false;
+	let showLeft = true,
+		showRight = false;
+	if (props.icon) {
+		if (props.iconPos == "both") showRight = true;
+		else if (props.iconPos == "right")
+			(showLeft = false), (showRight = true);
+	}
 	const type = props.icon ? props.icon + " mt-0.5" : null;
 	let size = iconSize(props.size);
 	if (props.isSelected) size += "; " + iconWeight("medium");
-	return { show, size, type };
+	return { showLeft, showRight, size, type };
 });
 
 // Deal with Props
