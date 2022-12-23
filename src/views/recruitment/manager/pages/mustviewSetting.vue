@@ -69,7 +69,7 @@
 				@click="confirmGrading"
 				icon="pi pi-times"
 			>
-				<span class="tracking-1px">{{ $t("刪除所有名單") }}</span>
+				<span class="tracking-1px">{{ $t("刪除必看名單") }}</span>
 			</NButton>
 		</div>
 	</div>
@@ -330,6 +330,15 @@ function deleteRelation() {
 
 const confirm1 = useConfirm();
 const confirmGrading = () => {
+	if (!selectedReviewer.value) {
+		toast.add({
+			severity: "error",
+			summary: "Error",
+			detail: "請選擇審查委員",
+			life: 3000,
+		});
+		return;
+	}
 	confirm1.require({
 		header: $t("是否要刪除此審查委員的所有必看名單？"),
 		message: $t("此動作不可回復，請謹慎操作"),
