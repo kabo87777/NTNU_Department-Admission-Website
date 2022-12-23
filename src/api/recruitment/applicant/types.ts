@@ -106,3 +106,9 @@ export interface RecruitmentApplicantUserInfoResponse {
 	publication: string;
 	remark: string;
 }
+
+export interface RApplicantChangePasswordRequest {
+	current_password: string;
+	password: string;
+	password_confirmation: string;
+}

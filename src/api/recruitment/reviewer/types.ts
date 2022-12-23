@@ -106,3 +106,9 @@ export interface RecruitmentReviewerApplicantInfoResponse {
 	updated_at: string;
 	isConfirm: boolean;
 }
+
+export interface RReviewerChangePasswordRequest {
+	current_password: string;
+	password: string;
+	password_confirmation: string;
+}
