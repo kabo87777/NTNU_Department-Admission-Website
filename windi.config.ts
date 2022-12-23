@@ -8,7 +8,14 @@ import SrollSnap from "windicss/plugin/scroll-snap";
 export default defineConfig({
 	darkMode: "class",
 	attributify: true,
-	plugins: [AspectRatio, Filters, Forms, LineClamp, SrollSnap],
+	plugins: [
+		AspectRatio,
+		Filters,
+		Forms,
+		LineClamp,
+		SrollSnap,
+		require("@windicss/plugin-scrollbar"),
+	],
 	theme: {
 		textColor: {
 			success: "#62AE01",
