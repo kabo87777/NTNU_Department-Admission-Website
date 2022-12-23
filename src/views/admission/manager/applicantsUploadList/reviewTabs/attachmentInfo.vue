@@ -3,28 +3,31 @@
 		<!-- TITLE -->
 		<div class="mt-24px text-24px font-bold">{{ $t("就學經歷") }}</div>
 		<div class="grid">
-		<!-- SCHOOL EXPERIENCE -->
-		<div
-			v-for="(item, index) in schoolExpList"
-			:key="index"
-			class="listContainer"
-		>
-			<ReviewState
-				v-if="item.state === 1"
-				category="就學經歷"
-				identity="admissionManager"
-				:downloadFile="true"
-				:itemName="item.name"
-				:itemId="item.id"
-				:fileUrl="item.filepath?.url"
-				:order="index + 1"
-				:showActionButtons="false"
-				@download="handleDownload"
-			/>
-		</div>
-		<div v-show="examCertificateList.length === 0" class="emptyContainer">
-			{{ $t("暫無資訊") }}
-		</div>
+			<!-- SCHOOL EXPERIENCE -->
+			<div
+				v-for="(item, index) in schoolExpList"
+				:key="index"
+				class="listContainer"
+			>
+				<ReviewState
+					v-if="item.state === 1"
+					category="就學經歷"
+					identity="admissionManager"
+					:downloadFile="true"
+					:itemName="item.name"
+					:itemId="item.id"
+					:fileUrl="item.filepath?.url"
+					:order="index + 1"
+					:showActionButtons="false"
+					@download="handleDownload"
+				/>
+			</div>
+			<div
+				v-show="examCertificateList.length === 0"
+				class="emptyContainer"
+			>
+				{{ $t("暫無資訊") }}
+			</div>
 		</div>
 
 		<!-- TITLE -->
@@ -32,59 +35,61 @@
 			{{ $t("考試與檢定分數") }}
 		</div>
 		<div class="grid">
-		<!-- EXAM AND QUALIFICATION TEST SCORE -->
-		<div
-			v-for="(item, index) in examCertificateList"
-			:key="index"
-			class="listContainer"
-		>
-			<ReviewState
-				v-if="item.state === 1"
-				category="考試與檢定分數"
-				identity="admissionManager"
-				:downloadFile="true"
-				:itemName="item.name"
-				:itemId="item.id"
-				:fileUrl="item.filepath?.url"
-				:order="index + 1"
-				:showActionButtons="false"
-				@download="handleDownload"
-			/>
+			<!-- EXAM AND QUALIFICATION TEST SCORE -->
+			<div
+				v-for="(item, index) in examCertificateList"
+				:key="index"
+				class="listContainer"
+			>
+				<ReviewState
+					v-if="item.state === 1"
+					category="考試與檢定分數"
+					identity="admissionManager"
+					:downloadFile="true"
+					:itemName="item.name"
+					:itemId="item.id"
+					:fileUrl="item.filepath?.url"
+					:order="index + 1"
+					:showActionButtons="false"
+					@download="handleDownload"
+				/>
+			</div>
+			<div
+				v-show="examCertificateList.length === 0"
+				class="emptyContainer"
+			>
+				{{ $t("暫無資訊") }}
+			</div>
 		</div>
-		<div v-show="examCertificateList.length === 0" class="emptyContainer">
-			{{ $t("暫無資訊") }}
-		</div>
-	</div>
 
 		<!-- TITLE -->
 		<div class="mt-24px text-24px font-bold">
 			{{ $t("其他有利於審查資料") }}
 		</div>
-	<div class="grid">
-
-		<!-- OTHER -->
-		<div
-			v-for="(item, index) in otherList"
-			:key="index"
-			class="listContainer"
-		>
-			<ReviewState
-				v-if="item.state === 1"
-				category="其他有利於審查資料"
-				identity="admissionManager"
-				:downloadFile="true"
-				:itemName="item.name"
-				:itemId="item.id"
-				:fileUrl="item.filepath?.url"
-				:order="index + 1"
-				:showActionButtons="false"
-				@download="handleDownload"
-			/>
+		<div class="grid">
+			<!-- OTHER -->
+			<div
+				v-for="(item, index) in otherList"
+				:key="index"
+				class="listContainer"
+			>
+				<ReviewState
+					v-if="item.state === 1"
+					category="其他有利於審查資料"
+					identity="admissionManager"
+					:downloadFile="true"
+					:itemName="item.name"
+					:itemId="item.id"
+					:fileUrl="item.filepath?.url"
+					:order="index + 1"
+					:showActionButtons="false"
+					@download="handleDownload"
+				/>
+			</div>
+			<div v-show="otherList.length === 0" class="emptyContainer">
+				{{ $t("暫無資訊") }}
+			</div>
 		</div>
-		<div v-show="otherList.length === 0" class="emptyContainer">
-			{{ $t("暫無資訊") }}
-		</div>
-	</div>
 		<!-- DIVIDER -->
 		<div class="bigRedDivider !mt-32px" />
 
