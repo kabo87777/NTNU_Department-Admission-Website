@@ -65,7 +65,11 @@
 			</DataTable>
 
 			<!-- Modal for editting reviewer profile -->
-			<Dialog v-model:visible="modalVisible" :modal="true">
+			<Dialog
+				v-model:visible="modalVisible"
+				:modal="true"
+				:draggable="false"
+			>
 				<template #header>
 					<h3 class="font-extrabold text-lg">
 						{{ $t("編輯審查者帳號") }}
@@ -139,7 +143,11 @@
 			</Dialog>
 
 			<!-- Modal for adding reviewer -->
-			<Dialog :modal="true" v-model:visible="addReviewerModal.visible">
+			<Dialog
+				:modal="true"
+				v-model:visible="addReviewerModal.visible"
+				:draggable="false"
+			>
 				<template #header>
 					<h3 class="font-black text-lg">
 						{{ $t("建立審查者帳號") }}
@@ -223,7 +231,7 @@
 				</template>
 			</Dialog>
 
-			<ConfirmDialog> </ConfirmDialog>
+			<ConfirmDialog :draggable="false" />
 		</template>
 		<template #Footer>
 			<div flex="~" justify="center" gap="4">
