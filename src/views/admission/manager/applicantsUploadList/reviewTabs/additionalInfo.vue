@@ -100,23 +100,22 @@
 			</div>
 		</div>
 
-		<div pos="absolute bottom-0 inset-x-0" bg="white">
-			<div class="bigRedDivider"></div>
-			<div class="flex mt-16px ml-20px justify-center">
-				<Button
-					@click="saveOnclick"
-					class="p-button-outlined p-button-secondary text-20px"
-				>
-					{{ $t("儲存變更") }}
-				</Button>
-				<Button
-					@click="isModalVisible.sendEmail = true"
-					class="p-button-outlined p-button-secondary !ml-40px text-20px"
-				>
-					{{ $t("寄送E-mail通知") }}
-				</Button>
-			</div>
+		<div class="bigRedDivider" style="margin-top: 32px"></div>
+		<div class="flex mt-16px ml-20px justify-center">
+			<Button
+				@click="saveOnclick"
+				class="p-button-outlined p-button-secondary text-20px"
+			>
+				{{ $t("儲存變更") }}
+			</Button>
+			<Button
+				@click="isModalVisible.sendEmail = true"
+				class="p-button-outlined p-button-secondary !ml-40px text-20px"
+			>
+				{{ $t("寄送E-mail通知") }}
+			</Button>
 		</div>
+
 		<div class="mt-20px"></div>
 	</div>
 	<Dialog

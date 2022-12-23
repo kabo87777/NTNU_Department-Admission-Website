@@ -98,6 +98,7 @@
 		</div>
 
 		<!-- DIVIDER -->
+		<div class="bigRedDivider !mt-32px" />
 
 		<div class="mt-32px"></div>
 	</div>

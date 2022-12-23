@@ -200,6 +200,8 @@
 				</div>
 			</div>
 		</div>
+
+		<div class="bigRedDivider !mt-32px" />
 	</div>
 </template>
 

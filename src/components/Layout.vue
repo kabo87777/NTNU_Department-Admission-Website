@@ -19,7 +19,7 @@
 			</div>
 		</div>
 		<!-- Footer -->
-		<div v-if="footer">
+		<div>
 			<div w="full" h="1" my="1" :class="colorStyle" />
 			<div mt="3"><slot name="Footer" /></div>
 		</div>
@@ -43,7 +43,6 @@ const props = defineProps({
 	Reviewer: { type: Boolean, default: false, create: true },
 	Applicant: { type: Boolean, default: false, create: true },
 	noMargin: { type: Boolean, default: false, create: true },
-	noFooter: { type: Boolean, default: false, create: true },
 });
 
 const colorStyle = computed(() => {
@@ -62,11 +61,6 @@ const scrollbarStyle = computed(() => {
 
 const margin = computed(() => {
 	if (props.noMargin) return false;
-	else return true;
-});
-
-const footer = computed(() => {
-	if (props.noFooter) return false;
 	else return true;
 });
 </script>
