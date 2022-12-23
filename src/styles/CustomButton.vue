@@ -5,6 +5,7 @@
 		:class="btnState"
 		:text="btnText"
 		border="2 rounded-lg"
+		:disabled="disabled"
 	>
 		<i v-if="btnIcon.show" :class="btnIcon.type" :style="btnIcon.size" />
 		<slot />
