@@ -41,7 +41,7 @@
 	<div class="flex justify-between mt-10px">
 		<div class="flex justify-start">
 			<div class="text-xl content-center mt-10px">
-				{{ $t("審查人員") }}:
+				{{ $t("審查委員") }}:
 			</div>
 			<Dropdown
 				v-model="selectedReviewer"
@@ -69,7 +69,7 @@
 			</NButton>
 		</div>
 	</div>
-	<ConfirmDialog />
+	<ConfirmDialog :draggable="false" />
 </template>
 
 <script setup lang="ts">

@@ -64,7 +64,7 @@
 				</div>
 				<div flex="~ col gap-1" text="body">
 					<div>{{ $t("驗證新密碼") }}</div>
-					<InputText
+					<Password
 						class="!w-100"
 						:input-class="invalidClass('confirm')"
 						v-model="password.confirm"
@@ -80,21 +80,23 @@
 					</div>
 				</div>
 			</div>
-			<NButton
-				Admin
-				class="p-2 w-32 mt-8"
-				icon="pi pi-pencil"
-				:loading="isProcessing"
-				@click="handleSubmit()"
-				>{{ $t("修改送出") }}</NButton
-			>
-			<NButton
-				Admin
-				class="p-2 w-32 mt-8"
-				icon="pi pi-undo"
-				@click="resetPassValue()"
-				>{{ $t("重置表單") }}</NButton
-			>
+			<div class="mt-8 flex gap-x-2">
+				<NButton
+					Admin
+					class="p-2 w-32"
+					icon="pi pi-pencil"
+					:loading="isProcessing"
+					@click="handleSubmit()"
+					>{{ $t("修改送出") }}</NButton
+				>
+				<NButton
+					Admin
+					class="p-2 w-32"
+					icon="pi pi-undo"
+					@click="resetPassValue()"
+					>{{ $t("重置表單") }}</NButton
+				>
+			</div>
 		</template>
 	</Layout>
 </template>

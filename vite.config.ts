@@ -9,6 +9,7 @@ import IconsResolver from "unplugin-icons/resolver";
 import ViteComponents from "unplugin-vue-components/vite";
 import vueI18n from "@intlify/vite-plugin-vue-i18n";
 import branch from "git-branch";
+import minimatch from "minimatch";
 
 process.env.VITE_ADMISSION_APPLICANT_USERNAME = "1110101"
 process.env.VITE_ADMISSION_APPLICANT_PASSWORD = "Example123"
@@ -24,7 +25,6 @@ process.env.VITE_RECRUITMENT_MANAGER_USERNAME = "ntnuradmin1@yopmail.com"
 process.env.VITE_RECRUITMENT_MANAGER_PASSWORD = "Example123"
 
 if (!process.env.VITE_ADMISSIONS_API_ENDPOINT) {
-  console.log(process.env.VERCEL_ENV)
   if (process.env.VERCEL_ENV) {
     // project being built on Vercel
     if (process.env.VERCEL_ENV === "production") {
@@ -70,8 +70,62 @@ if (!process.env.VITE_IS_SKIP_CAPTCHA) {
 
 console.log(Object.keys(process.env).filter(e => e.startsWith("VITE_")).map(e => `${e}=${process.env[e]}`))
 
+const moduleChunks = {
+  landing: [
+    "@/views/*.vue",
+    "@/views/admission/*.vue",
+    "@/views/admission/applicant/login/*.vue",
+    "@/views/admission/reviewer/login/*.vue",
+    "@/views/admission/manager/login/*.vue",
+    "@/views/recruitment/*.vue",
+    "@/views/recruitment/applicant/login/*.vue",
+    "@/views/recruitment/reviewer/login/*.vue",
+    "@/views/recruitment/manager/login/*.vue",
+  ],
+  admissionReviewer: [
+    "@/views/admission/reviewer/*.vue"
+  ],
+  admissionApplicant: [
+    "@/views/admission/applicant/*.vue",
+    "@/views/admission/applicant/pages/*.vue",
+  ],
+  admissionManager: [
+    "@/views/admission/manager/*.vue",
+    "@/views/admission/manager/applicantsUploadList/*.vue",
+  ],
+  admissionRecommender: [
+    "@/views/admission/recommender/*.vue"
+  ],
+  recruitmentApplicant: [
+    "@/views/recruitment/applicant/*.vue",
+    "@/views/recruitment/applicant/pages/*.vue",
+  ],
+  recruitmentManager: [
+    "@/views/recruitment/manager/*.vue",
+    "@/views/recruitment/manager/pages/*.vue",
+  ],
+  recruitmentReviewer: [
+    "@/views/recruitment/reviewer/*.vue"
+  ],
+}
+
 // https://vitejs.dev/config/
 export default defineConfig({
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id, { getModuleInfo, getModuleIds }) {
+          const relativePath = id.replace(__dirname, "");
+
+          for (const [moduleName, globs] of Object.entries(moduleChunks)) {
+            if (globs.some(g => minimatch(relativePath, g.replace(/^@\//, "/src/")))) {
+              return moduleName;
+            }
+          }
+        }
+      }
+    }
+  },
   plugins: [
     vue({
       include: [/\.vue$/],
@@ -87,7 +141,7 @@ export default defineConfig({
         }),
       ],
     }),
-    Icons({ autoInstall: true }),
+    Icons({ autoInstall: true })
   ],
   resolve: {
     alias: {

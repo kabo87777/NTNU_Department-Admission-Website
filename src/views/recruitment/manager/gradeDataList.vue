@@ -55,6 +55,7 @@
 			<Dialog
 				v-model:visible="productDialog"
 				:header="gradeDataEdit"
+				:draggable="false"
 				:modal="true"
 				class="w-720px h-873px"
 			>
@@ -156,28 +157,34 @@
 				</div>
 			</Dialog>
 			<div class="bigRedDivider !mt-50px"></div>
-			<div class="flex text-xl mt-20px">
-				<div>{{ $t("待審核") }} {{ pendingCount }} {{ $t("位") }}</div>
-				<Divider layout="vertical" class="!ml-30px" />
-				<div class="!ml-30px">
-					{{ $t("通過") }} {{ passCount }} {{ $t("位") }}
+			<div class="flex text-xl mt-20px justify-between">
+				<div class="flex justify-around">
+					<div>
+						{{ $t("待審核") }} {{ pendingCount }} {{ $t("位") }}
+					</div>
+					<Divider layout="vertical" class="!ml-30px" />
+					<div class="!ml-30px">
+						{{ $t("通過") }} {{ passCount }} {{ $t("位") }}
+					</div>
+					<Divider layout="vertical" class="!ml-30px" />
+					<div class="!ml-30px">
+						{{ $t("不通過") }} {{ notPassCount }} {{ $t("位") }}
+					</div>
 				</div>
-				<Divider layout="vertical" class="!ml-30px" />
-				<div class="!ml-30px">
-					{{ $t("不通過") }} {{ notPassCount }} {{ $t("位") }}
+				<div>
+					<NButton
+						type="Admin"
+						class="w-150px h-44px !ml-680px p-button-outlined p-button-help"
+					>
+						<img
+							alt="logo"
+							src="/assets/gradeDataList/Paper.png"
+							style="width: 1.5rem"
+							class="fill-green-500"
+						/>
+						<span class="tracking-1px">{{ $t("報表列印") }}</span>
+					</NButton>
 				</div>
-				<NButton
-					type="Admin"
-					class="w-140px h-44px !ml-680px p-button-outlined p-button-help"
-				>
-					<img
-						alt="logo"
-						src="/assets/gradeDataList/Paper.png"
-						style="width: 1.5rem"
-						class="fill-green-500"
-					/>
-					<span class="tracking-1px">{{ $t("報表列印") }}</span>
-				</NButton>
 			</div>
 		</div>
 	</div>

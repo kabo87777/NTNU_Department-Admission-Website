@@ -1,5 +1,5 @@
 <template>
-	<Layout Admin>
+	<Layout Admin noMargin>
 		<template #Header>{{ $t("上傳資料列表") }}</template>
 		<template #Body>
 			<DataTable :value="applicantList">
