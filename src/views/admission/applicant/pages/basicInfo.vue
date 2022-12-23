@@ -580,17 +580,6 @@ const handleSave = async () => {
 		isForeigner: identity.selectedIdentity === "本國人士" ? false : true,
 	};
 
-	const keys = Object.keys(body);
-	Object.values(body).map((value, index) => {
-		if (value === null || value === "") {
-			const keyName = keys[
-				index
-			] as keyof AdmissionApplicantGetUserInfoResponse;
-
-			delete body[keyName];
-		}
-	});
-
 	loading.save = true;
 
 	const res = await api.patchBasicInfo(body);

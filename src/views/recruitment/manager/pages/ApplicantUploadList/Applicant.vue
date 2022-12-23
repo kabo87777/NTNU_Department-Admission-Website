@@ -8,10 +8,10 @@
 				>
 			</div>
 			<div v-if="headerInfo.name" class="ml-32px font-bold text-32px">
-				{{ headerInfo.id + " " + headerInfo.name }}
+				{{ Number(route.params.userId) + " " + headerInfo.name }}
 			</div>
 			<div v-else class="ml-32px font-bold text-32px">
-				{{ headerInfo.id }}
+				{{ Number(route.params.userId) }}
 			</div>
 		</div>
 		<div class="bigRedDivider" style="margin-top: 12px"></div>
@@ -32,13 +32,13 @@
 			</SelectButton>
 		</div>
 		<div class="mt-32px" v-if="activeTab.value === 1">
-			<BasicInfo :userId="headerInfo.id" />
+			<BasicInfo :userId="Number(route.params.userId)" />
 		</div>
 		<div class="mt-32px" v-if="activeTab.value === 2">
-			<AttachmentList :userId="headerInfo.id" />
+			<AttachmentList :userId="Number(route.params.userId)" />
 		</div>
 		<div class="mt-32px" v-if="activeTab.value === 3">
-			<Moredoc :userId="headerInfo.id" />
+			<Moredoc :userId="Number(route.params.userId)" />
 		</div>
 	</div>
 </template>
@@ -51,7 +51,6 @@ import { RecruitmentAdminAPI } from "@/api/recruitment/admin/api";
 import { RecruitmentAdminGetApplicantInfoHeader } from "@/api/recruitment/admin/types";
 import { useGlobalStore } from "@/stores/RecruitmentAdminStore";
 import { useQuery } from "@tanstack/vue-query";
-import { InvalidSessionError } from "@/api/error";
 import BasicInfo from "./BasicInfo.vue";
 import AttachmentList from "./AttachmentList.vue";
 import Moredoc from "./Moredoc.vue";
@@ -75,7 +74,7 @@ const tabs = ref([
 	{ name: "補件系統欄位", value: 3 },
 ]);
 
-const { data } = useQuery(
+useQuery(
 	["adminApplicantBasisInfo"],
 	async () => {
 		if (!programId) throw new Error("invalid programId");
