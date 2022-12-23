@@ -80,7 +80,9 @@
 					</div>
 				</div>
 			</div>
-			<div class="mt-8 flex gap-x-2">
+		</template>
+		<template #Footer>
+			<div flex="~" justify="center" gap="4">
 				<NButton
 					Admin
 					class="p-2 w-32"
@@ -102,16 +104,12 @@
 </template>
 <script setup lang="ts">
 import NButton from "@/styles/CustomButton.vue";
-import InputText from "primevue/inputtext";
 import Layout from "@/components/Layout.vue";
-import Button from "primevue/button";
 import Password from "primevue/password";
-import { ref, reactive, toRaw, toRef, computed } from "vue";
+import { ref, computed } from "vue";
 import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
 import { AdmissionAdminAPI } from "@/api/admission/admin/api";
 import { useToast } from "primevue/usetoast";
-import ParagraphDivider from "@/styles/paragraphDividerApplicant.vue";
-import { AdmissionManagerAuthResponse } from "@/api/admission/admin/types";
 import { useAdminInfoStore } from "@/stores/AdmissionAdminStore";
 import { useMutation } from "@tanstack/vue-query";
 import type { AdmAdminChangePasswordRequest } from "@/api/admission/admin/types";

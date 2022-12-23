@@ -256,3 +256,9 @@ export interface RecruitmentAdminReviewersListResponseWithDetail {
 	optionalSeen: number;
 	optionalTotal: number;
 }
+
+export interface RAdminChangePasswordRequest {
+	current_password: string;
+	password: string;
+	password_confirmation: string;
+}
