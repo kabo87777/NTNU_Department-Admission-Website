@@ -58,7 +58,11 @@
 						class="py-3 px-6 mx-6 gap-4 !justify-start"
 						:class="letterSpace"
 						@click="navigate"
-						:isSelected="gateway === ''"
+						:isSelected="
+							gateway ===
+							('AdmissionReviewerApplicationReview' ||
+								'AdmissionReviewerSingleApplicationReview')
+						"
 						:disabled="!isDocsAvailable"
 						><div>{{ $t("書面資料評閱") }}</div>
 						<div v-if="!isDocsAvailable" text="sm">
@@ -89,7 +93,11 @@
 						class="py-3 px-6 mx-6 gap-4 !justify-start"
 						:class="letterSpace"
 						@click="navigate"
-						:isSelected="gateway === ''"
+						:isSelected="
+							gateway ===
+							('AdmissionReviewerOralReview' ||
+								'AdmissionReviewerSingleOralReview')
+						"
 						:disabled="!isOralAvailable"
 						><div>{{ $t("口試資料評閱") }}</div>
 						<div v-if="!isOralAvailable" text="sm">
@@ -134,7 +142,7 @@
 							size="lg"
 							class="w-12 h-12 m-auto"
 							:isSelected="
-								gateway === 'AdmissionAdminUserSetting'
+								gateway === 'AdmissionReviewerUserSetting'
 							"
 						/>
 					</router-link>
