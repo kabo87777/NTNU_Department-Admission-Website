@@ -63,6 +63,7 @@
 				<Dialog
 					v-model:visible="productDialog"
 					:header="gradeDataEdit"
+					:draggable="false"
 					:modal="true"
 					class="w-720px h-988px"
 				>
@@ -282,6 +283,7 @@
 				<Dialog
 					v-model:visible="productDialog"
 					header="評分資料編輯"
+					:draggable="false"
 					:modal="true"
 					class="w-720px h-988px"
 				>

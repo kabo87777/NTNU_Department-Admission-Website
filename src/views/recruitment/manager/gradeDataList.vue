@@ -55,6 +55,7 @@
 			<Dialog
 				v-model:visible="productDialog"
 				:header="gradeDataEdit"
+				:draggable="false"
 				:modal="true"
 				class="w-720px h-873px"
 			>
