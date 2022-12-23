@@ -44,7 +44,11 @@
 			</template>
 		</DataTable>
 
-		<Dialog v-model:visible="editModal.visible" :modal="true">
+		<Dialog
+			v-model:visible="editModal.visible"
+			:modal="true"
+			:draggable="false"
+		>
 			<template #header>
 				<h3 class="font-black text-xl">
 					{{ $t("編輯申請者帳號") }}
@@ -125,7 +129,7 @@
 		</Dialog>
 	</div>
 
-	<ConfirmDialog></ConfirmDialog>
+	<ConfirmDialog :draggable="false" />
 </template>
 
 <script setup lang="ts">

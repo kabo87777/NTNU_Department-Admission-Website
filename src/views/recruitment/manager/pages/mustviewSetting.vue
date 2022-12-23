@@ -69,7 +69,7 @@
 			</NButton>
 		</div>
 	</div>
-	<ConfirmDialog />
+	<ConfirmDialog :draggable="false" />
 </template>
 
 <script setup lang="ts">

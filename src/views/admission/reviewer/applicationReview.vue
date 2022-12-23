@@ -140,7 +140,7 @@
 				{{ $t("※成績送出即無法再次修改，煩請送出前再三確認成績無誤") }}
 			</div>
 		</div>
-		<ConfirmDialog />
+		<ConfirmDialog :draggable="false" />
 	</div>
 </template>
 

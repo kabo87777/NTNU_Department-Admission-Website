@@ -108,7 +108,7 @@
 			</FileUpload>
 		</template>
 	</Layout>
-	<ConfirmDialog />
+	<ConfirmDialog :draggable="false" />
 </template>
 
 <script setup lang="ts">

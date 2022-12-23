@@ -246,6 +246,8 @@
 				header="新增專案"
 				v-model:visible="displayNewProject"
 				class="w-484px h-282px"
+				:draggable="false"
+				:modal="true"
 			>
 				<divider class="!mt-0px" />
 				<p class="mt-24px text-base tracking-2px">
@@ -383,6 +385,8 @@
 				header="新增專案"
 				v-model:visible="displayNewProject"
 				class="w-484px h-282px"
+				:draggable="false"
+				:modal="true"
 			>
 				<divider class="!mt-0px" />
 				<p class="mt-24px text-base tracking-2px">
