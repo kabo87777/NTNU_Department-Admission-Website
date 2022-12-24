@@ -49,8 +49,6 @@
 			</div>
 		</div>
 
-		<ParagraphDivider />
-
 		<div class="mt-24px">
 			<div>
 				<label class="text-24px font-bold">{{ $t("補件需求") }}</label>
@@ -102,22 +100,23 @@
 			</div>
 		</div>
 
-		<div class="bigRedDivider" style="margin-top: 32px"></div>
-		<div class="flex mt-16px ml-20px justify-center">
-			<Button
-				@click="saveOnclick"
-				class="p-button-outlined p-button-secondary text-20px"
-			>
-				{{ $t("儲存變更") }}
-			</Button>
-			<Button
-				@click="isModalVisible.sendEmail = true"
-				class="p-button-outlined p-button-secondary !ml-40px text-20px"
-			>
-				{{ $t("寄送E-mail通知") }}
-			</Button>
+		<div pos="absolute bottom-0 inset-x-0" bg="white">
+			<div class="bigRedDivider"></div>
+			<div class="flex mt-16px ml-20px justify-center">
+				<Button
+					@click="saveOnclick"
+					class="p-button-outlined p-button-secondary text-20px"
+				>
+					{{ $t("儲存變更") }}
+				</Button>
+				<Button
+					@click="isModalVisible.sendEmail = true"
+					class="p-button-outlined p-button-secondary !ml-40px text-20px"
+				>
+					{{ $t("寄送E-mail通知") }}
+				</Button>
+			</div>
 		</div>
-
 		<div class="mt-20px"></div>
 	</div>
 	<Dialog
@@ -231,7 +230,6 @@ import Button from "primevue/button";
 import Dropdown from "primevue/dropdown";
 import Calendar from "primevue/calendar";
 import Dialog from "primevue/dialog";
-import ParagraphDivider from "../../../../../styles/paragraphDivider.vue";
 
 const props = defineProps(["userId"]);
 const adminAuth = useAdmissionAdminAuthStore();
