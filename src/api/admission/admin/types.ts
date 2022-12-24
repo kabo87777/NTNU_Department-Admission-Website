@@ -45,20 +45,6 @@ export interface AdmissionAdminProgramListResponse {
 }
 
 export interface AdmAdminReviewerListResponse {
-	// TODO: Wait backend to give exact data type
-	// --- Example response ---
-	// "id": 1,
-	// "provider": "email",
-	// "uid": "example@email.com",
-	// "allow_password_change": false,
-	// "lang": null,
-	// "name": "example",
-	// "nickname": null,
-	// "image": null,
-	// "email": "example@email.com",
-	// "created_at": "2022-11-07T01:31:21.153+08:00",
-	// "updated_at": "2022-11-07T01:31:21.153+08:00",
-	// "isDisabled": false
 	id: number;
 	provider: string;
 	uid: string;
