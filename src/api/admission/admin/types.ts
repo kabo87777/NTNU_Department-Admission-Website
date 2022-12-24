@@ -11,11 +11,11 @@ export interface AdmissionManagerAuthResponse {
 	uid: string;
 	id: number;
 	allow_password_change: boolean;
-	isInit: any | null;
-	lang: any | null;
-	name: any | null;
-	nickname: any | null;
-	image: any | null;
+	isInit: boolean | null;
+	lang: string | null;
+	name: string;
+	nickname: string | null;
+	image: string | null;
 	created_at: string;
 	updated_at: string;
 }
