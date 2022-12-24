@@ -4,7 +4,7 @@
 		:class="colorStyle"
 		v-bind="$attrs"
 		bg="opacity-90"
-		border="2 rounded-lg"
+		border="1 rounded-lg"
 	>
 		<NButton
 			v-if="props.optionNum >= 1"
