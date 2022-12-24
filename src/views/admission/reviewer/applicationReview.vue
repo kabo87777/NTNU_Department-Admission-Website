@@ -1,6 +1,18 @@
 <template>
 	<Layout Reviewer noMargin>
-		<template #Header>{{ $t("書面資料評閱") }}</template>
+		<template #Header>
+			<div flex="~ gap-6">
+				<div>{{ $t("書面資料評閱") }}</div>
+				<div
+					text="sm body"
+					font="normal"
+					class="!tracking-normal mt-auto"
+				>
+					{{ $t("開放時間") }} : {{ reviewStartTime }} -
+					{{ reviewEndTime }}
+				</div>
+			</div>
+		</template>
 		<template #Body>
 			<DataTable
 				:value="applicantList"
