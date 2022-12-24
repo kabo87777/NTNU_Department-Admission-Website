@@ -427,6 +427,7 @@
 								icon="pi pi-envelope"
 								iconClass="text-[#53565A]"
 								v-tooltip.top="t('發出邀請')"
+								:disabled="item.stage === '已寄出'"
 							/>
 							<Button
 								class="p-button-outlined p-button-secondary"
@@ -438,6 +439,7 @@
 								icon="pi pi-trash"
 								iconClass="text-[#93282C]"
 								v-tooltip.top="t('刪除')"
+								:disabled="item.stage === '已寄出'"
 								@click="isModalVisible.delete = true"
 							/>
 						</div>
@@ -500,7 +502,6 @@ import { useAdmissionApplicantAuthStore } from "@/stores/universalAuth";
 import { AdmissionApplicantAPI } from "@/api/admission/applicant/api";
 import type { AdmissionApplicantRecLetListRes } from "@/api/admission/applicant/types";
 import { useQuery } from "@tanstack/vue-query";
-import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import { useToast } from "primevue/usetoast";
 import Button from "primevue/button";
@@ -509,7 +510,6 @@ import InputText from "primevue/inputtext";
 import "primeicons/primeicons.css";
 
 const { t } = useI18n();
-const router = useRouter();
 
 const applicantAuth = useAdmissionApplicantAuthStore();
 const api = new AdmissionApplicantAPI(applicantAuth);
@@ -847,5 +847,13 @@ watch(
 	transform: translate(-50%, -50%);
 	height: 400px;
 	width: 500px;
+}
+
+.button {
+	cursor: pointer;
+}
+
+.button:hover {
+	cursor: not-allowed;
 }
 </style>
