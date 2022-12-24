@@ -53,7 +53,7 @@
 		<template #Footer>
 			<!-- Last / Next Page & Toggle Score Field Button set -->
 			<div
-				class="flex my-1 absolute inset-x-0 bottom-0"
+				class="flex my-1 absolute inset-x-0 bottom-1"
 				:class="toggleScoreFieldPosition"
 				bg="white opacity-90"
 			>
@@ -174,7 +174,7 @@
 						Reviewer
 						class="min-w-36 h-11 !ml-20px p-button-success"
 						@click="saveScore"
-						icon="pi pi-check"
+						icon="pi pi-save"
 					>
 						<span class="tracking-1px">{{ $t("保存") }}</span>
 					</NButton>
@@ -185,21 +185,21 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, toRaw } from "vue";
-import { useRoute, useRouter } from "vue-router";
 import InputNumber from "primevue/inputnumber";
 import Checkbox from "primevue/checkbox";
 import InputText from "primevue/inputtext";
 import NButton from "@/styles/CustomButton.vue";
 import NSelect from "@/components/SelectButton.vue";
 import Layout from "@/components/Layout.vue";
+import VuePdfEmbed from "vue-pdf-embed";
+import { computed, ref, toRaw } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import { useAdmissionReviewerAuthStore } from "@/stores/universalAuth";
 import { AdmissionReviewerAPI } from "@/api/admission/reviewer/api";
 import { useMutation, useQuery } from "@tanstack/vue-query";
 import { useGlobalStore } from "@/stores/AdmissionReviewerStore";
 import { useToast } from "primevue/usetoast";
-import VuePdfEmbed from "vue-pdf-embed";
 
 const route = useRoute();
 const { t } = useI18n();
@@ -214,7 +214,7 @@ const Page = ref(1);
 const maxPage = ref(1);
 const showScoreField = ref(true);
 const toggleScoreFieldIcon = ref("pi pi-chevron-down");
-const toggleScoreFieldPosition = ref("mb-61");
+const toggleScoreFieldPosition = ref("mb-60");
 
 // FIXME: logic may refactor
 
@@ -422,11 +422,11 @@ function nextPage() {
 function toggleScoreField() {
 	if (showScoreField.value) {
 		showScoreField.value = false;
-		toggleScoreFieldPosition.value = "mb-6";
+		toggleScoreFieldPosition.value = "mb-5";
 		toggleScoreFieldIcon.value = "pi pi-chevron-up";
 	} else {
 		showScoreField.value = true;
-		toggleScoreFieldPosition.value = "mb-61";
+		toggleScoreFieldPosition.value = "mb-60";
 		toggleScoreFieldIcon.value = "pi pi-chevron-down";
 	}
 }
