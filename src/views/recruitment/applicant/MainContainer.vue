@@ -59,7 +59,7 @@ const auth = useRecruitmentApplicantAuthStore();
 const project = useProjectIdStore();
 const api = new RecruitmentApplicantAPI(auth);
 
-const { data } = useQuery(
+useQuery(
 	["programList"],
 	async () => {
 		return await api.getProgramList();
