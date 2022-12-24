@@ -71,6 +71,7 @@
 				:modal="true"
 				v-model:visible="assignProgramModal.visible"
 				:draggable="false"
+				@after-hide="assignProgramModal.isError=false"
 			>
 				<template #header>
 					<h3 class="font-black text-lg">
@@ -79,9 +80,14 @@
 				</template>
 
 				<template #default>
+					<transition-group name="p-message" tag="div">
+						<Message severity="error" :closable="false" key="error" v-if="assignProgramModal.isError">{{
+							$t("操作失敗，請關閉對話窗後再試")
+						}}</Message>
+					</transition-group>
 					<div class="font-bold">{{ $t("選擇的專案") }}</div>
 					<MultiSelect
-						:placeholder="$t('選擇專案')"
+						:placeholder="$t('尚無選擇的專案')"
 						:show-toggle-all="false"
 						v-model:model-value="assignProgramModal.data.selected"
 						:options="assignProgramModal.data.programs"
@@ -96,6 +102,7 @@
 				<template #footer>
 					<Button
 						:label="$t('完成')"
+						:loading="assignProgramModal.isLoading"
 						@click="assignProgramModal.submit()"
 					/>
 				</template>
@@ -132,6 +139,7 @@ import InputText from "primevue/inputtext";
 import Checkbox from "primevue/checkbox";
 import { useMutation, useQuery } from "@tanstack/vue-query";
 import { useRouter } from "vue-router";
+import Message from "primevue/message";
 import {
 	useAdmissionAdminAuthStore,
 	useAdmissionReviewerAuthStore,
@@ -148,6 +156,7 @@ import { useToast } from "primevue/usetoast";
 import ConfirmDialog from "primevue/confirmdialog";
 import MultiSelect from "primevue/multiselect";
 import AddReviewerDialog from "@/components/AdmAddReviewerDialog.vue";
+import { time } from "console";
 
 const { t: $t } = useI18n();
 
@@ -254,6 +263,8 @@ class AssignProgramModal {
 		oldSelected: Record<"id" | "category" | "name" | "fullname", any>[];
 	};
 	visible: boolean;
+	isLoading: boolean;
+	isError: boolean;
 	constructor() {
 		this.data = {
 			id: 0,
@@ -262,6 +273,8 @@ class AssignProgramModal {
 			oldSelected: [],
 		};
 		this.visible = false;
+		this.isLoading = false;
+		this.isError = false;
 	}
 
 	open(reviewer: AdmAdminReviewerRelatedProgramResponse) {
@@ -270,8 +283,6 @@ class AssignProgramModal {
 		getRelatedPrograms();
 	}
 	submit() {
-		// TODO: close the modal after the result is certain
-
 		// Find out which programs are to be removed
 		const toRemove: number[] = this.data.oldSelected
 			.filter((program) => !this.data.selected.includes(program))
@@ -281,20 +292,54 @@ class AssignProgramModal {
 			.filter((program) => !this.data.oldSelected.includes(program))
 			.map((program) => program.id);
 
+		this.isLoading = true;
+		let removeCompleted = false,
+			assignCompleted = false;
+
+		if (toRemove.length == 0) removeCompleted = true;
+		if (toAssign.length == 0) assignCompleted = true;
+
 		toRemove.map((programID) => {
-			removeReviewerFromProgram({
-				reviewerID: this.data.id,
-				programID: programID,
-			});
+			removeReviewerFromProgram(
+				{
+					reviewerID: this.data.id,
+					programID: programID,
+				},
+				{
+					onSuccess: () => {
+						removeCompleted = true;
+					},
+					onError: () => {
+						this.isError=true;
+					},
+					onSettled: () => {
+						this.isLoading = false;
+						if (removeCompleted && assignCompleted) this.close();
+					},
+				}
+			);
 		});
 
 		toAssign.map((programID) => {
-			assignReviewertoProgram({
-				reviewerID: this.data.id,
-				programID: programID,
-			});
+			assignReviewertoProgram(
+				{
+					reviewerID: this.data.id,
+					programID: programID,
+				},
+				{
+					onSuccess: () => {
+						assignCompleted = true;
+					},
+					onError: () => {
+						this.isError=true;
+					},
+					onSettled: () => {
+						this.isLoading = false;
+						if (removeCompleted && assignCompleted) this.close();
+					},
+				}
+			);
 		});
-		this.close();
 	}
 	close() {
 		this.visible = false;
