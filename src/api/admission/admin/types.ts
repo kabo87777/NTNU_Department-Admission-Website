@@ -111,7 +111,6 @@ export interface AdmAdminReviewerRelatedProgramResponse {
 	detail: null | unknown;
 }
 export interface AdmissionAdminApplicantsListResponse {
-	// TODO: Wait backend to give exact data type
 	id: number;
 	provider: string;
 	uid: string;
@@ -132,7 +131,7 @@ export interface AdmissionAdminApplicantsListResponse {
 	updated_at: string;
 	s_program_id: number;
 	application_stage: string | null;
-	isMoredoc: boolean | null;
+	isMoredoc: boolean;
 	moredoc_category: string | null;
 	moredoc_end_date: string | null;
 	moredoc_name: string | null;
