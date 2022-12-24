@@ -17,7 +17,10 @@
 				border="rounded-xl"
 			>
 				<div>請至電子信箱點擊連結並重新設定密碼</div>
-				<div>Please check your mailbox and follow the link to reset your password.</div>
+				<div>
+					Please check your mailbox and follow the link to reset your
+					password.
+				</div>
 			</div>
 		</div>
 	</div>
