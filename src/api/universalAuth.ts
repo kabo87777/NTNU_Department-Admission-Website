@@ -170,3 +170,39 @@ export async function doUniversalAuthResetPassword(
 	console.log("response", response);
 	return response.data;
 }
+
+export async function doAdmissionRecommenderGetRecommendLetter(
+	auth: AuthStore,
+	data: object
+) {
+	const response = await axios.get(
+		"https://admissions-backend-stg.birkhoff.me/api/v1/admission/recommendletter",
+		data
+	);
+
+	return response.data;
+}
+
+export async function doAdmissionRecommenderSaveRecommendLetter(
+	auth: AuthStore,
+	data: object
+) {
+	const response = await axios.patch(
+		"https://admissions-backend-stg.birkhoff.me/api/v1/admission/recommendletter",
+		data
+	);
+
+	return response.data;
+}
+
+export async function doAdmissionRecommenderConfirmRecommendLetter(
+	auth: AuthStore,
+	data: object
+) {
+	const response = await axios.patch(
+		"https://admissions-backend-stg.birkhoff.me/api/v1/admission/recommendletter/confirm",
+		data
+	);
+
+	return response.data;
+}

@@ -320,7 +320,7 @@ const routes: Array<RouteRecordRaw> = [
 					),
 			},
 			{
-				path: "applicantsUploadList/:userId",
+				path: "applicantsUploadList/:userId/:userName",
 				name: "AdmissionAdminApplicantUploadedDocs",
 				component: () =>
 					import(
