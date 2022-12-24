@@ -49,8 +49,6 @@
 			</div>
 		</div>
 
-		<ParagraphDivider />
-
 		<div class="mt-24px">
 			<div>
 				<label class="text-24px font-bold">{{ $t("補件需求") }}</label>
