@@ -47,13 +47,6 @@
 				>
 					{{ $t("基本資料") }}
 				</span>
-				<!-- <div class="mb-28px">
-					<CompletedTag v-if="tags.basicInfo === 'completed'" />
-					<IncompleteTag
-						v-else-if="tags.basicInfo === 'incompleted'"
-					/>
-					<UnableTag v-else-if="tags.basicInfo === 'unable'" />
-				</div> -->
 			</Button>
 		</router-link>
 
@@ -75,13 +68,6 @@
 				>
 					{{ $t("附件資料") }}
 				</span>
-				<!-- <div class="mb-28px">
-					<CompletedTag v-if="tags.attachment === 'completed'" />
-					<IncompleteTag
-						v-else-if="tags.attachment === 'incomplete'"
-					/>
-					<UnableTag v-else-if="tags.attachment === 'unable'" />
-				</div> -->
 			</Button>
 		</router-link>
 
@@ -110,13 +96,6 @@
 				>
 					{{ $t("補交文件系統") }}
 				</span>
-				<!-- <div class="mb-28px">
-					<CompletedTag v-if="tags.additionalDocs === 'completed'" />
-					<IncompleteTag
-						v-else-if="tags.additionalDocs === 'incomplete'"
-					/>
-					<UnableTag v-else-if="tags.additionalDocs === 'unable'" />
-				</div> -->
 			</Button>
 		</router-link>
 
@@ -303,6 +282,7 @@
 
 <script setup lang="ts">
 import { reactive, ref, toRaw } from "vue";
+import { useRouter } from "vue-router";
 import { useRecruitmentApplicantAuthStore } from "@/stores/universalAuth";
 import { RecruitmentApplicantAPI } from "@/api/recruitment/applicant/api";
 import { useProjectIdStore } from "@/stores/RecruitmentApplicantStore";
@@ -311,7 +291,6 @@ import { useToast } from "primevue/usetoast";
 import "primeicons/primeicons.css";
 import "primevue/resources/primevue.min.css";
 import Button from "primevue/button";
-import { useRouter } from "vue-router";
 import Dialog from "primevue/dialog";
 import "primeicons/primeicons.css";
 import "@/styles/customize.css";
