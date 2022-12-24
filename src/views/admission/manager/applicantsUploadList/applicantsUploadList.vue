@@ -64,7 +64,7 @@
 								{{ slotProps.data.application_stage }}
 							</Tag>
 							<Tag v-else severity="danger">
-								{{ slotProps.data.application_stage }}
+								{{ $t("無") }}
 							</Tag>
 						</div>
 					</template>
