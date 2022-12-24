@@ -82,9 +82,9 @@ const props = defineProps({
 
 const emits = defineEmits(["currentTab"]);
 
-const isAdmin = props.Admin;
-const isApplicant = props.Applicant;
-const isReviewer = props.Reviewer;
+const isAdmin = computed(() => props.Admin);
+const isApplicant = computed(() => props.Applicant);
+const isReviewer = computed(() => props.Reviewer);
 
 const choseOption = ref(1);
 
