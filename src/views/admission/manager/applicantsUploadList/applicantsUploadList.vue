@@ -13,7 +13,7 @@
 						>
 							<router-link
 								:to="{
-									path: `/admission/manager/applicantsUploadList/${slotProps.data.id}`,
+									path: `/admission/manager/applicantsUploadList/${slotProps.data.id}/${slotProps.data.name}`,
 								}"
 							>
 								{{ slotProps.data.uid }}
@@ -31,7 +31,7 @@
 						>
 							<router-link
 								:to="{
-									path: `/admission/manager/applicantsUploadList/${slotProps.data.id}`,
+									path: `/admission/manager/applicantsUploadList/${slotProps.data.id}/${slotProps.data.name}`,
 								}"
 							>
 								{{ slotProps.data.name }}
@@ -64,7 +64,7 @@
 								{{ slotProps.data.application_stage }}
 							</Tag>
 							<Tag v-else severity="danger">
-								{{ slotProps.data.application_stage }}
+								{{ $t("無") }}
 							</Tag>
 						</div>
 					</template>
