@@ -10,7 +10,7 @@
 			text="body"
 			flex="grow"
 			pos="relative"
-			overflow="x-hidden y-auto"
+			overflow="x-auto y-auto"
 			:scrollbar="scrollbarStyle"
 		>
 			<div h="4" v-if="margin" />
