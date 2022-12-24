@@ -211,7 +211,7 @@
 					/>
 				</div>
 			</div>
-			<div class="mt-24px w-2/3">
+			<!-- <div class="mt-24px w-2/3">
 				<div>{{ $t("備註") }}</div>
 				<div>
 					<Textarea
@@ -221,14 +221,14 @@
 						v-model="info.remark"
 					/>
 				</div>
-			</div>
+			</div> -->
 		</div>
 		<div class="bigYellowDivider"></div>
 		<div>
 			<Button
 				class="p-button-secondary"
 				style="
-					margin-top: 32px;
+					margin-top: 16px;
 					margin-left: 100%;
 					transform: translateX(-100%);
 					width: 100px;
