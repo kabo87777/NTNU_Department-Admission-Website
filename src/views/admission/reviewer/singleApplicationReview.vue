@@ -100,7 +100,8 @@
 						<div text="body">
 							{{ score1Title }} ({{ score1Proportion }}%)
 						</div>
-						<InputNumber
+						<InputText
+							type="number"
 							v-model="inputScore_1"
 							style="width: 100% !important"
 						/>
@@ -109,7 +110,8 @@
 						<div text="body">
 							{{ score2Title }} ({{ score2Proportion }}%)
 						</div>
-						<InputNumber
+						<InputText
+							type="number"
 							v-model="inputScore_2"
 							style="width: 100% !important"
 						/>
@@ -118,7 +120,8 @@
 						<div text="body">
 							{{ score3Title }} ({{ score3Proportion }}%)
 						</div>
-						<InputNumber
+						<InputText
+							type="number"
 							v-model="inputScore_3"
 							style="width: 100% !important"
 						/>
@@ -127,7 +130,8 @@
 						<div text="body">
 							{{ score4Title }} ({{ score4Proportion }}%)
 						</div>
-						<InputNumber
+						<InputText
+							type="number"
 							v-model="inputScore_4"
 							style="width: 100% !important"
 						/>
@@ -136,7 +140,8 @@
 						<div text="body">
 							{{ score5Title }} ({{ score5Proportion }}%)
 						</div>
-						<InputNumber
+						<InputText
+							type="number"
 							v-model="inputScore_5"
 							style="width: 100% !important"
 						/>
@@ -240,20 +245,20 @@ const score2Title = ref("");
 const score3Title = ref("");
 const score4Title = ref("");
 const score5Title = ref("");
-const inputScore_1 = ref(0);
-const inputScore_2 = ref(0);
-const inputScore_3 = ref(0);
-const inputScore_4 = ref(0);
-const inputScore_5 = ref(0);
+const inputScore_1 = ref("0");
+const inputScore_2 = ref("0");
+const inputScore_3 = ref("0");
+const inputScore_4 = ref("0");
+const inputScore_5 = ref("0");
 const name = ref("");
 const remark = ref("");
 const total_score = computed(() => {
 	return (
-		(inputScore_1!.value! * score1Proportion.value) / 100 +
-		(inputScore_2!.value! * score2Proportion.value) / 100 +
-		(inputScore_3!.value! * score3Proportion.value) / 100 +
-		(inputScore_4!.value! * score4Proportion.value) / 100 +
-		(inputScore_5!.value! * score5Proportion.value) / 100
+		(+inputScore_1!.value! * score1Proportion.value) / 100 +
+		(+inputScore_2!.value! * score2Proportion.value) / 100 +
+		(+inputScore_3!.value! * score3Proportion.value) / 100 +
+		(+inputScore_4!.value! * score4Proportion.value) / 100 +
+		(+inputScore_5!.value! * score5Proportion.value) / 100
 	).toFixed(2);
 });
 const data = ref("基本資料");
@@ -271,11 +276,11 @@ const {
 	},
 	{
 		onSuccess: (data) => {
-			inputScore_1.value = data!.docs_grade_1;
-			inputScore_2.value = data!.docs_grade_2;
-			inputScore_3.value = data!.docs_grade_3;
-			inputScore_4.value = data!.docs_grade_4;
-			inputScore_5.value = data!.docs_grade_5;
+			inputScore_1.value = data!.docs_grade_1.toString();
+			inputScore_2.value = data!.docs_grade_2.toString();
+			inputScore_3.value = data!.docs_grade_3.toString();
+			inputScore_4.value = data!.docs_grade_4.toString();
+			inputScore_5.value = data!.docs_grade_5.toString();
 			accessChecked.value = data!.isImmediateEnroll;
 			accessReason.value = data!.immediate_enroll_comment;
 		},
@@ -442,9 +447,9 @@ const toast = useToast();
 function saveScore() {
 	const today = new Date();
 	if (
-		inputScore_1.value > 100 ||
-		inputScore_2.value > 100 ||
-		inputScore_3.value > 100
+		+inputScore_1.value > 100 ||
+		+inputScore_2.value > 100 ||
+		+inputScore_3.value > 100
 	) {
 		toast.add({
 			severity: "error",
@@ -454,9 +459,9 @@ function saveScore() {
 		return;
 	}
 	if (
-		inputScore_1.value < 0 ||
-		inputScore_2.value < 0 ||
-		inputScore_3.value < 0
+		+inputScore_1.value < 0 ||
+		+inputScore_2.value < 0 ||
+		+inputScore_3.value < 0
 	) {
 		toast.add({
 			severity: "error",
