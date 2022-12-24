@@ -69,7 +69,11 @@
 						:class="letterSpace"
 						@click="navigate"
 						:isSelected="gateway === 'AdmissionApplicantBasicInfo'"
+						:disabled="!isProgramAvailable"
 						>{{ $t("基本資料") }}
+						<div v-if="!isProgramAvailable" text="sm">
+							{{ $t("(未開放)") }}
+						</div>
 					</NButton>
 				</router-link>
 				<!-- 3.附件資料 -->
@@ -89,7 +93,11 @@
 						:class="letterSpace"
 						@click="navigate"
 						:isSelected="gateway === 'AdmissionApplicantAttachment'"
+						:disabled="!isProgramAvailable"
 						>{{ $t("附件資料") }}
+						<div v-if="!isProgramAvailable" text="sm">
+							{{ $t("(未開放)") }}
+						</div>
 					</NButton>
 				</router-link>
 				<!-- Divider -->
@@ -118,7 +126,11 @@
 						:isSelected="
 							gateway === 'AdmissionApplicantRecommendationLetter'
 						"
+						:disabled="!isProgramAvailable"
 						>{{ $t("推薦信作業") }}
+						<div v-if="!isProgramAvailable" text="sm">
+							{{ $t("(未開放)") }}
+						</div>
 					</NButton>
 				</router-link>
 				<!-- 5.補交文件系統 -->
@@ -156,6 +168,7 @@
 						icon="pi pi-user-edit"
 						class="p-2 h-11 bg-white whitespace-nowrap"
 						:class="letterSpace"
+						:disabled="!isProgramAvailable"
 						>{{ $t("資料確認送出") }}
 					</NButton>
 				</div>
