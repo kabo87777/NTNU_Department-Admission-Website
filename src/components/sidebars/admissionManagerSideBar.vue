@@ -224,7 +224,8 @@
 							class="whitespace-nowrap"
 							:class="letterSpace"
 						>
-							{{ $t("系辦主管") }}
+							<!-- 記得把這邊從寫死的內容，改成 store 裡的資料 -->
+							{{ adminStore.userInfo.name }}
 						</div>
 					</div>
 					<!-- Button -->
