@@ -9,7 +9,7 @@
 					>
 				</div>
 				<div class="ml-32px font-bold text-32px">
-					{{ userInfo.admission_id + " " + userInfo.name }}
+					{{ userInfo.admission_id + " " + route.params.userName }}
 				</div>
 			</div>
 		</template>
