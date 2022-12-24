@@ -71,7 +71,7 @@
 				:modal="true"
 				v-model:visible="assignProgramModal.visible"
 				:draggable="false"
-				@after-hide="assignProgramModal.isError=false"
+				@after-hide="assignProgramModal.isError = false"
 			>
 				<template #header>
 					<h3 class="font-black text-lg">
@@ -81,9 +81,13 @@
 
 				<template #default>
 					<transition-group name="p-message" tag="div">
-						<Message severity="error" :closable="false" key="error" v-if="assignProgramModal.isError">{{
-							$t("操作失敗，請關閉對話窗後再試")
-						}}</Message>
+						<Message
+							severity="error"
+							:closable="false"
+							key="error"
+							v-if="assignProgramModal.isError"
+							>{{ $t("操作失敗，請關閉對話窗後再試") }}</Message
+						>
 					</transition-group>
 					<div class="font-bold">{{ $t("選擇的專案") }}</div>
 					<MultiSelect
@@ -310,7 +314,7 @@ class AssignProgramModal {
 						removeCompleted = true;
 					},
 					onError: () => {
-						this.isError=true;
+						this.isError = true;
 					},
 					onSettled: () => {
 						this.isLoading = false;
@@ -331,7 +335,7 @@ class AssignProgramModal {
 						assignCompleted = true;
 					},
 					onError: () => {
-						this.isError=true;
+						this.isError = true;
 					},
 					onSettled: () => {
 						this.isLoading = false;
