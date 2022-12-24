@@ -21,7 +21,7 @@
 		<div
 			h="[calc(100%-14rem)]"
 			overflow="y-auto"
-			scrollbar="thin thumb-nRed-100 thumb-rounded-full"
+			scrollbar="thin thumb-nGold-100 thumb-rounded-full"
 		>
 			<div flex="~ col gap-6" mt="6">
 				<!-- 1.最新資訊 -->
