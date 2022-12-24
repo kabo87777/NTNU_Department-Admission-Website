@@ -164,3 +164,9 @@ export interface AdmissionReviewerApplicantFileListResponse {
 	school: null;
 	score: number;
 }
+
+export interface AdmReviewerChangePasswordRequest {
+	current_password: string;
+	password: string;
+	password_confirmation: string;
+}
