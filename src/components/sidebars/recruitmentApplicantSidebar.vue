@@ -139,7 +139,7 @@
 				>
 					<template #header>
 						<div class="font-bold text-[24px]">
-							{{ $t("確認送出") }}
+							{{ $t("注意") }}
 						</div>
 					</template>
 					<template #default>
@@ -180,6 +180,7 @@
 							iconClass="text-[#53565A]"
 							:label="$t('確認')"
 							:loading="isLoading"
+							@click="sendConfirmation"
 						/>
 					</template>
 				</Dialog>
@@ -301,29 +302,24 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from "vue";
+import { reactive, ref, toRaw } from "vue";
 import { useRecruitmentApplicantAuthStore } from "@/stores/universalAuth";
 import { RecruitmentApplicantAPI } from "@/api/recruitment/applicant/api";
-import {
-	useProjectIdStore,
-	useUserInfoStore,
-} from "@/stores/RecruitmentApplicantStore";
+import { useProjectIdStore } from "@/stores/RecruitmentApplicantStore";
 import { useI18n } from "vue-i18n";
-import { Tags } from "@/api/recruitment/applicant/types";
+import { useToast } from "primevue/usetoast";
 import "primeicons/primeicons.css";
 import "primevue/resources/primevue.min.css";
 import Button from "primevue/button";
-import UnableTag from "@/styles/tags/unableTag.vue";
-import CompletedTag from "@/styles/tags/completedTag.vue";
-import IncompleteTag from "@/styles/tags/incompleteTag.vue";
 import { useRouter } from "vue-router";
 import Dialog from "primevue/dialog";
 import "primeicons/primeicons.css";
 import "@/styles/customize.css";
 
 const { t } = useI18n();
+const toast = useToast();
 const router = useRouter();
-const applicantStore = useUserInfoStore();
+
 const project = useProjectIdStore();
 const applicantName = window.localStorage.getItem(
 	"RecruitmentApplicantUsername"
@@ -331,18 +327,47 @@ const applicantName = window.localStorage.getItem(
 const currentYear = new Date().getFullYear();
 const rocYear = currentYear - 1911;
 
-let tags: Tags = reactive({
-	basicInfo: "completed",
-	attachment: "incomplete",
-	additionalDocs: "unable",
-	submitConfirm: "incomplete",
-});
-
 const applicantAuth = useRecruitmentApplicantAuthStore();
 const api = new RecruitmentApplicantAPI(applicantAuth);
 
 const isModalVisible = ref(false);
 const isLoading = ref(false);
+
+let fetchResponse = reactive({
+	success: false,
+	message: "" as string | [],
+});
+
+const sendConfirmation = async () => {
+	isLoading.value = true;
+
+	const res = await api.sendConfirmation(project.project.pid);
+
+	if (res?.success !== undefined && res?.message !== undefined) {
+		fetchResponse.success = toRaw(res.success);
+		fetchResponse.message = toRaw(res.message);
+	}
+
+	isLoading.value = false;
+	isModalVisible.value = false;
+
+	if (fetchResponse.success) {
+		toast.add({
+			severity: "success",
+			summary: "Success",
+			detail: fetchResponse.message,
+			life: 3000,
+		});
+		router.push("/recruitment/applicant/switchProject");
+	} else {
+		toast.add({
+			severity: "error",
+			summary: "Error",
+			detail: fetchResponse.message,
+			life: 5000,
+		});
+	}
+};
 
 async function signOut() {
 	await api.invalidateSession();
