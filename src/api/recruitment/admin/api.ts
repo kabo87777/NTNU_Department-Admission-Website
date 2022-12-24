@@ -14,6 +14,7 @@ import type {
 	RecruimentAdminGetApplicantMoredocResponses,
 	RecruitmentAdminGenericStatusResponse,
 	RecruitmentAdminReviewersListResponseWithDetail,
+	RAdminChangePasswordRequest,
 } from "./types";
 import type { APIGenericResponse } from "@/api/types";
 import { Ref } from "vue";
@@ -79,22 +80,18 @@ export class RecruitmentAdminAPI extends GenericAPI {
 	}
 
 	async changePassword(
-		body: object
+		body: RAdminChangePasswordRequest
 	): Promise<RecruitmentAdminChangePassResponse> {
-		const data: APIGenericResponse = await this.instance.patch(
+		const response: APIGenericResponse = await this.instance.patch(
 			"/recruitment/auth/admin/password",
 			body
 		);
-		if (data.error !== false) {
-			return {
-				success: false,
-				message: data.message.full_messages,
-			};
+		if (response.error === true) {
+			const msg = response.message.full_messages.join("\n");
+			throw new Error(msg);
 		}
-		return {
-			success: true,
-			message: data.message,
-		};
+
+		return response;
 	}
 
 	async getApplicantList(
