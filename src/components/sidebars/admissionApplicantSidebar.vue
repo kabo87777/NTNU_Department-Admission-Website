@@ -70,13 +70,6 @@
 					>
 						{{ $t("基本資料") }}
 					</span>
-					<!-- <div class="mb-28px">
-						<CompletedTag v-if="tags.basicInfo === 'completed'" />
-						<IncompleteTag
-							v-else-if="tags.basicInfo === 'incompleted'"
-						/>
-						<UnableTag v-else-if="tags.basicInfo === 'unable'" />
-					</div> -->
 				</Button>
 			</router-link>
 
@@ -101,13 +94,6 @@
 					>
 						{{ $t("附件資料") }}
 					</span>
-					<!-- <div class="mb-28px">
-						<CompletedTag v-if="tags.attachment === 'completed'" />
-						<IncompleteTag
-							v-else-if="tags.attachment === 'incomplete'"
-						/>
-						<UnableTag v-else-if="tags.attachment === 'unable'" />
-					</div> -->
 				</Button>
 			</router-link>
 
@@ -141,17 +127,6 @@
 					>
 						{{ $t("推薦信作業") }}
 					</span>
-					<!-- <div class="mb-28px">
-						<CompletedTag
-							v-if="tags.recommendLetter === 'completed'"
-						/>
-						<IncompleteTag
-							v-else-if="tags.recommendLetter === 'incomplete'"
-						/>
-						<UnableTag
-							v-else-if="tags.recommendLetter === 'unable'"
-						/>
-					</div> -->
 				</Button>
 			</router-link>
 
@@ -176,22 +151,11 @@
 					>
 						{{ $t("補交文件系統") }}
 					</span>
-					<!-- <div class="mb-28px">
-						<CompletedTag
-							v-if="tags.additionalDocs === 'completed'"
-						/>
-						<IncompleteTag
-							v-else-if="tags.additionalDocs === 'incomplete'"
-						/>
-						<UnableTag
-							v-else-if="tags.additionalDocs === 'unable'"
-						/>
-					</div> -->
 				</Button>
 			</router-link>
 		</div>
 		<div
-			class="bg-gray-200 bg-opacity-50 h-140px w-[100%]"
+			class="bg-gray-200 bg-opacity-50 h-200px w-[100%]"
 			style="
 				position: absolute;
 				bottom: 0px;
@@ -199,6 +163,83 @@
 				padding-right: 8px;
 			"
 		>
+			<div class="mt-16px">
+				<Dialog
+					v-model:visible="isModalVisible"
+					style="width: 500px"
+					:closable="false"
+					:draggable="false"
+					:modal="true"
+				>
+					<template #header>
+						<div class="font-bold text-[24px]">
+							{{ $t("注意") }}
+						</div>
+					</template>
+					<template #default>
+						<div class="flex">
+							<div class="mt-2px">
+								<i
+									class="pi pi-exclamation-triangle"
+									style="font-size: 20px"
+								/>
+							</div>
+							<div class="ml-4px">
+								{{ $t("確認送出後無法再更改資料") }}
+							</div>
+						</div>
+					</template>
+					<template #footer>
+						<Button
+							class="p-button-outlined p-button-secondary"
+							style="
+								border: 2px solid #a18b4a;
+								color: #736028;
+								height: 36px;
+							"
+							icon="pi pi-times"
+							iconClass="text-[#736028]"
+							:label="$t('取消')"
+							@click="isModalVisible = false"
+						/>
+						<Button
+							class="p-button-outlined p-button-secondary"
+							style="
+								color: #53565a;
+								border: 2px solid #bcd19b;
+								margin-left: 16px;
+								height: 36px;
+							"
+							icon="pi pi-check"
+							iconClass="text-[#53565A]"
+							:label="$t('確認')"
+							:loading="isLoading"
+							@click="sendConfirmation"
+						/>
+					</template>
+				</Dialog>
+				<div class="flex">
+					<div class="m-auto">
+						<Button
+							class="p-button-secondary p-button-outlined"
+							style="height: 40px; border: 2px solid #736028"
+							@click="isModalVisible = true"
+						>
+							<div>
+								<i
+									class="pi pi-check-square text-[#736028]"
+									style="font-size: small"
+								/>
+							</div>
+							<div
+								class="ml-8px font-bold text-15px text-[#736028]"
+							>
+								{{ $t("資料確認送出") }}
+							</div>
+						</Button>
+					</div>
+				</div>
+			</div>
 			<div class="mt-24px flex relative">
 				<div
 					style="
@@ -266,7 +307,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, toRaw, ref, reactive } from "vue";
 import { useRouter } from "vue-router";
 import { useQuery } from "@tanstack/vue-query";
 import { useI18n } from "vue-i18n";
@@ -278,6 +319,8 @@ import { AdmissionApplicantAPI } from "@/api/admission/applicant/api";
 import "primeicons/primeicons.css";
 import "primevue/resources/primevue.min.css";
 import Button from "primevue/button";
+import Dialog from "primevue/dialog";
+import { useToast } from "primevue/usetoast";
 
 import "@/styles/customize.css";
 
@@ -286,12 +329,51 @@ const applicantAuth = useAdmissionApplicantAuthStore();
 const applicantName = window.localStorage.getItem("AdmissionApplicantUsername");
 
 const { t } = useI18n();
+const toast = useToast();
+const isModalVisible = ref(false);
+const isLoading = ref(false);
 
 const api = new AdmissionApplicantAPI(applicantAuth);
 
 const now = dayjs();
 const currentYear = now.get("year");
 const rocYear = currentYear - 1911;
+
+let fetchResponse = reactive({
+	success: false,
+	message: "" as string | [],
+});
+
+const sendConfirmation = async () => {
+	isLoading.value = true;
+
+	const res = await api.sendConfirmation();
+
+	if (res?.success !== undefined && res?.message !== undefined) {
+		fetchResponse.success = toRaw(res.success);
+		fetchResponse.message = toRaw(res.message);
+	}
+
+	isLoading.value = false;
+	isModalVisible.value = false;
+
+	if (fetchResponse.success) {
+		toast.add({
+			severity: "success",
+			summary: "Success",
+			detail: fetchResponse.message,
+			life: 3000,
+		});
+		router.push({ name: "AdmissionApplicantLatestNews" });
+	} else {
+		toast.add({
+			severity: "error",
+			summary: "Error",
+			detail: fetchResponse.message,
+			life: 5000,
+		});
+	}
+};
 
 const isProgramAvailable = computed(() => {
 	if (!applicantProgram.value) return false;
@@ -301,13 +383,6 @@ const isProgramAvailable = computed(() => {
 
 	return now.isAfter(start) && now.isBefore(end);
 });
-
-// let tags: Tags = reactive({
-// 	basicInfo: "completed",
-// 	attachment: "incomplete",
-// 	recommendLetter: "unable",
-// 	additionalDocs: "unable",
-// });
 
 const { data: applicantProgram } = useQuery(
 	["admissionApplicantProgram"],

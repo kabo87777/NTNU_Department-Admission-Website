@@ -86,7 +86,7 @@ const handleVerify = () => {
 
 .authVerifyImg {
 	flex-basis: 50%;
-	background-image: url("/assets/login-page/Login-img.png");
+	background-image: url("/assets/login-page/Login-img.jpg");
 	background-size: cover;
 	background-position: left;
 	background-repeat: no-repeat;

@@ -254,4 +254,22 @@ export class AdmissionApplicantAPI extends GenericAPI {
 			message: data.message,
 		};
 	}
+
+	async sendConfirmation(): Promise<AdmissionApplicantGenericResponse> {
+		const data: APIGenericResponse = await this.instance.patch(
+			"admission/applicant/confirm"
+		);
+
+		if (data.error !== false) {
+			return {
+				success: false,
+				message: data.message,
+			};
+		}
+
+		return {
+			success: true,
+			message: data.message,
+		};
+	}
 }
