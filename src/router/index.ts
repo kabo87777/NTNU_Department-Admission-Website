@@ -6,6 +6,7 @@ import {
 } from "vue-router";
 
 const routes: Array<RouteRecordRaw> = [
+	// Login Pages
 	{
 		path: "/",
 		name: "LandingView",
@@ -192,6 +193,7 @@ const routes: Array<RouteRecordRaw> = [
 			},
 		],
 	},
+	// Admission Reviewer Pages
 	{
 		path: "/admission/reviewer",
 		name: "AdmissionReviewerMainContainer",
@@ -199,19 +201,19 @@ const routes: Array<RouteRecordRaw> = [
 		children: [
 			{
 				path: "applicationReview",
-				name: "applicationReview",
+				name: "AdmissionReviewerApplicationReview",
 				component: () =>
 					import("@/views/admission/reviewer/applicationReview.vue"),
 			},
 			{
 				path: "oralReview",
-				name: "oralReview",
+				name: "AdmissionReviewerOralReview",
 				component: () =>
 					import("@/views/admission/reviewer/oralReview.vue"),
 			},
 			{
 				path: "singleApplicationReview/:id",
-				name: "singleApplicationReview",
+				name: "AdmissionReviewerSingleApplicationReview",
 				component: () =>
 					import(
 						"@/views/admission/reviewer/singleApplicationReview.vue"
@@ -219,7 +221,7 @@ const routes: Array<RouteRecordRaw> = [
 			},
 			{
 				path: "singleOralReview/:id",
-				name: "singleOralReview",
+				name: "AdmissionReviewerSingleOralReview",
 				component: () =>
 					import("@/views/admission/reviewer/singleOralReview.vue"),
 			},
@@ -231,6 +233,7 @@ const routes: Array<RouteRecordRaw> = [
 			},
 		],
 	},
+	// Admission Applicant Pages
 	{
 		path: "/admission/applicant",
 		name: "AdmissionApplicantMainContainer",
@@ -280,6 +283,7 @@ const routes: Array<RouteRecordRaw> = [
 			},
 		],
 	},
+	// Admission Admin Pages
 	{
 		path: "/admission/manager",
 		name: "AdmissionManagerMainContainer",
@@ -347,7 +351,7 @@ const routes: Array<RouteRecordRaw> = [
 			},
 		],
 	},
-	// Admission - Recommendation Letters
+	// Admission Recommand Pages
 	{
 		path: "/admission/recommenderAuthVerify",
 		name: "RecommenderAuthVerify",
@@ -360,6 +364,7 @@ const routes: Array<RouteRecordRaw> = [
 		component: () =>
 			import("@/views/admission/recommender/FillRecommendLetter.vue"),
 	},
+	// Recruitment Applicant Pages
 	{
 		path: "/recruitment/applicant",
 		name: "RecruitmentApplicantMainContainer",
@@ -409,7 +414,7 @@ const routes: Array<RouteRecordRaw> = [
 			},
 		],
 	},
-	// Recruitment - manager
+	// Recruitment Admin Pages
 	{
 		path: "/recruitment/manager",
 		name: "RecruitmentAdminMainContainer",
@@ -490,6 +495,7 @@ const routes: Array<RouteRecordRaw> = [
 			},
 		],
 	},
+	// Recruitment Reviewer Pages
 	{
 		path: "/recruitment/reviewer",
 		name: "RecruitmentReviewerMainContainer",
