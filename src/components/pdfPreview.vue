@@ -1,25 +1,16 @@
 <template>
-	<div class="pdf-preview !h-670px">
-		<div class="pdf-wrap !h-590px">
+	<div class="pdf-preview !h-1670px">
+		<div class="pdf-wrap !h-1590px">
 			<vue-pdf-embed
 				:source="state.source"
-				class="vue-pdf-embed"
-				:page="state.pageNum"
+				:height="state.height"
+				class="!ml-280px"
 			/>
-		</div>
-		<div class="page-tool mt-10px">
-			<div class="page-tool-item" @click="lastPage">上一頁</div>
-			<div class="page-tool-item" @click="nextPage">下一頁</div>
-			<div class="page-tool-item">
-				{{ state.pageNum }}/{{ state.numPages }}
-			</div>
-			<div class="page-tool-item" @click="pageZoomOut">放大</div>
-			<div class="page-tool-item" @click="pageZoomIn">缩小</div>
 		</div>
 	</div>
 </template>
 <script setup lang="ts">
-import { reactive, onMounted } from "vue";
+import { onMounted } from "vue";
 import VuePdfEmbed from "vue-pdf-embed";
 
 const props = defineProps({
@@ -29,12 +20,13 @@ const props = defineProps({
 	},
 });
 
-const state = reactive({
+const state = {
 	source: props.pdfUrl,
 	pageNum: 1,
-	scale: 1.9,
+	scale: 2.5,
 	numPages: 0,
-});
+	height: 1000,
+};
 
 function lastPage() {
 	if (state.pageNum > 1) {

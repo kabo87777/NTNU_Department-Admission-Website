@@ -29,24 +29,24 @@
 .container {
 	display: flex;
 	width: 10%;
+}
 
-	.smallContainer {
-		margin: auto;
-		display: flex;
+.smallContainer {
+	margin: auto;
+	display: flex;
+}
 
-		.cube {
-			background-color: #874b52;
-			height: 8px;
-			width: 4px;
-			margin-top: -4px;
-		}
+.cube {
+	background-color: #874b52;
+	height: 8px;
+	width: 4px;
+	margin-top: -4px;
+}
 
-		.dash {
-			background-color: #874b52;
-			height: 2px;
-			width: 4px;
-			margin-top: -1px;
-		}
-	}
+.dash {
+	background-color: #874b52;
+	height: 2px;
+	width: 4px;
+	margin-top: -1px;
 }
 </style>

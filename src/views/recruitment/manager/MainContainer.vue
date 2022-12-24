@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<div style="position: fixed; top: 0; width: 100%; z-index: 1000">
+		<div style="position: fixed; top: 0; width: 100%; z-index: 10">
 			<NavBar />
 		</div>
 		<div style="display: flex; margin-top: 60px; position: relative">
@@ -20,25 +20,31 @@
 			</div>
 		</div>
 	</div>
+	<ScrollTop target="parent" :threshold="100" icon="pi pi-arrow-up" />
+	<ScrollTop />
 </template>
 
 <script setup lang="ts">
 import NavBar from "@/components/NavBar.vue";
-import SideBar from "@/components/recruitmentManagerSidebar.vue";
-import { watch } from "vue";
+import SideBar from "@/components/sidebars/recruitmentManagerSidebar.vue";
+import ScrollTop from "primevue/scrolltop";
+
+import { useQuery } from "@tanstack/vue-query";
 import { useRouter } from "vue-router";
+
 import { useRecruitmentAdminAuthStore } from "@/stores/universalAuth";
 import { doUniversalAuthSessionValidation } from "@/api/universalAuth";
 
 const router = useRouter();
 
-const adminAuth = useRecruitmentAdminAuthStore();
+const auth = useRecruitmentAdminAuthStore();
 
-watch(router.currentRoute, async () => {
-	if (!(await doUniversalAuthSessionValidation(adminAuth))) {
-		router.replace({ name: "RecruitmentManagerSignin" });
-		// TODO: show session expired notification
-	}
+useQuery(["recruitmentManagerAuthorizationStatus"], async () => {
+	const status = await doUniversalAuthSessionValidation(auth);
+
+	if (status) return true;
+
+	return router.replace({ name: "RecruitmentManagerSignin" });
 });
 </script>
 

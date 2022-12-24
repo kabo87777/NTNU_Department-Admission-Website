@@ -1,6 +1,6 @@
 <template>
-	<div>
-		<div class="font-medium text-32px">{{ $t("申請上傳欄位") }}</div>
+	<div class="pt-62px pl-128px pr-128px">
+		<div class="font-medium text-32px">{{ trans.uploadFileCol.value }}</div>
 		<div class="bigRedDivider"></div>
 		<div class="p-fluid">
 			<SelectButton
@@ -9,6 +9,7 @@
 				:options="tabOptions"
 				optionLabel="name"
 				aria-labelledby="single"
+				:unselectable="false"
 			>
 			</SelectButton>
 		</div>
@@ -23,14 +24,15 @@
 					<label
 						for="nameInfo"
 						class="ml-8px text-24px font-medium"
-						>{{ $t("姓名資訊") }}</label
+						>{{ trans.nameInfo.value }}</label
 					>
 				</div>
 				<div class="flex mt-40px">
-					<div class="w-1/3 pl-16px">{{ $t("※ 稱謂/後綴") }}</div>
-					<div class="w-1/3 pl-16px">{{ $t("※ 中文姓氏/名字") }}</div>
 					<div class="w-1/3 pl-16px">
-						{{ $t("※ 英文姓氏/中間名/名字") }}
+						{{ trans.details.chineseName.value }}
+					</div>
+					<div class="w-1/3 pl-16px">
+						{{ trans.details.englishName.value }}
 					</div>
 				</div>
 				<ParagraphDivider />
@@ -45,13 +47,16 @@
 					<label
 						for="permanentAd"
 						class="ml-8px text-24px font-medium"
-						>{{ $t("戶籍資訊") }}</label
+						>{{ trans.recruitmentIdentity.value }}</label
 					>
 				</div>
 				<div class="flex mt-40px">
-					<div class="w-1/3 pl-16px">{{ $t("※ 國家/州") }}</div>
-					<div class="w-1/3 pl-16px">{{ $t("※ 城市/郵遞區號") }}</div>
-					<div class="w-1/3 pl-16px">{{ $t("※ 街道地址") }}</div>
+					<div class="w-1/2 pl-16px">
+						{{ trans.details.locals.value }}
+					</div>
+					<div class="w-1/2 pl-16px">
+						{{ trans.details.foreigner.value }}
+					</div>
 				</div>
 				<ParagraphDivider />
 			</div>
@@ -65,13 +70,19 @@
 					<label
 						for="mailingAd"
 						class="ml-8px text-24px font-medium"
-						>{{ $t("現居地址") }}</label
+						>{{ trans.registAddressInfo.value }}</label
 					>
 				</div>
 				<div class="flex mt-40px">
-					<div class="w-1/3 pl-16px">{{ $t("※ 國家/州") }}</div>
-					<div class="w-1/3 pl-16px">{{ $t("※ 城市/郵遞區號") }}</div>
-					<div class="w-1/3 pl-16px">{{ $t("※ 街道地址") }}</div>
+					<div class="w-1/3 pl-16px">
+						{{ trans.details.countryState.value }}
+					</div>
+					<div class="w-1/3 pl-16px">
+						{{ trans.details.cityPostNumber.value }}
+					</div>
+					<div class="w-1/3 pl-16px">
+						{{ trans.details.streetAddress.value }}
+					</div>
 				</div>
 				<ParagraphDivider />
 			</div>
@@ -85,18 +96,69 @@
 					<label
 						for="basicIdentityInfo"
 						class="ml-8px text-24px font-medium"
-						>{{ $t("身份資料") }}</label
+						>{{ trans.residentAddress.value }}</label
+					>
+				</div>
+				<div class="flex mt-40px">
+					<div class="w-1/3 pl-16px">
+						{{ trans.details.countryState.value }}
+					</div>
+					<div class="w-1/3 pl-16px">
+						{{ trans.details.cityPostNumber.value }}
+					</div>
+					<div class="w-1/3 pl-16px">
+						{{ trans.details.streetAddress.value }}
+					</div>
+				</div>
+				<ParagraphDivider />
+			</div>
+			<div class="mt-16px">
+				<div>
+					<Checkbox
+						inputId="basicIdentityInfo"
+						v-model="showedInfo[4].checked"
+						:binary="true"
+					/>
+					<label
+						for="basicIdentityInfo"
+						class="ml-8px text-24px font-medium"
+						>{{ trans.identityInfo.value }}</label
 					>
 				</div>
 				<div class="flex mt-40px">
 					<div class="w-1/4 pl-16px">
-						{{ $t("※ 法定性別/ 性別認同") }}
+						{{ trans.details.legalGender }}
 					</div>
-					<div class="w-1/4 pl-16px">{{ $t("※ 出生國") }}</div>
-					<div class="w-1/4 pl-16px">{{ $t("※ 主要國籍") }}</div>
-					<div class="w-1/4 pl-16px">{{ $t("※ 出生日期") }}</div>
+					<div class="w-1/4 pl-16px">
+						{{ trans.details.bornCountry }}
+					</div>
+					<div class="w-1/4 pl-16px">
+						{{ trans.details.citizenship }}
+					</div>
+					<div class="w-1/4 pl-16px">
+						{{ trans.details.bornDate }}
+					</div>
 				</div>
 				<ParagraphDivider />
+			</div>
+			<div class="mt-16px">
+				<div>
+					<Checkbox
+						inputId="contactInfo"
+						v-model="showedInfo[5].checked"
+						:binary="true"
+					/>
+					<label
+						for="contactInfo"
+						class="ml-8px text-24px font-medium"
+						>{{ trans.contactInfo.value }}</label
+					>
+				</div>
+				<div class="flex mt-40px">
+					<div class="w-1/4 pl-16px">
+						{{ trans.details.mobileNumber.value }}
+					</div>
+				</div>
 			</div>
 		</div>
 		<div v-else-if="activeTab.value === 2">
@@ -110,11 +172,16 @@
 					<label
 						for="schoolExp"
 						class="ml-8px text-24px font-medium"
-						>{{ $t("教學經歷") }}</label
+						>{{ trans.teachExp.value }}</label
 					>
 				</div>
 				<div class="flex mt-40px">
-					<div class="pl-16px">{{ $t("※ 檔案上傳") }}</div>
+					<div class="pl-16px">
+						{{ trans.details.fileName.value }}
+					</div>
+					<div class="pl-16px">
+						{{ trans.details.fileUpload.value }}
+					</div>
 				</div>
 				<ParagraphDivider />
 			</div>
@@ -126,11 +193,16 @@
 						:binary="true"
 					/>
 					<label for="score" class="ml-8px text-24px font-medium">{{
-						$t("考試與檢定分數")
+						trans.examScore.value
 					}}</label>
 				</div>
 				<div class="flex mt-40px">
-					<div class="pl-16px">{{ $t("※ 檔案上傳") }}</div>
+					<div class="pl-16px">
+						{{ trans.details.fileName.value }}
+					</div>
+					<div class="pl-16px">
+						{{ trans.details.fileUpload.value }}
+					</div>
 				</div>
 				<ParagraphDivider />
 			</div>
@@ -142,13 +214,16 @@
 						:binary="true"
 					/>
 					<label for="other" class="ml-8px text-24px font-medium">{{
-						$t("其他有利於審查資料")
+						trans.advantageFile.value
 					}}</label>
 				</div>
 				<div class="flex mt-40px">
-					<div class="w-1/3 pl-16px">{{ $t("※ 國家/州") }}</div>
-					<div class="w-1/3 pl-16px">{{ $t("※ 城市/郵遞區號") }}</div>
-					<div class="w-1/3 pl-16px">{{ $t("※ 街道地址") }}</div>
+					<div class="pl-16px">
+						{{ trans.details.fileName.value }}
+					</div>
+					<div class="pl-16px">
+						{{ trans.details.fileUpload.value }}
+					</div>
 				</div>
 				<ParagraphDivider />
 			</div>
@@ -201,26 +276,55 @@ import { reactive, ref, computed, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRecruitmentAdminAuthStore } from "@/stores/universalAuth";
 import { RecruitmentAdminAPI } from "@/api/recruitment/admin/api";
-import { useGlobalStore } from "@/stores/RecruitmentAdminStore";
+import { useGlobalStore } from "@/stores/globalStore";
 import { InvalidSessionError } from "@/api/error";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
 import { RecruitmentAdminProgramListResponse } from "@/api/recruitment/admin/types";
 
 const toast = useToast();
 
-// i18n Translation
+// i18n
 const { t } = useI18n();
-const translation = {
-	basicCol: t("基本資料欄位"),
-	attachmentCol: t("檢附資料欄位"),
+const trans = {
+	uploadFileCol: computed(() => t("申請上傳欄位")),
+	basicCol: computed(() => t("基本資料欄位")),
+	attachmentCol: computed(() => t("檢附資料欄位")),
+	nameInfo: computed(() => t("姓名資訊")),
+	recruitmentIdentity: computed(() => t("入學身分")),
+	registAddressInfo: computed(() => t("戶籍資訊")),
+	residentAddress: computed(() => t("現居地址")),
+	identityInfo: computed(() => t("身份資料")),
+	contactInfo: computed(() => t("聯絡資料")),
+	teachExp: computed(() => t("教學經歷")),
+	examScore: computed(() => t("考試與檢定分數")),
+	advantageFile: computed(() => t("其他有利於審查資料")),
 	changeSuccess: computed(() => t("儲存成功")),
+	details: {
+		chineseName: computed(() => t("※ 中文姓氏/名字")),
+		englishName: computed(() => t("※ 英文姓氏/中間名/名字")),
+		locals: computed(() => t("※ 本國人士")),
+		foreigner: computed(() => t("※ 外籍人士")),
+		countryState: computed(() => t("※ 國家/州")),
+		cityPostNumber: computed(() => t("※ 城市/郵遞區號")),
+		streetAddress: computed(() => t("※ 街道地址")),
+		legalGender: computed(() => t("※ 性別")),
+		bornCountry: computed(() => t("※ 出生國家")),
+		bornDate: computed(() => t("※ 出生日期")),
+		citizenship: computed(() => t("※ 主要國籍")),
+		email: computed(() => t("※ 電子郵件")),
+		mainNumber: computed(() => t("※ 電話(主要)")),
+		secondaryNumber: computed(() => t("※ 電話(次要)")),
+		mobileNumber: computed(() => t("※ 電話(行動電話)")),
+		fileName: computed(() => t("※ 資料名稱")),
+		fileUpload: computed(() => t("※ 資料上傳")),
+	},
 };
 
 // SelectButton: Change Tab
-const activeTab = ref({ name: translation.basicCol, value: 1 });
+const activeTab = ref({ name: trans.basicCol, value: 1 });
 const tabOptions = ref([
-	{ name: translation.basicCol, value: 1 },
-	{ name: translation.attachmentCol, value: 2 },
+	{ name: trans.basicCol, value: 1 },
+	{ name: trans.attachmentCol, value: 2 },
 ]);
 
 // API Authorization
@@ -231,22 +335,24 @@ const store = useGlobalStore();
 const queryClient = useQueryClient();
 
 // Field Data
-const showedInfo = reactive([
-	{ id: "file1", checked: false },
-	{ id: "file2", checked: false },
-	{ id: "file3", checked: false },
-	{ id: "file4", checked: false },
+let showedInfo = reactive([
+	{ id: "姓名資訊", checked: false },
+	{ id: "入職身分", checked: false },
+	{ id: "戶籍資訊", checked: false },
+	{ id: "現居地址", checked: false },
+	{ id: "身份資料", checked: false },
+	{ id: "聯絡資料", checked: false },
 ]);
-const showedFile = reactive([
-	{ id: "file1", checked: false },
-	{ id: "file2", checked: false },
-	{ id: "file3", checked: false },
+let showedFile = reactive([
+	{ id: "教學經歷", checked: false },
+	{ id: "考試與檢定分數", checked: false },
+	{ id: "其他有利於審查資料", checked: false },
 ]);
 const fieldList = {
 	infoChecked: [""],
 	fileChecked: [""],
 };
-const programData: RecruitmentAdminProgramListResponse = reactive({
+let programData: RecruitmentAdminProgramListResponse = reactive({
 	id: 0,
 	category: "",
 	name: "",
@@ -267,18 +373,13 @@ const programData: RecruitmentAdminProgramListResponse = reactive({
 
 // API: Get Info/File Data
 const getInfoFileField = useQuery(
-	["infoFileField"],
+	["recruitmentInfoFileField"],
 	async () => {
-		try {
-			if (store.program) {
-				const allData = await api.getProgramList();
-				return allData[store.program.id - 1];
-			}
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				console.error("Invalid Session Error");
-			}
-		}
+		if (!store.program)
+			throw new Error("recruitmentInfoFileField: no program selected");
+
+		const allData = await api.getProgramList();
+		return allData[store.program.id - 1];
 	},
 	{
 		refetchOnWindowFocus: false,
@@ -329,19 +430,14 @@ const getInfoFileField = useQuery(
 // API: Patch Info/File Data
 const patchInfoFileField = useMutation(
 	async (newData: RecruitmentAdminProgramListResponse) => {
-		try {
-			if (store.program) {
-				return await api.updateProgramData(store.program.id, newData);
-			}
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				console.error("Invalid Session Error");
-			}
-		}
+		if (!store.program)
+			throw new Error("patchInfoFileField: no program selected");
+
+		return await api.updateProgramData(store.program.id, newData);
 	},
 	{
 		onSuccess: () => {
-			queryClient.invalidateQueries(["infoFileField"]);
+			queryClient.invalidateQueries(["recruitmentInfoFileField"]);
 		},
 	}
 );
@@ -369,7 +465,7 @@ function saveChange() {
 		patchInfoFileField.mutate(programData);
 		toast.add({
 			severity: "success",
-			summary: translation.changeSuccess.value,
+			summary: trans.changeSuccess.value,
 			life: 3000,
 		});
 	} catch (e: any) {
@@ -383,7 +479,7 @@ function saveChange() {
 }
 
 function refreshData() {
-	queryClient.invalidateQueries(["infoFileField"]);
+	queryClient.invalidateQueries(["recruitmentInfoFileField"]);
 }
 
 watch(activeTab, () => {

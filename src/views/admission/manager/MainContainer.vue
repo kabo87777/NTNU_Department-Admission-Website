@@ -1,47 +1,54 @@
 <template>
-	<div>
-		<div style="position: fixed; top: 0; width: 100%; z-index: 1000">
-			<NavBar />
+	<!-- Navbar -->
+	<div pos="fixed inset-0 h-15" h="full" w="screen">
+		<NavBar />
+	</div>
+	<!-- Sidebar -->
+	<div pos="fixed top-15 bottom-0 inset-x-0" flex="~">
+		<div flex="none" w="90" bg="white" border="r-2 nGrey-100">
+			<SideBar />
 		</div>
-		<div style="display: flex; margin-top: 60px; position: relative">
-			<div
-				style="
-					position: fixed;
-					float: left;
-					width: 360px;
-					border-right: 1px solid gray;
-					height: 100%;
-				"
-			>
-				<SideBar />
-			</div>
-			<div style="margin-left: 360px; width: 100%; padding: 60px 6%">
+		<!-- Page Content -->
+		<div flex="grow">
+			<div w="9/10 max-300" h="[calc(100%-3rem)]" m="x-auto t-8">
 				<router-view />
 			</div>
 		</div>
 	</div>
+	<ScrollTop target="parent" :threshold="100" icon="pi pi-arrow-up" />
+	<ScrollTop />
 </template>
 
 <script setup lang="ts">
-import NavBar from "@/components/NavBar.vue";
-import SideBar from "@/components/sidebars/SideBar.vue";
-
-import { watch } from "vue";
+import { useQuery } from "@tanstack/vue-query";
 import { useRouter } from "vue-router";
 
 import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
 import { doUniversalAuthSessionValidation } from "@/api/universalAuth";
 
+import NavBar from "@/components/NavBar.vue";
+import SideBar from "@/components/sidebars/admissionManagerSideBar.vue";
+import ScrollTop from "primevue/scrolltop";
+
 const router = useRouter();
+const auth = useAdmissionAdminAuthStore();
 
-const adminAuth = useAdmissionAdminAuthStore();
+useQuery(["admissionAdminAuthorizationStatus"], async () => {
+	const status = await doUniversalAuthSessionValidation(auth);
 
-watch(router.currentRoute, async () => {
-	if (!(await doUniversalAuthSessionValidation(adminAuth))) {
-		router.replace({ name: "AdmissionManagerSignin" });
-		// TODO: show session expired notification
-	}
+	if (status) return true;
+
+	return router.replace({ name: "AdmissionManagerSignin" });
 });
 </script>
 
-<style scoped></style>
+<style scoped="scss">
+.pi-chevron-right {
+	font-size: 12px;
+}
+</style>
+<style scoped="scss">
+.pi-chevron-right {
+	font-size: 12px;
+}
+</style>

@@ -26,6 +26,9 @@ export interface AdmissionApplicantAuthResponse {
 	file: any;
 	docs_stage: any;
 	oral_stage: any;
+	isMoredoc: boolean;
+	moredoc_category: string;
+	moredoc_name: string;
 	created_at: string;
 	updated_at: string;
 	s_program_id: number;
@@ -79,18 +82,18 @@ export interface AdmissionApplicantGetProgramResponse {
 	id: number;
 	category: string;
 	name: string;
-	application_start_date: string;
-	application_end_date: string;
-	review_start_date: string;
-	review_end_date: string;
+	application_start_date: Date;
+	application_end_date: Date;
+	review_start_date: Date;
+	review_end_date: Date;
 	require_file: [];
 	stage: string;
 	created_at: string;
 	updated_at: string;
-	applicant_required_info: null; // ??
-	applicant_required_file: null;
-	reviewer_required_info: null;
-	reviewer_required_file: null;
+	applicant_required_info: string;
+	applicant_required_file: string;
+	reviewer_required_info: string;
+	reviewer_required_file: string;
 }
 
 export interface AdmissionApplicantRecLetListRes {
@@ -101,6 +104,7 @@ export interface AdmissionApplicantRecLetListRes {
 	relation: string;
 	position: string;
 	institution: string;
+	stage: string;
 	status: string;
 	s_applicant_id: number;
 	created_at: string;
@@ -128,26 +132,28 @@ export interface AdmissionApplicantGetFileListResponse {
 }
 
 export interface AdmissionApplicantGetUserInfoResponse {
-	id?: number;
+	id: number;
+	admission_id?: number;
+	title?: string;
+	suffix?: string;
+	cn_surname?: string;
 	name?: string;
-	email?: string;
-	national_id?: number;
+	en_givenname?: string;
+	en_midname?: string;
+	en_surname?: string;
+	nationality?: string;
+	national_id?: string;
 	sex?: string;
-	birth?: string;
-	day_phone?: string;
-	night_phone?: string;
+	birth?: Date;
+	birthcountry?: string;
 	mobile_phone?: string;
-	household_address?: string;
-	household_zipcode?: number | string;
 	communicate_address?: string;
 	communicate_zipcode?: number | string;
-	GSAT_num?: number | string;
-	GSAT_registration?: boolean;
-	graduated_school?: string;
-	graduated_major?: string;
-	isSameDept?: boolean;
-	isDisabled?: boolean;
-	r_applicant_id?: number;
-	created_at?: string;
-	updated_at?: string;
+	isForeigner: boolean;
+}
+
+export interface AdmApplicantChangePasswordRequest {
+	current_password: string;
+	password: string;
+	password_confirmation: string;
 }

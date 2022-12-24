@@ -1,25 +1,22 @@
 <template>
-	<div class="ml-128px mr-128px mt-62px">
+	<div>
 		<div class="flex">
 			<router-link
 				to="/recruitment/reviewer/requiredDataReview"
 				custom
 				v-slot="{ navigate }"
 			>
-				<Button
+				<NButton
+					type="Reviewer"
 					class="p-button-secondary p-button-text !w-164px !h-29px"
 					@click="navigate"
 					role="link"
+					icon="pi pi-angle-left"
 				>
-					<img
-						alt="logo"
-						src="/assets/reviewer-page/Expand_left.png"
-						style="width: 1.5rem"
-					/>
 					<span class="text-base">
 						{{ $t("必看資料評閱") }}
 					</span>
-				</Button>
+				</NButton>
 			</router-link>
 			<div class="text-[32px] ml-24px">
 				{{ ID }}
@@ -28,24 +25,78 @@
 				{{ name }}
 			</div>
 		</div>
-		<div class="p-fluid">
-			<SelectButton
-				v-model="data"
-				:options="datas"
-				aria-labelledby="single"
-				disabled
-				class="!h-50px"
-			/>
-		</div>
-		<div class="bigBrownDivider"></div>
-		<div class="mt-10px h-670px">
-			<PDFView
-				:pdfUrl="jsPdf"
-				class="!h650px"
-				v-if="data != '基本資料'"
-			/>
-		</div>
 		<div class="bigBlueDivider"></div>
+		<div class="flex !mt-5px justify-around">
+			<NButton
+				type="Reviewer"
+				@click="changeInfo"
+				class="!w-200px !h-40px"
+			>
+				<span class="text-base">
+					{{ $t("基本資料") }}
+				</span>
+			</NButton>
+			<NButton
+				type="Reviewer"
+				@click="changeUploadFile"
+				class="!w-200px !h-40px"
+			>
+				<span class="text-base">
+					{{ $t("檢附資料") }}
+				</span>
+			</NButton>
+			<NButton
+				type="Reviewer"
+				@click="changeCombine"
+				class="!w-200px !h-40px"
+			>
+				<span class="text-base">
+					{{ $t("整合pdf") }}
+				</span>
+			</NButton>
+		</div>
+		<div class="mt-10px !h-1830px !ml-40px">
+			<vue-pdf-embed
+				ref="pdfRef"
+				v-if="infoPDF !== ''"
+				:source="'data:application/pdf;base64,' + PDF"
+				class="!h-1600px"
+				:page="Page"
+				@rendered="handleDocumentRender"
+			/>
+			<i
+				v-if="infoPDF === ''"
+				class="pi pi-spin pi-spinner"
+				style="font-size: 2rem"
+			></i>
+			<div class="flex !mt-250px justify-around">
+				<NButton
+					type="Reviewer"
+					icon="pi pi-chevron-left"
+					iconPos="left"
+					@click="Page--"
+					:disabled="Page === 1"
+					class="!w-200px !h-40px"
+				>
+					<span class="text-base">
+						{{ $t("上一頁") }}
+					</span>
+				</NButton>
+				<NButton
+					type="Reviewer"
+					icon="pi pi-chevron-right"
+					iconPos="right"
+					@click="nextPage"
+					:disabled="Page === maxPage"
+					class="!w-200px !h-40px"
+				>
+					<span class="text-base">
+						{{ $t("下一頁") }}
+					</span>
+				</NButton>
+			</div>
+		</div>
+		<div class="bigBlueDivider !mt-100px"></div>
 		<div class="flex mt-32px">
 			<div class="text-xl mt-5px !tracking-widest">
 				{{ $t("評比結果") }} :
@@ -65,34 +116,20 @@
 			/>
 		</div>
 		<div class="flex mt-42px">
-			<Checkbox
-				inputId="binary"
-				v-model="checked"
-				:binary="true"
-				class="!w-31px !h-31px mt-9px"
-			/>
-			<div class="text-xl ml-5px mt-5px">
-				{{ $t("已閱讀所有必看資料 (*字號部分之資料)") }}
-			</div>
-			<Button
-				class="w-100px h-40px !ml-795px p-button-success"
+			<NButton
+				type="Reviewer"
+				class="w-100px h-40px !ml-1200px p-button-success"
 				@click="saveScore"
-				:disabled="!checked"
+				icon="pi pi-check"
 			>
-				<img
-					alt="logo"
-					src="/assets/project-setting/Check_fill.png"
-					style="width: 1.5rem"
-					class="fill-green-500"
-				/>
 				<span class="tracking-1px">{{ $t("保存") }}</span>
-			</Button>
+			</NButton>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, ref, toRaw } from "vue";
 import { useRoute } from "vue-router";
 import Button from "primevue/button";
 import Dropdown from "primevue/dropdown";
@@ -109,6 +146,8 @@ import { InvalidSessionError } from "@/api/error";
 import { useGlobalStore } from "@/stores/RecruitmentReviewerStore";
 import { useToast } from "primevue/usetoast";
 import SelectButton from "primevue/selectbutton";
+import VuePdfEmbed from "vue-pdf-embed";
+import NButton from "@/styles/CustomButton.vue";
 
 const reviewerAuth = useRecruitmentReviewerAuthStore();
 const api = new RecruitmentReviewerAPI(reviewerAuth);
@@ -117,13 +156,98 @@ const store = useGlobalStore();
 const router = useRouter();
 const route = useRoute();
 const { t } = useI18n();
+const pdfRef = ref(null);
+const PDF = ref();
+const Page = ref(1);
+const maxPage = ref(1);
 
 const ID = computed(() => route.params.id);
 const name = ref("");
 const checked = ref();
 const comment = ref("");
+const page = ref(1);
 const data = ref("基本資料");
-const datas = ref(["基本資料", "PDF"]);
+const datas = ref(["基本資料", "檢附資料", "整合pdf"]);
+
+const infoPDF = ref("");
+const uploadFilePDF = ref("");
+const combinePDF = ref("");
+const infoPage = ref(1);
+const uploadPage = ref(1);
+const combinePage = ref(1);
+useQuery(
+	["infoPDF"],
+	async () => {
+		return await api.getApplicantInfoFile(
+			store.recruitmentReviewerProgram!.id!,
+			ID.value
+		);
+	},
+	{
+		onSuccess: (data) => {
+			if (infoPDF.value === "") {
+				infoPDF.value = data!;
+			}
+		},
+	}
+);
+useQuery(
+	["combinePDF"],
+	async () => {
+		return await api.getApplicantCombineFile(
+			store.recruitmentReviewerProgram!.id!,
+			ID.value
+		);
+	},
+	{
+		onSuccess: (data) => {
+			if (combinePDF.value === "") {
+				combinePDF.value = data!;
+			}
+		},
+	}
+);
+useQuery(
+	["uploadFilePDF"],
+	async () => {
+		return await api.getApplicantCategoryCombineFile(
+			store.recruitmentReviewerProgram!.id!,
+			ID.value
+		);
+	},
+	{
+		onSuccess: (data) => {
+			if (uploadFilePDF.value === "") {
+				uploadFilePDF.value = data!;
+			}
+		},
+	}
+);
+
+function handleDocumentRender() {
+	const target_copy = Object.assign({}, toRaw(pdfRef.value));
+	maxPage.value = target_copy["pageCount"];
+}
+
+function changeInfo() {
+	PDF.value = infoPDF.value;
+	Page.value = 1;
+	data.value = "基本資料";
+}
+function changeCombine() {
+	PDF.value = combinePDF.value;
+	Page.value = 1;
+	data.value = "整合pdf";
+}
+function changeUploadFile() {
+	PDF.value = uploadFilePDF.value;
+	Page.value = 1;
+	data.value = "檢附資料";
+}
+function nextPage() {
+	Page.value++;
+	window.scrollTo(0, 0);
+}
 
 // FIXME: logic may refactor
 
@@ -148,23 +272,10 @@ const {
 } = useQuery(
 	["recruitmenReviewerComment"],
 	async () => {
-		try {
-			return await api.getApplicantComment(
-				store.recruitmentReviewerProgram!.id!,
-				ID.value
-			);
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				// FIXME: show session expiry notification??
-				// Why are we even here in the first place?
-				// MainContainer should have checked already.
-				console.error(
-					"Session has already expired while querying programList"
-				);
-				router.push("/");
-				return;
-			}
-		}
+		return await api.getApplicantComment(
+			store.recruitmentReviewerProgram!.id!,
+			ID.value
+		);
 	},
 	{
 		onSuccess: (data) => {
@@ -185,23 +296,10 @@ const {
 const { data: applicantInfo } = useQuery(
 	["recruitmenReviewerInfo"],
 	async () => {
-		try {
-			return await api.getApplicantInfo(
-				store.recruitmentReviewerProgram!.id!,
-				ID.value
-			);
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				// FIXME: show session expiry notification??
-				// Why are we even here in the first place?
-				// MainContainer should have checked already.
-				console.error(
-					"Session has already expired while querying programList"
-				);
-				router.push("/");
-				return;
-			}
-		}
+		return await api.getApplicantInfo(
+			store.recruitmentReviewerProgram!.id!,
+			ID.value
+		);
 	},
 	{
 		onSuccess: (data) => {

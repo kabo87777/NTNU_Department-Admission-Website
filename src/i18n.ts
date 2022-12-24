@@ -3,10 +3,11 @@ import messages from "@intlify/vite-plugin-vue-i18n/messages";
 
 const i18n = createI18n({
 	globalInjection: true,
-	locale:
-		window.localStorage.getItem("lastLocale") || navigator.language || "",
+	locale: window.localStorage.getItem("lastLocale") || "",
 	fallbackLocale: "zh",
 	messages,
+	fallbackWarn: false,
+	missingWarn: false,
 });
 
 const { t, te, locale } = i18n.global;

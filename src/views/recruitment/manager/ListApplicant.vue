@@ -44,7 +44,11 @@
 			</template>
 		</DataTable>
 
-		<Dialog v-model:visible="editModal.visible" :modal="true">
+		<Dialog
+			v-model:visible="editModal.visible"
+			:modal="true"
+			:draggable="false"
+		>
 			<template #header>
 				<h3 class="font-black text-xl">
 					{{ $t("編輯申請者帳號") }}
@@ -125,7 +129,7 @@
 		</Dialog>
 	</div>
 
-	<ConfirmDialog></ConfirmDialog>
+	<ConfirmDialog :draggable="false" />
 </template>
 
 <script setup lang="ts">
@@ -144,7 +148,7 @@ import { useMutation, useQuery } from "@tanstack/vue-query";
 import { InvalidSessionError } from "@/api/error";
 import { router } from "@/router";
 import { RecruitmentAdminApplicantsListResponse } from "@/api/recruitment/admin/types";
-import { useGlobalStore } from "@/stores/globalStore";
+import { useGlobalStore } from "@/stores/RecruitmentAdminStore";
 import ConfirmDialog from "primevue/confirmdialog";
 import { useConfirm } from "primevue/useconfirm";
 
@@ -169,24 +173,12 @@ const {
 	data: applicants,
 	refetch,
 } = useQuery(
-	["applicantList"],
+	["recruitmentApplicantList"],
 	async () => {
-		try {
-			if (store.program)
-				return await api.getApplicantList(store.program.id);
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				// FIXME: show session expiry notification??
-				// Why are we even here in the first place?
-				// MainContainer should have checked already.
-				console.error(
-					"Session has already expired while querying applicant list"
-				);
-				router.push("/");
-				return;
-			}
-			throw e;
-		}
+		if (!store.program)
+			throw new Error("recruitmentApplicantList: no program selected");
+
+		return await api.getApplicantList(store.program.id);
 	},
 	{
 		onSuccess: (data) => {

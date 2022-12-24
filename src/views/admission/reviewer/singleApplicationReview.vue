@@ -1,26 +1,23 @@
 <template>
 	<div v-if="load"></div>
-	<div class="ml-128px mr-128px mt-62px" v-else>
+	<div v-else>
 		<div class="flex">
 			<router-link
 				to="/admission/reviewer/applicationReview"
 				custom
 				v-slot="{ navigate }"
 			>
-				<Button
-					class="p-button-secondary p-button-text !w-164px !h-29px"
+				<NButton
+					type="Reviewer"
+					class="!w-164px !h-29px"
 					@click="navigate"
 					role="link"
+					icon="pi pi-angle-left"
 				>
-					<img
-						alt="logo"
-						src="/assets/reviewer-page/Expand_left.png"
-						style="width: 1.5rem"
-					/>
 					<span class="text-base">
 						{{ $t("書面資料評閱") }}
 					</span>
-				</Button>
+				</NButton>
 			</router-link>
 			<div class="text-[32px] ml-24px">
 				{{ ID }}
@@ -29,73 +26,148 @@
 				{{ name }}
 			</div>
 		</div>
-		<div class="p-fluid">
-			<SelectButton
-				v-model="data"
-				:options="datas"
-				aria-labelledby="single"
-				disabled
-				class="!h-50px"
-			/>
-		</div>
-		<div class="bigBrownDivider"></div>
-		<div class="mt-10px h-670px">
-			<PDFView
-				:pdfUrl="jsPdf"
-				class="!h650px"
-				v-if="data != '基本資料'"
-			/>
-		</div>
 		<div class="bigBlueDivider"></div>
-		<div class="flex mt-16px">
-			<div class="text-xl mt-5px">
+		<div class="flex !mt-5px justify-around">
+			<NButton
+				type="Reviewer"
+				@click="changeInfo"
+				class="!w-200px !h-40px"
+			>
+				<span class="text-base">
+					{{ $t("基本資料") }}
+				</span>
+			</NButton>
+			<NButton
+				type="Reviewer"
+				@click="changeUploadFile"
+				class="!w-200px !h-40px"
+			>
+				<span class="text-base">
+					{{ $t("檢附資料") }}
+				</span>
+			</NButton>
+			<NButton
+				type="Reviewer"
+				@click="changeRecommendLetter"
+				class="!w-200px !h-40px"
+			>
+				<span class="text-base">
+					{{ $t("推薦信") }}
+				</span>
+			</NButton>
+			<NButton
+				type="Reviewer"
+				@click="changeCombine"
+				class="!w-200px !h-40px"
+			>
+				<span class="text-base">
+					{{ $t("整合pdf") }}
+				</span>
+			</NButton>
+		</div>
+		<div class="mt-10px !h-1830px !ml-40px">
+			<vue-pdf-embed
+				ref="pdfRef"
+				v-if="infoPDF !== ''"
+				:source="'data:application/pdf;base64,' + PDF"
+				class="!h-1600px"
+				:page="Page"
+				@rendered="handleDocumentRender"
+			/>
+			<i
+				v-if="infoPDF === ''"
+				class="pi pi-spin pi-spinner"
+				style="font-size: 2rem"
+			></i>
+			<div class="flex !mt-250px justify-around">
+				<NButton
+					type="Reviewer"
+					icon="pi pi-chevron-left"
+					iconPos="left"
+					@click="Page--"
+					:disabled="Page === 1"
+					class="!w-200px !h-40px"
+				>
+					<span class="text-base">
+						{{ $t("上一頁") }}
+					</span>
+				</NButton>
+				<NButton
+					type="Reviewer"
+					icon="pi pi-chevron-right"
+					iconPos="right"
+					@click="nextPage"
+					:disabled="Page === maxPage"
+					class="!w-200px !h-40px"
+				>
+					<span class="text-base">
+						{{ $t("下一頁") }}
+					</span>
+				</NButton>
+			</div>
+		</div>
+		<div class="bigBlueDivider !mt-100px"></div>
+		<div class="flex mt-10px">
+			<div class="text-xl mt-5px" v-if="score1Proportion !== 0">
 				{{ score1Title }} ({{ score1Proportion }}%)
 			</div>
 			<InputNumber
 				inputId="integeronly"
 				v-model="inputScore_1"
 				class="ml-34px !w-132px !h-44px"
+				v-if="score1Proportion !== 0"
 			/>
-			<div class="text-xl ml-125px mt-5px">
+			<div class="text-xl ml-125px mt-5px" v-if="score2Proportion !== 0">
 				{{ score2Title }} ({{ score2Proportion }}%)
 			</div>
 			<InputNumber
 				inputId="integeronly"
 				v-model="inputScore_2"
 				class="ml-34px !w-132px !h-44px"
+				v-if="score2Proportion !== 0"
 			/>
-			<div class="text-xl ml-125px mt-5px">
+			<div class="text-xl ml-125px mt-5px" v-if="score3Proportion !== 0">
 				{{ score3Title }} ({{ score3Proportion }}%)
 			</div>
 			<InputNumber
 				inputId="integeronly"
 				v-model="inputScore_3"
 				class="ml-34px !w-132px !h-44px"
+				v-if="score3Proportion !== 0"
 			/>
 		</div>
-		<div class="flex mt-16px" v-if="programGrading?.docs_grade_name_4">
-			<div class="text-xl mt-5px">
+		<div
+			class="flex mt-10px"
+			v-if="score4Proportion !== 0 || score5Proportion !== 0"
+		>
+			<div class="text-xl mt-5px" v-if="score4Proportion !== 0">
 				{{ score4Title }} ({{ score4Proportion }}%)
 			</div>
 			<InputNumber
 				inputId="integeronly"
 				v-model="inputScore_4"
 				class="ml-34px !w-132px !h-44px"
+				v-if="score4Proportion !== 0"
 			/>
-			<div
-				class="text-xl ml-125px mt-5px"
-				v-if="programGrading?.docs_grade_name_5"
-			>
+			<div class="text-xl ml-125px mt-5px" v-if="score5Proportion !== 0">
 				{{ score5Title }} ({{ score5Proportion }}%)
 			</div>
 			<InputNumber
 				inputId="integeronly"
 				v-model="inputScore_5"
 				class="ml-34px !w-132px !h-44px"
-				v-if="programGrading?.docs_grade_name_5"
+				v-if="score5Proportion !== 0"
 			/>
 		</div>
-		<div class="flex mt-24px">
+		<div class="flex mt-10px">
+			<div class="text-xl mt-5px">{{ $t("備註") }}:</div>
+			<InputText
+				type="text"
+				v-model="remark"
+				class="!w-683px !h-44px ml-5px"
+			/>
+		</div>
+		<div class="flex mt-10px">
 			<Checkbox
 				inputId="binary"
 				v-model="accessChecked"
@@ -114,32 +186,26 @@
 			<div class="text-xl ml-180px mt-5px">
 				{{ $t("書面分數合計： ") }} {{ total_score }} {{ $t("分") }}
 			</div>
-			<Button
+			<NButton
+				type="Reviewer"
 				class="w-100px h-40px !ml-20px p-button-success"
 				@click="saveScore"
+				icon="pi pi-check"
 			>
-				<img
-					alt="logo"
-					src="/assets/project-setting/Check_fill.png"
-					style="width: 1.5rem"
-					class="fill-green-500"
-				/>
 				<span class="tracking-1px">{{ $t("保存") }}</span>
-			</Button>
+			</NButton>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, onMounted, onUpdated, ref, toRaw } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import Button from "primevue/button";
 import InputNumber from "primevue/inputnumber";
 import Checkbox from "primevue/checkbox";
 import InputText from "primevue/inputtext";
 import { useI18n } from "vue-i18n";
-import PDFView from "@/components/pdfPreview.vue";
-import jsPdf from "./test.pdf";
 import { useAdmissionReviewerAuthStore } from "@/stores/universalAuth";
 import { AdmissionReviewerAPI } from "@/api/admission/reviewer/api";
 import { useMutation, useQuery } from "@tanstack/vue-query";
@@ -147,6 +213,8 @@ import { InvalidSessionError } from "@/api/error";
 import { useGlobalStore } from "@/stores/AdmissionReviewerStore";
 import { useToast } from "primevue/usetoast";
 import SelectButton from "primevue/selectbutton";
+import VuePdfEmbed from "vue-pdf-embed";
+import NButton from "@/styles/CustomButton.vue";
 
 const route = useRoute();
 const { t } = useI18n();
@@ -155,6 +223,10 @@ const router = useRouter();
 const adminAuth = useAdmissionReviewerAuthStore();
 const store = useGlobalStore();
 const api = new AdmissionReviewerAPI(adminAuth);
+const pdfRef = ref(null);
+const PDF = ref();
+const Page = ref(1);
+const maxPage = ref(1);
 
 // FIXME: logic may refactor
 
@@ -170,9 +242,9 @@ const newApplicantGrade = useMutation(async (newProgramData: any) => {
 const accessChecked = ref();
 const disable = computed(() => !accessChecked.value);
 const accessReason = ref("");
-const score1Proportion = ref(30);
-const score2Proportion = ref(30);
-const score3Proportion = ref(40);
+const score1Proportion = ref(0);
+const score2Proportion = ref(0);
+const score3Proportion = ref(0);
 const score4Proportion = ref(0);
 const score5Proportion = ref(0);
 const score1Title = ref("");
@@ -186,6 +258,7 @@ const inputScore_3 = ref(0);
 const inputScore_4 = ref(0);
 const inputScore_5 = ref(0);
 const name = ref("");
+const remark = ref("");
 const total_score = computed(() => {
 	return (
 		(inputScore_1!.value! * score1Proportion.value) / 100 +
@@ -196,7 +269,7 @@ const total_score = computed(() => {
 	).toFixed(2);
 });
 const data = ref("基本資料");
-const datas = ref(["基本資料", "PDF"]);
+const datas = ref(["基本資料", "檢附資料", "推薦信", "整合pdf"]);
 
 const {
 	isLoading,
@@ -206,20 +279,7 @@ const {
 } = useQuery(
 	["applicantGrade"],
 	async () => {
-		try {
-			return await api.getSingleApplicantGrade(ID.value);
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				// FIXME: show session expiry notification??
-				// Why are we even here in the first place?
-				// MainContainer should have checked already.
-				console.error(
-					"Session has already expired while querying programList"
-				);
-				router.push("/");
-				return;
-			}
-		}
+		return await api.getSingleApplicantGrade(ID.value);
 	},
 	{
 		onSuccess: (data) => {
@@ -237,20 +297,7 @@ const {
 const { data: applicantInfo } = useQuery(
 	["applicantInfo"],
 	async () => {
-		try {
-			return await api.getSingleApplicantInfo(ID.value);
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				// FIXME: show session expiry notification??
-				// Why are we even here in the first place?
-				// MainContainer should have checked already.
-				console.error(
-					"Session has already expired while querying applicantInfo"
-				);
-				router.push("/");
-				return;
-			}
-		}
+		return await api.getSingleApplicantInfo(ID.value);
 	},
 	{
 		onSuccess: (data) => {
@@ -262,22 +309,7 @@ const { data: applicantInfo } = useQuery(
 const { data: programGrading } = useQuery(
 	["programGrading"],
 	async () => {
-		try {
-			return await api.getProgramGrading(
-				store.admissionReviewerProgram!.id
-			);
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				// FIXME: show session expiry notification??
-				// Why are we even here in the first place?
-				// MainContainer should have checked already.
-				console.error(
-					"Session has already expired while querying applicantInfo"
-				);
-				router.push("/");
-				return;
-			}
-		}
+		return await api.getProgramGrading(store.admissionReviewerProgram!.id);
 	},
 	{
 		onSuccess: (data) => {
@@ -290,18 +322,111 @@ const { data: programGrading } = useQuery(
 			if (data!.docs_grade_name_5) {
 				score5Title.value = data!.docs_grade_name_5;
 			}
-			score1Proportion.value = data!.docs_grade_weight_1;
-			score2Proportion.value = data!.docs_grade_weight_2;
-			score3Proportion.value = data!.docs_grade_weight_3;
-			if (data!.docs_grade_weight_4) {
-				score4Proportion.value = data!.docs_grade_weight_4;
+			if (data!.docs_grade_weight_1 !== 0) {
+				score1Proportion.value = data!.docs_grade_weight_1!;
 			}
-			if (data!.docs_grade_weight_5) {
-				score5Proportion.value = data!.docs_grade_weight_5;
+			if (data!.docs_grade_weight_2 !== 0) {
+				score2Proportion.value = data!.docs_grade_weight_2!;
+			}
+			if (data!.docs_grade_weight_3 !== 0) {
+				score3Proportion.value = data!.docs_grade_weight_3!;
+			}
+			if (data!.docs_grade_weight_4 !== 0) {
+				score4Proportion.value = data!.docs_grade_weight_4!;
+			}
+			if (data!.docs_grade_weight_5 !== 0) {
+				score5Proportion.value = data!.docs_grade_weight_5!;
 			}
 		},
 	}
 );
+const infoPDF = ref("");
+const recommendLetterPDF = ref("");
+const uploadFilePDF = ref("");
+const combinePDF = ref("");
+useQuery(
+	["infoPDF"],
+	async () => {
+		return await api.getApplicantInfoFile(ID.value);
+	},
+	{
+		onSuccess: (data) => {
+			if (infoPDF.value === "") {
+				infoPDF.value = data!;
+				PDF.value = data!;
+			}
+		},
+	}
+);
+useQuery(
+	["recommendLetterPDF"],
+	async () => {
+		return await api.getApplicantRecommendLetter(ID.value);
+	},
+	{
+		onSuccess: (data) => {
+			if (recommendLetterPDF.value === "") {
+				recommendLetterPDF.value = data!;
+			}
+		},
+	}
+);
+useQuery(
+	["combinePDF"],
+	async () => {
+		return await api.getApplicantCombineFile(ID.value);
+	},
+	{
+		onSuccess: (data) => {
+			if (combinePDF.value === "") {
+				combinePDF.value = data!;
+			}
+		},
+	}
+);
+useQuery(
+	["uploadFilePDF"],
+	async () => {
+		return await api.getApplicantCategoryCombineFile(ID.value);
+	},
+	{
+		onSuccess: (data) => {
+			if (uploadFilePDF.value === "") {
+				uploadFilePDF.value = data!;
+			}
+		},
+	}
+);
+
+function handleDocumentRender() {
+	const target_copy = Object.assign({}, toRaw(pdfRef.value));
+	maxPage.value = target_copy["pageCount"];
+}
+
+function changeInfo() {
+	PDF.value = infoPDF.value;
+	Page.value = 1;
+	data.value = "基本資料";
+}
+function changeRecommendLetter() {
+	PDF.value = recommendLetterPDF.value;
+	Page.value = 1;
+	data.value = "推薦信";
+}
+function changeCombine() {
+	PDF.value = combinePDF.value;
+	Page.value = 1;
+	data.value = "整合pdf";
+}
+function changeUploadFile() {
+	PDF.value = uploadFilePDF.value;
+	Page.value = 1;
+	data.value = "檢附資料";
+}
+function nextPage() {
+	Page.value++;
+	window.scrollTo(0, 0);
+}
 
 const load = computed(() => {
 	if (isLoading.value) {
@@ -351,6 +476,7 @@ function saveScore() {
 			isImmediateEnroll: accessChecked.value,
 			immediate_enroll_comment: accessReason.value,
 		});
+		toast.add({ severity: "success", summary: "保存成功", life: 3000 });
 	} catch (error) {
 		// console.log(error);
 	}

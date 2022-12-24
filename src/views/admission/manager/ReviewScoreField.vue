@@ -1,315 +1,339 @@
 <template>
-	<div>
-		<!-- Header - Title -->
-		<div class="tracking-widest" text="4xl bold">
+	<Layout Admin gap="2">
+		<template #Header>
 			{{ trans.reviewScoreField.value }}
-		</div>
-		<div class="bigRedDivider"></div>
-
-		<!-- Body - Score Field: Phase 1 -->
-		<div class="my-6" text="2xl gray-900">
-			{{ trans.scoreOptionSetting.value }}
-			{{ trans.colon.value }}
-			{{ trans.phase[1].value }}
-		</div>
-		<div class="my-4 space-y-3" text="lg gray-700">
-			<div>{{ trans.phaseWeight[1].value }}</div>
-			<InputNumber class="!w-300px" v-model="docsScore[0].weight" />
-		</div>
-		<div class="my-4 space-y-3" text="lg gray-700">
-			<div>{{ trans.scoreOption.value }}</div>
-			<!-- Phase 1 - item 1 -->
-			<div class="flex content-center gap-6">
-				<InputText class="!w-300px" v-model="docsScore[1].name" />
-				<InputNumber class="!w-200px" v-model="docsScore[1].weight" />
+		</template>
+		<template #Body>
+			<Message severity="warn" pos="sticky top-0" m="!0">
+				各個評分項目與佔比同時填 0 表示關閉該評分項目
+			</Message>
+			<!-- Body - Score Field: Phase 1 -->
+			<div text="2xl title" pb="2">
+				{{ trans.scoreOptionSetting.value }}
+				{{ trans.colon.value }}
+				{{ trans.phase[1].value }}
 			</div>
-			<!-- Phase 1 - item 2 -->
-			<div class="flex content-center gap-6">
-				<InputText class="!w-300px" v-model="docsScore[2].name" />
-				<InputNumber class="!w-200px" v-model="docsScore[2].weight" />
+			<div flex="~ col gap-2" text="body">
+				<div>{{ trans.phaseWeight[1].value }}</div>
+				<InputNumber class="!w-300px" v-model="docsScore[0].weight" />
 			</div>
-			<!-- Phase 1 - item 3 -->
-			<div class="flex content-center gap-6">
-				<InputText class="!w-300px" v-model="docsScore[3].name" />
-				<InputNumber class="!w-200px" v-model="docsScore[3].weight" />
-			</div>
-			<!-- Phase 1 - item 4 -->
-			<div class="flex content-center gap-6">
-				<InputText class="!w-300px" v-model="docsScore[4].name" />
-				<InputNumber class="!w-200px" v-model="docsScore[4].weight" />
-			</div>
-			<!-- Phase 1 - item 5 -->
-			<div class="flex content-center gap-6">
-				<InputText class="!w-300px" v-model="docsScore[5].name" />
-				<InputNumber class="!w-200px" v-model="docsScore[5].weight" />
-			</div>
-		</div>
-		<ParagraphDivider />
-
-		<!-- Body - Score Field: Phase 2 -->
-		<div class="my-6" text="2xl gray-900">
-			{{ trans.scoreOptionSetting.value }}
-			{{ trans.colon.value }}
-			{{ trans.phase[2].value }}
-		</div>
-		<div class="space-y-4" text="lg gray-700">
-			<div>{{ trans.phaseWeight[2].value }}</div>
-			<InputNumber class="!w-300px" v-model="oralScore[0].weight" />
-		</div>
-		<div class="my-4 space-y-3" text="lg gray-700">
-			<div>{{ trans.scoreOption.value }}</div>
-			<!-- Phase 2 - item 1 -->
-			<div class="flex content-center gap-6">
-				<InputText class="!w-300px" v-model="oralScore[1].name" />
-				<InputNumber class="!w-200px" v-model="oralScore[1].weight" />
-			</div>
-			<!-- Phase 2 - item 2 -->
-			<div class="flex content-center gap-6">
-				<InputText class="!w-300px" v-model="oralScore[2].name" />
-				<InputNumber class="!w-200px" v-model="oralScore[2].weight" />
-			</div>
-			<!-- Phase 2 - item 3 -->
-			<div class="flex content-center gap-6">
-				<InputText class="!w-300px" v-model="oralScore[3].name" />
-				<InputNumber class="!w-200px" v-model="oralScore[3].weight" />
-			</div>
-			<!-- Phase 2 - item 4 -->
-			<div class="flex content-center gap-6">
-				<InputText class="!w-300px" v-model="oralScore[4].name" />
-				<InputNumber class="!w-200px" v-model="oralScore[4].weight" />
-			</div>
-			<!-- Phase 2 - item 5 -->
-			<div class="flex content-center gap-6">
-				<InputText class="!w-300px" v-model="oralScore[5].name" />
-				<InputNumber class="!w-200px" v-model="oralScore[5].weight" />
-			</div>
-		</div>
-		<ParagraphDivider />
-
-		<!-- Body - Show Information Data -->
-		<div class="my-6" text="2xl gray-900">{{ trans.showInfo.value }}</div>
-		<!-- showInfo - checkbox 1 -->
-		<div v-if="showedInfo[0].visible">
-			<div class="flex mt-6 mb-2 gap-4 items-center">
-				<Checkbox
-					v-model="showedInfo[0].checked"
-					:input-id="showedInfo[0].id"
-					:binary="true"
-				/>
-				<label for="showedInfo[0].id" text="xl gray-700">
-					{{ trans.nameInfo.value }}
-				</label>
-			</div>
-			<div class="flex mx-10 gap-8 mb-4" text="gray-500">
-				<div>{{ trans.details.suffix.value }}</div>
-				<div>{{ trans.details.chineseName.value }}</div>
-				<div>{{ trans.details.englishName.value }}</div>
-			</div>
-		</div>
-		<!-- showInfo - checkbox 2 -->
-		<div v-if="showedInfo[1].visible">
-			<div class="flex mt-6 mb-2 gap-4 items-center">
-				<Checkbox
-					v-model="showedInfo[1].checked"
-					:input-id="showedInfo[1].id"
-					:binary="true"
-				/>
-				<label :for="showedInfo[1].id" text="xl gray-700">
-					{{ trans.admissionId.value }}
-				</label>
-			</div>
-			<div class="flex mx-10 gap-8 mb-4" text="gray-500">
-				<div>{{ trans.details.master.value }}</div>
-				<div>{{ trans.details.phD.value }}</div>
-			</div>
-		</div>
-		<!-- showInfo - checkbox 3 -->
-		<div v-if="showedInfo[2].visible">
-			<div class="flex mt-6 mb-2 gap-4 items-center">
-				<Checkbox
-					v-model="showedInfo[2].checked"
-					:input-id="showedInfo[2].id"
-					:binary="true"
-				/>
-				<label :for="showedInfo[2].id" text="xl gray-700">
-					{{ trans.residentAddr.value }}
-				</label>
-			</div>
-			<div class="flex mx-10 gap-8 mb-4" text="gray-500">
-				<div>{{ trans.details.country.value }}</div>
-				<div>{{ trans.details.city.value }}</div>
-				<div>{{ trans.details.streetAddr.value }}</div>
-			</div>
-		</div>
-		<!-- showInfo - checkbox 4 -->
-		<div v-if="showedInfo[3].visible">
-			<div class="flex mt-6 mb-2 gap-4 items-center">
-				<Checkbox
-					v-model="showedInfo[3].checked"
-					:input-id="showedInfo[3].id"
-					:binary="true"
-				/>
-				<label :for="showedInfo[3].id" text="xl gray-700">
-					{{ trans.currentAddr.value }}
-				</label>
-			</div>
-			<div class="flex mx-10 gap-8 mb-4" text="gray-500">
-				<div>{{ trans.details.country.value }}</div>
-				<div>{{ trans.details.city.value }}</div>
-				<div>{{ trans.details.streetAddr.value }}</div>
-			</div>
-		</div>
-		<!-- showInfo - checkbox 5 -->
-		<div v-if="showedInfo[4].visible">
-			<div class="flex mt-6 mb-2 gap-4 items-center">
-				<Checkbox
-					v-model="showedInfo[4].checked"
-					:input-id="showedInfo[4].id"
-					:binary="true"
-				/>
-				<label :for="showedInfo[4].id" text="xl gray-700">
-					{{ trans.nationalId.value }}
-				</label>
-			</div>
-			<div class="flex mx-10 gap-8 mb-4" text="gray-500">
-				<div>{{ trans.details.gender.value }}</div>
-				<div>{{ trans.details.bornCountry.value }}</div>
-				<div>{{ trans.details.mainNation.value }}</div>
-				<div>{{ trans.details.bornDate.value }}</div>
-				<div>{{ trans.details.mainNation.value }}</div>
-			</div>
-		</div>
-		<!-- showInfo - checkbox 6 -->
-		<div v-if="showedInfo[5].visible">
-			<div class="flex mt-6 mb-2 gap-4 items-center">
-				<Checkbox
-					v-model="showedInfo[5].checked"
-					:input-id="showedInfo[5].id"
-					:binary="true"
-				/>
-				<label :for="showedInfo[5].id" text="xl gray-700">
-					{{ trans.contactInfo.value }}
-				</label>
-			</div>
-			<div class="flex mx-10 gap-8 mb-4" text="gray-500">
-				<div>{{ trans.details.email.value }}</div>
-				<div>{{ trans.details.primePhone.value }}</div>
-				<div>{{ trans.details.secondPhone.value }}</div>
-				<div>{{ trans.details.mobilePhone.value }}</div>
-			</div>
-		</div>
-		<ParagraphDivider />
-
-		<!-- Body - Show Uploaded File Data -->
-		<div class="my-6" text="2xl gray-900">{{ trans.showFile.value }}</div>
-		<!-- showFile - checkbox 1 -->
-		<div v-if="showedFile[0].visible">
-			<div class="flex mt-6 mb-2 gap-4 items-center">
-				<Checkbox
-					v-model="showedFile[0].checked"
-					:input-id="showedFile[0].id"
-					:binary="true"
-				/>
-				<label :for="showedFile[0].id" text="xl gray-700">
-					{{ trans.schoolExp.value }}
-				</label>
-			</div>
-			<div class="flex mx-10 gap-8 mb-4" text="gray-500">
-				<div>{{ trans.details.fileName.value }}</div>
-				<div>{{ trans.details.fileUpload.value }}</div>
-			</div>
-		</div>
-		<!-- showFile - checkbox 2 -->
-		<div v-if="showedFile[1].visible">
-			<div class="flex mt-6 mb-2 gap-4 items-center">
-				<Checkbox
-					v-model="showedFile[1].checked"
-					:input-id="showedFile[1].id"
-					:binary="true"
-				/>
-				<label :for="showedFile[1].id" text="xl gray-700">
-					{{ trans.testScore.value }}
-				</label>
-			</div>
-			<div class="flex mx-10 gap-8 mb-4" text="gray-500">
-				<div>{{ trans.details.fileName.value }}</div>
-				<div>{{ trans.details.fileUpload.value }}</div>
-			</div>
-		</div>
-		<!-- showFile - checkbox 3 -->
-		<div v-if="showedFile[2].visible">
-			<div class="flex mt-6 mb-2 gap-4 items-center">
-				<Checkbox
-					v-model="showedFile[2].checked"
-					:input-id="showedFile[2].id"
-					:binary="true"
-				/>
-				<label :for="showedFile[2].id" text="xl gray-700">
-					{{ trans.otherFile.value }}
-				</label>
-			</div>
-			<div class="flex mx-10 gap-8 mb-4" text="gray-500">
-				<div>{{ trans.details.fileName.value }}</div>
-				<div>{{ trans.details.fileUpload.value }}</div>
-			</div>
-		</div>
-		<!-- showFile - checkbox 4 -->
-		<div v-if="showedFile[3].visible">
-			<div class="flex mt-6 mb-2 gap-4 items-center">
-				<Checkbox
-					v-model="showedFile[3].checked"
-					:input-id="showedFile[3].id"
-					:binary="true"
-				/>
-				<label :for="showedFile[3].id" text="xl gray-700">
-					{{ trans.nationalId.value }}
-				</label>
-			</div>
-			<div class="flex mx-10 gap-8 mb-4" text="gray-500">
-				<div>{{ trans.details.fileName.value }}</div>
-				<div>{{ trans.details.fileUpload.value }}</div>
-			</div>
-		</div>
-
-		<!-- Footer - Control Buttons -->
-		<div class="bigRedDivider my-6 mt-10"></div>
-		<div class="flex justify-center w-full mb-8 gap-8">
-			<Button
-				class="bg-white h-14 w-36 border-ntnuRed p-button-outlined"
-				@click="refreshData()"
-			>
-				<i class="pi pi-times ml-1 mr-2 box-border text-ntnuRed" />
-				<div class="m-auto text-ntnuRed">
-					<div>{{ trans.cancel.value }}</div>
+			<div flex="~ col gap-2" text="body">
+				<div>{{ trans.scoreOption.value }}</div>
+				<!-- Phase 1 - item 1 -->
+				<div class="flex gap-6">
+					<InputText class="!w-300px" v-model="docsScore[1].name" />
+					<InputNumber
+						class="!w-200px"
+						v-model="docsScore[1].weight"
+					/>
 				</div>
-			</Button>
-			<Button
-				class="bg-Green h-14 w-36 border-ntnuRed"
-				@click="saveChange()"
-			>
-				<i class="pi pi-check ml-1 mr-2 box-border text-black" />
-				<div class="m-auto text-black">
-					<div>{{ trans.save.value }}</div>
+				<!-- Phase 1 - item 2 -->
+				<div class="flex gap-6">
+					<InputText class="!w-300px" v-model="docsScore[2].name" />
+					<InputNumber
+						class="!w-200px"
+						v-model="docsScore[2].weight"
+					/>
 				</div>
-			</Button>
-		</div>
-	</div>
+				<!-- Phase 1 - item 3 -->
+				<div class="flex gap-6">
+					<InputText class="!w-300px" v-model="docsScore[3].name" />
+					<InputNumber
+						class="!w-200px"
+						v-model="docsScore[3].weight"
+					/>
+				</div>
+				<!-- Phase 1 - item 4 -->
+				<div class="flex gap-6">
+					<InputText class="!w-300px" v-model="docsScore[4].name" />
+					<InputNumber
+						class="!w-200px"
+						v-model="docsScore[4].weight"
+					/>
+				</div>
+				<!-- Phase 1 - item 5 -->
+				<div class="flex gap-6">
+					<InputText class="!w-300px" v-model="docsScore[5].name" />
+					<InputNumber
+						class="!w-200px"
+						v-model="docsScore[5].weight"
+					/>
+				</div>
+			</div>
+			<PDivider Admin />
+			<!-- Body - Score Field: Phase 2 -->
+			<div text="2xl title" pb="2">
+				{{ trans.scoreOptionSetting.value }}
+				{{ trans.colon.value }}
+				{{ trans.phase[2].value }}
+			</div>
+			<div flex="~ col gap-2" text="body">
+				<div>{{ trans.phaseWeight[2].value }}</div>
+				<InputNumber class="!w-300px" v-model="oralScore[0].weight" />
+			</div>
+			<div flex="~ col gap-2" text="body">
+				<div>{{ trans.scoreOption.value }}</div>
+				<!-- Phase 2 - item 1 -->
+				<div class="flex gap-6">
+					<InputText class="!w-300px" v-model="oralScore[1].name" />
+					<InputNumber
+						class="!w-200px"
+						v-model="oralScore[1].weight"
+					/>
+				</div>
+				<!-- Phase 2 - item 2 -->
+				<div class="flex gap-6">
+					<InputText class="!w-300px" v-model="oralScore[2].name" />
+					<InputNumber
+						class="!w-200px"
+						v-model="oralScore[2].weight"
+					/>
+				</div>
+				<!-- Phase 2 - item 3 -->
+				<div class="flex gap-6">
+					<InputText class="!w-300px" v-model="oralScore[3].name" />
+					<InputNumber
+						class="!w-200px"
+						v-model="oralScore[3].weight"
+					/>
+				</div>
+				<!-- Phase 2 - item 4 -->
+				<div class="flex gap-6">
+					<InputText class="!w-300px" v-model="oralScore[4].name" />
+					<InputNumber
+						class="!w-200px"
+						v-model="oralScore[4].weight"
+					/>
+				</div>
+				<!-- Phase 2 - item 5 -->
+				<div class="flex gap-6">
+					<InputText class="!w-300px" v-model="oralScore[5].name" />
+					<InputNumber
+						class="!w-200px"
+						v-model="oralScore[5].weight"
+					/>
+				</div>
+			</div>
+			<PDivider Admin />
+			<!-- Body - Show Information Data -->
+			<div text="2xl title" pb="2">
+				{{ trans.showInfo.value }}
+			</div>
+			<!-- showInfo - checkbox 1 -->
+			<div v-if="showedInfo[0].visible">
+				<div flex="~ gap-2" justify="items-center">
+					<Checkbox
+						m="!t-1 l-1"
+						v-model="showedInfo[0].checked"
+						:input-id="showedInfo[0].id"
+						:binary="true"
+					/>
+					<label for="showedInfo[0].id" text="lg body" pb="!1">
+						{{ trans.nameInfo.value }}
+					</label>
+				</div>
+				<div class="flex mx-10 gap-8" text="secondary">
+					<div>{{ trans.details.chineseName.value }}</div>
+					<div>{{ trans.details.englishName.value }}</div>
+				</div>
+			</div>
+			<!-- showInfo - checkbox 2 -->
+			<div v-if="showedInfo[1].visible">
+				<div flex="~ gap-2" justify="items-center">
+					<Checkbox
+						m="!t-1 l-1"
+						v-model="showedInfo[1].checked"
+						:input-id="showedInfo[1].id"
+						:binary="true"
+					/>
+					<label :for="showedInfo[1].id" text="lg body" mb="1">
+						{{ trans.admissionId.value }}
+					</label>
+				</div>
+				<div class="flex mx-10 gap-8" text="secondary">
+					<div>{{ trans.details.locals.value }}</div>
+					<div>{{ trans.details.foreigner.value }}</div>
+				</div>
+			</div>
+			<!-- showInfo - checkbox 3 -->
+			<div v-if="showedInfo[2].visible">
+				<div flex="~ gap-2" justify="items-center">
+					<Checkbox
+						m="!t-1 l-1"
+						v-model="showedInfo[2].checked"
+						:input-id="showedInfo[2].id"
+						:binary="true"
+					/>
+					<label :for="showedInfo[2].id" text="lg body" mb="1">
+						{{ trans.residentAddr.value }}
+					</label>
+				</div>
+				<div class="flex mx-10 gap-8" text="secondary">
+					<div>{{ trans.details.country.value }}</div>
+					<div>{{ trans.details.city.value }}</div>
+					<div>{{ trans.details.streetAddr.value }}</div>
+				</div>
+			</div>
+			<!-- showInfo - checkbox 4 -->
+			<div v-if="showedInfo[3].visible">
+				<div flex="~ gap-2" justify="items-center">
+					<Checkbox
+						m="!t-1 l-1"
+						v-model="showedInfo[3].checked"
+						:input-id="showedInfo[3].id"
+						:binary="true"
+					/>
+					<label :for="showedInfo[3].id" text="lg body" mb="1">
+						{{ trans.currentAddr.value }}
+					</label>
+				</div>
+				<div class="flex mx-10 gap-8" text="secondary">
+					<div>{{ trans.details.country.value }}</div>
+					<div>{{ trans.details.city.value }}</div>
+					<div>{{ trans.details.streetAddr.value }}</div>
+				</div>
+			</div>
+			<!-- showInfo - checkbox 5 -->
+			<div v-if="showedInfo[4].visible">
+				<div flex="~ gap-2" justify="items-center">
+					<Checkbox
+						m="!t-1 l-1"
+						v-model="showedInfo[4].checked"
+						:input-id="showedInfo[4].id"
+						:binary="true"
+					/>
+					<label :for="showedInfo[4].id" text="lg body" mb="1">
+						{{ trans.nationalId.value }}
+					</label>
+				</div>
+				<div class="flex mx-10 gap-8" text="secondary">
+					<div>{{ trans.details.gender.value }}</div>
+					<div>{{ trans.details.bornCountry.value }}</div>
+					<div>{{ trans.details.mainNation.value }}</div>
+					<div>{{ trans.details.bornDate.value }}</div>
+					<div>{{ trans.details.mainNation.value }}</div>
+				</div>
+			</div>
+			<!-- showInfo - checkbox 6 -->
+			<div v-if="showedInfo[5].visible">
+				<div flex="~ gap-2" justify="items-center">
+					<Checkbox
+						m="!t-1 l-1"
+						v-model="showedInfo[5].checked"
+						:input-id="showedInfo[5].id"
+						:binary="true"
+					/>
+					<label :for="showedInfo[5].id" text="lg body" mb="1">
+						{{ trans.contactInfo.value }}
+					</label>
+				</div>
+				<div class="flex mx-10 gap-8" text="secondary">
+					<div>{{ trans.details.email.value }}</div>
+					<div>{{ trans.details.primePhone.value }}</div>
+					<div>{{ trans.details.secondPhone.value }}</div>
+					<div>{{ trans.details.mobilePhone.value }}</div>
+				</div>
+			</div>
+			<PDivider Admin />
+			<!-- Body - Show Uploaded File Data -->
+			<div text="2xl title" pb="2">
+				{{ trans.showFile.value }}
+			</div>
+			<!-- showFile - checkbox 1 -->
+			<div v-if="showedFile[0].visible">
+				<div flex="~ gap-2" justify="items-center">
+					<Checkbox
+						m="!t-1 l-1"
+						v-model="showedFile[0].checked"
+						:input-id="showedFile[0].id"
+						:binary="true"
+					/>
+					<label :for="showedFile[0].id" text="lg body" pb="!1">
+						{{ trans.schoolExp.value }}
+					</label>
+				</div>
+				<div class="flex mx-10 gap-8" text="secondary">
+					<div>{{ trans.details.fileName.value }}</div>
+					<div>{{ trans.details.fileUpload.value }}</div>
+				</div>
+			</div>
+			<!-- showFile - checkbox 2 -->
+			<div v-if="showedFile[1].visible">
+				<div flex="~ gap-2" justify="items-center">
+					<Checkbox
+						m="!t-1 l-1"
+						v-model="showedFile[1].checked"
+						:input-id="showedFile[1].id"
+						:binary="true"
+					/>
+					<label :for="showedFile[1].id" text="lg body" pb="!1">
+						{{ trans.testScore.value }}
+					</label>
+				</div>
+				<div class="flex mx-10 gap-8" text="secondary">
+					<div>{{ trans.details.fileName.value }}</div>
+					<div>{{ trans.details.fileUpload.value }}</div>
+				</div>
+			</div>
+			<!-- showFile - checkbox 3 -->
+			<div v-if="showedFile[2].visible">
+				<div flex="~ gap-2" justify="items-center">
+					<Checkbox
+						m="!t-1 l-1"
+						v-model="showedFile[2].checked"
+						:input-id="showedFile[2].id"
+						:binary="true"
+					/>
+					<label :for="showedFile[2].id" text="lg body" pb="!1">
+						{{ trans.otherFile.value }}
+					</label>
+				</div>
+				<div class="flex mx-10 gap-8" text="secondary">
+					<div>{{ trans.details.fileName.value }}</div>
+					<div>{{ trans.details.fileUpload.value }}</div>
+				</div>
+			</div>
+		</template>
+		<template #Footer>
+			<div flex="~" justify="center" gap="4">
+				<NButton
+					Admin
+					class="p-2 w-32"
+					icon="pi pi-check"
+					@click="saveChange()"
+				>
+					{{ trans.save.value }}
+				</NButton>
+				<NButton
+					class="p-2 w-32"
+					icon="pi pi-times"
+					@click="refreshData()"
+				>
+					{{ trans.cancel.value }}
+				</NButton>
+			</div>
+		</template>
+	</Layout>
 </template>
 
 <script setup lang="ts">
+import Layout from "@/components/Layout.vue";
+import NButton from "@/styles/CustomButton.vue";
+import Message from "primevue/message";
 import InputText from "primevue/inputtext";
 import InputNumber from "primevue/inputnumber";
-import Button from "primevue/button";
 import Checkbox from "primevue/checkbox";
-import ParagraphDivider from "@/styles/paragraphDivider.vue";
+import PDivider from "@/styles/PrDivider.vue";
+
 import { useToast } from "primevue/usetoast";
-import { reactive, ref, watch, computed } from "vue";
-import { useI18n } from "vue-i18n";
-import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
-import { AdmissionAdminAPI } from "@/api/admission/admin/api";
-import { useGlobalStore } from "@/stores/globalStore";
-import { InvalidSessionError } from "@/api/error";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
+import { reactive, watch, computed } from "vue";
+import { useI18n } from "vue-i18n";
+
+import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
+import { useGlobalStore } from "@/stores/globalStore";
+
+import { AdmissionAdminAPI } from "@/api/admission/admin/api";
 import {
 	AdmissionAdminScoreFieldResponse,
 	AdmissionAdminProgramListResponse,
@@ -317,6 +341,10 @@ import {
 
 const { t } = useI18n();
 const toast = useToast();
+const adminAuth = useAdmissionAdminAuthStore();
+const api = new AdmissionAdminAPI(adminAuth);
+const globalStore = useGlobalStore();
+const queryClient = useQueryClient();
 
 // I18n translation
 const trans = {
@@ -355,11 +383,10 @@ const trans = {
 		5: computed(() => t("項目五")),
 	},
 	details: {
-		suffix: computed(() => t("※ 稱謂/後綴")),
 		chineseName: computed(() => t("※ 中文姓氏/名字")),
 		englishName: computed(() => t("※ 英文姓氏/中間名/名字")),
-		master: computed(() => t("※ 碩士生")),
-		phD: computed(() => t("※ 博士生")),
+		locals: computed(() => t("※ 本國人士")),
+		foreigner: computed(() => t("※外籍人士")),
 		country: computed(() => t("※ 國家/州")),
 		city: computed(() => t("※ 城市/郵遞區號")),
 		streetAddr: computed(() => t("※ 街道地址")),
@@ -380,15 +407,8 @@ const trans = {
 	},
 };
 
-// API Authorization
-const adminAuth = useAdmissionAdminAuthStore();
-const api = new AdmissionAdminAPI(adminAuth);
-const store = useGlobalStore();
-// Tanstack Query
-const queryClient = useQueryClient();
-
 // Field content & data
-const docsScore = reactive([
+let docsScore = reactive([
 	{ name: "Total", weight: 0, index: 0 },
 	{ name: trans.labelName[1].value, weight: 0, index: 1 },
 	{ name: trans.labelName[2].value, weight: 0, index: 2 },
@@ -396,7 +416,7 @@ const docsScore = reactive([
 	{ name: trans.labelName[4].value, weight: 0, index: 4 },
 	{ name: trans.labelName[5].value, weight: 0, index: 5 },
 ]);
-const oralScore = reactive([
+let oralScore = reactive([
 	{ name: "Total", weight: 0, index: 0 },
 	{ name: trans.labelName[1].value, weight: 0, index: 1 },
 	{ name: trans.labelName[2].value, weight: 0, index: 2 },
@@ -404,19 +424,19 @@ const oralScore = reactive([
 	{ name: trans.labelName[4].value, weight: 0, index: 4 },
 	{ name: trans.labelName[5].value, weight: 0, index: 5 },
 ]);
-const showedInfo = reactive([
-	{ id: "file1", visible: true, checked: true },
-	{ id: "file2", visible: true, checked: true },
-	{ id: "file3", visible: true, checked: true },
-	{ id: "file4", visible: true, checked: true },
-	{ id: "file5", visible: true, checked: true },
-	{ id: "file6", visible: true, checked: true },
+let showedInfo = reactive([
+	{ id: "姓名資訊", visible: true, checked: true },
+	{ id: "入學身分", visible: true, checked: true },
+	{ id: "戶籍資訊", visible: true, checked: true },
+	{ id: "現居地址", visible: true, checked: true },
+	{ id: "身份資料", visible: true, checked: true },
+	{ id: "聯絡資料", visible: true, checked: true },
 ]);
-const showedFile = reactive([
-	{ id: "file1", visible: true, checked: true },
-	{ id: "file2", visible: true, checked: true },
-	{ id: "file3", visible: true, checked: true },
-	{ id: "file4", visible: true, checked: true },
+let showedFile = reactive([
+	{ id: "就學經歷", visible: true, checked: true },
+	{ id: "考試與檢定分數", visible: true, checked: true },
+	{ id: "其他有利於審查資料", visible: true, checked: true },
+	{ id: "身份資料", visible: true, checked: true },
 ]);
 const fieldList = {
 	info: {
@@ -428,7 +448,7 @@ const fieldList = {
 		checked: [""],
 	},
 };
-const programData: AdmissionAdminProgramListResponse = reactive({
+let programData: AdmissionAdminProgramListResponse = reactive({
 	id: 0,
 	category: "",
 	name: "",
@@ -436,7 +456,6 @@ const programData: AdmissionAdminProgramListResponse = reactive({
 	application_end_date: "",
 	review_start_date: "",
 	review_end_date: "",
-	stage: "",
 	created_at: "",
 	updated_at: "",
 	applicant_required_info: "",
@@ -444,66 +463,61 @@ const programData: AdmissionAdminProgramListResponse = reactive({
 	reviewer_required_info: "",
 	reviewer_required_file: "",
 	detail: "",
+	oral_start_date: "",
+	docs_end_date: "",
 });
 
 // API: Get Score Data
-const getScoreField = useQuery(
-	["scoreField"],
-	async () => {
-		try {
-			if (store.program) {
-				return await api.getScoreField(store.program.id);
-			}
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				console.error("Invalid Session Error");
-			}
-		}
+const getScoreField = useQuery({
+	queryKey: ["scoreField"],
+	queryFn: async () => {
+		if (!globalStore.program)
+			throw new Error("getScoreField: no program selected");
+
+		return await api.getScoreField(globalStore.program.id);
 	},
-	{
-		onSuccess: (data) => {
-			// Pass Data one by one (There)
-			if (data) {
-				docsScore[0].weight = data.docs_weight;
-				oralScore[0].weight = data.oral_weight;
-				docsScore[1].name = data.docs_grade_name_1;
-				docsScore[2].name = data.docs_grade_name_2;
-				docsScore[3].name = data.docs_grade_name_3;
-				docsScore[4].name = data.docs_grade_name_4;
-				docsScore[5].name = data.docs_grade_name_5;
-				docsScore[1].weight = data.docs_grade_weight_1;
-				docsScore[2].weight = data.docs_grade_weight_2;
-				docsScore[3].weight = data.docs_grade_weight_3;
-				docsScore[4].weight = data.docs_grade_weight_4;
-				docsScore[5].weight = data.docs_grade_weight_5;
-				oralScore[1].name = data.oral_grade_name_1;
-				oralScore[2].name = data.oral_grade_name_2;
-				oralScore[3].name = data.oral_grade_name_3;
-				oralScore[4].name = data.oral_grade_name_4;
-				oralScore[5].name = data.oral_grade_name_5;
-				oralScore[1].weight = data.oral_grade_weight_1;
-				oralScore[2].weight = data.oral_grade_weight_2;
-				oralScore[3].weight = data.oral_grade_weight_3;
-				oralScore[4].weight = data.oral_grade_weight_4;
-				oralScore[5].weight = data.oral_grade_weight_5;
-			}
-			console.log("Get Score Data Successfully");
-		},
-	}
-);
+	onSuccess: (data) => {
+		// Pass Data one by one (There)
+		docsScore[0].weight = data.docs_weight;
+		oralScore[0].weight = data.oral_weight;
+		docsScore[1].name = data.docs_grade_name_1;
+		docsScore[2].name = data.docs_grade_name_2;
+		docsScore[3].name = data.docs_grade_name_3;
+		docsScore[4].name = data.docs_grade_name_4;
+		docsScore[5].name = data.docs_grade_name_5;
+		docsScore[1].weight = data.docs_grade_weight_1;
+		docsScore[2].weight = data.docs_grade_weight_2;
+		docsScore[3].weight = data.docs_grade_weight_3;
+		docsScore[4].weight = data.docs_grade_weight_4;
+		docsScore[5].weight = data.docs_grade_weight_5;
+		oralScore[1].name = data.oral_grade_name_1;
+		oralScore[2].name = data.oral_grade_name_2;
+		oralScore[3].name = data.oral_grade_name_3;
+		oralScore[4].name = data.oral_grade_name_4;
+		oralScore[5].name = data.oral_grade_name_5;
+		oralScore[1].weight = data.oral_grade_weight_1;
+		oralScore[2].weight = data.oral_grade_weight_2;
+		oralScore[3].weight = data.oral_grade_weight_3;
+		oralScore[4].weight = data.oral_grade_weight_4;
+		oralScore[5].weight = data.oral_grade_weight_5;
+		console.log("Get Score Data Successfully");
+	},
+	onError: (e: any) => {
+		toast.add({
+			severity: "error",
+			summary: e.toString(),
+			life: 3000,
+		});
+	},
+});
 
 // API: Patch Score Data
 const patchScoreField = useMutation(
 	async (newData: AdmissionAdminScoreFieldResponse) => {
-		try {
-			if (store.program) {
-				return await api.patchScoreField(store.program.id, newData);
-			}
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				console.error("Invalid Session Error");
-			}
-		}
+		if (!globalStore.program)
+			throw new Error("patchScoreField: no program selected");
+
+		return await api.patchScoreField(globalStore.program.id, newData);
 	},
 	{
 		onSuccess: () => {
@@ -516,41 +530,36 @@ const patchScoreField = useMutation(
 const getInfoFileField = useQuery(
 	["infoFileField"],
 	async () => {
-		try {
-			if (store.program) {
-				const allData = await api.getProgramList();
-				return allData[store.program.id - 1];
-			}
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				console.error("Invalid Session Error");
-			}
-		}
+		if (!globalStore.program)
+			throw new Error("infoFileField: no program selected");
+
+		const progarmList = await api.getProgramList();
+
+		// if (!Object.prototype.hasOwnProperty.call(progarmList, store.program.id - 1))
+
+		if (!progarmList[globalStore.program.id - 1])
+			throw new Error("infoFileField query error");
+
+		return progarmList[globalStore.program.id - 1];
 	},
 	{
 		onSuccess: (data) => {
-			if (data) {
-				programData.id = data.id;
-				programData.category = data.category;
-				programData.name = data.name;
-				programData.application_start_date =
-					data.application_start_date;
-				programData.application_end_date = data.application_end_date;
-				programData.review_start_date = data.review_start_date;
-				programData.review_end_date = data.review_end_date;
-				programData.stage = data.stage;
-				programData.created_at = data.created_at;
-				programData.updated_at = data.updated_at;
-				programData.detail = data.detail;
-				programData.applicant_required_info =
-					data.applicant_required_info;
-				programData.applicant_required_file =
-					data.applicant_required_file;
-				programData.reviewer_required_info =
-					data.reviewer_required_info;
-				programData.reviewer_required_file =
-					data.reviewer_required_file;
-			}
+			programData.id = data.id;
+			programData.category = data.category;
+			programData.name = data.name;
+			programData.application_start_date = data.application_start_date;
+			programData.application_end_date = data.application_end_date;
+			programData.review_start_date = data.review_start_date;
+			programData.review_end_date = data.review_end_date;
+			programData.created_at = data.created_at;
+			programData.updated_at = data.updated_at;
+			programData.detail = data.detail;
+			programData.applicant_required_info = data.applicant_required_info;
+			programData.applicant_required_file = data.applicant_required_file;
+			programData.reviewer_required_info = data.reviewer_required_info;
+			programData.reviewer_required_file = data.reviewer_required_file;
+			programData.oral_start_date = data.oral_start_date;
+			programData.docs_end_date = data.docs_end_date;
 			fieldList.info = {
 				visible: JSON.parse(programData.applicant_required_info),
 				checked: JSON.parse(programData.reviewer_required_info),
@@ -560,22 +569,13 @@ const getInfoFileField = useQuery(
 				checked: JSON.parse(programData.reviewer_required_file),
 			};
 			showedInfo.forEach((element) => {
-				if (fieldList.info.visible.includes(element.id))
-					element.visible = true;
-				else element.visible = false;
-				if (fieldList.info.checked.includes(element.id))
-					element.checked = true;
-				else element.checked = false;
+				element.visible = fieldList.info.visible.includes(element.id);
+				element.checked = fieldList.info.checked.includes(element.id);
 			});
 			showedFile.forEach((element) => {
-				if (fieldList.file.visible.includes(element.id))
-					element.visible = true;
-				else element.visible = false;
-				if (fieldList.file.checked.includes(element.id))
-					element.checked = true;
-				else element.checked = false;
+				element.visible = fieldList.file.visible.includes(element.id);
+				element.checked = fieldList.file.checked.includes(element.id);
 			});
-			console.log("Get Info/File Successfully");
 		},
 	}
 );
@@ -583,15 +583,10 @@ const getInfoFileField = useQuery(
 // API: Patch Info/File Data
 const patchInfoFileField = useMutation(
 	async (newData: AdmissionAdminProgramListResponse) => {
-		try {
-			if (store.program) {
-				return await api.updateProgramData(store.program.id, newData);
-			}
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				console.error("Invalid Session Error");
-			}
-		}
+		if (!globalStore.program)
+			throw new Error("patchInfoFileField: no program selected");
+
+		return await api.updateProgramData(globalStore.program.id, newData);
 	},
 	{
 		onSuccess: () => {
@@ -601,11 +596,10 @@ const patchInfoFileField = useMutation(
 );
 
 // ButtonFn: Save Changes and Patch Data
-function saveChange() {
+async function saveChange() {
+	// Adjust and Check correctness of Data
 	try {
-		// Adjust and Check correctness of Data
-		const docsSum = ref(0),
-			oralSum = ref(0);
+		let docsSum = 0;
 		docsScore.forEach((element) => {
 			if (element.name === null && element.weight > 0)
 				element.name =
@@ -614,8 +608,19 @@ function saveChange() {
 					].value;
 			if (element.weight < 0 || element.weight > 100)
 				throw { object: element, message: "Invalid Weight" };
-			if (element.index) docsSum.value += element.weight;
+			if (element.index) docsSum += element.weight;
 		});
+		if (docsSum !== 100) {
+			toast.add({
+				severity: "error",
+				summary:
+					"第一階段 (書面審查)評分項目比例需要加總等於100 The ratio of scoring items in the first stage (Docs review) needs to add up to 100",
+				life: 3000,
+			});
+			return;
+		}
+
+		let oralSum = 0;
 		oralScore.forEach((element) => {
 			if (element.name === null && element.weight > 0)
 				element.name =
@@ -624,15 +629,24 @@ function saveChange() {
 					].value;
 			if (element.weight < 0 || element.weight > 100)
 				throw { object: element, message: "Invalid Weight" };
-			if (element.index) oralSum.value += element.weight;
+			if (element.index) oralSum += element.weight;
 		});
-		if (docsSum.value !== 100)
-			throw { object: docsScore, message: "Invalid Sum" };
-		if (docsSum.value !== 100)
-			throw { object: oralScore, message: "Invalid Sum" };
-		// Patch Score Data
-		patchScoreField.mutate({
-			// IMPROVE: Use Array to pass value instead of Hard-code.
+		if (oralSum !== 100) {
+			toast.add({
+				severity: "error",
+				summary:
+					"第二階段 (口試審查)評分項目比例需要加總等於100 The ratio of the scoring items in the second stage (oral test review) needs to add up to 100",
+				life: 3000,
+			});
+			return;
+		}
+	} catch (e: any) {
+		console.error(e);
+	}
+
+	// Patch Score Data
+	try {
+		await patchScoreField.mutateAsync({
 			docs_weight: docsScore[0].weight,
 			oral_weight: oralScore[0].weight,
 			docs_grade_name_1: docsScore[1].name,
@@ -656,39 +670,48 @@ function saveChange() {
 			oral_grade_weight_4: oralScore[4].weight,
 			oral_grade_weight_5: oralScore[5].weight,
 		});
-
-		// Adjust Info/File Data
-		fieldList.info.checked.splice(0, fieldList.info.checked.length);
-		fieldList.file.checked.splice(0, fieldList.file.checked.length);
-		showedInfo.forEach((element) => {
-			if (!fieldList.info.checked.includes(element.id))
-				if (element.checked) fieldList.info.checked.push(element.id);
-		});
-		showedFile.forEach((element) => {
-			if (!fieldList.file.checked.includes(element.id))
-				if (element.checked) fieldList.file.checked.push(element.id);
-		});
-		programData.reviewer_required_info = JSON.stringify(
-			fieldList.info.checked
-		);
-		programData.reviewer_required_file = JSON.stringify(
-			fieldList.file.checked
-		);
-		// Patch Info/File Data
-		patchInfoFileField.mutate(programData);
-		toast.add({
-			severity: "success",
-			summary: trans.changeSuccess.value,
-			life: 3000,
-		});
-	} catch (e: any) {
-		console.log(e);
+	} catch (error: any) {
 		toast.add({
 			severity: "error",
-			summary: "Fail to Save Change",
+			summary: "Unable to Patch Score Data: " + error.toString(),
 			life: 3000,
 		});
+
+		throw error;
 	}
+
+	// Adjust Info/File Data
+	fieldList.info.checked.splice(0, fieldList.info.checked.length);
+	fieldList.file.checked.splice(0, fieldList.file.checked.length);
+	showedInfo.forEach((element) => {
+		if (!fieldList.info.checked.includes(element.id))
+			if (element.checked) fieldList.info.checked.push(element.id);
+	});
+	showedFile.forEach((element) => {
+		if (!fieldList.file.checked.includes(element.id))
+			if (element.checked) fieldList.file.checked.push(element.id);
+	});
+	programData.reviewer_required_info = JSON.stringify(fieldList.info.checked);
+	programData.reviewer_required_file = JSON.stringify(fieldList.file.checked);
+
+	// Patch Info/File Data
+	try {
+		await patchInfoFileField.mutateAsync(programData);
+	} catch (error: any) {
+		toast.add({
+			severity: "error",
+			summary: "Unable to Info/File Data: " + error.toString(),
+			life: 3000,
+		});
+
+		throw error;
+	}
+
+	toast.add({
+		severity: "success",
+		summary: trans.changeSuccess.value,
+		life: 3000,
+	});
 }
 
 // ButtonFn: Discard Changes and Update Data

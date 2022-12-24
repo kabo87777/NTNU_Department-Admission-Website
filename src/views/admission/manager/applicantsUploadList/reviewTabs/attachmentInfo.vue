@@ -1,263 +1,238 @@
 <template>
-	<div class="mt-16px pl-8px pr-8px">
-		<!-- TITLE -->
-		<div class="mt-16px text-24px font-medium">{{ $t("就學經歷") }}</div>
-		<div class="mt-32px"></div>
+	<div>
+		<div v-if="requiredInputFields.includes('就學經歷')">
+			<!-- TITLE -->
+			<div class="mt-24px text-24px font-bold">{{ $t("就學經歷") }}</div>
 
-		<!-- SCHOOL EXPERIENCE -->
-		<div v-for="(item, index) in schoolExpList" :key="index">
-			<ReviewState
-				v-if="item.state === 1"
-				category="就學經歷"
-				identity="admissionManager"
-				:itemName="item.name"
-				:order="index + 1"
-				@edit="reviewToEdit"
-			/>
-			<EditState
-				v-else-if="item.state === 2"
-				category="就學經歷"
-				identity="admissionManager"
-				:itemName="item.name"
-				:order="index + 1"
-				@cancel="editToReview"
-			/>
-			<CreateState
-				v-else-if="item.state === 3"
-				category="就學經歷"
-				identity="admissionManager"
-				:order="index + 1"
-				@edit="createToEdit"
-			/>
-			<EditState
-				v-else-if="item.state === 4"
-				category="就學經歷"
-				identity="admissionManager"
-				:order="index + 1"
-				@cancel="editToCreate"
-			/>
+			<!-- SCHOOL EXPERIENCE -->
+			<div
+				v-for="(item, index) in schoolExpList"
+				:key="index"
+				class="listContainer"
+			>
+				<ReviewState
+					v-if="item.state === 1"
+					category="就學經歷"
+					identity="admissionManager"
+					:downloadFile="true"
+					:itemName="item.name"
+					:itemId="item.id"
+					:fileUrl="item.filepath?.url"
+					:order="index + 1"
+					:showActionButtons="false"
+					@download="handleDownload"
+				/>
+			</div>
+			<div
+				v-show="examCertificateList.length === 0"
+				class="emptyContainer"
+			>
+				{{ $t("暫無資訊") }}
+			</div>
 		</div>
 
-		<!-- DIVIDER -->
-		<ParagraphDivider />
+		<div v-if="requiredInputFields.includes('考試與檢定分數')">
+			<!-- TITLE -->
+			<div class="mt-24px text-24px font-bold">
+				{{ $t("考試與檢定分數") }}
+			</div>
 
-		<!-- TITLE -->
-		<div class="mt-24px text-24px font-medium">
-			{{ $t("考試與檢定分數") }}
+			<!-- EXAM AND QUALIFICATION TEST SCORE -->
+			<div
+				v-for="(item, index) in examCertificateList"
+				:key="index"
+				class="listContainer"
+			>
+				<ReviewState
+					v-if="item.state === 1"
+					category="考試與檢定分數"
+					identity="admissionManager"
+					:downloadFile="true"
+					:itemName="item.name"
+					:itemId="item.id"
+					:fileUrl="item.filepath?.url"
+					:order="index + 1"
+					:showActionButtons="false"
+					@download="handleDownload"
+				/>
+			</div>
+			<div
+				v-show="examCertificateList.length === 0"
+				class="emptyContainer"
+			>
+				{{ $t("暫無資訊") }}
+			</div>
 		</div>
-		<div class="mt-32px"></div>
+		<div v-if="requiredInputFields.includes('其他有利於審查資料')">
+			<!-- TITLE -->
+			<div class="mt-24px text-24px font-bold">
+				{{ $t("其他有利於審查資料") }}
+			</div>
 
-		<!-- EXAM AND QUALIFICATION TEST SCORE -->
-		<div v-for="(item, index) in examCertificateList" :key="index">
-			<ReviewState
-				v-if="item.state === 1"
-				category="考試與檢定分數"
-				identity="admissionManager"
-				:itemName="item.name"
-				:order="index + 1"
-				@edit="reviewToEdit"
-			/>
-			<EditState
-				v-else-if="item.state === 2"
-				category="考試與檢定分數"
-				identity="admissionManager"
-				:itemName="item.name"
-				:order="index + 1"
-				@cancel="editToReview"
-			/>
-			<CreateState
-				v-else-if="item.state === 3"
-				category="考試與檢定分數"
-				identity="admissionManager"
-				:order="index + 1"
-				@edit="createToEdit"
-			/>
-			<EditState
-				v-else-if="item.state === 4"
-				category="考試與檢定分數"
-				identity="admissionManager"
-				:order="index + 1"
-				@cancel="editToCreate"
-			/>
+			<!-- OTHER -->
+			<div
+				v-for="(item, index) in otherList"
+				:key="index"
+				class="listContainer"
+			>
+				<ReviewState
+					v-if="item.state === 1"
+					category="其他有利於審查資料"
+					identity="admissionManager"
+					:downloadFile="true"
+					:itemName="item.name"
+					:itemId="item.id"
+					:fileUrl="item.filepath?.url"
+					:order="index + 1"
+					:showActionButtons="false"
+					@download="handleDownload"
+				/>
+			</div>
+			<div v-show="otherList.length === 0" class="emptyContainer">
+				{{ $t("暫無資訊") }}
+			</div>
 		</div>
-
-		<!-- DIVIDER -->
-		<ParagraphDivider />
-
-		<!-- TITLE -->
-		<div class="mt-24px text-24px font-medium">
-			{{ $t("其他有利於審查資料") }}
-		</div>
-		<div class="mt-32px"></div>
-
-		<!-- OTHER -->
-		<div v-for="(item, index) in otherList" :key="index">
-			<ReviewState
-				v-if="item.state === 1"
-				category="其他有利於審查資料"
-				identity="admissionManager"
-				:itemName="item.name"
-				:order="index + 1"
-				@edit="reviewToEdit"
-			/>
-			<EditState
-				v-else-if="item.state === 2"
-				category="其他有利於審查資料"
-				identity="admissionManager"
-				:itemName="item.name"
-				:order="index + 1"
-				@cancel="editToReview"
-			/>
-			<CreateState
-				v-else-if="item.state === 3"
-				category="其他有利於審查資料"
-				identity="admissionManager"
-				:order="index + 1"
-				@edit="createToEdit"
-			/>
-			<EditState
-				v-else-if="item.state === 4"
-				category="其他有利於審查資料"
-				identity="admissionManager"
-				:order="index + 1"
-				@cancel="editToCreate"
-			/>
-		</div>
-
-		<!-- DIVIDER -->
-		<ParagraphDivider />
 
 		<div class="mt-32px"></div>
 	</div>
 </template>
+
 <script setup lang="ts">
-import { reactive } from "vue";
+import { reactive, onMounted, toRaw, ref } from "vue";
+import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
+import { AdmissionAdminAPI } from "@/api/admission/admin/api";
+import { useToast } from "primevue/usetoast";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
 import ReviewState from "@/components/attachmentStates/reviewState.vue";
-import EditState from "@/components/attachmentStates/editState.vue";
-import CreateState from "@/components/attachmentStates/createState.vue";
 import ParagraphDivider from "@/styles/paragraphDivider.vue";
 import "primeicons/primeicons.css";
-import AttachmentList from "./attachmentList.json";
+import {
+	AdmAdminGetApplicantAttachmentData,
+	AdmAdminGetApplicantAttachmentDataDetail,
+} from "@/api/admission/admin/types";
+import { useGlobalStore } from "@/stores/globalStore";
 
-interface BasicData {
-	name?: string;
-	file_name?: string;
-	file_url?: string;
-	order?: number;
-	state?: number;
-}
+const adminAuth = useAdmissionAdminAuthStore();
+const api = new AdmissionAdminAPI(adminAuth);
+const store = useGlobalStore();
 
 const props = defineProps(["userId"]);
-console.log(props.userId, "attachment info tab");
-
-const schoolExpList = reactive(
-	AttachmentList.school_exp?.map((item, index) => {
-		const element: BasicData = {
-			...(item as object),
-			order: index,
-			state: 1,
-		};
-		return element;
-	})
+const requiredInputFields = ref("");
+const toast = useToast();
+let attachmentList: AdmAdminGetApplicantAttachmentData[] = reactive([]);
+let schoolExpList: AdmAdminGetApplicantAttachmentDataDetail[] = reactive([]);
+let examCertificateList: AdmAdminGetApplicantAttachmentDataDetail[] = reactive(
+	[]
 );
-schoolExpList.push({
-	order: schoolExpList.length,
-	state: 3,
-});
+let otherList: AdmAdminGetApplicantAttachmentDataDetail[] = reactive([]);
 
-const examCertificateList = reactive(
-	AttachmentList.exam_score?.map((item, index) => {
-		const element: BasicData = {
-			...(item as object),
-			order: index,
-			state: 1,
-		};
-		return element;
-	})
+const splitThreeList = async (
+	fullList: AdmAdminGetApplicantAttachmentData[]
+) => {
+	fullList.map((item) => {
+		switch (item.category) {
+			case "就學經歷": {
+				schoolExpList.push({
+					...item,
+					order: schoolExpList.length,
+					state: 1,
+				});
+				break;
+			}
+			case "考試與檢定分數": {
+				examCertificateList.push({
+					...item,
+					order: examCertificateList.length,
+					state: 1,
+				});
+				break;
+			}
+			default: {
+				otherList.push({
+					...item,
+					order: otherList.length,
+					state: 1,
+				});
+			}
+		}
+	});
+};
+
+useQuery(
+	["getAdmApplicantProgramInfo_attachment"],
+	async () => {
+		if (!store.program)
+			throw new Error(
+				"getAdmApplicantProgramInfo_attachment: no program selected"
+			);
+
+		const allData = await api.getProgramList();
+		return allData[store.program.id - 1];
+	},
+	{
+		onSuccess: (data) => {
+			if (data) {
+				requiredInputFields.value = data.applicant_required_file;
+			}
+			console.log(data);
+		},
+		onError: (data) => {
+			toast.add({
+				severity: "error",
+				summary: "Error",
+				detail: "Unable to fetch user require input",
+				life: 5000,
+			});
+		},
+	}
 );
-examCertificateList.push({
-	order: examCertificateList.length,
-	state: 3,
+
+const handleDownload = async (fileId: number, fileName: string) => {
+	const res = await api.downloadApplicantFile(props.userId, fileId);
+
+	const file = new Blob([res], { type: "application/pdf" });
+
+	const fileURL = URL.createObjectURL(file);
+	// window.open(fileURL);
+	const link = document.createElement("a");
+	link.href = fileURL;
+	link.download = fileName + ".pdf";
+	link.click();
+};
+
+onMounted(async () => {
+	const res = await api.getApplicantFile(props.userId);
+
+	attachmentList = [...attachmentList, ...res];
+
+	splitThreeList(toRaw(attachmentList));
 });
-
-const otherList = reactive(
-	AttachmentList.other?.map((item, index) => {
-		const element: BasicData = {
-			...(item as object),
-			order: index,
-			state: 1,
-		};
-		return element;
-	})
-);
-otherList.push({
-	order: otherList.length,
-	state: 3,
-});
-/* 判斷總共有幾個attachment 並對個別attachment宣告一個state去切換該用review state 或是 edit state 或是 create state */
-/* 方法：api讀進來，如果後端沒有宣告state的話跑回圈並對每個attachment新增 { state: 1 or 2 or 3 or 4 } */
-/* 目前沒有api，先寫死 school 和 exam 和 other */
-const editToReview = (index: number, category: string) => {
-	switch (category) {
-		case "就學經歷":
-			schoolExpList[index].state = 1;
-			break;
-		case "考試與檢定分數":
-			examCertificateList[index].state = 1;
-			break;
-		case "其他有利於審查資料":
-			otherList[index].state = 1;
-			break;
-		default:
-			break;
-	}
-};
-
-const reviewToEdit = (index: number, category: string) => {
-	switch (category) {
-		case "就學經歷":
-			schoolExpList[index].state = 2;
-			break;
-		case "考試與檢定分數":
-			examCertificateList[index].state = 2;
-			break;
-		case "其他有利於審查資料":
-			otherList[index].state = 2;
-			break;
-		default:
-			break;
-	}
-};
-
-const editToCreate = (index: number, category: string) => {
-	switch (category) {
-		case "就學經歷":
-			schoolExpList[index].state = 3;
-			break;
-		case "考試與檢定分數":
-			examCertificateList[index].state = 3;
-			break;
-		case "其他有利於審查資料":
-			otherList[index].state = 3;
-			break;
-		default:
-			break;
-	}
-};
-
-const createToEdit = (index: number, category: string) => {
-	switch (category) {
-		case "就學經歷":
-			schoolExpList[index].state = 4;
-			break;
-		case "考試與檢定分數":
-			examCertificateList[index].state = 4;
-			break;
-		case "其他有利於審查資料":
-			otherList[index].state = 4;
-			break;
-		default:
-			break;
-	}
-};
 </script>
+
+<style setup lang="css">
+.listContainer {
+	margin-top: 16px;
+	padding: 0 32px 24px 32px;
+	border: 3px dashed rgb(174, 174, 174);
+	border-radius: 16px;
+	background-color: rgb(244, 244, 244);
+	/* width:; */
+}
+
+.emptyContainer {
+	text-align: center;
+	color: #333333;
+	font-size: 20px;
+	font-weight: bold;
+	margin-top: 16px;
+	padding: 0 32px 24px 32px;
+	/* padding: 24px 32px; */
+	border: 3px dashed rgb(174, 174, 174);
+	border-radius: 16px;
+	background-color: rgb(244, 244, 244);
+}
+.grid {
+	display: grid;
+	grid-template-columns: auto auto;
+}
+</style>

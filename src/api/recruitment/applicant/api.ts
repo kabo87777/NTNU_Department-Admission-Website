@@ -5,6 +5,7 @@ import type {
 	RecruitmentApplicantUserInfoResponse,
 	RecruitmentApplicantProgramResponse,
 	RecruitmentApplicantFileListResponse,
+	RApplicantChangePasswordRequest,
 } from "./types";
 import type { APIGenericResponse } from "@/api/types";
 
@@ -31,7 +32,7 @@ export class RecruitmentApplicantAPI extends GenericAPI {
 			`/recruitment/applicant/program/${pid}/info`
 		);
 
-		if (data.error === true) console.log("Failed to fetch user info");
+		if (data.error === true) throw new Error("Failed to fetch user info");
 
 		return data.data;
 	}
@@ -181,22 +182,18 @@ export class RecruitmentApplicantAPI extends GenericAPI {
 	}
 
 	async changePassword(
-		body: object
+		body: RApplicantChangePasswordRequest
 	): Promise<RecruitmentApplicantGenericResponse> {
-		const data: APIGenericResponse = await this.instance.patch(
+		const response: APIGenericResponse = await this.instance.patch(
 			"recruitment/auth/applicant/password",
 			body
 		);
 
-		if (data.error !== false) {
-			return {
-				success: false,
-				message: data.message.full_messages,
-			};
+		if (response.error === true) {
+			const msg = response.message.full_messages.join("\n");
+			throw new Error(msg);
 		}
-		return {
-			success: true,
-			message: data.message,
-		};
+
+		return response;
 	}
 }
