@@ -93,6 +93,10 @@ export const useAdmissionAdminAuthStore = defineUniversalAuthStore(
 	"AdmissionAdminAuthStore",
 	"/admission/auth/admin"
 );
+export const useAdmissionRecommenderAuthStore = defineUniversalAuthStore(
+	"AdmissionRecommenderAuthStore",
+	"/admission/auth/recommender"
+);
 export const useRecruitmentApplicantAuthStore = defineUniversalAuthStore(
 	"RecruitmentApplicantAuthStore",
 	"/recruitment/auth/applicant"
