@@ -2,7 +2,7 @@
 	<div>
 		<!-- TITLE -->
 		<div class="font-[500] text-[32px] font-bold">
-			{{ $t("附件佐證") }}
+			{{ $t("附件資料") }}
 		</div>
 		<div class="bigYellowDivider"></div>
 

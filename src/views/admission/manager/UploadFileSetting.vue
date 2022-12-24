@@ -243,7 +243,7 @@ const toast = useToast();
 // i18n
 const { t } = useI18n();
 const trans = {
-	uploadField: computed(() => t("申請上傳欄位")),
+	uploadField: computed(() => t("上傳欄位設置")),
 	basicCol: computed(() => t("基本資料欄位")),
 	attachmentCol: computed(() => t("檢附資料欄位")),
 	nameInfo: computed(() => t("姓名資訊")),

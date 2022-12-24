@@ -348,7 +348,7 @@ const queryClient = useQueryClient();
 
 // I18n translation
 const trans = {
-	reviewScoreField: computed(() => t("審查評分欄位")),
+	reviewScoreField: computed(() => t("審查評分設置")),
 	save: computed(() => t("儲存")),
 	changeSuccess: computed(() => t("儲存成功")),
 	cancel: computed(() => t("取消")),

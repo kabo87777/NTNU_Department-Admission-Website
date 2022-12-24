@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<h1 class="text-4xl font-bold">{{ $t("申請者帳號設定") }}</h1>
+		<h1 class="text-4xl font-bold">{{ $t("申請帳號設置") }}</h1>
 		<Divider />
 		<DataTable :value="tableData" :loading="isTableLoading">
 			<template #empty>
