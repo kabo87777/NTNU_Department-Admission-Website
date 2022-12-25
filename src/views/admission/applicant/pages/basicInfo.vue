@@ -298,6 +298,9 @@
 									border: 1px solid #736028;
 									border-radius: 6px;
 								"
+								:show-icon="true"
+								:showOnFocus="false"
+								placeholder="YYYY/MM/DD"
 							/>
 						</div>
 						<div v-show="required.birth" class="absolute mt-[-4px]">

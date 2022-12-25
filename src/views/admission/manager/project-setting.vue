@@ -59,6 +59,8 @@
 						class="!w-300px customDatePicker"
 						:baseZIndex="zIndex"
 						dateFormat="yy/mm/dd"
+						:showOnFocus="false"
+						placeholder="YYYY/MM/DD hh:mm"
 					/>
 				</div>
 				<div flex="~ col gap-1">
@@ -71,6 +73,8 @@
 						class="!w-300px customDatePicker"
 						:baseZIndex="zIndex"
 						dateFormat="yy/mm/dd"
+						:showOnFocus="false"
+						placeholder="YYYY/MM/DD hh:mm"
 					/>
 				</div>
 			</div>
@@ -86,6 +90,8 @@
 						class="!w-300px customDatePicker"
 						:baseZIndex="zIndex"
 						dateFormat="yy/mm/dd"
+						:showOnFocus="false"
+						placeholder="YYYY/MM/DD hh:mm"
 					/>
 				</div>
 				<div flex="~ col gap-1">
@@ -98,6 +104,8 @@
 						class="!w-300px customDatePicker"
 						:baseZIndex="zIndex"
 						dateFormat="yy/mm/dd"
+						:showOnFocus="false"
+						placeholder="YYYY/MM/DD hh:mm"
 					/>
 				</div>
 			</div>
@@ -114,6 +122,8 @@
 						class="!w-300px customDatePicker"
 						:baseZIndex="zIndex"
 						dateFormat="yy/mm/dd"
+						:showOnFocus="false"
+						placeholder="YYYY/MM/DD hh:mm"
 					/>
 				</div>
 				<div flex="~ col gap-1">
@@ -126,6 +136,8 @@
 						class="!w-300px customDatePicker"
 						:baseZIndex="zIndex"
 						dateFormat="yy/mm/dd"
+						:showOnFocus="false"
+						placeholder="YYYY/MM/DD hh:mm"
 					/>
 				</div>
 			</div>

@@ -30,6 +30,8 @@
 				:showTime="true"
 				class="w-320px h-44px mt-10px customDatePicker"
 				dateFormat="yy/mm/dd"
+				:showOnFocus="false"
+				placeholder="YYYY/MM/DD hh:mm"
 			/>
 		</div>
 		<div class="inline-block ml-100px">
@@ -43,6 +45,8 @@
 				:showTime="true"
 				class="w-320px h-44px mt-10px customDatePicker"
 				dateFormat="yy/mm/dd"
+				:showOnFocus="false"
+				placeholder="YYYY/MM/DD hh:mm"
 			/>
 		</div>
 		<br />
@@ -57,6 +61,8 @@
 				:showTime="true"
 				class="w-320px h-44px mt-10px customDatePicker"
 				dateFormat="yy/mm/dd"
+				:showOnFocus="false"
+				placeholder="YYYY/MM/DD hh:mm"
 			/>
 		</div>
 		<div class="inline-block ml-100px">
@@ -70,6 +76,8 @@
 				:showTime="true"
 				class="w-320px h-44px mt-10px customDatePicker"
 				dateFormat="yy/mm/dd"
+				:showOnFocus="false"
+				placeholder="YYYY/MM/DD hh:mm"
 			/>
 		</div>
 		<div class="mt-200px">
