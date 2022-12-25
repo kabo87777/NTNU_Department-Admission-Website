@@ -87,7 +87,7 @@
 							{{ $t("審查端帳戶") }}
 						</div>
 						<div class="mt-4px ml-[-2px] text-16px">
-							{{ reviewerInfo.name }}
+							{{ reviewerStore.userInfo.name }}
 						</div>
 					</div>
 				</div>
@@ -144,10 +144,6 @@ const reviewerAuth = useRecruitmentReviewerAuthStore();
 const store = useGlobalStore();
 const reviewerStore = useUserInfoStore();
 const api = new RecruitmentReviewerAPI(reviewerAuth);
-
-const reviewerInfo: RecruitmentManagerAuthResponse = toRaw(
-	reviewerStore.userInfo
-);
 
 const {
 	isLoading,
