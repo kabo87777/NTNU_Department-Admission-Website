@@ -271,47 +271,39 @@
 	</div>
 	<!-- 新增專案彈窗 -->
 	<Dialog
-		header="新增專案"
 		v-model:visible="displayNewProject"
-		class="w-484px h-282px"
 		:draggable="false"
+		:closable="false"
 		:modal="true"
 	>
-		<divider class="!mt-0px" />
-		<p class="mt-24px text-base tracking-2px">
-			{{ $t("專案名稱") }}
-		</p>
-		<InputText
-			type="text"
-			v-model="newProjectName"
-			class="!w-428px !h-44px !mt-5px"
-		/>
-		<div class="flex">
-			<Button
-				@click="addNewProject"
-				class="p-button-outlined p-button-success !ml-70px !mt-26px !w-142px !h-44px"
-			>
-				<img
-					alt="logo"
-					src="/assets/sidebar/Done_round.png"
-					style="width: 1.25rem"
-					class="!ml-0px"
-				/>
-				<span class="text-left text-xl">{{ $t("建立專案") }}</span>
-			</Button>
-			<Button
-				@click="closeDisplayNewProject"
-				class="p-button-outlined p-button-danger !ml-32px !mt-26px !w-105px !h-44px"
-			>
-				<img
-					alt="logo"
-					src="/assets/sidebar/Close_round.png"
-					style="width: 18px"
-					class="!ml-0px"
-				/>
-				<span class="text-left text-xl">{{ $t("取消") }}</span>
-			</Button>
-		</div>
+		<template #header>
+			<div text="2xl title">{{ $t("新增專案") }}</div>
+		</template>
+		<template #default>
+			<div space="y-1" mx="1">
+				<div text="body">{{ $t("專案名稱") }}</div>
+				<InputText type="text" v-model="newProjectName" w="full" />
+			</div>
+		</template>
+		<template #footer>
+			<div flex="~ gap-8" justify="center">
+				<NButton
+					Admin
+					@click="addNewProject"
+					icon="pi pi-check"
+					class="h-11 min-w-36"
+				>
+					{{ $t("建立專案") }}
+				</NButton>
+				<NButton
+					@click="closeDisplayNewProject"
+					icon="pi pi-times"
+					class="h-11 min-w-36"
+				>
+					{{ $t("取消") }}
+				</NButton>
+			</div>
+		</template>
 	</Dialog>
 </template>
 
