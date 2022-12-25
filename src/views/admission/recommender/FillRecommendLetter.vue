@@ -11,7 +11,11 @@
 					<div>請上傳簽名檔</div>
 					<div>Please upload your signature</div>
 				</div>
-				<div v-if="fileName === ''" class="mt-16px" style="width: 85%">
+				<div
+					v-if="fileName === ''"
+					class="mt-16px removeBadge"
+					style="width: 85%"
+				>
 					<FileUpload
 						:customUpload="true"
 						@uploader="handleUpload"
@@ -62,8 +66,8 @@
 								/>
 							</div>
 						</template>
-						<template #content="{ files }">
-							<div v-if="files.length">
+						<template #content>
+							<!-- <div v-if="files.length">
 								<div class="flex flex-wrap sm:p-5 gap-5">
 									<div
 										class="flex"
@@ -85,7 +89,7 @@
 										</div>
 									</div>
 								</div>
-							</div>
+							</div> -->
 						</template>
 						<template #empty>
 							<div class="flex">
@@ -420,7 +424,7 @@ watch(
 );
 </script>
 
-<style setup lang="css">
+<style setup lang="scss">
 .contentContainer {
 	margin: auto;
 	margin-top: 20px;
@@ -430,5 +434,10 @@ watch(
 	border: 3px dashed rgb(174, 174, 174);
 	border-radius: 16px;
 	background-color: rgb(244, 244, 244);
+}
+.removeBadge {
+	.p-fileupload-file-badge {
+		display: none;
+	}
 }
 </style>
