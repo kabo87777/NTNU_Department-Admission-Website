@@ -1,11 +1,8 @@
 <template>
-	<div>
-		<!-- 畫面顯示(開放補件時) -->
-		<div v-if="isEnabled">
-			<div class="font-[500] text-[32px] font-bold">
-				{{ $t("補交文件系統") }}
-			</div>
-			<div class="bigYellowDivider"></div>
+	<Layout Applicant>
+		<template #Header>{{ $t("補交文件系統") }}</template>
+		<template #Body>
+			<!-- 畫面顯示(開放補件時) -->
 			<div v-if="isEnabled" class="px-12px">
 				<div>
 					<CreateState
@@ -23,22 +20,25 @@
 					/>
 				</div>
 			</div>
-		</div>
 
-		<!-- 畫面顯示(未開放補件時) -->
-		<div v-else class="relative h-150">
-			<div class="admissionAdditionNoData">
-				<img
-					src="/assets/admissionApplicant/Newsletter.png"
-					alt="NO DATA"
-					style="border-radius: 50%"
-				/>
-				<div class="text-center font-bold text-[24px] text-[#736028]">
-					{{ $t("暫未開放補件") }}
+			<!-- 畫面顯示(未開放補件時) -->
+			<div v-else class="relative h-150">
+				<div class="admissionAdditionNoData">
+					<img
+						src="/assets/admissionApplicant/Newsletter.png"
+						alt="NO DATA"
+						style="border-radius: 50%"
+					/>
+					<div
+						class="text-center font-bold text-[24px] text-[#736028]"
+					>
+						{{ $t("暫未開放補件") }}
+					</div>
 				</div>
 			</div>
-		</div>
-	</div>
+		</template>
+	</Layout>
+	<div></div>
 </template>
 
 <script setup lang="ts">
@@ -46,7 +46,7 @@ import { ref, reactive, toRaw } from "vue";
 import { AdmissionApplicantAuthResponse } from "@/api/admission/applicant/types";
 import { useUserInfoStore } from "@/stores/AdmissionApplicantStore";
 import CreateState from "@/components/attachmentStates/createState.vue";
-import ParagraphDivider from "@/styles/paragraphDividerApplicant.vue";
+import Layout from "@/components/Layout.vue";
 import RefillState from "@/components/attachmentStates/RefillState.vue";
 import { useAdmissionApplicantAuthStore } from "@/stores/universalAuth";
 import { AdmissionApplicantAPI } from "@/api/admission/applicant/api";
