@@ -1,22 +1,19 @@
 <template>
-	<div>
-		<div class="flex">
-			<h1 class="text-4xl text-bold tracking-widest">
-				{{ $t("書面資料評閱") }}
-			</h1>
-			<div class="w-134px h-25px bg-[#FCC89B] rounded-lg ml-24px mt-8px">
-				<div class="mt-4px text-xs text-center">
-					{{ isBetweenDate }} | {{ $t("評分中") }}
+	<Layout Reviewer noMargin>
+		<template #Header>
+			<div flex="~ gap-6">
+				<div>{{ $t("書面資料評閱") }}</div>
+				<div
+					text="sm body"
+					font="normal"
+					class="!tracking-normal mt-auto"
+				>
+					{{ $t("開放時間") }} : {{ reviewStartTime }} -
+					{{ reviewEndTime }}
 				</div>
 			</div>
-			<div class="mt-20px ml-600px">
-				{{ $t("開放時間") }} : {{ reviewStartTime }} -
-				{{ reviewEndTime }}
-			</div>
-		</div>
-
-		<div class="bigBlueDivider"></div>
-		<div>
+		</template>
+		<template #Body>
 			<DataTable
 				:value="applicantList"
 				responsiveLayout="scroll"
@@ -26,7 +23,7 @@
 				v-model:selection="selectedData"
 				selectionMode="single"
 				@rowSelect="onRowSelect"
-				class="p-datatable-lg !h-700px"
+				class="!h-full"
 			>
 				<ColumnGroup type="header">
 					<Row>
@@ -120,28 +117,23 @@
 					</template>
 				</Column>
 			</DataTable>
-			<div class="bigBlueDivider !mt-50px"></div>
-			<div class="flex text-xl mt-20px">
-				<NButton
-					type="Reviewer"
-					class="w-150px h-44px !ml-1200px"
-					@click="confirmGrading"
-				>
-					<img
-						alt="logo"
-						src="/assets/reviewer-page/Add_round.png"
-						style="width: 1.5rem"
-						class="fill-green-500"
-					/>
-					<span class="tracking-1px">{{ $t("送出成績") }}</span>
-				</NButton>
-			</div>
-			<div class="ml-930px mt-12px text-red-500">
+		</template>
+		<template #Footer>
+			<NButton
+				type="Reviewer"
+				class="h-11 min-w-36 px-2 mx-auto bg-white"
+				icon="pi pi-upload"
+				@click="confirmGrading"
+			>
+				<span class="tracking-1px">{{ $t("送出成績") }}</span>
+			</NButton>
+			<div pos="absolute bottom-0 right-0" w="4/9" text="sm danger right">
 				{{ $t("※成績送出即無法再次修改，煩請送出前再三確認成績無誤") }}
 			</div>
-		</div>
-		<ConfirmDialog :draggable="false" />
-	</div>
+		</template>
+	</Layout>
+	<!-- Dialog -->
+	<ConfirmDialog :draggable="false" />
 </template>
 
 <script setup lang="ts">
@@ -149,11 +141,10 @@ import "@/styles/customize.css";
 import "primeicons/primeicons.css";
 import { computed, ref } from "vue";
 import DataTable from "primevue/datatable";
+import Layout from "@/components/Layout.vue";
 import Column from "primevue/column";
 import ColumnGroup from "primevue/columngroup";
 import Row from "primevue/row";
-import Button from "primevue/button";
-import ProgressBar from "primevue/progressbar";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { useAdmissionReviewerAuthStore } from "@/stores/universalAuth";

@@ -1,220 +1,210 @@
 <template>
-	<div v-if="load"></div>
-	<div v-else>
-		<div class="flex">
-			<router-link
-				to="/admission/reviewer/applicationReview"
-				custom
-				v-slot="{ navigate }"
-			>
-				<NButton
-					type="Reviewer"
-					class="!w-164px !h-29px"
-					@click="navigate"
-					role="link"
-					icon="pi pi-angle-left"
+	<Layout Reviewer noMargin>
+		<template #Header>
+			<div flex="~ gap-6">
+				<router-link
+					to="/admission/reviewer/applicationReview"
+					custom
+					v-slot="{ navigate }"
 				>
-					<span class="text-base">
-						{{ $t("書面資料評閱") }}
-					</span>
-				</NButton>
-			</router-link>
-			<div class="text-[32px] ml-24px">
-				{{ ID }}
+					<NButton
+						Reviewer
+						white
+						class="h-8 min-w-32 bg-nBlue-50"
+						@click="navigate"
+						size="sm"
+						role="link"
+						icon="pi pi-angle-left"
+						>{{ $t("書面資料評閱") }}
+					</NButton>
+				</router-link>
+				<div>{{ ID }}</div>
+				<div>{{ name }}</div>
 			</div>
-			<div class="text-[32px] ml-20px">
-				{{ name }}
+		</template>
+		<template #Body>
+			<NSelect
+				Reviewer
+				:optionNum="4"
+				class="h-12 mt-1 sticky top-0"
+				@currentTab="changeView"
+			>
+				<template #Select1>{{ $t("基本資料") }}</template>
+				<template #Select2>{{ $t("檢附資料") }}</template>
+				<template #Select3>{{ $t("推薦信") }}</template>
+				<template #Select4>{{ $t("整合pdf") }}</template>
+			</NSelect>
+			<div v-if="!load">
+				<vue-pdf-embed
+					ref="pdfRef"
+					v-if="infoPDF !== ''"
+					:source="'data:application/pdf;base64,' + PDF"
+					class=""
+					:page="Page"
+					@rendered="handleDocumentRender"
+				/>
+				<i
+					v-if="infoPDF === ''"
+					class="pi pi-spin pi-spinner"
+					style="font-size: 2rem"
+				/>
 			</div>
-		</div>
-		<div class="bigBlueDivider"></div>
-		<div class="flex !mt-5px justify-around">
-			<NButton
-				type="Reviewer"
-				@click="changeInfo"
-				class="!w-200px !h-40px"
+		</template>
+		<template #Footer>
+			<!-- Last / Next Page & Toggle Score Field Button set -->
+			<div
+				class="flex my-1 absolute inset-x-0 bottom-1"
+				:class="toggleScoreFieldPosition"
+				bg="white opacity-90"
 			>
-				<span class="text-base">
-					{{ $t("基本資料") }}
-				</span>
-			</NButton>
-			<NButton
-				type="Reviewer"
-				@click="changeUploadFile"
-				class="!w-200px !h-40px"
-			>
-				<span class="text-base">
-					{{ $t("檢附資料") }}
-				</span>
-			</NButton>
-			<NButton
-				type="Reviewer"
-				@click="changeRecommendLetter"
-				class="!w-200px !h-40px"
-			>
-				<span class="text-base">
-					{{ $t("推薦信") }}
-				</span>
-			</NButton>
-			<NButton
-				type="Reviewer"
-				@click="changeCombine"
-				class="!w-200px !h-40px"
-			>
-				<span class="text-base">
-					{{ $t("整合pdf") }}
-				</span>
-			</NButton>
-		</div>
-		<div class="mt-10px !h-1830px !ml-40px">
-			<vue-pdf-embed
-				ref="pdfRef"
-				v-if="infoPDF !== ''"
-				:source="'data:application/pdf;base64,' + PDF"
-				class="!h-1600px"
-				:page="Page"
-				@rendered="handleDocumentRender"
-			/>
-			<i
-				v-if="infoPDF === ''"
-				class="pi pi-spin pi-spinner"
-				style="font-size: 2rem"
-			></i>
-			<div class="flex !mt-250px justify-around">
 				<NButton
-					type="Reviewer"
 					icon="pi pi-chevron-left"
-					iconPos="left"
 					@click="Page--"
 					:disabled="Page === 1"
-					class="!w-200px !h-40px"
+					class="h-11 min-w-36 mr-auto"
 				>
 					<span class="text-base">
 						{{ $t("上一頁") }}
 					</span>
 				</NButton>
 				<NButton
-					type="Reviewer"
+					Reviewer
+					white
+					:icon="toggleScoreFieldIcon"
+					iconPos="both"
+					@click="toggleScoreField"
+					class="h-11 min-w-36"
+				>
+					<span class="text-base">
+						{{ $t("開啟/收合評分面板") }}
+					</span>
+				</NButton>
+				<NButton
 					icon="pi pi-chevron-right"
 					iconPos="right"
 					@click="nextPage"
 					:disabled="Page === maxPage"
-					class="!w-200px !h-40px"
+					class="h-11 min-w-36 ml-auto"
 				>
 					<span class="text-base">
 						{{ $t("下一頁") }}
 					</span>
 				</NButton>
 			</div>
-		</div>
-		<div class="bigBlueDivider !mt-100px"></div>
-		<div class="flex mt-10px">
-			<div class="text-xl mt-5px" v-if="score1Proportion !== 0">
-				{{ score1Title }} ({{ score1Proportion }}%)
+
+			<!-- Score Fields -->
+			<div flex="~ col gap-6" v-if="showScoreField">
+				<!-- Score Input -->
+				<div flex="~ gap-8">
+					<div flex="grow" space="y-1" v-if="score1Proportion !== 0">
+						<div text="body">
+							{{ score1Title }} ({{ score1Proportion }}%)
+						</div>
+						<InputText
+							type="number"
+							v-model="inputScore_1"
+							style="width: 100% !important"
+						/>
+					</div>
+					<div flex="grow" space="y-1" v-if="score2Proportion !== 0">
+						<div text="body">
+							{{ score2Title }} ({{ score2Proportion }}%)
+						</div>
+						<InputText
+							type="number"
+							v-model="inputScore_2"
+							style="width: 100% !important"
+						/>
+					</div>
+					<div flex="grow" space="y-1" v-if="score3Proportion !== 0">
+						<div text="body">
+							{{ score3Title }} ({{ score3Proportion }}%)
+						</div>
+						<InputText
+							type="number"
+							v-model="inputScore_3"
+							style="width: 100% !important"
+						/>
+					</div>
+					<div flex="grow" space="y-1" v-if="score4Proportion !== 0">
+						<div text="body">
+							{{ score4Title }} ({{ score4Proportion }}%)
+						</div>
+						<InputText
+							type="number"
+							v-model="inputScore_4"
+							style="width: 100% !important"
+						/>
+					</div>
+					<div flex="grow" space="y-1" v-if="score5Proportion !== 0">
+						<div text="body">
+							{{ score5Title }} ({{ score5Proportion }}%)
+						</div>
+						<InputText
+							type="number"
+							v-model="inputScore_5"
+							style="width: 100% !important"
+						/>
+					</div>
+				</div>
+				<!-- Access Check -->
+				<div flex="~ gap-2" class="items-center">
+					<Checkbox
+						inputId="binary"
+						v-model="accessChecked"
+						:binary="true"
+						class=""
+					/>
+					<div class="whitespace-nowrap">
+						{{ $t("逕取，逕取原因：") }}
+					</div>
+					<InputText
+						type="text"
+						v-model="accessReason"
+						class="w-full"
+						:disabled="disable"
+					/>
+				</div>
+				<!-- Total Score & Save Button -->
+				<div flex="~ gap-6" class="items-center">
+					<div flex="~ grow gap-2" class="items-center">
+						<div class="whitespace-nowrap">{{ $t("備註") }}：</div>
+						<InputText type="text" v-model="remark" w="full" />
+					</div>
+					<div class="whitespace-nowrap">
+						{{ $t("書面分數合計： ") }} {{ total_score }}
+						{{ $t("分") }}
+					</div>
+					<NButton
+						Reviewer
+						class="min-w-36 h-11 !ml-20px p-button-success"
+						@click="saveScore"
+						icon="pi pi-save"
+					>
+						<span class="tracking-1px">{{ $t("保存") }}</span>
+					</NButton>
+				</div>
 			</div>
-			<InputNumber
-				inputId="integeronly"
-				v-model="inputScore_1"
-				class="ml-34px !w-132px !h-44px"
-				v-if="score1Proportion !== 0"
-			/>
-			<div class="text-xl ml-125px mt-5px" v-if="score2Proportion !== 0">
-				{{ score2Title }} ({{ score2Proportion }}%)
-			</div>
-			<InputNumber
-				inputId="integeronly"
-				v-model="inputScore_2"
-				class="ml-34px !w-132px !h-44px"
-				v-if="score2Proportion !== 0"
-			/>
-			<div class="text-xl ml-125px mt-5px" v-if="score3Proportion !== 0">
-				{{ score3Title }} ({{ score3Proportion }}%)
-			</div>
-			<InputNumber
-				inputId="integeronly"
-				v-model="inputScore_3"
-				class="ml-34px !w-132px !h-44px"
-				v-if="score3Proportion !== 0"
-			/>
-		</div>
-		<div
-			class="flex mt-10px"
-			v-if="score4Proportion !== 0 || score5Proportion !== 0"
-		>
-			<div class="text-xl mt-5px" v-if="score4Proportion !== 0">
-				{{ score4Title }} ({{ score4Proportion }}%)
-			</div>
-			<InputNumber
-				inputId="integeronly"
-				v-model="inputScore_4"
-				class="ml-34px !w-132px !h-44px"
-				v-if="score4Proportion !== 0"
-			/>
-			<div class="text-xl ml-125px mt-5px" v-if="score5Proportion !== 0">
-				{{ score5Title }} ({{ score5Proportion }}%)
-			</div>
-			<InputNumber
-				inputId="integeronly"
-				v-model="inputScore_5"
-				class="ml-34px !w-132px !h-44px"
-				v-if="score5Proportion !== 0"
-			/>
-		</div>
-		<div class="flex mt-10px">
-			<div class="text-xl mt-5px">{{ $t("備註") }}:</div>
-			<InputText
-				type="text"
-				v-model="remark"
-				class="!w-683px !h-44px ml-5px"
-			/>
-		</div>
-		<div class="flex mt-10px">
-			<Checkbox
-				inputId="binary"
-				v-model="accessChecked"
-				:binary="true"
-				class="!w-31px !h-31px mt-9px"
-			/>
-			<div class="text-xl ml-5px mt-5px">
-				{{ $t("逕取，逕取原因：") }}
-			</div>
-			<InputText
-				type="text"
-				v-model="accessReason"
-				class="!w-549px !h-44px ml-5px"
-				:disabled="disable"
-			/>
-			<div class="text-xl ml-180px mt-5px">
-				{{ $t("書面分數合計： ") }} {{ total_score }} {{ $t("分") }}
-			</div>
-			<NButton
-				type="Reviewer"
-				class="w-100px h-40px !ml-20px p-button-success"
-				@click="saveScore"
-				icon="pi pi-check"
-			>
-				<span class="tracking-1px">{{ $t("保存") }}</span>
-			</NButton>
-		</div>
-	</div>
+		</template>
+	</Layout>
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, onUpdated, ref, toRaw } from "vue";
-import { useRoute, useRouter } from "vue-router";
-import Button from "primevue/button";
 import InputNumber from "primevue/inputnumber";
 import Checkbox from "primevue/checkbox";
 import InputText from "primevue/inputtext";
+import NButton from "@/styles/CustomButton.vue";
+import NSelect from "@/components/SelectButton.vue";
+import Layout from "@/components/Layout.vue";
+import VuePdfEmbed from "vue-pdf-embed";
+import { computed, ref, toRaw } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import { useAdmissionReviewerAuthStore } from "@/stores/universalAuth";
 import { AdmissionReviewerAPI } from "@/api/admission/reviewer/api";
 import { useMutation, useQuery } from "@tanstack/vue-query";
-import { InvalidSessionError } from "@/api/error";
 import { useGlobalStore } from "@/stores/AdmissionReviewerStore";
 import { useToast } from "primevue/usetoast";
-import SelectButton from "primevue/selectbutton";
-import VuePdfEmbed from "vue-pdf-embed";
-import NButton from "@/styles/CustomButton.vue";
 
 const route = useRoute();
 const { t } = useI18n();
@@ -227,6 +217,9 @@ const pdfRef = ref(null);
 const PDF = ref();
 const Page = ref(1);
 const maxPage = ref(1);
+const showScoreField = ref(true);
+const toggleScoreFieldIcon = ref("pi pi-chevron-down");
+const toggleScoreFieldPosition = ref("mb-60");
 
 // FIXME: logic may refactor
 
@@ -252,20 +245,20 @@ const score2Title = ref("");
 const score3Title = ref("");
 const score4Title = ref("");
 const score5Title = ref("");
-const inputScore_1 = ref(0);
-const inputScore_2 = ref(0);
-const inputScore_3 = ref(0);
-const inputScore_4 = ref(0);
-const inputScore_5 = ref(0);
+const inputScore_1 = ref("0");
+const inputScore_2 = ref("0");
+const inputScore_3 = ref("0");
+const inputScore_4 = ref("0");
+const inputScore_5 = ref("0");
 const name = ref("");
 const remark = ref("");
 const total_score = computed(() => {
 	return (
-		(inputScore_1!.value! * score1Proportion.value) / 100 +
-		(inputScore_2!.value! * score2Proportion.value) / 100 +
-		(inputScore_3!.value! * score3Proportion.value) / 100 +
-		(inputScore_4!.value! * score4Proportion.value) / 100 +
-		(inputScore_5!.value! * score5Proportion.value) / 100
+		(+inputScore_1!.value! * score1Proportion.value) / 100 +
+		(+inputScore_2!.value! * score2Proportion.value) / 100 +
+		(+inputScore_3!.value! * score3Proportion.value) / 100 +
+		(+inputScore_4!.value! * score4Proportion.value) / 100 +
+		(+inputScore_5!.value! * score5Proportion.value) / 100
 	).toFixed(2);
 });
 const data = ref("基本資料");
@@ -283,11 +276,11 @@ const {
 	},
 	{
 		onSuccess: (data) => {
-			inputScore_1.value = data!.docs_grade_1;
-			inputScore_2.value = data!.docs_grade_2;
-			inputScore_3.value = data!.docs_grade_3;
-			inputScore_4.value = data!.docs_grade_4;
-			inputScore_5.value = data!.docs_grade_5;
+			inputScore_1.value = data!.docs_grade_1.toString();
+			inputScore_2.value = data!.docs_grade_2.toString();
+			inputScore_3.value = data!.docs_grade_3.toString();
+			inputScore_4.value = data!.docs_grade_4.toString();
+			inputScore_5.value = data!.docs_grade_5.toString();
 			accessChecked.value = data!.isImmediateEnroll;
 			accessReason.value = data!.immediate_enroll_comment;
 		},
@@ -403,29 +396,44 @@ function handleDocumentRender() {
 	maxPage.value = target_copy["pageCount"];
 }
 
-function changeInfo() {
-	PDF.value = infoPDF.value;
+function changeView(currentTab: number) {
 	Page.value = 1;
-	data.value = "基本資料";
+	switch (currentTab) {
+		case 1:
+			PDF.value = infoPDF.value;
+			data.value = "基本資料";
+			break;
+		case 2:
+			PDF.value = uploadFilePDF.value;
+			data.value = "檢附資料";
+			break;
+		case 3:
+			PDF.value = recommendLetterPDF.value;
+			data.value = "推薦信";
+			break;
+		case 4:
+			PDF.value = combinePDF.value;
+			data.value = "整合pdf";
+			break;
+		default:
+			break;
+	}
 }
-function changeRecommendLetter() {
-	PDF.value = recommendLetterPDF.value;
-	Page.value = 1;
-	data.value = "推薦信";
-}
-function changeCombine() {
-	PDF.value = combinePDF.value;
-	Page.value = 1;
-	data.value = "整合pdf";
-}
-function changeUploadFile() {
-	PDF.value = uploadFilePDF.value;
-	Page.value = 1;
-	data.value = "檢附資料";
-}
+
 function nextPage() {
 	Page.value++;
 	window.scrollTo(0, 0);
+}
+function toggleScoreField() {
+	if (showScoreField.value) {
+		showScoreField.value = false;
+		toggleScoreFieldPosition.value = "mb-5";
+		toggleScoreFieldIcon.value = "pi pi-chevron-up";
+	} else {
+		showScoreField.value = true;
+		toggleScoreFieldPosition.value = "mb-60";
+		toggleScoreFieldIcon.value = "pi pi-chevron-down";
+	}
 }
 
 const load = computed(() => {
@@ -439,9 +447,9 @@ const toast = useToast();
 function saveScore() {
 	const today = new Date();
 	if (
-		inputScore_1.value > 100 ||
-		inputScore_2.value > 100 ||
-		inputScore_3.value > 100
+		+inputScore_1.value > 100 ||
+		+inputScore_2.value > 100 ||
+		+inputScore_3.value > 100
 	) {
 		toast.add({
 			severity: "error",
@@ -451,9 +459,9 @@ function saveScore() {
 		return;
 	}
 	if (
-		inputScore_1.value < 0 ||
-		inputScore_2.value < 0 ||
-		inputScore_3.value < 0
+		+inputScore_1.value < 0 ||
+		+inputScore_2.value < 0 ||
+		+inputScore_3.value < 0
 	) {
 		toast.add({
 			severity: "error",
@@ -482,3 +490,9 @@ function saveScore() {
 	}
 }
 </script>
+
+<style lang="scss">
+.p-inputnumber {
+	width: 20% !important;
+}
+</style>

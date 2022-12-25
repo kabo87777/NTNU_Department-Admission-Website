@@ -82,18 +82,17 @@
 			</div>
 		</template>
 		<template #Footer>
-			<div flex="~" justify="center" gap="4">
+			<div flex="~" justify="center" gap="6">
 				<NButton
 					Applicant
-					class="p-2 w-32"
+					class="min-w-36 h-11"
 					icon="pi pi-pencil"
 					:loading="isProcessing"
 					@click="handleSubmit()"
 					>{{ $t("修改送出") }}</NButton
 				>
 				<NButton
-					Applicant
-					class="p-2 w-32"
+					class="min-w-36 h-11"
 					icon="pi pi-undo"
 					@click="resetPassValue()"
 					>{{ $t("重置表單") }}</NButton

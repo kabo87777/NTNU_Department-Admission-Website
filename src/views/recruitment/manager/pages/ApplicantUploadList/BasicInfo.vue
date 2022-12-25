@@ -36,8 +36,6 @@
 			<div style="color: #333333">
 				<div>{{ $t("身份") + $t(":") }}</div>
 				<div>{{ $t("國籍") + $t(":") }}</div>
-				<div>{{ $t("身份證字號") + $t(":") }}</div>
-				<div>{{ $t("居留證統一證號") + $t(":") }}</div>
 			</div>
 			<div class="font-bold ml-12px">
 				<div v-if="userInfo?.isForeigner">{{ $t("外籍人士") }}</div>
@@ -90,7 +88,7 @@
 			</div>
 		</div>
 
-		<div class="mt-24px text-24px font-bold">{{ $t("現居地址") }}</div>
+		<div class="mt-24px text-24px font-bold">{{ $t("通訊地址") }}</div>
 		<div class="admApplicantBasicInfoCard">
 			<div style="color: #333333">
 				<div>{{ $t("地址") + $t(":") }}</div>

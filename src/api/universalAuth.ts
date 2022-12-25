@@ -171,6 +171,25 @@ export async function doUniversalAuthResetPassword(
 	return response.data;
 }
 
+export async function doUniversalAuthGetUserInfo(auth: AuthStore) {
+	if (!auth.isValidCredentials) return false;
+
+	const response = await axios({
+		method: "GET",
+		url: auth.apiEndpoint + "/validate_token",
+		headers: {
+			"Content-Type": "application/json",
+			authorization: auth.credentials?.authorization,
+		},
+		data: {},
+	});
+
+	if (response.data?.status !== "success" || response.data?.error === true)
+		throw new Error("Failed to get user info");
+
+	return response.data.data;
+}
+
 export async function doAdmissionRecommenderGetRecommendLetter(
 	auth: AuthStore,
 	data: object

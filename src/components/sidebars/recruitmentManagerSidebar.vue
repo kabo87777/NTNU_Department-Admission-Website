@@ -299,7 +299,7 @@
 							{{ $t("管理端帳戶") }}
 						</div>
 						<div class="text-16px mt-4px ml-8px tracking-wider">
-							{{ $t("系辦主管") }}
+							{{ adminStore.userInfo.name }}
 						</div>
 					</div>
 				</div>
@@ -438,7 +438,7 @@
 							{{ $t("管理端帳戶") }}
 						</div>
 						<div class="text-16px mt-4px ml-8px tracking-wider">
-							{{ adminInfo.name }}
+							{{ adminStore.userInfo.name }}
 						</div>
 					</div>
 				</div>

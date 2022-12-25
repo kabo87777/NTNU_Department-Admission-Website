@@ -19,6 +19,25 @@
 			/>
 		</template>
 	</Toast>
+	<!-- Toast Message: Confirm Account Success or Failed -->
+	<Toast position="top-right" group="ConfirmSuccess">
+		<template #message="slotprop">
+			<TMessage
+				type="ConfirmSuccess"
+				:zh="slotprop.message.summary"
+				:en="slotprop.message.detail"
+			/>
+		</template>
+	</Toast>
+	<Toast position="top-right" group="ConfirmFailed">
+		<template #message="slotprop">
+			<TMessage
+				type="ConfirmFailed"
+				:zh="slotprop.message.summary"
+				:en="slotprop.message.detail"
+			/>
+		</template>
+	</Toast>
 
 	<div v-if="!isLoggedIn">
 		<!-- Background Image -->
