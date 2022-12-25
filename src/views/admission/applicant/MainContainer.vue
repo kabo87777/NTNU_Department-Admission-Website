@@ -26,13 +26,20 @@ import ScrollTop from "primevue/scrolltop";
 
 import { useQuery } from "@tanstack/vue-query";
 import { useRouter } from "vue-router";
+import { AdmissionApplicantAuthResponse } from "@/api/admission/applicant/types";
 
+import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
+import {
+	doUniversalAuthSessionValidation,
+	doUniversalAuthGetUserInfo,
+} from "@/api/universalAuth";
 import { useAdmissionApplicantAuthStore } from "@/stores/universalAuth";
-import { doUniversalAuthSessionValidation } from "@/api/universalAuth";
+import { useUserInfoStore } from "@/stores/AdmissionApplicantStore";
 
 const router = useRouter();
 
 const auth = useAdmissionApplicantAuthStore();
+const applicantStore = useUserInfoStore();
 
 useQuery(["admissionApplicantAuthorizationStatus"], async () => {
 	const status = await doUniversalAuthSessionValidation(auth);
@@ -43,6 +50,21 @@ useQuery(["admissionApplicantAuthorizationStatus"], async () => {
 });
 
 router.push({ name: "AdmissionApplicantLatestNews" });
+
+useQuery(
+	["admission", "admin", "authorization", "getUserInfo"],
+	async () => {
+		const data: AdmissionApplicantAuthResponse =
+			await doUniversalAuthGetUserInfo(auth);
+
+		return data;
+	},
+	{
+		onSuccess: (data) => {
+			applicantStore.$patch({ userInfo: data });
+		},
+	}
+);
 </script>
 
 <style scoped></style>
