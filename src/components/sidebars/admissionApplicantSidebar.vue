@@ -165,7 +165,7 @@
 					<NButton
 						Applicant
 						@click="isModalVisible = true"
-						icon="pi pi-user-edit"
+						icon="pi pi-cloud-upload"
 						class="p-2 h-11 bg-white whitespace-nowrap"
 						:class="letterSpace"
 						:disabled="!isProgramAvailable"
