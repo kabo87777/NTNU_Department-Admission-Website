@@ -4,14 +4,19 @@
 			{{ $t("評分資料列表") }}
 		</template>
 		<template #Body>
-			<div class="p-fluid" pos="sticky top-0" text="!sm" z="50">
-				<SelectButton
-					v-model="currentTab"
-					:options="tabOptions"
-					aria-labelledby="single"
-					:unselectable="false"
-				/>
-			</div>
+			<NSelect
+				Admin
+				class="sticky top-0 h-12 z-50"
+				:optionNum="6"
+				@currentTab="handleTab"
+			>
+				<template #Select1>{{ $t("書面審查") }}</template>
+				<template #Select2>{{ $t("口試審查") }}</template>
+				<template #Select3>{{ $t("逕取名單") }}</template>
+				<template #Select4>{{ $t("正取名單") }}</template>
+				<template #Select5>{{ $t("備取名單") }}</template>
+				<template #Select6>{{ $t("報表列印") }}</template>
+			</NSelect>
 			<div v-if="currentTab === translation.phase1">
 				<DataTable
 					:value="applicantDocsGradeList.data.value"
@@ -707,6 +712,7 @@
 import "@/styles/customize.css";
 import "primeicons/primeicons.css";
 import SelectButton from "primevue/selectbutton";
+import NSelect from "@/components/SelectButton.vue";
 import DataTable from "primevue/datatable";
 import Layout from "@/components/Layout.vue";
 import Column from "primevue/column";
@@ -853,14 +859,28 @@ const translation = {
 const docsReviewerScore = ref<AdmissionAdminReviewerGradeResponse[]>();
 const oralReviewerScore = ref<AdmissionAdminReviewerGradeResponse[]>();
 const currentTab = ref(translation.phase1);
-const tabOptions = ref([
-	translation.phase1,
-	translation.phase2,
-	translation.iEnrollList,
-	translation.admissionList,
-	translation.reserveList,
-	translation.printReport,
-]);
+const handleTab = (selectTab: number) => {
+	switch (selectTab) {
+		case 1:
+			currentTab.value = translation.phase1;
+			return;
+		case 2:
+			currentTab.value = translation.phase2;
+			return;
+		case 3:
+			currentTab.value = translation.iEnrollList;
+			return;
+		case 4:
+			currentTab.value = translation.admissionList;
+			return;
+		case 5:
+			currentTab.value = translation.reserveList;
+			return;
+		case 6:
+			currentTab.value = translation.printReport;
+			return;
+	}
+};
 const dialogCurrentTab = ref(translation.phase1);
 const dialogCurrentTab2 = ref(translation.phase2);
 const dialogTabOptions = ref([translation.phase1, translation.phase2]);

@@ -66,6 +66,18 @@
 		>
 			<slot name="Select5" />
 		</NButton>
+		<NButton
+			v-if="props.optionNum >= 6"
+			:Admin="isAdmin"
+			:Applicant="isApplicant"
+			:Reviewer="isReviewer"
+			:isSelected="choseOption === 6"
+			@click="pickOption(6)"
+			white
+			class="w-full h-full"
+		>
+			<slot name="Select6" />
+		</NButton>
 	</div>
 </template>
 
