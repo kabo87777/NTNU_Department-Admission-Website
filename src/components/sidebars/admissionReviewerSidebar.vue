@@ -197,6 +197,8 @@ const selectedProgram = ref<AdmissionReviewerProgramListResponse>();
 const now = dayjs();
 const start = ref();
 const end = ref();
+const isDocsAvailable = ref(false);
+const isOralAvailable = ref(false);
 const route = useRoute();
 const gateway = computed(() => route.name);
 
@@ -204,24 +206,6 @@ const letterSpace = computed(() => {
 	if (locale.value == "zh") return "tracking-[.125em]";
 	if (locale.value == "en") return "tracking-tighter";
 	else return "";
-});
-
-const isDocsAvailable = computed(() => {
-	if (!selectedProgram.value) return false;
-
-	const startTime = dayjs(selectedProgram!.value!.review_start_date);
-	const endTime = dayjs(selectedProgram!.value!.oral_start_date);
-
-	return now.isAfter(startTime) && now.isBefore(endTime);
-});
-
-const isOralAvailable = computed(() => {
-	if (!selectedProgram.value) return false;
-
-	const startTime = dayjs(selectedProgram!.value!.oral_start_date);
-	const endTime = dayjs(selectedProgram!.value!.review_end_date);
-
-	return now.isAfter(startTime) && now.isBefore(endTime);
 });
 
 watchEffect(() => {
@@ -239,11 +223,11 @@ watch(selectedProgram, (selection) => {
 	start.value = dayjs(selectedProgram!.value!.review_start_date);
 	end.value = dayjs(selectedProgram!.value!.oral_start_date);
 
-	// if (now.isAfter(start.value) && now.isBefore(end.value)) {
-	// 	isDocsAvailable.value = true;
-	// } else {
-	// 	isDocsAvailable.value = false;
-	// }
+	if (now.isAfter(start.value) && now.isBefore(end.value)) {
+		isDocsAvailable.value = true;
+	} else {
+		isDocsAvailable.value = false;
+	}
 	console.log("Docs is availible: " + isDocsAvailable.value);
 	console.log("Time is:" + start.value + "~" + end.value);
 	console.log("Now is:" + now);
@@ -252,11 +236,11 @@ watch(selectedProgram, (selection) => {
 	start.value = dayjs(selectedProgram!.value!.oral_start_date);
 	end.value = dayjs(selectedProgram!.value!.review_end_date);
 
-	// if (now.isAfter(start.value) && now.isBefore(end.value)) {
-	// 	isOralAvailable.value = true;
-	// } else {
-	// 	isOralAvailable.value = false;
-	// }
+	if (now.isAfter(start.value) && now.isBefore(end.value)) {
+		isOralAvailable.value = true;
+	} else {
+		isOralAvailable.value = false;
+	}
 	console.log("Oral is availible: " + isOralAvailable.value);
 	console.log("Time is:" + start.value + "~" + end.value);
 	console.log("Now is:" + now);
