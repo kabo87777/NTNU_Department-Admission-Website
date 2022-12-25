@@ -1,8 +1,6 @@
 <template>
 	<Layout Admin>
-		<template #Header>
-			{{ $t("管理審查者") }}
-		</template>
+		<template #Header>{{ $t("管理審查者") }}</template>
 		<!-- <Button @click="getRelatedPrograms">Button</Button> -->
 		<template #Body>
 			<DataTable :value="tableData" :loading="getLoadingStatus">
@@ -36,229 +34,209 @@
 				<Column>
 					<template #header>{{ $t("動作") }}</template>
 					<template #body="slotProp">
-						<div class="flex gap-x-1">
-							<Button
-								icon="pi pi-pencil"
-								class="p-button-outlined p-button-success"
-							/>
-
+						<div class="flex gap-4">
+							<NButton Admin icon="pi pi-pencil" class="p-2" />
 							<!-- Disable user button -->
-							<Button
-								v-if="toRaw(slotProp.data).isDisabled === false"
+							<NButton
+								Danger
 								icon="pi pi-ban"
 								class="p-button-outlined p-button-warning"
 								@click="confirmDisableReviewer(slotProp.data)"
 								v-tooltip="$t('停用帳號')"
+								v-if="toRaw(slotProp.data).isDisabled === false"
 							/>
-
 							<!-- Activate user button -->
-							<Button
-								v-else
+							<NButton
+								Success
 								icon="pi pi-chevron-circle-up"
 								class="p-button-outlined"
 								@click="confirmActivateReviewer(slotProp.data)"
 								v-tooltip="$t('啟用帳號')"
+								v-else
 							/>
 						</div>
 					</template>
 				</Column>
 			</DataTable>
-
-			<!-- Modal for editting reviewer profile -->
-			<Dialog
-				v-model:visible="modalVisible"
-				:modal="true"
-				:draggable="false"
-			>
-				<template #header>
-					<h3 class="font-extrabold text-lg">
-						{{ $t("編輯審查者帳號") }}
-					</h3>
-				</template>
-				<template #default>
-					<div class="w-xl">
-						<div class="grid grid-cols-2">
-							<div class="col-start-1">
-								<h3 font="font-black">
-									{{ $t("審查者帳號") }}
-								</h3>
-								<h4 class="">{{ modalData.id }}</h4>
-							</div>
-
-							<div class="col-start-2 font-black">
-								<label class="block">{{ $t("姓名") }}</label>
-								<InputText
-									type="text"
-									class=""
-									v-model="modalData.name"
-								>
-								</InputText>
-							</div>
-						</div>
-						<div>
-							<label for="" class="block font-black">{{
-								$t("電子信箱")
-							}}</label>
-							<InputText
-								type="email"
-								class="w-full"
-								v-model="modalData.email"
-							></InputText>
-						</div>
-
-						<div class="mt-5">
-							<h3 class="font-black">{{ $t("管理身份組") }}</h3>
-							<Divider class="!mt-0"></Divider>
-							<div
-								class="inline-flex items-center"
-								v-for="role in modalData.roles"
-								:key="role.id"
-							>
-								<Checkbox
-									:binary="true"
-									:value="true"
-								></Checkbox>
-								<span class="mx-1">{{ role.name }}</span>
-							</div>
-						</div>
-					</div>
-				</template>
-				<template #footer>
-					<div class="flex justify-center">
-						<div class="space-x-2">
-							<Button
-								icon="pi pi-check"
-								:label="$t('儲存')"
-								class="p-button-outlined p-button-success"
-							></Button>
-							<Button
-								icon="pi pi-times"
-								:label="$t('取消')"
-								class="p-button-outlined p-button-danger"
-								@click="modalVisible = false"
-							></Button>
-						</div>
-					</div>
-				</template>
-			</Dialog>
-
-			<!-- Modal for adding reviewer -->
-			<Dialog
-				:modal="true"
-				v-model:visible="addReviewerModal.visible"
-				:draggable="false"
-			>
-				<template #header>
-					<h3 class="font-black text-lg">
-						{{ $t("建立審查者帳號") }}
-					</h3>
-				</template>
-
-				<template #default>
-					<div class="w-lg grid gap-y-2">
-						<div>
-							<h3 font="font-black">{{ $t("審查者帳號") }}</h3>
-							<InputText
-								type="text"
-								class="w-full"
-								v-model:model-value="
-									addReviewerModal.data.username
-								"
-							/>
-						</div>
-
-						<div class="font-black">
-							<label class="block">{{ $t("姓名") }}</label>
-							<InputText
-								type="text"
-								class="w-full"
-								v-model:model-value="addReviewerModal.data.name"
-							/>
-						</div>
-						<div>
-							<label for="" class="block font-black">{{
-								$t("電子信箱")
-							}}</label>
-							<InputText
-								type="email"
-								:class="`w-full ${addReviewerModal.getInputEmailClass()}`"
-								v-model:model-value="
-									addReviewerModal.data.email
-								"
-							/>
-							<small
-								v-if="addReviewerModal.invalidEmailFlag()"
-								class="p-error"
-								>{{ $t("無效的電子信箱") }}</small
-							>
-						</div>
-
-						<div>
-							<label for="" class="block font-black">
-								{{ $t("密碼") }}
-							</label>
-							<Password
-								class="w-full"
-								input-class="w-full"
-								:feedback="false"
-								:toggle-mask="true"
-								v-model:model-value="
-									addReviewerModal.data.password
-								"
-							/>
-						</div>
-					</div>
-				</template>
-
-				<template #footer>
-					<div class="flex justify-center">
-						<div class="space-x-2">
-							<Button
-								icon="pi pi-check"
-								:disabled="!addReviewerModal.allowSave"
-								:label="$t('送出')"
-								class="p-button-outlined p-button-success"
-								@click="addReviewerModal.submit"
-							></Button>
-							<Button
-								icon="pi pi-times"
-								:label="$t('取消')"
-								class="p-button-outlined p-button-danger"
-								@click="addReviewerModal.visible = false"
-							></Button>
-						</div>
-					</div>
-				</template>
-			</Dialog>
-
-			<ConfirmDialog :draggable="false" />
 		</template>
 		<template #Footer>
 			<div flex="~" justify="center" gap="4">
-				<NButton Admin class="p-2 w-32" @click="addReviewerModal.open">
+				<NButton
+					Admin
+					class="h-11 min-w-36"
+					icon="pi pi-user-plus"
+					@click="addReviewerModal.open"
+				>
 					{{ $t("建立帳號") }}
 				</NButton>
 			</div>
 		</template>
 	</Layout>
+
+	<!-- Modal for editting reviewer profile -->
+	<Dialog v-model:visible="modalVisible" :modal="true" :draggable="false">
+		<template #header>
+			<h3 class="font-extrabold text-lg">
+				{{ $t("編輯審查者帳號") }}
+			</h3>
+		</template>
+		<template #default>
+			<div class="w-xl">
+				<div class="grid grid-cols-2">
+					<div class="col-start-1">
+						<h3 font="font-black">
+							{{ $t("審查者帳號") }}
+						</h3>
+						<h4 class="">{{ modalData.id }}</h4>
+					</div>
+
+					<div class="col-start-2 font-black">
+						<label class="block">{{ $t("姓名") }}</label>
+						<InputText
+							type="text"
+							class=""
+							v-model="modalData.name"
+						>
+						</InputText>
+					</div>
+				</div>
+				<div>
+					<label for="" class="block font-black">{{
+						$t("電子信箱")
+					}}</label>
+					<InputText
+						type="email"
+						class="w-full"
+						v-model="modalData.email"
+					></InputText>
+				</div>
+
+				<div class="mt-5">
+					<h3 class="font-black">{{ $t("管理身份組") }}</h3>
+					<Divider class="!mt-0"></Divider>
+					<div
+						class="inline-flex items-center"
+						v-for="role in modalData.roles"
+						:key="role.id"
+					>
+						<Checkbox :binary="true" :value="true"></Checkbox>
+						<span class="mx-1">{{ role.name }}</span>
+					</div>
+				</div>
+			</div>
+		</template>
+		<template #footer>
+			<div class="flex justify-center">
+				<div class="space-x-2">
+					<Button
+						icon="pi pi-check"
+						:label="$t('儲存')"
+						class="p-button-outlined p-button-success"
+					></Button>
+					<Button
+						icon="pi pi-times"
+						:label="$t('取消')"
+						class="p-button-outlined p-button-danger"
+						@click="modalVisible = false"
+					></Button>
+				</div>
+			</div>
+		</template>
+	</Dialog>
+	<!-- Modal for adding reviewer -->
+	<Dialog
+		:modal="true"
+		v-model:visible="addReviewerModal.visible"
+		:draggable="false"
+		:closable="false"
+		class="min-w-120"
+	>
+		<template #header>
+			<div text="title 2xl">{{ $t("建立審查者帳號") }}</div>
+		</template>
+		<template #default>
+			<div flex="~ col gap-6">
+				<!-- Account -->
+				<div flex="~ col gap-1">
+					<div text="body">{{ $t("審查者帳號") }}</div>
+					<InputText
+						type="text"
+						class="w-full"
+						v-model:model-value="addReviewerModal.data.username"
+					/>
+				</div>
+				<!-- Name -->
+				<div flex="~ col gap-1">
+					<div text="body">{{ $t("姓名") }}</div>
+					<InputText
+						type="text"
+						class="w-full"
+						v-model:model-value="addReviewerModal.data.name"
+					/>
+				</div>
+				<!-- Email -->
+				<div flex="~ col gap-1">
+					<div text="body">{{ $t("電子信箱") }}</div>
+					<InputText
+						type="email"
+						:class="`w-full ${addReviewerModal.getInputEmailClass()}`"
+						v-model:model-value="addReviewerModal.data.email"
+					/>
+					<div
+						v-if="addReviewerModal.invalidEmailFlag()"
+						text="sm danger"
+					>
+						{{ $t("無效的電子信箱") }}
+					</div>
+				</div>
+				<!-- Password -->
+				<div flex="~ col gap-1">
+					<div text="body">{{ $t("密碼") }}</div>
+					<Password
+						class="w-full"
+						input-class="w-full"
+						:feedback="false"
+						:toggle-mask="true"
+						v-model:model-value="addReviewerModal.data.password"
+					/>
+				</div>
+			</div>
+		</template>
+		<template #footer>
+			<div flex="~ gap-6" justify="center">
+				<NButton
+					Admin
+					icon="pi pi-check"
+					:disabled="!addReviewerModal.allowSave"
+					class="h-11 min-w-36"
+					@click="addReviewerModal.submit"
+					>{{ $t("送出") }}</NButton
+				>
+				<NButton
+					icon="pi pi-times"
+					class="h-11 min-w-36"
+					@click="addReviewerModal.visible = false"
+					>{{ $t("取消") }}</NButton
+				>
+			</div>
+		</template>
+	</Dialog>
+	<ConfirmDialog :draggable="false" />
 </template>
 
 <script setup lang="ts">
 import NButton from "@/styles/CustomButton.vue";
 import DataTable from "primevue/datatable";
-import Row from "primevue/row";
 import Column from "primevue/column";
-import { computed, ref, toRaw, watch, watchEffect } from "vue";
+import { computed, ref, toRaw } from "vue";
 import type { Ref } from "vue";
 import { useI18n } from "vue-i18n";
 import Divider from "primevue/divider";
-import Tag from "primevue/tag";
 import Button from "primevue/button";
 import Dialog from "primevue/dialog";
 import InputText from "primevue/inputtext";
 import Checkbox from "primevue/checkbox";
 import { useMutation, useQuery } from "@tanstack/vue-query";
-import { InvalidSessionError } from "@/api/error";
 import { useRouter } from "vue-router";
 import { useRecruitmentAdminAuthStore } from "@/stores/universalAuth";
 import { RecruitmentAdminAPI } from "@/api/recruitment/admin/api";
