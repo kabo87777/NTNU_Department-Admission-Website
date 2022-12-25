@@ -1,14 +1,15 @@
 <template>
-	<div class="relative" style="height: 100%">
-		<div class="flex">
-			<div class="sidebarVerticalBigBlueDivider mt-32px"></div>
-			<div class="sidebarVerticalSmallBlueDivider mt-32px"></div>
-			<div class="mt-32px ml-12px w-[100%]">
+	<div p="t-8" w="full" h="full" pos="relative">
+		<!-- 專案選單 -->
+		<div flex="~">
+			<div w="2" h="15" mr="1" bg="nBlue-500" />
+			<div w="1" h="15" bg="nBlue-500" />
+			<div flex="grow" mx="4">
 				<Dropdown
 					v-model="selectedProgram"
 					:options="programs"
 					:optionLabel="generateOptions"
-					class="h-60px w-[93%]"
+					class="h-15 w-full"
 					style="border-radius: 8px; border: 1px solid black"
 				>
 					<template #value="slotProps">
@@ -24,101 +25,110 @@
 				</Dropdown>
 			</div>
 		</div>
-
-		<router-link
-			to="/recruitment/reviewer/requiredDataReview"
-			custom
-			v-slot="{ navigate }"
-		>
-			<Button
-				class="p-button-secondary p-button-text !ml-24px !mt-32px !w-[85%] !h-48px"
-				@click="navigate"
-				role="link"
-			>
-				<img
-					alt="logo"
-					src="/assets/reviewer-page/Arhive.png"
-					style="width: 18px"
-				/>
-				<span
-					class="text-left tracking-3px ml-3 font-bold text-[18px] text-[#2D2926]"
-				>
-					{{ $t("必看資料評閱") }}
-				</span>
-			</Button>
-		</router-link>
-
-		<router-link
-			to="/recruitment/reviewer/optionalDataReview"
-			custom
-			v-slot="{ navigate }"
-		>
-			<Button
-				class="p-button-secondary p-button-text !ml-24px !mt-32px !w-[85%] !h-48px"
-				@click="navigate"
-				role="link"
-			>
-				<img
-					alt="logo"
-					src="/assets/reviewer-page/Arhive-1.png"
-					style="width: 18px"
-				/>
-				<span
-					class="text-left tracking-3px ml-3 font-bold text-[18px] text-[#2D2926]"
-				>
-					{{ $t("選看資料評閱") }}
-				</span>
-			</Button>
-		</router-link>
-
+		<!-- 頁面按鈕 -->
 		<div
-			class="absolute bg-gray-200 bg-opacity-50 h-140px w-[100%]"
-			style="bottom: 0px"
+			h="[calc(100%-14rem)]"
+			overflow="y-auto"
+			scrollbar="thin thumb-nBlue-100 thumb-rounded-full"
 		>
-			<div class="flex relative">
-				<div class="flex mt-24px">
-					<img
-						alt="logo"
-						src="/assets/sidebar/User_circle.png"
-						class="h-40px w-40px ml-20px mt-[-3px]"
-					/>
-					<div class="ml-12px">
-						<div class="text-14px">
-							{{ $t("審查端帳戶") }}
+			<div flex="~ col gap-6" mt="6">
+				<!-- 1.必看資料評閱 -->
+				<router-link
+					:to="{ name: 'RecruitmentReviewerRequiredDataReview' }"
+					custom
+					v-slot="{ navigate }"
+				>
+					<NButton
+						Reviewer
+						white
+						icon="pi pi-exclamation-circle"
+						size="lg"
+						class="py-3 px-6 mx-6 gap-4 !justify-start"
+						:class="letterSpace"
+						@click="navigate"
+						:isSelected="
+							gateway === 'RecruitmentReviewerRequiredDataReview'
+						"
+						:disabled="!isReviewAvailable"
+						>{{ $t("必看資料評閱") }}
+						<div v-if="!isReviewAvailable" text="sm">
+							{{ $t("(未開放)") }}
 						</div>
-						<div class="mt-4px ml-[-2px] text-16px">
-							{{ reviewerStore.userInfo.name }}
+					</NButton>
+				</router-link>
+				<!-- 2.選看資料評閱 -->
+				<router-link
+					:to="{ name: 'RecruitmentReviewerOptionalDataReview' }"
+					custom
+					v-slot="{ navigate }"
+				>
+					<NButton
+						Reviewer
+						white
+						icon="pi pi-minus-circle"
+						size="lg"
+						class="py-3 px-6 mx-6 gap-4 !justify-start"
+						:class="letterSpace"
+						@click="navigate"
+						:isSelected="
+							gateway === 'RecruitmentReviewerOptionalDataReview'
+						"
+						:disabled="!isReviewAvailable"
+						>{{ $t("選看資料評閱") }}
+						<div v-if="!isReviewAvailable" text="sm">
+							{{ $t("(未開放)") }}
 						</div>
+					</NButton>
+				</router-link>
+			</div>
+		</div>
+		<!-- 頁面底部操作項目 -->
+		<div pos="absolute bottom-0" bg="nGrey-50" w="full">
+			<!-- 使用者操作 -->
+			<div flex="~ gap-4" m="x-6 t-6 b-6" class="items-center">
+				<!-- Icon -->
+				<div w="10" h="10" bg="nBlue-600" border="rounded-full">
+					<i class="pi pi-user" text="!2xl white" mx="2" my="1" />
+				</div>
+				<!-- Heading -->
+				<div>
+					<div text="sm pReviewer">{{ $t("審查端帳戶") }}</div>
+					<div
+						text="title"
+						class="whitespace-nowrap"
+						:class="letterSpace"
+					>
+						{{ reviewerStore.userInfo.name }}
 					</div>
 				</div>
-				<div class="flex absolute mt-18px mr-4px" style="right: 0px">
+				<!-- Button -->
+				<div flex="~ gap-1" ml="auto">
 					<router-link
-						to="/recruitment/reviewer/userSetting"
+						:to="{ name: 'RecruitmentReviewerUserSetting' }"
 						custom
 						v-slot="{ navigate }"
 					>
-						<Button
-							class="p-button-text p-button-secondary p-button-sm"
+						<NButton
+							Reviewer
+							white
+							icon="pi pi-cog"
 							@click="navigate"
-							role="link"
-						>
-							<img
-								alt="logo"
-								src="/assets/sidebar/Setting_alt_line.png"
-								class="w-18px h-18px"
-							/>
-						</Button>
-					</router-link>
-					<Button
-						class="p-button-text p-button-secondary p-button-sm"
-						@click="signOut"
-					>
-						<img
-							alt="logo"
-							src="/assets/sidebar/Sign_out_circle.png"
-							class="w-18px h-18px"
+							size="lg"
+							class="w-12 h-12 m-auto"
+							:isSelected="
+								gateway === 'RecruitmentReviewerUserSetting'
+							"
 						/>
-					</Button>
+					</router-link>
+					<!-- 登出 -->
+					<NButton
+						Reviewer
+						white
+						icon="pi pi-sign-out"
+						size="lg"
+						class="w-12 h-12 m-auto"
+						@click="signOut"
+					/>
 				</div>
 			</div>
 		</div>
@@ -130,49 +140,73 @@ import "primevue/resources/primevue.min.css";
 import { ref, watch, watchEffect, toRaw, computed } from "vue";
 import Dropdown from "primevue/dropdown";
 import Button from "primevue/button";
-import { useRouter } from "vue-router";
+import NButton from "@/styles/CustomButton.vue";
+import { useRoute, useRouter } from "vue-router";
 import { useRecruitmentReviewerAuthStore } from "@/stores/universalAuth";
 import { RecruitmentReviewerAPI } from "@/api/recruitment/reviewer/api";
 import { useQuery } from "@tanstack/vue-query";
-import { InvalidSessionError } from "@/api/error";
 import { useGlobalStore } from "@/stores/RecruitmentReviewerStore";
 import { RecruitmentReviewerProgramListResponse } from "@/api/recruitment/reviewer/types";
 import { RecruitmentManagerAuthResponse } from "@/api/recruitment/reviewer/types";
 import { useUserInfoStore } from "@/stores/RecruitmentReviewerStore";
+import { useI18n } from "vue-i18n";
+import dayjs from "dayjs";
 
+const { locale } = useI18n();
 const reviewerAuth = useRecruitmentReviewerAuthStore();
 const store = useGlobalStore();
 const reviewerStore = useUserInfoStore();
 const api = new RecruitmentReviewerAPI(reviewerAuth);
+const route = useRoute();
+const gateway = computed(() => route.name);
+const now = dayjs();
+const start = ref();
+const end = ref();
 
-const {
-	isLoading,
-	isError,
-	data: programs,
-	error,
-} = useQuery(["programList"], async () => {
-	return await api.getProgramList();
+const reviewerInfo: RecruitmentManagerAuthResponse = toRaw(
+	reviewerStore.userInfo
+);
+
+const letterSpace = computed(() => {
+	if (locale.value == "zh") return "tracking-[.125em]";
+	if (locale.value == "en") return "tracking-tighter";
+	else return "";
 });
+
+const { data: programs } = useQuery(
+	["recruitmentReviewerprogramList"],
+	async () => {
+		return await api.getProgramList();
+	}
+);
 
 const router = useRouter();
 
 // FIXME: this should NOT be hardcoded.
 const selectedProgram = ref<RecruitmentReviewerProgramListResponse>();
 
+const isReviewAvailable = computed(() => {
+	if (!selectedProgram.value) return false;
+
+	const startTime = dayjs(selectedProgram!.value!.review_start_date);
+	const endTime = dayjs(selectedProgram!.value!.review_end_date);
+
+	return now.isAfter(startTime) && now.isBefore(endTime);
+});
+
 watchEffect(() => {
-	if (programs.value && programs.value.length > 1) {
-		const temp = programs.value[0];
-		store.$patch((state) => {
-			// state.program = temp;
-		});
-		store.updaterecruitmentReviewerProgramData(programs.value[0]);
-		selectedProgram.value = programs.value[0];
-	}
+	if (!programs.value) return;
+	store.updaterecruitmentReviewerProgramData(programs.value[0]);
+	selectedProgram.value = programs.value[0];
 });
 
 watch(selectedProgram, (selection) => {
-	store.$patch({ recruitmentReviewerProgram: selectedProgram.value });
-
+	store.updaterecruitmentReviewerProgramData(selectedProgram!.value!);
+	start.value = dayjs(selectedProgram!.value!.review_start_date);
+	end.value = dayjs(selectedProgram!.value!.review_end_date);
+	console.log("Review is availible: " + isReviewAvailable.value);
+	console.log("Time is:" + start.value + "~" + end.value);
+	console.log("Now is:" + now);
 	console.debug("Selected program:\n" + JSON.stringify(selection, null, 2));
 });
 

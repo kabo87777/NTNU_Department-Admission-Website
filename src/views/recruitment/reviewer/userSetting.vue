@@ -13,7 +13,7 @@
 			<div flex="~ col gap-1" text="body">
 				<div>{{ $t("舊密碼") }}</div>
 				<Password
-					class="!w-100"
+					class="!w-full !max-w-100 !h-12"
 					:input-class="invalidClass('old')"
 					v-model="password.old"
 					:toggle-mask="true"
@@ -23,11 +23,11 @@
 					{{ $t("請輸入舊密碼") }}
 				</div>
 			</div>
-			<div flex="~ gap-8">
-				<div flex="~ col gap-1" text="body">
+			<div flex="~ gap-6">
+				<div flex="~ col grow gap-1" text="body">
 					<div>{{ $t("設定新密碼") }}</div>
 					<Password
-						class="!w-100"
+						class="!w-full !max-w-100 !h-12"
 						:input-class="invalidClass('new')"
 						v-model="password.new"
 						:toggle-mask="true"
@@ -62,10 +62,10 @@
 						{{ $t("格式不符合要求") }}
 					</div>
 				</div>
-				<div flex="~ col gap-1" text="body">
+				<div flex="~ col grow gap-1" text="body">
 					<div>{{ $t("驗證新密碼") }}</div>
 					<Password
-						class="!w-100"
+						class="!w-full !max-w-100 !h-12"
 						:input-class="invalidClass('confirm')"
 						v-model="password.confirm"
 						:toggle-mask="true"
@@ -85,15 +85,14 @@
 			<div flex="~" justify="center" gap="4">
 				<NButton
 					Reviewer
-					class="p-2 w-32"
+					class="h-11 min-w-36"
 					icon="pi pi-pencil"
 					:loading="isProcessing"
 					@click="handleSubmit()"
 					>{{ $t("修改送出") }}</NButton
 				>
 				<NButton
-					Reviewer
-					class="p-2 w-32"
+					class="h-11 min-w-36"
 					icon="pi pi-undo"
 					@click="resetPassValue()"
 					>{{ $t("重置表單") }}</NButton
