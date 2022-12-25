@@ -1,42 +1,44 @@
 <template>
-	<div>
-		<div class="font-[500] text-[32px] font-bold">
-			{{ $t("最新資訊") }}
-		</div>
-		<div class="bigYellowDivider"></div>
-		<!-- 畫面顯示(有資料時) -->
-		<div v-if="hasNews">
-			<div class="newsCard">
-				<div>
-					{{
-						$t("申請時間") +
-						$t(":") +
-						program.start_date +
-						" " +
-						"~" +
-						" " +
-						program.end_date
-					}}
+	<Layout Applicant>
+		<template #Header> {{ $t("最新資訊") }} </template>
+		<template #Body>
+			<!-- 畫面顯示(有資料時) -->
+			<div v-if="hasNews">
+				<div class="newsCard">
+					<div>
+						{{
+							$t("申請時間") +
+							$t(":") +
+							program.start_date +
+							" " +
+							"~" +
+							" " +
+							program.end_date
+						}}
+					</div>
 				</div>
 			</div>
-		</div>
-		<!-- 畫面顯示(無資料時) -->
-		<div v-else class="relative h-150">
-			<div class="newsNoData">
-				<img
-					src="/assets/admissionApplicant/Newsletter.png"
-					alt="NO DATA"
-					style="border-radius: 50%"
-				/>
-				<div class="text-center font-bold text-[24px] text-[#736028]">
-					{{ $t("暫無資訊") }}
+			<!-- 畫面顯示(無資料時) -->
+			<div v-else class="relative h-150">
+				<div class="newsNoData">
+					<img
+						src="/assets/admissionApplicant/Newsletter.png"
+						alt="NO DATA"
+						style="border-radius: 50%"
+					/>
+					<div
+						class="text-center font-bold text-[24px] text-[#736028]"
+					>
+						{{ $t("暫無資訊") }}
+					</div>
 				</div>
 			</div>
-		</div>
-	</div>
+		</template>
+	</Layout>
 </template>
 
 <script setup lang="ts">
+import Layout from "@/components/Layout.vue";
 import { ref, reactive } from "vue";
 
 import { useQuery } from "@tanstack/vue-query";
@@ -112,7 +114,7 @@ useQuery(
 .newsNoData {
 	position: absolute;
 	left: 50%;
-	top: 63%;
+	top: 60%;
 	transform: translate(-50%, -50%);
 	height: 400px;
 	width: 500px;
@@ -123,7 +125,6 @@ useQuery(
 	border: 2px solid #d4b862;
 	padding: 24px;
 	background-color: #fcefcb;
-	margin-top: 24px;
 	font-weight: bold;
 	font-size: 18px;
 }

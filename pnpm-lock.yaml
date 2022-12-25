@@ -25,7 +25,7 @@ specifiers:
   minimatch: ^5.1.2
   pinia: ^2.0.28
   prettier: ^2.8.1
-  primeicons: ^5.0.0
+  primeicons: ^6.0.0
   primevue: ^3.21.0
   sass: ^1.56.2
   typescript: ^4.9.4
@@ -57,8 +57,8 @@ dependencies:
   eslint-plugin-prettier: 4.2.1_5dgjrgoi64tgrv3zzn3walur3u
   pinia: 2.0.28_prq2uz4lho2pwp6irk4cfkrxwu
   prettier: 2.8.1
-  primeicons: 5.0.0
-  primevue: 3.21.0_l6zcujbf7e6ml3ouhwgkvebppy
+  primeicons: 6.0.1
+  primevue: 3.21.0_5f3kdig7wnjzidee4jtphf73cq
   sass: 1.56.2
   unplugin-icons: 0.14.14
   unplugin-vue-components: 0.22.11_vue@3.2.45
@@ -2462,17 +2462,17 @@ packages:
     hasBin: true
     dev: false
 
-  /primeicons/5.0.0:
-    resolution: {integrity: sha512-heygWF0X5HFI1otlZE62pp6ye7sZ8om78J9au2BRkg8O7Y8AHTZ9qKMRzchZUHLe8zUAvdi6hZzzm9XxgwIExw==}
+  /primeicons/6.0.1:
+    resolution: {integrity: sha512-KDeO94CbWI4pKsPnYpA1FPjo79EsY9I+M8ywoPBSf9XMXoe/0crjbUK7jcQEDHuc0ZMRIZsxH3TYLv4TUtHmAA==}
     dev: false
 
-  /primevue/3.21.0_l6zcujbf7e6ml3ouhwgkvebppy:
+  /primevue/3.21.0_5f3kdig7wnjzidee4jtphf73cq:
     resolution: {integrity: sha512-VqXMvigzz24JRPgG+i20Vj1AMS0AKiNdT9iFkmcWnO4EilntLS2I1yR2OE1hd9bMFV97ePsdaScIygW+bedN2g==}
     peerDependencies:
       primeicons: ^5.0.0 || ^6.0.0
       vue: ^3.0.0
     dependencies:
-      primeicons: 5.0.0
+      primeicons: 6.0.1
       vue: 3.2.45
     dev: false
 
