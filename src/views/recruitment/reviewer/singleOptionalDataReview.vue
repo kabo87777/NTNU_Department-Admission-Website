@@ -1,66 +1,44 @@
 <template>
-	<div>
-		<div class="flex">
-			<router-link
-				to="/recruitment/reviewer/optionalDataReview"
-				custom
-				v-slot="{ navigate }"
-			>
-				<NButton
-					type="Reviewer"
-					class="p-button-secondary p-button-text !w-164px !h-29px"
-					@click="navigate"
-					role="link"
-					icon="pi pi-angle-left"
+	<Layout Reviewer noMargin>
+		<template #Header>
+			<div flex="~ gap-6">
+				<router-link
+					to="/recruitment/reviewer/optionalDataReview"
+					custom
+					v-slot="{ navigate }"
 				>
-					<span class="text-base">
-						{{ $t("選看資料評閱") }}
-					</span>
-				</NButton>
-			</router-link>
-			<div class="text-[32px] ml-24px">
-				{{ ID }}
+					<NButton
+						type="Reviewer"
+						class="p-button-secondary p-button-text !w-164px !h-29px"
+						@click="navigate"
+						role="link"
+						icon="pi pi-angle-left"
+					>
+						<span class="text-base">
+							{{ $t("選看資料評閱") }}
+						</span>
+					</NButton>
+				</router-link>
+				<div>{{ ID }}</div>
+				<div>{{ name }}</div>
 			</div>
-			<div class="text-[32px] ml-20px">
-				{{ name }}
-			</div>
-		</div>
-		<div class="bigBlueDivider"></div>
-		<div class="flex !mt-5px justify-around">
-			<NButton
-				type="Reviewer"
-				@click="changeInfo"
-				class="!w-200px !h-40px"
+		</template>
+		<template #Body>
+			<NSelect
+				Reviewer
+				:optionNum="3"
+				class="h-12 mt-1 sticky top-0"
+				@currentTab="changeView"
 			>
-				<span class="text-base">
-					{{ $t("基本資料") }}
-				</span>
-			</NButton>
-			<NButton
-				type="Reviewer"
-				@click="changeUploadFile"
-				class="!w-200px !h-40px"
-			>
-				<span class="text-base">
-					{{ $t("檢附資料") }}
-				</span>
-			</NButton>
-			<NButton
-				type="Reviewer"
-				@click="changeCombine"
-				class="!w-200px !h-40px"
-			>
-				<span class="text-base">
-					{{ $t("整合pdf") }}
-				</span>
-			</NButton>
-		</div>
-		<div class="mt-10px !h-1830px !ml-40px">
+				<template #Select1>{{ $t("基本資料") }}</template>
+				<template #Select2>{{ $t("檢附資料") }}</template>
+				<template #Select3>{{ $t("整合pdf") }}</template>
+			</NSelect>
 			<vue-pdf-embed
 				ref="pdfRef"
 				v-if="infoPDF !== ''"
 				:source="'data:application/pdf;base64,' + PDF"
-				class="!h-1600px"
+				class=""
 				:page="Page"
 				@rendered="handleDocumentRender"
 			/>
@@ -69,91 +47,102 @@
 				class="pi pi-spin pi-spinner"
 				style="font-size: 2rem"
 			></i>
-			<div class="flex !mt-250px justify-around">
+		</template>
+		<template #Footer>
+			<!-- Last / Next Page & Toggle Score Field Button set -->
+			<div
+				class="flex my-1 absolute inset-x-0 bottom-1"
+				:class="toggleScoreFieldPosition"
+				bg="white opacity-90"
+			>
 				<NButton
-					type="Reviewer"
 					icon="pi pi-chevron-left"
-					iconPos="left"
 					@click="Page--"
 					:disabled="Page === 1"
-					class="!w-200px !h-40px"
+					class="h-11 min-w-36 mr-auto"
 				>
 					<span class="text-base">
 						{{ $t("上一頁") }}
 					</span>
 				</NButton>
 				<NButton
-					type="Reviewer"
+					Reviewer
+					white
+					:icon="toggleScoreFieldIcon"
+					iconPos="both"
+					@click="toggleScoreField"
+					class="h-11 min-w-36"
+				>
+					<span class="text-base">
+						{{ $t("開啟/收合評分面板") }}
+					</span>
+				</NButton>
+				<NButton
 					icon="pi pi-chevron-right"
 					iconPos="right"
 					@click="nextPage"
 					:disabled="Page === maxPage"
-					class="!w-200px !h-40px"
+					class="h-11 min-w-36 ml-auto"
 				>
 					<span class="text-base">
 						{{ $t("下一頁") }}
 					</span>
 				</NButton>
 			</div>
-		</div>
-		<div class="bigBlueDivider !mt-100px"></div>
-		<div class="flex mt-32px">
-			<div class="text-xl mt-5px !tracking-widest">
-				{{ $t("評比結果") }} :
+
+			<!-- Score Fields -->
+			<div flex="~ col gap-4" v-if="showScoreField">
+				<div flex="~ none gap-6">
+					<div flex="~ col gap-1" w="1/4 min-32">
+						<div text="body">{{ $t("評比結果") }} :</div>
+						<Dropdown
+							v-model="selectedRating"
+							:options="ratings"
+							class="w-full h-12"
+						/>
+					</div>
+					<div flex="~ grow col gap-1">
+						<div text="body">{{ $t("評比理由/註記") }} :</div>
+						<InputText
+							type="text"
+							v-model="comment"
+							class="w-full h-12"
+						/>
+					</div>
+				</div>
+				<NButton
+					type="Reviewer"
+					class="mx-auto min-w-36 h-11"
+					@click="saveScore"
+					icon="pi pi-check"
+					>{{ $t("保存") }}
+				</NButton>
 			</div>
-			<Dropdown
-				v-model="selectedRating"
-				:options="ratings"
-				class="!w-160px !h-45px !ml-50px"
-			/>
-			<div class="text-xl mt-5px ml-130px !tracking-widest">
-				{{ $t("評比理由/註記") }} :
-			</div>
-			<InputText
-				type="text"
-				v-model="comment"
-				class="!w-650px !h-44px !ml-34px"
-			/>
-		</div>
-		<div class="flex mt-42px">
-			<NButton
-				type="Reviewer"
-				class="w-100px h-40px !ml-1200px p-button-success"
-				@click="saveScore"
-				icon="pi pi-check"
-			>
-				<span class="tracking-1px">{{ $t("保存") }}</span>
-			</NButton>
-		</div>
-	</div>
+		</template>
+	</Layout>
 </template>
 
 <script setup lang="ts">
-import { computed, ref, toRaw } from "vue";
-import { useRoute } from "vue-router";
-import Button from "primevue/button";
 import Dropdown from "primevue/dropdown";
-import Checkbox from "primevue/checkbox";
 import InputText from "primevue/inputtext";
+import VuePdfEmbed from "vue-pdf-embed";
+import Layout from "@/components/Layout.vue";
+import NSelect from "@/components/SelectButton.vue";
+import NButton from "@/styles/CustomButton.vue";
+import { useRoute } from "vue-router";
 import { useI18n } from "vue-i18n";
-import PDFView from "@/components/pdfPreview.vue";
-import jsPdf from "./test.pdf";
 import { useRouter } from "vue-router";
 import { useRecruitmentReviewerAuthStore } from "@/stores/universalAuth";
 import { RecruitmentReviewerAPI } from "@/api/recruitment/reviewer/api";
 import { useMutation, useQuery } from "@tanstack/vue-query";
-import { InvalidSessionError } from "@/api/error";
 import { useGlobalStore } from "@/stores/RecruitmentReviewerStore";
 import { useToast } from "primevue/usetoast";
-import SelectButton from "primevue/selectbutton";
-import VuePdfEmbed from "vue-pdf-embed";
-import NButton from "@/styles/CustomButton.vue";
+import { computed, ref, toRaw } from "vue";
 
 const reviewerAuth = useRecruitmentReviewerAuthStore();
 const api = new RecruitmentReviewerAPI(reviewerAuth);
 const store = useGlobalStore();
 
-const router = useRouter();
 const route = useRoute();
 const { t } = useI18n();
 const pdfRef = ref(null);
@@ -165,16 +154,16 @@ const ID = computed(() => route.params.id);
 const name = ref("");
 const checked = ref();
 const comment = ref("");
-const page = ref(1);
 const data = ref("基本資料");
-const datas = ref(["基本資料", "檢附資料", "整合pdf"]);
 // Fix while backend ready
 const infoPDF = ref("");
 const uploadFilePDF = ref("");
 const combinePDF = ref("");
-const infoPage = ref(1);
-const uploadPage = ref(1);
-const combinePage = ref(1);
+
+const showScoreField = ref(true);
+const toggleScoreFieldIcon = ref("pi pi-chevron-down");
+const toggleScoreFieldPosition = ref("mb-40");
+
 useQuery(
 	["infoPDF"],
 	async () => {
@@ -229,21 +218,26 @@ function handleDocumentRender() {
 	maxPage.value = target_copy["pageCount"];
 }
 
-function changeInfo() {
-	PDF.value = infoPDF.value;
+function changeView(currentTab: number) {
 	Page.value = 1;
-	data.value = "基本資料";
+	switch (currentTab) {
+		case 1:
+			PDF.value = infoPDF.value;
+			data.value = "基本資料";
+			break;
+		case 2:
+			PDF.value = uploadFilePDF.value;
+			data.value = "檢附資料";
+			break;
+		case 3:
+			PDF.value = combinePDF.value;
+			data.value = "整合pdf";
+			break;
+		default:
+			break;
+	}
 }
-function changeCombine() {
-	PDF.value = combinePDF.value;
-	Page.value = 1;
-	data.value = "整合pdf";
-}
-function changeUploadFile() {
-	PDF.value = uploadFilePDF.value;
-	Page.value = 1;
-	data.value = "檢附資料";
-}
+
 function nextPage() {
 	Page.value++;
 	window.scrollTo(0, 0);
@@ -320,6 +314,19 @@ const newApplicantComment = useMutation(async (newProgramData: any) => {
 		console.log(error);
 	}
 });
+
+function toggleScoreField() {
+	if (showScoreField.value) {
+		showScoreField.value = false;
+		toggleScoreFieldPosition.value = "mb-5";
+		toggleScoreFieldIcon.value = "pi pi-chevron-up";
+	} else {
+		showScoreField.value = true;
+		toggleScoreFieldPosition.value = "mb-40";
+		toggleScoreFieldIcon.value = "pi pi-chevron-down";
+	}
+}
+
 function saveScore() {
 	try {
 		if (selectedRating.value === translation.noRating.value) {
