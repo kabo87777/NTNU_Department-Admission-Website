@@ -24,7 +24,7 @@
     "eslint-plugin-prettier": "^4.2.1",
     "pinia": "^2.0.28",
     "prettier": "^2.8.1",
-    "primeicons": "^5.0.0",
+    "primeicons": "^6.0.0",
     "primevue": "^3.21.0",
     "sass": "^1.56.2",
     "unplugin-icons": "^0.14.14",
