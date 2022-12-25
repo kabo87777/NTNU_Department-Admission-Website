@@ -201,7 +201,7 @@
 						<NButton
 							Admin
 							@click="navigate"
-							icon="pi pi-user-edit"
+							:icon="isOverflow('pi pi-user-edit')"
 							class="p-2 w-2/5 h-11 bg-white whitespace-nowrap"
 							:class="letterSpace"
 						>
@@ -211,7 +211,7 @@
 					<NButton
 						Success
 						@click="newProject"
-						icon="pi pi-plus"
+						:icon="isOverflow('pi pi-plus')"
 						class="p-2 w-2/5 h-11 bg-white whitespace-nowrap"
 						:class="letterSpace"
 					>
@@ -373,6 +373,11 @@ const letterSpace = computed(() => {
 	if (locale.value == "en") return "tracking-tighter";
 	else return "";
 });
+
+const isOverflow = (classStyle: string) => {
+	if (locale.value == "zh") return classStyle;
+	else return "";
+};
 
 watchEffect(() => {
 	if (!programs.value) return;
