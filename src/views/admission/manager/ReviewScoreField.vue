@@ -421,26 +421,37 @@ async function saveChange() {
 	// Adjust and Check correctness of Data
 	try {
 		let docsSum = 0;
+		let isReturn = false;
 		docsScore.forEach((element) => {
 			if (element.name === null && element.weight > 0)
 				element.name =
 					trans.labelName[
 						element.index as keyof typeof trans.labelName
 					].value;
-			if (element.weight < 0 || element.weight > 100)
-				throw { object: element, message: "Invalid Weight" };
+			if (element.weight < 0 || element.weight > 100) {
+				toast.add({
+					severity: "error",
+					summary:
+						"第一階段 (書面審查) 評分項目每一項佔比範圍需在 (0~100)",
+					life: 3000,
+				});
+				isReturn = true;
+			}
 			if (element.index) docsSum += element.weight;
 		});
+		if (isReturn) {
+			return;
+		}
 		if (docsSum !== 100) {
 			toast.add({
 				severity: "error",
 				summary:
-					"第一階段 (書面審查)評分項目比例需要加總等於100 The ratio of scoring items in the first stage (Docs review) needs to add up to 100",
+					"第一階段 (書面審查) 評分項目比例需要加總等於100 The ratio of scoring items in the first stage (Docs review) needs to add up to 100",
 				life: 3000,
 			});
 			return;
 		}
-
+		isReturn = false;
 		let oralSum = 0;
 		oralScore.forEach((element) => {
 			if (element.name === null && element.weight > 0)
@@ -448,10 +459,20 @@ async function saveChange() {
 					trans.labelName[
 						element.index as keyof typeof trans.labelName
 					].value;
-			if (element.weight < 0 || element.weight > 100)
-				throw { object: element, message: "Invalid Weight" };
+			if (element.weight < 0 || element.weight > 100) {
+				toast.add({
+					severity: "error",
+					summary:
+						"第二階段 (口試審查) 評分項目每一項佔比範圍需在 (0~100)",
+					life: 3000,
+				});
+				isReturn = true;
+			}
 			if (element.index) oralSum += element.weight;
 		});
+		if (isReturn) {
+			return;
+		}
 		if (oralSum !== 100) {
 			toast.add({
 				severity: "error",

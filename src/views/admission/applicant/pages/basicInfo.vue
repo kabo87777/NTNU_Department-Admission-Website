@@ -2,9 +2,12 @@
 	<Layout Applicant>
 		<template #Header>{{ $t("基本資料") }}</template>
 		<template #Body>
+			<Message severity="warn" pos="sticky top-0" z="10" m="!0">
+				"*" 皆為必填項目
+			</Message>
 			<div
-				class="px-12px py-24px"
-				v-if="requiredInputFields.includes('cn_surname')"
+				class="px-12px py-12px"
+				v-if="requiredInputFields.includes('en_givename')"
 			>
 				<div class="flex">
 					<div class="text-[24px] font-[50] font-bold">
@@ -36,7 +39,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="flex py-16px">
+				<div class="flex pt-12px pb-16px">
 					<div class="w-1/3">
 						<div>{{ "*" + $t("英文姓氏") }}</div>
 						<div>
@@ -89,7 +92,7 @@
 				</div>
 			</div>
 			<div
-				class="px-12px py-24px"
+				class="px-12px pt-12px pb-24px"
 				v-if="requiredInputFields.includes('nationality')"
 			>
 				<div class="flex">
@@ -140,7 +143,7 @@
 				</div>
 				<div v-if="identity.selectedIdentity === '外籍人士'">
 					<div>
-						<div class="flex pt-16px">
+						<div class="flex py-16px">
 							<div class="w-1/3">
 								<div>{{ $t("國籍") }}</div>
 								<div>
@@ -162,14 +165,13 @@
 							</div>
 						</div>
 					</div>
-					<div class="pt-24px"></div>
 				</div>
 			</div>
 
 			<div>
 				<div
-					class="px-12px py-24px"
-					v-if="requiredInputFields.includes('communicate_address')"
+					class="px-12px py-12px"
+					v-if="requiredInputFields.includes('email')"
 				>
 					<div class="flex">
 						<div class="text-[24px] font-[50] font-bold">
@@ -241,7 +243,7 @@
 				</div>
 			</div>
 			<div
-				class="px-12px py-24px"
+				class="px-12px py-12px"
 				v-if="requiredInputFields.includes('sex')"
 			>
 				<div class="flex">
@@ -312,7 +314,7 @@
 				</div>
 			</div>
 			<div
-				class="px-12px py-24px"
+				class="px-12px py-12px"
 				v-if="requiredInputFields.includes('mobile_phone')"
 			>
 				<div class="flex">
@@ -363,6 +365,7 @@ import Calendar from "primevue/calendar";
 import NButton from "@/styles/CustomButton.vue";
 import Layout from "@/components/Layout.vue";
 import dayjs from "dayjs";
+import Message from "primevue/message";
 import { useAdmissionApplicantAuthStore } from "@/stores/universalAuth";
 import { AdmissionApplicantAPI } from "@/api/admission/applicant/api";
 import { AdmissionApplicantGetUserInfoResponse } from "@/api/admission/applicant/types";

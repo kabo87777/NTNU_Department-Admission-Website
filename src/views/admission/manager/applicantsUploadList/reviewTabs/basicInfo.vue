@@ -1,6 +1,6 @@
 <template>
 	<div class="mt-24px">
-		<div v-if="requiredInputFields.includes('cn_surname')">
+		<div v-if="requiredInputFields.includes('en_givename')">
 			<div class="text-24px font-bold">{{ $t("姓名資訊") }}</div>
 			<div class="admApplicantBasicInfoCard">
 				<div style="color: #333333">
@@ -68,7 +68,7 @@
 			</div>
 		</div>
 
-		<div v-if="requiredInputFields.includes('communicate_address')">
+		<div v-if="requiredInputFields.includes('email')">
 			<div class="mt-24px text-24px font-bold">{{ $t("通訊地址") }}</div>
 			<div class="admApplicantBasicInfoCard">
 				<div style="color: #333333">

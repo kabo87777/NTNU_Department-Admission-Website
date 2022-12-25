@@ -296,15 +296,15 @@ let showedInfo = reactive([
 	{
 		id: "姓名資訊",
 		checked: false,
-		field: ["cn_surname", "en_surname", "en_givenname"],
+		field: ["en_surname", "en_givename"],
 	},
 	{ id: "入學身分", checked: false, field: ["nationality"] },
 	{
-		id: "現居地址",
+		id: "通訊地址",
 		checked: false,
-		field: ["communicate_address", "communicate_zipcode"],
+		field: ["email"],
 	},
-	{ id: "身份資料", checked: false, field: ["sex", "birthcountry", "birth"] },
+	{ id: "身份資料", checked: false, field: ["sex"] },
 	{ id: "聯絡資料", checked: false, field: ["mobile_phone"] },
 ]);
 let showedFile = reactive([
@@ -377,13 +377,13 @@ const getInfoFileField = useQuery(
 			fieldList.fileChecked = JSON.parse(
 				programData.applicant_required_file
 			);
-			if (fieldList.infoChecked.includes("cn_surname"))
+			if (fieldList.infoChecked.includes("en_givename"))
 				showedInfo[0].checked = true;
 			else showedInfo[0].checked = false;
 			if (fieldList.infoChecked.includes("nationality"))
 				showedInfo[1].checked = true;
 			else showedInfo[1].checked = false;
-			if (fieldList.infoChecked.includes("communicate_address"))
+			if (fieldList.infoChecked.includes("email"))
 				showedInfo[2].checked = true;
 			else showedInfo[2].checked = false;
 			if (fieldList.infoChecked.includes("sex"))
