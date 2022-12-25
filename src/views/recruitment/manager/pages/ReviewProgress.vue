@@ -1,42 +1,39 @@
 <template>
-	<div>
-		<div class="flex">
-			<div class="text-4xl text-bold tracking-widest">
-				{{ reviewProgress }}
-			</div>
-		</div>
-		<div class="bigRedDivider" />
-		<DataTable
-			:value="reviewerList"
-			responsiveLayout="scroll"
-			dataKey="id"
-			:scrollable="true"
-			scrollHeight="700px"
-			class="!h-700px"
-		>
-			<Column field="name" :header="name"></Column>
-			<Column :header="requiredData">
-				<template #body="slotProps">
-					{{ slotProps.data.requiredSeen }}/{{
-						slotProps.data.requiredTotal
-					}}
-				</template>
-			</Column>
-			<Column :header="optionalData">
-				<template #body="slotProps">
-					{{ slotProps.data.optionalSeen }}/{{
-						slotProps.data.optionalTotal
-					}}
-				</template>
-			</Column>
-		</DataTable>
-		<div class="bigRedDivider" />
-	</div>
+	<Layout Admin noMargin>
+		<template #Header>{{ reviewProgress }}</template>
+		<template #Body>
+			<DataTable
+				:value="reviewerList"
+				responsiveLayout="scroll"
+				dataKey="id"
+				:scrollable="true"
+				scrollHeight="700px"
+				class="!h-700px"
+			>
+				<Column field="name" :header="name"></Column>
+				<Column :header="requiredData">
+					<template #body="slotProps">
+						{{ slotProps.data.requiredSeen }}/{{
+							slotProps.data.requiredTotal
+						}}
+					</template>
+				</Column>
+				<Column :header="optionalData">
+					<template #body="slotProps">
+						{{ slotProps.data.optionalSeen }}/{{
+							slotProps.data.optionalTotal
+						}}
+					</template>
+				</Column>
+			</DataTable>
+		</template>
+	</Layout>
 </template>
 
 <script setup lang="ts">
 // Primevue Component
 import Column from "primevue/column";
+import Layout from "@/components/Layout.vue";
 import DataTable from "primevue/datatable";
 
 import { useI18n } from "vue-i18n";

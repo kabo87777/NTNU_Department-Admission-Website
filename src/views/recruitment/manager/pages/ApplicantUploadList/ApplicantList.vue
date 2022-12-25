@@ -1,8 +1,7 @@
 <template>
-	<div class="">
-		<div class="text-32px font-bold">上傳資料列表</div>
-		<div class="bigRedDivider"></div>
-		<div class="mt-16px">
+	<Layout Admin noMargin>
+		<template #Header>{{ $t("上傳資料列表") }}</template>
+		<template #Body>
 			<DataTable :value="applicantList">
 				<Column field="id">
 					<template #header>
@@ -100,14 +99,8 @@
 					</template>
 				</Column>
 			</DataTable>
-		</div>
-		<!-- <TableList
-			role="admin"
-			header="上傳資料列表"
-			:data="applicantList"
-			:items="items"
-		/> -->
-	</div>
+		</template>
+	</Layout>
 </template>
 
 <script setup lang="ts">
@@ -117,6 +110,7 @@ import { RecruitmentAdminAPI } from "@/api/recruitment/admin/api";
 import { useGlobalStore } from "@/stores/RecruitmentAdminStore";
 import { useQuery } from "@tanstack/vue-query";
 import { RecruitmentAdminApplicantsListResponse } from "@/api/recruitment/admin/types";
+import Layout from "@/components/Layout.vue";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import Tag from "primevue/tag";
