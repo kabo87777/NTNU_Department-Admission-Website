@@ -239,7 +239,7 @@
 					<div
 						class="text-[16px] font-[500] font-bold mt-[8px] tracking-wider"
 					>
-						{{ applicantName }}
+						{{ applicantStore.userInfo.name }}
 					</div>
 				</div>
 				<div class="absolute right-[0] mt-[-8px]">
@@ -286,6 +286,7 @@ import { useRouter } from "vue-router";
 import { useRecruitmentApplicantAuthStore } from "@/stores/universalAuth";
 import { RecruitmentApplicantAPI } from "@/api/recruitment/applicant/api";
 import { useProjectIdStore } from "@/stores/RecruitmentApplicantStore";
+import { useUserInfoStore } from "@/stores/RecruitmentApplicantStore";
 import { useI18n } from "vue-i18n";
 import { useToast } from "primevue/usetoast";
 import "primeicons/primeicons.css";
@@ -298,11 +299,9 @@ import "@/styles/customize.css";
 const { t } = useI18n();
 const toast = useToast();
 const router = useRouter();
+const applicantStore = useUserInfoStore();
 
 const project = useProjectIdStore();
-const applicantName = window.localStorage.getItem(
-	"RecruitmentApplicantUsername"
-);
 const currentYear = new Date().getFullYear();
 const rocYear = currentYear - 1911;
 
