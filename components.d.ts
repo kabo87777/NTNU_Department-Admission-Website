@@ -24,6 +24,7 @@ declare module '@vue/runtime-core' {
     ReviewState: typeof import('./src/components/attachmentStates/reviewState.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SelectButton: typeof import('./src/components/SelectButton.vue')['default']
     Turnstile: typeof import('./src/components/Turnstile.vue')['default']
   }
 }

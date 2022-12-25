@@ -196,4 +196,24 @@ export class RecruitmentApplicantAPI extends GenericAPI {
 
 		return response;
 	}
+
+	async sendConfirmation(
+		programId: number
+	): Promise<RecruitmentApplicantGenericResponse> {
+		const data: APIGenericResponse = await this.instance.get(
+			`recruitment/applicant/program/${programId}/confirm`
+		);
+
+		if (data.error !== false) {
+			return {
+				success: false,
+				message: data.message,
+			};
+		}
+
+		return {
+			success: true,
+			message: data.message,
+		};
+	}
 }

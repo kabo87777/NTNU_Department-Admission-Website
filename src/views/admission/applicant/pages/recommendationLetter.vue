@@ -1,4 +1,279 @@
 <template>
+	<Layout Applicant>
+		<template #Header>{{ $t("推薦信作業") }}</template>
+		<template #Body>
+			<!-- 推薦信列表頭(有資料時) -->
+			<div
+				v-if="letterList[0]?.length"
+				class="flex mt-24px font-bold text-[18px]"
+			>
+				<div class="recTableTitleCol">{{ t("上傳時間") }}</div>
+				<div class="recTableTitleCol">{{ t("推薦人姓名") }}</div>
+				<div class="recTableTitleCol">{{ t("作業狀態") }}</div>
+				<div class="recTableTitleCol">{{ t("操作") }}</div>
+			</div>
+			<!-- 畫面顯示(無資料時) -->
+			<div v-else class="relative h-150">
+				<div class="recNoData">
+					<img
+						src="/assets/admissionApplicant/Newsletter.png"
+						alt="NO DATA"
+						style="border-radius: 50%"
+					/>
+					<div
+						class="text-center font-bold text-[24px] text-[#736028]"
+					>
+						{{ $t("暫無推薦人") }}
+					</div>
+				</div>
+			</div>
+			<!-- 推薦信列表(有資料時) -->
+			<div v-if="letterList[0]?.length !== 0">
+				<div v-for="(item, index) in letterList[0]" :key="index">
+					<!-- 送出邀請Dialog -->
+					<Dialog
+						v-model:visible="isModalVisible.request"
+						style="width: 500px"
+						:closable="false"
+						:draggable="false"
+						:modal="true"
+					>
+						<template #header>
+							<div class="font-bold text-[24px]">
+								{{ $t("發出邀請") }}
+							</div>
+						</template>
+						<template #default>
+							<div class="flex">
+								<div class="mt-2px">
+									<i
+										class="pi pi-question-circle"
+										style="font-size: 20px"
+									/>
+								</div>
+								<div class="ml-4px">
+									{{ $t("確認送出") + $t("?") }}
+								</div>
+							</div>
+						</template>
+						<template #footer>
+							<Button
+								class="p-button-outlined p-button-secondary"
+								style="
+									border: 2px solid #a18b4a;
+									color: #736028;
+									height: 36px;
+								"
+								icon="pi pi-times"
+								iconClass="text-[#736028]"
+								:label="t('取消')"
+								@click="isModalVisible.request = false"
+							/>
+							<Button
+								class="p-button-outlined p-button-secondary"
+								style="
+									color: #53565a;
+									border: 2px solid #bcd19b;
+									margin-left: 16px;
+									height: 36px;
+								"
+								icon="pi pi-check"
+								iconClass="text-[#53565A]"
+								:label="t('確認')"
+								:loading="isActionLoading.request"
+								@click="handleRequest(item.id)"
+							/>
+						</template>
+					</Dialog>
+					<!-- 刪除Dialog -->
+					<Dialog
+						v-model:visible="isModalVisible.delete"
+						style="width: 500px"
+						:closable="false"
+						:draggable="false"
+						:modal="true"
+					>
+						<template #header>
+							<div class="font-bold text-[24px]">
+								{{ $t("刪除") }}
+							</div>
+						</template>
+						<template #default>
+							<div class="flex">
+								<div class="mt-2px">
+									<i
+										class="pi pi-exclamation-triangle"
+										style="font-size: 20px"
+									/>
+								</div>
+								<div class="ml-4px">
+									{{ $t("確認刪除") + $t("?") }}
+								</div>
+							</div>
+						</template>
+						<template #footer>
+							<Button
+								class="p-button-outlined p-button-secondary"
+								style="
+									border: 2px solid #a18b4a;
+									color: #736028;
+									height: 36px;
+								"
+								icon="pi pi-times"
+								iconClass="text-[#736028]"
+								:label="t('取消')"
+								@click="isModalVisible.delete = false"
+							/>
+							<Button
+								class="p-button-outlined p-button-secondary"
+								style="
+									color: #93282c;
+									border: 2px solid #93282c;
+									margin-left: 16px;
+									height: 36px;
+								"
+								icon="pi pi-check"
+								iconClass="text-[#93282C]"
+								:label="t('確認')"
+								@click="handleDelete(item.id)"
+							/>
+						</template>
+					</Dialog>
+					<!-- 列表收起狀態 -->
+					<div v-if="!item.isCollapse" class="recTableRowIncollapse">
+						<div class="recTableCol">
+							{{ convertTime(item.created_at) }}
+						</div>
+						<div class="recTableCol">{{ item.name }}</div>
+						<div class="recTableCol">{{ t(item.status) }}</div>
+						<div class="recTableButtonCol">
+							<Button
+								class="p-button-outlined p-button-secondary"
+								style="
+									border: 2px solid #bcd19b;
+									font-size: xx-small;
+								"
+								icon="pi pi-envelope"
+								iconClass="text-[#53565A]"
+								v-tooltip.top="t('發出邀請')"
+								:disabled="item.stage === '已寄出'"
+								@click="isModalVisible.request = true"
+							/>
+							<Button
+								class="p-button-outlined p-button-secondary"
+								style="
+									border: 2px solid #93282c;
+									margin-left: 16px;
+									font-size: xx-small;
+								"
+								icon="pi pi-trash"
+								iconClass="text-[#93282C]"
+								v-tooltip.top="t('刪除')"
+								:disabled="item.stage === '已寄出'"
+								@click="isModalVisible.delete = true"
+							/>
+						</div>
+						<i
+							class="pi pi-angle-down collapseIcon"
+							@click="item.isCollapse = !item.isCollapse"
+						></i>
+					</div>
+					<!-- 列表展開狀態 -->
+					<div v-else class="recTableRowCollapse">
+						<div class="recTableRowCollapseItem font-bold">
+							<div class="recTableCol">
+								{{ convertTime(item.created_at) }}
+							</div>
+							<div class="recTableCol">{{ item.name }}</div>
+							<div class="recTableCol">{{ t(item.status) }}</div>
+							<div class="recTableButtonCol">
+								<Button
+									class="p-button-outlined p-button-secondary"
+									style="
+										border: 2px solid #bcd19b;
+										font-size: xx-small;
+									"
+									icon="pi pi-envelope"
+									iconClass="text-[#53565A]"
+									v-tooltip.top="t('發出邀請')"
+									:disabled="item.stage === '已寄出'"
+								/>
+								<Button
+									class="p-button-outlined p-button-secondary"
+									style="
+										border: 2px solid #93282c;
+										margin-left: 16px;
+										font-size: xx-small;
+									"
+									icon="pi pi-trash"
+									iconClass="text-[#93282C]"
+									v-tooltip.top="t('刪除')"
+									:disabled="item.stage === '已寄出'"
+									@click="isModalVisible.delete = true"
+								/>
+							</div>
+							<i
+								class="pi pi-angle-up collapseIcon"
+								@click="item.isCollapse = !item.isCollapse"
+							></i>
+						</div>
+						<div class="recTableRowCollapseItem">
+							<div class="recTableSemiCol">
+								{{ $t("推薦人姓名") + $t(":") }}
+								{{ item.name }}
+							</div>
+							<div class="recTableSemiCol">
+								{{ $t("推薦人稱謂") + $t(":") }}
+								{{ item.title }}
+							</div>
+						</div>
+						<div class="recTableRowCollapseItem">
+							<div class="recTableSemiCol">
+								{{ $t("關係") + $t(":") }}
+								{{ item.relation }}
+							</div>
+							<div class="recTableSemiCol">
+								{{ $t("電話") + $t(":") }}
+								{{ item.phone }}
+							</div>
+						</div>
+						<div class="recTableRowCollapseItem">
+							<div class="recTableSemiCol">
+								{{ $t("電郵") + $t(":") }}
+								{{ item.email }}
+							</div>
+						</div>
+						<div class="recTableRowCollapseItem">
+							<div class="recTableSemiCol">
+								{{ $t("單位") + $t(":") }}
+								{{ item.institution }}
+							</div>
+							<div class="recTableSemiCol">
+								{{ $t("職稱") + $t(":") }}
+								{{ item.position }}
+							</div>
+						</div>
+						<div class="recTableRowCollapseItem">
+							<div class="recTableSemiCol flex">
+								<div class="font-bold">{{ $t("簽名檔") }}</div>
+								<div class="ml-24px">{{ $t("限制") }}</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</template>
+		<template #Footer>
+			<NButton
+				Applicant
+				icon="pi pi-plus"
+				class="mx-auto h-11 min-w-36"
+				@click="openModal()"
+			>
+				{{ $t("新增推薦人") }}
+			</NButton>
+		</template>
+	</Layout>
 	<div>
 		<!-- 新增推薦人 Dialog -->
 		<Dialog
@@ -29,7 +304,7 @@
 							text-align: center;
 						"
 					>
-						{{ t("error") + t("!") + " "
+						{{ $t("error") + $t("!") + " "
 						}}{{ fetchResponse.message }}
 					</div>
 				</div>
@@ -39,7 +314,7 @@
 				<div class="text-[17px]">
 					<div class="flex mt-32px">
 						<div class="w-1/2">
-							<div>{{ t("推薦人姓名") }}</div>
+							<div>{{ $t("推薦人姓名") }}</div>
 							<div>
 								<InputText
 									class="w-[70%] h-40px !mt-8px"
@@ -51,12 +326,12 @@
 							</div>
 							<div class="absolute" v-if="isModalValueBlank.name">
 								<small id="name-help" class="p-error">
-									{{ t("此為必填欄位") }}
+									{{ $t("此為必填欄位") }}
 								</small>
 							</div>
 						</div>
 						<div class="w-1/2">
-							<div>{{ t("推薦人稱謂") }}</div>
+							<div>{{ $t("推薦人稱謂") }}</div>
 							<div>
 								<InputText
 									class="w-[70%] h-40px !mt-8px"
@@ -71,14 +346,14 @@
 								v-if="isModalValueBlank.appellation"
 							>
 								<small id="appellation-help" class="p-error">
-									{{ t("此為必填欄位") }}
+									{{ $t("此為必填欄位") }}
 								</small>
 							</div>
 						</div>
 					</div>
 					<div class="flex mt-32px">
 						<div class="w-1/2">
-							<div>{{ t("關係") }}</div>
+							<div>{{ $t("關係") }}</div>
 							<div>
 								<InputText
 									class="w-[70%] h-40px !mt-8px"
@@ -93,12 +368,12 @@
 								v-if="isModalValueBlank.relationship"
 							>
 								<small id="relationship-help" class="p-error">
-									{{ t("此為必填欄位") }}
+									{{ $t("此為必填欄位") }}
 								</small>
 							</div>
 						</div>
 						<div class="w-1/2">
-							<div>{{ t("電話") }}</div>
+							<div>{{ $t("電話") }}</div>
 							<div>
 								<InputText
 									class="w-[70%] h-40px !mt-8px"
@@ -113,13 +388,13 @@
 								v-if="isModalValueBlank.phone"
 							>
 								<small id="phone-help" class="p-error">
-									{{ t("此為必填欄位") }}
+									{{ $t("此為必填欄位") }}
 								</small>
 							</div>
 						</div>
 					</div>
 					<div class="w-1/2 mt-32px">
-						<div>{{ t("電郵") }}</div>
+						<div>{{ $t("電郵") }}</div>
 						<div>
 							<InputText
 								class="w-[70%] h-40px !mt-8px"
@@ -131,13 +406,13 @@
 						</div>
 						<div class="absolute" v-if="isModalValueBlank.email">
 							<small id="email-help" class="p-error">
-								{{ t("此為必填欄位") }}
+								{{ $t("此為必填欄位") }}
 							</small>
 						</div>
 					</div>
 					<div class="flex mt-32px">
 						<div class="w-1/2">
-							<div>{{ t("單位") }}</div>
+							<div>{{ $t("單位") }}</div>
 							<div>
 								<InputText
 									class="w-[70%] h-40px !mt-8px"
@@ -152,12 +427,12 @@
 								v-if="isModalValueBlank.organization"
 							>
 								<small id="organization-help" class="p-error">
-									{{ t("此為必填欄位") }}
+									{{ $t("此為必填欄位") }}
 								</small>
 							</div>
 						</div>
 						<div class="w-1/2">
-							<div>{{ t("職稱") }}</div>
+							<div>{{ $t("職稱") }}</div>
 							<div>
 								<InputText
 									class="w-[70%] h-40px !mt-8px"
@@ -172,7 +447,7 @@
 								v-if="isModalValueBlank.position"
 							>
 								<small id="position-help" class="p-error">
-									{{ t("此為必填欄位") }}
+									{{ $t("此為必填欄位") }}
 								</small>
 							</div>
 						</div>
@@ -216,281 +491,6 @@
 				/>
 			</template>
 		</Dialog>
-		<!-- 頁面大標題 -->
-		<div class="font-[500] text-[32px] font-bold">
-			{{ t("推薦信作業") }}
-		</div>
-		<div class="bigYellowDivider"></div>
-		<!-- 新增推薦人按鈕 -->
-		<Button
-			class="p-button-secondary"
-			style="
-				margin-top: 32px;
-				height: 44px;
-				background-color: #f0dfad;
-				border: 2px solid #a18b4a;
-				color: #736028;
-			"
-			icon="pi pi-plus"
-			:label="t('新增推薦人')"
-			@click="openModal()"
-		/>
-		<!-- 推薦信列表頭(有資料時) -->
-		<div
-			v-if="letterList[0]?.length"
-			class="flex mt-24px font-bold text-[18px]"
-		>
-			<div class="recTableTitleCol">{{ t("上傳時間") }}</div>
-			<div class="recTableTitleCol">{{ t("推薦人姓名") }}</div>
-			<div class="recTableTitleCol">{{ t("作業狀態") }}</div>
-			<div class="recTableTitleCol">{{ t("操作") }}</div>
-		</div>
-		<!-- 畫面顯示(無資料時) -->
-		<div v-else class="relative h-150">
-			<div class="recNoData">
-				<img
-					src="/assets/admissionApplicant/Newsletter.png"
-					alt="NO DATA"
-					style="border-radius: 50%"
-				/>
-				<div class="text-center font-bold text-[24px] text-[#736028]">
-					{{ t("暫無推薦人") }}
-				</div>
-			</div>
-		</div>
-		<!-- 推薦信列表(有資料時) -->
-		<div v-if="letterList[0]?.length !== 0">
-			<div v-for="(item, index) in letterList[0]" :key="index">
-				<!-- 送出邀請Dialog -->
-				<Dialog
-					v-model:visible="isModalVisible.request"
-					style="width: 500px"
-					:closable="false"
-					:draggable="false"
-					:modal="true"
-				>
-					<template #header>
-						<div class="font-bold text-[24px]">
-							{{ t("發出邀請") }}
-						</div>
-					</template>
-					<template #default>
-						<div class="flex">
-							<div class="mt-2px">
-								<i
-									class="pi pi-question-circle"
-									style="font-size: 20px"
-								/>
-							</div>
-							<div class="ml-4px">
-								{{ t("確認送出") + t("?") }}
-							</div>
-						</div>
-					</template>
-					<template #footer>
-						<Button
-							class="p-button-outlined p-button-secondary"
-							style="
-								border: 2px solid #a18b4a;
-								color: #736028;
-								height: 36px;
-							"
-							icon="pi pi-times"
-							iconClass="text-[#736028]"
-							:label="t('取消')"
-							@click="isModalVisible.request = false"
-						/>
-						<Button
-							class="p-button-outlined p-button-secondary"
-							style="
-								color: #53565a;
-								border: 2px solid #bcd19b;
-								margin-left: 16px;
-								height: 36px;
-							"
-							icon="pi pi-check"
-							iconClass="text-[#53565A]"
-							:label="t('確認')"
-							:loading="isActionLoading.request"
-							@click="handleRequest(item.id)"
-						/>
-					</template>
-				</Dialog>
-				<!-- 刪除Dialog -->
-				<Dialog
-					v-model:visible="isModalVisible.delete"
-					style="width: 500px"
-					:closable="false"
-					:draggable="false"
-					:modal="true"
-				>
-					<template #header>
-						<div class="font-bold text-[24px]">
-							{{ t("刪除") }}
-						</div>
-					</template>
-					<template #default>
-						<div class="flex">
-							<div class="mt-2px">
-								<i
-									class="pi pi-exclamation-triangle"
-									style="font-size: 20px"
-								/>
-							</div>
-							<div class="ml-4px">
-								{{ t("確認刪除") + t("?") }}
-							</div>
-						</div>
-					</template>
-					<template #footer>
-						<Button
-							class="p-button-outlined p-button-secondary"
-							style="
-								border: 2px solid #a18b4a;
-								color: #736028;
-								height: 36px;
-							"
-							icon="pi pi-times"
-							iconClass="text-[#736028]"
-							:label="t('取消')"
-							@click="isModalVisible.delete = false"
-						/>
-						<Button
-							class="p-button-outlined p-button-secondary"
-							style="
-								color: #93282c;
-								border: 2px solid #93282c;
-								margin-left: 16px;
-								height: 36px;
-							"
-							icon="pi pi-check"
-							iconClass="text-[#93282C]"
-							:label="t('確認')"
-							@click="handleDelete(item.id)"
-						/>
-					</template>
-				</Dialog>
-				<!-- 列表收起狀態 -->
-				<div v-if="!item.isCollapse" class="recTableRowIncollapse">
-					<div class="recTableCol">
-						{{ convertTime(item.created_at) }}
-					</div>
-					<div class="recTableCol">{{ item.name }}</div>
-					<div class="recTableCol">{{ t(item.status) }}</div>
-					<div class="recTableButtonCol">
-						<Button
-							class="p-button-outlined p-button-secondary"
-							style="
-								border: 2px solid #bcd19b;
-								font-size: xx-small;
-							"
-							icon="pi pi-envelope"
-							iconClass="text-[#53565A]"
-							v-tooltip.top="t('發出邀請')"
-							:disabled="item.stage === '已寄出'"
-							@click="isModalVisible.request = true"
-						/>
-						<Button
-							class="p-button-outlined p-button-secondary"
-							style="
-								border: 2px solid #93282c;
-								margin-left: 16px;
-								font-size: xx-small;
-							"
-							icon="pi pi-trash"
-							iconClass="text-[#93282C]"
-							v-tooltip.top="t('刪除')"
-							:disabled="item.stage === '已寄出'"
-							@click="isModalVisible.delete = true"
-						/>
-					</div>
-					<i
-						class="pi pi-angle-down collapseIcon"
-						@click="item.isCollapse = !item.isCollapse"
-					></i>
-				</div>
-				<!-- 列表展開狀態 -->
-				<div v-else class="recTableRowCollapse">
-					<div class="recTableRowCollapseItem font-bold">
-						<div class="recTableCol">
-							{{ convertTime(item.created_at) }}
-						</div>
-						<div class="recTableCol">{{ item.name }}</div>
-						<div class="recTableCol">{{ t(item.status) }}</div>
-						<div class="recTableButtonCol">
-							<Button
-								class="p-button-outlined p-button-secondary"
-								style="
-									border: 2px solid #bcd19b;
-									font-size: xx-small;
-								"
-								icon="pi pi-envelope"
-								iconClass="text-[#53565A]"
-								v-tooltip.top="t('發出邀請')"
-							/>
-							<Button
-								class="p-button-outlined p-button-secondary"
-								style="
-									border: 2px solid #93282c;
-									margin-left: 16px;
-									font-size: xx-small;
-								"
-								icon="pi pi-trash"
-								iconClass="text-[#93282C]"
-								v-tooltip.top="t('刪除')"
-								@click="isModalVisible.delete = true"
-							/>
-						</div>
-						<i
-							class="pi pi-angle-up collapseIcon"
-							@click="item.isCollapse = !item.isCollapse"
-						></i>
-					</div>
-					<div class="recTableRowCollapseItem">
-						<div class="recTableSemiCol">
-							{{ t("推薦人姓名") + t(":") }}
-							{{ item.name }}
-						</div>
-						<div class="recTableSemiCol">
-							{{ t("推薦人稱謂") + t(":") }}
-							{{ item.title }}
-						</div>
-					</div>
-					<div class="recTableRowCollapseItem">
-						<div class="recTableSemiCol">
-							{{ t("關係") + t(":") }}
-							{{ item.relation }}
-						</div>
-						<div class="recTableSemiCol">
-							{{ t("電話") + t(":") }}
-							{{ item.phone }}
-						</div>
-					</div>
-					<div class="recTableRowCollapseItem">
-						<div class="recTableSemiCol">
-							{{ t("電郵") + t(":") }}
-							{{ item.email }}
-						</div>
-					</div>
-					<div class="recTableRowCollapseItem">
-						<div class="recTableSemiCol">
-							{{ t("單位") + t(":") }}
-							{{ item.institution }}
-						</div>
-						<div class="recTableSemiCol">
-							{{ t("職稱") + t(":") }}
-							{{ item.position }}
-						</div>
-					</div>
-					<div class="recTableRowCollapseItem">
-						<div class="recTableSemiCol flex">
-							<div class="font-bold">{{ t("簽名檔") }}</div>
-							<div class="ml-24px">{{ t("限制") }}</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
 	</div>
 </template>
 
@@ -500,16 +500,16 @@ import { useAdmissionApplicantAuthStore } from "@/stores/universalAuth";
 import { AdmissionApplicantAPI } from "@/api/admission/applicant/api";
 import type { AdmissionApplicantRecLetListRes } from "@/api/admission/applicant/types";
 import { useQuery } from "@tanstack/vue-query";
-import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import { useToast } from "primevue/usetoast";
 import Button from "primevue/button";
+import NButton from "@/styles/CustomButton.vue";
 import Dialog from "primevue/dialog";
+import Layout from "@/components/Layout.vue";
 import InputText from "primevue/inputtext";
 import "primeicons/primeicons.css";
 
 const { t } = useI18n();
-const router = useRouter();
 
 const applicantAuth = useAdmissionApplicantAuthStore();
 const api = new AdmissionApplicantAPI(applicantAuth);
@@ -732,7 +732,7 @@ const handleSave = async () => {
 const handleRequest = async (letterId: number) => {
 	isActionLoading.request = true;
 
-	const url = "http://127.0.0.1:5173/admission/recommenderAuthVerify";
+	const url = "http://127.0.0.1:5173/admission/recommendLetterFillIn";
 	const response = await api.requestRecommendLetter(letterId, {
 		params: { redirect_url: url },
 	});
@@ -847,5 +847,13 @@ watch(
 	transform: translate(-50%, -50%);
 	height: 400px;
 	width: 500px;
+}
+
+.button {
+	cursor: pointer;
+}
+
+.button:hover {
+	cursor: not-allowed;
 }
 </style>

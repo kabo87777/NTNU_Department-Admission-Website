@@ -1,11 +1,13 @@
 import type { AxiosInstance } from "axios";
 import type { AuthStore } from "@/stores/universalAuth";
-import type {
+import {
 	universalAuthData,
 	universalAuthSendResetPwdEmailData,
 	universalAuthSendPostEmailRegister,
 	universalAuthResetPwdData,
 	AdmissionApplicantAuthSendResetPwdEmailData,
+	doAdmissionRecommenderSaveRecommendLetter,
+	doAdmissionRecommenderConfirmRecommendLetter,
 } from "@/api/universalAuth";
 
 import axios from "axios";
@@ -16,6 +18,7 @@ import {
 	doUniversalAuthSendPostEmailRegister,
 	doUniversalAuthResetPassword,
 	doAdmisssionApplicantAuthSendForgotPwdEmail,
+	doAdmissionRecommenderGetRecommendLetter,
 } from "./universalAuth";
 import { InvalidSessionError } from "./error";
 
@@ -109,6 +112,24 @@ export class GenericAPI {
 			access_token,
 			client,
 			uid
+		);
+	}
+
+	// Recommender Get Recommend Letter
+	async recommenderGetRecommendLetter(data: object) {
+		return await doAdmissionRecommenderGetRecommendLetter(this.auth, data);
+	}
+
+	// Recommender Save Recommend Letter
+	async recommenderSaveRecommendLetter(data: object) {
+		return await doAdmissionRecommenderSaveRecommendLetter(this.auth, data);
+	}
+
+	//Recommender Confirm Recommend Letter
+	async recommenderConfirmRecommendLetter(data: object) {
+		return await doAdmissionRecommenderConfirmRecommendLetter(
+			this.auth,
+			data
 		);
 	}
 }
