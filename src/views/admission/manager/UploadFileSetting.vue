@@ -293,11 +293,11 @@ const queryClient = useQueryClient();
 
 // Field Data
 let showedInfo = reactive([
-	{ id: "姓名資訊", checked: false },
-	{ id: "入學身分", checked: false },
-	{ id: "現居地址", checked: false },
-	{ id: "身份資料", checked: false },
-	{ id: "聯絡資料", checked: false },
+	{ id: "姓名資訊", checked: false, field: ["中文姓氏","英文姓氏","英文名字","英文中間名"] },
+	{ id: "入學身分", checked: false, field: ["國籍"] },
+	{ id: "現居地址", checked: false, field: ["通訊地址","通訊地址郵遞區號"] },
+	{ id: "身份資料", checked: false, field: ["性別","出生籍貫","出生日期"] },
+	{ id: "聯絡資料", checked: false, field: ["行動電話"] },
 ]);
 let showedFile = reactive([
 	{ id: "就學經歷", checked: false },
@@ -369,11 +369,26 @@ const getInfoFileField = useQuery(
 			fieldList.fileChecked = JSON.parse(
 				programData.applicant_required_file
 			);
-			showedInfo.forEach((element) => {
-				if (fieldList.infoChecked.includes(element.id))
-					element.checked = true;
-				else element.checked = false;
-			});
+			if (fieldList.infoChecked.includes("中文姓氏"))
+				showedInfo[0].checked = true;
+			else
+				showedInfo[0].checked = false;
+			if (fieldList.infoChecked.includes("國籍"))
+				showedInfo[1].checked = true;
+			else
+				showedInfo[1].checked = false;
+			if (fieldList.infoChecked.includes("通訊地址"))
+				showedInfo[2].checked = true;
+			else
+				showedInfo[2].checked = false;
+			if (fieldList.infoChecked.includes("性別"))
+				showedInfo[3].checked = true;
+			else
+				showedInfo[3].checked = false;
+			if (fieldList.infoChecked.includes("行動電話"))
+				showedInfo[4].checked = true;
+			else
+				showedInfo[4].checked = false;
 			showedFile.forEach((element) => {
 				if (fieldList.fileChecked.includes(element.id))
 					element.checked = true;
@@ -405,7 +420,11 @@ function saveChange() {
 		fieldList.fileChecked.splice(0, fieldList.fileChecked.length);
 		showedInfo.forEach((element) => {
 			if (!fieldList.infoChecked.includes(element.id))
-				if (element.checked) fieldList.infoChecked.push(element.id);
+				if (element.checked) {
+					element.field.forEach((field) => {
+							fieldList.infoChecked.push(field);
+					});
+				}
 		});
 		showedFile.forEach((element) => {
 			if (!fieldList.fileChecked.includes(element.id))
@@ -416,6 +435,9 @@ function saveChange() {
 		);
 		programData.applicant_required_file = JSON.stringify(
 			fieldList.fileChecked
+		);
+		programData.reviewer_required_info = JSON.stringify(
+			fieldList.infoChecked
 		);
 		// Patch Info/File Data
 		patchInfoFileField.mutate(programData);
