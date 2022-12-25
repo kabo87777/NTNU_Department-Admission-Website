@@ -125,6 +125,8 @@
 					class="mt-8px !w-576px !h-44px ml-52px"
 					:baseZIndex="zIndex"
 					dateFormat="yy/mm/dd"
+					:showOnFocus="false"
+					placeholder="YYYY/MM/DD hh:mm"
 				/>
 				<Calendar
 					v-else
@@ -136,6 +138,8 @@
 					:baseZIndex="zIndex"
 					disabled
 					dateFormat="yy/mm/dd"
+					:showOnFocus="false"
+					placeholder="YYYY/MM/DD hh:mm"
 				/>
 				<div class="flex mt-48px">
 					<NButton

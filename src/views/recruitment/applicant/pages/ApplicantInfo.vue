@@ -72,6 +72,9 @@
 								border-radius: 6px;
 							"
 							v-model="info.birth"
+							:show-icon="true"
+							:showOnFocus="false"
+							placeholder="YYYY/MM/DD"
 						/>
 					</div>
 					<div

@@ -123,7 +123,7 @@
 						class="whitespace-nowrap"
 						:class="letterSpace"
 					>
-						{{ $t("系辦主管") }}
+						{{ reviewerStore.userInfo.name }}
 					</div>
 				</div>
 				<!-- Button -->
@@ -177,6 +177,7 @@ import { AdmissionReviewerProgramListResponse } from "@/api/admission/reviewer/t
 import { useAdmissionReviewerAuthStore } from "@/stores/universalAuth";
 import { useGlobalStore } from "@/stores/AdmissionReviewerStore";
 import { useI18n } from "vue-i18n";
+import { useUserInfoStore } from "@/stores/AdmissionReviewerStore";
 
 const { locale } = useI18n();
 const router = useRouter();
@@ -185,6 +186,7 @@ const toast = useToast();
 const reviewerAuth = useAdmissionReviewerAuthStore();
 const api = new AdmissionReviewerAPI(reviewerAuth);
 const globalStore = useGlobalStore();
+const reviewerStore = useUserInfoStore();
 
 const { data: programs } = useQuery(
 	["admissionReviewerProgramList"],
