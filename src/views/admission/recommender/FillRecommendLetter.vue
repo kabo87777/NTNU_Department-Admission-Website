@@ -66,31 +66,7 @@
 								/>
 							</div>
 						</template>
-						<template #content>
-							<!-- <div v-if="files.length">
-								<div class="flex flex-wrap sm:p-5 gap-5">
-									<div
-										class="flex"
-										v-for="file of files"
-										:key="file.name + file.type + file.size"
-									>
-										<img
-											src="/assets/pdf_icon.png"
-											alt="pdf"
-											style="width: 50px"
-										/>
-										<div class="ml-8px">
-											<span class="font-semibold">{{
-												file.name
-											}}</span>
-											<div>
-												{{ formatSize(file.size) }}
-											</div>
-										</div>
-									</div>
-								</div>
-							</div> -->
-						</template>
+						<template #content></template>
 						<template #empty>
 							<div class="flex">
 								<div>※</div>
