@@ -246,6 +246,7 @@ const isLoading = reactive({
 	fetch: false,
 });
 const isModalVisible = ref(false);
+const ableConfirm = ref(false);
 
 const { t } = useI18n();
 const toast = useToast();
@@ -254,19 +255,6 @@ let fetchResponse = reactive({
 	success: false,
 	message: "" as string | [],
 });
-
-const formatSize = (bytes: number) => {
-	if (bytes === 0) {
-		return "0 B";
-	}
-
-	let k = 1000,
-		dm = 3,
-		sizes = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"],
-		i = Math.floor(Math.log(bytes) / Math.log(k));
-
-	return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
-};
 
 const sliceFile = (fileUrl: string) => {
 	if (fileUrl !== null) {
@@ -327,6 +315,35 @@ const handleSave = async () => {
 };
 
 const handleConfirm = async () => {
+	if (
+		content.value === "" ||
+		content.value === null ||
+		fileName.value === "" ||
+		fileName.value === null
+	) {
+		toast.add({
+			severity: "error",
+			summary: "錯誤 Error",
+			detail: "所有欄位為必填 All input is required",
+			life: 5000,
+		});
+
+		isModalVisible.value = false;
+		return;
+	}
+
+	if (ableConfirm.value === false) {
+		toast.add({
+			severity: "error",
+			summary: "錯誤 Error",
+			detail: "請先進行儲存 Please save before confirm",
+			life: 5000,
+		});
+
+		isModalVisible.value = false;
+		return;
+	}
+
 	isLoading.confirm = true;
 
 	const response: APIGenericResponse =
@@ -362,6 +379,20 @@ const handleConfirm = async () => {
 	isLoading.fetch = true;
 };
 
+const defineVariable = (data: RecommenderRecommendLetterResponse) => {
+	if (data.filepath.url !== null)
+		fileName.value = sliceFile(data.filepath.url) as string;
+	content.value = data.content === "null" ? "" : data.content;
+
+	if (
+		content.value === "null" ||
+		content.value === "" ||
+		data.filepath.url === null
+	)
+		ableConfirm.value = false;
+	else ableConfirm.value = true;
+};
+
 useQuery(
 	["recommenderGetLetter"],
 	async () => {
@@ -374,9 +405,7 @@ useQuery(
 	{
 		onSuccess: (response: APIGenericResponse) => {
 			const data: RecommenderRecommendLetterResponse = response.data;
-			if (data.filepath.url !== null)
-				fileName.value = sliceFile(data.filepath.url) as string;
-			content.value = data.content;
+			defineVariable(data);
 		},
 	}
 );
@@ -393,9 +422,7 @@ watch(
 
 		isLoading.fetch = false;
 
-		if (data.filepath.url !== null)
-			fileName.value = sliceFile(data.filepath.url) as string;
-		content.value = data.content;
+		defineVariable(data);
 	}
 );
 </script>
