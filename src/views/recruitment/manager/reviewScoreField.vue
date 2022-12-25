@@ -1,7 +1,7 @@
 <template>
 	<div class="ml-128px mr-128px mt-62px">
 		<h1 class="text-4xl text-bold tracking-widest">
-			{{ $t("審查評分欄位") }}
+			{{ $t("審查評分設置") }}
 		</h1>
 		<div class="bigRedDivider"></div>
 		<div class="mt-20px text-2xl">
@@ -63,7 +63,7 @@ import SelectButton from "primevue/selectbutton";
 
 const enrollProver = ref();
 const selectStage = ref(true);
-const stage = reactive([
+let stage = reactive([
 	{ name: "第一階段（書面審查）" },
 	{ name: "第二階段（口試審查）" },
 ]);

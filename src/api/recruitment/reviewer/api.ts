@@ -6,8 +6,8 @@ import type {
 	RecruitmentReviewerApplicantListResponse,
 	RecruitmentReviewerApplicantCommentResponse,
 	RecruitmentReviewerApplicantInfoResponse,
-	RecruitmentReviewerProgramResponse,
 	RecruitmentReviewerGenericResponse,
+	RReviewerChangePasswordRequest,
 } from "./types";
 import type { APIGenericResponse } from "@/api/types";
 
@@ -28,24 +28,19 @@ export class RecruitmentReviewerAPI extends GenericAPI {
 	}
 
 	async changePassword(
-		body: object
+		body: RReviewerChangePasswordRequest
 	): Promise<RecruitmentReviewerGenericResponse> {
-		const data: APIGenericResponse = await this.instance.patch(
-			"recruitment/auth/reviewer/password",
+		const response: APIGenericResponse = await this.instance.patch(
+			"/recruitment/auth/reviewer/password",
 			body
 		);
 
-		if (data.error !== false) {
-			return {
-				success: false,
-				message: data.message.full_messages,
-			};
+		if (response.error === true) {
+			const msg = response.message.full_messages.join("\n");
+			throw new Error(msg);
 		}
 
-		return {
-			success: true,
-			message: data.message,
-		};
+		return response;
 	}
 
 	async getRequiredApplicantList(
@@ -120,5 +115,33 @@ export class RecruitmentReviewerAPI extends GenericAPI {
 
 		if (data.error === true || typeof data.data === "undefined")
 			throw new Error("Failed to fetch applicant comment");
+	}
+
+	async getApplicantInfoFile(
+		programID: number,
+		applicantID: string | string[]
+	): Promise<string> {
+		return await this.instance.get(
+			`/recruitment/reviewer/program/${programID}/applicant/${applicantID}/get_info_file`
+		);
+	}
+
+	async getApplicantCombineFile(
+		programID: number,
+		applicantID: string | string[]
+	): Promise<string> {
+		return await this.instance.get(
+			`/recruitment/reviewer/program/${programID}/applicant/${applicantID}/get_combine_pdf_file`
+		);
+	}
+
+	async getApplicantCategoryCombineFile(
+		programID: number,
+		applicantID: string | string[]
+	): Promise<string> {
+		return await this.instance.get(
+			`/recruitment/reviewer/program/${programID}/applicant/${applicantID}/get_category_file`,
+			{ params: { category: "file" } }
+		);
 	}
 }

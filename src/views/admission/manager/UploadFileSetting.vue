@@ -1,295 +1,287 @@
 <template>
-	<div>
-		<div class="font-medium text-32px">{{ $t("申請上傳欄位") }}</div>
-		<div class="bigRedDivider"></div>
-		<div class="p-fluid">
-			<SelectButton
-				class="mt-8px"
-				v-model="activeTab"
-				:options="tabOptions"
-				optionLabel="name"
-				aria-labelledby="single"
-			>
-			</SelectButton>
-		</div>
-		<div v-if="activeTab.value === 1">
-			<div class="mt-16px">
-				<div>
+	<Layout Admin noMargin>
+		<template #Header> {{ trans.uploadField.value }} </template>
+		<template #Body>
+			<div class="p-fluid" pos="sticky top-0" z="50">
+				<SelectButton
+					v-model="activeTab"
+					:options="tabOptions"
+					optionLabel="name"
+					aria-labelledby="single"
+					:unselectable="false"
+				/>
+			</div>
+			<!-- 基本資料欄位 -->
+			<!-- 姓名資訊 -->
+			<div v-if="activeTab.value === 1">
+				<div flex="~ gap-2" justify="items-center">
 					<Checkbox
 						inputId="nameInfo"
+						class="pt-1"
 						v-model="showedInfo[0].checked"
 						:binary="true"
 					/>
-					<label
-						for="nameInfo"
-						class="ml-8px text-24px font-medium"
-						>{{ $t("姓名資訊") }}</label
-					>
+					<label for="nameInfo" text="lg body" pb="!1">
+						{{ trans.nameInfo.value }}
+					</label>
 				</div>
-				<div class="flex mt-40px">
-					<div class="w-1/3 pl-16px">{{ $t("※ 稱謂/後綴") }}</div>
-					<div class="w-1/3 pl-16px">{{ $t("※ 中文姓氏/名字") }}</div>
-					<div class="w-1/3 pl-16px">
-						{{ $t("※ 英文姓氏/中間名/名字") }}
+				<div class="flex mx-10 gap-8" text="secondary">
+					<div>
+						{{ trans.details.chineseName.value }}
+					</div>
+					<div>
+						{{ trans.details.englishName.value }}
 					</div>
 				</div>
-				<ParagraphDivider />
 			</div>
-			<div class="mt-16px">
-				<div>
+			<PDivider Admin v-if="activeTab.value === 1" />
+			<!-- 入學身份 -->
+			<div v-if="activeTab.value === 1">
+				<div flex="~ gap-2" justify="items-center">
 					<Checkbox
 						inputId="enrollment"
+						class="pt-1"
 						v-model="showedInfo[1].checked"
 						:binary="true"
 					/>
-					<label
-						for="enrollment"
-						class="ml-8px text-24px font-medium"
-						>{{ $t("入學身分") }}</label
-					>
+					<label for="enrollment" text="lg body" pb="!1">
+						{{ trans.admissionIdentity.value }}
+					</label>
 				</div>
-				<div class="flex mt-40px">
-					<div class="w-1/2 pl-16px">{{ $t("※ 碩士生") }}</div>
-					<div class="w-1/2 pl-16px">{{ $t("※ 博士生") }}</div>
+				<div class="flex mx-10 gap-8" text="secondary">
+					<div>
+						{{ trans.details.locals.value }}
+					</div>
+					<div>
+						{{ trans.details.foreigner.value }}
+					</div>
 				</div>
-				<ParagraphDivider />
 			</div>
-			<div class="mt-16px">
-				<div>
+			<PDivider Admin v-if="activeTab.value === 1" />
+			<!-- 通訊地址 -->
+			<div v-if="activeTab.value === 1">
+				<div flex="~ gap-2" justify="items-center">
 					<Checkbox
-						inputId="permanentAd"
+						inputId="mailingAd"
+						class="pt-1"
 						v-model="showedInfo[2].checked"
 						:binary="true"
 					/>
-					<label
-						for="permanentAd"
-						class="ml-8px text-24px font-medium"
-						>{{ $t("戶籍資訊") }}</label
-					>
+					<label for="mailingAd" text="lg body" pb="!1">
+						{{ trans.residentAddress.value }}
+					</label>
 				</div>
-				<div class="flex mt-40px">
-					<div class="w-1/3 pl-16px">{{ $t("※ 國家/州") }}</div>
-					<div class="w-1/3 pl-16px">{{ $t("※ 城市/郵遞區號") }}</div>
-					<div class="w-1/3 pl-16px">{{ $t("※ 街道地址") }}</div>
+				<div class="flex mx-10 gap-8" text="secondary">
+					<div>
+						{{ trans.details.countryState.value }}
+					</div>
+					<div>
+						{{ trans.details.cityPostNumber.value }}
+					</div>
 				</div>
-				<ParagraphDivider />
 			</div>
-			<div class="mt-16px">
-				<div>
+			<PDivider Admin v-if="activeTab.value === 1" />
+			<!-- 身份資料 -->
+			<div v-if="activeTab.value === 1">
+				<div flex="~ gap-2" justify="items-center">
 					<Checkbox
-						inputId="mailingAd"
+						inputId="basicIdentityInfo"
+						class="pt-1"
 						v-model="showedInfo[3].checked"
 						:binary="true"
 					/>
-					<label
-						for="mailingAd"
-						class="ml-8px text-24px font-medium"
-						>{{ $t("現居地址") }}</label
-					>
+					<label for="basicIdentityInfo" text="lg body" pb="!1">{{
+						trans.identityInfo.value
+					}}</label>
 				</div>
-				<div class="flex mt-40px">
-					<div class="w-1/3 pl-16px">{{ $t("※ 國家/州") }}</div>
-					<div class="w-1/3 pl-16px">{{ $t("※ 城市/郵遞區號") }}</div>
-					<div class="w-1/3 pl-16px">{{ $t("※ 街道地址") }}</div>
+				<div class="flex mx-10 gap-8" text="secondary">
+					<div>
+						{{ trans.details.legalGender.value }}
+					</div>
+					<div>
+						{{ trans.details.bornCountry.value }}
+					</div>
+					<div>
+						{{ trans.details.citizenship.value }}
+					</div>
+					<div>
+						{{ trans.details.bornDate.value }}
+					</div>
 				</div>
-				<ParagraphDivider />
 			</div>
-			<div class="mt-16px">
-				<div>
+			<PDivider Admin v-if="activeTab.value === 1" />
+			<!-- 聯絡資料 -->
+			<div v-if="activeTab.value === 1">
+				<div flex="~ gap-2" justify="items-center">
 					<Checkbox
-						inputId="basicIdentityInfo"
+						inputId="contactInfo"
+						class="pt-1"
 						v-model="showedInfo[4].checked"
 						:binary="true"
 					/>
-					<label
-						for="basicIdentityInfo"
-						class="ml-8px text-24px font-medium"
-						>{{ $t("身份資料") }}</label
-					>
+					<label for="contactInfo" text="lg body" pb="!1">{{
+						trans.contactInfo.value
+					}}</label>
 				</div>
-				<div class="flex mt-40px">
-					<div class="w-1/4 pl-16px">
-						{{ $t("※ 法定性別/ 性別認同") }}
-					</div>
-					<div class="w-1/4 pl-16px">{{ $t("※ 出生國") }}</div>
-					<div class="w-1/4 pl-16px">{{ $t("※ 主要國籍") }}</div>
-					<div class="w-1/4 pl-16px">{{ $t("※ 出生日期") }}</div>
-				</div>
-				<ParagraphDivider />
-			</div>
-			<div class="mt-16px">
-				<div>
-					<Checkbox
-						inputId="contactInfo"
-						v-model="showedInfo[5].checked"
-						:binary="true"
-					/>
-					<label
-						for="contactInfo"
-						class="ml-8px text-24px font-medium"
-						>{{ $t("聯絡資料") }}</label
-					>
-				</div>
-				<div class="flex mt-40px">
-					<div class="w-1/4 pl-16px">{{ $t("※ 電子郵件") }}</div>
-					<div class="w-1/4 pl-16px">{{ $t("※ 電話(主要)") }}</div>
-					<div class="w-1/4 pl-16px">{{ $t("※ 電話(次要)") }}</div>
-					<div class="w-1/4 pl-16px">
-						{{ $t("※ 電話(行動電話)") }}
+				<div class="flex mx-10 gap-8" text="secondary">
+					<div>
+						{{ trans.details.mobileNumber.value }}
 					</div>
 				</div>
-				<ParagraphDivider />
 			</div>
-		</div>
-		<div v-else-if="activeTab.value === 2">
-			<div class="mt-16px">
-				<div>
+
+			<!-- 檢附資料欄位 -->
+			<!-- 就學經歷 -->
+			<div v-if="activeTab.value === 2">
+				<div flex="~ gap-2" justify="items-center">
 					<Checkbox
 						inputId="schoolExp"
+						class="pt-1"
 						v-model="showedFile[0].checked"
 						:binary="true"
 					/>
-					<label
-						for="schoolExp"
-						class="ml-8px text-24px font-medium"
-						>{{ $t("就學經歷") }}</label
-					>
+					<label for="schoolExp" text="lg body" pb="!1">{{
+						trans.schoolExp.value
+					}}</label>
 				</div>
-				<div class="flex mt-40px">
-					<div class="w-1/3 pl-16px">{{ $t("※ 稱謂/後綴") }}</div>
-					<div class="w-1/3 pl-16px">{{ $t("※ 中文姓氏/名字") }}</div>
-					<div class="w-1/3 pl-16px">
-						{{ $t("※ 英文姓氏/中間名/名字") }}
+				<div class="flex mx-10 gap-8" text="secondary">
+					<div>
+						{{ trans.details.fileName.value }}
+					</div>
+					<div>
+						{{ trans.details.fileUpload.value }}
 					</div>
 				</div>
-				<ParagraphDivider />
 			</div>
-			<div class="mt-16px">
-				<div>
+			<PDivider Admin v-if="activeTab.value === 2" />
+			<!-- 考試與檢定分數 -->
+			<div v-if="activeTab.value === 2">
+				<div flex="~ gap-2" justify="items-center">
 					<Checkbox
 						inputId="score"
+						class="pt-1"
 						v-model="showedFile[1].checked"
 						:binary="true"
 					/>
-					<label for="score" class="ml-8px text-24px font-medium">{{
-						$t("考試與檢定分數")
+					<label for="score" text="lg body" pb="!1">{{
+						trans.examScore.value
 					}}</label>
 				</div>
-				<div class="flex mt-40px">
-					<div class="w-1/3 pl-16px">{{ $t("※ 國家/州") }}</div>
-					<div class="w-1/3 pl-16px">{{ $t("※ 城市/郵遞區號") }}</div>
-					<div class="w-1/3 pl-16px">{{ $t("※ 街道地址") }}</div>
+				<div class="flex mx-10 gap-8" text="secondary">
+					<div>
+						{{ trans.details.fileName.value }}
+					</div>
+					<div>
+						{{ trans.details.fileUpload.value }}
+					</div>
 				</div>
-				<ParagraphDivider />
 			</div>
-			<div class="mt-16px">
-				<div>
+			<PDivider Admin v-if="activeTab.value === 2" />
+			<!-- 其他有利於審查資料 -->
+			<div v-if="activeTab.value === 2">
+				<div flex="~ gap-2" justify="items-center">
 					<Checkbox
 						inputId="other"
+						class="pt-1"
 						v-model="showedFile[2].checked"
 						:binary="true"
 					/>
-					<label for="other" class="ml-8px text-24px font-medium">{{
-						$t("其他有利於審查資料")
+					<label for="other" text="lg body" pb="!1">{{
+						trans.advantageFile.value
 					}}</label>
 				</div>
-				<div class="flex mt-40px">
-					<div class="w-1/3 pl-16px">{{ $t("※ 國家/州") }}</div>
-					<div class="w-1/3 pl-16px">{{ $t("※ 城市/郵遞區號") }}</div>
-					<div class="w-1/3 pl-16px">{{ $t("※ 街道地址") }}</div>
-				</div>
-				<ParagraphDivider />
-			</div>
-			<div class="mt-16px">
-				<div>
-					<Checkbox
-						inputId="identity"
-						v-model="showedFile[3].checked"
-						:binary="true"
-					/>
-					<label
-						for="identity"
-						class="ml-8px text-24px font-medium"
-						>{{ $t("身份資料") }}</label
-					>
-				</div>
-				<div class="flex mt-40px">
-					<div class="w-1/3 pl-16px">
-						{{ $t("※ 法定性別/ 性別認同") }}
+				<div class="flex mx-10 gap-8" text="secondary">
+					<div>
+						{{ trans.details.fileName.value }}
 					</div>
-					<div class="w-1/3 pl-16px">{{ $t("※ 城市/郵遞區號") }}</div>
-					<div class="w-1/3 pl-16px">{{ $t("※ 街道地址") }}</div>
+					<div>
+						{{ trans.details.fileUpload.value }}
+					</div>
 				</div>
 			</div>
-		</div>
-		<div class="mt-100px">
-			<div class="bigRedDivider"></div>
-		</div>
-		<div class="flex mt-24px">
-			<div class="m-auto">
-				<div class="flex">
-					<Button
-						class="bg-white h-60px w-140px border-ntnuRed"
-						@click="refreshData"
-					>
-						<i
-							class="pi pi-times ml-1 mr-2 box-border"
-							text="sm ntnuRed"
-						></i>
-						<div class="m-auto tracking-2" text="sm ntnuRed">
-							<div>{{ $t("取消變更") }}</div>
-						</div>
-					</Button>
-					<div class="w-24px"></div>
-					<Button
-						class="bg-Green h-60px w-140px border-ntnuRed"
-						@click="saveChange"
-					>
-						<i
-							class="pi pi-check ml-1 mr-2 box-border"
-							text="sm black"
-						></i>
-						<div class="m-auto tracking-2" text="sm black">
-							<div>{{ $t("儲存設定") }}</div>
-						</div>
-					</Button>
-				</div>
+		</template>
+		<template #Footer>
+			<div flex="~" justify="center" gap="4">
+				<NButton
+					Admin
+					class="p-2 w-32"
+					icon="pi pi-check"
+					@click="saveChange"
+				>
+					{{ $t("儲存設定") }}
+				</NButton>
+				<NButton
+					class="p-2 w-32"
+					icon="pi pi-times"
+					@click="refreshData"
+				>
+					{{ $t("取消變更") }}
+				</NButton>
 			</div>
-		</div>
-	</div>
+		</template>
+	</Layout>
 </template>
 
 <script setup lang="ts">
-import ParagraphDivider from "@/styles/paragraphDivider.vue";
-import "primeicons/primeicons.css";
+import Layout from "@/components/Layout.vue";
+import NButton from "@/styles/CustomButton.vue";
 import SelectButton from "primevue/selectbutton";
 import Checkbox from "primevue/checkbox";
-import Button from "primevue/button";
+import PDivider from "@/styles/PrDivider.vue";
+import "primeicons/primeicons.css";
 import { useToast } from "primevue/usetoast";
 import { reactive, ref, computed, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
 import { AdmissionAdminAPI } from "@/api/admission/admin/api";
 import { useGlobalStore } from "@/stores/globalStore";
-import { InvalidSessionError } from "@/api/error";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
 import { AdmissionAdminProgramListResponse } from "@/api/admission/admin/types";
 
 const toast = useToast();
 
-// i18n Translation
+// i18n
 const { t } = useI18n();
-const translation = {
+const trans = {
+	uploadField: computed(() => t("上傳欄位設置")),
 	basicCol: computed(() => t("基本資料欄位")),
 	attachmentCol: computed(() => t("檢附資料欄位")),
+	nameInfo: computed(() => t("姓名資訊")),
+	admissionIdentity: computed(() => t("入學身分")),
+	registAddressInfo: computed(() => t("戶籍資訊")),
+	residentAddress: computed(() => t("通訊地址")),
+	identityInfo: computed(() => t("身份資料")),
+	contactInfo: computed(() => t("聯絡資料")),
+	schoolExp: computed(() => t("就學經歷")),
+	examScore: computed(() => t("考試與檢定分數")),
+	advantageFile: computed(() => t("其他有利於審查資料")),
 	changeSuccess: computed(() => t("儲存成功")),
+	details: {
+		chineseName: computed(() => t("※ 中文姓氏/名字")),
+		englishName: computed(() => t("※ 英文姓氏/中間名/名字")),
+		locals: computed(() => t("※ 本國人士")),
+		foreigner: computed(() => t("※ 外籍人士")),
+		countryState: computed(() => t("※ 國家/州")),
+		cityPostNumber: computed(() => t("※ 郵遞區號")),
+		streetAddress: computed(() => t("※ 街道地址")),
+		legalGender: computed(() => t("※ 性別")),
+		bornCountry: computed(() => t("※ 出生國家")),
+		bornDate: computed(() => t("※ 出生日期")),
+		citizenship: computed(() => t("※ 主要國籍")),
+		email: computed(() => t("※ 電子郵件")),
+		mainNumber: computed(() => t("※ 電話(主要)")),
+		secondaryNumber: computed(() => t("※ 電話(次要)")),
+		mobileNumber: computed(() => t("※ 電話(行動電話)")),
+		fileName: computed(() => t("※ 資料名稱")),
+		fileUpload: computed(() => t("※ 資料上傳")),
+	},
 };
 
 // SelectButton: Change Tab
-const activeTab = ref({ name: translation.basicCol, value: 1 });
+const activeTab = ref({ name: trans.basicCol, value: 1 });
 const tabOptions = ref([
-	{ name: translation.basicCol, value: 1 },
-	{ name: translation.attachmentCol, value: 2 },
+	{ name: trans.basicCol, value: 1 },
+	{ name: trans.attachmentCol, value: 2 },
 ]);
 
 // API Authorization
@@ -300,21 +292,27 @@ const store = useGlobalStore();
 const queryClient = useQueryClient();
 
 // Field Data
-const showedInfo = reactive([
-	{ id: "file1", checked: false },
-	{ id: "file2", checked: false },
-	{ id: "file3", checked: false },
-	{ id: "file4", checked: false },
-	{ id: "file5", checked: false },
-	{ id: "file6", checked: false },
+let showedInfo = reactive([
+	{
+		id: "姓名資訊",
+		checked: false,
+		field: ["en_surname", "en_givename"],
+	},
+	{ id: "入學身分", checked: false, field: ["nationality"] },
+	{
+		id: "通訊地址",
+		checked: false,
+		field: ["email"],
+	},
+	{ id: "身份資料", checked: false, field: ["sex"] },
+	{ id: "聯絡資料", checked: false, field: ["mobile_phone"] },
 ]);
-const showedFile = reactive([
-	{ id: "file1", checked: false },
-	{ id: "file2", checked: false },
-	{ id: "file3", checked: false },
-	{ id: "file4", checked: false },
+let showedFile = reactive([
+	{ id: "就學經歷", checked: false },
+	{ id: "考試與檢定分數", checked: false },
+	{ id: "其他有利於審查資料", checked: false },
 ]);
-const programData: AdmissionAdminProgramListResponse = reactive({
+let programData: AdmissionAdminProgramListResponse = reactive({
 	id: 0,
 	category: "",
 	name: "",
@@ -322,7 +320,6 @@ const programData: AdmissionAdminProgramListResponse = reactive({
 	application_end_date: "",
 	review_start_date: "",
 	review_end_date: "",
-	stage: "",
 	created_at: "",
 	updated_at: "",
 	applicant_required_info: "",
@@ -330,6 +327,8 @@ const programData: AdmissionAdminProgramListResponse = reactive({
 	reviewer_required_info: "",
 	reviewer_required_file: "",
 	detail: "",
+	oral_start_date: "",
+	docs_end_date: "",
 });
 const fieldList = {
 	infoChecked: [""],
@@ -340,16 +339,11 @@ const fieldList = {
 const getInfoFileField = useQuery(
 	["infoFileField"],
 	async () => {
-		try {
-			if (store.program) {
-				const allData = await api.getProgramList();
-				return allData[store.program.id - 1];
-			}
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				console.error("Invalid Session Error");
-			}
-		}
+		if (!store.program)
+			throw new Error("infoFileField: no program selected");
+
+		const allData = await api.getProgramList();
+		return allData[store.program.id - 1];
 	},
 	{
 		refetchOnWindowFocus: false,
@@ -363,7 +357,6 @@ const getInfoFileField = useQuery(
 				programData.application_end_date = data.application_end_date;
 				programData.review_start_date = data.review_start_date;
 				programData.review_end_date = data.review_end_date;
-				programData.stage = data.stage;
 				programData.created_at = data.created_at;
 				programData.updated_at = data.updated_at;
 				programData.detail = data.detail;
@@ -375,6 +368,8 @@ const getInfoFileField = useQuery(
 					data.reviewer_required_info;
 				programData.reviewer_required_file =
 					data.reviewer_required_file;
+				programData.oral_start_date = data.oral_start_date;
+				programData.docs_end_date = data.docs_end_date;
 			}
 			fieldList.infoChecked = JSON.parse(
 				programData.applicant_required_info
@@ -382,11 +377,21 @@ const getInfoFileField = useQuery(
 			fieldList.fileChecked = JSON.parse(
 				programData.applicant_required_file
 			);
-			showedInfo.forEach((element) => {
-				if (fieldList.infoChecked.includes(element.id))
-					element.checked = true;
-				else element.checked = false;
-			});
+			if (fieldList.infoChecked.includes("en_givename"))
+				showedInfo[0].checked = true;
+			else showedInfo[0].checked = false;
+			if (fieldList.infoChecked.includes("nationality"))
+				showedInfo[1].checked = true;
+			else showedInfo[1].checked = false;
+			if (fieldList.infoChecked.includes("email"))
+				showedInfo[2].checked = true;
+			else showedInfo[2].checked = false;
+			if (fieldList.infoChecked.includes("sex"))
+				showedInfo[3].checked = true;
+			else showedInfo[3].checked = false;
+			if (fieldList.infoChecked.includes("mobile_phone"))
+				showedInfo[4].checked = true;
+			else showedInfo[4].checked = false;
 			showedFile.forEach((element) => {
 				if (fieldList.fileChecked.includes(element.id))
 					element.checked = true;
@@ -400,14 +405,8 @@ const getInfoFileField = useQuery(
 // API: Patch Info/File Data
 const patchInfoFileField = useMutation(
 	async (newData: AdmissionAdminProgramListResponse) => {
-		try {
-			if (store.program) {
-				return await api.updateProgramData(store.program.id, newData);
-			}
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				console.error("Invalid Session Error");
-			}
+		if (store.program) {
+			return await api.updateProgramData(store.program.id, newData);
 		}
 	},
 	{
@@ -424,7 +423,11 @@ function saveChange() {
 		fieldList.fileChecked.splice(0, fieldList.fileChecked.length);
 		showedInfo.forEach((element) => {
 			if (!fieldList.infoChecked.includes(element.id))
-				if (element.checked) fieldList.infoChecked.push(element.id);
+				if (element.checked) {
+					element.field.forEach((field) => {
+						fieldList.infoChecked.push(field);
+					});
+				}
 		});
 		showedFile.forEach((element) => {
 			if (!fieldList.fileChecked.includes(element.id))
@@ -436,11 +439,14 @@ function saveChange() {
 		programData.applicant_required_file = JSON.stringify(
 			fieldList.fileChecked
 		);
+		programData.reviewer_required_info = JSON.stringify(
+			fieldList.infoChecked
+		);
 		// Patch Info/File Data
 		patchInfoFileField.mutate(programData);
 		toast.add({
 			severity: "success",
-			summary: translation.changeSuccess.value,
+			summary: trans.changeSuccess.value,
 			life: 3000,
 		});
 	} catch (e: any) {

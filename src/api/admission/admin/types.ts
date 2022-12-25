@@ -11,13 +11,18 @@ export interface AdmissionManagerAuthResponse {
 	uid: string;
 	id: number;
 	allow_password_change: boolean;
-	isInit: any | null;
-	lang: any | null;
-	name: any | null;
-	nickname: any | null;
-	image: any | null;
+	isInit: boolean | null;
+	lang: string | null;
+	name: string;
+	nickname: string | null;
+	image: string | null;
 	created_at: string;
 	updated_at: string;
+}
+
+export interface AdmissionAdminGenericStatusResponse {
+	success?: boolean;
+	message?: string | [];
 }
 
 export interface AdmissionAdminProgramListResponse {
@@ -28,7 +33,6 @@ export interface AdmissionAdminProgramListResponse {
 	application_end_date: string;
 	review_start_date: string;
 	review_end_date: string;
-	stage: string;
 	created_at: string;
 	updated_at: string;
 	applicant_required_info: string;
@@ -36,23 +40,11 @@ export interface AdmissionAdminProgramListResponse {
 	reviewer_required_info: string;
 	reviewer_required_file: string;
 	detail: string;
+	oral_start_date: string;
+	docs_end_date: string;
 }
 
 export interface AdmAdminReviewerListResponse {
-	// TODO: Wait backend to give exact data type
-	// --- Example response ---
-	// "id": 1,
-	// "provider": "email",
-	// "uid": "example@email.com",
-	// "allow_password_change": false,
-	// "lang": null,
-	// "name": "example",
-	// "nickname": null,
-	// "image": null,
-	// "email": "example@email.com",
-	// "created_at": "2022-11-07T01:31:21.153+08:00",
-	// "updated_at": "2022-11-07T01:31:21.153+08:00",
-	// "isDisabled": false
 	id: number;
 	provider: string;
 	uid: string;
@@ -68,26 +60,6 @@ export interface AdmAdminReviewerListResponse {
 }
 
 export interface AdmAdminReviewerRelatedProgramResponse {
-	// TODO: Wait backend to give exact data type
-	// --- Example response ---
-	// {
-	// 	"id": 1,
-	// 	"category": "111年碩士班",
-	// 	"name": "A組",
-	// 	"application_start_date": "2022-10-01T00:00:00.000+08:00",
-	// 	"application_end_date": "2022-10-31T00:00:00.000+08:00",
-	// 	"review_start_date": "2022-11-01T00:00:00.000+08:00",
-	// 	"review_end_date": "2022-11-30T00:00:00.000+08:00",
-	// 	"require_file": "[\"file1\", \"file2\"]",
-	// 	"stage": "application",
-	// 	"created_at": "2022-11-07T01:31:19.417+08:00",
-	// 	"updated_at": "2022-11-07T01:31:19.417+08:00",
-	// 	"applicant_required_info": null,
-	// 	"applicant_required_file": null,
-	// 	"reviewer_required_info": null,
-	// 	"reviewer_required_file": null
-	// }
-
 	id: number;
 	category: string;
 	name: string;
@@ -95,38 +67,119 @@ export interface AdmAdminReviewerRelatedProgramResponse {
 	application_end_date: string;
 	review_start_date: string;
 	review_end_date: string;
-	require_file: string[];
 	stage: string;
 	created_at: string;
 	updated_at: string;
-	applicant_required_info: null;
-	applicant_required_file: null;
-	reviewer_required_info: null;
-	reviewer_required_file: null;
-	relation?: AdmAdminReviewerRelatedProgramResponse[];
+	applicant_required_info: string;
+	applicant_required_file: string;
+	reviewer_required_info: string;
+	reviewer_required_file: string;
+	detail: null | string;
 }
 export interface AdmissionAdminApplicantsListResponse {
-	// TODO: Wait backend to give exact data type
 	id: number;
 	provider: string;
 	uid: string;
 	allow_password_change: boolean;
-	isInit: null;
-	lang: null;
+	isInit: boolean | null;
+	lang: string | null;
 	name: string;
-	nickname: null;
-	image: null;
+	nickname: string | null;
+	image: string | null;
 	email: string;
 	username: string;
-	docs_order: null;
-	oral_order: null;
-	file: null;
-	docs_stage: null;
-	oral_stage: null;
+	docs_order: number | null;
+	oral_order: number | null;
+	file: string | null;
+	docs_stage: string | null;
+	oral_stage: string | null;
 	created_at: string;
 	updated_at: string;
 	s_program_id: number;
-	application_stage: null;
+	application_stage: string | null;
+	isMoredoc: boolean;
+	moredoc_category: string | null;
+	moredoc_end_date: string | null;
+	moredoc_name: string | null;
+	moredoc_start_date: string | null;
+}
+
+export interface AdmAdminGetApplicantInfo {
+	admission_id: string;
+	birth?: Date;
+	birthcountry?: string;
+	cn_surname?: string;
+	communicate_address?: string;
+	communicate_zipcode?: number | string;
+	created_at: string;
+	day_phone?: string;
+	en_givenname?: string;
+	en_midname?: string;
+	en_surname?: string;
+	graduated_school?: string;
+	graduated_major?: string;
+	household_address?: string;
+	household_zipcode?: number | string;
+	id: number;
+	isDisabled?: boolean;
+	isForeigner?: boolean;
+	isSameDept?: boolean;
+	mobile_phone?: string;
+	title?: string;
+	name?: string;
+	nationality?: string;
+	national_id?: string;
+	night_phone?: string;
+	s_applicant_id: number;
+	suffix?: string;
+	sex?: string;
+	updated_at: string;
+}
+
+export interface AdmAdminGetApplicantInfoHeader {
+	id: number;
+	name: string;
+	admission_id: string;
+}
+
+export interface AdmAdminGetApplicantAttachmentData {
+	id: number;
+	category: string;
+	name: string;
+	filepath: {
+		url: string | any;
+	};
+	school?: string;
+	score?: number;
+	s_applicant_id: number;
+	created_at: string;
+	updated_at: string;
+}
+
+export interface AdmAdminGetApplicantAttachmentDataDetail {
+	id?: number;
+	category?: string;
+	name?: string;
+	filepath?: {
+		url?: string | any;
+	};
+	school?: string;
+	score?: number;
+	s_applicant_id?: number;
+	created_at?: string;
+	updated_at?: string;
+	order: number;
+	state: number;
+}
+
+export interface AdmAdminGetApplicantMoredocResponses {
+	name: string;
+	program_id: number;
+	isMoredoc: boolean;
+	moredoc_start_date: Date;
+	moredoc_end_date: Date;
+	moredoc_category: string;
+	moredoc_name: string;
 }
 
 export interface AdmAdminEditApplicantRequest {
@@ -210,8 +263,13 @@ export interface AdmissionAdminSingleOralGradeResponse {
 }
 
 export interface AdmissionAdminCreateReviewerRequest {
-	username: string;
-	password: string;
 	email: string;
 	name: string;
+	redirect_url: string;
+}
+
+export interface AdmAdminChangePasswordRequest {
+	current_password: string;
+	password: string;
+	password_confirmation: string;
 }

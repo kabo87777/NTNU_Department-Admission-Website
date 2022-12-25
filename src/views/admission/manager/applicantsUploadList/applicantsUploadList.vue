@@ -1,10 +1,9 @@
 <template>
-	<div>
-		<div class="text-32px font-medium">上傳資料列表</div>
-		<div class="bigRedDivider"></div>
-		<div class="mt-16px">
+	<Layout Admin noMargin>
+		<template #Header>{{ $t("上傳資料列表") }}</template>
+		<template #Body>
 			<DataTable :value="applicantList">
-				<Column field="uid">
+				<Column field="id">
 					<template #header>
 						<div class="m-auto">{{ $t("帳號") }}</div>
 					</template>
@@ -14,7 +13,7 @@
 						>
 							<router-link
 								:to="{
-									path: `/admission/manager/applicantsUploadList/${slotProps.data.uid}`,
+									path: `/admission/manager/applicantsUploadList/${slotProps.data.id}/${slotProps.data.name}`,
 								}"
 							>
 								{{ slotProps.data.uid }}
@@ -32,7 +31,7 @@
 						>
 							<router-link
 								:to="{
-									path: `/admission/manager/applicantsUploadList/${slotProps.data.uid}`,
+									path: `/admission/manager/applicantsUploadList/${slotProps.data.id}/${slotProps.data.name}`,
 								}"
 							>
 								{{ slotProps.data.name }}
@@ -65,7 +64,7 @@
 								{{ slotProps.data.application_stage }}
 							</Tag>
 							<Tag v-else severity="danger">
-								{{ slotProps.data.application_stage }}
+								{{ $t("無") }}
 							</Tag>
 						</div>
 					</template>
@@ -76,7 +75,7 @@
 					</template>
 					<template #body="slotProps">
 						<div
-							v-if="slotProps.data.isMoreDoc"
+							v-if="slotProps.data.isMoredoc"
 							class="m-auto text-center"
 						>
 							{{ $t("已開放") }}
@@ -108,26 +107,19 @@
 					</template>
 				</Column>
 			</DataTable>
-		</div>
-		<!-- <TableList
-			role="admin"
-			header="上傳資料列表"
-			:data="applicantList"
-			:items="items"
-		/> -->
-	</div>
+		</template>
+	</Layout>
 </template>
 
 <script setup lang="ts">
-import { toRaw } from "vue";
-import { router } from "@/router";
+import { reactive } from "vue";
 import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
 import { AdmissionAdminAPI } from "@/api/admission/admin/api";
 import { useGlobalStore } from "@/stores/globalStore";
 import { useQuery } from "@tanstack/vue-query";
-import { InvalidSessionError } from "@/api/error";
+import { AdmissionAdminApplicantsListResponse } from "@/api/admission/admin/types";
 import DataTable from "primevue/datatable";
-// import TableList from "@/components/dataTable/AdmissionAdminApplicantListTable.vue";
+import Layout from "@/components/Layout.vue";
 import Column from "primevue/column";
 import Tag from "primevue/tag";
 import "../../../../styles/customize.css";
@@ -136,54 +128,23 @@ const adminAuth = useAdmissionAdminAuthStore();
 const store = useGlobalStore();
 const api = new AdmissionAdminAPI(adminAuth);
 
-const {
-	isLoading,
-	isError,
-	data: applicants,
-	error,
-} = useQuery(["applicantList"], async () => {
-	try {
-		if (store.program) return await api.getApplicantList(store.program.id);
-	} catch (e: any) {
-		if (e instanceof InvalidSessionError) {
-			console.error(
-				"Session has already expired while quering appliacntList"
-			);
-			router.push("/");
-			return;
-		}
+const applicantList: AdmissionAdminApplicantsListResponse[] = reactive<
+	AdmissionAdminApplicantsListResponse[]
+>([] as AdmissionAdminApplicantsListResponse[]);
+
+useQuery(
+	["applicantListUpload"],
+	async () => {
+		return await api.getApplicantList(store.program!.id as number);
+	},
+	{
+		onSuccess: (data) => {
+			data!.map((item, index) => {
+				applicantList[index] = item;
+			});
+		},
 	}
-});
-
-const items = [
-	{
-		name: "帳號",
-		dataIndex: "uid",
-		width: "20%",
-	},
-	{
-		name: "姓名",
-		dataIndex: "name",
-		width: "20%",
-	},
-	{
-		name: "上傳狀態",
-		dataIndex: "applicantion_stage",
-		width: "20%",
-	},
-	{
-		name: "補件狀態",
-		// dataIndex: "",
-		width: "20%",
-	},
-	{
-		name: "補件狀態",
-		// dataIndex: "",
-		width: "20%",
-	},
-];
-
-const applicantList = toRaw(applicants.value);
+);
 </script>
 
 <style setup lang="css">

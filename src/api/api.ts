@@ -1,9 +1,13 @@
 import type { AxiosInstance } from "axios";
 import type { AuthStore } from "@/stores/universalAuth";
-import type {
+import {
 	universalAuthData,
 	universalAuthSendResetPwdEmailData,
 	universalAuthSendPostEmailRegister,
+	universalAuthResetPwdData,
+	AdmissionApplicantAuthSendResetPwdEmailData,
+	doAdmissionRecommenderSaveRecommendLetter,
+	doAdmissionRecommenderConfirmRecommendLetter,
 } from "@/api/universalAuth";
 
 import axios from "axios";
@@ -12,6 +16,9 @@ import {
 	doUniversalAuthSignOut,
 	doUniversalAuthSendForgotPwdEmail,
 	doUniversalAuthSendPostEmailRegister,
+	doUniversalAuthResetPassword,
+	doAdmisssionApplicantAuthSendForgotPwdEmail,
+	doAdmissionRecommenderGetRecommendLetter,
 } from "./universalAuth";
 import { InvalidSessionError } from "./error";
 
@@ -77,8 +84,52 @@ export class GenericAPI {
 		return await doUniversalAuthSendForgotPwdEmail(this.auth, data);
 	}
 
+	// Send Forgot Password (only for Admission Applicant)
+	async sendAdmissionApplicantForgotPasswordEmail(
+		data: AdmissionApplicantAuthSendResetPwdEmailData
+	) {
+		return await doAdmisssionApplicantAuthSendForgotPwdEmail(
+			this.auth,
+			data
+		);
+	}
+
 	//  Register
 	async sendPostEmailRegister(data: universalAuthSendPostEmailRegister) {
 		return await doUniversalAuthSendPostEmailRegister(this.auth, data);
+	}
+
+	// Reset Password
+	async requestResetPasswordSession(
+		data: universalAuthResetPwdData,
+		access_token: string,
+		client: string,
+		uid: string
+	) {
+		return await doUniversalAuthResetPassword(
+			this.auth,
+			data,
+			access_token,
+			client,
+			uid
+		);
+	}
+
+	// Recommender Get Recommend Letter
+	async recommenderGetRecommendLetter(data: object) {
+		return await doAdmissionRecommenderGetRecommendLetter(this.auth, data);
+	}
+
+	// Recommender Save Recommend Letter
+	async recommenderSaveRecommendLetter(data: object) {
+		return await doAdmissionRecommenderSaveRecommendLetter(this.auth, data);
+	}
+
+	//Recommender Confirm Recommend Letter
+	async recommenderConfirmRecommendLetter(data: object) {
+		return await doAdmissionRecommenderConfirmRecommendLetter(
+			this.auth,
+			data
+		);
 	}
 }

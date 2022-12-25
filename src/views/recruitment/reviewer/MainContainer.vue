@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<div style="position: fixed; top: 0; width: 100%; z-index: 1000">
+		<div style="position: fixed; top: 0; width: 100%; z-index: 10">
 			<NavBar />
 		</div>
 		<div style="display: flex; margin-top: 60px; position: relative">
@@ -20,27 +20,53 @@
 			</div>
 		</div>
 	</div>
+	<ScrollTop target="parent" :threshold="100" icon="pi pi-arrow-up" />
+	<ScrollTop />
 </template>
 
 <script setup lang="ts">
 import NavBar from "@/components/NavBar.vue";
-import recruitmentReviewerSideBar from "@/components/recruitmentReviewerSidebar.vue";
+import recruitmentReviewerSideBar from "@/components/sidebars/recruitmentReviewerSidebar.vue";
+import ScrollTop from "primevue/scrolltop";
 
-import { watch } from "vue";
+import { useQuery } from "@tanstack/vue-query";
 import { useRouter } from "vue-router";
+
 import { useRecruitmentReviewerAuthStore } from "@/stores/universalAuth";
-import { doUniversalAuthSessionValidation } from "@/api/universalAuth";
+import {
+	doUniversalAuthSessionValidation,
+	doUniversalAuthGetUserInfo,
+} from "@/api/universalAuth";
+import { RecruitmentManagerAuthResponse } from "@/api/recruitment/reviewer/types";
+import { useUserInfoStore } from "@/stores/RecruitmentReviewerStore";
 
 const router = useRouter();
 
-const reviewerAuth = useRecruitmentReviewerAuthStore();
+const auth = useRecruitmentReviewerAuthStore();
+const reviewerStore = useUserInfoStore();
 
-watch(router.currentRoute, async () => {
-	if (!(await doUniversalAuthSessionValidation(reviewerAuth))) {
-		router.replace({ name: "recruitmentReviewerSignin" });
-		// TODO: show session expired notification
-	}
+useQuery(["recruitmentReviewerAuthorizationStatus"], async () => {
+	const status = await doUniversalAuthSessionValidation(auth);
+
+	if (status) return true;
+
+	return router.replace({ name: "RecruitmentReviewerSignin" });
 });
+
+useQuery(
+	["recruitmentReviewerAuthorizationGetUserInfo"],
+	async () => {
+		const data: RecruitmentManagerAuthResponse =
+			await doUniversalAuthGetUserInfo(auth);
+
+		return data;
+	},
+	{
+		onSuccess: (data) => {
+			reviewerStore.$patch({ userInfo: data });
+		},
+	}
+);
 </script>
 
 <style scoped></style>

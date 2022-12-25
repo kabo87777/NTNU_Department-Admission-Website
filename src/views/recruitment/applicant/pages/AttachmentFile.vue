@@ -6,116 +6,16 @@
 		</div>
 		<div class="bigYellowDivider"></div>
 
-		<!-- SCHOOL EXPERIENCE -->
-		<div class="px-12px py-24px">
-			<div class="text-[24px] font-[50] font-bold">
-				{{ $t("教學經歷") }}
-			</div>
-			<div v-for="(item, index) in teachingExpList" :key="index">
-				<ReviewState
-					v-if="item.state === 1"
-					category="教學經歷"
-					identity="admissionApplicant"
-					:itemId="item.id"
-					:itemName="item.name"
-					:schoolName="item.school"
-					:fileUrl="item.filepath?.url"
-					:order="index + 1"
-					:isDeleteLoading="isLoading.delete"
-					@edit="reviewToEdit"
-					@delete="handleDelete"
-				/>
-				<CorrectionState
-					v-else-if="item.state === 2"
-					category="教學經歷"
-					identity="admissionApplicant"
-					:itemId="item.id"
-					:itemName="item.name"
-					:schoolName="item.school"
-					:fileUrl="item.filepath?.url"
-					:order="index + 1"
-					:isEditLoading="isLoading.edit"
-					@cancel="editToReview"
-					@correction="handleEdit"
-				/>
-				<CreateState
-					v-else-if="item.state === 3"
-					category="教學經歷"
-					identity="admissionApplicant"
-					:order="index + 1"
-					@edit="createToEdit"
-				/>
-				<EditState
-					v-else-if="item.state === 4"
-					category="教學經歷"
-					identity="admissionApplicant"
-					:isCreateLoading="isLoading.create"
-					:order="index + 1"
-					@cancel="editToCreate"
-					@create="handleCreate"
-				/>
-			</div>
-		</div>
-		<ParagraphDivider />
-
-		<!-- EXAM AND QUALIFICATION TEST SCORE -->
-		<div class="px-12px py-24px">
-			<div class="text-[24px] font-[50] font-bold">
-				{{ $t("考試與檢定分數") }}
-			</div>
-			<div v-for="(item, index) in examCertificateList" :key="index">
-				<ReviewState
-					v-if="item.state === 1"
-					category="考試與檢定分數"
-					identity="admissionApplicant"
-					:itemId="item.id"
-					:itemName="item.name"
-					:score="item.score"
-					:fileUrl="item.filepath?.url"
-					:order="index + 1"
-					:isDeleteLoading="isLoading.delete"
-					@edit="reviewToEdit"
-					@delete="handleDelete"
-				/>
-				<CorrectionState
-					v-else-if="item.state === 2"
-					category="考試與檢定分數"
-					identity="admissionApplicant"
-					:itemId="item.id"
-					:itemName="item.name"
-					:score="item.score"
-					:fileUrl="item.filepath?.url"
-					:order="index + 1"
-					:isEditLoading="isLoading.edit"
-					@cancel="editToReview"
-					@correction="handleEdit"
-				/>
-				<CreateState
-					v-else-if="item.state === 3"
-					category="考試與檢定分數"
-					identity="admissionApplicant"
-					:order="index + 1"
-					@edit="createToEdit"
-				/>
-				<EditState
-					v-else-if="item.state === 4"
-					category="考試與檢定分數"
-					identity="admissionApplicant"
-					:isCreateLoading="isLoading.create"
-					:order="index + 1"
-					@cancel="editToCreate"
-					@create="handleCreate"
-				/>
-			</div>
-		</div>
-		<ParagraphDivider />
-
-		<!-- OTHER -->
-		<div class="px-12px py-24px">
-			<div class="text-[24px] font-[50] font-bold">
-				{{ $t("其他有利於審查資料") }}
-			</div>
+		<div class="px-12px pb-24px">
 			<div v-for="(item, index) in otherList" :key="index">
+				<div
+					class="bigYellowDivider !mt-24px"
+					v-if="
+						index !== 0 &&
+						otherList[index].id === undefined &&
+						otherList[index - 1].id
+					"
+				></div>
 				<ReviewState
 					v-if="item.state === 1"
 					category="其他有利於審查資料"
@@ -125,32 +25,27 @@
 					:fileUrl="item.filepath?.url"
 					:order="index + 1"
 					:isDeleteLoading="isLoading.delete"
-					@edit="reviewToEdit"
+					:enableEdit="false"
 					@delete="handleDelete"
 				/>
-				<CorrectionState
-					v-else-if="item.state === 2"
-					category="其他有利於審查資料"
-					identity="admissionApplicant"
-					:isEditLoading="isLoading.edit"
-					:itemId="item.id"
-					:itemName="item.name"
-					:fileUrl="item.filepath?.url"
-					:order="index + 1"
-					@cancel="editToReview"
-					@correction="handleEdit"
-				/>
-				<CreateState
-					v-else-if="item.state === 3"
-					category="其他有利於審查資料"
-					identity="admissionApplicant"
-					:order="index + 1"
-					@edit="createToEdit"
-				/>
+				<div v-else-if="item.state === 3">
+					<div class="text-20px text-[#53565A] pt-24px">
+						{{ item.name }}
+					</div>
+					<div class="mt-[-16px]">
+						<CreateState
+							category="其他有利於審查資料"
+							identity="admissionApplicant"
+							:order="index + 1"
+							@edit="createToEdit"
+						/>
+					</div>
+				</div>
 				<EditState
 					v-else-if="item.state === 4"
 					category="其他有利於審查資料"
 					identity="admissionApplicant"
+					:itemName="item.name"
 					:isCreateLoading="isLoading.create"
 					:order="index + 1"
 					@cancel="editToCreate"
@@ -158,17 +53,15 @@
 				/>
 			</div>
 		</div>
+		<div class="bigYellowDivider"></div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { reactive, toRaw, onMounted, watch } from "vue";
-import { InvalidSessionError } from "@/api/error";
+import { reactive, toRaw, watch, onMounted } from "vue";
 import ReviewState from "@/components/attachmentStates/reviewState.vue";
 import EditState from "@/components/attachmentStates/editState.vue";
 import CreateState from "@/components/attachmentStates/createState.vue";
-import CorrectionState from "@/components/attachmentStates/CorrectionState.vue";
-import ParagraphDivider from "@/styles/paragraphDividerApplicant.vue";
 import {
 	AttachmentData,
 	AttachmentDetailData,
@@ -182,321 +75,191 @@ const applicantAuth = useRecruitmentApplicantAuthStore();
 const api = new RecruitmentApplicantAPI(applicantAuth);
 const project = useProjectIdStore();
 
-const attachmentList: AttachmentData[] = reactive([]);
-const teachingExpList: AttachmentDetailData[] = reactive([]);
-const examCertificateList: AttachmentDetailData[] = reactive([]);
-const otherList: AttachmentDetailData[] = reactive([]);
+let attachmentList: AttachmentData[] = reactive([]);
+let otherList: AttachmentDetailData[] = reactive([]);
+
+const requiredAttachmentName = [
+	"履歷表",
+	"學位證明（博士班為國外學位者需有駐外單位驗證章）",
+	"成績單（博士班為國外學位者，歷年成績單需有駐外單位驗證章）",
+	"著作列表",
+	"代表作及其他重要著作全文",
+	"推薦函-1",
+	"推薦函-2",
+	"其他有利於審查資料",
+	"行事曆",
+];
 
 const toast = useToast();
 
-const isLoading = reactive({
+let isLoading = reactive({
 	delete: false,
 	create: false,
 	edit: false,
 	fetch: false,
 });
 
-const fetchResponse = reactive({
+let fetchResponse = reactive({
 	success: false,
 	message: "" as string | [],
 });
 
-const editToReview = (index: number, category: string) => {
-	switch (category) {
-		case "教學經歷":
-			teachingExpList[index].state = 1;
-			break;
-		case "考試與檢定分數":
-			examCertificateList[index].state = 1;
-			break;
-		case "其他有利於審查資料":
-			otherList[index].state = 1;
-			break;
-		default:
-			break;
-	}
-};
-
-const reviewToEdit = (index: number, category: string) => {
-	switch (category) {
-		case "教學經歷":
-			teachingExpList[index].state = 2;
-			break;
-		case "考試與檢定分數":
-			examCertificateList[index].state = 2;
-			break;
-		case "其他有利於審查資料":
-			otherList[index].state = 2;
-			break;
-		default:
-			break;
-	}
-};
-
 const editToCreate = (index: number, category: string) => {
-	switch (category) {
-		case "教學經歷":
-			teachingExpList[index].state = 3;
-			break;
-		case "考試與檢定分數":
-			examCertificateList[index].state = 3;
-			break;
-		case "其他有利於審查資料":
-			otherList[index].state = 3;
-			break;
-		default:
-			break;
-	}
+	otherList[index].state = 3;
 };
 
 const createToEdit = (index: number, category: string) => {
-	switch (category) {
-		case "教學經歷":
-			teachingExpList[index].state = 4;
-			break;
-		case "考試與檢定分數":
-			examCertificateList[index].state = 4;
-			break;
-		case "其他有利於審查資料":
-			otherList[index].state = 4;
-			break;
-		default:
-			break;
-	}
-};
-
-const deleteFile = async (fileId: number) => {
-	try {
-		return await api.deleteFile(project.project.pid, fileId);
-	} catch (e: any) {
-		if (e instanceof InvalidSessionError) {
-			console.error(
-				"Session has already expired while changing password"
-			);
-			return;
-		}
-	}
-};
-
-const createFile = async (body: object) => {
-	try {
-		return await api.createFile(project.project.pid, body);
-	} catch (e: any) {
-		if (e instanceof InvalidSessionError) {
-			console.error(
-				"Session has already expired while changing password"
-			);
-			return;
-		}
-	}
-};
-
-const editFile = async (body: object, fileId: number) => {
-	try {
-		return await api.editFile(body, project.project.pid, fileId);
-	} catch (e: any) {
-		if (e instanceof InvalidSessionError) {
-			console.error(
-				"Session has already expired while changing password"
-			);
-			return;
-		}
-	}
+	otherList[index].state = 4;
 };
 
 const handleDelete = async (fileId: number) => {
 	isLoading.delete = true;
 
-	const response = deleteFile(fileId);
+	const res = await api.deleteFile(project.project.pid, fileId);
 
-	await response.then((res) => {
-		if (res?.success !== undefined && res?.message !== undefined) {
-			fetchResponse.success = toRaw(res.success);
-			fetchResponse.message = toRaw(res.message);
-		}
+	if (res?.success !== undefined && res?.message !== undefined) {
+		fetchResponse.success = toRaw(res.success);
+		fetchResponse.message = toRaw(res.message);
+	}
 
-		isLoading.delete = false;
-		isLoading.fetch = true;
+	isLoading.delete = false;
+	isLoading.fetch = true;
 
-		if (fetchResponse.success) {
-			toast.add({
-				severity: "success",
-				summary: "Success",
-				detail: fetchResponse.message,
-				life: 3000,
-			});
-		} else {
-			toast.add({
-				severity: "error",
-				summary: "Error",
-				detail: fetchResponse.message,
-				life: 5000,
-			});
-		}
+	if (fetchResponse.success) {
+		toast.add({
+			severity: "success",
+			summary: "Success",
+			detail: fetchResponse.message,
+			life: 3000,
+		});
+	} else {
+		toast.add({
+			severity: "error",
+			summary: "Error",
+			detail: fetchResponse.message,
+			life: 5000,
+		});
+	}
 
-		isLoading.fetch = true;
-	});
+	isLoading.fetch = true;
 };
 
 const handleCreate = async (body: object) => {
 	isLoading.create = true;
 
-	const response = createFile(body);
+	const res = await api.createFile(project.project.pid, body);
 
-	await response.then((res) => {
-		if (res?.success !== undefined && res?.message !== undefined) {
-			fetchResponse.success = toRaw(res.success);
-			fetchResponse.message = toRaw(res.message);
-		}
+	if (res?.success !== undefined && res?.message !== undefined) {
+		fetchResponse.success = toRaw(res.success);
+		fetchResponse.message = toRaw(res.message);
+	}
 
-		isLoading.create = false;
-		isLoading.fetch = true;
+	isLoading.create = false;
+	isLoading.fetch = true;
 
-		if (fetchResponse.success) {
-			toast.add({
-				severity: "success",
-				summary: "Success",
-				detail: fetchResponse.message,
-				life: 3000,
-			});
-		} else {
-			toast.add({
-				severity: "error",
-				summary: "Error",
-				detail: fetchResponse.message,
-				life: 5000,
-			});
-		}
+	if (fetchResponse.success) {
+		toast.add({
+			severity: "success",
+			summary: "Success",
+			detail: fetchResponse.message,
+			life: 3000,
+		});
+	} else {
+		toast.add({
+			severity: "error",
+			summary: "Error",
+			detail: fetchResponse.message,
+			life: 5000,
+		});
+	}
 
-		isLoading.fetch = true;
-	});
+	isLoading.fetch = true;
 };
 
 const handleEdit = async (body: object, fileId: number) => {
 	isLoading.edit = true;
 
-	const response = editFile(body, fileId);
+	const res = await api.editFile(body, project.project.pid, fileId);
 
-	await response.then((res) => {
-		if (res?.success !== undefined && res?.message !== undefined) {
-			fetchResponse.success = toRaw(res.success);
-			fetchResponse.message = toRaw(res.message);
-		}
+	if (res?.success !== undefined && res?.message !== undefined) {
+		fetchResponse.success = toRaw(res.success);
+		fetchResponse.message = toRaw(res.message);
+	}
 
-		isLoading.edit = false;
-		isLoading.fetch = true;
+	isLoading.edit = false;
+	isLoading.fetch = true;
 
-		if (fetchResponse.success) {
-			toast.add({
-				severity: "success",
-				summary: "Success",
-				detail: fetchResponse.message,
-				life: 3000,
-			});
-		} else {
-			toast.add({
-				severity: "error",
-				summary: "Error",
-				detail: fetchResponse.message,
-				life: 5000,
-			});
-		}
+	if (fetchResponse.success) {
+		toast.add({
+			severity: "success",
+			summary: "Success",
+			detail: fetchResponse.message,
+			life: 3000,
+		});
+	} else {
+		toast.add({
+			severity: "error",
+			summary: "Error",
+			detail: fetchResponse.message,
+			life: 5000,
+		});
+	}
 
-		isLoading.fetch = true;
-	});
+	isLoading.fetch = true;
 };
 
-const splitThreeList = async (fullList: AttachmentData[]) => {
+const addDetail = async (fullList: AttachmentData[]) => {
+	let itemNames: string[] = [];
+
+	requiredAttachmentName.map((item) => {
+		itemNames.push(item);
+	});
+
 	fullList.map((item) => {
-		switch (item.category) {
-			case "教學經歷": {
-				teachingExpList.push({
-					...item,
-					order: teachingExpList.length,
-					state: 1,
-				});
-				break;
-			}
-			case "考試與檢定分數": {
-				examCertificateList.push({
-					...item,
-					order: examCertificateList.length,
-					state: 1,
-				});
-				break;
-			}
-			default: {
-				otherList.push({
-					...item,
-					order: otherList.length,
-					state: 1,
-				});
-			}
+		otherList.push({
+			...item,
+			order: otherList.length,
+			state: 1,
+		});
+
+		if (itemNames.includes(item.name)) {
+			const index = itemNames.indexOf(item.name);
+			itemNames.splice(index, 1);
 		}
 	});
 
-	teachingExpList.push({
-		order: teachingExpList.length,
-		state: 3,
-	});
-
-	examCertificateList.push({
-		order: examCertificateList.length,
-		state: 3,
-	});
-
-	otherList.push({
-		order: otherList.length,
-		state: 3,
+	itemNames.map((item) => {
+		otherList.push({
+			name: item,
+			order: otherList.length,
+			state: 3,
+		});
 	});
 };
 
 const clearAllList = () => {
 	attachmentList.splice(0, attachmentList.length);
-	teachingExpList.splice(0, teachingExpList.length);
-	examCertificateList.splice(0, examCertificateList.length);
 	otherList.splice(0, otherList.length);
 };
 
-const getFileList = async () => {
-	return await api.getFileList(project.project.pid);
-};
-
 onMounted(async () => {
-	const response = getFileList();
-	await response.then((res) => {
-		if (Object.keys(res).length) {
-			res.map((item) => {
-				if (item) {
-					attachmentList.push(item);
-				}
-			});
-		}
-	});
+	const res = await api.getFileList(project.project.pid);
 
-	splitThreeList(toRaw(attachmentList));
+	clearAllList();
+	attachmentList = [...attachmentList, ...res];
+	addDetail(toRaw(attachmentList));
 });
 
 watch(
 	() => isLoading.fetch,
 	async () => {
-		const response = getFileList();
-
 		clearAllList();
 
-		await response.then((res) => {
-			if (Object.keys(res).length) {
-				res.map((item) => {
-					if (item) {
-						attachmentList.push(item);
-					}
-				});
-			}
-		});
+		const res = await api.getFileList(project.project.pid);
 
+		if (res) attachmentList = [...attachmentList, ...res];
 		isLoading.fetch = false;
-
-		splitThreeList(toRaw(attachmentList));
+		addDetail(toRaw(attachmentList));
 	}
 );
 </script>

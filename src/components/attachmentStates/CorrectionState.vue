@@ -1,7 +1,4 @@
 <template>
-	<div class="mt-16px pt-16px text-20px text-[#53565A]">
-		{{ $t(props.category) }}{{ " - " }}{{ props.order }}
-	</div>
 	<div :class="dynamicClass()">
 		<div class="p-[12px] w-9/10">
 			<Dialog
@@ -174,7 +171,6 @@ import { ref, reactive } from "vue";
 import Button from "primevue/button";
 import InputText from "primevue/inputtext";
 import InputNumber from "primevue/inputnumber";
-import FileUpload from "primevue/fileupload";
 import Dialog from "primevue/dialog";
 import "primeicons/primeicons.css";
 
@@ -193,7 +189,7 @@ const props = defineProps([
 const name = ref(props.itemName);
 const schoolName = ref(props.schoolName);
 const score = ref(props.score);
-const file = reactive({
+let file = reactive({
 	fileUrl: "",
 	name: "",
 	size: 0,
@@ -255,14 +251,14 @@ const handleEdit = () => {
 
 <style setup lang="css">
 .admissionManagerEditState {
-	margin-top: 8px;
+	margin-top: 24px;
 	border: 1px solid #874b52;
 	border-radius: 8px;
 	display: flex;
 }
 
 .admissionApplicantEditState {
-	margin-top: 8px;
+	margin-top: 24px;
 	border: 1px solid #736028;
 	border-radius: 8px;
 	display: flex;

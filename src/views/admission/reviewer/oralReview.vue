@@ -1,132 +1,173 @@
 <template>
-	<div>
-		<div class="flex">
-			<h1 class="text-4xl text-bold tracking-widest">
-				{{ $t("口試資料評閱") }}
-			</h1>
-			<div class="w-134px h-25px bg-[#FCC89B] rounded-lg ml-24px mt-8px">
-				<div class="mt-4px text-xs text-center">
-					{{ $t("開放時段") }} | {{ $t("評分中") }}
+	<Layout Reviewer noMargin>
+		<template #Header>
+			<div flex="~ gap-6">
+				<div>{{ $t("口試資料評閱") }}</div>
+				<div
+					text="sm body"
+					font="normal"
+					class="!tracking-normal mt-auto"
+				>
+					{{ $t("開放時間") }} : {{ reviewStartTime }} -
+					{{ reviewEndTime }}
 				</div>
 			</div>
-			<!-- FIXME: program opening time must be got by using API -->
-			<div class="mt-20px ml-600px">
-				{{ $t("開放時間") }} : 09/29 00:00 - 10/30 23:59
-			</div>
-		</div>
-
-		<div class="bigBlueDivider"></div>
-		<div>
+		</template>
+		<template #Body>
 			<DataTable
-				:value="data_list"
+				:value="ApplicantList"
 				responsiveLayout="scroll"
 				dataKey="id"
 				:scrollable="true"
 				v-model:selection="selectedData"
 				selectionMode="single"
 				@rowSelect="onRowSelect"
-				class="p-datatable-lg"
+				class="!h-full"
 			>
 				<ColumnGroup type="header">
 					<Row>
-						<Column field="id" :header="ID" :rowspan="2"></Column>
-						<Column
-							field="name"
-							:header="applicantName"
-							:rowspan="2"
-						></Column>
-						<Column :header="reviewerGrade" :colspan="3" />
-						<Column
-							field="total_score"
-							:header="totalscore"
-							:rowspan="2"
-						></Column>
-						<Column
-							field="access"
-							dataType="boolean"
-							bodyClass="text-center"
-							style="min-width: 8rem"
-							:rowspan="2"
-						>
-							<template #body="slotProps">
-								<i
-									v-if="slotProps.data.access"
-									class="pi pi-check"
-								></i>
-								<p v-else>-</p>
-							</template>
-						</Column>
-						<Column
-							field="access_reason"
-							:header="reason"
-							:rowspan="2"
-						></Column>
+						<Column :header="oralOrder" :rowspan="2"></Column>
+						<Column :header="applicantName" :rowspan="2"></Column>
+						<Column :header="reviewerGrade" :colspan="scoreCount" />
+						<Column :header="OralGrade" :rowspan="2"></Column>
+						<Column :header="docGrade" :rowspan="2"></Column>
+						<Column :header="totalscore" :rowspan="2"></Column>
 					</Row>
 					<Row>
 						<Column
-							field="score_1"
-							:header="learningEx"
+							v-if="score1Proportion > 0"
+							:header="score1FieldName"
 							:colspan="1"
 						/>
 						<Column
-							field="score_2"
-							:header="devPotential"
+							v-if="score2Proportion > 0"
+							:header="score2FieldName"
 							:colspan="1"
 						/>
 						<Column
-							field="score_3"
-							:header="learnPotential"
+							v-if="score3Proportion > 0"
+							:header="score3FieldName"
+							:colspan="1"
+						/>
+						<Column
+							v-if="score4Proportion > 0"
+							:header="score4FieldName"
+							:colspan="1"
+						/>
+						<Column
+							v-if="score5Proportion > 0"
+							:header="score5FieldName"
 							:colspan="1"
 						/>
 					</Row>
 				</ColumnGroup>
-				<Column field="id" :header="ID"></Column>
-				<Column field="name" :header="applicantName"></Column>
-				<Column field="score_1" :header="learningEx" />
-				<Column field="score_2" :header="devPotential" />
-				<Column field="score_3" :header="learnPotential" />
-				<Column field="total_score" :header="totalscore"></Column>
-				<Column
-					field="access"
+				<div v-if="true">
+					<Column field="oral_order"></Column>
+					<Column field="name"></Column>
+					<Column v-if="score1Proportion > 0" field="oral_grade_1" />
+					<Column v-if="score2Proportion > 0" field="oral_grade_2" />
+					<Column v-if="score3Proportion > 0" field="oral_grade_3" />
+					<Column v-if="score4Proportion > 0" field="oral_grade_4" />
+					<Column v-if="score5Proportion > 0" field="oral_grade_5" />
+					<!-- oral grade -->
+					<Column>
+						<template #body="slotProps">
+							{{
+								(slotProps.data.oral_grade_1 *
+									score1Proportion +
+									slotProps.data.oral_grade_2 *
+										score2Proportion +
+									slotProps.data.oral_grade_3 *
+										score3Proportion +
+									slotProps.data.oral_grade_4 *
+										score4Proportion +
+									slotProps.data.oral_grade_5 *
+										score5Proportion) /
+								100
+							}}
+						</template>
+					</Column>
+					<!-- docs grade -->
+					<Column>
+						<template #body="slotProps">
+							{{
+								(slotProps.data.docs_grade_1 *
+									docsScore1Proportion +
+									slotProps.data.docs_grade_2 *
+										docsScore2Proportion +
+									slotProps.data.docs_grade_3 *
+										docsScore3Proportion +
+									slotProps.data.docs_grade_4 *
+										docsScore4Proportion +
+									slotProps.data.docs_grade_5 *
+										docsScore5Proportion) /
+								100
+							}}
+						</template>
+					</Column>
+					<!-- total grade -->
+					<Column>
+						<template #body="slotProps">
+							{{
+								((slotProps.data.oral_grade_1 *
+									score1Proportion +
+									slotProps.data.oral_grade_2 *
+										score2Proportion +
+									slotProps.data.oral_grade_3 *
+										score3Proportion +
+									slotProps.data.oral_grade_4 *
+										score4Proportion +
+									slotProps.data.oral_grade_5 *
+										score5Proportion) *
+									oralWeight +
+									(slotProps.data.docs_grade_1 *
+										docsScore1Proportion +
+										slotProps.data.docs_grade_2 *
+											docsScore2Proportion +
+										slotProps.data.docs_grade_3 *
+											docsScore3Proportion +
+										slotProps.data.docs_grade_4 *
+											docsScore4Proportion +
+										slotProps.data.docs_grade_5 *
+											docsScore5Proportion) *
+										docsWeight) /
+								10000
+							}}
+						</template>
+					</Column>
+					<!-- <Column
+					field="isImmediateEnroll"
 					dataType="boolean"
 					bodyClass="text-center"
 					style="min-width: 8rem"
 				>
 					<template #body="slotProps">
-						<i v-if="slotProps.data.access" class="pi pi-check"></i>
+						<i
+							v-if="slotProps.data.isImmediateEnroll"
+							class="pi pi-check"
+						></i>
 						<p v-else>-</p>
 					</template>
-				</Column>
-				<Column field="access_reason" :header="reason"></Column>
-			</DataTable>
-			<div class="bigBlueDivider !mt-50px"></div>
-			<div class="flex text-xl mt-20px">
-				<div>
-					{{ $t("評分進度") }}
+				</Column> -->
 				</div>
-
-				<ProgressBar
-					:value="progressValue"
-					:showValue="false"
-					class="!w-439px ml-24px mt-5px"
-				/>
-				<!-- FIXME: program amount of people must be got by using API -->
-				<div class="ml-24px">17 / 32 {{ $t("位") }}</div>
-
-				<Button class="w-140px h-44px !ml-480px p-button-success">
-					<img
-						alt="logo"
-						src="/assets/reviewer-page/Add_round.png"
-						style="width: 1.5rem"
-						class="fill-green-500"
-					/>
-					<span class="tracking-1px">{{ $t("送出成績") }}</span>
-				</Button>
-			</div>
-			<div class="ml-860px mt-12px text-red-500">
+			</DataTable>
+		</template>
+		<template #Footer>
+			<NButton
+				type="Reviewer"
+				class="h-11 min-w-36 px-2 mx-auto bg-white"
+				icon="pi pi-upload"
+				@click="confirmGrading"
+			>
+				<span class="tracking-1px">{{ $t("送出成績") }}</span>
+			</NButton>
+			<div pos="absolute bottom-0 right-0" w="4/9" text="sm danger right">
 				{{ $t("※成績送出即無法再次修改，煩請送出前再三確認成績無誤") }}
 			</div>
-		</div>
+		</template>
+	</Layout>
+	<div>
+		<ConfirmDialog :draggable="false" />
 	</div>
 </template>
 
@@ -135,140 +176,242 @@ import "@/styles/customize.css";
 import "primeicons/primeicons.css";
 import { computed, ref } from "vue";
 import DataTable from "primevue/datatable";
+import Layout from "@/components/Layout.vue";
 import Column from "primevue/column";
 import ColumnGroup from "primevue/columngroup";
 import Row from "primevue/row";
-import Button from "primevue/button";
-import ProgressBar from "primevue/progressbar";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { useAdmissionReviewerAuthStore } from "@/stores/universalAuth";
 import { AdmissionReviewerAPI } from "@/api/admission/reviewer/api";
-// import { useQuery } from "@tanstack/vue-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
+import { InvalidSessionError } from "@/api/error";
+import { useGlobalStore } from "@/stores/AdmissionReviewerStore";
+import { useToast } from "primevue/usetoast";
+import NButton from "@/styles/CustomButton.vue";
+import ConfirmDialog from "primevue/confirmdialog";
+import { useConfirm } from "primevue/useconfirm";
 
 const reviewerAuth = useAdmissionReviewerAuthStore();
 const api = new AdmissionReviewerAPI(reviewerAuth);
+const store = useGlobalStore();
 
+const { t: $t } = useI18n();
 const { t } = useI18n();
 
-const progressValue = ref(50);
+const totalApplicant = ref(0);
+const applicantGraded = ref(0);
+const progressValue = ref(0);
+// const alist = ref([]);
 
-// TODO: 連接API
-const data_list = ref([
-	{
-		id: "1000",
-		name: "Aaa",
-		score_1: 25,
-		score_2: 25,
-		score_3: 30,
-		total_score: 80,
-		access: false,
-		access_reason: "",
+const {
+	isLoading,
+	isError,
+	data: ApplicantList,
+	error,
+} = useQuery(
+	["admissionReviewerApplicantList"],
+	async () => {
+		return await api.getApplicantList(store.admissionReviewerProgram!.id!);
 	},
 	{
-		id: "1001",
-		name: "Bbb",
-		score_1: 25,
-		score_2: 25,
-		score_3: 30,
-		total_score: 80,
-		access: false,
-		access_reason: "",
+		onSuccess: (data) => {
+			totalApplicant.value = data!.length;
+			applicantGraded.value = 0;
+			data!.forEach((applicant) => {
+				if (applicant.isDocsGraded) {
+					applicantGraded.value += 1;
+				}
+			});
+			progressValue.value =
+				(applicantGraded.value / totalApplicant.value) * 100;
+		},
+	}
+);
+
+const docsWeight = ref(0);
+const oralWeight = ref(0);
+const score1Proportion = ref(0);
+const score2Proportion = ref(0);
+const score3Proportion = ref(0);
+const score4Proportion = ref(0);
+const score5Proportion = ref(0);
+const docsScore1Proportion = ref(0);
+const docsScore2Proportion = ref(0);
+const docsScore3Proportion = ref(0);
+const docsScore4Proportion = ref(0);
+const docsScore5Proportion = ref(0);
+const score1Title = ref("");
+const score2Title = ref("");
+const score3Title = ref("");
+const score4Title = ref("");
+const score5Title = ref("");
+const score1FieldName = ref("");
+const score2FieldName = ref("");
+const score3FieldName = ref("");
+const score4FieldName = ref("");
+const score5FieldName = ref("");
+const scoreCount = ref(0);
+
+const { data: programGrading } = useQuery(
+	["programGrading"],
+	async () => {
+		return await api.getProgramGrading(store.admissionReviewerProgram!.id);
 	},
 	{
-		id: "1002",
-		name: "Ccc",
-		score_1: 25,
-		score_2: 25,
-		score_3: 30,
-		total_score: 80,
-		access: true,
-		access_reason: "great student",
+		onSuccess: (data) => {
+			score1Title.value = data!.oral_grade_name_1;
+			score2Title.value = data!.oral_grade_name_2;
+			score3Title.value = data!.oral_grade_name_3;
+			if (data!.oral_grade_name_4) {
+				score4Title.value = data!.oral_grade_name_4;
+			}
+			if (data!.oral_grade_name_5) {
+				score5Title.value = data!.oral_grade_name_5;
+			}
+			scoreCount.value = 0;
+			if (data!.oral_grade_weight_1 !== 0) {
+				score1Proportion.value = data!.oral_grade_weight_1!;
+				scoreCount.value++;
+			}
+			if (data!.oral_grade_weight_2 !== 0) {
+				score2Proportion.value = data!.oral_grade_weight_2!;
+				scoreCount.value++;
+			}
+			if (data!.oral_grade_weight_3 !== 0) {
+				score3Proportion.value = data!.oral_grade_weight_3!;
+				scoreCount.value++;
+			}
+			if (data!.oral_grade_weight_4 !== 0) {
+				score4Proportion.value = data!.oral_grade_weight_4!;
+				scoreCount.value++;
+			}
+			if (data!.oral_grade_weight_5 !== 0) {
+				score5Proportion.value = data!.oral_grade_weight_5!;
+				scoreCount.value++;
+			}
+			score1FieldName.value =
+				score1Title.value + score1Proportion.value + "%";
+			score2FieldName.value =
+				score2Title.value + score2Proportion.value + "%";
+			score3FieldName.value =
+				score3Title.value + score3Proportion.value + "%";
+			if (data!.oral_grade_name_4) {
+				score4FieldName.value =
+					score4Title.value + score4Proportion.value + "%";
+			}
+			if (data!.oral_grade_name_5) {
+				score5FieldName.value =
+					score5Title.value + score5Proportion.value + "%";
+			}
+
+			//doc propotion
+			if (data!.docs_grade_weight_1 !== 0) {
+				docsScore1Proportion.value = data!.docs_grade_weight_1!;
+			}
+			if (data!.docs_grade_weight_2 !== 0) {
+				docsScore2Proportion.value = data!.docs_grade_weight_2!;
+			}
+			if (data!.docs_grade_weight_3 !== 0) {
+				docsScore3Proportion.value = data!.docs_grade_weight_3!;
+			}
+			if (data!.docs_grade_weight_4 !== 0) {
+				docsScore4Proportion.value = data!.docs_grade_weight_4!;
+			}
+			if (data!.docs_grade_weight_5 !== 0) {
+				docsScore5Proportion.value = data!.docs_grade_weight_5!;
+			}
+
+			docsWeight.value = data!.docs_weight;
+			oralWeight.value = data!.oral_weight;
+		},
+	}
+);
+
+const toast = useToast();
+const oralGrade = useMutation(
+	["oralGrade"],
+	async () => {
+		return await api.submitOralGrade(store.admissionReviewerProgram!.id);
 	},
 	{
-		id: "1003",
-		name: "Ddd",
-		score_1: 25,
-		score_2: 25,
-		score_3: 30,
-		total_score: 80,
-		access: false,
-		access_reason: "",
+		onSuccess: () => {
+			toast.add({
+				severity: "success",
+				summary: $t("送出成功"),
+				detail: $t("送出成功"),
+				life: 3000,
+			});
+		},
+		onError: () => {
+			toast.add({
+				severity: "error",
+				summary: $t("送出失敗"),
+				detail: $t("送出失敗"),
+				life: 3000,
+			});
+		},
+	}
+);
+
+const reviewStartTime = ref("");
+const reviewEndTime = ref("");
+const isBetweenDate = ref("非開放時段");
+const { data: programs } = useQuery(
+	["admissionReviewerProgramList"],
+	async () => {
+		return await api.getProgramList();
 	},
 	{
-		id: "1004",
-		name: "Eee",
-		score_1: 25,
-		score_2: 25,
-		score_3: 30,
-		total_score: 80,
-		access: true,
-		access_reason: "nice",
-	},
-	{
-		id: "1005",
-		name: "fff",
-		score_1: 25,
-		score_2: 25,
-		score_3: 30,
-		total_score: 80,
-		access: false,
-		access_reason: "",
-	},
-	{
-		id: "1006",
-		name: "Ggg",
-		score_1: 25,
-		score_2: 25,
-		score_3: 30,
-		total_score: 80,
-		access: false,
-		access_reason: "",
-	},
-	{
-		id: "1007",
-		name: "Hhh",
-		score_1: 25,
-		score_2: 25,
-		score_3: 30,
-		total_score: 80,
-		access: false,
-		access_reason: "",
-	},
-	{
-		id: "1008",
-		name: "Iii",
-		score_1: 25,
-		score_2: 25,
-		score_3: 30,
-		total_score: 80,
-		access: false,
-		access_reason: "",
-	},
-	{
-		id: "1009",
-		name: "Jjj",
-		score_1: 25,
-		score_2: 25,
-		score_3: 30,
-		total_score: 80,
-		access: false,
-		access_reason: "",
-	},
-	{
-		id: "1010",
-		name: "Kkk",
-		score_1: 25,
-		score_2: 25,
-		score_3: 30,
-		total_score: 80,
-		access: false,
-		access_reason: "",
-	},
-]);
+		onSuccess: (data) => {
+			const today = new Date();
+			reviewStartTime.value = data!.filter(
+				(program) => program.id === store.admissionReviewerProgram?.id
+			)[0].review_start_date!;
+			reviewStartTime.value =
+				reviewStartTime.value.slice(5, 7) +
+				"/" +
+				reviewStartTime.value.slice(8, 10) +
+				" " +
+				reviewStartTime.value.slice(11, 16);
+			reviewEndTime.value = data!.filter(
+				(program) => program.id === store.admissionReviewerProgram?.id
+			)[0].review_end_date!;
+			reviewEndTime.value =
+				reviewEndTime.value.slice(5, 7) +
+				"/" +
+				reviewEndTime.value.slice(8, 10) +
+				" " +
+				reviewEndTime.value.slice(11, 16);
+			if (
+				today >=
+					new Date(
+						data!.filter(
+							(program) =>
+								program.id ===
+								store.admissionReviewerProgram?.id
+						)[0].review_start_date!
+					) &&
+				today <=
+					new Date(
+						data!.filter(
+							(program) =>
+								program.id ===
+								store.admissionReviewerProgram?.id
+						)[0].review_end_date!
+					)
+			) {
+				isBetweenDate.value = "開放時段";
+			}
+		},
+	}
+);
 
 // FIXME: logic may refactor
 
+const oralOrder = computed(() => t("口試順序"));
+const docGrade = computed(() => t("書面分數") + docsWeight.value + "%");
+const OralGrade = computed(() => t("口試分數") + oralWeight.value + "%");
 const ID = computed(() => t("帳號ID"));
 const applicantName = computed(() => t("申請人姓名"));
 const reviewerGrade = computed(() => t("評分分數"));
@@ -276,28 +419,42 @@ const learningExT = computed(() => t("學習歷程"));
 const devPotentialT = computed(() => t("發展潛能"));
 const learnPotentialT = computed(() => t("學習潛力"));
 const totalscore = computed(() => t("分數合計"));
-const reason = computed(() => t("逕取理由"));
-
-const learningExProportion = ref(30);
-const devPotentialProportion = ref(30);
-const learnPotentialProportion = ref(40);
-
-const learningEx = computed(() => {
-	return learningExT.value + learningExProportion.value + "%";
-});
-
-const devPotential = computed(() => {
-	return devPotentialT.value + devPotentialProportion.value + "%";
-});
-
-const learnPotential = computed(() => {
-	return learnPotentialT.value + learnPotentialProportion.value + "%";
-});
+// const reason = computed(() => t("逕取理由"));
+const confirm = computed(() => t("確認"));
+const cancel = computed(() => t("取消"));
+// const directAccess = computed(() => t("逕取"));
 
 const selectedData = ref();
 const router = useRouter();
 const onRowSelect = (event: any) => {
-	selectedData.value = "";
-	router.push("/admission/reviewer/singleOralReview/" + event.data.id);
+	if (event.data.oral_order) {
+		router.push("/admission/reviewer/singleOralReview/" + event.data.id);
+	}
+	// else{
+	// 	toast.add("");
+	// }
+};
+const queryClient = useQueryClient();
+store.$subscribe(() => {
+	queryClient.invalidateQueries({
+		queryKey: ["admissionReviewerApplicantList"],
+	});
+	queryClient.invalidateQueries({ queryKey: ["programGrading"] });
+	queryClient.invalidateQueries({
+		queryKey: ["admissionReviewerProgramList"],
+	});
+});
+const confirm1 = useConfirm();
+const confirmGrading = () => {
+	confirm1.require({
+		header: $t("是否要刪除此專案？"),
+		message: $t("此動作不可回復，請謹慎操作"),
+		icon: "pi pi-exclamation-triangle",
+		accept: () => {
+			oralGrade.mutate();
+		},
+		acceptLabel: $t("確認"),
+		rejectLabel: $t("取消"),
+	});
 };
 </script>

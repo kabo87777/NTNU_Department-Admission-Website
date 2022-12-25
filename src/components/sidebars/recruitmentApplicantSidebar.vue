@@ -5,16 +5,19 @@
 			<div class="sidebarVerticalSmallYellowDivider mt-32px"></div>
 			<div class="mt-32px ml-12px w-[100%]">
 				<div class="sidebarTitleBar">
-					{{
-						$t("sidebarTitleYear", {
-							year: currentYear,
-							roc: rocYear,
-						}) +
-						$t(project.project.category) +
-						$t("sidebarTitleGroup", {
-							group: project.project.name["0"],
-						})
-					}}
+					<div v-if="project.project.pid">
+						{{
+							$t("sidebarTitleYear", {
+								year: currentYear,
+								roc: rocYear,
+							}) +
+							$t(project.project.category) +
+							$t("sidebarTitleGroup", {
+								group: project.project.name["0"],
+							})
+						}}
+					</div>
+					<div v-else>{{ $t("暫無專案") }}</div>
 				</div>
 			</div>
 		</div>
@@ -44,13 +47,6 @@
 				>
 					{{ $t("基本資料") }}
 				</span>
-				<!-- <div class="mb-28px">
-					<CompletedTag v-if="tags.basicInfo === 'completed'" />
-					<IncompleteTag
-						v-else-if="tags.basicInfo === 'incompleted'"
-					/>
-					<UnableTag v-else-if="tags.basicInfo === 'unable'" />
-				</div> -->
 			</Button>
 		</router-link>
 
@@ -72,13 +68,6 @@
 				>
 					{{ $t("附件資料") }}
 				</span>
-				<!-- <div class="mb-28px">
-					<CompletedTag v-if="tags.attachment === 'completed'" />
-					<IncompleteTag
-						v-else-if="tags.attachment === 'incomplete'"
-					/>
-					<UnableTag v-else-if="tags.attachment === 'unable'" />
-				</div> -->
 			</Button>
 		</router-link>
 
@@ -107,13 +96,6 @@
 				>
 					{{ $t("補交文件系統") }}
 				</span>
-				<!-- <div class="mb-28px">
-					<CompletedTag v-if="tags.additionalDocs === 'completed'" />
-					<IncompleteTag
-						v-else-if="tags.additionalDocs === 'incomplete'"
-					/>
-					<UnableTag v-else-if="tags.additionalDocs === 'unable'" />
-				</div> -->
 			</Button>
 		</router-link>
 
@@ -136,7 +118,7 @@
 				>
 					<template #header>
 						<div class="font-bold text-[24px]">
-							{{ $t("確認送出") }}
+							{{ $t("注意") }}
 						</div>
 					</template>
 					<template #default>
@@ -177,6 +159,7 @@
 							iconClass="text-[#53565A]"
 							:label="$t('確認')"
 							:loading="isLoading"
+							@click="sendConfirmation"
 						/>
 					</template>
 				</Dialog>
@@ -211,6 +194,7 @@
 					</div>
 					<div class="ml-12px">
 						<Button
+							v-if="project.project.pid"
 							class="p-button-secondary p-button-outlined"
 							style="height: 40px; border: 2px solid #736028"
 							@click="isModalVisible = true"
@@ -235,17 +219,18 @@
 					style="
 						background-color: #8a7b27;
 						border-radius: 50%;
-						width: 32px;
-						height: 32px;
-						margin-left: 18px;
+						width: 40px;
+						height: 40px;
+						margin-top: -4px;
+						margin-left: 16px;
 					"
 				>
 					<i
 						class="pi pi-user ml-6.5px mt-8px"
-						style="font-size: 1.2rem"
+						style="font-size: 1.7rem"
 					/>
 				</div>
-				<div class="mt-[-4px] ml-16px">
+				<div class="mt-[-4px] ml-12px">
 					<div
 						class="text-[14px] font-[500] font-bold text-[#736028]"
 					>
@@ -254,7 +239,7 @@
 					<div
 						class="text-[16px] font-[500] font-bold mt-[8px] tracking-wider"
 					>
-						{{ applicantName }}
+						{{ applicantStore.userInfo.name }}
 					</div>
 				</div>
 				<div class="absolute right-[0] mt-[-8px]">
@@ -296,47 +281,71 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from "vue";
+import { reactive, ref, toRaw } from "vue";
+import { useRouter } from "vue-router";
 import { useRecruitmentApplicantAuthStore } from "@/stores/universalAuth";
 import { RecruitmentApplicantAPI } from "@/api/recruitment/applicant/api";
-import {
-	useProjectIdStore,
-	useUserInfoStore,
-} from "@/stores/RecruitmentApplicantStore";
+import { useProjectIdStore } from "@/stores/RecruitmentApplicantStore";
+import { useUserInfoStore } from "@/stores/RecruitmentApplicantStore";
 import { useI18n } from "vue-i18n";
-import { Tags } from "@/api/recruitment/applicant/types";
+import { useToast } from "primevue/usetoast";
 import "primeicons/primeicons.css";
 import "primevue/resources/primevue.min.css";
 import Button from "primevue/button";
-import UnableTag from "@/styles/tags/unableTag.vue";
-import CompletedTag from "@/styles/tags/completedTag.vue";
-import IncompleteTag from "@/styles/tags/incompleteTag.vue";
-import { useRouter } from "vue-router";
 import Dialog from "primevue/dialog";
 import "primeicons/primeicons.css";
+import "@/styles/customize.css";
 
 const { t } = useI18n();
+const toast = useToast();
 const router = useRouter();
 const applicantStore = useUserInfoStore();
+
 const project = useProjectIdStore();
-const applicantName = window.localStorage.getItem(
-	"RecruitmentApplicantUsername"
-);
 const currentYear = new Date().getFullYear();
 const rocYear = currentYear - 1911;
-
-const tags: Tags = reactive({
-	basicInfo: "completed",
-	attachment: "incomplete",
-	additionalDocs: "unable",
-	submitConfirm: "incomplete",
-});
 
 const applicantAuth = useRecruitmentApplicantAuthStore();
 const api = new RecruitmentApplicantAPI(applicantAuth);
 
 const isModalVisible = ref(false);
 const isLoading = ref(false);
+
+let fetchResponse = reactive({
+	success: false,
+	message: "" as string | [],
+});
+
+const sendConfirmation = async () => {
+	isLoading.value = true;
+
+	const res = await api.sendConfirmation(project.project.pid);
+
+	if (res?.success !== undefined && res?.message !== undefined) {
+		fetchResponse.success = toRaw(res.success);
+		fetchResponse.message = toRaw(res.message);
+	}
+
+	isLoading.value = false;
+	isModalVisible.value = false;
+
+	if (fetchResponse.success) {
+		toast.add({
+			severity: "success",
+			summary: "Success",
+			detail: fetchResponse.message,
+			life: 3000,
+		});
+		router.push("/recruitment/applicant/switchProject");
+	} else {
+		toast.add({
+			severity: "error",
+			summary: "Error",
+			detail: fetchResponse.message,
+			life: 5000,
+		});
+	}
+};
 
 async function signOut() {
 	await api.invalidateSession();

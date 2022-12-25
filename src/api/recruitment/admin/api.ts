@@ -4,9 +4,20 @@ import type {
 	RecruitmentAdminApplicantListResponse,
 	RecruitmentAdminApplicantsListResponse,
 	RecruitmentAdminChangePassResponse,
+	RecruitmentAdminCreateReviewerRequest,
 	RecruitmentAdminProgramListResponse,
+	RecruitmentAdminReviewersListResponse,
+	RecruitmentAdminApplicantListWithDetailResponse,
+	RecruitmentAdminSingleApplicantWithDetailResponse,
+	RecruitmentAdminApplicantResponse,
+	RecruitmentAdminGetApplicantAttachmentList,
+	RecruimentAdminGetApplicantMoredocResponses,
+	RecruitmentAdminGenericStatusResponse,
+	RecruitmentAdminReviewersListResponseWithDetail,
+	RAdminChangePasswordRequest,
 } from "./types";
 import type { APIGenericResponse } from "@/api/types";
+import { Ref } from "vue";
 
 export class RecruitmentAdminAPI extends GenericAPI {
 	constructor(auth: AuthStore) {
@@ -17,7 +28,6 @@ export class RecruitmentAdminAPI extends GenericAPI {
 		pid: number
 	): Promise<RecruitmentAdminApplicantListResponse[]> {
 		const data: APIGenericResponse = await this.instance.get(
-			// @PT FIXME: This should not be hardcode
 			`/recruitment/admin/program/${pid}/file`
 		);
 
@@ -27,7 +37,6 @@ export class RecruitmentAdminAPI extends GenericAPI {
 		return data.data;
 	}
 
-	// TODO: disannotation while backend finished admin get program API
 	async getProgramList(): Promise<RecruitmentAdminProgramListResponse[]> {
 		const data: APIGenericResponse = await this.instance.get(
 			"/recruitment/admin/program"
@@ -71,22 +80,18 @@ export class RecruitmentAdminAPI extends GenericAPI {
 	}
 
 	async changePassword(
-		body: object
+		body: RAdminChangePasswordRequest
 	): Promise<RecruitmentAdminChangePassResponse> {
-		const data: APIGenericResponse = await this.instance.patch(
+		const response: APIGenericResponse = await this.instance.patch(
 			"/recruitment/auth/admin/password",
 			body
 		);
-		if (data.error !== false) {
-			return {
-				success: false,
-				message: data.message.full_messages,
-			};
+		if (response.error === true) {
+			const msg = response.message.full_messages.join("\n");
+			throw new Error(msg);
 		}
-		return {
-			success: true,
-			message: data.message,
-		};
+
+		return response;
 	}
 
 	async getApplicantList(
@@ -100,6 +105,101 @@ export class RecruitmentAdminAPI extends GenericAPI {
 		return data.data.applicants;
 	}
 
+	async getApplicantBasicInfo(
+		programID: number,
+		userId: number
+	): Promise<RecruitmentAdminApplicantResponse> {
+		const data: APIGenericResponse = await this.instance.get(
+			`/recruitment/admin/program/${programID}/applicant/${userId}/info`
+		);
+		if (data.error === true)
+			throw new Error("Failed to fetch appplicant info");
+
+		return data.data;
+	}
+
+	async getApplicantFileList(
+		programID: number,
+		userId: number
+	): Promise<RecruitmentAdminGetApplicantAttachmentList[]> {
+		const data: APIGenericResponse = await this.instance.get(
+			`/recruitment/admin/program/${programID}/applicant/${userId}/file`
+		);
+		if (data.error === true)
+			throw new Error("Failed to fetch applicant attachment");
+
+		return data.data;
+	}
+
+	async downloadApplicantFile(
+		programID: number,
+		applicantID: number,
+		fileId: number
+	): Promise<Blob> {
+		return await this.instance.get(
+			`recruitment/admin/program/${programID}/applicant/${applicantID}/file/${fileId}/getfile`,
+			{ responseType: "blob" }
+		);
+	}
+
+	async getApplicantMoreDocRes(
+		programID: number,
+		userId: number
+	): Promise<RecruimentAdminGetApplicantMoredocResponses> {
+		const data: APIGenericResponse = await this.instance.get(
+			`recruitment/admin/program/${programID}/applicant/${userId}/moredoc`
+		);
+
+		if (data.error === true)
+			throw new Error("Failed to fetch applicant more doc state");
+
+		return data.data;
+	}
+
+	async updateApplicantMoreDocState(
+		programID: number,
+		userId: number,
+		body: object
+	): Promise<RecruitmentAdminGenericStatusResponse> {
+		const data: APIGenericResponse = await this.instance.patch(
+			`recruitment/admin/program/${programID}/applicant/${userId}/moredoc`,
+			body
+		);
+
+		if (data.error !== false) {
+			return {
+				success: false,
+				message: data.message,
+			};
+		}
+
+		return {
+			success: true,
+			message: data.message,
+		};
+	}
+
+	async sendNotifyApplicantMoreDoc(
+		programId: number,
+		userId: number
+	): Promise<RecruitmentAdminGenericStatusResponse> {
+		const data: APIGenericResponse = await this.instance.get(
+			`recruitment/admin/program/${programId}/applicant/${userId}/moredoc/notify`
+		);
+
+		if (data.error !== false) {
+			return {
+				success: false,
+				message: data.message,
+			};
+		}
+
+		return {
+			success: true,
+			message: data.message,
+		};
+	}
+
 	async deleteApplicant(id: number) {
 		const response: APIGenericResponse = await this.instance.delete(
 			`/recruitment/admin/applicant/${id}`
@@ -108,5 +208,132 @@ export class RecruitmentAdminAPI extends GenericAPI {
 			throw new Error("Failed to send DEL request at deleteApplicant");
 
 		return response;
+	}
+
+	async getReviewerList(): Promise<RecruitmentAdminReviewersListResponse[]> {
+		const response: APIGenericResponse = await this.instance.get(
+			"/recruitment/admin/reviewer"
+		);
+		if (response.error === true || typeof response.data === "undefined")
+			throw new Error("Failed to GET reviewer list");
+
+		return response.data.reviewers;
+	}
+
+	async createReviewerAccount(data: RecruitmentAdminCreateReviewerRequest) {
+		const response: APIGenericResponse = await this.instance.post(
+			"/recruitment/admin/reviewer",
+			data
+		);
+
+		if (response.error === true) throw new Error(`${response.message}`);
+
+		return;
+	}
+
+	async changeReviewerAccountState(
+		id: number,
+		action: "activate" | "disable"
+	) {
+		const body = {
+			isDisabled: action === "disable" ? true : false,
+		};
+
+		const response: APIGenericResponse = await this.instance.patch(
+			`/recruitment/admin/reviewer/${id}/state`,
+			body
+		);
+
+		if (response.error === true) throw new Error(`${response.message}`);
+
+		return;
+	}
+
+	async getApplicantListWithDetail(
+		programID: number
+	): Promise<RecruitmentAdminApplicantListWithDetailResponse[]> {
+		const data: APIGenericResponse = await this.instance.get(
+			`/recruitment/admin/program/${programID}/applicant`
+		);
+
+		if (data.error === true || typeof data.data.applicants === "undefined")
+			throw new Error("Failed to fetch applicant upload list");
+
+		return data.data.applicants;
+	}
+
+	async getSingleApplicantWithDetail(
+		programID: number,
+		applicantID: number
+	): Promise<RecruitmentAdminSingleApplicantWithDetailResponse> {
+		const data: APIGenericResponse = await this.instance.get(
+			`/recruitment/admin/program/${programID}/applicant/${applicantID}/reviewstate`
+		);
+
+		if (data.error === true || typeof data.data === "undefined")
+			throw new Error("Failed to fetch applicant reviewstate");
+
+		return data.data;
+	}
+
+	async updateSingleApplicantWithDetail(
+		programID: number,
+		applicantID: number,
+		newStage: any
+	): Promise<any> {
+		const data: APIGenericResponse = await this.instance.patch(
+			`/recruitment/admin/program/${programID}/applicant/${applicantID}`,
+			newStage
+		);
+
+		if (data.error === true || typeof data.data === "undefined")
+			throw new Error("Failed to update applicant reviewstate");
+
+		if (data.error !== false) {
+			return {
+				success: false,
+				message: data.message.full_messages,
+			};
+		}
+		return {
+			success: true,
+			message: data.message,
+		};
+	}
+
+	async addApplicantToReviewer(programID: number, body: any): Promise<any> {
+		const data: APIGenericResponse = await this.instance.post(
+			`/recruitment/admin/program/${programID}/addreviewer`,
+			body
+		);
+
+		if (data.error === true)
+			throw new Error("Failed to add applicant to reviewer");
+	}
+
+	async deleteApplicantFromReviewer(
+		programID: number,
+		body: any
+	): Promise<any> {
+		const data: APIGenericResponse = await this.instance.delete(
+			`/recruitment/admin/program/${programID}/deletereviewer`,
+			{ data: body }
+		);
+
+		if (data.error === true && !data.data.errors)
+			throw new Error("Failed to delete applicant from reviewer");
+	}
+
+	async getReviewerListWithDetail(
+		programID: number
+	): Promise<RecruitmentAdminReviewersListResponseWithDetail[]> {
+		const data: APIGenericResponse = await this.instance.get(
+			`/recruitment/admin/program/${programID}/reviewer`
+		);
+
+		if (data.error === true || typeof data.data === "undefined")
+			throw new Error("Failed to fetch reviewer list");
+
+		return data.data;
 	}
 }

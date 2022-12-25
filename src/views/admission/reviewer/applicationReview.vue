@@ -1,22 +1,19 @@
 <template>
-	<div>
-		<div class="flex">
-			<h1 class="text-4xl text-bold tracking-widest">
-				{{ $t("書面資料評閱") }}
-			</h1>
-			<div class="w-134px h-25px bg-[#FCC89B] rounded-lg ml-24px mt-8px">
-				<div class="mt-4px text-xs text-center">
-					{{ isBetweenDate }} | {{ $t("評分中") }}
+	<Layout Reviewer noMargin>
+		<template #Header>
+			<div flex="~ gap-6">
+				<div>{{ $t("書面資料評閱") }}</div>
+				<div
+					text="sm body"
+					font="normal"
+					class="!tracking-normal mt-auto"
+				>
+					{{ $t("開放時間") }} : {{ reviewStartTime }} -
+					{{ reviewEndTime }}
 				</div>
 			</div>
-			<div class="mt-20px ml-600px">
-				{{ $t("開放時間") }} : {{ reviewStartTime }} -
-				{{ reviewEndTime }}
-			</div>
-		</div>
-
-		<div class="bigBlueDivider"></div>
-		<div>
+		</template>
+		<template #Body>
 			<DataTable
 				:value="applicantList"
 				responsiveLayout="scroll"
@@ -26,11 +23,10 @@
 				v-model:selection="selectedData"
 				selectionMode="single"
 				@rowSelect="onRowSelect"
-				class="p-datatable-lg !h-700px"
+				class="!h-full"
 			>
 				<ColumnGroup type="header">
 					<Row>
-						<Column :header="ID" :rowspan="2"></Column>
 						<Column :header="applicantName" :rowspan="2"></Column>
 						<Column :header="reviewerGrade" :colspan="scoreCount" />
 						<Column :header="totalscore" :rowspan="2"></Column>
@@ -52,28 +48,39 @@
 						<Column :header="reason" :rowspan="2"></Column>
 					</Row>
 					<Row>
-						<Column :header="score1FieldName" :colspan="1" />
-						<Column :header="score2FieldName" :colspan="1" />
-						<Column :header="score3FieldName" :colspan="1" />
 						<Column
-							v-if="scoreCount > 3"
+							v-if="score1Proportion > 0"
+							:header="score1FieldName"
+							:colspan="1"
+						/>
+						<Column
+							v-if="score2Proportion > 0"
+							:header="score2FieldName"
+							:colspan="1"
+						/>
+						<Column
+							v-if="score3Proportion > 0"
+							:header="score3FieldName"
+							:colspan="1"
+						/>
+						<Column
+							v-if="score4Proportion > 0"
 							:header="score4FieldName"
 							:colspan="1"
 						/>
 						<Column
-							v-if="scoreCount > 4"
+							v-if="score5Proportion > 0"
 							:header="score5FieldName"
 							:colspan="1"
 						/>
 					</Row>
 				</ColumnGroup>
-				<Column field="id"></Column>
 				<Column field="name"></Column>
-				<Column field="docs_grade_1" />
-				<Column field="docs_grade_2" />
-				<Column field="docs_grade_3" />
-				<Column v-if="scoreCount > 3" field="docs_grade_4" />
-				<Column v-if="scoreCount > 4" field="docs_grade_5" />
+				<Column v-if="score1Proportion > 0" field="docs_grade_1" />
+				<Column v-if="score2Proportion > 0" field="docs_grade_2" />
+				<Column v-if="score3Proportion > 0" field="docs_grade_3" />
+				<Column v-if="score4Proportion > 0" field="docs_grade_4" />
+				<Column v-if="score5Proportion > 0" field="docs_grade_5" />
 				<Column>
 					<template #body="slotProps">
 						{{
@@ -104,76 +111,29 @@
 						<p v-else>-</p>
 					</template>
 				</Column>
-				<Column field="immediate_enroll_comment"></Column>
-			</DataTable>
-			<div class="bigBlueDivider !mt-50px"></div>
-			<div class="flex text-xl mt-20px">
-				<div>
-					{{ $t("評分進度") }}
-				</div>
-
-				<ProgressBar
-					:value="progressValue"
-					:showValue="false"
-					class="!w-439px ml-24px mt-5px"
-				/>
-				<!-- FIXME: program amount of people must be got by using API -->
-				<div class="ml-24px">
-					{{ applicantGraded }} / {{ totalApplicant }} {{ $t("位") }}
-				</div>
-
-				<Button
-					class="w-140px h-44px !ml-480px p-button-success"
-					@click="showTemplate"
-				>
-					<img
-						alt="logo"
-						src="/assets/reviewer-page/Add_round.png"
-						style="width: 1.5rem"
-						class="fill-green-500"
-					/>
-					<span class="tracking-1px">{{ $t("送出成績") }}</span>
-				</Button>
-				<Toast position="bottom-center" group="bc" class="!w-400px">
-					<template #message="slotProps">
-						<div class="">
-							<div class="text-center">
-								<i
-									class="pi pi-exclamation-triangle"
-									style="font-size: 3rem"
-								></i>
-								<h4 class="text-2xl">
-									{{ slotProps.message.summary }}
-								</h4>
-								<p class="text-xl">
-									{{ slotProps.message.detail }}
-								</p>
-							</div>
-							<div class="flex">
-								<div class="ml-80px">
-									<Button
-										class="p-button-success"
-										:label="confirm"
-										@click="onConfirm"
-									></Button>
-								</div>
-								<div class="ml-20px">
-									<Button
-										class="p-button-secondary"
-										:label="cancel"
-										@click="onReject"
-									></Button>
-								</div>
-							</div>
-						</div>
+				<Column field="immediate_enroll_comment" dataType="string">
+					<template #body="slotProps">
+						{{ short(slotProps.data.immediate_enroll_comment) }}
 					</template>
-				</Toast>
-			</div>
-			<div class="ml-860px mt-12px text-red-500">
+				</Column>
+			</DataTable>
+		</template>
+		<template #Footer>
+			<NButton
+				type="Reviewer"
+				class="h-11 min-w-36 px-2 mx-auto bg-white"
+				icon="pi pi-upload"
+				@click="confirmGrading"
+			>
+				<span class="tracking-1px">{{ $t("送出成績") }}</span>
+			</NButton>
+			<div pos="absolute bottom-0 right-0" w="4/9" text="sm danger right">
 				{{ $t("※成績送出即無法再次修改，煩請送出前再三確認成績無誤") }}
 			</div>
-		</div>
-	</div>
+		</template>
+	</Layout>
+	<!-- Dialog -->
+	<ConfirmDialog :draggable="false" />
 </template>
 
 <script setup lang="ts">
@@ -181,19 +141,21 @@ import "@/styles/customize.css";
 import "primeicons/primeicons.css";
 import { computed, ref } from "vue";
 import DataTable from "primevue/datatable";
+import Layout from "@/components/Layout.vue";
 import Column from "primevue/column";
 import ColumnGroup from "primevue/columngroup";
 import Row from "primevue/row";
-import Button from "primevue/button";
-import ProgressBar from "primevue/progressbar";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { useAdmissionReviewerAuthStore } from "@/stores/universalAuth";
 import { AdmissionReviewerAPI } from "@/api/admission/reviewer/api";
-import { useMutation, useQuery } from "@tanstack/vue-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
 import { InvalidSessionError } from "@/api/error";
 import { useGlobalStore } from "@/stores/AdmissionReviewerStore";
 import { useToast } from "primevue/usetoast";
+import NButton from "@/styles/CustomButton.vue";
+import ConfirmDialog from "primevue/confirmdialog";
+import { useConfirm } from "primevue/useconfirm";
 
 const reviewerAuth = useAdmissionReviewerAuthStore();
 const api = new AdmissionReviewerAPI(reviewerAuth);
@@ -210,22 +172,7 @@ const {
 } = useQuery(
 	["admissionReviewerApplicantList"],
 	async () => {
-		try {
-			return await api.getApplicantList(
-				store.admissionReviewerProgram!.id!
-			);
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				// FIXME: show session expiry notification??
-				// Why are we even here in the first place?
-				// MainContainer should have checked already.
-				console.error(
-					"Session has already expired while querying programList"
-				);
-				router.push("/");
-				return;
-			}
-		}
+		return await api.getApplicantList(store.admissionReviewerProgram!.id!);
 	},
 	{
 		onSuccess: (data) => {
@@ -242,11 +189,12 @@ const {
 	}
 );
 
+const { t: $t } = useI18n();
 const { t } = useI18n();
 
-const score1Proportion = ref(30);
-const score2Proportion = ref(30);
-const score3Proportion = ref(40);
+const score1Proportion = ref(0);
+const score2Proportion = ref(0);
+const score3Proportion = ref(0);
 const score4Proportion = ref(0);
 const score5Proportion = ref(0);
 const score1Title = ref("");
@@ -264,22 +212,7 @@ const scoreCount = ref(0);
 const { data: programGrading } = useQuery(
 	["programGrading"],
 	async () => {
-		try {
-			return await api.getProgramGrading(
-				store.admissionReviewerProgram!.id
-			);
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				// FIXME: show session expiry notification??
-				// Why are we even here in the first place?
-				// MainContainer should have checked already.
-				console.error(
-					"Session has already expired while querying applicantInfo"
-				);
-				router.push("/");
-				return;
-			}
-		}
+		return await api.getProgramGrading(store.admissionReviewerProgram!.id);
 	},
 	{
 		onSuccess: (data) => {
@@ -292,14 +225,26 @@ const { data: programGrading } = useQuery(
 			if (data!.docs_grade_name_5) {
 				score5Title.value = data!.docs_grade_name_5;
 			}
-			score1Proportion.value = data!.docs_grade_weight_1;
-			score2Proportion.value = data!.docs_grade_weight_2;
-			score3Proportion.value = data!.docs_grade_weight_3;
-			if (data!.docs_grade_weight_4) {
-				score4Proportion.value = data!.docs_grade_weight_4;
+			scoreCount.value = 0;
+			if (data!.docs_grade_weight_1 !== 0) {
+				score1Proportion.value = data!.docs_grade_weight_1!;
+				scoreCount.value++;
 			}
-			if (data!.docs_grade_weight_5) {
-				score5Proportion.value = data!.docs_grade_weight_5;
+			if (data!.docs_grade_weight_2 !== 0) {
+				score2Proportion.value = data!.docs_grade_weight_2!;
+				scoreCount.value++;
+			}
+			if (data!.docs_grade_weight_3 !== 0) {
+				score3Proportion.value = data!.docs_grade_weight_3!;
+				scoreCount.value++;
+			}
+			if (data!.docs_grade_weight_4 !== 0) {
+				score4Proportion.value = data!.docs_grade_weight_4!;
+				scoreCount.value++;
+			}
+			if (data!.docs_grade_weight_5 !== 0) {
+				score5Proportion.value = data!.docs_grade_weight_5!;
+				scoreCount.value++;
 			}
 			score1FieldName.value =
 				score1Title.value + score1Proportion.value + "%";
@@ -315,44 +260,34 @@ const { data: programGrading } = useQuery(
 				score5FieldName.value =
 					score5Title.value + score5Proportion.value + "%";
 			}
-			if (data!.docs_grade_name_4 && data!.docs_grade_name_5) {
-				scoreCount.value = 5;
-			} else if (data!.docs_grade_name_4) {
-				scoreCount.value = 4;
-			} else {
-				scoreCount.value = 3;
-			}
 		},
 	}
 );
 
-const docsGrade = useMutation(async () => {
-	try {
+const docsGrade = useMutation(
+	async () => {
 		return await api.submitDocsGrade(store.admissionReviewerProgram!.id);
-	} catch (error) {
-		console.log(error);
+	},
+	{
+		onSuccess: () => {
+			toast.add({
+				severity: "success",
+				summary: $t("送出成功"),
+				detail: $t("送出成功"),
+				life: 3000,
+			});
+		},
+		onError: () => {
+			toast.add({
+				severity: "error",
+				summary: $t("送出失敗"),
+				detail: $t("送出失敗"),
+				life: 3000,
+			});
+		},
 	}
-});
+);
 const toast = useToast();
-const showTemplate = () => {
-	toast.add({
-		severity: "warn",
-		summary: "確認送出成績?",
-		detail: "成績送出即無法再次修改，煩請送出前再三確認成績無誤",
-		group: "bc",
-	});
-};
-const onConfirm = () => {
-	try {
-		docsGrade.mutate();
-	} catch (error) {
-		console.log(error);
-	}
-	toast.removeGroup("bc");
-};
-const onReject = () => {
-	toast.removeGroup("bc");
-};
 
 const reviewStartTime = ref("");
 const reviewEndTime = ref("");
@@ -360,20 +295,7 @@ const isBetweenDate = ref("非開放時段");
 const { data: programs } = useQuery(
 	["admissionReviewerProgramList"],
 	async () => {
-		try {
-			return await api.getProgramList();
-		} catch (e: any) {
-			if (e instanceof InvalidSessionError) {
-				// FIXME: show session expiry notification??
-				// Why are we even here in the first place?
-				// MainContainer should have checked already.
-				console.error(
-					"Session has already expired while querying programList"
-				);
-				router.push("/");
-				return;
-			}
-		}
+		return await api.getProgramList();
 	},
 	{
 		onSuccess: (data) => {
@@ -434,7 +356,37 @@ const cancel = computed(() => t("取消"));
 const selectedData = ref();
 const router = useRouter();
 const onRowSelect = (event: any) => {
-	selectedData.value = "";
 	router.push("/admission/reviewer/singleApplicationReview/" + event.data.id);
+};
+const queryClient = useQueryClient();
+store.$subscribe(() => {
+	queryClient.invalidateQueries({
+		queryKey: ["admissionReviewerApplicantList"],
+	});
+	queryClient.invalidateQueries({ queryKey: ["programGrading"] });
+	queryClient.invalidateQueries({
+		queryKey: ["admissionReviewerProgramList"],
+	});
+});
+function short(str: string | null) {
+	if (str === null) return "";
+	if (str.length > 10) {
+		return str.slice(0, 10) + "...";
+	} else {
+		return str;
+	}
+}
+const confirm1 = useConfirm();
+const confirmGrading = () => {
+	confirm1.require({
+		header: $t("是否要刪除此專案？"),
+		message: $t("此動作不可回復，請謹慎操作"),
+		icon: "pi pi-exclamation-triangle",
+		accept: () => {
+			docsGrade.mutate();
+		},
+		acceptLabel: $t("確認"),
+		rejectLabel: $t("取消"),
+	});
 };
 </script>

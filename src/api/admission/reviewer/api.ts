@@ -7,6 +7,8 @@ import type {
 	AdmissionReviewerProgramGradingResponse,
 	AdmissionReviewerApplicantListResponse,
 	AdmissionReviewerGenericResponse,
+	AdmissionReviewerApplicantFileListResponse,
+	AdmReviewerChangePasswordRequest,
 } from "./types";
 import type { APIGenericResponse } from "@/api/types";
 
@@ -27,24 +29,19 @@ export class AdmissionReviewerAPI extends GenericAPI {
 	}
 
 	async changePassword(
-		body: object
+		body: AdmReviewerChangePasswordRequest
 	): Promise<AdmissionReviewerGenericResponse> {
-		const data: APIGenericResponse = await this.instance.patch(
+		const response: APIGenericResponse = await this.instance.patch(
 			"admission/auth/reviewer/password",
 			body
 		);
 
-		if (data.error !== false) {
-			return {
-				success: false,
-				message: data.message.full_messages,
-			};
+		if (response.error === true) {
+			const msg = response.message.full_messages.join("\n");
+			throw new Error(msg);
 		}
 
-		return {
-			success: true,
-			message: data.message,
-		};
+		return response;
 	}
 
 	async getSingleApplicantGrade(
@@ -119,5 +116,60 @@ export class AdmissionReviewerAPI extends GenericAPI {
 
 		if (response.error === true)
 			throw new Error("Failed to submit DocsGrade");
+	}
+
+	async getApplicantFileList(
+		applicantID: string | string[]
+	): Promise<AdmissionReviewerApplicantFileListResponse[]> {
+		const data: APIGenericResponse = await this.instance.get(
+			`/admission/reviewer/applicant/${applicantID}/file`
+		);
+
+		if (data.error === true || typeof data.data === "undefined")
+			throw new Error("Failed to fetch applicant file list");
+
+		return data.data;
+	}
+
+	async getApplicantInfoFile(
+		applicantID: string | string[]
+	): Promise<string> {
+		return await this.instance.get(
+			`/admission/reviewer/applicant/${applicantID}/get_info_file`
+		);
+	}
+
+	async getApplicantRecommendLetter(
+		applicantID: string | string[]
+	): Promise<string> {
+		return await this.instance.get(
+			`/admission/reviewer/applicant/${applicantID}/get_recommend_letter_file`
+		);
+	}
+
+	async getApplicantCombineFile(
+		applicantID: string | string[]
+	): Promise<string> {
+		return await this.instance.get(
+			`/admission/reviewer/applicant/${applicantID}/get_combine_pdf_file`
+		);
+	}
+
+	async getApplicantCategoryCombineFile(
+		applicantID: string | string[]
+	): Promise<string> {
+		return await this.instance.get(
+			`/admission/reviewer/applicant/${applicantID}/get_category_file`,
+			{ params: { category: "file" } }
+		);
+	}
+
+	async submitOralGrade(programID: number): Promise<any> {
+		const response: APIGenericResponse = await this.instance.patch(
+			`/admission/reviewer/program/${programID}/confirm_oral`
+		);
+
+		if (response.error === true)
+			throw new Error("Failed to submit OralGrade");
 	}
 }

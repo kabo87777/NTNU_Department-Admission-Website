@@ -30,7 +30,7 @@ export const useAdminInfoStore = defineStore({
 		},
 	},
 });
-export const useGlobalStore = defineStore("global", () => {
+export const useGlobalStore = defineStore("globalRecruitmentAdmin", () => {
 	const program = ref<RecruitmentAdminProgramListResponse>();
 
 	const updateProgramData = (

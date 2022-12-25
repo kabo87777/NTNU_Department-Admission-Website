@@ -63,13 +63,17 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 import Divider from "primevue/divider";
 import InputText from "primevue/inputtext";
+
+const router = useRouter();
 
 const token = ref("");
 
 const handleVerify = () => {
 	console.log("button on clicked", token.value);
+	router.push("/admission/recommendLetterFillIn");
 };
 </script>
 
@@ -82,7 +86,7 @@ const handleVerify = () => {
 
 .authVerifyImg {
 	flex-basis: 50%;
-	background-image: url("/assets/login-page/Login-img.png");
+	background-image: url("/assets/login-page/Login-img.jpg");
 	background-size: cover;
 	background-position: left;
 	background-repeat: no-repeat;
