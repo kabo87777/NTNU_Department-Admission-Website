@@ -26,8 +26,11 @@
 					<Calendar
 						inputId="icon"
 						:showIcon="true"
+						:showTime="true"
 						dateFormat="yy/mm/dd"
 						v-model="date.start"
+						:showOnFocus="false"
+						placeholder="YYYY/MM/DD hh:mm"
 					/>
 				</div>
 				<div v-show="showRequire.start" class="absolute">
@@ -39,8 +42,11 @@
 					<Calendar
 						inputId="icon"
 						:showIcon="true"
+						:showTime="true"
 						dateFormat="yy/mm/dd"
 						v-model="date.end"
+						:showOnFocus="false"
+						placeholder="YYYY/MM/DD hh:mm"
 					/>
 				</div>
 				<div v-show="showRequire.end" class="absolute">
