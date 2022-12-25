@@ -139,6 +139,8 @@
 						:baseZIndex="zIndex"
 						:disabled="disable"
 						dateFormat="yy/mm/dd"
+						:showOnFocus="false"
+						placeholder="YYYY/MM/DD hh:mm"
 					/>
 				</div>
 			</div>

@@ -227,12 +227,10 @@
 					<!-- Heading -->
 					<div>
 						<div text="sm pAdmin">{{ $t("管理端帳戶") }}</div>
-						<div
-							text="title"
+						<div text="title"
 							class="whitespace-nowrap"
-							:class="letterSpace"
-						>
-							{{ $t("系辦主管") }}
+							:class="letterSpace">
+							{{ adminStore.userInfo.name }}
 						</div>
 					</div>
 					<!-- Button -->

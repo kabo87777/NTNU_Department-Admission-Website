@@ -109,7 +109,7 @@ import { ref, computed } from "vue";
 import { useRecruitmentAdminAuthStore } from "@/stores/universalAuth";
 import { useToast } from "primevue/usetoast";
 import { RecruitmentAdminAPI } from "@/api/recruitment/admin/api";
-import { useAdminInfoStore } from "@/stores/AdmissionAdminStore";
+import { useAdminInfoStore } from "@/stores/RecruitmentAdminStore";
 import { useMutation } from "@tanstack/vue-query";
 import type { RecruitmentAdminAuthResponse } from "@/api/recruitment/admin/types";
 import type { RAdminChangePasswordRequest } from "@/api/recruitment/admin/types";

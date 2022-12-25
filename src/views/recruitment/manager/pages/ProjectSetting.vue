@@ -47,6 +47,8 @@
 						:showTime="true"
 						class="!w-300px customDatePicker"
 						dateFormat="yy/mm/dd"
+						:showOnFocus="false"
+						placeholder="YYYY/MM/DD hh:mm"
 					/>
 				</div>
 				<div flex="~ col gap-1">
@@ -58,6 +60,8 @@
 						:showTime="true"
 						class="!w-300px customDatePicker"
 						dateFormat="yy/mm/dd"
+						:showOnFocus="false"
+						placeholder="YYYY/MM/DD hh:mm"
 					/>
 				</div>
 			</div>
@@ -72,6 +76,8 @@
 						:showTime="true"
 						class="!w-300px customDatePicker"
 						dateFormat="yy/mm/dd"
+						:showOnFocus="false"
+						placeholder="YYYY/MM/DD hh:mm"
 					/>
 				</div>
 				<div flex="~ col gap-1">
@@ -83,6 +89,8 @@
 						:showTime="true"
 						class="!w-300px customDatePicker"
 						dateFormat="yy/mm/dd"
+						:showOnFocus="false"
+						placeholder="YYYY/MM/DD hh:mm"
 					/>
 				</div>
 			</div>

@@ -1,224 +1,54 @@
 <template>
-	<div>
-		<div class="font-[500] text-[32px] font-bold">
-			{{ $t("基本資料") }}
-		</div>
-		<div class="bigYellowDivider"></div>
-
-		<div
-			class="px-12px py-24px"
-			v-if="requiredInputFields.includes('姓名資訊')"
-		>
-			<div class="flex">
-				<div class="text-[24px] font-[50] font-bold">
-					{{ $t("姓名資訊") }}
-				</div>
-			</div>
-			<div class="flex pt-16px">
-				<div class="w-1/3">
-					<div>{{ $t("中文姓氏") }}</div>
-					<div class="mt-4px text-12px text-[#8D9093]"></div>
-					<div>
-						<InputText
-							class="w-[70%] h-36px !mt-4px"
-							style="border: 1px solid #736028"
-							type="text"
-							v-model="name.zhFamName"
-						/>
-					</div>
-				</div>
-				<div class="w-1/3">
-					<div>{{ $t("中文名字") }}</div>
-					<div>
-						<InputText
-							class="w-[70%] h-36px !mt-4px"
-							style="border: 1px solid #736028"
-							type="text"
-							v-model="name.zhName"
-						/>
-					</div>
-				</div>
-			</div>
-			<div class="flex py-16px">
-				<div class="w-1/3">
-					<div>{{ $t("英文姓氏") }}</div>
-					<div>
-						<InputText
-							class="w-[70%] h-36px !mt-4px"
-							style="border: 1px solid #736028"
-							type="text"
-							v-model="name.enFamName"
-						/>
-					</div>
-					<div v-show="required.enFamName" class="absolute mt-[-4px]">
-						<small class="p-error">
-							{{ $t("此為必填欄位") }}
-						</small>
-					</div>
-				</div>
-				<div class="w-1/3">
-					<div>{{ $t("英文名字") }}</div>
-					<div>
-						<InputText
-							class="w-[70%] h-36px !mt-4px"
-							style="border: 1px solid #736028"
-							type="text"
-							v-model="name.enName"
-						/>
-					</div>
-					<div v-show="required.enName" class="absolute mt-[-4px]">
-						<small class="p-error">
-							{{ $t("此為必填欄位") }}
-						</small>
-					</div>
-				</div>
-				<div class="w-1/3">
-					<div>{{ $t("英文中間名") }}</div>
-					<div>
-						<InputText
-							class="w-[70%] h-36px !mt-4px"
-							style="border: 1px solid #736028"
-							type="text"
-							v-model="name.enMidName"
-						/>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div
-			class="px-12px py-24px"
-			v-if="requiredInputFields.includes('入學身分')"
-		>
-			<div class="flex">
-				<div class="text-[24px] font-[50] font-bold">
-					{{ $t("入學身分") }}
-				</div>
-			</div>
-			<div class="flex pt-24px">
-				<div class="w-1/3">
-					<div>{{ $t("入學身分") }}</div>
-					<div>
-						<Dropdown
-							class="w-[70%] h-36px !mt-4px"
-							style="border: 1px solid #736028"
-							v-model="identity.selectedIdentity"
-							placeholder="請選擇身分"
-							:options="identityOptions"
-							optionLabel="name"
-							optionValue="name"
-						>
-							<template #value="slotProps">
-								<div v-if="slotProps.value" class="mt-[-8px]">
-									{{ slotProps.value }}
-								</div>
-								<div v-else class="mt-[-8px]">
-									{{ $t(slotProps.placeholder) }}
-								</div>
-							</template>
-							<template #option="slotProps">
-								<div class="mt-[-8px] h-12px">
-									{{ $t(slotProps.option.name) }}
-								</div>
-							</template>
-						</Dropdown>
-					</div>
-					<div v-show="required.identity" class="absolute mt-[-4px]">
-						<small class="p-error">
-							{{ $t("此為必填欄位") }}
-						</small>
-					</div>
-				</div>
-			</div>
-			<div v-if="identity.selectedIdentity === '外籍人士'">
-				<div>
-					<div class="flex pt-16px">
-						<div class="w-1/3">
-							<div>{{ $t("國籍") }}</div>
-							<div>
-								<InputText
-									class="w-[70%] h-36px !mt-4px"
-									style="border: 1px solid #736028"
-									type="text"
-									v-model="identity.nationality"
-								/>
-							</div>
-							<div
-								v-show="required.country"
-								class="absolute mt-[-4px]"
-							>
-								<small class="p-error">
-									{{ $t("此為必填欄位") }}
-								</small>
-							</div>
-						</div>
-						<div class="w-1/3">
-							<div>{{ $t("居留證統一證號") }}</div>
-							<div>
-								<InputText
-									class="w-[70%] h-36px !mt-4px"
-									style="border: 1px solid #736028"
-									type="text"
-									v-model="identity.ui"
-								/>
-							</div>
-							<div
-								v-show="required.ui"
-								class="absolute mt-[-4px]"
-							>
-								<small class="p-error">
-									{{ $t("此為必填欄位") }}
-								</small>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="pt-24px"></div>
-			</div>
-			<div v-else>
-				<div class="flex py-16px">
-					<div class="w-1/3">
-						<div>{{ $t("身份證字號") }}</div>
-						<div>
-							<InputText
-								class="w-[70%] h-36px !mt-4px"
-								style="border: 1px solid #736028"
-								type="text"
-								v-model="identity.ic"
-							/>
-						</div>
-						<div v-show="required.icNum" class="absolute mt-[-4px]">
-							<small class="p-error">
-								{{ $t("此為必填欄位") }}
-							</small>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<div>
+	<Layout Applicant>
+		<template #Header>{{ $t("基本資料") }}</template>
+		<template #Body>
 			<div
 				class="px-12px py-24px"
-				v-if="requiredInputFields.includes('現居地址')"
+				v-if="requiredInputFields.includes('姓名資訊')"
 			>
 				<div class="flex">
 					<div class="text-[24px] font-[50] font-bold">
-						{{ $t("通訊地址") }}
+						{{ $t("姓名資訊") }}
+					</div>
+				</div>
+				<div class="flex pt-16px">
+					<div class="w-1/3">
+						<div>{{ $t("中文姓氏") }}</div>
+						<div class="mt-4px text-12px text-[#8D9093]"></div>
+						<div>
+							<InputText
+								class="w-[70%] h-36px !mt-4px"
+								style="border: 1px solid #736028"
+								type="text"
+								v-model="name.zhFamName"
+							/>
+						</div>
+					</div>
+					<div class="w-1/3">
+						<div>{{ $t("中文名字") }}</div>
+						<div>
+							<InputText
+								class="w-[70%] h-36px !mt-4px"
+								style="border: 1px solid #736028"
+								type="text"
+								v-model="name.zhName"
+							/>
+						</div>
 					</div>
 				</div>
 				<div class="flex py-16px">
-					<div class="w-2/3">
-						<div>{{ $t("地址") }}</div>
+					<div class="w-1/3">
+						<div>{{ "*" + $t("英文姓氏") }}</div>
 						<div>
 							<InputText
-								class="w-[80%] h-36px !mt-4px"
+								class="w-[70%] h-36px !mt-4px"
 								style="border: 1px solid #736028"
 								type="text"
-								v-model="currentAddr.addr"
+								v-model="name.enFamName"
 							/>
 						</div>
 						<div
-							v-show="required.currentAddr"
+							v-show="required.enFamName"
 							class="absolute mt-[-4px]"
 						>
 							<small class="p-error">
@@ -227,39 +57,229 @@
 						</div>
 					</div>
 					<div class="w-1/3">
-						<div>{{ $t("郵遞區號") }}</div>
+						<div>{{ "*" + $t("英文名字") }}</div>
 						<div>
 							<InputText
 								class="w-[70%] h-36px !mt-4px"
 								style="border: 1px solid #736028"
 								type="text"
-								v-model="currentAddr.postcode"
+								v-model="name.enName"
 							/>
 						</div>
 						<div
-							v-show="required.currentPostcode"
+							v-show="required.enName"
 							class="absolute mt-[-4px]"
 						>
 							<small class="p-error">
 								{{ $t("此為必填欄位") }}
 							</small>
 						</div>
+					</div>
+					<div class="w-1/3">
+						<div>{{ $t("英文中間名") }}</div>
+						<div>
+							<InputText
+								class="w-[70%] h-36px !mt-4px"
+								style="border: 1px solid #736028"
+								type="text"
+								v-model="name.enMidName"
+							/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div
+				class="px-12px py-24px"
+				v-if="requiredInputFields.includes('入學身分')"
+			>
+				<div class="flex">
+					<div class="text-[24px] font-[50] font-bold">
+						{{ $t("入學身分") }}
+					</div>
+				</div>
+				<div class="flex pt-24px">
+					<div class="w-1/3">
+						<div>{{ "*" + $t("入學身分") }}</div>
+						<div>
+							<Dropdown
+								class="w-[70%] h-36px !mt-4px"
+								style="border: 1px solid #736028"
+								v-model="identity.selectedIdentity"
+								placeholder="請選擇身分"
+								:options="identityOptions"
+								optionLabel="name"
+								optionValue="name"
+							>
+								<template #value="slotProps">
+									<div
+										v-if="slotProps.value"
+										class="mt-[-8px]"
+									>
+										{{ slotProps.value }}
+									</div>
+									<div v-else class="mt-[-8px]">
+										{{ $t(slotProps.placeholder) }}
+									</div>
+								</template>
+								<template #option="slotProps">
+									<div class="mt-[-8px] h-12px">
+										{{ $t(slotProps.option.name) }}
+									</div>
+								</template>
+							</Dropdown>
+						</div>
+						<div
+							v-show="required.identity"
+							class="absolute mt-[-4px]"
+						>
+							<small class="p-error">
+								{{ $t("此為必填欄位") }}
+							</small>
+						</div>
+					</div>
+				</div>
+				<div v-if="identity.selectedIdentity === '外籍人士'">
+					<div>
+						<div class="flex pt-16px">
+							<div class="w-1/3">
+								<div>{{ $t("國籍") }}</div>
+								<div>
+									<InputText
+										class="w-[70%] h-36px !mt-4px"
+										style="border: 1px solid #736028"
+										type="text"
+										v-model="identity.nationality"
+									/>
+								</div>
+								<div
+									v-show="required.country"
+									class="absolute mt-[-4px]"
+								>
+									<small class="p-error">
+										{{ $t("此為必填欄位") }}
+									</small>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="pt-24px"></div>
+				</div>
+			</div>
+
+			<div>
+				<div
+					class="px-12px py-24px"
+					v-if="requiredInputFields.includes('通訊地址')"
+				>
+					<div class="flex">
+						<div class="text-[24px] font-[50] font-bold">
+							{{ $t("通訊地址") }}
+						</div>
+					</div>
+					<div class="flex py-16px">
+						<div class="w-2/3">
+							<div>{{ $t("地址") }}</div>
+							<div>
+								<InputText
+									class="w-[80%] h-36px !mt-4px"
+									style="border: 1px solid #736028"
+									type="text"
+									v-model="currentAddr.addr"
+								/>
+							</div>
+							<div
+								v-show="required.currentAddr"
+								class="absolute mt-[-4px]"
+							>
+								<small class="p-error">
+									{{ $t("此為必填欄位") }}
+								</small>
+							</div>
+						</div>
+						<div class="w-1/3">
+							<div>{{ $t("郵遞區號") }}</div>
+							<div>
+								<InputText
+									class="w-[70%] h-36px !mt-4px"
+									style="border: 1px solid #736028"
+									type="text"
+									v-model="currentAddr.postcode"
+								/>
+							</div>
+							<div
+								v-show="required.currentPostcode"
+								class="absolute mt-[-4px]"
+							>
+								<small class="p-error">
+									{{ $t("此為必填欄位") }}
+								</small>
+							</div>
+						</div>
+					</div>
+					<div class="flex py-16px">
+						<div class="w-2/3">
+							<div>{{ $t("電子郵件") }}</div>
+							<div>
+								<InputText
+									class="w-[80%] h-36px !mt-4px"
+									style="border: 1px solid #736028"
+									type="text"
+									v-model="email"
+									:disabled="true"
+								/>
+							</div>
+							<div
+								v-show="required.currentAddr"
+								class="absolute mt-[-4px]"
+							>
+								<small class="p-error">
+									{{ $t("此為必填欄位") }}
+								</small>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div
+				class="px-12px py-24px"
+				v-if="requiredInputFields.includes('身份資料')"
+			>
+				<div class="flex">
+					<div class="text-[24px] font-[50] font-bold">
+						{{ $t("身份資料") }}
+					</div>
+				</div>
+				<div class="mt-24px">
+					<div>{{ "*" + $t("性別") }}</div>
+					<div class="mt-2px flex">
+						<div>
+							<RadioButton v-model="born.sex" value="male" />
+							<label class="ml-4px">{{ $t("男性") }}</label>
+						</div>
+						<div class="ml-160px">
+							<RadioButton v-model="born.sex" value="female" />
+							<label class="ml-4px">{{ $t("女性") }}</label>
+						</div>
+					</div>
+					<div v-show="required.sex" class="absolute mt-[-4px]">
+						<small class="p-error">
+							{{ $t("此為必填欄位") }}
+						</small>
 					</div>
 				</div>
 				<div class="flex py-16px">
-					<div class="w-2/3">
-						<div>{{ $t("電子郵件") }}</div>
+					<div class="w-1/3">
+						<div>{{ $t("出生國家") }}</div>
 						<div>
 							<InputText
-								class="w-[80%] h-36px !mt-4px"
+								class="w-[70%] h-36px !mt-4px"
 								style="border: 1px solid #736028"
 								type="text"
-								v-model="email"
-								:disabled="true"
+								v-model="born.country"
 							/>
 						</div>
 						<div
-							v-show="required.currentAddr"
+							v-show="required.country"
 							class="absolute mt-[-4px]"
 						>
 							<small class="p-error">
@@ -267,122 +287,69 @@
 							</small>
 						</div>
 					</div>
-				</div>
-			</div>
-		</div>
-		<div
-			class="px-12px py-24px"
-			v-if="requiredInputFields.includes('身份資料')"
-		>
-			<div class="flex">
-				<div class="text-[24px] font-[50] font-bold">
-					{{ $t("身份資料") }}
-				</div>
-			</div>
-			<div class="mt-24px">
-				<div>{{ "*" + $t("性別") }}</div>
-				<div class="mt-2px flex">
-					<div>
-						<RadioButton v-model="born.sex" value="male" />
-						<label class="ml-4px">{{ $t("男性") }}</label>
-					</div>
-					<div class="ml-160px">
-						<RadioButton v-model="born.sex" value="female" />
-						<label class="ml-4px">{{ $t("女性") }}</label>
-					</div>
-				</div>
-				<div v-show="required.sex" class="absolute mt-[-4px]">
-					<small class="p-error">
-						{{ $t("此為必填欄位") }}
-					</small>
-				</div>
-			</div>
-			<div class="flex py-16px">
-				<div class="w-1/3">
-					<div>{{ $t("出生國家") }}</div>
-					<div>
-						<InputText
-							class="w-[70%] h-36px !mt-4px"
-							style="border: 1px solid #736028"
-							type="text"
-							v-model="born.country"
-						/>
-					</div>
-					<div v-show="required.country" class="absolute mt-[-4px]">
-						<small class="p-error">
-							{{ $t("此為必填欄位") }}
-						</small>
-					</div>
-				</div>
-				<div class="w-1/3">
-					<div>{{ $t("出生日期") }}</div>
-					<div>
-						<Calendar
-							v-model="born.birth"
-							dateFormat="yy/mm/dd"
-							class="w-[70%] h-36px !mt-4px"
-							style="
-								border: 1px solid #736028;
-								border-radius: 6px;
-							"
-						/>
-					</div>
-					<div v-show="required.birth" class="absolute mt-[-4px]">
-						<small class="p-error">
-							{{ $t("此為必填欄位") }}
-						</small>
+					<div class="w-1/3">
+						<div>{{ $t("出生日期") }}</div>
+						<div>
+							<Calendar
+								v-model="born.birth"
+								dateFormat="yy/mm/dd"
+								class="w-[70%] h-36px !mt-4px"
+								style="
+									border: 1px solid #736028;
+									border-radius: 6px;
+								"
+								:show-icon="true"
+								:showOnFocus="false"
+								placeholder="YYYY/MM/DD"
+							/>
+						</div>
+						<div v-show="required.birth" class="absolute mt-[-4px]">
+							<small class="p-error">
+								{{ $t("此為必填欄位") }}
+							</small>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-		<div
-			class="px-12px py-24px"
-			v-if="requiredInputFields.includes('聯絡資料')"
-		>
-			<div class="flex">
-				<div class="text-[24px] font-[50] font-bold">
-					{{ $t("聯絡方式") }}
-				</div>
-			</div>
-			<div class="flex py-16px">
-				<div class="w-1/3">
-					<div>{{ "*" + $t("行動電話") }}</div>
-					<div>
-						<InputText
-							class="w-[70%] h-36px !mt-4px"
-							style="border: 1px solid #736028"
-							type="text"
-							v-model="contact.phone"
-						/>
-					</div>
-					<div v-show="required.phone" class="absolute mt-[-4px]">
-						<small class="p-error">
-							{{ $t("此為必填欄位") }}
-						</small>
+			<div
+				class="px-12px py-24px"
+				v-if="requiredInputFields.includes('聯絡資料')"
+			>
+				<div class="flex">
+					<div class="text-[24px] font-[50] font-bold">
+						{{ $t("聯絡方式") }}
 					</div>
 				</div>
+				<div class="flex py-16px">
+					<div class="w-1/3">
+						<div>{{ "*" + $t("行動電話") }}</div>
+						<div>
+							<InputText
+								class="w-[70%] h-36px !mt-4px"
+								style="border: 1px solid #736028"
+								type="text"
+								v-model="contact.phone"
+							/>
+						</div>
+						<div v-show="required.phone" class="absolute mt-[-4px]">
+							<small class="p-error">
+								{{ $t("此為必填欄位") }}
+							</small>
+						</div>
+					</div>
+				</div>
 			</div>
-		</div>
-		<div class="bigYellowDivider"></div>
-		<div>
-			<Button
-				class="p-button-secondary"
-				style="
-					margin-top: 32px;
-					margin-left: 100%;
-					transform: translateX(-100%);
-					width: 100px;
-					height: 44px;
-					background-color: #f0dfad;
-					border: 2px solid #a18b4a;
-					color: #736028;
-				"
+		</template>
+		<template #Footer>
+			<NButton
+				Applicant
 				icon="pi pi-save"
-				:label="$t('儲存')"
+				class="mx-auto h-11 min-w-36"
 				@click="handleSave()"
-			/>
-		</div>
-	</div>
+				>{{ $t("儲存") }}</NButton
+			>
+		</template>
+	</Layout>
 </template>
 
 <script setup lang="ts">
@@ -393,7 +360,8 @@ import Dropdown from "primevue/dropdown";
 import InputText from "primevue/inputtext";
 import RadioButton from "primevue/radiobutton";
 import Calendar from "primevue/calendar";
-import Button from "primevue/button";
+import NButton from "@/styles/CustomButton.vue";
+import Layout from "@/components/Layout.vue";
 import dayjs from "dayjs";
 import { useAdmissionApplicantAuthStore } from "@/stores/universalAuth";
 import { AdmissionApplicantAPI } from "@/api/admission/applicant/api";
