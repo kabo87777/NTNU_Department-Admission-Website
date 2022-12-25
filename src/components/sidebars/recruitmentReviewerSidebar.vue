@@ -34,7 +34,7 @@
 			<div flex="~ col gap-6" mt="6">
 				<!-- 1.必看資料評閱 -->
 				<router-link
-					to="/recruitment/reviewer/requiredDataReview"
+					:to="{ name: 'RecruitmentReviewerRequiredDataReview' }"
 					custom
 					v-slot="{ navigate }"
 				>
@@ -47,16 +47,14 @@
 						:class="letterSpace"
 						@click="navigate"
 						:isSelected="
-							gateway ===
-							('AdmissionReviewerApplicationReview' ||
-								'AdmissionReviewerSingleApplicationReview')
+							gateway === 'RecruitmentReviewerRequiredDataReview'
 						"
 						>{{ $t("必看資料評閱") }}
 					</NButton>
 				</router-link>
 				<!-- 2.選看資料評閱 -->
 				<router-link
-					to="/recruitment/reviewer/optionalDataReview"
+					:to="{ name: 'RecruitmentReviewerOptionalDataReview' }"
 					custom
 					v-slot="{ navigate }"
 				>
@@ -69,9 +67,7 @@
 						:class="letterSpace"
 						@click="navigate"
 						:isSelected="
-							gateway ===
-							('AdmissionReviewerApplicationReview' ||
-								'AdmissionReviewerSingleApplicationReview')
+							gateway === 'RecruitmentReviewerOptionalDataReview'
 						"
 						>{{ $t("選看資料評閱") }}
 					</NButton>
@@ -100,7 +96,7 @@
 				<!-- Button -->
 				<div flex="~ gap-1" ml="auto">
 					<router-link
-						to="/recruitment/reviewer/userSetting"
+						:to="{ name: 'RecruitmentReviewerUserSetting' }"
 						custom
 						v-slot="{ navigate }"
 					>
@@ -112,7 +108,7 @@
 							size="lg"
 							class="w-12 h-12 m-auto"
 							:isSelected="
-								gateway === 'AdmissionReviewerUserSetting'
+								gateway === 'RecruitmentReviewerUserSetting'
 							"
 						/>
 					</router-link>
