@@ -49,7 +49,11 @@
 						:isSelected="
 							gateway === 'RecruitmentReviewerRequiredDataReview'
 						"
+						:disabled="!isReviewAvailable"
 						>{{ $t("必看資料評閱") }}
+						<div v-if="!isReviewAvailable" text="sm">
+							{{ $t("(未開放)") }}
+						</div>
 					</NButton>
 				</router-link>
 				<!-- 2.選看資料評閱 -->
@@ -69,7 +73,11 @@
 						:isSelected="
 							gateway === 'RecruitmentReviewerOptionalDataReview'
 						"
+						:disabled="!isReviewAvailable"
 						>{{ $t("選看資料評閱") }}
+						<div v-if="!isReviewAvailable" text="sm">
+							{{ $t("(未開放)") }}
+						</div>
 					</NButton>
 				</router-link>
 			</div>
@@ -142,6 +150,7 @@ import { RecruitmentReviewerProgramListResponse } from "@/api/recruitment/review
 import { RecruitmentManagerAuthResponse } from "@/api/recruitment/reviewer/types";
 import { useUserInfoStore } from "@/stores/RecruitmentReviewerStore";
 import { useI18n } from "vue-i18n";
+import dayjs from "dayjs";
 
 const { locale } = useI18n();
 const reviewerAuth = useRecruitmentReviewerAuthStore();
@@ -150,6 +159,9 @@ const reviewerStore = useUserInfoStore();
 const api = new RecruitmentReviewerAPI(reviewerAuth);
 const route = useRoute();
 const gateway = computed(() => route.name);
+const now = dayjs();
+const start = ref();
+const end = ref();
 
 const reviewerInfo: RecruitmentManagerAuthResponse = toRaw(
 	reviewerStore.userInfo
@@ -161,34 +173,40 @@ const letterSpace = computed(() => {
 	else return "";
 });
 
-const {
-	isLoading,
-	isError,
-	data: programs,
-	error,
-} = useQuery(["programList"], async () => {
-	return await api.getProgramList();
-});
+const { data: programs } = useQuery(
+	["recruitmentReviewerprogramList"],
+	async () => {
+		return await api.getProgramList();
+	}
+);
 
 const router = useRouter();
 
 // FIXME: this should NOT be hardcoded.
 const selectedProgram = ref<RecruitmentReviewerProgramListResponse>();
 
+const isReviewAvailable = computed(() => {
+	if (!selectedProgram.value) return false;
+
+	const startTime = dayjs(selectedProgram!.value!.review_start_date);
+	const endTime = dayjs(selectedProgram!.value!.review_end_date);
+
+	return now.isAfter(startTime) && now.isBefore(endTime);
+});
+
 watchEffect(() => {
-	if (programs.value && programs.value.length > 1) {
-		const temp = programs.value[0];
-		store.$patch((state) => {
-			// state.program = temp;
-		});
-		store.updaterecruitmentReviewerProgramData(programs.value[0]);
-		selectedProgram.value = programs.value[0];
-	}
+	if (!programs.value) return;
+	store.updaterecruitmentReviewerProgramData(programs.value[0]);
+	selectedProgram.value = programs.value[0];
 });
 
 watch(selectedProgram, (selection) => {
-	store.$patch({ recruitmentReviewerProgram: selectedProgram.value });
-
+	store.updaterecruitmentReviewerProgramData(selectedProgram!.value!);
+	start.value = dayjs(selectedProgram!.value!.review_start_date);
+	end.value = dayjs(selectedProgram!.value!.review_end_date);
+	console.log("Review is availible: " + isReviewAvailable.value);
+	console.log("Time is:" + start.value + "~" + end.value);
+	console.log("Now is:" + now);
 	console.debug("Selected program:\n" + JSON.stringify(selection, null, 2));
 });
 
