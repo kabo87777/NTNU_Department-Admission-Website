@@ -1,10 +1,7 @@
 <template>
-	<div>
-		<h1 class="text-4xl text-bold tracking-widest">
-			{{ $t("評分資料列表") }}
-		</h1>
-		<div class="bigRedDivider"></div>
-		<div>
+	<Layout Admin noMargin>
+		<template #Header>{{ $t("評分資料列表") }}</template>
+		<template #Body>
 			<DataTable
 				:value="applicantGradeList.data.value"
 				responsiveLayout="scroll"
@@ -44,38 +41,66 @@
 					style="min-width: 8rem"
 				>
 					<template #body="slotProps">
-						<Button
+						<NButton
+							Admin
 							icon="pi pi-pencil"
-							class="p-button-outlined p-button-success"
+							class="p-2"
 							@click="editProduct(slotProps)"
 						/>
 					</template>
 				</Column>
 			</DataTable>
-			<Dialog
-				v-model:visible="productDialog"
-				:header="gradeDataEdit"
-				:draggable="false"
-				:modal="true"
-				class="w-720px h-873px"
-			>
-				<div class="flex mt-24px">
-					<div class="text-lg">{{ $t("帳號ID") }} :</div>
-					<div class="text-lg ml-266px">{{ $t("帳號名稱") }} :</div>
+		</template>
+		<template #Footer>
+			<div flex="~ gap-4" justify="items-center" text="body" mx="4">
+				<div my="auto" text="space-nowrap">
+					{{ $t("待審核") }} {{ pendingCount }} {{ $t("位") }}
 				</div>
-				<div class="flex mt-18.5px">
-					<div>
-						{{ id }}
+				<Divider layout="vertical" />
+				<div my="auto" text="space-nowrap">
+					{{ $t("通過") }} {{ passCount }} {{ $t("位") }}
+				</div>
+				<Divider layout="vertical" />
+				<div my="auto" text="space-nowrap">
+					{{ $t("不通過") }} {{ notPassCount }} {{ $t("位") }}
+				</div>
+				<NButton
+					Admin
+					icon="pi pi-print"
+					class="h-11 min-w-36"
+					pos="absolute right-0"
+				>
+					{{ $t("報表列印") }}
+				</NButton>
+			</div>
+		</template>
+	</Layout>
+	<Dialog
+		v-model:visible="productDialog"
+		:draggable="false"
+		:closable="false"
+		:modal="true"
+		class="min-w-160 h-160"
+	>
+		<template #header>
+			<div text="2xl title">{{ gradeDataEdit }}</div>
+		</template>
+		<template #default>
+			<div flex="~ col gap-6">
+				<div flex="~ col gap-4" bg="gray-100" p="4" border="rounded-lg">
+					<div text="body" flex="~ gap-6">
+						<div>{{ $t("帳號ID") }} :</div>
+						<div>{{ id }}</div>
 					</div>
-					<div class="text-base ml-300px">
-						{{ name }}
+					<div text="body" flex="~ gap-6">
+						<div>{{ $t("帳號名稱") }} :</div>
+						<div>{{ name }}</div>
 					</div>
 				</div>
 				<DataTable
 					:value="reviewers"
 					responsiveLayout="scroll"
 					dataKey="id"
-					class="text-base mt-56px !h-228px"
 				>
 					<Column field="name" :header="reviewer"></Column>
 					<Column
@@ -95,103 +120,49 @@
 					</Column>
 					<Column field="comment" :header="note"></Column>
 				</DataTable>
-				<div class="bigRedDivider"></div>
-				<div class="flex mt-15px ml-36px">
-					<div>
-						{{ recommand }}
-					</div>
-					<div class="ml-48px">
-						{{ recommandCount }}/{{ notRecommandCount }}
-					</div>
+				<div flex="~ gap-4" text="sm secondary" mx="4" justify="end">
+					<div>{{ recommand }} :</div>
+					<div>{{ recommandCount }}/{{ notRecommandCount }}</div>
 				</div>
-				<div class="mt-55px ml-52px">
-					{{ $t("書面審查結果") }}
+				<div flex="~ col gap-1" w="2/3">
+					<div text="body">{{ $t("書面審查結果") }}</div>
+					<Dropdown v-model="selectedResult" :options="results">
+					</Dropdown>
 				</div>
-				<Dropdown
-					v-model="selectedResult"
-					:options="results"
-					class="mt-8px !w-576px !h-44px ml-52px"
-				>
-				</Dropdown>
-				<div class="mt-32px ml-52px">
-					{{ $t("面試時間") }}
-				</div>
-				<Calendar
-					v-if="disable"
-					inputId="icon"
-					v-model="selectedInterviewTime"
-					:showIcon="true"
-					:showTime="true"
-					class="mt-8px !w-576px !h-44px ml-52px"
-					:baseZIndex="zIndex"
-					dateFormat="yy/mm/dd"
-					:showOnFocus="false"
-					placeholder="YYYY/MM/DD hh:mm"
-				/>
-				<Calendar
-					v-else
-					inputId="icon"
-					v-model="selectedInterviewTime"
-					:showIcon="true"
-					:showTime="true"
-					class="mt-8px !w-576px !h-44px ml-52px"
-					:baseZIndex="zIndex"
-					disabled
-					dateFormat="yy/mm/dd"
-					:showOnFocus="false"
-					placeholder="YYYY/MM/DD hh:mm"
-				/>
-				<div class="flex mt-48px">
-					<NButton
-						type="Admin"
-						class="w-140px h-44px !ml-170px"
-						@click="doneEdit"
-						icon="pi pi-check"
-					>
-						<span class="tracking-1px">{{ $t("儲存變更") }}</span>
-					</NButton>
-					<NButton
-						type="Admin"
-						class="w-100px h-44px !ml-49px"
-						@click="cancelEdit"
-						icon="pi pi-times"
-					>
-						<span class="tracking-1px">{{ $t("取消") }}</span>
-					</NButton>
-				</div>
-			</Dialog>
-			<div class="bigRedDivider !mt-50px"></div>
-			<div class="flex text-xl mt-20px justify-between">
-				<div class="flex justify-around">
-					<div>
-						{{ $t("待審核") }} {{ pendingCount }} {{ $t("位") }}
-					</div>
-					<Divider layout="vertical" class="!ml-30px" />
-					<div class="!ml-30px">
-						{{ $t("通過") }} {{ passCount }} {{ $t("位") }}
-					</div>
-					<Divider layout="vertical" class="!ml-30px" />
-					<div class="!ml-30px">
-						{{ $t("不通過") }} {{ notPassCount }} {{ $t("位") }}
-					</div>
-				</div>
-				<div>
-					<NButton
-						type="Admin"
-						class="w-150px h-44px !ml-680px p-button-outlined p-button-help"
-					>
-						<img
-							alt="logo"
-							src="/assets/gradeDataList/Paper.png"
-							style="width: 1.5rem"
-							class="fill-green-500"
-						/>
-						<span class="tracking-1px">{{ $t("報表列印") }}</span>
-					</NButton>
+				<div flex="~ col gap-1" w="2/3">
+					<div text="body">{{ $t("面試時間") }}</div>
+					<Calendar
+						inputId="icon"
+						v-model="selectedInterviewTime"
+						:showIcon="true"
+						:showTime="true"
+						:baseZIndex="zIndex"
+						:disabled="disable"
+						dateFormat="yy/mm/dd"
+						:showOnFocus="false"
+						placeholder="YYYY/MM/DD hh:mm"
+					/>
 				</div>
 			</div>
-		</div>
-	</div>
+		</template>
+		<template #footer>
+			<div flex="~ gap-6" justify="center">
+				<NButton
+					Admin
+					class="h-11 min-w-36"
+					@click="doneEdit"
+					icon="pi pi-save"
+					>{{ $t("儲存變更") }}
+				</NButton>
+				<NButton
+					class="h-11 min-w-36"
+					@click="cancelEdit"
+					icon="pi pi-times"
+					>{{ $t("取消") }}
+				</NButton>
+			</div>
+		</template>
+	</Dialog>
 </template>
 
 <script setup lang="ts">
@@ -201,9 +172,11 @@ import { computed, ref } from "vue";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import Button from "primevue/button";
+import NButton from "@/styles/CustomButton.vue";
 import Dialog from "primevue/dialog";
 import Divider from "primevue/divider";
 import Dropdown from "primevue/dropdown";
+import Layout from "@/components/Layout.vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { useRecruitmentAdminAuthStore } from "@/stores/universalAuth";
@@ -214,7 +187,6 @@ import { useGlobalStore } from "@/stores/RecruitmentAdminStore";
 import { useToast } from "primevue/usetoast";
 import Calendar from "primevue/calendar";
 import { RecruitmentAdminSingleReviewerRecommendResponse } from "@/api/recruitment/admin/types";
-import NButton from "@/styles/CustomButton.vue";
 
 const adminAuth = useRecruitmentAdminAuthStore();
 const api = new RecruitmentAdminAPI(adminAuth);

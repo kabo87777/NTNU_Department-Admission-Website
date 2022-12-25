@@ -1,123 +1,129 @@
 <template>
-	<div>
-		<h1 class="text-4xl text-bold tracking-widest">{{ $t("專案設定") }}</h1>
-		<div class="bigRedDivider"></div>
-		<h2 class="text-2xl text-bold tracking-widest inline-block mt-16px">
-			{{ oldProgramName }}
-		</h2>
-		<h3 class="text-s tracking-widest text-gray-500 mt-8px">
-			{{ programCreateDate }} · {{ $t("新增到專案") }}
-		</h3>
-		<h5 class="text-base tracking-widest mt-32px mb-10px">
-			{{ $t("專案名稱 (修改)") }} :
-		</h5>
-		<InputText
-			type="text"
-			v-model="programName"
-			class="w-960px h-44px mt-16px"
-		/>
-		<div class="text-lg tracking-widest font-bold mt-120px text-red-500">
-			{{ $t("請在申請端開放之前完成其他專案設定") }}
-		</div>
-		<div class="inline-block">
-			<h5 class="text-base tracking-widest mt-48px">
-				{{ $t("申請端開放時間/日期") }} :
-			</h5>
-			<Calendar
-				inputId="icon"
-				v-model="recruit_start_time"
-				:showIcon="true"
-				:showTime="true"
-				class="w-320px h-44px mt-10px customDatePicker"
-				dateFormat="yy/mm/dd"
-				:showOnFocus="false"
-				placeholder="YYYY/MM/DD hh:mm"
-			/>
-		</div>
-		<div class="inline-block ml-100px">
-			<h5 class="text-base tracking-widest mt-48px">
-				{{ $t("申請端關閉時間/日期") }} :
-			</h5>
-			<Calendar
-				inputId="icon"
-				v-model="recruit_end_time"
-				:showIcon="true"
-				:showTime="true"
-				class="w-320px h-44px mt-10px customDatePicker"
-				dateFormat="yy/mm/dd"
-				:showOnFocus="false"
-				placeholder="YYYY/MM/DD hh:mm"
-			/>
-		</div>
-		<br />
-		<div class="inline-block">
-			<h5 class="text-base tracking-widest mt-30px">
-				{{ $t("審查端開放時間/日期") }} :
-			</h5>
-			<Calendar
-				inputId="icon"
-				v-model="review_stage1_start_time"
-				:showIcon="true"
-				:showTime="true"
-				class="w-320px h-44px mt-10px customDatePicker"
-				dateFormat="yy/mm/dd"
-				:showOnFocus="false"
-				placeholder="YYYY/MM/DD hh:mm"
-			/>
-		</div>
-		<div class="inline-block ml-100px">
-			<h5 class="text-base tracking-widest mt-30px">
-				{{ $t("審查端關閉時間/日期") }} :
-			</h5>
-			<Calendar
-				inputId="icon"
-				v-model="review_stage1_end_time"
-				:showIcon="true"
-				:showTime="true"
-				class="w-320px h-44px mt-10px customDatePicker"
-				dateFormat="yy/mm/dd"
-				:showOnFocus="false"
-				placeholder="YYYY/MM/DD hh:mm"
-			/>
-		</div>
-		<div class="mt-200px">
-			<div class="bigRedDivider"></div>
-		</div>
-		<div class="flex mt-24px">
-			<div class="m-auto">
-				<div class="flex">
-					<NButton
-						type="Admin"
-						class="bg-white h-60px w-140px"
-						@click="confirmDeleteProject()"
-						icon="pi pi-times"
-					>
-						<div>{{ $t("刪除專案") }}</div>
-					</NButton>
-					<div class="w-24px"></div>
-					<NButton
-						type="Admin"
-						class="bg-Green h-60px w-140px"
-						@click="updateProgramData"
-						icon="pi pi-check"
-					>
-						<div>{{ $t("儲存設定") }}</div>
-					</NButton>
+	<ConfirmDialog :draggable="false" />
+	<Layout Admin>
+		<template #Header>
+			{{ $t("專案設定") }}
+		</template>
+		<template #Body>
+			<!-- 專案名稱 -->
+			<div pos="sticky top-0" bg="white" pb="2" z="50">
+				<div text="sm secondary">
+					{{ $t("當前專案") }}
+				</div>
+				<div flex="~ gap-4" p="4" border="rounded-lg nGrey-100 2">
+					<div text="3xl pAdmin" font="medium tracking-widest">
+						{{ oldProgramName }}
+					</div>
+					<div text="sm secondary" mt="auto">
+						{{ programCreateDate }} · {{ $t("新增到專案") }}
+					</div>
 				</div>
 			</div>
-		</div>
-		<ConfirmDialog :draggable="false" />
-	</div>
+			<!-- 基本設定 -->
+			<div text="2xl title" pb="2">
+				{{ $t("基本屬性") }}
+			</div>
+			<!-- 修改專案名稱 -->
+			<div flex="~ col gap-1" text="body">
+				<div>{{ $t("修改專案名稱") }} :</div>
+				<InputText w="!300px" type="text" v-model="programName" />
+			</div>
+			<PDivider Admin />
+			<!-- 開放時間 -->
+			<div flex="~ gap-2" pb="2">
+				<div text="2xl title">{{ $t("開放時間") }}</div>
+				<div text="sm warning" mt="auto">
+					※ {{ $t("請在申請端開放之前完成其他專案設定") }}
+				</div>
+			</div>
+			<div text="xl pApplicant">{{ $t("申請端") }}</div>
+			<div flex="~ gap-12" ml="4" text="secondary">
+				<div flex="~ col gap-1">
+					<div>{{ $t("開放日期與時間") }} :</div>
+					<Calendar
+						inputId="icon"
+						v-model="recruit_start_time"
+						:showIcon="true"
+						:showTime="true"
+						class="!w-300px customDatePicker"
+						dateFormat="yy/mm/dd"
+						:showOnFocus="false"
+						placeholder="YYYY/MM/DD hh:mm"
+					/>
+				</div>
+				<div flex="~ col gap-1">
+					<div>{{ $t("關閉日期與時間") }} :</div>
+					<Calendar
+						inputId="icon"
+						v-model="recruit_end_time"
+						:showIcon="true"
+						:showTime="true"
+						class="!w-300px customDatePicker"
+						dateFormat="yy/mm/dd"
+						:showOnFocus="false"
+						placeholder="YYYY/MM/DD hh:mm"
+					/>
+				</div>
+			</div>
+			<div pt="6" text="xl pReviewer">{{ $t("審查端") }}</div>
+			<div flex="~ gap-12" ml="4" text="secondary">
+				<div flex="~ col gap-1">
+					<div>{{ $t("開放日期與時間") }} :</div>
+					<Calendar
+						inputId="icon"
+						v-model="review_stage1_start_time"
+						:showIcon="true"
+						:showTime="true"
+						class="!w-300px customDatePicker"
+						dateFormat="yy/mm/dd"
+						:showOnFocus="false"
+						placeholder="YYYY/MM/DD hh:mm"
+					/>
+				</div>
+				<div flex="~ col gap-1">
+					<div>{{ $t("關閉日期與時間") }} :</div>
+					<Calendar
+						inputId="icon"
+						v-model="review_stage1_end_time"
+						:showIcon="true"
+						:showTime="true"
+						class="!w-300px customDatePicker"
+						dateFormat="yy/mm/dd"
+						:showOnFocus="false"
+						placeholder="YYYY/MM/DD hh:mm"
+					/>
+				</div>
+			</div>
+		</template>
+		<template #Footer>
+			<div class="flex" justify="end">
+				<NButton
+					Admin
+					class="h-11 min-w-36 mx-auto"
+					@click="updateProgramData"
+					icon="pi pi-save"
+				>
+					<div>{{ $t("儲存設定") }}</div>
+				</NButton>
+				<NButton
+					Danger
+					class="h-11 min-w-36 absolute"
+					@click="confirmDeleteProject()"
+					icon="pi pi-trash"
+				>
+					<div>{{ $t("刪除專案") }}</div>
+				</NButton>
+			</div>
+		</template>
+	</Layout>
 </template>
 
 <script setup lang="ts">
 import { useToast } from "primevue/usetoast";
-import Button from "primevue/button";
 import Calendar from "primevue/calendar";
-import Checkbox from "primevue/checkbox";
-import Divider from "primevue/divider";
+import Layout from "@/components/Layout.vue";
 import InputText from "primevue/inputtext";
-import Textarea from "primevue/textarea";
+import PDivider from "@/styles/PrDivider.vue";
 import NButton from "@/styles/CustomButton.vue";
 import { useI18n } from "vue-i18n";
 import ConfirmDialog from "primevue/confirmdialog";

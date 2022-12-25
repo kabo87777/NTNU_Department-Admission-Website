@@ -423,7 +423,7 @@ const routes: Array<RouteRecordRaw> = [
 		children: [
 			{
 				path: "projectSetting",
-				name: "recruitmentProjectSetting",
+				name: "RecruitmentAdminProjectSetting",
 				component: () =>
 					import(
 						"@/views/recruitment/manager/pages/ProjectSetting.vue"
@@ -431,31 +431,31 @@ const routes: Array<RouteRecordRaw> = [
 			},
 			{
 				path: "reviewerSettings",
-				name: "recruitmentManagerManageReviewers",
+				name: "RecruitmentAdminManageReviewers",
 				component: () =>
 					import("@/views/recruitment/manager/ListReviewer.vue"),
 			},
 			{
 				path: "ListApplicant",
-				name: "recruitmentManagerListApplicant",
+				name: "RecruitmentAdminListApplicant",
 				component: () =>
 					import("@/views/recruitment/manager/ListApplicant.vue"),
 			},
 			{
 				path: "gradeDataList",
-				name: "recruitmentGradeDataList",
+				name: "RecruitmentAdminGradeDataList",
 				component: () =>
 					import("@/views/recruitment/manager/gradeDataList.vue"),
 			},
 			{
 				path: "reviewScoreField",
-				name: "recruitmentReviewScoreField",
+				name: "RecruitmentAdminReviewScoreField",
 				component: () =>
 					import("@/views/recruitment/manager/reviewScoreField.vue"),
 			},
 			{
 				path: "reviewProgress",
-				name: "recruitmentManagerReviewProgress",
+				name: "RecruitmentAdminReviewProgress",
 				component: () =>
 					import(
 						"@/views/recruitment/manager/pages/ReviewProgress.vue"
@@ -463,7 +463,7 @@ const routes: Array<RouteRecordRaw> = [
 			},
 			{
 				path: "mustviewSetting",
-				name: "recruitmentManagerMustviewSetting",
+				name: "RecruitmentAdminMustviewSetting",
 				component: () =>
 					import(
 						"@/views/recruitment/manager/pages/mustviewSetting.vue"
@@ -471,7 +471,7 @@ const routes: Array<RouteRecordRaw> = [
 			},
 			{
 				path: "attachmentList",
-				name: "recruitmentManagerApplicantUploadList",
+				name: "RecruitmentAdminApplicantUploadList",
 				component: () =>
 					import(
 						"@/views/recruitment/manager/pages/ApplicantUploadList/ApplicantList.vue"
@@ -479,7 +479,7 @@ const routes: Array<RouteRecordRaw> = [
 			},
 			{
 				path: "applicant/:userId",
-				name: "recruitmentManagerApplicant",
+				name: "RecruitmentAdminApplicant",
 				component: () =>
 					import(
 						"@/views/recruitment/manager/pages/ApplicantUploadList/Applicant.vue"
@@ -487,7 +487,7 @@ const routes: Array<RouteRecordRaw> = [
 			},
 			{
 				path: "userSetting",
-				name: "recruitmentManagerUserSetting",
+				name: "RecruitmentAdminUserSetting",
 				component: () =>
 					import(
 						"@/views/recruitment/manager/pages/RecruitmentManagerSelfSetting.vue"
