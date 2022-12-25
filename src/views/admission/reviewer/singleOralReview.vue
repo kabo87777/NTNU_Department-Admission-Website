@@ -100,7 +100,8 @@
 						<div text="body">
 							{{ oscore1Title }} ({{ oscore1Proportion }}%)
 						</div>
-						<InputNumber
+						<InputText
+							type="number"
 							v-model="oinputScore_1"
 							style="width: 100% !important"
 						/>
@@ -109,7 +110,8 @@
 						<div text="body">
 							{{ oscore2Title }} ({{ oscore2Proportion }}%)
 						</div>
-						<InputNumber
+						<InputText
+							type="number"
 							v-model="oinputScore_2"
 							style="width: 100% !important"
 						/>
@@ -118,7 +120,8 @@
 						<div text="body">
 							{{ oscore3Title }} ({{ oscore3Proportion }}%)
 						</div>
-						<InputNumber
+						<InputText
+							type="number"
 							v-model="oinputScore_3"
 							style="width: 100% !important"
 						/>
@@ -127,7 +130,8 @@
 						<div text="body">
 							{{ oscore4Title }} ({{ oscore4Proportion }}%)
 						</div>
-						<InputNumber
+						<InputText
+							type="number"
 							v-model="oinputScore_4"
 							style="width: 100% !important"
 						/>
@@ -136,7 +140,8 @@
 						<div text="body">
 							{{ oscore5Title }} ({{ oscore5Proportion }}%)
 						</div>
-						<InputNumber
+						<InputText
+							type="number"
 							v-model="oinputScore_5"
 							style="width: 100% !important"
 						/>
@@ -235,11 +240,11 @@ const inputScore_2 = ref(0);
 const inputScore_3 = ref(0);
 const inputScore_4 = ref(0);
 const inputScore_5 = ref(0);
-const oinputScore_1 = ref(0);
-const oinputScore_2 = ref(0);
-const oinputScore_3 = ref(0);
-const oinputScore_4 = ref(0);
-const oinputScore_5 = ref(0);
+const oinputScore_1 = ref("0");
+const oinputScore_2 = ref("0");
+const oinputScore_3 = ref("0");
+const oinputScore_4 = ref("0");
+const oinputScore_5 = ref("0");
 const name = ref("");
 const total_score = computed(() => {
 	return (
@@ -252,11 +257,11 @@ const total_score = computed(() => {
 });
 const oral_score = computed(() => {
 	return (
-		(oinputScore_1!.value! * score1Proportion.value) / 100 +
-		(oinputScore_2!.value! * score2Proportion.value) / 100 +
-		(oinputScore_3!.value! * score3Proportion.value) / 100 +
-		(oinputScore_4!.value! * score4Proportion.value) / 100 +
-		(oinputScore_5!.value! * score5Proportion.value) / 100
+		(+oinputScore_1!.value! * score1Proportion.value) / 100 +
+		(+oinputScore_2!.value! * score2Proportion.value) / 100 +
+		(+oinputScore_3!.value! * score3Proportion.value) / 100 +
+		(+oinputScore_4!.value! * score4Proportion.value) / 100 +
+		(+oinputScore_5!.value! * score5Proportion.value) / 100
 	);
 });
 
@@ -286,11 +291,11 @@ const {
 	},
 	{
 		onSuccess: (data) => {
-			oinputScore_1.value = data!.oral_grade_1;
-			oinputScore_2.value = data!.oral_grade_2;
-			oinputScore_3.value = data!.oral_grade_3;
-			oinputScore_4.value = data!.oral_grade_4;
-			oinputScore_5.value = data!.oral_grade_5;
+			oinputScore_1.value = data!.oral_grade_1.toString();
+			oinputScore_2.value = data!.oral_grade_2.toString();
+			oinputScore_3.value = data!.oral_grade_3.toString();
+			oinputScore_4.value = data!.oral_grade_4.toString();
+			oinputScore_5.value = data!.oral_grade_5.toString();
 			inputScore_1.value = data!.docs_grade_1;
 			inputScore_2.value = data!.docs_grade_2;
 			inputScore_3.value = data!.docs_grade_3;
@@ -496,9 +501,9 @@ function toggleScoreField() {
 function saveScore() {
 	const today = new Date();
 	if (
-		oinputScore_1.value > 100 ||
-		oinputScore_2.value > 100 ||
-		oinputScore_3.value > 100
+		+oinputScore_1.value > 100 ||
+		+oinputScore_2.value > 100 ||
+		+oinputScore_3.value > 100
 	) {
 		toast.add({
 			severity: "error",
@@ -508,9 +513,9 @@ function saveScore() {
 		return;
 	}
 	if (
-		oinputScore_1.value < 0 ||
-		oinputScore_2.value < 0 ||
-		oinputScore_3.value < 0
+		+oinputScore_1.value < 0 ||
+		+oinputScore_2.value < 0 ||
+		+oinputScore_3.value < 0
 	) {
 		toast.add({
 			severity: "error",
