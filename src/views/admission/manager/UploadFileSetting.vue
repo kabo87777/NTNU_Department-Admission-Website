@@ -296,7 +296,7 @@ let showedInfo = reactive([
 	{
 		id: "姓名資訊",
 		checked: false,
-		field: ["cn_surname", "en_surname", "en_midname", "en_givenname"],
+		field: ["cn_surname", "en_surname", "en_givenname"],
 	},
 	{ id: "入學身分", checked: false, field: ["nationality"] },
 	{
