@@ -38,7 +38,7 @@
 				</div>
 				<div class="flex py-16px">
 					<div class="w-1/3">
-						<div>{{ $t("英文姓氏") }}</div>
+						<div>{{ "*" + $t("英文姓氏") }}</div>
 						<div>
 							<InputText
 								class="w-[70%] h-36px !mt-4px"
@@ -57,7 +57,7 @@
 						</div>
 					</div>
 					<div class="w-1/3">
-						<div>{{ $t("英文名字") }}</div>
+						<div>{{ "*" + $t("英文名字") }}</div>
 						<div>
 							<InputText
 								class="w-[70%] h-36px !mt-4px"
@@ -99,7 +99,7 @@
 				</div>
 				<div class="flex pt-24px">
 					<div class="w-1/3">
-						<div>{{ $t("入學身分") }}</div>
+						<div>{{ "*" + $t("入學身分") }}</div>
 						<div>
 							<Dropdown
 								class="w-[70%] h-36px !mt-4px"
@@ -160,58 +160,16 @@
 									</small>
 								</div>
 							</div>
-							<div class="w-1/3">
-								<div>{{ $t("居留證統一證號") }}</div>
-								<div>
-									<InputText
-										class="w-[70%] h-36px !mt-4px"
-										style="border: 1px solid #736028"
-										type="text"
-										v-model="identity.ui"
-									/>
-								</div>
-								<div
-									v-show="required.ui"
-									class="absolute mt-[-4px]"
-								>
-									<small class="p-error">
-										{{ $t("此為必填欄位") }}
-									</small>
-								</div>
-							</div>
 						</div>
 					</div>
 					<div class="pt-24px"></div>
-				</div>
-				<div v-else>
-					<div class="flex py-16px">
-						<div class="w-1/3">
-							<div>{{ $t("身份證字號") }}</div>
-							<div>
-								<InputText
-									class="w-[70%] h-36px !mt-4px"
-									style="border: 1px solid #736028"
-									type="text"
-									v-model="identity.ic"
-								/>
-							</div>
-							<div
-								v-show="required.icNum"
-								class="absolute mt-[-4px]"
-							>
-								<small class="p-error">
-									{{ $t("此為必填欄位") }}
-								</small>
-							</div>
-						</div>
-					</div>
 				</div>
 			</div>
 
 			<div>
 				<div
 					class="px-12px py-24px"
-					v-if="requiredInputFields.includes('現居地址')"
+					v-if="requiredInputFields.includes('通訊地址')"
 				>
 					<div class="flex">
 						<div class="text-[24px] font-[50] font-bold">

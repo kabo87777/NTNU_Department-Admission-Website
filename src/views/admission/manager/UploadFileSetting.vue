@@ -58,7 +58,7 @@
 				</div>
 			</div>
 			<PDivider Admin v-if="activeTab.value === 1" />
-			<!-- 現居地址 -->
+			<!-- 通訊地址 -->
 			<div v-if="activeTab.value === 1">
 				<div flex="~ gap-2" justify="items-center">
 					<Checkbox
@@ -249,7 +249,7 @@ const trans = {
 	nameInfo: computed(() => t("姓名資訊")),
 	admissionIdentity: computed(() => t("入學身分")),
 	registAddressInfo: computed(() => t("戶籍資訊")),
-	residentAddress: computed(() => t("現居地址")),
+	residentAddress: computed(() => t("通訊地址")),
 	identityInfo: computed(() => t("身份資料")),
 	contactInfo: computed(() => t("聯絡資料")),
 	schoolExp: computed(() => t("就學經歷")),
@@ -295,7 +295,7 @@ const queryClient = useQueryClient();
 let showedInfo = reactive([
 	{ id: "姓名資訊", checked: false },
 	{ id: "入學身分", checked: false },
-	{ id: "現居地址", checked: false },
+	{ id: "通訊地址", checked: false },
 	{ id: "身份資料", checked: false },
 	{ id: "聯絡資料", checked: false },
 ]);

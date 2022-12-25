@@ -360,7 +360,7 @@ const trans = {
 	nameInfo: computed(() => t("姓名資訊")),
 	admissionId: computed(() => t("入學身份")),
 	residentAddr: computed(() => t("戶籍資訊")),
-	currentAddr: computed(() => t("現居地址")),
+	currentAddr: computed(() => t("通訊地址")),
 	nationalId: computed(() => t("身份資料")),
 	contactInfo: computed(() => t("聯絡資訊")),
 	schoolExp: computed(() => t("就學經歷")),
@@ -428,7 +428,7 @@ let showedInfo = reactive([
 	{ id: "姓名資訊", visible: true, checked: true },
 	{ id: "入學身分", visible: true, checked: true },
 	{ id: "戶籍資訊", visible: true, checked: true },
-	{ id: "現居地址", visible: true, checked: true },
+	{ id: "通訊地址", visible: true, checked: true },
 	{ id: "身份資料", visible: true, checked: true },
 	{ id: "聯絡資料", visible: true, checked: true },
 ]);

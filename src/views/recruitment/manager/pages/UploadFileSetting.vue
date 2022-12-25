@@ -292,7 +292,7 @@ const trans = {
 	nameInfo: computed(() => t("姓名資訊")),
 	recruitmentIdentity: computed(() => t("入學身分")),
 	registAddressInfo: computed(() => t("戶籍資訊")),
-	residentAddress: computed(() => t("現居地址")),
+	residentAddress: computed(() => t("通訊地址")),
 	identityInfo: computed(() => t("身份資料")),
 	contactInfo: computed(() => t("聯絡資料")),
 	teachExp: computed(() => t("教學經歷")),
@@ -339,7 +339,7 @@ let showedInfo = reactive([
 	{ id: "姓名資訊", checked: false },
 	{ id: "入職身分", checked: false },
 	{ id: "戶籍資訊", checked: false },
-	{ id: "現居地址", checked: false },
+	{ id: "通訊地址", checked: false },
 	{ id: "身份資料", checked: false },
 	{ id: "聯絡資料", checked: false },
 ]);
