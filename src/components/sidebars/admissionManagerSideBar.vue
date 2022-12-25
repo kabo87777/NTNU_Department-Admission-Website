@@ -193,7 +193,7 @@
 						<NButton
 							Admin
 							@click="navigate"
-							icon="pi pi-user-edit"
+							:icon="isOverflow('pi pi-user-edit')"
 							class="p-2 w-2/5 h-11 bg-white whitespace-nowrap"
 							:class="letterSpace"
 						>
@@ -203,7 +203,7 @@
 					<NButton
 						Success
 						@click="isDisplayNewProjectPrompt = true"
-						icon="pi pi-plus"
+						:icon="isOverflow('pi pi-plus')"
 						class="p-2 w-2/5 h-11 bg-white whitespace-nowrap"
 						:class="letterSpace"
 					>
@@ -380,6 +380,11 @@ const newProgram = ref(false);
 
 const route = useRoute();
 const gateway = computed(() => route.name);
+
+const isOverflow = (classStyle: string) => {
+	if (locale.value == "zh") return classStyle;
+	else return "";
+};
 
 function addNewProject() {
 	const todayDateString = dateTransform(new Date()) + "+08:00";
