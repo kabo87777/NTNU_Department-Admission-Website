@@ -173,11 +173,13 @@ const onSubmit = handleSubmit(async function (values) {
 		const api = new RecruitmentAdminAPI(authStore);
 
 		userInfo.saveUserInfo(
-			await api.requestNewSession({
-				email: values.email,
-				password: values.password,
-				"cf-turnstile-response": turnstileResponse,
-			})
+			(
+				await api.requestNewSession({
+					email: values.email,
+					password: values.password,
+					"cf-turnstile-response": turnstileResponse,
+				})
+			).data
 		);
 
 		router.replace({ name: "RecruitmentAdminMainContainer" });

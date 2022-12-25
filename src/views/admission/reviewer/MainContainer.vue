@@ -26,13 +26,18 @@ import ScrollTop from "primevue/scrolltop";
 
 import { useQuery } from "@tanstack/vue-query";
 import { useRouter } from "vue-router";
-
 import { useAdmissionReviewerAuthStore } from "@/stores/universalAuth";
-import { doUniversalAuthSessionValidation } from "@/api/universalAuth";
+import {
+	doUniversalAuthSessionValidation,
+	doUniversalAuthGetUserInfo,
+} from "@/api/universalAuth";
+import { AdmissionReviewerAuthResponse } from "@/api/admission/reviewer/types";
+import { useUserInfoStore } from "@/stores/AdmissionReviewerStore";
 
 const router = useRouter();
 
 const auth = useAdmissionReviewerAuthStore();
+const reviewerStore = useUserInfoStore();
 
 useQuery(["admissionReviewerAuthorizationStatus"], async () => {
 	const status = await doUniversalAuthSessionValidation(auth);
@@ -41,6 +46,22 @@ useQuery(["admissionReviewerAuthorizationStatus"], async () => {
 
 	return router.replace({ name: "AdmissionReviewerSignin" });
 });
+
+useQuery(
+	["admissionReviewerAuthorizationGetUserInfo"],
+	async () => {
+		const data: AdmissionReviewerAuthResponse =
+			await doUniversalAuthGetUserInfo(auth);
+
+		return data;
+	},
+	{
+		onSuccess: (data) => {
+			// 記得把這邊換成其他帳戶類型的 store
+			reviewerStore.$patch({ userInfo: data });
+		},
+	}
+);
 </script>
 
 <style scoped></style>

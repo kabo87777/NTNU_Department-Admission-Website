@@ -33,11 +33,17 @@ import { useQuery } from "@tanstack/vue-query";
 import { useRouter } from "vue-router";
 
 import { useRecruitmentAdminAuthStore } from "@/stores/universalAuth";
-import { doUniversalAuthSessionValidation } from "@/api/universalAuth";
+import {
+	doUniversalAuthSessionValidation,
+	doUniversalAuthGetUserInfo,
+} from "@/api/universalAuth";
+import { RecruitmentAdminAuthResponse } from "@/api/recruitment/admin/types";
+import { useAdminInfoStore } from "@/stores/RecruitmentAdminStore";
 
 const router = useRouter();
 
 const auth = useRecruitmentAdminAuthStore();
+const adminStore = useAdminInfoStore();
 
 useQuery(["recruitmentManagerAuthorizationStatus"], async () => {
 	const status = await doUniversalAuthSessionValidation(auth);
@@ -46,6 +52,21 @@ useQuery(["recruitmentManagerAuthorizationStatus"], async () => {
 
 	return router.replace({ name: "RecruitmentManagerSignin" });
 });
+
+useQuery(
+	["recruitmentAdminAuthorizationGetUserInfo"],
+	async () => {
+		const data: RecruitmentAdminAuthResponse =
+			await doUniversalAuthGetUserInfo(auth);
+
+		return data;
+	},
+	{
+		onSuccess: (data) => {
+			adminStore.$patch({ userInfo: data });
+		},
+	}
+);
 </script>
 
 <style scoped></style>
