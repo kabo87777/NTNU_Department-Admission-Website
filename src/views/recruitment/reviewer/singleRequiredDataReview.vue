@@ -174,6 +174,7 @@ useQuery(
 		onSuccess: (data) => {
 			if (infoPDF.value === "") {
 				infoPDF.value = data!;
+				PDF.value = data!;
 			}
 		},
 	}
