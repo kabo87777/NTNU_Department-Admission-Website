@@ -52,7 +52,7 @@ useQuery(["admissionApplicantAuthorizationStatus"], async () => {
 router.push({ name: "AdmissionApplicantLatestNews" });
 
 useQuery(
-	["admission", "admin", "authorization", "getUserInfo"],
+	["admissionApplicantAuthorizationGetUserInfo"],
 	async () => {
 		const data: AdmissionApplicantAuthResponse =
 			await doUniversalAuthGetUserInfo(auth);
