@@ -286,7 +286,7 @@
 		</template>
 		<template #Footer>
 			<NButton
-				v-if="!(letterList[0]?.length > 0)"
+				v-if="letterList[0]?.length === 0"
 				Applicant
 				icon="pi pi-plus"
 				class="mx-auto h-11 min-w-36"
