@@ -504,7 +504,7 @@ const routes: Array<RouteRecordRaw> = [
 		children: [
 			{
 				path: "requiredDataReview",
-				name: "requiredDataReview",
+				name: "RecruitmentReviewerRequiredDataReview",
 				component: () =>
 					import(
 						"@/views/recruitment/reviewer/requiredDataReview.vue"
@@ -512,7 +512,7 @@ const routes: Array<RouteRecordRaw> = [
 			},
 			{
 				path: "optionalDataReview",
-				name: "optionalDataReview",
+				name: "RecruitmentReviewerOptionalDataReview",
 				component: () =>
 					import(
 						"@/views/recruitment/reviewer/optionalDataReview.vue"
@@ -520,7 +520,7 @@ const routes: Array<RouteRecordRaw> = [
 			},
 			{
 				path: "singleRequiredDataReview/:id",
-				name: "singleRequiredDataReview",
+				name: "RecruitmentReviewerSingleRequiredDataReview",
 				component: () =>
 					import(
 						"@/views/recruitment/reviewer/singleRequiredDataReview.vue"
@@ -528,7 +528,7 @@ const routes: Array<RouteRecordRaw> = [
 			},
 			{
 				path: "singleOptionalDataReview/:id",
-				name: "singleOptionalDataReview",
+				name: "RecruitmentReviewerSingleOptionalDataReview",
 				component: () =>
 					import(
 						"@/views/recruitment/reviewer/singleOptionalDataReview.vue"
@@ -536,7 +536,7 @@ const routes: Array<RouteRecordRaw> = [
 			},
 			{
 				path: "userSetting",
-				name: "recruitmentReviewerUserSetting",
+				name: "RecruitmentReviewerUserSetting",
 				component: () =>
 					import("@/views/recruitment/reviewer/userSetting.vue"),
 			},
