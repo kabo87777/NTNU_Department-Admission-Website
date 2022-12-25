@@ -186,7 +186,7 @@
 							class="whitespace-nowrap"
 							:class="letterSpace"
 						>
-							{{ applicantName }}
+							{{ applicantStore.userInfo.name }}
 						</div>
 					</div>
 					<!-- Button -->
@@ -284,6 +284,7 @@ import { useI18n } from "vue-i18n";
 import dayjs from "dayjs";
 
 import { useAdmissionApplicantAuthStore } from "@/stores/universalAuth";
+import { useUserInfoStore } from "@/stores/AdmissionApplicantStore";
 import { AdmissionApplicantAPI } from "@/api/admission/applicant/api";
 
 import "primeicons/primeicons.css";
@@ -299,6 +300,7 @@ const route = useRoute();
 const gateway = computed(() => route.name);
 const applicantAuth = useAdmissionApplicantAuthStore();
 const applicantName = window.localStorage.getItem("AdmissionApplicantUsername");
+const applicantStore = useUserInfoStore();
 
 const { t } = useI18n();
 const { locale } = useI18n();

@@ -58,7 +58,7 @@
 				</div>
 			</div>
 			<PDivider Admin v-if="activeTab.value === 1" />
-			<!-- 現居地址 -->
+			<!-- 通訊地址 -->
 			<div v-if="activeTab.value === 1">
 				<div flex="~ gap-2" justify="items-center">
 					<Checkbox
@@ -243,13 +243,13 @@ const toast = useToast();
 // i18n
 const { t } = useI18n();
 const trans = {
-	uploadField: computed(() => t("申請上傳欄位")),
+	uploadField: computed(() => t("上傳欄位設置")),
 	basicCol: computed(() => t("基本資料欄位")),
 	attachmentCol: computed(() => t("檢附資料欄位")),
 	nameInfo: computed(() => t("姓名資訊")),
 	admissionIdentity: computed(() => t("入學身分")),
 	registAddressInfo: computed(() => t("戶籍資訊")),
-	residentAddress: computed(() => t("現居地址")),
+	residentAddress: computed(() => t("通訊地址")),
 	identityInfo: computed(() => t("身份資料")),
 	contactInfo: computed(() => t("聯絡資料")),
 	schoolExp: computed(() => t("就學經歷")),
