@@ -264,35 +264,39 @@
 	</div>
 	<!-- 新增專案彈窗 -->
 	<Dialog
-		header="新增專案"
 		v-model:visible="isDisplayNewProjectPrompt"
-		:closable="false"
 		:draggable="false"
+		:closable="false"
 		:modal="true"
 	>
-		<div space="y-1">
-			<div text="body">{{ $t("專案名稱") }}</div>
-			<InputText type="text" v-model="newProjectName" w="!100" />
-		</div>
-		<div flex="~ gap-8" justify="center" mt="12">
-			<NButton
-				Admin
-				@click="addNewProject"
-				icon="pi pi-check"
-				w="32"
-				h="11"
-			>
-				{{ $t("建立專案") }}
-			</NButton>
-			<NButton
-				@click="closeDisplayNewProjectPrompt"
-				icon="pi pi-times"
-				w="32"
-				h="11"
-			>
-				{{ $t("取消") }}
-			</NButton>
-		</div>
+		<template #header>
+			<div text="2xl title">{{ $t("新增專案") }}</div>
+		</template>
+		<template #default>
+			<div space="y-1" mx="1">
+				<div text="body">{{ $t("專案名稱") }}</div>
+				<InputText type="text" v-model="newProjectName" w="full" />
+			</div>
+		</template>
+		<template #footer>
+			<div flex="~ gap-8" justify="center">
+				<NButton
+					Admin
+					@click="addNewProject"
+					icon="pi pi-check"
+					class="h-11 min-w-36"
+				>
+					{{ $t("建立專案") }}
+				</NButton>
+				<NButton
+					@click="closeDisplayNewProjectPrompt"
+					icon="pi pi-times"
+					class="h-11 min-w-36"
+				>
+					{{ $t("取消") }}
+				</NButton>
+			</div>
+		</template>
 	</Dialog>
 </template>
 
