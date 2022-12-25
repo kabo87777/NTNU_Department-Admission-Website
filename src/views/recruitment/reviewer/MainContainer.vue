@@ -33,11 +33,17 @@ import { useQuery } from "@tanstack/vue-query";
 import { useRouter } from "vue-router";
 
 import { useRecruitmentReviewerAuthStore } from "@/stores/universalAuth";
-import { doUniversalAuthSessionValidation } from "@/api/universalAuth";
+import {
+	doUniversalAuthSessionValidation,
+	doUniversalAuthGetUserInfo,
+} from "@/api/universalAuth";
+import { RecruitmentManagerAuthResponse } from "@/api/recruitment/reviewer/types";
+import { useUserInfoStore } from "@/stores/RecruitmentReviewerStore";
 
 const router = useRouter();
 
 const auth = useRecruitmentReviewerAuthStore();
+const reviewerStore = useUserInfoStore();
 
 useQuery(["recruitmentReviewerAuthorizationStatus"], async () => {
 	const status = await doUniversalAuthSessionValidation(auth);
@@ -46,6 +52,21 @@ useQuery(["recruitmentReviewerAuthorizationStatus"], async () => {
 
 	return router.replace({ name: "RecruitmentReviewerSignin" });
 });
+
+useQuery(
+	["recruitmentReviewerAuthorizationGetUserInfo"],
+	async () => {
+		const data: RecruitmentManagerAuthResponse =
+			await doUniversalAuthGetUserInfo(auth);
+
+		return data;
+	},
+	{
+		onSuccess: (data) => {
+			reviewerStore.$patch({ userInfo: data });
+		},
+	}
+);
 </script>
 
 <style scoped></style>
