@@ -36,7 +36,7 @@
 			<div flex="~ col gap-6" mt="6">
 				<!-- 1.專案設定 -->
 				<router-link
-					to="/recruitment/manager/projectSetting"
+					:to="{ name: 'RecruitmentAdminProjectSetting' }"
 					custom
 					v-slot="{ navigate }"
 				>
@@ -48,7 +48,9 @@
 						class="py-3 px-6 mx-6 gap-4 !justify-start"
 						:class="letterSpace"
 						@click="navigate"
-						:isSelected="gateway === 'AdmissionAdminProjectSetting'"
+						:isSelected="
+							gateway === 'RecruitmentAdminProjectSetting'
+						"
 						>{{ $t("專案設定") }}
 					</NButton>
 				</router-link>
@@ -59,7 +61,7 @@
 				</div>
 				<!-- 2.申請帳號設置 -->
 				<router-link
-					to="/recruitment/manager/ListApplicant"
+					:to="{ name: 'RecruitmentAdminListApplicant' }"
 					custom
 					v-slot="{ navigate }"
 				>
@@ -72,7 +74,7 @@
 						:class="letterSpace"
 						@click="navigate"
 						:isSelected="
-							gateway === 'AdmissionAdminManageApplicants'
+							gateway === 'RecruitmentAdminListApplicant'
 						"
 						>{{ $t("申請帳號設置") }}
 					</NButton>
@@ -80,7 +82,7 @@
 				<!-- 3.上傳資料列表 -->
 				<router-link
 					:to="{
-						name: 'recruitmentManagerApplicantUploadList',
+						name: 'RecruitmentAdminApplicantUploadList',
 					}"
 					custom
 					v-slot="{ navigate }"
@@ -94,9 +96,7 @@
 						:class="letterSpace"
 						@click="navigate"
 						:isSelected="
-							gateway ===
-							('AdmissionAdminApplicantsUploadList' ||
-								'AdmissionAdminApplicantUploadedDocs')
+							gateway === 'RecruitmentAdminApplicantUploadList'
 						"
 						>{{ $t("上傳資料列表") }}
 					</NButton>
@@ -128,7 +128,7 @@
 				</router-link> -->
 				<!-- 5.評分資料列表 -->
 				<router-link
-					to="/recruitment/manager/gradeDataList"
+					:to="{ name: 'RecruitmentAdminGradeDataList' }"
 					custom
 					v-slot="{ navigate }"
 				>
@@ -140,13 +140,15 @@
 						class="py-3 px-6 mx-6 gap-4 !justify-start"
 						:class="letterSpace"
 						@click="navigate"
-						:isSelected="gateway === 'AdmissionAdminGradeDataList'"
+						:isSelected="
+							gateway === 'RecruitmentAdminGradeDataList'
+						"
 						>{{ $t("評分資料列表") }}
 					</NButton>
 				</router-link>
 				<!-- 6.審查人員與進度 -->
 				<router-link
-					to="/recruitment/manager/reviewProgress"
+					:to="{ name: 'RecruitmentAdminReviewProgress' }"
 					custom
 					v-slot="{ navigate }"
 				>
@@ -158,13 +160,15 @@
 						class="py-3 px-6 mx-6 gap-4 !justify-start"
 						:class="letterSpace"
 						@click="navigate"
-						:isSelected="gateway === 'AdmissionAdminGradeDataList'"
+						:isSelected="
+							gateway === 'RecruitmentAdminReviewProgress'
+						"
 						>{{ $t("審查人員與進度") }}
 					</NButton>
 				</router-link>
 				<!-- 7.必看名單設置 -->
 				<router-link
-					to="/recruitment/manager/mustviewSetting"
+					:to="{ name: 'RecruitmentAdminMustviewSetting' }"
 					custom
 					v-slot="{ navigate }"
 				>
@@ -176,7 +180,9 @@
 						class="py-3 px-6 mx-6 gap-4 !justify-start"
 						:class="letterSpace"
 						@click="navigate"
-						:isSelected="gateway === 'AdmissionAdminGradeDataList'"
+						:isSelected="
+							gateway === 'RecruitmentAdminMustviewSetting'
+						"
 						>{{ $t("必看名單設置") }}
 					</NButton>
 				</router-link>
@@ -188,7 +194,7 @@
 				<!-- 管理按鈕 -->
 				<div flex="~ gap-4" justify="center">
 					<router-link
-						to="/recruitment/manager/reviewerSettings"
+						:to="{ name: 'RecruitmentAdminManageReviewers' }"
 						custom
 						v-slot="{ navigate }"
 					>
@@ -233,7 +239,7 @@
 					<div flex="~ gap-1" ml="auto">
 						<!-- 使用者設定 -->
 						<router-link
-							to="/recruitment/manager/userSetting"
+							:to="{ name: 'RecruitmentAdminUserSetting' }"
 							custom
 							v-slot="{ navigate }"
 						>
@@ -245,7 +251,7 @@
 								size="lg"
 								class="w-12 h-12 m-auto"
 								:isSelected="
-									gateway === 'AdmissionAdminUserSetting'
+									gateway === 'RecruitmentAdminUserSetting'
 								"
 							/>
 						</router-link>
