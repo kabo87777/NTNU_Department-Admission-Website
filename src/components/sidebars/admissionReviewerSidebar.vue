@@ -53,7 +53,7 @@
 					<NButton
 						Reviewer
 						white
-						icon="pi pi-cog"
+						icon="pi pi-book"
 						size="lg"
 						class="py-3 px-6 mx-6 gap-4 !justify-start"
 						:class="letterSpace"
@@ -88,7 +88,7 @@
 					<NButton
 						Reviewer
 						white
-						icon="pi pi-cog"
+						icon="pi pi-calendar"
 						size="lg"
 						class="py-3 px-6 mx-6 gap-4 !justify-start"
 						:class="letterSpace"
