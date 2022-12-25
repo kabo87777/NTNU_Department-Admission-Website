@@ -4,7 +4,7 @@
 		<template #Body>
 			<div
 				class="px-12px py-24px"
-				v-if="requiredInputFields.includes('姓名資訊')"
+				v-if="requiredInputFields.includes('cn_surname')"
 			>
 				<div class="flex">
 					<div class="text-[24px] font-[50] font-bold">
@@ -90,7 +90,7 @@
 			</div>
 			<div
 				class="px-12px py-24px"
-				v-if="requiredInputFields.includes('入學身分')"
+				v-if="requiredInputFields.includes('nationality')"
 			>
 				<div class="flex">
 					<div class="text-[24px] font-[50] font-bold">
@@ -169,7 +169,7 @@
 			<div>
 				<div
 					class="px-12px py-24px"
-					v-if="requiredInputFields.includes('通訊地址')"
+					v-if="requiredInputFields.includes('communicate_address')"
 				>
 					<div class="flex">
 						<div class="text-[24px] font-[50] font-bold">
@@ -242,7 +242,7 @@
 			</div>
 			<div
 				class="px-12px py-24px"
-				v-if="requiredInputFields.includes('身份資料')"
+				v-if="requiredInputFields.includes('sex')"
 			>
 				<div class="flex">
 					<div class="text-[24px] font-[50] font-bold">
@@ -313,7 +313,7 @@
 			</div>
 			<div
 				class="px-12px py-24px"
-				v-if="requiredInputFields.includes('聯絡資料')"
+				v-if="requiredInputFields.includes('mobile_phone')"
 			>
 				<div class="flex">
 					<div class="text-[24px] font-[50] font-bold">

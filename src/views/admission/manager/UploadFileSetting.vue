@@ -293,11 +293,19 @@ const queryClient = useQueryClient();
 
 // Field Data
 let showedInfo = reactive([
-	{ id: "姓名資訊", checked: false, field: ["中文姓氏","英文姓氏","英文名字","英文中間名"] },
-	{ id: "入學身分", checked: false, field: ["國籍"] },
-	{ id: "現居地址", checked: false, field: ["通訊地址","通訊地址郵遞區號"] },
-	{ id: "身份資料", checked: false, field: ["性別","出生籍貫","出生日期"] },
-	{ id: "聯絡資料", checked: false, field: ["行動電話"] },
+	{
+		id: "姓名資訊",
+		checked: false,
+		field: ["cn_surname", "en_surname", "en_midname", "en_givenname"],
+	},
+	{ id: "入學身分", checked: false, field: ["nationality"] },
+	{
+		id: "現居地址",
+		checked: false,
+		field: ["communicate_address", "communicate_zipcode"],
+	},
+	{ id: "身份資料", checked: false, field: ["sex", "birthcountry", "birth"] },
+	{ id: "聯絡資料", checked: false, field: ["mobile_phone"] },
 ]);
 let showedFile = reactive([
 	{ id: "就學經歷", checked: false },
@@ -369,26 +377,21 @@ const getInfoFileField = useQuery(
 			fieldList.fileChecked = JSON.parse(
 				programData.applicant_required_file
 			);
-			if (fieldList.infoChecked.includes("中文姓氏"))
+			if (fieldList.infoChecked.includes("cn_surname"))
 				showedInfo[0].checked = true;
-			else
-				showedInfo[0].checked = false;
-			if (fieldList.infoChecked.includes("國籍"))
+			else showedInfo[0].checked = false;
+			if (fieldList.infoChecked.includes("nationality"))
 				showedInfo[1].checked = true;
-			else
-				showedInfo[1].checked = false;
-			if (fieldList.infoChecked.includes("通訊地址"))
+			else showedInfo[1].checked = false;
+			if (fieldList.infoChecked.includes("communicate_address"))
 				showedInfo[2].checked = true;
-			else
-				showedInfo[2].checked = false;
-			if (fieldList.infoChecked.includes("性別"))
+			else showedInfo[2].checked = false;
+			if (fieldList.infoChecked.includes("sex"))
 				showedInfo[3].checked = true;
-			else
-				showedInfo[3].checked = false;
-			if (fieldList.infoChecked.includes("行動電話"))
+			else showedInfo[3].checked = false;
+			if (fieldList.infoChecked.includes("mobile_phone"))
 				showedInfo[4].checked = true;
-			else
-				showedInfo[4].checked = false;
+			else showedInfo[4].checked = false;
 			showedFile.forEach((element) => {
 				if (fieldList.fileChecked.includes(element.id))
 					element.checked = true;
@@ -422,7 +425,7 @@ function saveChange() {
 			if (!fieldList.infoChecked.includes(element.id))
 				if (element.checked) {
 					element.field.forEach((field) => {
-							fieldList.infoChecked.push(field);
+						fieldList.infoChecked.push(field);
 					});
 				}
 		});
