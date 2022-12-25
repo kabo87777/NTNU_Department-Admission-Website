@@ -54,7 +54,6 @@
 	"新增到專案": "Created",
 	"專案名稱 (修改)": "Project Name (Edit)",
 	"屬性": "Category",
-	"申請端帳戶": "Applicant User",
 	"申請端開放時間/日期": "Application Open Time/Date",
 	"申請端關閉時間/日期": "Application Close Time/Date",
 	"審查端開放時間/日期": "Reviewer Open Time/Date",
@@ -390,5 +389,7 @@
 	"已將": "",
 	"指派給": " is assigned to",
 	"已刪除": "Already deleted",
-	"的所有必看名單刪除": " required view list"
+	"的所有必看名單刪除": " required view list",
+	"申請端帳戶": "Applicant User",
+	"請注意，資料一經送出後即「無法」再次更改資料。送出前請務必確認資料無誤！": "Notice: The file CANNOT change since it's sent, please check it for sure before sent out!"
 }

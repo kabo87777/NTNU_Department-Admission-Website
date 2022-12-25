@@ -233,7 +233,7 @@
 		:modal="true"
 	>
 		<template #header>
-			<div text="xl title" font="medium">
+			<div text="2xl title">
 				{{ $t("資料確認送出") }}
 			</div>
 		</template>
