@@ -1,175 +1,179 @@
 <template>
-	<div>
-		<!-- TITLE -->
-		<div class="font-[500] text-[32px] font-bold">
-			{{ $t("附件資料") }}
-		</div>
-		<div class="bigYellowDivider"></div>
+	<Layout Applicant>
+		<template #Header>{{ $t("附件資料") }}</template>
+		<template #Body>
+			<!-- SCHOOL EXPERIENCE -->
+			<div
+				class="px-12px py-24px"
+				v-if="requiredInputFields.includes('就學經歷')"
+			>
+				<div class="text-[24px] font-[50] font-bold">
+					{{ $t("就學經歷") }}
+				</div>
+				<div v-for="(item, index) in schoolExpList" :key="index">
+					<ReviewState
+						v-if="item.state === 1"
+						category="就學經歷"
+						identity="admissionApplicant"
+						:itemId="item.id"
+						:itemName="item.name"
+						:schoolName="item.school"
+						:fileUrl="item.filepath?.url"
+						:order="index + 1"
+						:isDeleteLoading="isLoading.delete"
+						@edit="reviewToEdit"
+						@delete="handleDelete"
+					/>
+					<CorrectionState
+						v-else-if="item.state === 2"
+						category="就學經歷"
+						identity="admissionApplicant"
+						:itemId="item.id"
+						:itemName="item.name"
+						:fileUrl="item.filepath?.url"
+						:schoolName="item.school"
+						:order="index + 1"
+						:isEditLoading="isLoading.edit"
+						@cancel="editToReview"
+						@correction="handleEdit"
+					/>
+					<CreateState
+						v-else-if="item.state === 3"
+						category="就學經歷"
+						identity="admissionApplicant"
+						:order="index + 1"
+						@edit="createToEdit"
+					/>
+					<EditState
+						v-else-if="item.state === 4"
+						category="就學經歷"
+						identity="admissionApplicant"
+						:isCreateLoading="isLoading.create"
+						:order="index + 1"
+						@cancel="editToCreate"
+						@create="handleCreate"
+					/>
+				</div>
+			</div>
+			<ParagraphDivider v-if="requiredInputFields.includes('就學經歷')" />
 
-		<!-- SCHOOL EXPERIENCE -->
-		<div
-			class="px-12px py-24px"
-			v-if="requiredInputFields.includes('就學經歷')"
-		>
-			<div class="text-[24px] font-[50] font-bold">
-				{{ $t("就學經歷") }}
+			<!-- EXAM AND QUALIFICATION TEST SCORE -->
+			<div
+				class="px-12px py-24px"
+				v-if="
+					requiredInputFields.includes('就學經歷') &&
+					requiredInputFields.includes('考試與檢定分數')
+				"
+			>
+				<div class="text-[24px] font-[50] font-bold">
+					{{ $t("考試與檢定分數") }}
+				</div>
+				<div v-for="(item, index) in examCertificateList" :key="index">
+					<ReviewState
+						v-if="item.state === 1"
+						category="考試與檢定分數"
+						identity="admissionApplicant"
+						:itemId="item.id"
+						:itemName="item.name"
+						:fileUrl="item.filepath?.url"
+						:score="item.score"
+						:order="index + 1"
+						:isDeleteLoading="isLoading.delete"
+						@edit="reviewToEdit"
+						@delete="handleDelete"
+					/>
+					<CorrectionState
+						v-else-if="item.state === 2"
+						category="考試與檢定分數"
+						identity="admissionApplicant"
+						:itemId="item.id"
+						:itemName="item.name"
+						:fileUrl="item.filepath?.url"
+						:score="item.score"
+						:order="index + 1"
+						:isEditLoading="isLoading.edit"
+						@cancel="editToReview"
+						@correction="handleEdit"
+					/>
+					<CreateState
+						v-else-if="item.state === 3"
+						category="考試與檢定分數"
+						identity="admissionApplicant"
+						:order="index + 1"
+						@edit="createToEdit"
+					/>
+					<EditState
+						v-else-if="item.state === 4"
+						category="考試與檢定分數"
+						identity="admissionApplicant"
+						:isCreateLoading="isLoading.create"
+						:order="index + 1"
+						@cancel="editToCreate"
+						@create="handleCreate"
+					/>
+				</div>
 			</div>
-			<div v-for="(item, index) in schoolExpList" :key="index">
-				<ReviewState
-					v-if="item.state === 1"
-					category="就學經歷"
-					identity="admissionApplicant"
-					:itemId="item.id"
-					:itemName="item.name"
-					:schoolName="item.school"
-					:fileUrl="item.filepath?.url"
-					:order="index + 1"
-					:isDeleteLoading="isLoading.delete"
-					@edit="reviewToEdit"
-					@delete="handleDelete"
-				/>
-				<CorrectionState
-					v-else-if="item.state === 2"
-					category="就學經歷"
-					identity="admissionApplicant"
-					:itemId="item.id"
-					:itemName="item.name"
-					:fileUrl="item.filepath?.url"
-					:schoolName="item.school"
-					:order="index + 1"
-					:isEditLoading="isLoading.edit"
-					@cancel="editToReview"
-					@correction="handleEdit"
-				/>
-				<CreateState
-					v-else-if="item.state === 3"
-					category="就學經歷"
-					identity="admissionApplicant"
-					:order="index + 1"
-					@edit="createToEdit"
-				/>
-				<EditState
-					v-else-if="item.state === 4"
-					category="就學經歷"
-					identity="admissionApplicant"
-					:isCreateLoading="isLoading.create"
-					:order="index + 1"
-					@cancel="editToCreate"
-					@create="handleCreate"
-				/>
-			</div>
-		</div>
-		<ParagraphDivider v-if="requiredInputFields.includes('就學經歷')" />
+			<ParagraphDivider
+				v-if="
+					(requiredInputFields.includes('就學經歷') ||
+						requiredInputFields.includes('考試與檢定分數')) &&
+					requiredInputFields.includes('其他有利於審查資料')
+				"
+			/>
 
-		<!-- EXAM AND QUALIFICATION TEST SCORE -->
-		<div
-			class="px-12px py-24px"
-			v-if="requiredInputFields.includes('考試與檢定分數')"
-		>
-			<div class="text-[24px] font-[50] font-bold">
-				{{ $t("考試與檢定分數") }}
+			<!-- OTHER -->
+			<div
+				class="px-12px py-24px"
+				v-if="requiredInputFields.includes('其他有利於審查資料')"
+			>
+				<div class="text-[24px] font-[50] font-bold">
+					{{ $t("其他有利於審查資料") }}
+				</div>
+				<div v-for="(item, index) in otherList" :key="index">
+					<ReviewState
+						v-if="item.state === 1"
+						category="其他有利於審查資料"
+						identity="admissionApplicant"
+						:itemId="item.id"
+						:itemName="item.name"
+						:order="index + 1"
+						:fileUrl="item.filepath?.url"
+						:isDeleteLoading="isLoading.delete"
+						@edit="reviewToEdit"
+						@delete="handleDelete"
+					/>
+					<CorrectionState
+						v-else-if="item.state === 2"
+						category="其他有利於審查資料"
+						identity="admissionApplicant"
+						:isEditLoading="isLoading.edit"
+						:itemId="item.id"
+						:itemName="item.name"
+						:fileUrl="item.filepath?.url"
+						:order="index + 1"
+						@cancel="editToReview"
+						@correction="handleEdit"
+					/>
+					<CreateState
+						v-else-if="item.state === 3"
+						category="其他有利於審查資料"
+						identity="admissionApplicant"
+						:order="index + 1"
+						@edit="createToEdit"
+					/>
+					<EditState
+						v-else-if="item.state === 4"
+						category="其他有利於審查資料"
+						identity="admissionApplicant"
+						:isCreateLoading="isLoading.create"
+						:order="index + 1"
+						@cancel="editToCreate"
+						@create="handleCreate"
+					/>
+				</div>
 			</div>
-			<div v-for="(item, index) in examCertificateList" :key="index">
-				<ReviewState
-					v-if="item.state === 1"
-					category="考試與檢定分數"
-					identity="admissionApplicant"
-					:itemId="item.id"
-					:itemName="item.name"
-					:fileUrl="item.filepath?.url"
-					:score="item.score"
-					:order="index + 1"
-					:isDeleteLoading="isLoading.delete"
-					@edit="reviewToEdit"
-					@delete="handleDelete"
-				/>
-				<CorrectionState
-					v-else-if="item.state === 2"
-					category="考試與檢定分數"
-					identity="admissionApplicant"
-					:itemId="item.id"
-					:itemName="item.name"
-					:fileUrl="item.filepath?.url"
-					:score="item.score"
-					:order="index + 1"
-					:isEditLoading="isLoading.edit"
-					@cancel="editToReview"
-					@correction="handleEdit"
-				/>
-				<CreateState
-					v-else-if="item.state === 3"
-					category="考試與檢定分數"
-					identity="admissionApplicant"
-					:order="index + 1"
-					@edit="createToEdit"
-				/>
-				<EditState
-					v-else-if="item.state === 4"
-					category="考試與檢定分數"
-					identity="admissionApplicant"
-					:isCreateLoading="isLoading.create"
-					:order="index + 1"
-					@cancel="editToCreate"
-					@create="handleCreate"
-				/>
-			</div>
-		</div>
-		<ParagraphDivider
-			v-if="requiredInputFields.includes('考試與檢定分數')"
-		/>
-
-		<!-- OTHER -->
-		<div
-			class="px-12px py-24px"
-			v-if="requiredInputFields.includes('其他有利於審查資料')"
-		>
-			<div class="text-[24px] font-[50] font-bold">
-				{{ $t("其他有利於審查資料") }}
-			</div>
-			<div v-for="(item, index) in otherList" :key="index">
-				<ReviewState
-					v-if="item.state === 1"
-					category="其他有利於審查資料"
-					identity="admissionApplicant"
-					:itemId="item.id"
-					:itemName="item.name"
-					:order="index + 1"
-					:fileUrl="item.filepath?.url"
-					:isDeleteLoading="isLoading.delete"
-					@edit="reviewToEdit"
-					@delete="handleDelete"
-				/>
-				<CorrectionState
-					v-else-if="item.state === 2"
-					category="其他有利於審查資料"
-					identity="admissionApplicant"
-					:isEditLoading="isLoading.edit"
-					:itemId="item.id"
-					:itemName="item.name"
-					:fileUrl="item.filepath?.url"
-					:order="index + 1"
-					@cancel="editToReview"
-					@correction="handleEdit"
-				/>
-				<CreateState
-					v-else-if="item.state === 3"
-					category="其他有利於審查資料"
-					identity="admissionApplicant"
-					:order="index + 1"
-					@edit="createToEdit"
-				/>
-				<EditState
-					v-else-if="item.state === 4"
-					category="其他有利於審查資料"
-					identity="admissionApplicant"
-					:isCreateLoading="isLoading.create"
-					:order="index + 1"
-					@cancel="editToCreate"
-					@create="handleCreate"
-				/>
-			</div>
-		</div>
-	</div>
+		</template>
+	</Layout>
 </template>
 
 <script setup lang="ts">
@@ -181,6 +185,7 @@ import EditState from "@/components/attachmentStates/editState.vue";
 import CreateState from "@/components/attachmentStates/createState.vue";
 import CorrectionState from "@/components/attachmentStates/CorrectionState.vue";
 import ParagraphDivider from "@/styles/paragraphDividerApplicant.vue";
+import Layout from "@/components/Layout.vue";
 
 import { useQuery } from "@tanstack/vue-query";
 
