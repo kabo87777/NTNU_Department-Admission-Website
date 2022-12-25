@@ -293,11 +293,19 @@ const queryClient = useQueryClient();
 
 // Field Data
 let showedInfo = reactive([
-	{ id: "姓名資訊", checked: false },
-	{ id: "入學身分", checked: false },
-	{ id: "通訊地址", checked: false },
-	{ id: "身份資料", checked: false },
-	{ id: "聯絡資料", checked: false },
+	{
+		id: "姓名資訊",
+		checked: false,
+		field: ["en_surname", "en_givename"],
+	},
+	{ id: "入學身分", checked: false, field: ["nationality"] },
+	{
+		id: "通訊地址",
+		checked: false,
+		field: ["email"],
+	},
+	{ id: "身份資料", checked: false, field: ["sex"] },
+	{ id: "聯絡資料", checked: false, field: ["mobile_phone"] },
 ]);
 let showedFile = reactive([
 	{ id: "就學經歷", checked: false },
@@ -369,11 +377,21 @@ const getInfoFileField = useQuery(
 			fieldList.fileChecked = JSON.parse(
 				programData.applicant_required_file
 			);
-			showedInfo.forEach((element) => {
-				if (fieldList.infoChecked.includes(element.id))
-					element.checked = true;
-				else element.checked = false;
-			});
+			if (fieldList.infoChecked.includes("en_givename"))
+				showedInfo[0].checked = true;
+			else showedInfo[0].checked = false;
+			if (fieldList.infoChecked.includes("nationality"))
+				showedInfo[1].checked = true;
+			else showedInfo[1].checked = false;
+			if (fieldList.infoChecked.includes("email"))
+				showedInfo[2].checked = true;
+			else showedInfo[2].checked = false;
+			if (fieldList.infoChecked.includes("sex"))
+				showedInfo[3].checked = true;
+			else showedInfo[3].checked = false;
+			if (fieldList.infoChecked.includes("mobile_phone"))
+				showedInfo[4].checked = true;
+			else showedInfo[4].checked = false;
 			showedFile.forEach((element) => {
 				if (fieldList.fileChecked.includes(element.id))
 					element.checked = true;
@@ -405,7 +423,11 @@ function saveChange() {
 		fieldList.fileChecked.splice(0, fieldList.fileChecked.length);
 		showedInfo.forEach((element) => {
 			if (!fieldList.infoChecked.includes(element.id))
-				if (element.checked) fieldList.infoChecked.push(element.id);
+				if (element.checked) {
+					element.field.forEach((field) => {
+						fieldList.infoChecked.push(field);
+					});
+				}
 		});
 		showedFile.forEach((element) => {
 			if (!fieldList.fileChecked.includes(element.id))
@@ -416,6 +438,9 @@ function saveChange() {
 		);
 		programData.applicant_required_file = JSON.stringify(
 			fieldList.fileChecked
+		);
+		programData.reviewer_required_info = JSON.stringify(
+			fieldList.infoChecked
 		);
 		// Patch Info/File Data
 		patchInfoFileField.mutate(programData);
