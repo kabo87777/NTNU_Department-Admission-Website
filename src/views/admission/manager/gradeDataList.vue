@@ -221,7 +221,7 @@
 							Applicant
 							icon="pi pi-print"
 							size="lg"
-						class="h-14"
+							class="h-14"
 							@click="
 								downloadPDFFile(docPdfData, 'doc_report', false)
 							"
@@ -232,7 +232,7 @@
 							Admin
 							icon="pi pi-eye-slash"
 							size="lg"
-						class="h-14"
+							class="h-14"
 							@click="
 								downloadPDFFile(
 									docAnonyPdfData,
@@ -240,7 +240,6 @@
 									true
 								)
 							"
-							class="ml-35px"
 						>
 							{{ $t("匿名報表列印") }}
 						</NButton>
@@ -259,7 +258,7 @@
 							Applicant
 							icon="pi pi-print"
 							size="lg"
-						class="h-14"
+							class="h-14"
 							@click="
 								downloadPDFFile(
 									genPdfData,
@@ -274,7 +273,7 @@
 							Admin
 							icon="pi pi-eye-slash"
 							size="lg"
-						class="h-14"
+							class="h-14"
 							@click="
 								downloadPDFFile(
 									genAnonyPdfData,
@@ -300,7 +299,7 @@
 							Applicant
 							icon="pi pi-print"
 							size="lg"
-						class="h-14"
+							class="h-14"
 							@click="
 								downloadPDFFile(
 									enrollPdfData,
