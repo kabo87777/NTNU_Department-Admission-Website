@@ -31,6 +31,7 @@
 								icon="pi pi-trash"
 								class="p-2"
 								@click="confirmDeleteAccount(slotProps.data.id)"
+								v-tooltip.right="$t('刪除帳號')"
 							/>
 						</span>
 					</template>
