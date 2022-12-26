@@ -44,7 +44,7 @@
 						<NButton
 							Admin
 							icon="pi pi-pencil"
-							class="p-2"
+							class="h-11 w-11"
 							@click="editProduct(slotProps)"
 						/>
 					</template>
