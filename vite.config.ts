@@ -41,9 +41,15 @@ if (!process.env.VITE_ADMISSIONS_API_ENDPOINT) {
 
     // use respective endpoints for prod & staging branch.
     // for other branches, use localhost.
-    if (gitBranch === "main")
+    if (gitBranch === "main") {
+      /*
+        Note that in here it's still going to be staging because production
+        has CORS limits. Override VITE_ADMISSIONS_API_ENDPOINT on your own
+        if you'd like to use the local copy of the backend.
+       */
       process.env.VITE_ADMISSIONS_API_ENDPOINT =
-        "https://admissions-backend-prd.birkhoff.me";
+        "https://admissions-backend-stg.birkhoff.me";
+    }
     else if (gitBranch === "develop")
       process.env.VITE_ADMISSIONS_API_ENDPOINT =
         "https://admissions-backend-stg.birkhoff.me";
