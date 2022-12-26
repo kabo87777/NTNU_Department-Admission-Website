@@ -388,7 +388,7 @@ watch(programs, (newValue, oldValue) => {
 	if (typeof globalStore.program === "undefined") {
 		globalStore.$patch({ program: newValue[0] });
 		selectedProgram.value = newValue[0];
-		return
+		return;
 	}
 
 	const oldProgram = newValue.find((program) => {
