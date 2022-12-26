@@ -13,6 +13,7 @@ declare module '@vue/runtime-core' {
     AdmissionReviewerSidebar: typeof import('./src/components/sidebars/admissionReviewerSidebar.vue')['default']
     CorrectionState: typeof import('./src/components/attachmentStates/CorrectionState.vue')['default']
     CreateState: typeof import('./src/components/attachmentStates/createState.vue')['default']
+    CustomTag: typeof import('./src/components/CustomTag.vue')['default']
     EditState: typeof import('./src/components/attachmentStates/editState.vue')['default']
     Layout: typeof import('./src/components/Layout.vue')['default']
     NavBar: typeof import('./src/components/NavBar.vue')['default']
