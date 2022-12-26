@@ -29,14 +29,14 @@
 							<NButton
 								Admin
 								icon="pi pi-pencil"
-								class="p-2"
+								class="h-11 w-11"
 								@click="editModal.open(slotProps.data)"
 							/>
 							<!-- Delete button -->
 							<NButton
 								Danger
 								icon="pi pi-times"
-								class="p-2"
+								class="h-11 w-11"
 								@click="actions.delete(slotProps.data.id)"
 							/>
 						</span>

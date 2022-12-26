@@ -146,7 +146,7 @@
 			<div class="flex" justify="end">
 				<NButton
 					Admin
-					class="p-2 w-32 mx-auto"
+					class="h-11 min-w-36 mx-auto"
 					@click="update"
 					icon="pi pi-save"
 				>
@@ -154,7 +154,7 @@
 				</NButton>
 				<NButton
 					Danger
-					class="p-2 w-32 absolute"
+					class="h-11 min-w-36 absolute"
 					@click="confirmDeleteProject()"
 					icon="pi pi-trash"
 				>

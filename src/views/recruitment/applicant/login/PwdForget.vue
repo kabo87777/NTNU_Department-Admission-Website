@@ -99,11 +99,11 @@ const changeState = () => {
 	enterEmail();
 };
 
-// FIXME: this redirectUrl is hardcode. Need to FIX it before merge in main branch.
 const enterEmail = async () => {
 	try {
-		const redirectUrl =
-			"http://127.0.0.1:5173/recruitment/applicant/password/reset";
+		const redirectUrl = `${
+			import.meta.env.VITE_BASEURL
+		}/recruitment/applicant/password/reset`;
 		const turnstileResponse = consumeTurnstileToken();
 		if (!turnstileResponse) throw new Error("Turnstile challenge failed");
 		const api = new RecruitmentApplicantAPI(authStore);

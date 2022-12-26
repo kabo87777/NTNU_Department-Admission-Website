@@ -119,14 +119,14 @@
 			<div flex="~" justify="center" gap="4">
 				<NButton
 					Admin
-					class="p-2 w-32"
+					class="h-11 min-w-36"
 					icon="pi pi-check"
 					@click="saveChange()"
 				>
 					{{ trans.save.value }}
 				</NButton>
 				<NButton
-					class="p-2 w-32"
+					class="h-11 min-w-36"
 					icon="pi pi-times"
 					@click="refreshData()"
 				>
