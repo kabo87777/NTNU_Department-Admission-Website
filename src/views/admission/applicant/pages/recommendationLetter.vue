@@ -30,115 +30,6 @@
 			<!-- 推薦信列表(有資料時) -->
 			<div v-if="letterList[0]?.length !== 0">
 				<div v-for="(item, index) in letterList[0]" :key="index">
-					<!-- 送出邀請Dialog -->
-					<Dialog
-						v-model:visible="isModalVisible.request"
-						style="width: 500px"
-						:closable="false"
-						:draggable="false"
-						:modal="true"
-					>
-						<template #header>
-							<div class="font-bold text-[24px]">
-								{{ $t("發出邀請") }}
-							</div>
-						</template>
-						<template #default>
-							<div class="flex">
-								<div class="mt-2px">
-									<i
-										class="pi pi-question-circle"
-										style="font-size: 20px"
-									/>
-								</div>
-								<div class="ml-4px">
-									{{ $t("確認送出") + $t("?") }}
-								</div>
-							</div>
-						</template>
-						<template #footer>
-							<Button
-								class="p-button-outlined p-button-secondary"
-								style="
-									border: 2px solid #a18b4a;
-									color: #736028;
-									height: 36px;
-								"
-								icon="pi pi-times"
-								iconClass="text-[#736028]"
-								:label="t('取消')"
-								@click="isModalVisible.request = false"
-							/>
-							<Button
-								class="p-button-outlined p-button-secondary"
-								style="
-									color: #53565a;
-									border: 2px solid #bcd19b;
-									margin-left: 16px;
-									height: 36px;
-								"
-								icon="pi pi-check"
-								iconClass="text-[#53565A]"
-								:label="t('確認')"
-								:loading="isActionLoading.request"
-								@click="handleRequest(item.id)"
-							/>
-						</template>
-					</Dialog>
-					<!-- 刪除Dialog -->
-					<Dialog
-						v-model:visible="isModalVisible.delete"
-						style="width: 500px"
-						:closable="false"
-						:draggable="false"
-						:modal="true"
-					>
-						<template #header>
-							<div class="font-bold text-[24px]">
-								{{ $t("刪除") }}
-							</div>
-						</template>
-						<template #default>
-							<div class="flex">
-								<div class="mt-2px">
-									<i
-										class="pi pi-exclamation-triangle"
-										style="font-size: 20px"
-									/>
-								</div>
-								<div class="ml-4px">
-									{{ $t("確認刪除") + $t("?") }}
-								</div>
-							</div>
-						</template>
-						<template #footer>
-							<Button
-								class="p-button-outlined p-button-secondary"
-								style="
-									border: 2px solid #a18b4a;
-									color: #736028;
-									height: 36px;
-								"
-								icon="pi pi-times"
-								iconClass="text-[#736028]"
-								:label="t('取消')"
-								@click="isModalVisible.delete = false"
-							/>
-							<Button
-								class="p-button-outlined p-button-secondary"
-								style="
-									color: #93282c;
-									border: 2px solid #93282c;
-									margin-left: 16px;
-									height: 36px;
-								"
-								icon="pi pi-check"
-								iconClass="text-[#93282C]"
-								:label="t('確認')"
-								@click="handleDelete(item.id)"
-							/>
-						</template>
-					</Dialog>
 					<!-- 列表收起狀態 -->
 					<div v-if="!item.isCollapse" class="recTableRowIncollapse">
 						<div class="recTableCol">
@@ -157,7 +48,10 @@
 								iconClass="text-[#53565A]"
 								v-tooltip.top="t('發出邀請')"
 								:disabled="item.stage === '已寄出'"
-								@click="isModalVisible.request = true"
+								@click="
+									isModalVisible.request = true;
+									selectedItem = item.id;
+								"
 							/>
 							<Button
 								class="p-button-outlined p-button-secondary"
@@ -170,7 +64,10 @@
 								iconClass="text-[#93282C]"
 								v-tooltip.top="t('刪除')"
 								:disabled="item.stage === '已寄出'"
-								@click="isModalVisible.delete = true"
+								@click="
+									isModalVisible.delete = true;
+									selectedItem = item.id;
+								"
 							/>
 						</div>
 						<i
@@ -197,6 +94,10 @@
 									iconClass="text-[#53565A]"
 									v-tooltip.top="t('發出邀請')"
 									:disabled="item.stage === '已寄出'"
+									@click="
+										isModalVisible.request = true;
+										selectedItem = item.id;
+									"
 								/>
 								<Button
 									class="p-button-outlined p-button-secondary"
@@ -209,7 +110,10 @@
 									iconClass="text-[#93282C]"
 									v-tooltip.top="t('刪除')"
 									:disabled="item.stage === '已寄出'"
-									@click="isModalVisible.delete = true"
+									@click="
+										isModalVisible.delete = true;
+										selectedItem = item.id;
+									"
 								/>
 							</div>
 							<i
@@ -261,10 +165,128 @@
 						</div>
 					</div>
 				</div>
+				<!-- 送出邀請Dialog -->
+				<Dialog
+					v-model:visible="isModalVisible.request"
+					style="width: 500px"
+					:closable="false"
+					:draggable="false"
+					:modal="true"
+				>
+					<template #header>
+						<div class="font-bold text-[24px]">
+							{{ $t("發出邀請") }}
+						</div>
+					</template>
+					<template #default>
+						<div class="flex">
+							<div class="mt-2px">
+								<i
+									class="pi pi-question-circle"
+									style="font-size: 20px"
+								/>
+							</div>
+							<div class="ml-4px">
+								{{ $t("確認送出") + $t("?") }}
+							</div>
+						</div>
+					</template>
+					<template #footer>
+						<Button
+							class="p-button-outlined p-button-secondary"
+							style="
+								border: 2px solid #a18b4a;
+								color: #736028;
+								height: 36px;
+							"
+							icon="pi pi-times"
+							iconClass="text-[#736028]"
+							:label="t('取消')"
+							@click="isModalVisible.request = false"
+						/>
+						<Button
+							class="p-button-outlined p-button-secondary"
+							style="
+								color: #53565a;
+								border: 2px solid #bcd19b;
+								margin-left: 16px;
+								height: 36px;
+							"
+							icon="pi pi-check"
+							iconClass="text-[#53565A]"
+							:label="t('確認')"
+							:loading="isActionLoading.request"
+							@click="handleRequest(selectedItem)"
+						/>
+					</template>
+				</Dialog>
+				<!-- 刪除Dialog -->
+				<Dialog
+					v-model:visible="isModalVisible.delete"
+					style="width: 500px"
+					:closable="false"
+					:draggable="false"
+					:modal="true"
+				>
+					<template #header>
+						<div class="font-bold text-[24px]">
+							{{ $t("刪除") }}
+						</div>
+					</template>
+					<template #default>
+						<div class="flex">
+							<div class="mt-2px">
+								<i
+									class="pi pi-exclamation-triangle"
+									style="font-size: 20px"
+								/>
+							</div>
+							<div class="ml-4px">
+								{{ $t("確認刪除") + $t("?") }}
+							</div>
+						</div>
+					</template>
+					<template #footer>
+						<Button
+							class="p-button-outlined p-button-secondary"
+							style="
+								border: 2px solid #a18b4a;
+								color: #736028;
+								height: 36px;
+							"
+							icon="pi pi-times"
+							iconClass="text-[#736028]"
+							:label="t('取消')"
+							@click="isModalVisible.delete = false"
+						/>
+						<Button
+							class="p-button-outlined p-button-secondary"
+							style="
+								color: #93282c;
+								border: 2px solid #93282c;
+								margin-left: 16px;
+								height: 36px;
+							"
+							icon="pi pi-check"
+							iconClass="text-[#93282C]"
+							:label="t('確認')"
+							@click="handleDelete(selectedItem)"
+						/>
+					</template>
+				</Dialog>
+				<NButton
+					Applicant
+					icon="pi pi-plus"
+					class="w-[100%] mt-32px"
+					@click="openModal()"
+				>
+					{{ $t("新增推薦人") }}
+				</NButton>
 			</div>
 		</template>
 		<template #Footer>
 			<NButton
+				v-if="letterList[0]?.length === 0"
 				Applicant
 				icon="pi pi-plus"
 				class="mx-auto h-11 min-w-36"
@@ -524,6 +546,8 @@ let isActionLoading = reactive({
 });
 
 const modalShowErr = ref(false);
+
+const selectedItem = ref(0);
 
 let isModalVisible = reactive({
 	fill: false,

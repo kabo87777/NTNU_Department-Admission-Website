@@ -11,7 +11,11 @@
 					<div>請上傳簽名檔</div>
 					<div>Please upload your signature</div>
 				</div>
-				<div v-if="fileName === ''" class="mt-16px" style="width: 85%">
+				<div
+					v-if="fileName === ''"
+					class="mt-16px removeBadge"
+					style="width: 85%"
+				>
 					<FileUpload
 						:customUpload="true"
 						@uploader="handleUpload"
@@ -62,31 +66,7 @@
 								/>
 							</div>
 						</template>
-						<template #content="{ files }">
-							<div v-if="files.length">
-								<div class="flex flex-wrap sm:p-5 gap-5">
-									<div
-										class="flex"
-										v-for="file of files"
-										:key="file.name + file.type + file.size"
-									>
-										<img
-											src="/assets/pdf_icon.png"
-											alt="pdf"
-											style="width: 50px"
-										/>
-										<div class="ml-8px">
-											<span class="font-semibold">{{
-												file.name
-											}}</span>
-											<div>
-												{{ formatSize(file.size) }}
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</template>
+						<template #content></template>
 						<template #empty>
 							<div class="flex">
 								<div>※</div>
@@ -266,6 +246,7 @@ const isLoading = reactive({
 	fetch: false,
 });
 const isModalVisible = ref(false);
+const ableConfirm = ref(false);
 
 const { t } = useI18n();
 const toast = useToast();
@@ -274,19 +255,6 @@ let fetchResponse = reactive({
 	success: false,
 	message: "" as string | [],
 });
-
-const formatSize = (bytes: number) => {
-	if (bytes === 0) {
-		return "0 B";
-	}
-
-	let k = 1000,
-		dm = 3,
-		sizes = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"],
-		i = Math.floor(Math.log(bytes) / Math.log(k));
-
-	return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
-};
 
 const sliceFile = (fileUrl: string) => {
 	if (fileUrl !== null) {
@@ -347,6 +315,35 @@ const handleSave = async () => {
 };
 
 const handleConfirm = async () => {
+	if (
+		content.value === "" ||
+		content.value === null ||
+		fileName.value === "" ||
+		fileName.value === null
+	) {
+		toast.add({
+			severity: "error",
+			summary: "錯誤 Error",
+			detail: "所有欄位為必填 All input is required",
+			life: 5000,
+		});
+
+		isModalVisible.value = false;
+		return;
+	}
+
+	if (ableConfirm.value === false) {
+		toast.add({
+			severity: "error",
+			summary: "錯誤 Error",
+			detail: "請先進行儲存 Please save before confirm",
+			life: 5000,
+		});
+
+		isModalVisible.value = false;
+		return;
+	}
+
 	isLoading.confirm = true;
 
 	const response: APIGenericResponse =
@@ -382,6 +379,20 @@ const handleConfirm = async () => {
 	isLoading.fetch = true;
 };
 
+const defineVariable = (data: RecommenderRecommendLetterResponse) => {
+	if (data.filepath.url !== null)
+		fileName.value = sliceFile(data.filepath.url) as string;
+	content.value = data.content === "null" ? "" : data.content;
+
+	if (
+		content.value === "null" ||
+		content.value === "" ||
+		data.filepath.url === null
+	)
+		ableConfirm.value = false;
+	else ableConfirm.value = true;
+};
+
 useQuery(
 	["recommenderGetLetter"],
 	async () => {
@@ -394,9 +405,7 @@ useQuery(
 	{
 		onSuccess: (response: APIGenericResponse) => {
 			const data: RecommenderRecommendLetterResponse = response.data;
-			if (data.filepath.url !== null)
-				fileName.value = sliceFile(data.filepath.url) as string;
-			content.value = data.content;
+			defineVariable(data);
 		},
 	}
 );
@@ -413,14 +422,12 @@ watch(
 
 		isLoading.fetch = false;
 
-		if (data.filepath.url !== null)
-			fileName.value = sliceFile(data.filepath.url) as string;
-		content.value = data.content;
+		defineVariable(data);
 	}
 );
 </script>
 
-<style setup lang="css">
+<style setup lang="scss">
 .contentContainer {
 	margin: auto;
 	margin-top: 20px;
@@ -430,5 +437,10 @@ watch(
 	border: 3px dashed rgb(174, 174, 174);
 	border-radius: 16px;
 	background-color: rgb(244, 244, 244);
+}
+.removeBadge {
+	.p-fileupload-file-badge {
+		display: none;
+	}
 }
 </style>
