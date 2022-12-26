@@ -54,7 +54,7 @@
 		</template>
 		<template #Footer>
 			<NButton
-				class="w-3/5 p-2 m-auto"
+				class="w-3/5 h-13 m-auto"
 				type="Grey"
 				size="lg"
 				@click="handleSubmit"
