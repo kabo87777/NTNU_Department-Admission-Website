@@ -53,7 +53,7 @@
 					Admin
 					class="h-11 min-w-36"
 					icon="pi pi-user-plus"
-					@click="addReviewerModal.open"
+					@click="addReviewerModalVisible = true"
 				>
 					{{ $t("建立帳號") }}
 				</NButton>
@@ -61,83 +61,10 @@
 		</template>
 	</Layout>
 
-	<AddReviewerDialog v-model:visible="addReviewerModal.visible" />
-	<!-- Modal for adding reviewer -->
-	<!-- <Dialog
-		:modal="true"
-		v-model:visible="addReviewerModal.visible"
-		:draggable="false"
-		:closable="false"
-		class="min-w-120"
-	>
-		<template #header>
-			<div text="title 2xl">{{ $t("建立審查者帳號") }}</div>
-		</template>
-		<template #default>
-			<div flex="~ col gap-6">
-				<div flex="~ col gap-1">
-					<div text="body">{{ $t("審查者帳號") }}</div>
-					<InputText
-						type="text"
-						class="w-full"
-						v-model:model-value="addReviewerModal.data.username"
-					/>
-				</div>
-				<div flex="~ col gap-1">
-					<div text="body">{{ $t("姓名") }}</div>
-					<InputText
-						type="text"
-						class="w-full"
-						v-model:model-value="addReviewerModal.data.name"
-					/>
-				</div>
-
-				<div flex="~ col gap-1">
-					<div text="body">{{ $t("電子信箱") }}</div>
-					<InputText
-						type="email"
-						:class="`w-full ${addReviewerModal.getInputEmailClass()}`"
-						v-model:model-value="addReviewerModal.data.email"
-					/>
-					<div
-						v-if="addReviewerModal.invalidEmailFlag()"
-						text="sm danger"
-					>
-						{{ $t("無效的電子信箱") }}
-					</div>
-				</div>
-
-				<div flex="~ col gap-1">
-					<div text="body">{{ $t("密碼") }}</div>
-					<Password
-						class="w-full"
-						input-class="w-full"
-						:feedback="false"
-						:toggle-mask="true"
-						v-model:model-value="addReviewerModal.data.password"
-					/>
-				</div>
-			</div>
-		</template>
-		<template #footer>
-			<div flex="~ gap-6" justify="center">
-				<NButton
-					Admin
-					icon="pi pi-check"
-					:disabled="!addReviewerModal.allowSave"
-					class="h-11 min-w-36"
-					@click="addReviewerModal.submit"
-					>{{ $t("送出") }}</NButton
-				>
-				<NButton
-					icon="pi pi-times"
-					class="h-11 min-w-36"
-					@click="addReviewerModal.visible = false"
-					>{{ $t("取消") }}</NButton
-				>
-			</div>
-		</template>
-	</Dialog> -->
+	<AddReviewerDialog
+		v-model:visible="addReviewerModalVisible"
+		@success="onSuccessCreateAccount"
+	/>
 	<ConfirmDialog :draggable="false" />
 </template>
 
@@ -148,18 +75,11 @@ import Column from "primevue/column";
 import { computed, ref, toRaw } from "vue";
 import type { Ref } from "vue";
 import { useI18n } from "vue-i18n";
-import Divider from "primevue/divider";
-import Button from "primevue/button";
-import Dialog from "primevue/dialog";
-import InputText from "primevue/inputtext";
-import Checkbox from "primevue/checkbox";
 import { useMutation, useQuery } from "@tanstack/vue-query";
-import { useRouter } from "vue-router";
 import { useRecruitmentAdminAuthStore } from "@/stores/universalAuth";
 import { RecruitmentAdminAPI } from "@/api/recruitment/admin/api";
 import { useGlobalStore } from "@/stores/globalStore";
 import { RecruitmentAdminReviewersListResponse } from "@/api/recruitment/admin/types";
-import Password from "primevue/password";
 import ConfirmDialog from "primevue/confirmdialog";
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
@@ -181,46 +101,6 @@ const tableData = ref<RecruitmentAdminReviewersListResponse[]>(
 	[] as RecruitmentAdminReviewersListResponse[]
 );
 
-const reviewerID = ref(1);
-// const programQuery = useQuery(
-// 	["reviewerProgram", reviewerID],
-// 	async () => {
-// 		try {
-// 			return await api.getReviewerPrograms(reviewerID);
-// 		} catch (e: any) {
-// 			if (e instanceof InvalidSessionError) {
-// 				// FIXME: show session expiry notification??
-// 				// Why are we even here in the first place?
-// 				// MainContainer should have checked already.
-// 				console.error(
-// 					"Session has already expired while querying reviewerProgram"
-// 				);
-// 				router.push("/");
-// 				return;
-// 			}
-// 		}
-// 	},
-// 	{
-// 		enabled: false,
-// 		select: (programData) => {
-// 			// Select the data fields we are interested in
-// 			if (!programData) return programData;
-// 			return programData.map((program) => {
-// 				return {
-// 					id: program.id,
-// 					category: program.category,
-// 					name: program.name,
-// 				};
-// 			});
-// 		},
-// 		onSuccess: (data) => {
-// 			// data is filtered by option select
-// 			console.log("Success");
-// 			console.log(data);
-// 			// TODO: save result after getting response
-// 		},
-// 	}
-// );
 const getLoadingStatus = computed(() => {
 	return isLoading.value || isProcessing.value;
 });
@@ -246,46 +126,16 @@ const {
 	}
 );
 
-const addReviewerModal = ref({
-	data: {
-		username: "",
-		name: "",
-		email: "",
-		password: "",
-		redirect_url: "http://127.0.0.1:5173/recruitment/reviewer/setupaccount",
-	},
-	visible: false,
-	open: () => (addReviewerModal.value.visible = true),
-	close: () => (addReviewerModal.value.visible = false),
-	allowSave: computed(() => {
-		const ref: Ref = addReviewerModal;
-		const { username, name, email, password } = ref.value.data;
-		const result =
-			username.length && name.length && email.length && password.length;
-		return result;
-	}),
-	submit: () => {
-		addReviewerModal.value.close();
-		createReviewerAPI();
-	},
-	validateEmail: () => {
-		// TODO: email validation
-		// RFC 2822 email regex
-		// https://regexr.com/2rhq7
-		const re =
-			/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
-		return re.test(addReviewerModal.value.data.email);
-	},
-	getInputEmailClass: () => {
-		return addReviewerModal.value.validateEmail() ? "" : "p-invalid";
-	},
-	invalidEmailFlag: () => {
-		return addReviewerModal.value.validateEmail() === false;
-	},
-});
+const addReviewerModalVisible = ref(false);
+const onSuccessCreateAccount = () => {
+	refetch();
+	toast.add({
+		severity: "success",
+		life: 3000,
+		summary: $t("操作成功"),
+	});
+};
 
-const modalVisible = ref(false);
-const modalData = ref();
 const confirm = useConfirm();
 const confirmDisableReviewer = (
 	reviewerData: RecruitmentAdminReviewersListResponse
@@ -321,23 +171,7 @@ const confirmActivateReviewer = (
 		},
 	});
 };
-
 const isProcessing = ref(false);
-
-const { mutate: createReviewerAPI } = useMutation({
-	mutationFn: () => {
-		return api.createReviewerAccount(addReviewerModal.value.data);
-	},
-	onMutate: () => {
-		isProcessing.value = true;
-	},
-	onSettled: () => {
-		isProcessing.value = false;
-	},
-	onSuccess: () => {
-		refetch();
-	},
-});
 
 const toast = useToast();
 const { mutate: changeAccountStateAPI } = useMutation({
