@@ -13,7 +13,7 @@
 		<template #Chinese>教師徵聘系統</template>
 		<template #English>Teacher Recruitment System</template>
 		<template #Divider>
-			<div text="pApplicant">申請者註冊 Applicant Regist</div>
+			<div text="pApplicant">申請者註冊 Applicant Register</div>
 		</template>
 	</Title>
 	<!-- Body: Edit Regist Form -->

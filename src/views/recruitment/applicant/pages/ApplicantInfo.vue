@@ -295,12 +295,6 @@ useQuery(
 			info.birth = addHours(24, new Date(info.birth));
 		},
 		onError: (data) => {
-			toast.add({
-				severity: "error",
-				summary: "Error",
-				detail: "Unable to fetch user basic info",
-				life: 5000,
-			});
 			console.log(data);
 		},
 	}
