@@ -1,42 +1,40 @@
 <template>
 	<Layout Admin noMargin noFooter>
 		<template #Header>
-			<div class="flex">
-				<div class="prevPage">
-					<router-link to="/admission/manager/applicantsUploadList"
-						><i class="pi pi-chevron-left"></i
-						>{{ $t("上傳資料列表") }}</router-link
-					>
-				</div>
-				<div class="ml-32px font-bold text-32px">
+			<div flex="~ gap-6">
+				<router-link
+					to="/admission/manager/applicantsUploadList"
+					custom
+					v-slot="{ navigate }"
+					><NButton
+						Admin
+						white
+						class="h-8 min-w-32 bg-nRed-50"
+						@click="navigate"
+						size="sm"
+						role="link"
+						icon="pi pi-angle-left"
+						>{{ $t("上傳資料列表") }}
+					</NButton></router-link
+				>
+				<div>
 					{{ userInfo.admission_id + " " + route.params.userName }}
 				</div>
 			</div>
 		</template>
 		<template #Body>
-			<div class="p-fluid">
-				<SelectButton
-					class="mt-16px"
-					v-model="activeTab"
-					:options="tabs"
-					optionLabel="name"
-					aria-labelledby="single"
-					:unselectable="false"
-				>
-					<template #option="slotProps">
-						<div class="m-auto text-20px font-bold">
-							{{ $t(slotProps.option.name) }}
-						</div>
-					</template>
-				</SelectButton>
-			</div>
-			<div class="mt-8px" v-if="activeTab.value === 1">
+			<NSelect Admin :optionNum="3" h="12" @currentTab="switchTab">
+				<template #Select1>{{ $t("基本資料欄位") }}</template>
+				<template #Select2>{{ $t("檢附資料欄位") }}</template>
+				<template #Select3>{{ $t("補件系統欄位") }}</template>
+			</NSelect>
+			<div v-if="activeTab === 1">
 				<BasicInfo :userId="Number(route.params.userId)" />
 			</div>
-			<div class="mt-8px" v-if="activeTab.value === 2">
+			<div v-if="activeTab === 2">
 				<AttachmentInfo :userId="Number(route.params.userId)" />
 			</div>
-			<div class="mt-8px" v-if="activeTab.value === 3">
+			<div v-if="activeTab === 3">
 				<AdditionalInfo :userId="Number(route.params.userId)" />
 			</div>
 		</template>
@@ -50,6 +48,9 @@ import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
 import { AdmissionAdminAPI } from "@/api/admission/admin/api";
 import { useQuery } from "@tanstack/vue-query";
 import { AdmAdminGetApplicantInfoHeader } from "@/api/admission/admin/types";
+import Layout from "@/components/Layout.vue";
+import NButton from "@/styles/CustomButton.vue";
+import NSelect from "@/components/SelectButton.vue";
 import BasicInfo from "./reviewTabs/basicInfo.vue";
 import AttachmentInfo from "./reviewTabs/attachmentInfo.vue";
 import AdditionalInfo from "./reviewTabs/additionalInfo.vue";
@@ -67,12 +68,10 @@ const userInfo: AdmAdminGetApplicantInfoHeader =
 		{} as AdmAdminGetApplicantInfoHeader
 	);
 
-const activeTab = ref({ name: "基本資料欄位", value: 1 });
-const tabs = ref([
-	{ name: "基本資料欄位", value: 1 },
-	{ name: "檢附資料欄位", value: 2 },
-	{ name: "補件系統欄位", value: 3 },
-]);
+const activeTab = ref(1);
+const switchTab = (tabValue: number) => {
+	activeTab.value = tabValue;
+};
 
 useQuery(
 	["adminApplicantBasicInfo"],
