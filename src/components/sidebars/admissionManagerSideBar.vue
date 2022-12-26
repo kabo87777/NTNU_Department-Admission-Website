@@ -418,8 +418,9 @@ function addNewProject() {
 				'["en_surname","en_givenname","nationality","communicate_address","sex","mobile_phone"]',
 			applicant_required_file: '["就學經歷","考試與檢定分數"]',
 			reviewer_required_info:
-				'["cn_surname","name","en_surname","en_midname","en_givenname","nationality","communicate_address","communicate_zipcode","email","sex","birthcountry","birth","mobile_phone"]',
-			reviewer_required_file: '["就學經歷","考試與檢定分數"]',
+				'["en_surname","en_givenname","nationality","communicate_address","sex","mobile_phone"]',
+			reviewer_required_file:
+				'["就學經歷","考試與檢定分數","其他有利於審查資料"]',
 		},
 		{
 			onError: (e: any) => {

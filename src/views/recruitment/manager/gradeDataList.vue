@@ -64,14 +64,14 @@
 				<div my="auto" text="space-nowrap">
 					{{ $t("不通過") }} {{ notPassCount }} {{ $t("位") }}
 				</div>
-				<NButton
+				<!-- <NButton
 					Admin
 					icon="pi pi-print"
 					class="h-11 min-w-36"
 					pos="absolute right-0"
 				>
 					{{ $t("報表列印") }}
-				</NButton>
+				</NButton> -->
 			</div>
 		</template>
 	</Layout>
@@ -112,7 +112,7 @@
 					>
 						<template #body="slotProps">
 							<i
-								v-if="slotProps.data.recommandOrNot"
+								v-if="slotProps.data.isRecommend"
 								class="pi pi-check"
 							></i>
 							<p v-else>-</p>

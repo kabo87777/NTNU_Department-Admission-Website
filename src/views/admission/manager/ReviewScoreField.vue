@@ -537,17 +537,17 @@ async function saveChange() {
 	programData.reviewer_required_file = JSON.stringify(fieldList.file.checked);
 
 	// Patch Info/File Data
-	try {
-		await patchInfoFileField.mutateAsync(programData);
-	} catch (error: any) {
-		toast.add({
-			severity: "error",
-			summary: "Unable to Info/File Data: " + error.toString(),
-			life: 3000,
-		});
+	// try {
+	// 	await patchInfoFileField.mutateAsync(programData);
+	// } catch (error: any) {
+	// 	toast.add({
+	// 		severity: "error",
+	// 		summary: "Unable to Info/File Data: " + error.toString(),
+	// 		life: 3000,
+	// 	});
 
-		throw error;
-	}
+	// 	throw error;
+	// }
 
 	toast.add({
 		severity: "success",

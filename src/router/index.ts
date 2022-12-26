@@ -453,14 +453,14 @@ const routes: Array<RouteRecordRaw> = [
 				component: () =>
 					import("@/views/recruitment/manager/reviewScoreField.vue"),
 			},
-			{
-				path: "reviewProgress",
-				name: "RecruitmentAdminReviewProgress",
-				component: () =>
-					import(
-						"@/views/recruitment/manager/pages/ReviewProgress.vue"
-					),
-			},
+			// {
+			// 	path: "reviewProgress",
+			// 	name: "RecruitmentAdminReviewProgress",
+			// 	component: () =>
+			// 		import(
+			// 			"@/views/recruitment/manager/pages/ReviewProgress.vue"
+			// 		),
+			// },
 			{
 				path: "mustviewSetting",
 				name: "RecruitmentAdminMustviewSetting",

@@ -175,6 +175,7 @@
 
 <script setup lang="ts">
 import InputNumber from "primevue/inputnumber";
+import InputText from "primevue/inputtext";
 import NButton from "@/styles/CustomButton.vue";
 import NSelect from "@/components/SelectButton.vue";
 import Layout from "@/components/Layout.vue";
@@ -257,11 +258,11 @@ const total_score = computed(() => {
 });
 const oral_score = computed(() => {
 	return (
-		(+oinputScore_1!.value! * score1Proportion.value) / 100 +
-		(+oinputScore_2!.value! * score2Proportion.value) / 100 +
-		(+oinputScore_3!.value! * score3Proportion.value) / 100 +
-		(+oinputScore_4!.value! * score4Proportion.value) / 100 +
-		(+oinputScore_5!.value! * score5Proportion.value) / 100
+		(+oinputScore_1!.value! * oscore1Proportion.value) / 100 +
+		(+oinputScore_2!.value! * oscore2Proportion.value) / 100 +
+		(+oinputScore_3!.value! * oscore3Proportion.value) / 100 +
+		(+oinputScore_4!.value! * oscore4Proportion.value) / 100 +
+		(+oinputScore_5!.value! * oscore5Proportion.value) / 100
 	);
 });
 

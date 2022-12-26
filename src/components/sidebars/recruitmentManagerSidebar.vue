@@ -147,7 +147,7 @@
 					</NButton>
 				</router-link>
 				<!-- 6.審查人員與進度 -->
-				<router-link
+				<!-- <router-link
 					:to="{ name: 'RecruitmentAdminReviewProgress' }"
 					custom
 					v-slot="{ navigate }"
@@ -165,7 +165,7 @@
 						"
 						>{{ $t("審查人員與進度") }}
 					</NButton>
-				</router-link>
+				</router-link> -->
 				<!-- 7.必看名單設置 -->
 				<router-link
 					:to="{ name: 'RecruitmentAdminMustviewSetting' }"

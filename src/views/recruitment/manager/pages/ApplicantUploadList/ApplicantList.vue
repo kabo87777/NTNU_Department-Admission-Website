@@ -28,65 +28,6 @@
 						</div>
 					</template>
 				</Column>
-				<Column field="application_stage">
-					<template #header>
-						<div class="m-auto">{{ $t("上傳狀態") }}</div>
-					</template>
-					<template #body="slotProps">
-						<div class="m-auto text-center">
-							<Tag
-								v-if="
-									slotProps.data.application_stage === 'sent'
-								"
-								severity="success"
-							>
-								{{ slotProps.data.application_stage }}
-							</Tag>
-							<Tag
-								v-else-if="
-									slotProps.data.application_stage ===
-									'unstart'
-								"
-								severity="danger"
-							>
-								{{ slotProps.data.application_stage }}
-							</Tag>
-							<Tag
-								v-else-if="
-									slotProps.data.application_stage === 'draft'
-								"
-								severity="warning"
-							>
-								{{ slotProps.data.application_stage }}
-							</Tag>
-						</div>
-					</template>
-				</Column>
-				<Column field="oral_stage">
-					<template #header>
-						<div class="m-auto">{{ $t("補件狀態") }}</div>
-					</template>
-					<template #body="slotProps">
-						<div class="m-auto text-center">
-							{{ slotProps.data.oral_stage }}
-						</div>
-					</template>
-				</Column>
-				<Column field="email">
-					<template #header>
-						<div class="m-auto">{{ $t("補件系統") }}</div>
-					</template>
-					<template #body="slotProps">
-						<div class="m-auto text-center">
-							<Tag
-								v-if="slotProps.data.email === 'sent'"
-								severity="success"
-							>
-								{{ slotProps.data.email }}
-							</Tag>
-						</div>
-					</template>
-				</Column>
 			</DataTable>
 		</template>
 	</Layout>
