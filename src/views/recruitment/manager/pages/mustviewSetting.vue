@@ -2,7 +2,7 @@
 	<Layout Admin>
 		<template #Header>{{ $t("必看名單設置") }}</template>
 		<template #Body>
-			<div space="y-1" pos="sticky top-0">
+			<div space="y-1" pos="sticky top-0 " z="10">
 				<div>{{ hint }}</div>
 				<div class="newsCard h-80px" v-if="assign">
 					{{ $t("已將") }} {{ message }} {{ $t("指派給") }}
@@ -55,7 +55,6 @@
 					<Column field="name" :header="name"></Column>
 				</DataTable>
 			</div>
-			<div class="bigRedDivider"></div>
 			<div class="flex justify-between mt-10px">
 				<div class="flex justify-start">
 					<div class="text-xl content-center mt-10px">
