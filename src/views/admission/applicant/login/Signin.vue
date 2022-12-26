@@ -77,7 +77,7 @@
 				<!-- Login Button -->
 				<Turnstile ref="turnstileRef" />
 				<NButton
-					class="w-3/5 p-2 m-auto"
+					class="w-3/5 h-13 m-auto"
 					type="Applicant"
 					size="lg"
 					:loading="isTurnstileRunning || isSubmitting"

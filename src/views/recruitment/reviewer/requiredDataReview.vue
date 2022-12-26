@@ -1,22 +1,15 @@
 <template>
-	<div>
-		<div class="flex">
-			<h1 class="text-4xl text-bold tracking-widest">
-				{{ $t("必看資料評閱") }}
-			</h1>
-			<div class="w-134px h-25px bg-[#FCC89B] rounded-lg ml-24px mt-8px">
-				<div class="mt-4px text-xs text-center">
-					{{ isBetweenDate }} | {{ $t("評分中") }}
+	<Layout Reviewer noMargin>
+		<template #Header>
+			<div flex="~ gap-6" class="items-end">
+				<div>{{ $t("必看資料評閱") }}</div>
+				<div text="sm body" font="normal tracking-normal">
+					{{ $t("開放時間") }} : {{ reviewStartTime }} -
+					{{ reviewEndTime }}
 				</div>
 			</div>
-			<div class="mt-20px ml-600px">
-				{{ $t("開放時間") }} : {{ reviewStartTime }} -
-				{{ reviewEndTime }}
-			</div>
-		</div>
-
-		<div class="bigBlueDivider"></div>
-		<div>
+		</template>
+		<template #Body>
 			<DataTable
 				:value="applicantList"
 				responsiveLayout="scroll"
@@ -71,26 +64,8 @@
 					</template>
 				</Column>
 			</DataTable>
-			<div class="bigBlueDivider !mt-50px"></div>
-			<!-- <div class="flex text-xl mt-20px">
-				<Button
-					class="w-140px h-44px !ml-1200px p-button-success"
-					disabled
-				>
-					<img
-						alt="logo"
-						src="/assets/reviewer-page/Add_round.png"
-						style="width: 1.5rem"
-						class="fill-green-500"
-					/>
-					<span class="tracking-1px">{{ $t("送出評比") }}</span>
-				</Button>
-			</div>
-			<div class="ml-930px mt-12px text-red-500">
-				{{ $t("※成績送出即無法再次修改，煩請送出前再三確認成績無誤") }}
-			</div> -->
-		</div>
-	</div>
+		</template>
+	</Layout>
 </template>
 
 <script setup lang="ts">
@@ -100,6 +75,8 @@ import { computed, ref } from "vue";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import Button from "primevue/button";
+import NButton from "@/styles/CustomButton.vue";
+import Layout from "@/components/Layout.vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { useRecruitmentReviewerAuthStore } from "@/stores/universalAuth";
