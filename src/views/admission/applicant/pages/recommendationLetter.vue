@@ -756,7 +756,9 @@ const handleSave = async () => {
 const handleRequest = async (letterId: number) => {
 	isActionLoading.request = true;
 
-	const url = `${import.meta.env.VITE_BASEURL}/admission/recommendLetterFillIn`;
+	const url = `${
+		import.meta.env.VITE_BASEURL
+	}/admission/recommendLetterFillIn`;
 	const response = await api.requestRecommendLetter(letterId, {
 		params: { redirect_url: url },
 	});
