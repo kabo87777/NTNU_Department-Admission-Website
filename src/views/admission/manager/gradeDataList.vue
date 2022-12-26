@@ -532,19 +532,20 @@
 		</template>
 	</Layout>
 
-	<!-- Dialog -->
+	<!-- Dialog - 1 -->
 	<Dialog
 		v-model:visible="productDialog"
 		:draggable="false"
 		:closable="false"
 		:modal="true"
-		class="w-720px h-988px"
+		class="w-160"
 	>
 		<template #header>
 			<div text="2xl title">{{ $t("評分資料編輯") }}</div>
 		</template>
 		<template #default>
 			<div flex="~ col gap-6 mx-2">
+				<!-- 基本資料 -->
 				<div flex="~ col gap-4" bg="gray-100" p="4" border="rounded-lg">
 					<div text="body" flex="~ gap-6">
 						<div>{{ $t("帳號ID") }} :</div>
@@ -555,6 +556,7 @@
 						<div>{{ name }}</div>
 					</div>
 				</div>
+				<!-- Select Button -->
 				<NSelect
 					Admin
 					class="h-11"
@@ -564,7 +566,7 @@
 					<template #Select1>{{ $t("書面審查") }}</template>
 					<template #Select2>{{ $t("口試審查") }}</template>
 				</NSelect>
-
+				<!-- 1. 書面審查 -->
 				<DataTable
 					v-if="dialogCurrentTab === translation.phase1"
 					:value="docsReviewerScore"
@@ -590,6 +592,13 @@
 					</Column>
 					<Column field="grades" :header="totalScore"></Column>
 				</DataTable>
+				<div v-if="dialogCurrentTab === translation.phase1">
+					<div flex="~ gap-2" justify="end" text="sm secondary">
+						<div>{{ $t("平均分數") }}</div>
+						<div mr="4">{{ docsAverageGrade }}</div>
+					</div>
+				</div>
+				<!-- 2. 口試審查 -->
 				<DataTable
 					v-if="dialogCurrentTab === translation.phase2"
 					:value="oralReviewerScore"
@@ -600,85 +609,81 @@
 					<Column field="name" :header="reviewer"></Column>
 					<Column field="grades" :header="totalScore"></Column>
 				</DataTable>
-				<div v-if="dialogCurrentTab === translation.phase1">
-					<div flex="~ gap-2" justify="end" text="sm secondary">
-						<div>{{ $t("平均分數") }}</div>
-						<div mr="4">{{ docsAverageGrade }}</div>
-					</div>
-				</div>
 				<div v-if="dialogCurrentTab === translation.phase2">
 					<div flex="~ gap-2" justify="end" text="sm secondary">
 						<div>{{ $t("平均分數") }}</div>
 						<div mr="4">{{ oralAverageGrade }}</div>
 					</div>
 				</div>
-			</div>
-			<div v-if="disable2" flex="~ col gap-8" mx="8">
-				<div space="y-1">
-					<div>{{ $t("一階審查結果") }}</div>
-					<Dropdown
-						v-if="disable"
-						v-model="p1_result"
-						:options="p1_result_option"
-						disabled
-						class="h-12 w-1/2"
-					/>
-					<Dropdown
-						v-else
-						v-model="p1_result"
-						:options="p1_result_option"
-						class="h-12 w-1/2"
-					/>
+				<!-- 1. 書面審查 - 結果 -->
+				<div v-if="disable2" flex="~ col gap-6" mx="8">
+					<div space="y-1">
+						<div>{{ $t("一階審查結果") }}</div>
+						<Dropdown
+							v-if="disable"
+							v-model="p1_result"
+							:options="p1_result_option"
+							disabled
+							class="h-12 w-1/2"
+						/>
+						<Dropdown
+							v-else
+							v-model="p1_result"
+							:options="p1_result_option"
+							class="h-12 w-1/2"
+						/>
+					</div>
+					<div space="y-1">
+						<div>{{ $t("口試順序") }}</div>
+						<InputText
+							v-if="disable1"
+							type="text"
+							v-model="oral_order"
+							class="h-12 w-1/2"
+						/>
+						<InputText
+							v-else
+							type="text"
+							v-model="oral_order"
+							disabled
+							class="h-12 w-1/2"
+						/>
+					</div>
 				</div>
-				<div space="y-1">
-					<div>{{ $t("口試順序") }}</div>
-					<InputText
-						v-if="disable1"
-						type="text"
-						v-model="oral_order"
-						class="h-12 w-1/2"
-					/>
-					<InputText
-						v-else
-						type="text"
-						v-model="oral_order"
-						disabled
-						class="h-12 w-1/2"
-					/>
-				</div>
-			</div>
-			<div v-else flex="~ col gap-8" mx="8">
-				<div space="y-1">
-					<div>{{ $t("二階審查結果") }}</div>
-					<Dropdown
-						v-if="disable1"
-						v-model="p2_result"
-						:options="p2_result_option"
-						class="h-12 w-1/2"
-					/>
-					<Dropdown
-						v-else
-						v-model="p2_result"
-						:options="p2_result_option"
-						disabled
-						class="h-12 w-1/2"
-					/>
-				</div>
-				<div space="y-1">
-					<div>{{ $t("錄取順序") }}</div>
-					<InputText
-						v-if="disable1"
-						type="text"
-						v-model="admitted_order"
-						class="h-12 w-1/2"
-					/>
-					<InputText
-						v-else-if="!disable1"
-						type="text"
-						v-model="admitted_order"
-						disabled
-						class="h-12 w-1/2"
-					/>
+				<!-- 2. 口試審查 - 結果 -->
+				<div v-else flex="~ col gap-6" mx="8">
+					<div space="y-1">
+						<div>{{ $t("二階審查結果") }}</div>
+						<Dropdown
+							v-if="disable1"
+							v-model="p2_result"
+							:options="p2_result_option"
+							class="h-12 w-1/2"
+						/>
+						<Dropdown
+							v-else
+							v-model="p2_result"
+							:options="p2_result_option"
+							disabled
+							class="h-12 w-1/2"
+						/>
+					</div>
+					<div space="y-1">
+						<div>{{ $t("錄取順序") }}</div>
+						<InputText
+							v-if="disable1"
+							type="text"
+							v-model="admitted_order"
+							class="h-12 w-1/2"
+						/>
+						<InputText
+							v-else-if="!disable1"
+							type="text"
+							v-model="admitted_order"
+							disabled
+							class="h-12 w-1/2"
+						/>
+					</div>
 				</div>
 			</div>
 		</template>
