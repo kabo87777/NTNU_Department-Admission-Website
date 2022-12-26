@@ -35,7 +35,7 @@
 							<!-- Delete button -->
 							<NButton
 								Danger
-								icon="pi pi-times"
+								icon="pi pi-trash"
 								class="p-2"
 								@click="actions.delete(slotProps.data.id)"
 							/>
