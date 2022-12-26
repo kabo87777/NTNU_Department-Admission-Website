@@ -65,181 +65,6 @@
 						</template>
 					</Column>
 				</DataTable>
-				<Dialog
-					v-model:visible="productDialog"
-					:header="gradeDataEdit"
-					:draggable="false"
-					:modal="true"
-					class="w-720px h-988px"
-				>
-					<Divider></Divider>
-					<div class="flex mt-24px">
-						<div class="text-lg">{{ $t("帳號ID") }} :</div>
-						<div class="text-lg ml-266px">
-							{{ $t("帳號名稱") }} :
-						</div>
-					</div>
-					<div class="flex mt-18.5px">
-						<div>
-							{{ id }}
-						</div>
-						<div class="text-base ml-300px">
-							{{ name }}
-						</div>
-					</div>
-					<div class="p-fluid">
-						<SelectButton
-							v-if="disable1"
-							class="h-39px mt-32px !w-664px"
-							v-model="dialogCurrentTab"
-							:options="dialogTabOptions"
-						/>
-						<SelectButton
-							v-else
-							class="h-39px mt-32px !w-664px"
-							v-model="dialogCurrentTab"
-							:options="dialogTabOptions"
-							disabled
-						/>
-					</div>
-					<DataTable
-						v-if="dialogCurrentTab === translation.phase1"
-						:value="docsReviewerScore"
-						responsiveLayout="scroll"
-						dataKey="id"
-						class="text-base mt-24px !h-286px"
-					>
-						<Column field="name" :header="reviewer"></Column>
-						<Column
-							field="isimmendiateenroll"
-							:header="directedAdmitted"
-							dataType="boolean"
-							bodyClass="text-center"
-							style="min-width: 8rem"
-						>
-							<template #body="slotProps">
-								<i
-									v-if="slotProps.data.isimmendiateenroll"
-									class="pi pi-check"
-								></i>
-								<p v-else>-</p>
-							</template>
-						</Column>
-						<Column field="grades" :header="totalScore"></Column>
-					</DataTable>
-					<DataTable
-						v-if="dialogCurrentTab === translation.phase2"
-						:value="oralReviewerScore"
-						responsiveLayout="scroll"
-						dataKey="id"
-						class="text-base mt-24px !h-286px"
-					>
-						<Column field="name" :header="reviewer"></Column>
-						<Column field="grades" :header="totalScore"></Column>
-					</DataTable>
-					<div
-						v-if="dialogCurrentTab === translation.phase1"
-						class="flex mt-20px ml-15px"
-					>
-						<div>{{ $t("平均分數") }}</div>
-						<div class="ml-330px">{{ docsAverageGrade }}</div>
-					</div>
-					<div
-						v-if="dialogCurrentTab === translation.phase2"
-						class="flex mt-20px ml-15px"
-					>
-						<div>{{ $t("平均分數") }}</div>
-						<div class="ml-188px">{{ oralAverageGrade }}</div>
-					</div>
-					<div class="flex mt-100px ml-53px" v-if="disable2">
-						<div>
-							<div>{{ $t("一階審查結果") }}</div>
-							<Dropdown
-								v-if="disable"
-								v-model="p1_result"
-								:options="p1_result_option"
-								disabled
-								class="w-228px h-44px mt-8px"
-							/>
-							<Dropdown
-								v-else
-								v-model="p1_result"
-								:options="p1_result_option"
-								class="w-228px h-44px mt-8px"
-							/>
-						</div>
-						<div class="ml-120px">
-							<div>{{ $t("口試順序") }}</div>
-							<InputText
-								v-if="disable1"
-								type="text"
-								v-model="oral_order"
-								class="w-148px h-44px !mt-8px"
-							/>
-							<InputText
-								v-else
-								type="text"
-								v-model="oral_order"
-								disabled
-								class="w-148px h-44px !mt-8px"
-							/>
-						</div>
-					</div>
-					<div class="flex mt-100px ml-52px" v-else>
-						<div>
-							<div>{{ $t("二階審查結果") }}</div>
-							<Dropdown
-								v-if="disable1"
-								v-model="p2_result"
-								:options="p2_result_option"
-								class="w-228px h-44px mt-8px"
-							/>
-							<Dropdown
-								v-else
-								v-model="p2_result"
-								:options="p2_result_option"
-								disabled
-								class="w-228px h-44px mt-8px"
-							/>
-						</div>
-						<div class="ml-120px">
-							<div>{{ $t("錄取順序") }}</div>
-							<InputText
-								v-if="disable1"
-								type="text"
-								v-model="admitted_order"
-								class="w-148px h-44px !mt-8px"
-							/>
-							<InputText
-								v-else-if="!disable1"
-								type="text"
-								v-model="admitted_order"
-								disabled
-								class="w-148px h-44px !mt-8px"
-							/>
-						</div>
-					</div>
-					<div class="flex !mt-100px">
-						<NButton
-							type="Admin"
-							class="w-140px h-44px !ml-170px"
-							@click="doneEdit"
-							icon="pi pi-check"
-						>
-							<span class="tracking-1px">{{
-								$t("儲存變更")
-							}}</span>
-						</NButton>
-						<NButton
-							type="Admin"
-							class="w-100px h-44px !ml-49px"
-							@click="cancelEdit"
-							icon="pi pi-times"
-						>
-							<span class="tracking-1px">{{ $t("取消") }}</span>
-						</NButton>
-					</div>
-				</Dialog>
 			</div>
 			<div v-if="currentTab === translation.phase2">
 				<DataTable
@@ -706,6 +531,175 @@
 			</div>
 		</template>
 	</Layout>
+
+	<!-- Dialog -->
+	<Dialog
+		v-model:visible="productDialog"
+		:draggable="false"
+		:closable="false"
+		:modal="true"
+		class="w-720px h-988px"
+	>
+		<template #header>
+			<div text="2xl title">{{ $t("評分資料編輯") }}</div>
+		</template>
+		<template #default>
+			<div flex="~ col gap-6 mx-2">
+				<div flex="~ col gap-4" bg="gray-100" p="4" border="rounded-lg">
+					<div text="body" flex="~ gap-6">
+						<div>{{ $t("帳號ID") }} :</div>
+						<div>{{ id }}</div>
+					</div>
+					<div text="body" flex="~ gap-6">
+						<div>{{ $t("帳號名稱") }} :</div>
+						<div>{{ name }}</div>
+					</div>
+				</div>
+				<NSelect
+					Admin
+					class="h-11"
+					:disabled="disable1"
+					@currentTab="handleDialogTab"
+				>
+					<template #Select1>{{ $t("書面審查") }}</template>
+					<template #Select2>{{ $t("口試審查") }}</template>
+				</NSelect>
+
+				<DataTable
+					v-if="dialogCurrentTab === translation.phase1"
+					:value="docsReviewerScore"
+					responsiveLayout="scroll"
+					dataKey="id"
+					class="text-base"
+				>
+					<Column field="name" :header="reviewer"></Column>
+					<Column
+						field="isimmendiateenroll"
+						:header="directedAdmitted"
+						dataType="boolean"
+						bodyClass="text-center"
+						style="min-width: 8rem"
+					>
+						<template #body="slotProps">
+							<i
+								v-if="slotProps.data.isimmendiateenroll"
+								class="pi pi-check"
+							></i>
+							<p v-else>-</p>
+						</template>
+					</Column>
+					<Column field="grades" :header="totalScore"></Column>
+				</DataTable>
+				<DataTable
+					v-if="dialogCurrentTab === translation.phase2"
+					:value="oralReviewerScore"
+					responsiveLayout="scroll"
+					dataKey="id"
+					class="text-base"
+				>
+					<Column field="name" :header="reviewer"></Column>
+					<Column field="grades" :header="totalScore"></Column>
+				</DataTable>
+				<div v-if="dialogCurrentTab === translation.phase1">
+					<div flex="~ gap-2" justify="end" text="sm secondary">
+						<div>{{ $t("平均分數") }}</div>
+						<div mr="4">{{ docsAverageGrade }}</div>
+					</div>
+				</div>
+				<div v-if="dialogCurrentTab === translation.phase2">
+					<div flex="~ gap-2" justify="end" text="sm secondary">
+						<div>{{ $t("平均分數") }}</div>
+						<div mr="4">{{ oralAverageGrade }}</div>
+					</div>
+				</div>
+			</div>
+			<div v-if="disable2" flex="~ col gap-8" mx="8">
+				<div space="y-1">
+					<div>{{ $t("一階審查結果") }}</div>
+					<Dropdown
+						v-if="disable"
+						v-model="p1_result"
+						:options="p1_result_option"
+						disabled
+						class="h-12 w-1/2"
+					/>
+					<Dropdown
+						v-else
+						v-model="p1_result"
+						:options="p1_result_option"
+						class="h-12 w-1/2"
+					/>
+				</div>
+				<div space="y-1">
+					<div>{{ $t("口試順序") }}</div>
+					<InputText
+						v-if="disable1"
+						type="text"
+						v-model="oral_order"
+						class="h-12 w-1/2"
+					/>
+					<InputText
+						v-else
+						type="text"
+						v-model="oral_order"
+						disabled
+						class="h-12 w-1/2"
+					/>
+				</div>
+			</div>
+			<div v-else flex="~ col gap-8" mx="8">
+				<div space="y-1">
+					<div>{{ $t("二階審查結果") }}</div>
+					<Dropdown
+						v-if="disable1"
+						v-model="p2_result"
+						:options="p2_result_option"
+						class="h-12 w-1/2"
+					/>
+					<Dropdown
+						v-else
+						v-model="p2_result"
+						:options="p2_result_option"
+						disabled
+						class="h-12 w-1/2"
+					/>
+				</div>
+				<div space="y-1">
+					<div>{{ $t("錄取順序") }}</div>
+					<InputText
+						v-if="disable1"
+						type="text"
+						v-model="admitted_order"
+						class="h-12 w-1/2"
+					/>
+					<InputText
+						v-else-if="!disable1"
+						type="text"
+						v-model="admitted_order"
+						disabled
+						class="h-12 w-1/2"
+					/>
+				</div>
+			</div>
+		</template>
+		<template #footer>
+			<div flex="~ gap-6" justify="center">
+				<NButton
+					Admin
+					class="min-w-32 h-11"
+					@click="doneEdit"
+					icon="pi pi-check"
+					>{{ $t("儲存變更") }}
+				</NButton>
+				<NButton
+					class="min-w-32 h-11"
+					@click="cancelEdit"
+					icon="pi pi-times"
+					>{{ $t("取消") }}
+				</NButton>
+			</div>
+		</template>
+	</Dialog>
 </template>
 
 <script setup lang="ts">
@@ -882,8 +876,11 @@ const handleTab = (selectTab: number) => {
 	}
 };
 const dialogCurrentTab = ref(translation.phase1);
+const handleDialogTab = (selectTab: number) => {
+	if (selectTab === 2) dialogCurrentTab.value = translation.phase2;
+	else dialogCurrentTab.value = translation.phase1;
+};
 const dialogCurrentTab2 = ref(translation.phase2);
-const dialogTabOptions = ref([translation.phase1, translation.phase2]);
 const productDialog = ref(false);
 const name = ref("");
 const id = ref("");
