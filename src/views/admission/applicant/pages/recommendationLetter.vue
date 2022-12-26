@@ -25,6 +25,16 @@
 					>
 						{{ $t("暫無推薦人") }}
 					</div>
+					<div class="mt-16px">
+						<NButton
+							Applicant
+							icon="pi pi-plus"
+							class="mx-auto h-11 min-w-36"
+							@click="openModal()"
+						>
+							{{ $t("新增推薦人") }}
+						</NButton>
+					</div>
 				</div>
 			</div>
 			<!-- 推薦信列表(有資料時) -->
@@ -284,17 +294,7 @@
 				</NButton>
 			</div>
 		</template>
-		<template #Footer>
-			<NButton
-				v-if="letterList[0]?.length === 0"
-				Applicant
-				icon="pi pi-plus"
-				class="mx-auto h-11 min-w-36"
-				@click="openModal()"
-			>
-				{{ $t("新增推薦人") }}
-			</NButton>
-		</template>
+		<template #Footer></template>
 	</Layout>
 	<div>
 		<!-- 新增推薦人 Dialog -->
@@ -756,7 +756,9 @@ const handleSave = async () => {
 const handleRequest = async (letterId: number) => {
 	isActionLoading.request = true;
 
-	const url = "http://127.0.0.1:5173/admission/recommendLetterFillIn";
+	const url = `${
+		import.meta.env.VITE_BASEURL
+	}/admission/recommendLetterFillIn`;
 	const response = await api.requestRecommendLetter(letterId, {
 		params: { redirect_url: url },
 	});

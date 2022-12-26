@@ -2,107 +2,94 @@
 	<Layout Admin noMargin>
 		<template #Header>{{ $t("上傳資料列表") }}</template>
 		<template #Body>
-			<DataTable :value="applicantList">
+			<DataTable
+				:value="applicantList"
+				:metaKeySelection="false"
+				@rowSelect="navigate"
+				selectionMode="single"
+			>
 				<Column field="id">
 					<template #header>
-						<div class="m-auto">{{ $t("帳號") }}</div>
+						<div mx="auto">{{ $t("帳號") }}</div>
 					</template>
 					<template #body="slotProps">
-						<div
-							class="m-auto w-50px text-center text-blue-500 hover:text-blue-300"
-						>
-							<router-link
-								:to="{
-									path: `/admission/manager/applicantsUploadList/${slotProps.data.id}/${slotProps.data.name}`,
-								}"
-							>
-								{{ slotProps.data.uid }}
-							</router-link>
+						<div mx="auto" text="center">
+							{{ slotProps.data.uid }}
 						</div>
 					</template>
 				</Column>
 				<Column field="name">
 					<template #header>
-						<div class="m-auto">{{ $t("姓名") }}</div>
+						<div mx="auto">{{ $t("姓名") }}</div>
 					</template>
 					<template #body="slotProps">
-						<div
-							class="m-auto w-50px text-center text-blue-500 hover:text-blue-300"
-						>
-							<router-link
-								:to="{
-									path: `/admission/manager/applicantsUploadList/${slotProps.data.id}/${slotProps.data.name}`,
-								}"
-							>
-								{{ slotProps.data.name }}
-							</router-link>
+						<div mx="auto" text="center">
+							{{ slotProps.data.name }}
 						</div>
 					</template>
 				</Column>
 				<Column field="application_stage">
 					<template #header>
-						<div class="m-auto">{{ $t("上傳狀態") }}</div>
+						<div mx="auto">{{ $t("上傳狀態") }}</div>
 					</template>
 					<template #body="slotProps">
-						<div class="m-auto text-center">
-							<Tag
+						<div flex="~" justify="center">
+							<NTag
 								v-if="
 									slotProps.data.application_stage ===
 									'已送審'
 								"
-								severity="success"
+								class="flex-grow-0"
+								flag="success"
 							>
 								{{ slotProps.data.application_stage }}
-							</Tag>
-							<Tag
+							</NTag>
+							<NTag
 								v-else-if="
 									slotProps.data.application_stage ===
 									'未送審'
 								"
-								severity="warning"
+								flag="warning"
 							>
 								{{ slotProps.data.application_stage }}
-							</Tag>
-							<Tag v-else severity="danger">
+							</NTag>
+							<NTag v-else>
 								{{ $t("無") }}
-							</Tag>
+							</NTag>
 						</div>
 					</template>
 				</Column>
 				<Column field="oral_stage">
 					<template #header>
-						<div class="m-auto">{{ $t("補件系統") }}</div>
+						<div mx="auto">{{ $t("補件系統") }}</div>
 					</template>
 					<template #body="slotProps">
 						<div
 							v-if="slotProps.data.isMoredoc"
-							class="m-auto text-center"
+							text="sm center pApplicant"
 						>
 							{{ $t("已開放") }}
 						</div>
-						<div v-else class="m-auto text-center">
+						<div v-else text="sm center secondary">
 							{{ $t("未開放") }}
 						</div>
 					</template>
 				</Column>
 				<Column field="email">
 					<template #header>
-						<div class="m-auto">{{ $t("補件狀態") }}</div>
+						<div mx="auto">{{ $t("補件狀態") }}</div>
 					</template>
 					<template #body="slotProps">
-						<div class="m-auto text-center">
-							<Tag
+						<div flex="~" justify="center">
+							<NTag
 								v-if="slotProps.data.email === 'sent'"
-								severity="success"
+								flag="success"
 							>
 								{{ slotProps.data.email }}
-							</Tag>
-							<Tag
-								v-else
-								style="background-color: #d9dada; color: black"
-							>
+							</NTag>
+							<NTag v-else>
 								{{ $t("無") }}
-							</Tag>
+							</NTag>
 						</div>
 					</template>
 				</Column>
@@ -117,20 +104,31 @@ import { useAdmissionAdminAuthStore } from "@/stores/universalAuth";
 import { AdmissionAdminAPI } from "@/api/admission/admin/api";
 import { useGlobalStore } from "@/stores/globalStore";
 import { useQuery } from "@tanstack/vue-query";
+import { useRouter } from "vue-router";
 import { AdmissionAdminApplicantsListResponse } from "@/api/admission/admin/types";
 import DataTable from "primevue/datatable";
 import Layout from "@/components/Layout.vue";
 import Column from "primevue/column";
+import NTag from "@/components/CustomTag.vue";
 import Tag from "primevue/tag";
 import "../../../../styles/customize.css";
 
 const adminAuth = useAdmissionAdminAuthStore();
 const store = useGlobalStore();
 const api = new AdmissionAdminAPI(adminAuth);
+const router = useRouter();
 
 const applicantList: AdmissionAdminApplicantsListResponse[] = reactive<
 	AdmissionAdminApplicantsListResponse[]
 >([] as AdmissionAdminApplicantsListResponse[]);
+
+const navigate = (event: any) => {
+	console.log("Click it");
+	console.log(event);
+	router.replace({
+		path: `/admission/manager/applicantsUploadList/${event.data.id}/${event.data.name}`,
+	});
+};
 
 useQuery(
 	["applicantListUpload"],

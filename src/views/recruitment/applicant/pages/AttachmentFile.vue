@@ -84,7 +84,6 @@ const requiredAttachmentName = [
 	"推薦函-1",
 	"推薦函-2",
 	"其他有利於審查資料",
-	"行事曆",
 ];
 
 const toast = useToast();
@@ -243,7 +242,7 @@ onMounted(async () => {
 	const res = await api.getFileList(project.project.pid);
 
 	clearAllList();
-	attachmentList = [...attachmentList, ...res];
+	if (res) attachmentList = [...attachmentList, ...res];
 	addDetail(toRaw(attachmentList));
 });
 

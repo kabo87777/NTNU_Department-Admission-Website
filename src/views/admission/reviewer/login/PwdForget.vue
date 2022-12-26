@@ -97,8 +97,9 @@ const changeState = () => {
 
 const enterEmail = async () => {
 	try {
-		const redirectUrl =
-			"http://127.0.0.1:5173/admission/reviewer/password/reset";
+		const redirectUrl = `${
+			import.meta.env.VITE_BASEURL
+		}/admission/reviewer/password/reset`;
 		const turnstileResponse = consumeTurnstileToken();
 		if (!turnstileResponse) throw new Error("Turnstile challenge failed");
 		const api = new AdmissionReviewerAPI(authStore);

@@ -13,7 +13,7 @@
 		<template #Chinese>教師徵聘系統</template>
 		<template #English>Teacher Recruitment System</template>
 		<template #Divider>
-			<div text="pApplicant">申請者註冊 Applicant Regist</div>
+			<div text="pApplicant">申請者註冊 Applicant Register</div>
 		</template>
 	</Title>
 	<!-- Body: Edit Regist Form -->
@@ -81,6 +81,10 @@
 					※ 密碼不符 Password not Matched
 				</div>
 			</div>
+			<!-- 為了DEMO臨時解 -->
+			<div v-if="tempErrResponse !== ''" space="y-1">
+				<div text="sm danger">{{ "※ " + tempErrResponse }}</div>
+			</div>
 		</template>
 		<template #Footer>
 			<!-- Regist Button -->
@@ -138,6 +142,8 @@
 import NButton from "@/styles/CustomButton.vue";
 import Title from "@/styles/login/LoginTitle.vue";
 import Body from "@/styles/login/LoginBody.vue";
+import Toast from "primevue/toast";
+import TMessage from "@/styles/login/ToastMessage.vue";
 import { reactive, toRaw } from "vue";
 import { RecruitmentApplicantAPI } from "@/api/recruitment/applicant/api";
 import { useRecruitmentApplicantAuthStore } from "@/stores/universalAuth";
@@ -151,12 +157,15 @@ const registState = ref("Edit");
 const applicantAuth = useRecruitmentApplicantAuthStore();
 const turnstileRef = ref<TurnstileComponentExposes>();
 const isRegistLoading = ref(false);
+
 let userRegistData = reactive({
 	name: "",
 	email: "",
 	password: "",
 	password_confirmation: "",
-	confirm_success_url: "http://127.0.0.1:5173/recruitment/applicant/signin",
+	confirm_success_url: `${
+		import.meta.env.VITE_BASEURL
+	}/recruitment/applicant/signin`,
 });
 
 let password = reactive({
@@ -174,6 +183,9 @@ let RegisterResponse = reactive({
 	success: false,
 	message: "" as string | [],
 });
+
+// 為了DEMO的臨時解法
+const tempErrResponse = ref("");
 
 const consumeTurnstileToken = () => {
 	const token: string | undefined = turnstileRef.value?.turnstileToken;
@@ -234,9 +246,12 @@ const handleSubmit = async () => {
 		isRegistLoading.value = true;
 		const res = await postEmailRegister();
 
-		if (res?.status !== undefined && res?.message !== undefined) {
-			RegisterResponse.success = toRaw(res.status);
+		if (res?.error === false && res?.status === "success") {
+			RegisterResponse.success = true;
 			RegisterResponse.message = toRaw(res.message);
+		} else {
+			RegisterResponse.success = false;
+			tempErrResponse.value = res?.message.full_messages[0];
 		}
 		isRegistLoading.value = false;
 		if (RegisterResponse.success) {
