@@ -886,6 +886,7 @@ const handleDialogTab = (selectTab: number) => {
 	else dialogCurrentTab.value = translation.phase1;
 };
 const dialogCurrentTab2 = ref(translation.phase2);
+const dialogTabOptions = ref([translation.phase1, translation.phase2]);
 const productDialog = ref(false);
 const name = ref("");
 const id = ref("");
