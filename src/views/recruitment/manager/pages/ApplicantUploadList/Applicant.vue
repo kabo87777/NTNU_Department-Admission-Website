@@ -1,46 +1,47 @@
 <template>
-	<div>
-		<div class="flex">
-			<div class="prevPage">
-				<router-link to="/recruitment/manager/attachmentList"
-					><i class="pi pi-chevron-left"></i
-					>{{ $t("上傳資料列表") }}</router-link
+	<Layout Admin noMargin noFooter>
+		<template #Header>
+			<div flex="~ gap-6">
+				<router-link
+					to="/recruitment/manager/attachmentList"
+					custom
+					v-slot="{ navigate }"
+					><NButton
+						Admin
+						white
+						class="h-8 min-w-32 bg-nRed-50"
+						@click="navigate"
+						size="sm"
+						role="link"
+						icon="pi pi-angle-left"
+						>{{ $t("上傳資料列表") }}
+					</NButton></router-link
 				>
+				<div v-if="headerInfo.name" class="ml-32px font-bold text-32px">
+					{{ Number(route.params.userId) + " " + headerInfo.name }}
+				</div>
+				<div v-else class="ml-32px font-bold text-32px">
+					{{ Number(route.params.userId) }}
+				</div>
 			</div>
-			<div v-if="headerInfo.name" class="ml-32px font-bold text-32px">
-				{{ Number(route.params.userId) + " " + headerInfo.name }}
+		</template>
+		<template #Body>
+			<NSelect Admin :optionNum="3" h="12" @currentTab="switchTab">
+				<template #Select1>{{ $t("基本資料欄位") }}</template>
+				<template #Select2>{{ $t("檢附資料欄位") }}</template>
+				<template #Select3>{{ $t("補件系統欄位") }}</template>
+			</NSelect>
+			<div v-if="activeTab === 1">
+				<BasicInfo :userId="Number(route.params.userId)" />
 			</div>
-			<div v-else class="ml-32px font-bold text-32px">
-				{{ Number(route.params.userId) }}
+			<div v-if="activeTab === 2">
+				<AttachmentList :userId="Number(route.params.userId)" />
 			</div>
-		</div>
-		<div class="bigRedDivider" style="margin-top: 12px"></div>
-		<div class="p-fluid">
-			<SelectButton
-				class="mt-16px"
-				v-model="activeTab"
-				:options="tabs"
-				optionLabel="name"
-				aria-labelledby="single"
-				:unselectable="false"
-			>
-				<template #option="slotProps">
-					<div class="m-auto text-20px font-bold">
-						{{ $t(slotProps.option.name) }}
-					</div>
-				</template>
-			</SelectButton>
-		</div>
-		<div class="mt-32px" v-if="activeTab.value === 1">
-			<BasicInfo :userId="Number(route.params.userId)" />
-		</div>
-		<div class="mt-32px" v-if="activeTab.value === 2">
-			<AttachmentList :userId="Number(route.params.userId)" />
-		</div>
-		<div class="mt-32px" v-if="activeTab.value === 3">
-			<Moredoc :userId="Number(route.params.userId)" />
-		</div>
-	</div>
+			<div v-if="activeTab === 3">
+				<Moredoc :userId="Number(route.params.userId)" />
+			</div>
+		</template>
+	</Layout>
 </template>
 
 <script setup lang="ts">
@@ -53,8 +54,10 @@ import { useGlobalStore } from "@/stores/RecruitmentAdminStore";
 import { useQuery } from "@tanstack/vue-query";
 import BasicInfo from "./BasicInfo.vue";
 import AttachmentList from "./AttachmentList.vue";
+import Layout from "@/components/Layout.vue";
+import NButton from "@/styles/CustomButton.vue";
+import NSelect from "@/components/SelectButton.vue";
 import Moredoc from "./Moredoc.vue";
-import SelectButton from "primevue/selectbutton";
 
 const adminAuth = useRecruitmentAdminAuthStore();
 const api = new RecruitmentAdminAPI(adminAuth);
@@ -67,12 +70,10 @@ const headerInfo: RecruitmentAdminGetApplicantInfoHeader =
 		{} as RecruitmentAdminGetApplicantInfoHeader
 	);
 
-const activeTab = ref({ name: "基本資料欄位", value: 1 });
-const tabs = ref([
-	{ name: "基本資料欄位", value: 1 },
-	{ name: "檢附資料欄位", value: 2 },
-	{ name: "補件系統欄位", value: 3 },
-]);
+const activeTab = ref(1);
+const switchTab = (tabValue: number) => {
+	activeTab.value = tabValue;
+};
 
 useQuery(
 	["adminApplicantBasisInfo"],
