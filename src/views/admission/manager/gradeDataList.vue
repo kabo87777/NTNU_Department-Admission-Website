@@ -536,74 +536,102 @@
 					<div text="xl title center" font="medium" my="auto" w="80">
 						{{ $t("審查書面評分") }}
 					</div>
-					<NButton
-						Applicant
-						icon="pi pi-print"
-						size="lg"
-						@click="
-							downloadPDFFile(docPdfData, 'doc_report', false)
-						"
-					>
-						{{ $t("報表列印") }}
-					</NButton>
-					<NButton
-						Admin
-						icon="pi pi-eye-slash"
-						size="lg"
-						@click="
-							downloadPDFFile(docAnonyPdfData, 'doc_report', true)
-						"
-					>
-						{{ $t("匿名報表列印") }}
-					</NButton>
+					<div v-if="betweenDocs">
+						{{ $t("於") }} {{ docs_end_time }}
+						{{ $t("後開放列印") }}
+					</div>
+					<div v-else class="flex">
+						<NButton
+							Applicant
+							icon="pi pi-print"
+							size="lg"
+							@click="
+								downloadPDFFile(docPdfData, 'doc_report', false)
+							"
+						>
+							{{ $t("報表列印") }}
+						</NButton>
+						<NButton
+							Admin
+							icon="pi pi-eye-slash"
+							size="lg"
+							@click="
+								downloadPDFFile(
+									docAnonyPdfData,
+									'doc_report',
+									true
+								)
+							"
+							class="ml-35px"
+						>
+							{{ $t("匿名報表列印") }}
+						</NButton>
+					</div>
 				</div>
 				<div flex="~ gap-8" p="8" border="2 nGrey-50">
 					<div text="xl title center" font="medium" my="auto" w="80">
 						{{ $t("審查總評分") }}
 					</div>
-					<NButton
-						Applicant
-						icon="pi pi-print"
-						size="lg"
-						@click="
-							downloadPDFFile(genPdfData, 'general_report', false)
-						"
-					>
-						{{ $t("報表列印") }}
-					</NButton>
-					<NButton
-						Admin
-						icon="pi pi-eye-slash"
-						size="lg"
-						@click="
-							downloadPDFFile(
-								genAnonyPdfData,
-								'general_report',
-								true
-							)
-						"
-					>
-						{{ $t("匿名報表列印") }}
-					</NButton>
+					<div v-if="betweenReview">
+						{{ $t("於") }} {{ oral_end_time }}
+						{{ $t("後開放列印") }}
+					</div>
+					<div v-else class="flex">
+						<NButton
+							Applicant
+							icon="pi pi-print"
+							size="lg"
+							@click="
+								downloadPDFFile(
+									genPdfData,
+									'general_report',
+									false
+								)
+							"
+						>
+							{{ $t("報表列印") }}
+						</NButton>
+						<NButton
+							Admin
+							icon="pi pi-eye-slash"
+							size="lg"
+							@click="
+								downloadPDFFile(
+									genAnonyPdfData,
+									'general_report',
+									true
+								)
+							"
+							class="ml-35px"
+						>
+							{{ $t("匿名報表列印") }}
+						</NButton>
+					</div>
 				</div>
 				<div flex="~ gap-8" p="8" bg="nGrey-50">
 					<div text="xl title center" font="medium" my="auto" w="80">
 						{{ $t("錄取名單") }}
 					</div>
-					<NButton
-						Applicant
-						icon="pi pi-print"
-						size="lg"
-						@click="
-							downloadPDFFile(
-								enrollPdfData,
-								'enroll_report',
-								false
-							)
-						"
-					>
-						{{ $t("報表列印") }}
-					</NButton>
+					<div v-if="betweenReview">
+						{{ $t("於") }} {{ oral_end_time }}
+						{{ $t("後開放列印") }}
+					</div>
+					<div v-else>
+						<NButton
+							Applicant
+							icon="pi pi-print"
+							size="lg"
+							@click="
+								downloadPDFFile(
+									enrollPdfData,
+									'enroll_report',
+									false
+								)
+							"
+						>
+							{{ $t("報表列印") }}
+						</NButton>
+					</div>
 				</div>
 				<!--
 			<div class="flex items-center justify-around bg-teal-100 rounded-md py-[40%] w-[80%] mx-auto">
@@ -752,6 +780,30 @@ const admittedList = ref();
 const reserveList = ref();
 const iEnrollList = ref();
 const applicantID = ref();
+const today = new Date();
+const betweenDocs = computed(() => {
+	return dateTransform(today) < store.program!.docs_end_date!;
+});
+const betweenReview = computed(() => {
+	return dateTransform(today) < store.program!.review_end_date!;
+});
+
+const docs_end_time =
+	store.program!.docs_end_date.slice(0, 4) +
+	"/" +
+	store.program!.docs_end_date.slice(5, 7) +
+	"/" +
+	store.program!.docs_end_date.slice(8, 10) +
+	" " +
+	store.program!.docs_end_date.slice(11, 16);
+const oral_end_time =
+	store.program!.review_end_date.slice(0, 4) +
+	"/" +
+	store.program!.review_end_date.slice(5, 7) +
+	"/" +
+	store.program!.review_end_date.slice(8, 10) +
+	" " +
+	store.program!.review_end_date.slice(11, 16);
 const applicantDocsGradeList = useQuery(
 	["admissionAdminDocsGradeList"],
 	async () => {
@@ -1199,4 +1251,11 @@ const enrollPdfData = async () => {
 	await api.getEnrollReportGenerated(store.program!.id!);
 	return await api.getEnrollReport(store.program!.id!);
 };
+
+function dateTransform(date?: Date) {
+	const result = new Date(date!.setHours(date!.getHours() + 8))
+		.toJSON()
+		.replace("Z", "");
+	return result;
+}
 </script>
