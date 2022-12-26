@@ -185,7 +185,7 @@ const onSubmit = handleSubmit(async function (values) {
 
 		router.replace({ name: "RecruitmentReviewerMainContainer" });
 	} catch (e: any) {
-		console.error(e.toString());
+		console.error(e);
 		if (e?.response?.status === 401) {
 			return toast.add({
 				severity: "error",
