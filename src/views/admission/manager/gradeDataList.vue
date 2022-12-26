@@ -57,9 +57,10 @@
 					</Column>
 					<Column :exportable="false" style="min-width: 8rem">
 						<template #body="slotProps">
-							<Button
+							<NButton
+								Admin
 								icon="pi pi-pencil"
-								class="p-button-outlined p-button-success"
+								class="w-11 h-11"
 								@click="editProduct(slotProps)"
 							/>
 						</template>
@@ -102,9 +103,10 @@
 					</Column>
 					<Column :exportable="false" style="min-width: 8rem">
 						<template #body="slotProps">
-							<Button
+							<NButton
+								Admin
 								icon="pi pi-pencil"
-								class="p-button-outlined p-button-success"
+								class="w-11 h-11"
 								@click="editProduct(slotProps)"
 							/>
 						</template>
