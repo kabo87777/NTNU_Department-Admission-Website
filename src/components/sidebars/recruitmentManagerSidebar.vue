@@ -415,10 +415,12 @@ async function addNewProject() {
 				review_end_date: dateTransform(today) + "+08:00",
 				created_at: dateTransform(today) + "+08:00",
 				updated_at: dateTransform(today) + "+08:00",
-				applicant_required_info: '["file1", "file2"]',
-				applicant_required_file: '["file3", "file4"]',
-				reviewer_required_info: '["file1", "file2"]',
-				reviewer_required_file: '["file3", "file4"]',
+				applicant_required_info:
+					'["name", "birth", "college", "college_year", "master", "master_year"]',
+				applicant_required_file: '["其他有利於審查資料"]',
+				reviewer_required_info:
+					'["name", "birth", "college", "college_year", "master", "master_year"]',
+				reviewer_required_file: '["其他有利於審查資料"]',
 			},
 			{
 				onError: (e: any) => {
