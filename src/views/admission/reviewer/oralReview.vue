@@ -66,7 +66,7 @@
 					</Row>
 				</ColumnGroup>
 				<div v-if="true">
-					<Column field="oral_order"></Column>
+					<Column field="docs_order"></Column>
 					<Column field="name"></Column>
 					<Column v-if="score1Proportion > 0" field="oral_grade_1" />
 					<Column v-if="score2Proportion > 0" field="oral_grade_2" />
