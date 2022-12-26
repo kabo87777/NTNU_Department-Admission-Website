@@ -3,7 +3,7 @@
 		<template #Header>{{ $t("基本資料") }}</template>
 		<template #Body>
 			<Message severity="warn" pos="sticky top-0" z="10" m="!0">
-				"*" 皆為必填項目
+				"*" 皆為必填項目 Are Required Fields
 			</Message>
 			<div
 				class="px-12px py-12px"
