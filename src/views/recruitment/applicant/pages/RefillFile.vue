@@ -1,49 +1,48 @@
 <template>
-	<div>
-		<div class="font-[500] text-[32px] font-bold">
-			{{ $t("補交文件系統") }}
-		</div>
-		<div class="bigYellowDivider"></div>
-
-		<!-- 畫面顯示(開放補件時) -->
-		<div v-if="isEnabled" class="px-12px">
-			<div>
-				<CreateState
-					v-if="refillFile.state === 3"
-					category="補交文件"
-					identity="admissionApplicant"
-					@edit="createToEdit"
-				/>
-				<RefillState
-					v-else-if="refillFile.state === 4"
-					identity="admissionApplicant"
-					:isUploadLoading="refillFile.loading"
-					@cancel="editToCreate"
-					@upload="handleUpload"
-				/>
-			</div>
-		</div>
-
-		<!-- 畫面顯示(未開放補件時) -->
-		<div v-else class="relative h-150">
-			<div class="recruitmentAdditionNoData">
-				<img
-					src="/assets/admissionApplicant/Newsletter.png"
-					alt="NO DATA"
-					style="border-radius: 50%"
-				/>
-				<div class="text-center font-bold text-[24px] text-[#736028]">
-					{{ $t("暫未開放補件") }}
+	<Layout Applicant>
+		<template #Header>{{ $t("補交文件系統") }}</template>
+		<template #Body>
+			<!-- 畫面顯示(開放補件時) -->
+			<div v-if="isEnabled">
+				<div>
+					<CreateState
+						v-if="refillFile.state === 3"
+						category="補交文件"
+						identity="admissionApplicant"
+						@edit="createToEdit"
+					/>
+					<RefillState
+						v-else-if="refillFile.state === 4"
+						identity="admissionApplicant"
+						:isUploadLoading="refillFile.loading"
+						@cancel="editToCreate"
+						@upload="handleUpload"
+					/>
 				</div>
 			</div>
-		</div>
-	</div>
+
+			<!-- 畫面顯示(未開放補件時) -->
+			<div v-else>
+				<div pos="absolute inset-0 my-1/5">
+					<img
+						src="/assets/admissionApplicant/Newsletter.png"
+						alt="NO DATA"
+						class="w-1/2 mx-auto"
+					/>
+					<div text="xl secondary center">
+						{{ $t("暫未開放補件") }}
+					</div>
+				</div>
+			</div>
+		</template>
+	</Layout>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, toRaw, onMounted, watch } from "vue";
+import Layout from "@/components/Layout.vue";
 import CreateState from "@/components/attachmentStates/createState.vue";
 import RefillState from "@/components/attachmentStates/RefillState.vue";
+import { ref, reactive, toRaw, onMounted, watch } from "vue";
 import { useRecruitmentApplicantAuthStore } from "@/stores/universalAuth";
 import { RecruitmentApplicantAPI } from "@/api/recruitment/applicant/api";
 import { useProjectIdStore } from "@/stores/RecruitmentApplicantStore";
@@ -133,12 +132,12 @@ watch(
 </script>
 
 <style setup lang="css">
-.recruitmentAdditionNoData {
+/* .recruitmentAdditionNoData {
 	position: absolute;
 	left: 50%;
 	top: 63%;
 	transform: translate(-50%, -50%);
 	height: 400px;
 	width: 500px;
-}
+} */
 </style>
