@@ -195,7 +195,7 @@ export async function doAdmissionRecommenderGetRecommendLetter(
 	data: object
 ) {
 	const response = await axios.get(
-		"https://admissions-backend-stg.birkhoff.me/api/v1/admission/recommendletter",
+		"https://admissions-backend-stg.birkhoff.me/api/v1/admission/recommendletterid",
 		data
 	);
 

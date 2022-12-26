@@ -1,251 +1,162 @@
 <template>
-	<div>
-		<div class="font-[500] text-[32px] font-bold">
-			{{ $t("基本資料") }}
-		</div>
-		<div class="bigYellowDivider"></div>
-
-		<div class="px-12px py-24px">
-			<div class="flex">
-				<div class="w-1/3">
-					<div class="flex">
-						<div>{{ $t("姓名") }}</div>
-						<div class="ml-8px text-[#757575]">
-							{{ $t("(") + $t("必填") + $t(")") }}
-						</div>
-					</div>
-					<div>
-						<InputText
-							class="w-[70%] h-36px !mt-4px"
-							style="border: 1px solid #736028"
-							type="text"
-							v-model="info.name"
-						/>
-					</div>
-					<div
-						v-show="isRequiredBlank.name"
-						class="absolute mt-[-2px]"
-					>
-						<small class="p-error">
-							{{ $t("此為必填欄位") }}
-						</small>
-					</div>
+	<Layout Applicant>
+		<template #Header>{{ $t("基本資料") }}</template>
+		<template #Body>
+			<!-- 姓名 -->
+			<div space="y-1" m="2">
+				<div flex="~ gap-2" class="items-end" text="body">
+					<div>{{ $t("姓名") }}</div>
+					<div text="sm danger">{{ "*\ \ " + $t("必填") }}</div>
 				</div>
-				<div class="w-1/3">
-					<div class="flex">
-						<div>{{ $t("電子郵件") }}</div>
-						<div class="ml-8px text-[#757575]">
-							{{ $t("(") + $t("必填") + $t(")") }}
-						</div>
-					</div>
-					<div>
-						<InputText
-							class="w-[70%] h-36px !mt-4px"
-							style="border: 1px solid #736028"
-							type="text"
-							v-model="applicantStore.userInfo.email"
-							:disabled="true"
-						/>
-					</div>
-					<div
-						v-show="isRequiredBlank.email"
-						class="absolute mt-[-2px]"
-					>
-						<small class="p-error">
-							{{ $t("此為必填欄位") }}
-						</small>
-					</div>
-				</div>
-				<div class="w-1/3">
-					<div class="flex">
-						<div>{{ $t("出生日期") }}</div>
-						<div class="ml-8px text-[#757575]">
-							{{ $t("(") + $t("必填") + $t(")") }}
-						</div>
-					</div>
-					<div>
-						<Calendar
-							dateFormat="yy/mm/dd"
-							class="w-[70%] h-36px !mt-4px"
-							style="
-								border: 1px solid #736028;
-								border-radius: 6px;
-							"
-							v-model="info.birth"
-							:show-icon="true"
-							:showOnFocus="false"
-							placeholder="YYYY/MM/DD"
-						/>
-					</div>
-					<div
-						v-show="isRequiredBlank.birth"
-						class="absolute mt-[-2px]"
-					>
-						<small class="p-error">
-							{{ $t("此為必填欄位") }}
-						</small>
+				<div flex="~ gap-6" class="items-center">
+					<InputText
+						class="w-1/3 min-w-50 max-w-100 h-12"
+						:class="{ 'p-invalid': isRequiredBlank.name }"
+						type="text"
+						v-model="info.name"
+					/>
+					<div v-show="isRequiredBlank.name" text="danger">
+						{{ $t("此為必填欄位") }}
 					</div>
 				</div>
 			</div>
 
-			<div class="flex mt-24px">
-				<div class="w-2/3">
-					<div>{{ $t("博士班畢業學校與系所") }}</div>
-					<div>
-						<InputText
-							class="w-[70%] h-36px !mt-4px"
-							style="border: 1px solid #736028"
-							type="text"
-							v-model="info.doctoral"
-						/>
-					</div>
+			<!-- 電子郵件 -->
+			<div space="y-1" m="2">
+				<div text="body">{{ $t("電子郵件") }}</div>
+				<div text="secondary">{{ applicantStore.userInfo.email }}</div>
+			</div>
+
+			<!-- 出生日期 -->
+			<div space="y-1" m="2">
+				<div flex="~ gap-2" class="items-end" text="body">
+					<div>{{ $t("出生日期") }}</div>
+					<div text="sm danger">{{ "*\ \ " + $t("必填") }}</div>
 				</div>
-				<div class="w-1/3">
-					<div>
-						{{
-							$t("畢業年度") + $t("(") + $t("西元年份") + $t(")")
-						}}
-					</div>
-					<div>
-						<InputNumber
-							class="w-[70%] h-36px !mt-4px"
-							style="
-								border: 1px solid #736028;
-								border-radius: 6px;
-							"
-							:useGrouping="false"
-							v-model="info.doctoral_year"
-						/>
+				<div flex="~ gap-6" class="items-center">
+					<Calendar
+						dateFormat="yy/mm/dd"
+						class="w-1/3 min-w-50 max-w-100 h-12"
+						v-model="info.birth"
+						:show-icon="true"
+						:showOnFocus="false"
+						placeholder="YYYY/MM/DD"
+					/>
+					<div v-show="isRequiredBlank.birth" text="danger">
+						{{ $t("此為必填欄位") }}
 					</div>
 				</div>
 			</div>
-			<div class="flex mt-24px">
-				<div class="w-2/3">
-					<div>{{ $t("碩士班畢業學校與系所") }}</div>
-					<div>
-						<InputText
-							class="w-[70%] h-36px !mt-4px"
-							style="border: 1px solid #736028"
-							type="text"
-							v-model="info.master"
-						/>
-					</div>
-				</div>
-				<div class="w-1/3">
-					<div>
-						{{
-							$t("畢業年度") + $t("(") + $t("西元年份") + $t(")")
-						}}
-					</div>
-					<div>
-						<InputNumber
-							class="w-[70%] h-36px !mt-4px"
-							style="
-								border: 1px solid #736028;
-								border-radius: 6px;
-							"
-							:useGrouping="false"
-							v-model="info.master_year"
-						/>
-					</div>
-				</div>
-			</div>
-			<div class="flex mt-24px">
-				<div class="w-2/3">
-					<div>{{ $t("學士班畢業學校與系所") }}</div>
-					<div>
-						<InputText
-							class="w-[70%] h-36px !mt-4px"
-							style="border: 1px solid #736028"
-							type="text"
-							v-model="info.college"
-						/>
-					</div>
-				</div>
-				<div class="w-1/3">
-					<div>
-						{{
-							$t("畢業年度") + $t("(") + $t("西元年份") + $t(")")
-						}}
-					</div>
-					<div>
-						<InputNumber
-							class="w-[70%] h-36px !mt-4px"
-							style="
-								border: 1px solid #736028;
-								border-radius: 6px;
-							"
-							:useGrouping="false"
-							v-model="info.college_year"
-						/>
-					</div>
-				</div>
-			</div>
-			<div class="mt-24px w-2/3">
-				<div>{{ $t("現職") }}</div>
-				<div>
+
+			<!-- 博士班畢業學校與系所 -->
+			<div flex="~ gap-6" m="2">
+				<div space="y-1" w="1/2 min-50 max-100">
+					<div text="body">{{ $t("博士班畢業學校與系所") }}</div>
 					<InputText
-						class="w-[70%] h-36px !mt-4px"
-						style="border: 1px solid #736028"
+						class="w-full h-12"
 						type="text"
-						v-model="info.current_job"
+						v-model="info.doctoral"
+					/>
+				</div>
+				<div space="y-1" w="1/3 min-30 max-60">
+					<div text="body">
+						{{
+							$t("畢業年度") + $t("(") + $t("西元年份") + $t(")")
+						}}
+					</div>
+					<InputNumber
+						class="w-full h-12"
+						v-model="info.doctoral_year"
 					/>
 				</div>
 			</div>
-			<div class="mt-24px w-2/3">
-				<div>{{ $t("博士班論文主題") }}</div>
-				<div>
+
+			<!-- 碩士班畢業學校與系所 -->
+			<div flex="~ gap-6" m="2">
+				<div space="y-1" w="1/2 min-50 max-100">
+					<div text="body">{{ $t("碩士班畢業學校與系所") }}</div>
 					<InputText
-						class="w-[70%] h-36px !mt-4px"
-						style="border: 1px solid #736028"
+						class="w-full h-12"
 						type="text"
-						v-model="info.doctoral_paper"
+						v-model="info.master"
+					/>
+				</div>
+				<div space="y-1" w="1/3 min-30 max-60">
+					<div text="body">
+						{{
+							$t("畢業年度") + $t("(") + $t("西元年份") + $t(")")
+						}}
+					</div>
+					<InputNumber
+						class="w-full h-12"
+						v-model="info.master_year"
 					/>
 				</div>
 			</div>
-			<div class="mt-24px w-2/3">
-				<div>{{ $t("代表作") }}</div>
-				<div>
-					<Textarea
-						class="w-[70%] !mt-4px"
-						style="border: 1px solid #736028"
+
+			<!-- 學士班畢業學校與系所 -->
+			<div flex="~ gap-6" m="2">
+				<div space="y-1" w="1/2 min-50 max-100">
+					<div text="body">{{ $t("學士班畢業學校與系所") }}</div>
+					<InputText
+						class="w-full h-12"
 						type="text"
-						v-model="info.publication"
+						v-model="info.college"
+					/>
+				</div>
+				<div space="y-1" w="1/3 min-30 max-60">
+					<div text="body">
+						{{
+							$t("畢業年度") + $t("(") + $t("西元年份") + $t(")")
+						}}
+					</div>
+					<InputNumber
+						class="w-full h-12"
+						v-model="info.college_year"
 					/>
 				</div>
 			</div>
-			<!-- <div class="mt-24px w-2/3">
-				<div>{{ $t("備註") }}</div>
-				<div>
-					<Textarea
-						class="w-[70%] !mt-4px"
-						style="border: 1px solid #736028"
-						type="text"
-						v-model="info.remark"
-					/>
-				</div>
-			</div> -->
-		</div>
-		<div class="bigYellowDivider"></div>
-		<div>
-			<Button
-				class="p-button-secondary"
-				style="
-					margin-top: 16px;
-					margin-left: 100%;
-					transform: translateX(-100%);
-					width: 100px;
-					height: 44px;
-					background-color: #f0dfad;
-					border: 2px solid #a18b4a;
-					color: #736028;
-				"
+
+			<!-- 現職 -->
+			<div space="y-1" m="2">
+				<div text="body">{{ $t("現職") }}</div>
+				<InputText
+					class="w-1/2 min-w-50 max-w-100 h-12"
+					type="text"
+					v-model="info.current_job"
+				/>
+			</div>
+
+			<!-- 博士班論文主題 -->
+			<div space="y-1" m="2">
+				<div text="body">{{ $t("博士班論文主題") }}</div>
+				<InputText
+					class="w-1/2 min-w-50 max-w-100 h-12"
+					type="text"
+					v-model="info.doctoral_paper"
+				/>
+			</div>
+
+			<!-- 代表作 -->
+			<div space="y-1" m="2">
+				<div text="body">{{ $t("代表作") }}</div>
+				<Textarea
+					class="w-full h-80"
+					type="text"
+					v-model="info.publication"
+				/>
+			</div>
+		</template>
+		<template #Footer>
+			<NButton
+				Applicant
+				class="h-11 min-w-36 mx-auto"
 				icon="pi pi-save"
-				:label="$t('儲存')"
 				@click="handleSave()"
-			/>
-		</div>
-	</div>
+				>{{ $t("儲存") }}
+			</NButton>
+		</template>
+	</Layout>
 </template>
 
 <script setup lang="ts">
@@ -262,7 +173,9 @@ import InputText from "primevue/inputtext";
 import InputNumber from "primevue/inputnumber";
 import Textarea from "primevue/textarea";
 import Calendar from "primevue/calendar";
-import Button from "primevue/button";
+import Layout from "@/components/Layout.vue";
+import NButton from "@/styles/CustomButton.vue";
+import Message from "primevue/message";
 import { RecruitmentApplicantAuthResponse } from "@/api/recruitment/applicant/types";
 const applicantAuth = useRecruitmentApplicantAuthStore();
 const applicantStore = useUserInfoStore();
