@@ -1,137 +1,59 @@
 <template>
 	<div class="mt-24px">
-		<div class="text-24px font-bold">{{ $t("姓名資訊") }}</div>
-		<div class="admApplicantBasicInfoCard">
+		<div class="text-24px font-bold">{{ $t("基本資訊") }}</div>
+		<div class="recruitmentApplicantBasicInfoCard">
 			<div style="color: #333333">
-				<div>{{ $t("中文姓氏") + $t(":") }}</div>
-				<div>{{ $t("中文名字") + $t(":") }}</div>
-				<div>{{ $t("英文姓氏") + $t(":") }}</div>
-				<div>{{ $t("英文中間名字") + $t(":") }}</div>
-				<div>{{ $t("英文名字") + $t(":") }}</div>
-			</div>
-			<div class="font-bold ml-12px">
-				<div v-if="userInfo?.cn_surname">{{ userInfo.cn_surname }}</div>
-				<div v-else>-</div>
-				<div v-if="userInfo?.name">{{ userInfo?.name }}</div>
-				<div v-else>-</div>
-				<div v-if="userInfo?.en_surname">
-					{{ userInfo?.en_surname }}
-				</div>
-				<div v-else>-</div>
-				<div v-if="userInfo?.en_midname">
-					{{ userInfo?.en_midname }}
-				</div>
-				<div v-else>-</div>
-				<div v-if="userInfo?.en_givenname">
-					{{ userInfo?.en_givenname }}
-				</div>
-				<div v-else>-</div>
-			</div>
-		</div>
-
-		<div class="mt-24px text-24px font-bold">
-			{{ $t("身分") }}
-		</div>
-		<div class="admApplicantBasicInfoCard">
-			<div style="color: #333333">
-				<div>{{ $t("身份") + $t(":") }}</div>
-				<div>{{ $t("國籍") + $t(":") }}</div>
-			</div>
-			<div class="font-bold ml-12px">
-				<div v-if="userInfo?.isForeigner">{{ $t("外籍人士") }}</div>
-				<div v-else-if="userInfo?.isForeigner === false">
-					{{ $t("在籍人士") }}
-				</div>
-				<div v-else>-</div>
-				<div v-if="userInfo?.nationality">
-					{{ userInfo?.nationality }}
-				</div>
-				<div v-else>-</div>
-				<div
-					v-if="
-						userInfo?.national_id && userInfo?.isForeigner === false
-					"
-				>
-					{{ userInfo.national_id }}
-				</div>
-				<div v-else>-</div>
-				<div v-if="userInfo?.national_id && userInfo?.isForeigner">
-					{{ userInfo.national_id }}
-				</div>
-				<div v-else>-</div>
-			</div>
-		</div>
-
-		<div
-			v-show="userInfo?.isForeigner === false"
-			class="mt-24px text-24px font-bold"
-		>
-			{{ $t("戶籍地址") }}
-		</div>
-		<div
-			v-show="userInfo?.isForeigner === false"
-			class="admApplicantBasicInfoCard"
-		>
-			<div style="color: #333333">
-				<div>{{ $t("地址") + $t(":") }}</div>
-				<div>{{ $t("區號") + $t(":") }}</div>
-			</div>
-			<div class="font-bold ml-12px">
-				<div v-if="userInfo?.household_address">
-					{{ userInfo?.household_address }}
-				</div>
-				<div v-else>-</div>
-				<div v-if="userInfo?.household_zipcode">
-					{{ userInfo?.household_zipcode }}
-				</div>
-				<div v-else>-</div>
-			</div>
-		</div>
-
-		<div class="mt-24px text-24px font-bold">{{ $t("通訊地址") }}</div>
-		<div class="admApplicantBasicInfoCard">
-			<div style="color: #333333">
-				<div>{{ $t("地址") + $t(":") }}</div>
-				<div>{{ $t("區號") + $t(":") }}</div>
-			</div>
-			<div class="font-bold ml-12px">
-				<div v-if="userInfo?.communicate_address">
-					{{ userInfo?.communicate_address }}
-				</div>
-				<div v-else>-</div>
-				<div v-if="userInfo?.communicate_zipcode">
-					{{ userInfo?.communicate_zipcode }}
-				</div>
-				<div v-else>-</div>
-			</div>
-		</div>
-
-		<div class="mt-24px text-24px font-bold">{{ $t("身份資料") }}</div>
-		<div class="admApplicantBasicInfoCard">
-			<div style="color: #333333">
-				<div>{{ $t("性別") + $t(":") }}</div>
-				<div>{{ $t("出生國家") + $t(":") }}</div>
+				<div>{{ $t("姓名") + $t(":") }}</div>
 				<div>{{ $t("出生日期") + $t(":") }}</div>
+				<div>{{ $t("博士班畢業學校與系所") + $t(":") }}</div>
+				<div>{{ $t("博士班畢業年份") + $t(":") }}</div>
+				<div>{{ $t("碩士班畢業學校與系所") + $t(":") }}</div>
+				<div>{{ $t("碩士士班畢業年份") + $t(":") }}</div>
+				<div>{{ $t("學士班畢業學校與系所") + $t(":") }}</div>
+				<div>{{ $t("學士班畢業年份") + $t(":") }}</div>
+				<div>{{ $t("現職") + $t(":") }}</div>
+				<div>{{ $t("博士論文主題") + $t(":") }}</div>
+				<div>{{ $t("代表作") + $t(":") }}</div>
 			</div>
 			<div class="font-bold ml-12px">
-				<div v-if="userInfo?.sex">{{ userInfo?.sex }}</div>
+				<div v-if="userInfo?.name">{{ userInfo.name }}</div>
 				<div v-else>-</div>
-				<div v-if="userInfo?.birthcountry">
-					{{ userInfo?.birthcountry }}
+				<div v-if="userInfo?.birth">{{ userInfo?.birth }}</div>
+				<div v-else>-</div>
+				<div v-if="userInfo?.doctoral">
+					{{ userInfo?.doctoral }}
 				</div>
 				<div v-else>-</div>
-				<div v-if="userInfo?.birth">{{ userInfo.birth }}</div>
+				<div v-if="userInfo?.doctoral_year">
+					{{ userInfo?.doctoral_year }}
+				</div>
 				<div v-else>-</div>
-			</div>
-		</div>
-		<div class="mt-24px text-24px font-bold">{{ $t("聯絡方式") }}</div>
-		<div class="admApplicantBasicInfoCard">
-			<div style="color: #333333">
-				<div>{{ $t("聯絡號碼") + $t(":") }}</div>
-			</div>
-			<div class="font-bold ml-12px">
-				<div v-if="userInfo?.mobile_phone">
-					{{ userInfo?.mobile_phone }}
+				<div v-if="userInfo?.master">
+					{{ userInfo?.master }}
+				</div>
+				<div v-else>-</div>
+				<div v-if="userInfo?.master_year">
+					{{ userInfo?.master_year }}
+				</div>
+				<div v-else>-</div>
+				<div v-if="userInfo?.college">
+					{{ userInfo?.college }}
+				</div>
+				<div v-else>-</div>
+				<div v-if="userInfo?.college_year">
+					{{ userInfo?.college_year }}
+				</div>
+				<div v-else>-</div>
+				<div v-if="userInfo?.current_job">
+					{{ userInfo?.current_job }}
+				</div>
+				<div v-else>-</div>
+				<div v-if="userInfo?.doctoral_paper">
+					{{ userInfo?.doctoral_paper }}
+				</div>
+				<div v-else>-</div>
+				<div v-if="userInfo?.publication">
+					{{ userInfo?.publication }}
 				</div>
 				<div v-else>-</div>
 			</div>
@@ -146,7 +68,6 @@ import { useRecruitmentAdminAuthStore } from "@/stores/universalAuth";
 import { RecruitmentAdminAPI } from "@/api/recruitment/admin/api";
 import { useQuery } from "@tanstack/vue-query";
 import { useGlobalStore } from "@/stores/RecruitmentAdminStore";
-import { InvalidSessionError } from "@/api/error";
 import { RecruitmentAdminApplicantResponse } from "@/api/recruitment/admin/types";
 
 const adminAuth = useRecruitmentAdminAuthStore();
@@ -158,7 +79,7 @@ const props = defineProps(["userId"]);
 
 const userInfo = ref<RecruitmentAdminApplicantResponse>();
 
-const { data } = useQuery(
+useQuery(
 	["RadminApplicantBasicInfo"],
 	async () => {
 		return await api.getApplicantBasicInfo(
@@ -169,7 +90,6 @@ const { data } = useQuery(
 	{
 		onSuccess: (data) => {
 			userInfo.value = data;
-			console.log(userInfo.value);
 		},
 	}
 );
