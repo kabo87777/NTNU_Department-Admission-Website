@@ -22,13 +22,15 @@ const enableTurnstile = import.meta.env.VITE_IS_SKIP_CAPTCHA !== "true";
 const turnstileToken = ref("");
 
 if (enableTurnstile) {
-	const script = document.createElement("script");
+	if (!("turnstile" in window)) {
+		const script = document.createElement("script");
 
-	script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js";
-	script.async = true;
-	script.defer = true;
+		script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js";
+		script.async = true;
+		script.defer = true;
 
-	document.head.appendChild(script);
+		document.head.appendChild(script);
+	}
 
 	window.onTurnstileSuccessfulVerification = (token: string) => {
 		turnstileToken.value = token;
