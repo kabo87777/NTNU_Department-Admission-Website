@@ -212,12 +212,12 @@ function updateProgramData() {
 			category: selected_type.value,
 			name: programName.value,
 			recruit_start_date:
-				dateTransform(recruit_start_time.value) + "+08:00",
-			recruit_end_date: dateTransform(recruit_end_time.value) + "+08:00",
+				dateTransform(recruit_start_time.value) + "+00:00",
+			recruit_end_date: dateTransform(recruit_end_time.value) + "+00:00",
 			review_start_date:
-				dateTransform(review_stage1_start_time.value) + "+08:00",
+				dateTransform(review_stage1_start_time.value) + "+00:00",
 			review_end_date:
-				dateTransform(review_stage1_end_time.value) + "+08:00",
+				dateTransform(review_stage1_end_time.value) + "+00:00",
 		},
 		{
 			onError: (e: any) => {
@@ -273,7 +273,7 @@ const confirmDeleteProject = () => {
 };
 
 function dateTransform(date?: Date) {
-	const result = new Date(date!.setHours(date!.getHours() + 8))
+	const result = new Date(date!.setHours(date!.getHours()))
 		.toJSON()
 		.replace("Z", "");
 	return result;

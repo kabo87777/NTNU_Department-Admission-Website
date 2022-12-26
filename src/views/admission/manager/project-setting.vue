@@ -313,17 +313,17 @@ async function update() {
 				category: selected_type.value,
 				name: programName.value,
 				application_start_date:
-					dateTransform(application_start_time.value) + "+08:00",
+					dateTransform(application_start_time.value) + "+00:00",
 				application_end_date:
-					dateTransform(application_end_time.value) + "+08:00",
+					dateTransform(application_end_time.value) + "+00:00",
 				review_start_date:
-					dateTransform(review_stage1_start_time.value) + "+08:00",
+					dateTransform(review_stage1_start_time.value) + "+00:00",
 				docs_end_date:
-					dateTransform(review_stage1_end_time.value) + "+08:00",
+					dateTransform(review_stage1_end_time.value) + "+00:00",
 				oral_start_date:
-					dateTransform(review_stage2_start_time.value) + "+08:00",
+					dateTransform(review_stage2_start_time.value) + "+00:00",
 				review_end_date:
-					dateTransform(review_stage2_end_time.value) + "+08:00",
+					dateTransform(review_stage2_end_time.value) + "+00:00",
 			},
 			{
 				onSuccess: () => {
@@ -370,7 +370,7 @@ const confirmDeleteProject = () => {
 };
 
 function dateTransform(date?: Date) {
-	const result = new Date(date!.setHours(date!.getHours() + 8))
+	const result = new Date(date!.setHours(date!.getHours()))
 		.toJSON()
 		.replace("Z", "");
 	return result;

@@ -427,7 +427,7 @@
 					</div>
 				</div>
 				<!-- Select Button -->
-				<NSelect
+				<!-- <NSelect
 					Admin
 					class="h-11"
 					:disabled="disable1"
@@ -435,7 +435,7 @@
 				>
 					<template #Select1>{{ $t("書面審查") }}</template>
 					<template #Select2>{{ $t("口試審查") }}</template>
-				</NSelect>
+				</NSelect> -->
 				<!-- 1. 書面審查 -->
 				<DataTable
 					v-if="dialogCurrentTab === translation.phase1"
@@ -454,7 +454,7 @@
 					>
 						<template #body="slotProps">
 							<i
-								v-if="slotProps.data.isimmendiateenroll"
+								v-if="slotProps.data.isImmediateEnroll"
 								class="pi pi-check"
 							></i>
 							<p v-else>-</p>
@@ -602,10 +602,10 @@
 					</div>
 				</div>
 				<!-- Select Button -->
-				<NSelect Admin class="h-11" @currentTab="handleDialogTab2">
+				<!-- <NSelect Admin class="h-11" @currentTab="handleDialogTab2" disabled>
 					<template #Select1>{{ $t("書面審查") }}</template>
 					<template #Select2>{{ $t("口試審查") }}</template>
-				</NSelect>
+				</NSelect> -->
 
 				<!-- 1. 書面審查 -->
 				<DataTable
@@ -924,7 +924,7 @@ const handleDialogTab = (selectTab: number) => {
 const dialogCurrentTab2 = ref(translation.phase2);
 const handleDialogTab2 = (selectTab: number) => {
 	if (selectTab === 2) dialogCurrentTab2.value = translation.phase2;
-	else dialogCurrentTab2.value = translation.phase1;
+	else dialogCurrentTab2.value = translation.phase2;
 };
 const productDialog = ref(false);
 const name = ref("");
@@ -1056,11 +1056,12 @@ store.$subscribe(() => {
 	});
 });
 const editProduct = (prod: any) => {
-	p1_result.value = prod.data.application_stage;
 	name.value = prod.data.name;
 	id.value = prod.data.id;
 	productDialog.value = true;
 	applicantID.value = prod.data.id;
+	applicantDocsGrade.refetch({ throwOnError: true });
+	applicantOralGrade.refetch({ throwOnError: true });
 };
 
 const applicantStage = useMutation(async (newStage: any) => {

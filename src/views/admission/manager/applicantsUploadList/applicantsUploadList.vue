@@ -75,24 +75,6 @@
 						</div>
 					</template>
 				</Column>
-				<Column field="email">
-					<template #header>
-						<div mx="auto">{{ $t("補件狀態") }}</div>
-					</template>
-					<template #body="slotProps">
-						<div flex="~" justify="center">
-							<NTag
-								v-if="slotProps.data.email === 'sent'"
-								flag="success"
-							>
-								{{ slotProps.data.email }}
-							</NTag>
-							<NTag v-else>
-								{{ $t("無") }}
-							</NTag>
-						</div>
-					</template>
-				</Column>
 			</DataTable>
 		</template>
 	</Layout>

@@ -223,7 +223,7 @@ const {
 	{
 		onSuccess: (data) => {
 			oralList.value = data!.filter(
-				(applicant) => applicant.oral_order !== null
+				(applicant) => applicant.docs_order !== null
 			);
 			totalApplicant.value = data!.length;
 			applicantGraded.value = 0;
@@ -436,7 +436,7 @@ const cancel = computed(() => t("取消"));
 const selectedData = ref();
 const router = useRouter();
 const onRowSelect = (event: any) => {
-	if (event.data.oral_order) {
+	if (event.data.docs_order) {
 		router.push("/admission/reviewer/singleOralReview/" + event.data.id);
 	}
 	// else{

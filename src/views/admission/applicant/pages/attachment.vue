@@ -55,7 +55,6 @@
 					/>
 				</div>
 			</div>
-			<ParagraphDivider v-if="requiredInputFields.includes('就學經歷')" />
 
 			<!-- EXAM AND QUALIFICATION TEST SCORE -->
 			<div
