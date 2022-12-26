@@ -94,7 +94,7 @@
 					</NButton>
 				</RouterLink>
 				<!-- 4.上傳欄位設置 -->
-				<router-link
+				<!-- <router-link
 					to="/admission/manager/uploadFileSetting"
 					custom
 					v-slot="{ navigate }"
@@ -112,7 +112,7 @@
 						"
 						>{{ $t("上傳欄位設置") }}
 					</NButton>
-				</router-link>
+				</router-link> -->
 				<!-- 5.上傳資料列表 -->
 				<router-link
 					to="/admission/manager/applicantsUploadList"
@@ -333,9 +333,19 @@ const programData = useMutation(async (newProgramData: any) => {
 	return await api.addNewProgram(newProgramData);
 });
 
-const { isLoading, data: programs } = useQuery(["programList"], async () => {
-	return await api.getProgramList();
-});
+const programs = ref<AdmissionAdminProgramListResponse[]>();
+
+const { isLoading } = useQuery(
+	["programList"],
+	async () => {
+		return await api.getProgramList();
+	},
+	{
+		onSuccess: (data) => {
+			programs.value = data;
+		},
+	}
+);
 
 const noProgram = computed(() => {
 	return programs.value! === undefined || programs.value!.length === 0;
@@ -349,14 +359,28 @@ const letterSpace = computed(() => {
 	else return "";
 });
 
-watchEffect(() => {
-	if (!programs.value) return;
+watch(programs, (newValue, oldValue) => {
+	if (typeof newValue === "undefined")
+		throw new Error("Program list is undefined");
 
-	globalStore.$patch((state) => {
-		state.program = programs.value[0];
+	if (typeof globalStore.program === "undefined") {
+		globalStore.$patch({ program: newValue[0] });
+		selectedProgram.value = newValue[0];
+		return;
+	}
+
+	const oldProgram = newValue.find((program) => {
+		return globalStore.program?.id === program.id;
 	});
 
-	selectedProgram.value = programs.value[0];
+	// If current program is deleted, then select the first entry in response
+	const newProgram: AdmissionAdminProgramListResponse =
+		typeof oldProgram === "undefined" ? newValue[0] : oldProgram;
+
+	globalStore.$patch({
+		program: newProgram,
+	});
+	selectedProgram.value = newProgram;
 });
 
 watch(selectedProgram, (selection) => {
@@ -390,10 +414,12 @@ function addNewProject() {
 			review_end_date: todayDateString,
 			docs_end_date: todayDateString,
 			oral_start_date: todayDateString,
-			applicant_required_info: '["file1", "file2"]',
-			applicant_required_file: '["file3", "file4"]',
-			reviewer_required_info: '["file1", "file2"]',
-			reviewer_required_file: '["file3", "file4"]',
+			applicant_required_info:
+				'["en_surname","en_givenname","nationality","communicate_address","sex","mobile_phone"]',
+			applicant_required_file: '["就學經歷","考試與檢定分數"]',
+			reviewer_required_info:
+				'["cn_surname","name","en_surname","en_midname","en_givenname","nationality","communicate_address","communicate_zipcode","email","sex","birthcountry","birth","mobile_phone"]',
+			reviewer_required_file: '["就學經歷","考試與檢定分數"]',
 		},
 		{
 			onError: (e: any) => {

@@ -1,62 +1,8 @@
 <template>
 	<div>
 		<!-- TITLE -->
-		<div class="mt-24px text-24px font-bold">{{ $t("教學經歷") }}</div>
-
-		<!-- SCHOOL EXPERIENCE -->
-		<div
-			v-for="(item, index) in teachingExpList"
-			:key="index"
-			class="listContainer"
-		>
-			<ReviewState
-				v-if="item.state === 1"
-				category="教學經歷"
-				identity="recruitmentManager"
-				:downloadFile="true"
-				:itemName="item.name"
-				:itemId="item.id"
-				:fileUrl="item.filepath?.url"
-				:order="index + 1"
-				:showActionButtons="false"
-				@download="handleDownload"
-			/>
-		</div>
-		<div v-show="examCertificateList.length === 0" class="emptyContainer">
-			{{ $t("暫無資訊") }}
-		</div>
-
-		<!-- TITLE -->
 		<div class="mt-24px text-24px font-bold">
-			{{ $t("考試與檢定分數") }}
-		</div>
-
-		<!-- EXAM AND QUALIFICATION TEST SCORE -->
-		<div
-			v-for="(item, index) in examCertificateList"
-			:key="index"
-			class="listContainer"
-		>
-			<ReviewState
-				v-if="item.state === 1"
-				category="考試與檢定分數"
-				identity="recruitmentManager"
-				:downloadFile="true"
-				:itemName="item.name"
-				:itemId="item.id"
-				:fileUrl="item.filepath?.url"
-				:order="index + 1"
-				:showActionButtons="false"
-				@download="handleDownload"
-			/>
-		</div>
-		<div v-show="examCertificateList.length === 0" class="emptyContainer">
-			{{ $t("暫無資訊") }}
-		</div>
-
-		<!-- TITLE -->
-		<div class="mt-24px text-24px font-bold">
-			{{ $t("其他有利於審查資料") }}
+			{{ $t("附件資料") }}
 		</div>
 
 		<!-- OTHER -->

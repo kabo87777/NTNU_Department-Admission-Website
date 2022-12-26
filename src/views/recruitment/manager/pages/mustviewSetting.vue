@@ -1,78 +1,96 @@
 <template>
-	<h1 class="text-4xl text-bold tracking-widest">{{ $t("必看名單設置") }}</h1>
-	<div class="bigRedDivider"></div>
-	<div class="text-2xl text-bold tracking-widest mt-5px">{{ hint }}</div>
-	<div class="newsCard h-80px" v-if="assign">
-		{{ $t("已將") }} {{ message }} {{ $t("指派給") }} {{ message2 }}
-	</div>
-	<div class="newsCard h-80px" v-else-if="del">
-		{{ $t("已刪除") }} {{ message }} {{ $t("的所有必看名單刪除") }}
-	</div>
-	<div class="newsCard h-80px" v-else></div>
-	<div class="flex justify-around !h-620px mt-10px">
-		<DataTable
-			:value="applicantList1"
-			responsiveLayout="scroll"
-			v-model:selection="selectedApplicant1"
-			dataKey="id"
-			class="!w-200px"
-		>
-			<Column selectionMode="multiple" headerStyle="width: 3em"></Column>
-			<Column field="name" :header="name"></Column>
-		</DataTable>
-		<DataTable
-			:value="applicantList2"
-			responsiveLayout="scroll"
-			v-model:selection="selectedApplicant2"
-			dataKey="id"
-			class="!w-200px"
-		>
-			<Column selectionMode="multiple" headerStyle="width: 3em"></Column>
-			<Column field="name" :header="name"></Column>
-		</DataTable>
-		<DataTable
-			:value="applicantList3"
-			responsiveLayout="scroll"
-			v-model:selection="selectedApplicant3"
-			dataKey="id"
-			class="!w-200px"
-		>
-			<Column selectionMode="multiple" headerStyle="width: 3em"></Column>
-			<Column field="name" :header="name"></Column>
-		</DataTable>
-	</div>
-	<div class="bigRedDivider"></div>
-	<div class="flex justify-between mt-10px">
-		<div class="flex justify-start">
-			<div class="text-xl content-center mt-10px">
-				{{ $t("審查委員") }}:
+	<Layout Admin>
+		<template #Header>{{ $t("必看名單設置") }}</template>
+		<template #Body>
+			<div space="y-1" pos="sticky top-0 " z="10">
+				<div>{{ hint }}</div>
+				<div class="newsCard h-80px" v-if="assign">
+					{{ $t("已將") }} {{ message }} {{ $t("指派給") }}
+					{{ message2 }}
+				</div>
+				<div class="newsCard h-80px" v-else-if="del">
+					{{ $t("已刪除") }} {{ message }}
+					{{ $t("的所有必看名單刪除") }}
+				</div>
+				<div class="newsCard h-80px" v-else></div>
 			</div>
-			<Dropdown
-				v-model="selectedReviewer"
-				:options="reviewerList"
-				optionLabel="name"
-				class="!w-150px ml-5px"
-			/>
-		</div>
-		<div class="flex justify-around">
-			<NButton
-				type="Admin"
-				class="w-140px h-44px"
-				@click="save"
-				icon="pi pi-check"
-			>
-				<span class="tracking-1px">{{ $t("儲存名單") }}</span>
-			</NButton>
-			<NButton
-				type="Admin"
-				class="w-180px h-44px !ml-30px"
-				@click="confirmGrading"
-				icon="pi pi-times"
-			>
-				<span class="tracking-1px">{{ $t("刪除必看名單") }}</span>
-			</NButton>
-		</div>
-	</div>
+			<div class="flex justify-around !h-620px mt-10px">
+				<DataTable
+					:value="applicantList1"
+					responsiveLayout="scroll"
+					v-model:selection="selectedApplicant1"
+					dataKey="id"
+					class="!w-200px"
+				>
+					<Column
+						selectionMode="multiple"
+						headerStyle="width: 3em"
+					></Column>
+					<Column field="name" :header="name"></Column>
+				</DataTable>
+				<DataTable
+					:value="applicantList2"
+					responsiveLayout="scroll"
+					v-model:selection="selectedApplicant2"
+					dataKey="id"
+					class="!w-200px"
+				>
+					<Column
+						selectionMode="multiple"
+						headerStyle="width: 3em"
+					></Column>
+					<Column field="name" :header="name"></Column>
+				</DataTable>
+				<DataTable
+					:value="applicantList3"
+					responsiveLayout="scroll"
+					v-model:selection="selectedApplicant3"
+					dataKey="id"
+					class="!w-200px"
+				>
+					<Column
+						selectionMode="multiple"
+						headerStyle="width: 3em"
+					></Column>
+					<Column field="name" :header="name"></Column>
+				</DataTable>
+			</div>
+			<div class="flex justify-between mt-10px">
+				<div class="flex justify-start">
+					<div class="text-xl content-center mt-10px">
+						{{ $t("審查委員") }}:
+					</div>
+					<Dropdown
+						v-model="selectedReviewer"
+						:options="reviewerList"
+						optionLabel="name"
+						class="!w-150px ml-5px"
+					/>
+				</div>
+			</div>
+		</template>
+		<template #Footer>
+			<div flex="~" pos="relative">
+				<NButton
+					type="Admin"
+					class="h-11 min-w-32 mx-auto"
+					@click="save"
+					icon="pi pi-check"
+				>
+					{{ $t("儲存名單") }}
+				</NButton>
+				<NButton
+					Danger
+					class="h-11 min-w-32 absolute right-0"
+					@click="confirmGrading"
+					icon="pi pi-times"
+				>
+					{{ $t("刪除必看名單") }}
+				</NButton>
+			</div>
+		</template>
+	</Layout>
+
 	<ConfirmDialog :draggable="false" />
 </template>
 
@@ -83,6 +101,7 @@ import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import Dropdown from "primevue/dropdown";
 import NButton from "@/styles/CustomButton.vue";
+import Layout from "@/components/Layout.vue";
 import { useI18n } from "vue-i18n";
 import ConfirmDialog from "primevue/confirmdialog";
 import { useConfirm } from "primevue/useconfirm";
