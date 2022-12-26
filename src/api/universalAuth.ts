@@ -128,26 +128,35 @@ export async function doUniversalAuthSendForgotPwdEmail(
 	auth: AuthStore,
 	data: universalAuthSendResetPwdEmailData
 ) {
-	const response = await axios.post(auth.apiEndpoint + "/password", data);
-	console.log("response: ", response);
-	return response.data;
+	try {
+		const response = await axios.post(auth.apiEndpoint + "/password", data);
+		return response.data;
+	} catch (err: any) {
+		return err.response.data;
+	}
 }
 export async function doUniversalAuthSendPostEmailRegister(
 	auth: AuthStore,
 	data: universalAuthSendPostEmailRegister
 ) {
-	const response = await axios.post(auth.apiEndpoint, data);
-	console.log("response: ", response);
-	return response.data;
+	try {
+		const response = await axios.post(auth.apiEndpoint, data);
+		return response.data;
+	} catch (err: any) {
+		return err.response.data;
+	}
 }
 
 export async function doAdmisssionApplicantAuthSendForgotPwdEmail(
 	auth: AuthStore,
 	data: AdmissionApplicantAuthSendResetPwdEmailData
 ) {
-	const response = await axios.post(auth.apiEndpoint + "/password", data);
-	console.log("response: ", response);
-	return response.data;
+	try {
+		const response = await axios.post(auth.apiEndpoint + "/password", data);
+		return response.data;
+	} catch (err: any) {
+		return err.response.data;
+	}
 }
 
 export async function doUniversalAuthResetPassword(
@@ -157,71 +166,85 @@ export async function doUniversalAuthResetPassword(
 	client: string,
 	uid: string
 ) {
-	const response = await axios({
-		method: "PUT",
-		url: auth.apiEndpoint + "/password",
-		headers: {
-			"access-token": access_token,
-			client: client,
-			uid: uid,
-		},
-		data: data,
-	});
-	console.log("response", response);
-	return response.data;
+	try {
+		const response = await axios({
+			method: "PUT",
+			url: auth.apiEndpoint + "/password",
+			headers: {
+				"access-token": access_token,
+				client: client,
+				uid: uid,
+			},
+			data: data,
+		});
+
+		return response.data;
+	} catch (err: any) {
+		return err.response.data;
+	}
 }
 
 export async function doUniversalAuthGetUserInfo(auth: AuthStore) {
 	if (!auth.isValidCredentials) return false;
 
-	const response = await axios({
-		method: "GET",
-		url: auth.apiEndpoint + "/validate_token",
-		headers: {
-			"Content-Type": "application/json",
-			authorization: auth.credentials?.authorization,
-		},
-		data: {},
-	});
+	try {
+		const response = await axios({
+			method: "GET",
+			url: auth.apiEndpoint + "/validate_token",
+			headers: {
+				"Content-Type": "application/json",
+				authorization: auth.credentials?.authorization,
+			},
+			data: {},
+		});
 
-	if (response.data?.status !== "success" || response.data?.error === true)
-		throw new Error("Failed to get user info");
-
-	return response.data.data;
+		return response.data;
+	} catch (err: any) {
+		return err.response.data;
+	}
 }
 
 export async function doAdmissionRecommenderGetRecommendLetter(
 	auth: AuthStore,
 	data: object
 ) {
-	const response = await axios.get(
-		"https://admissions-backend-stg.birkhoff.me/api/v1/admission/recommendletterid",
-		data
-	);
-
-	return response.data;
+	try {
+		const response = await axios.get(
+			"https://admissions-backend-stg.birkhoff.me/api/v1/admission/recommendletterid",
+			data
+		);
+		return response.data;
+	} catch (err: any) {
+		return err.response.data;
+	}
 }
 
 export async function doAdmissionRecommenderSaveRecommendLetter(
 	auth: AuthStore,
 	data: object
 ) {
-	const response = await axios.patch(
-		"https://admissions-backend-stg.birkhoff.me/api/v1/admission/recommendletter",
-		data
-	);
-
-	return response.data;
+	try {
+		const response = await axios.patch(
+			"https://admissions-backend-stg.birkhoff.me/api/v1/admission/recommendletter",
+			data
+		);
+		return response.data;
+	} catch (err: any) {
+		return err.response.data;
+	}
 }
 
 export async function doAdmissionRecommenderConfirmRecommendLetter(
 	auth: AuthStore,
 	data: object
 ) {
-	const response = await axios.patch(
-		"https://admissions-backend-stg.birkhoff.me/api/v1/admission/recommendletter/confirm",
-		data
-	);
-
-	return response.data;
+	try {
+		const response = await axios.patch(
+			"https://admissions-backend-stg.birkhoff.me/api/v1/admission/recommendletter/confirm",
+			data
+		);
+		return response;
+	} catch (err: any) {
+		return err.response.data;
+	}
 }
