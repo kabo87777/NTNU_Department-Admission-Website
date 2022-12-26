@@ -77,7 +77,7 @@
 				<!-- Login Button -->
 				<Turnstile ref="turnstileRef" />
 				<NButton
-					class="w-3/5 p-2 m-auto"
+					class="w-3/5 h-13 m-auto"
 					type="Applicant"
 					size="lg"
 					:loading="isTurnstileRunning || isSubmitting"
@@ -106,7 +106,7 @@ import NButton from "@/styles/CustomButton.vue";
 import Title from "@/styles/login/LoginTitle.vue";
 import Body from "@/styles/login/LoginBody.vue";
 import { useToast } from "primevue/usetoast";
-import { ref, watch, computed } from "vue";
+import { ref, watch, computed, onBeforeUpdate } from "vue";
 import { useRouter } from "vue-router";
 import { Field, useForm } from "vee-validate";
 import * as yup from "yup";
@@ -126,7 +126,31 @@ const router = useRouter();
 
 const authStore = useRecruitmentApplicantAuthStore();
 const userInfo = useUserInfoStore();
+const confirmationSuccess = ref();
+watch(confirmationSuccess, async () => {
+	await setTimeout(() => undefined, 1000);
+	if (confirmationSuccess.value === "true") {
+		toast.add({
+			severity: "success",
+			group: "ConfirmSuccess",
+			closable: false,
+			life: 3000,
+		});
+	} else if (confirmationSuccess.value === "false") {
+		toast.add({
+			severity: "error",
+			group: "ConfirmFailed",
+			closable: false,
+			life: 3000,
+		});
+	}
+	confirmationSuccess.value = "";
+});
+const url = window.location;
 
+confirmationSuccess.value = new URLSearchParams(url.search).get(
+	"confirmationSuccess"
+);
 // Login Form
 const turnstileRef = ref<TurnstileComponentExposes>();
 const isRememberAccount = ref(false);

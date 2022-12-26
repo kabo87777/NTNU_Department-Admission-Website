@@ -1,26 +1,26 @@
 <template>
-	<div>
-		<div style="position: fixed; top: 0; width: 100%; z-index: 10">
-			<NavBar />
+	<!-- Navbar -->
+	<div pos="fixed inset-0 h-15" h="full" w="screen">
+		<NavBar />
+	</div>
+	<!-- Sidebar -->
+	<div pos="fixed top-15 bottom-0 inset-x-0" flex="~">
+		<div flex="none" w="90" bg="white" border="r-2 nGrey-100">
+			<SideBar />
 		</div>
-		<div style="display: flex; margin-top: 60px; position: relative">
-			<div
-				style="
-					position: fixed;
-					float: left;
-					width: 360px;
-					border-right: 1px solid gray;
-					height: 100%;
-				"
-			>
-				<SideBar />
-			</div>
-			<div style="margin-left: 360px; width: 100%; padding: 60px 6%">
+		<!-- Page Content -->
+		<div flex="grow">
+			<div w="9/10 max-300" h="[calc(100%-3rem)]" m="x-auto t-8">
 				<!-- 畫面顯示(已開放專案申請時) -->
-				<div v-if="project.project.pid"><router-view /></div>
+				<!-- <div v-if="project.project.pid"> -->
+				<router-view />
+				<!-- </div> -->
 				<!-- 畫面顯示(未開放專案申請時) -->
-				<div v-else class="relative h-150">
-					<div class="recruitmentMainNoData">
+				<!-- <div v-else class="relative h-150">
+					<div
+						v-if="gateway !== 'recruitmentApplicantUserManagement'"
+						class="recruitmentMainNoData"
+					>
 						<img
 							src="/assets/admissionApplicant/Newsletter.png"
 							alt="NO DATA"
@@ -32,7 +32,8 @@
 							{{ $t("暫未開放申請") }}
 						</div>
 					</div>
-				</div>
+					<div v-else><router-view /></div>
+				</div> -->
 			</div>
 		</div>
 	</div>
@@ -41,14 +42,20 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter } from "vue-router";
+import { computed } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import { useQuery } from "@tanstack/vue-query";
 
 import { useRecruitmentApplicantAuthStore } from "@/stores/universalAuth";
 import { useProjectIdStore } from "@/stores/RecruitmentApplicantStore";
+import {
+	doUniversalAuthSessionValidation,
+	doUniversalAuthGetUserInfo,
+} from "@/api/universalAuth";
+import { RecruitmentApplicantAuthResponse } from "@/api/recruitment/applicant/types";
 
 import { RecruitmentApplicantAPI } from "@/api/recruitment/applicant/api";
-import { doUniversalAuthSessionValidation } from "@/api/universalAuth";
+import { useUserInfoStore } from "@/stores/RecruitmentApplicantStore";
 
 import NavBar from "@/components/NavBar.vue";
 import SideBar from "@/components/sidebars/recruitmentApplicantSidebar.vue";
@@ -58,6 +65,9 @@ const router = useRouter();
 const auth = useRecruitmentApplicantAuthStore();
 const project = useProjectIdStore();
 const api = new RecruitmentApplicantAPI(auth);
+const applicantStore = useUserInfoStore();
+const route = useRoute();
+const gateway = computed(() => route.name);
 
 useQuery(
 	["programList"],
@@ -85,6 +95,21 @@ useQuery(["recruitmentApplicantAuthorizationStatus"], async () => {
 });
 
 router.push("/recruitment/applicant/switchProject");
+
+useQuery(
+	["recruitmentApplicantAuthorizationGetUserInfo"],
+	async () => {
+		const data: RecruitmentApplicantAuthResponse =
+			await doUniversalAuthGetUserInfo(auth);
+
+		return data;
+	},
+	{
+		onSuccess: (data) => {
+			applicantStore.$patch({ userInfo: data });
+		},
+	}
+);
 </script>
 
 <style setup lang="css">

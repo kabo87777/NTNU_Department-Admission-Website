@@ -49,7 +49,7 @@
 		<template #Footer>
 			<!-- Submit Button -->
 			<NButton
-				class="w-3/5 p-2 m-auto"
+				class="w-3/5 h-13 m-auto"
 				type="Reviewer"
 				size="lg"
 				:loading="isChangePassLoading"

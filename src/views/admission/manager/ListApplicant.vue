@@ -1,7 +1,7 @@
 <template>
 	<Layout Admin>
 		<template #Header>
-			{{ $t("申請者帳號設定") }}
+			{{ $t("申請帳號設置") }}
 		</template>
 		<template #Body>
 			<TransitionGroup name="p-message" tag="div">

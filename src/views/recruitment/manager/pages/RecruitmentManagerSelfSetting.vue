@@ -85,15 +85,14 @@
 			<div flex="~" justify="center" gap="4">
 				<NButton
 					Admin
-					class="p-2 w-32"
+					class="h-11 min-w-36"
 					icon="pi pi-pencil"
 					:loading="isProcessing"
 					@click="handleSubmit()"
 					>{{ $t("修改送出") }}</NButton
 				>
 				<NButton
-					Admin
-					class="p-2 w-32"
+					class="h-11 min-w-36"
 					icon="pi pi-undo"
 					@click="resetPassValue()"
 					>{{ $t("重置表單") }}</NButton
@@ -110,7 +109,7 @@ import { ref, computed } from "vue";
 import { useRecruitmentAdminAuthStore } from "@/stores/universalAuth";
 import { useToast } from "primevue/usetoast";
 import { RecruitmentAdminAPI } from "@/api/recruitment/admin/api";
-import { useAdminInfoStore } from "@/stores/AdmissionAdminStore";
+import { useAdminInfoStore } from "@/stores/RecruitmentAdminStore";
 import { useMutation } from "@tanstack/vue-query";
 import type { RecruitmentAdminAuthResponse } from "@/api/recruitment/admin/types";
 import type { RAdminChangePasswordRequest } from "@/api/recruitment/admin/types";

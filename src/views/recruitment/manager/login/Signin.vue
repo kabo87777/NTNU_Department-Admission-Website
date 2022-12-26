@@ -77,7 +77,7 @@
 				<!-- Login Button -->
 				<Turnstile ref="turnstileRef" />
 				<NButton
-					class="w-3/5 p-2 m-auto"
+					class="w-3/5 h-13 m-auto"
 					type="Admin"
 					size="lg"
 					:loading="isTurnstileRunning || isSubmitting"
@@ -173,11 +173,13 @@ const onSubmit = handleSubmit(async function (values) {
 		const api = new RecruitmentAdminAPI(authStore);
 
 		userInfo.saveUserInfo(
-			await api.requestNewSession({
-				email: values.email,
-				password: values.password,
-				"cf-turnstile-response": turnstileResponse,
-			})
+			(
+				await api.requestNewSession({
+					email: values.email,
+					password: values.password,
+					"cf-turnstile-response": turnstileResponse,
+				})
+			).data
 		);
 
 		router.replace({ name: "RecruitmentAdminMainContainer" });

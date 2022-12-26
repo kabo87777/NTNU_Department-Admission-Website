@@ -2,9 +2,12 @@
 	<Layout Applicant>
 		<template #Header>{{ $t("基本資料") }}</template>
 		<template #Body>
+			<Message severity="warn" pos="sticky top-0" z="10" m="!0">
+				"*" 皆為必填項目
+			</Message>
 			<div
-				class="px-12px py-24px"
-				v-if="requiredInputFields.includes('姓名資訊')"
+				class="px-12px py-12px"
+				v-if="requiredInputFields.includes('en_givename')"
 			>
 				<div class="flex">
 					<div class="text-[24px] font-[50] font-bold">
@@ -36,9 +39,9 @@
 						</div>
 					</div>
 				</div>
-				<div class="flex py-16px">
+				<div class="flex pt-12px pb-16px">
 					<div class="w-1/3">
-						<div>{{ $t("英文姓氏") }}</div>
+						<div>{{ "*" + $t("英文姓氏") }}</div>
 						<div>
 							<InputText
 								class="w-[70%] h-36px !mt-4px"
@@ -57,7 +60,7 @@
 						</div>
 					</div>
 					<div class="w-1/3">
-						<div>{{ $t("英文名字") }}</div>
+						<div>{{ "*" + $t("英文名字") }}</div>
 						<div>
 							<InputText
 								class="w-[70%] h-36px !mt-4px"
@@ -89,8 +92,8 @@
 				</div>
 			</div>
 			<div
-				class="px-12px py-24px"
-				v-if="requiredInputFields.includes('入學身分')"
+				class="px-12px pt-12px pb-24px"
+				v-if="requiredInputFields.includes('nationality')"
 			>
 				<div class="flex">
 					<div class="text-[24px] font-[50] font-bold">
@@ -99,7 +102,7 @@
 				</div>
 				<div class="flex pt-24px">
 					<div class="w-1/3">
-						<div>{{ $t("入學身分") }}</div>
+						<div>{{ "*" + $t("入學身分") }}</div>
 						<div>
 							<Dropdown
 								class="w-[70%] h-36px !mt-4px"
@@ -140,7 +143,7 @@
 				</div>
 				<div v-if="identity.selectedIdentity === '外籍人士'">
 					<div>
-						<div class="flex pt-16px">
+						<div class="flex py-16px">
 							<div class="w-1/3">
 								<div>{{ $t("國籍") }}</div>
 								<div>
@@ -160,49 +163,6 @@
 									</small>
 								</div>
 							</div>
-							<div class="w-1/3">
-								<div>{{ $t("居留證統一證號") }}</div>
-								<div>
-									<InputText
-										class="w-[70%] h-36px !mt-4px"
-										style="border: 1px solid #736028"
-										type="text"
-										v-model="identity.ui"
-									/>
-								</div>
-								<div
-									v-show="required.ui"
-									class="absolute mt-[-4px]"
-								>
-									<small class="p-error">
-										{{ $t("此為必填欄位") }}
-									</small>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="pt-24px"></div>
-				</div>
-				<div v-else>
-					<div class="flex py-16px">
-						<div class="w-1/3">
-							<div>{{ $t("身份證字號") }}</div>
-							<div>
-								<InputText
-									class="w-[70%] h-36px !mt-4px"
-									style="border: 1px solid #736028"
-									type="text"
-									v-model="identity.ic"
-								/>
-							</div>
-							<div
-								v-show="required.icNum"
-								class="absolute mt-[-4px]"
-							>
-								<small class="p-error">
-									{{ $t("此為必填欄位") }}
-								</small>
-							</div>
 						</div>
 					</div>
 				</div>
@@ -210,8 +170,8 @@
 
 			<div>
 				<div
-					class="px-12px py-24px"
-					v-if="requiredInputFields.includes('現居地址')"
+					class="px-12px py-12px"
+					v-if="requiredInputFields.includes('email')"
 				>
 					<div class="flex">
 						<div class="text-[24px] font-[50] font-bold">
@@ -283,8 +243,8 @@
 				</div>
 			</div>
 			<div
-				class="px-12px py-24px"
-				v-if="requiredInputFields.includes('身份資料')"
+				class="px-12px py-12px"
+				v-if="requiredInputFields.includes('sex')"
 			>
 				<div class="flex">
 					<div class="text-[24px] font-[50] font-bold">
@@ -340,6 +300,9 @@
 									border: 1px solid #736028;
 									border-radius: 6px;
 								"
+								:show-icon="true"
+								:showOnFocus="false"
+								placeholder="YYYY/MM/DD"
 							/>
 						</div>
 						<div v-show="required.birth" class="absolute mt-[-4px]">
@@ -351,8 +314,8 @@
 				</div>
 			</div>
 			<div
-				class="px-12px py-24px"
-				v-if="requiredInputFields.includes('聯絡資料')"
+				class="px-12px py-12px"
+				v-if="requiredInputFields.includes('mobile_phone')"
 			>
 				<div class="flex">
 					<div class="text-[24px] font-[50] font-bold">
@@ -402,6 +365,7 @@ import Calendar from "primevue/calendar";
 import NButton from "@/styles/CustomButton.vue";
 import Layout from "@/components/Layout.vue";
 import dayjs from "dayjs";
+import Message from "primevue/message";
 import { useAdmissionApplicantAuthStore } from "@/stores/universalAuth";
 import { AdmissionApplicantAPI } from "@/api/admission/applicant/api";
 import { AdmissionApplicantGetUserInfoResponse } from "@/api/admission/applicant/types";

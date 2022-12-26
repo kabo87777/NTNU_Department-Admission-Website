@@ -114,185 +114,6 @@
 					/>
 				</div>
 			</div>
-			<PDivider Admin />
-			<!-- Body - Show Information Data -->
-			<div text="2xl title" pb="2">
-				{{ trans.showInfo.value }}
-			</div>
-			<!-- showInfo - checkbox 1 -->
-			<div v-if="showedInfo[0].visible">
-				<div flex="~ gap-2" justify="items-center">
-					<Checkbox
-						m="!t-1 l-1"
-						v-model="showedInfo[0].checked"
-						:input-id="showedInfo[0].id"
-						:binary="true"
-					/>
-					<label for="showedInfo[0].id" text="lg body" pb="!1">
-						{{ trans.nameInfo.value }}
-					</label>
-				</div>
-				<div class="flex mx-10 gap-8" text="secondary">
-					<div>{{ trans.details.chineseName.value }}</div>
-					<div>{{ trans.details.englishName.value }}</div>
-				</div>
-			</div>
-			<!-- showInfo - checkbox 2 -->
-			<div v-if="showedInfo[1].visible">
-				<div flex="~ gap-2" justify="items-center">
-					<Checkbox
-						m="!t-1 l-1"
-						v-model="showedInfo[1].checked"
-						:input-id="showedInfo[1].id"
-						:binary="true"
-					/>
-					<label :for="showedInfo[1].id" text="lg body" mb="1">
-						{{ trans.admissionId.value }}
-					</label>
-				</div>
-				<div class="flex mx-10 gap-8" text="secondary">
-					<div>{{ trans.details.locals.value }}</div>
-					<div>{{ trans.details.foreigner.value }}</div>
-				</div>
-			</div>
-			<!-- showInfo - checkbox 3 -->
-			<div v-if="showedInfo[2].visible">
-				<div flex="~ gap-2" justify="items-center">
-					<Checkbox
-						m="!t-1 l-1"
-						v-model="showedInfo[2].checked"
-						:input-id="showedInfo[2].id"
-						:binary="true"
-					/>
-					<label :for="showedInfo[2].id" text="lg body" mb="1">
-						{{ trans.residentAddr.value }}
-					</label>
-				</div>
-				<div class="flex mx-10 gap-8" text="secondary">
-					<div>{{ trans.details.country.value }}</div>
-					<div>{{ trans.details.city.value }}</div>
-					<div>{{ trans.details.streetAddr.value }}</div>
-				</div>
-			</div>
-			<!-- showInfo - checkbox 4 -->
-			<div v-if="showedInfo[3].visible">
-				<div flex="~ gap-2" justify="items-center">
-					<Checkbox
-						m="!t-1 l-1"
-						v-model="showedInfo[3].checked"
-						:input-id="showedInfo[3].id"
-						:binary="true"
-					/>
-					<label :for="showedInfo[3].id" text="lg body" mb="1">
-						{{ trans.currentAddr.value }}
-					</label>
-				</div>
-				<div class="flex mx-10 gap-8" text="secondary">
-					<div>{{ trans.details.country.value }}</div>
-					<div>{{ trans.details.city.value }}</div>
-					<div>{{ trans.details.streetAddr.value }}</div>
-				</div>
-			</div>
-			<!-- showInfo - checkbox 5 -->
-			<div v-if="showedInfo[4].visible">
-				<div flex="~ gap-2" justify="items-center">
-					<Checkbox
-						m="!t-1 l-1"
-						v-model="showedInfo[4].checked"
-						:input-id="showedInfo[4].id"
-						:binary="true"
-					/>
-					<label :for="showedInfo[4].id" text="lg body" mb="1">
-						{{ trans.nationalId.value }}
-					</label>
-				</div>
-				<div class="flex mx-10 gap-8" text="secondary">
-					<div>{{ trans.details.gender.value }}</div>
-					<div>{{ trans.details.bornCountry.value }}</div>
-					<div>{{ trans.details.mainNation.value }}</div>
-					<div>{{ trans.details.bornDate.value }}</div>
-					<div>{{ trans.details.mainNation.value }}</div>
-				</div>
-			</div>
-			<!-- showInfo - checkbox 6 -->
-			<div v-if="showedInfo[5].visible">
-				<div flex="~ gap-2" justify="items-center">
-					<Checkbox
-						m="!t-1 l-1"
-						v-model="showedInfo[5].checked"
-						:input-id="showedInfo[5].id"
-						:binary="true"
-					/>
-					<label :for="showedInfo[5].id" text="lg body" mb="1">
-						{{ trans.contactInfo.value }}
-					</label>
-				</div>
-				<div class="flex mx-10 gap-8" text="secondary">
-					<div>{{ trans.details.email.value }}</div>
-					<div>{{ trans.details.primePhone.value }}</div>
-					<div>{{ trans.details.secondPhone.value }}</div>
-					<div>{{ trans.details.mobilePhone.value }}</div>
-				</div>
-			</div>
-			<PDivider Admin />
-			<!-- Body - Show Uploaded File Data -->
-			<div text="2xl title" pb="2">
-				{{ trans.showFile.value }}
-			</div>
-			<!-- showFile - checkbox 1 -->
-			<div v-if="showedFile[0].visible">
-				<div flex="~ gap-2" justify="items-center">
-					<Checkbox
-						m="!t-1 l-1"
-						v-model="showedFile[0].checked"
-						:input-id="showedFile[0].id"
-						:binary="true"
-					/>
-					<label :for="showedFile[0].id" text="lg body" pb="!1">
-						{{ trans.schoolExp.value }}
-					</label>
-				</div>
-				<div class="flex mx-10 gap-8" text="secondary">
-					<div>{{ trans.details.fileName.value }}</div>
-					<div>{{ trans.details.fileUpload.value }}</div>
-				</div>
-			</div>
-			<!-- showFile - checkbox 2 -->
-			<div v-if="showedFile[1].visible">
-				<div flex="~ gap-2" justify="items-center">
-					<Checkbox
-						m="!t-1 l-1"
-						v-model="showedFile[1].checked"
-						:input-id="showedFile[1].id"
-						:binary="true"
-					/>
-					<label :for="showedFile[1].id" text="lg body" pb="!1">
-						{{ trans.testScore.value }}
-					</label>
-				</div>
-				<div class="flex mx-10 gap-8" text="secondary">
-					<div>{{ trans.details.fileName.value }}</div>
-					<div>{{ trans.details.fileUpload.value }}</div>
-				</div>
-			</div>
-			<!-- showFile - checkbox 3 -->
-			<div v-if="showedFile[2].visible">
-				<div flex="~ gap-2" justify="items-center">
-					<Checkbox
-						m="!t-1 l-1"
-						v-model="showedFile[2].checked"
-						:input-id="showedFile[2].id"
-						:binary="true"
-					/>
-					<label :for="showedFile[2].id" text="lg body" pb="!1">
-						{{ trans.otherFile.value }}
-					</label>
-				</div>
-				<div class="flex mx-10 gap-8" text="secondary">
-					<div>{{ trans.details.fileName.value }}</div>
-					<div>{{ trans.details.fileUpload.value }}</div>
-				</div>
-			</div>
 		</template>
 		<template #Footer>
 			<div flex="~" justify="center" gap="4">
@@ -348,7 +169,7 @@ const queryClient = useQueryClient();
 
 // I18n translation
 const trans = {
-	reviewScoreField: computed(() => t("審查評分欄位")),
+	reviewScoreField: computed(() => t("審查評分設置")),
 	save: computed(() => t("儲存")),
 	changeSuccess: computed(() => t("儲存成功")),
 	cancel: computed(() => t("取消")),
@@ -360,7 +181,7 @@ const trans = {
 	nameInfo: computed(() => t("姓名資訊")),
 	admissionId: computed(() => t("入學身份")),
 	residentAddr: computed(() => t("戶籍資訊")),
-	currentAddr: computed(() => t("現居地址")),
+	currentAddr: computed(() => t("通訊地址")),
 	nationalId: computed(() => t("身份資料")),
 	contactInfo: computed(() => t("聯絡資訊")),
 	schoolExp: computed(() => t("就學經歷")),
@@ -428,7 +249,7 @@ let showedInfo = reactive([
 	{ id: "姓名資訊", visible: true, checked: true },
 	{ id: "入學身分", visible: true, checked: true },
 	{ id: "戶籍資訊", visible: true, checked: true },
-	{ id: "現居地址", visible: true, checked: true },
+	{ id: "通訊地址", visible: true, checked: true },
 	{ id: "身份資料", visible: true, checked: true },
 	{ id: "聯絡資料", visible: true, checked: true },
 ]);
@@ -600,26 +421,37 @@ async function saveChange() {
 	// Adjust and Check correctness of Data
 	try {
 		let docsSum = 0;
+		let isReturn = false;
 		docsScore.forEach((element) => {
 			if (element.name === null && element.weight > 0)
 				element.name =
 					trans.labelName[
 						element.index as keyof typeof trans.labelName
 					].value;
-			if (element.weight < 0 || element.weight > 100)
-				throw { object: element, message: "Invalid Weight" };
+			if (element.weight < 0 || element.weight > 100) {
+				toast.add({
+					severity: "error",
+					summary:
+						"第一階段 (書面審查) 評分項目每一項佔比範圍需在 (0~100)",
+					life: 3000,
+				});
+				isReturn = true;
+			}
 			if (element.index) docsSum += element.weight;
 		});
+		if (isReturn) {
+			return;
+		}
 		if (docsSum !== 100) {
 			toast.add({
 				severity: "error",
 				summary:
-					"第一階段 (書面審查)評分項目比例需要加總等於100 The ratio of scoring items in the first stage (Docs review) needs to add up to 100",
+					"第一階段 (書面審查) 評分項目比例需要加總等於100 The ratio of scoring items in the first stage (Docs review) needs to add up to 100",
 				life: 3000,
 			});
 			return;
 		}
-
+		isReturn = false;
 		let oralSum = 0;
 		oralScore.forEach((element) => {
 			if (element.name === null && element.weight > 0)
@@ -627,10 +459,20 @@ async function saveChange() {
 					trans.labelName[
 						element.index as keyof typeof trans.labelName
 					].value;
-			if (element.weight < 0 || element.weight > 100)
-				throw { object: element, message: "Invalid Weight" };
+			if (element.weight < 0 || element.weight > 100) {
+				toast.add({
+					severity: "error",
+					summary:
+						"第二階段 (口試審查) 評分項目每一項佔比範圍需在 (0~100)",
+					life: 3000,
+				});
+				isReturn = true;
+			}
 			if (element.index) oralSum += element.weight;
 		});
+		if (isReturn) {
+			return;
+		}
 		if (oralSum !== 100) {
 			toast.add({
 				severity: "error",
