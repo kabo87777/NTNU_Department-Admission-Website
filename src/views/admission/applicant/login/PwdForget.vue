@@ -98,8 +98,9 @@ const changeState = () => {
 
 const enterEmail = async () => {
 	try {
-		const redirectUrl =
-			`${import.meta.env.VITE_BASEURL}/admission/applicant/password/reset`;
+		const redirectUrl = `${
+			import.meta.env.VITE_BASEURL
+		}/admission/applicant/password/reset`;
 		const turnstileResponse = consumeTurnstileToken();
 		if (!turnstileResponse) throw new Error("Turnstile challenge failed");
 		const api = new AdmissionApplicantAPI(authStore);

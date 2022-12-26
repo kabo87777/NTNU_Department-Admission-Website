@@ -156,7 +156,9 @@ let userRegistData = reactive({
 	email: "",
 	password: "",
 	password_confirmation: "",
-	confirm_success_url: `${import.meta.env.VITE_BASEURL}/recruitment/applicant/signin`,
+	confirm_success_url: `${
+		import.meta.env.VITE_BASEURL
+	}/recruitment/applicant/signin`,
 });
 
 let password = reactive({
