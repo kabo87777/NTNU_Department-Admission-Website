@@ -290,12 +290,12 @@ const routes: Array<RouteRecordRaw> = [
 		component: () => import("@/views/admission/manager/MainContainer.vue"),
 		children: [
 			// Admission - manager project settings
-			{
-				path: "uploadFileSetting",
-				name: "AdmissionAdminUploadFileSetting",
-				component: () =>
-					import("@/views/admission/manager/UploadFileSetting.vue"),
-			},
+			// {
+			// 	path: "uploadFileSetting",
+			// 	name: "AdmissionAdminUploadFileSetting",
+			// 	component: () =>
+			// 		import("@/views/admission/manager/UploadFileSetting.vue"),
+			// },
 			{
 				path: "projectSetting",
 				name: "AdmissionAdminProjectSetting",

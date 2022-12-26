@@ -122,10 +122,7 @@
 			/>
 
 			<!-- OTHER -->
-			<div
-				class="px-12px py-24px"
-				v-if="requiredInputFields.includes('其他有利於審查資料')"
-			>
+			<div class="px-12px py-24px">
 				<div class="text-[24px] font-[50] font-bold">
 					{{ $t("其他有利於審查資料") }}
 				</div>

@@ -94,7 +94,7 @@
 					</NButton>
 				</RouterLink>
 				<!-- 4.上傳欄位設置 -->
-				<router-link
+				<!-- <router-link
 					to="/admission/manager/uploadFileSetting"
 					custom
 					v-slot="{ navigate }"
@@ -112,7 +112,7 @@
 						"
 						>{{ $t("上傳欄位設置") }}
 					</NButton>
-				</router-link>
+				</router-link> -->
 				<!-- 5.上傳資料列表 -->
 				<router-link
 					to="/admission/manager/applicantsUploadList"
@@ -414,10 +414,12 @@ function addNewProject() {
 			review_end_date: todayDateString,
 			docs_end_date: todayDateString,
 			oral_start_date: todayDateString,
-			applicant_required_info: '["file1", "file2"]',
-			applicant_required_file: '["file3", "file4"]',
-			reviewer_required_info: '["file1", "file2"]',
-			reviewer_required_file: '["file3", "file4"]',
+			applicant_required_info:
+				'["en_surname","en_givenname","nationality","communicate_address","sex","mobile_phone"]',
+			applicant_required_file: '["就學經歷","考試與檢定分數"]',
+			reviewer_required_info:
+				'["cn_surname","name","en_surname","en_midname","en_givenname","nationality","communicate_address","communicate_zipcode","email","sex","birthcountry","birth","mobile_phone"]',
+			reviewer_required_file: '["就學經歷","考試與檢定分數"]',
 		},
 		{
 			onError: (e: any) => {
