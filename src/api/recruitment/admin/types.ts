@@ -195,8 +195,6 @@ export interface RecruitmentAdminReviewersListResponse {
 }
 
 export interface RecruitmentAdminCreateReviewerRequest {
-	username: string;
-	password: string;
 	email: string;
 	name: string;
 	redirect_url: string;
