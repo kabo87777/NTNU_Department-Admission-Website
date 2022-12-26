@@ -111,13 +111,13 @@ const api = new RecruitmentAdminAPI(adminAuth);
 const data = ref({
 	name: "",
 	email: "",
-	redirect_url: "http://127.0.0.1:5173/recruitment/reviewer/setupaccount",
+	redirect_url: `${import.meta.env.VITE_BASEURL}/recruitment/reviewer/setupaccount`,
 });
 const resetForm = () => {
 	data.value = {
 		name: "",
 		email: "",
-		redirect_url: "http://127.0.0.1:5173/recruitment/reviewer/setupaccount",
+		redirect_url: `${import.meta.env.VITE_BASEURL}/recruitment/reviewer/setupaccount`,
 	};
 	isSubmitted.value = false;
 };

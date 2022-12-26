@@ -85,7 +85,7 @@
 		<template #Footer>
 			<!-- Regist Button -->
 			<NButton
-				class="w-3/5 p-2 m-auto"
+				class="w-3/5 h-13 m-auto"
 				type="Applicant"
 				size="lg"
 				:loading="isRegistLoading"
@@ -156,7 +156,7 @@ let userRegistData = reactive({
 	email: "",
 	password: "",
 	password_confirmation: "",
-	confirm_success_url: "http://127.0.0.1:5173/recruitment/applicant/signin",
+	confirm_success_url: `${import.meta.env.VITE_BASEURL}/recruitment/applicant/signin`,
 });
 
 let password = reactive({

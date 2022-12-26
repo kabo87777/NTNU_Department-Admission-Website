@@ -52,7 +52,7 @@
 			<!-- Submit Button -->
 			<Turnstile ref="turnstileRef" />
 			<NButton
-				class="w-3/5 p-2 m-auto"
+				class="w-3/5 h-13 m-auto"
 				type="Reviewer"
 				size="lg"
 				@click="changeState"
@@ -95,11 +95,10 @@ const changeState = () => {
 	enterEmail();
 };
 
-// FIXME: this redirectUrl is hardcode. Need to FIX it before merge in main branch.
 const enterEmail = async () => {
 	try {
 		const redirectUrl =
-			"http://127.0.0.1:5173/recruitment/reviewer/password/reset";
+			`${import.meta.env.VITE_BASEURL}/recruitment/reviewer/password/reset`;
 		const turnstileResponse = consumeTurnstileToken();
 		if (!turnstileResponse) throw new Error("Turnstile challenge failed");
 		const api = new RecruitmentReviewerAPI(authStore);

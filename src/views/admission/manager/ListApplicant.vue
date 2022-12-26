@@ -245,7 +245,7 @@ const importApplicantCallback = (event: FileUploadUploaderEvent) => {
 	formdata.append("file", file);
 	formdata.append(
 		"redirect_url",
-		"http://127.0.0.1:5173/admission/applicant/setupaccount"
+		`${import.meta.env.VITE_BASEURL}/admission/applicant/setupaccount`
 	);
 	uploadApplicantImport(formdata);
 };
