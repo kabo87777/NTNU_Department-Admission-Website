@@ -333,9 +333,19 @@ const programData = useMutation(async (newProgramData: any) => {
 	return await api.addNewProgram(newProgramData);
 });
 
-const { isLoading, data: programs } = useQuery(["programList"], async () => {
-	return await api.getProgramList();
-});
+const programs = ref<AdmissionAdminProgramListResponse[]>();
+
+const { isLoading } = useQuery(
+	["programList"],
+	async () => {
+		return await api.getProgramList();
+	},
+	{
+		onSuccess: (data) => {
+			programs.value = data;
+		},
+	}
+);
 
 const noProgram = computed(() => {
 	return programs.value! === undefined || programs.value!.length === 0;
@@ -349,14 +359,28 @@ const letterSpace = computed(() => {
 	else return "";
 });
 
-watchEffect(() => {
-	if (!programs.value) return;
+watch(programs, (newValue, oldValue) => {
+	if (typeof newValue === "undefined")
+		throw new Error("Program list is undefined");
 
-	globalStore.$patch((state) => {
-		state.program = programs.value[0];
+	if (typeof globalStore.program === "undefined") {
+		globalStore.$patch({ program: newValue[0] });
+		selectedProgram.value = newValue[0];
+		return;
+	}
+
+	const oldProgram = newValue.find((program) => {
+		return globalStore.program?.id === program.id;
 	});
 
-	selectedProgram.value = programs.value[0];
+	// If current program is deleted, then select the first entry in response
+	const newProgram: AdmissionAdminProgramListResponse =
+		typeof oldProgram === "undefined" ? newValue[0] : oldProgram;
+
+	globalStore.$patch({
+		program: newProgram,
+	});
+	selectedProgram.value = newProgram;
 });
 
 watch(selectedProgram, (selection) => {
