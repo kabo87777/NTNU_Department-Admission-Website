@@ -87,7 +87,7 @@ const visible = computed({
 const data = ref({
 	name: "",
 	email: "",
-	redirect_url: "http://127.0.0.1:5173/admission/reviewer/setupaccount",
+	redirect_url: `${import.meta.env.VITE_BASEURL}/admission/reviewer/setupaccount`,
 });
 const v$ = useVuelidate(
 	{

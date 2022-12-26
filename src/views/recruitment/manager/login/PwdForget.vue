@@ -98,7 +98,7 @@ const changeState = () => {
 const enterEmail = async () => {
 	try {
 		const redirectUrl =
-			"http://127.0.0.1:5173/recruitment/manager/password/reset";
+			`${import.meta.env.VITE_BASEURL}/recruitment/manager/password/reset`;
 		const turnstileResponse = consumeTurnstileToken();
 		if (!turnstileResponse) throw new Error("Turnstile challenge failed");
 		const api = new RecruitmentAdminAPI(authStore);
