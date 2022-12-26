@@ -1,67 +1,64 @@
 <template>
-	<div>
-		<!-- TITLE -->
-		<div class="font-[500] text-[32px] font-bold">
-			{{ $t("附件資料") }}
-		</div>
-		<div class="bigYellowDivider"></div>
-
-		<div class="px-12px pb-24px">
-			<div v-for="(item, index) in otherList" :key="index">
-				<div
-					class="bigYellowDivider !mt-24px"
-					v-if="
-						index !== 0 &&
-						otherList[index].id === undefined &&
-						otherList[index - 1].id
-					"
-				></div>
-				<ReviewState
-					v-if="item.state === 1"
-					category="其他有利於審查資料"
-					identity="admissionApplicant"
-					:itemId="item.id"
-					:itemName="item.name"
-					:fileUrl="item.filepath?.url"
-					:order="index + 1"
-					:isDeleteLoading="isLoading.delete"
-					:enableEdit="false"
-					@delete="handleDelete"
-				/>
-				<div v-else-if="item.state === 3">
-					<div class="text-20px text-[#53565A] pt-24px">
-						{{ item.name }}
+	<Layout Applicant>
+		<template #Header> {{ $t("附件資料") }} </template>
+		<template #Body>
+			<div mx="2">
+				<div v-for="(item, index) in otherList" :key="index">
+					<div
+						class="bigYellowDivider !mt-24px"
+						v-if="
+							index !== 0 &&
+							otherList[index].id === undefined &&
+							otherList[index - 1].id
+						"
+					></div>
+					<ReviewState
+						v-if="item.state === 1"
+						category="其他有利於審查資料"
+						identity="admissionApplicant"
+						:itemId="item.id"
+						:itemName="item.name"
+						:fileUrl="item.filepath?.url"
+						:order="index + 1"
+						:isDeleteLoading="isLoading.delete"
+						:enableEdit="false"
+						@delete="handleDelete"
+					/>
+					<div v-else-if="item.state === 3">
+						<div class="text-20px text-[#53565A] pt-24px">
+							{{ item.name }}
+						</div>
+						<div class="mt-[-16px]">
+							<CreateState
+								category="其他有利於審查資料"
+								identity="admissionApplicant"
+								:order="index + 1"
+								@edit="createToEdit"
+							/>
+						</div>
 					</div>
-					<div class="mt-[-16px]">
-						<CreateState
-							category="其他有利於審查資料"
-							identity="admissionApplicant"
-							:order="index + 1"
-							@edit="createToEdit"
-						/>
-					</div>
+					<EditState
+						v-else-if="item.state === 4"
+						category="其他有利於審查資料"
+						identity="admissionApplicant"
+						:itemName="item.name"
+						:isCreateLoading="isLoading.create"
+						:order="index + 1"
+						@cancel="editToCreate"
+						@create="handleCreate"
+					/>
 				</div>
-				<EditState
-					v-else-if="item.state === 4"
-					category="其他有利於審查資料"
-					identity="admissionApplicant"
-					:itemName="item.name"
-					:isCreateLoading="isLoading.create"
-					:order="index + 1"
-					@cancel="editToCreate"
-					@create="handleCreate"
-				/>
 			</div>
-		</div>
-		<div class="bigYellowDivider"></div>
-	</div>
+		</template>
+	</Layout>
 </template>
 
 <script setup lang="ts">
-import { reactive, toRaw, watch, onMounted } from "vue";
+import Layout from "@/components/Layout.vue";
 import ReviewState from "@/components/attachmentStates/reviewState.vue";
 import EditState from "@/components/attachmentStates/editState.vue";
 import CreateState from "@/components/attachmentStates/createState.vue";
+import { reactive, toRaw, watch, onMounted } from "vue";
 import {
 	AttachmentData,
 	AttachmentDetailData,

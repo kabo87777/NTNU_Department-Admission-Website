@@ -1,68 +1,63 @@
 <template>
-	<div class="font-bold text-32px">
-		{{ $t("切換專案") }}
-	</div>
-	<div class="bigYellowDivider"></div>
-	<div class="flex relative mt-8px">
-		<div style="width: 20%; text-align: center; font-weight: bold">
-			{{ $t("專案名稱") }}
-		</div>
-		<div style="width: 60%; text-align: center; font-weight: bold">
-			{{ $t("開放時間") }}
-		</div>
-	</div>
-	<div class="normalYellowDivider"></div>
-	<div class="tableSP">
-		<div
-			class="tableItem"
-			v-for="(item, index) in programList"
-			:key="index"
-		>
-			<div class="projectCol">{{ item.category + item.name }}</div>
-			<div class="periodCol">
-				{{ period(item.recruit_start_date, item.recruit_end_date) }}
+	<Layout Applicant noMargin>
+		<template #Header>{{ $t("切換專案") }}</template>
+		<template #Body>
+			<div flex="~ col gap-2" pos="sticky top-0" bg="white">
+				<div flex="~" text="body" m="x-4 t-2">
+					<div class="w-1/5" text="center">{{ $t("專案名稱") }}</div>
+					<div class="w-3/5" text="center">{{ $t("開放時間") }}</div>
+				</div>
+				<div w="full" h="!1px" bg="nGold" />
 			</div>
-			<div
-				class="switchCol"
-				style="
-					font-weight: bold;
-					color: #736028;
-					padding-top: 16px;
-					padding-right: 5%;
-					text-align: right;
-				"
-				v-if="item.id === project.project.pid"
-			>
-				{{ $t("當前專案") }}
-			</div>
-			<div class="switchCol" v-else>
-				<Button
-					class="p-button-outlined p-button-secondary"
-					style="
-						color: #736028;
-						height: 36px;
-						border: 2px solid #736028;
-						font-weight: bold;
-						position: absolute;
-						right: 12%;
-					"
-					@click="
-						project.switchProject({
-							pid: item.id,
-							category: item.category,
-							name: item.name,
-						})
-					"
+			<div v-for="(item, index) in programList" :key="index">
+				<div
+					class="flex items-center px-4 h-20"
+					:class="{
+						'bg-nGold-50 border-nGold':
+							item.id === project.project.pid,
+						'border-nGrey-200': item.id !== project.project.pid,
+					}"
+					border="2 rounded-lg"
 				>
-					<i class="pi pi-directions"></i>
-					<div class="ml-8px">{{ $t("進入專案") }}</div>
-				</Button>
+					<div w="1/5" text="body center">
+						{{ item.category + item.name }}
+					</div>
+					<div w="3/5" text="sm body center">
+						{{
+							period(
+								item.recruit_start_date,
+								item.recruit_end_date
+							)
+						}}
+					</div>
+					<div w="1/5" v-if="item.id === project.project.pid">
+						<div text="pApplicant center">
+							{{ $t("當前專案") }}
+						</div>
+					</div>
+					<NButton
+						v-else
+						Applicant
+						icon="pi pi-directions"
+						class="m-auto max-w-36 h-11"
+						@click="
+							project.switchProject({
+								pid: item.id,
+								category: item.category,
+								name: item.name,
+							})
+						"
+						>{{ $t("進入專案") }}
+					</NButton>
+				</div>
 			</div>
-		</div>
-	</div>
+		</template>
+	</Layout>
 </template>
 
 <script setup lang="ts">
+import NButton from "@/styles/CustomButton.vue";
+import Layout from "@/components/Layout.vue";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { useQuery } from "@tanstack/vue-query";
@@ -71,7 +66,6 @@ import { RecruitmentApplicantAPI } from "@/api/recruitment/applicant/api";
 import { useProjectIdStore } from "@/stores/RecruitmentApplicantStore";
 import { RecruitmentApplicantProgramResponse } from "@/api/recruitment/applicant/types";
 import { InvalidSessionError } from "@/api/error";
-import Button from "primevue/button";
 
 const router = useRouter();
 
@@ -112,28 +106,3 @@ const period = (start_date: string, end_date: string) => {
 	);
 };
 </script>
-
-<style setup lang="css">
-.tableItem {
-	display: flex;
-	margin-top: 20px;
-	border: 2px solid #aaaaaa;
-	border-radius: 8px;
-	height: 60px;
-}
-.projectCol {
-	width: 20%;
-	text-align: center;
-	padding-top: 16px;
-}
-.periodCol {
-	width: 60%;
-	text-align: center;
-	padding-top: 16px;
-}
-.switchCol {
-	position: relative;
-	padding-top: 10px;
-	width: 20%;
-}
-</style>
