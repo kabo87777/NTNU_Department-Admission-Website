@@ -15,7 +15,7 @@
 		</template>
 		<template #Body>
 			<DataTable
-				:value="ApplicantList"
+				:value="oralList"
 				responsiveLayout="scroll"
 				dataKey="id"
 				:scrollable="true"
@@ -26,7 +26,11 @@
 			>
 				<ColumnGroup type="header">
 					<Row>
-						<Column :header="oralOrder" :rowspan="2"></Column>
+						<Column
+							:header="oralOrder"
+							:rowspan="2"
+							:sortable="true"
+						></Column>
 						<Column :header="applicantName" :rowspan="2"></Column>
 						<Column :header="reviewerGrade" :colspan="scoreCount" />
 						<Column :header="OralGrade" :rowspan="2"></Column>
@@ -191,6 +195,7 @@ import { useToast } from "primevue/usetoast";
 import NButton from "@/styles/CustomButton.vue";
 import ConfirmDialog from "primevue/confirmdialog";
 import { useConfirm } from "primevue/useconfirm";
+import { AdmissionReviewerApplicantListResponse } from "@/api/admission/reviewer/types";
 
 const reviewerAuth = useAdmissionReviewerAuthStore();
 const api = new AdmissionReviewerAPI(reviewerAuth);
@@ -202,6 +207,7 @@ const { t } = useI18n();
 const totalApplicant = ref(0);
 const applicantGraded = ref(0);
 const progressValue = ref(0);
+const oralList = ref<AdmissionReviewerApplicantListResponse[]>([]);
 // const alist = ref([]);
 
 const {
@@ -216,6 +222,9 @@ const {
 	},
 	{
 		onSuccess: (data) => {
+			oralList.value = data!.filter(
+				(applicant) => applicant.oral_order !== null
+			);
 			totalApplicant.value = data!.length;
 			applicantGraded.value = 0;
 			data!.forEach((applicant) => {
