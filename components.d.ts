@@ -18,6 +18,7 @@ declare module '@vue/runtime-core' {
     Layout: typeof import('./src/components/Layout.vue')['default']
     NavBar: typeof import('./src/components/NavBar.vue')['default']
     PdfPreview: typeof import('./src/components/pdfPreview.vue')['default']
+    RecAddReviewerDialog: typeof import('./src/components/RecAddReviewerDialog.vue')['default']
     RecruitmentApplicantSidebar: typeof import('./src/components/sidebars/recruitmentApplicantSidebar.vue')['default']
     RecruitmentManagerSidebar: typeof import('./src/components/sidebars/recruitmentManagerSidebar.vue')['default']
     RecruitmentReviewerSidebar: typeof import('./src/components/sidebars/recruitmentReviewerSidebar.vue')['default']
