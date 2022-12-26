@@ -113,7 +113,7 @@ onMounted(() => {
 });
 
 const colorStyle = computed(() => {
-	if (props.Admin) return "bg-nRed-50 border-nRed-100";
+	if (props.Admin) return "bg-nRed-50 border-nRed-200";
 	if (props.Applicant) return "bg-nGold-50 border-nGold-100";
 	if (props.Reviewer) return "bg-nBlue-50 border-nBlue-100";
 	else return "bg-nGrey-700 text-body";
