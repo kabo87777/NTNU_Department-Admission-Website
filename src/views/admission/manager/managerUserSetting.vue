@@ -85,15 +85,14 @@
 			<div flex="~" justify="center" gap="4">
 				<NButton
 					Admin
-					class="p-2 w-32"
+					class="h-11 min-w-36"
 					icon="pi pi-pencil"
 					:loading="isProcessing"
 					@click="handleSubmit()"
 					>{{ $t("修改送出") }}</NButton
 				>
 				<NButton
-					Admin
-					class="p-2 w-32"
+					class="h-11 min-w-36"
 					icon="pi pi-undo"
 					@click="resetPassValue()"
 					>{{ $t("重置表單") }}</NButton

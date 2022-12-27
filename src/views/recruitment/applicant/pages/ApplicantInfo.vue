@@ -2,12 +2,12 @@
 	<Layout Applicant>
 		<template #Header>{{ $t("基本資料") }}</template>
 		<template #Body>
+			<Message severity="warn" pos="sticky top-0" m="!0" z="10">
+				基本資料所有欄位皆為必填欄位。
+			</Message>
 			<!-- 姓名 -->
 			<div space="y-1" m="2">
-				<div flex="~ gap-2" class="items-end" text="body">
-					<div>{{ $t("姓名") }}</div>
-					<div text="sm danger">{{ "*\ \ " + $t("必填") }}</div>
-				</div>
+				<div>{{ $t("姓名") }}</div>
 				<div flex="~ gap-6" class="items-center">
 					<InputText
 						class="w-1/3 min-w-50 max-w-100 h-12"
@@ -15,9 +15,6 @@
 						type="text"
 						v-model="info.name"
 					/>
-					<div v-show="isRequiredBlank.name" text="danger">
-						{{ $t("此為必填欄位") }}
-					</div>
 				</div>
 			</div>
 
@@ -29,10 +26,7 @@
 
 			<!-- 出生日期 -->
 			<div space="y-1" m="2">
-				<div flex="~ gap-2" class="items-end" text="body">
-					<div>{{ $t("出生日期") }}</div>
-					<div text="sm danger">{{ "*\ \ " + $t("必填") }}</div>
-				</div>
+				<div>{{ $t("出生日期") }}</div>
 				<div flex="~ gap-6" class="items-center">
 					<Calendar
 						dateFormat="yy/mm/dd"
@@ -42,9 +36,6 @@
 						:showOnFocus="false"
 						placeholder="YYYY/MM/DD"
 					/>
-					<div v-show="isRequiredBlank.birth" text="danger">
-						{{ $t("此為必填欄位") }}
-					</div>
 				</div>
 			</div>
 
@@ -295,12 +286,6 @@ useQuery(
 			info.birth = addHours(24, new Date(info.birth));
 		},
 		onError: (data) => {
-			toast.add({
-				severity: "error",
-				summary: "Error",
-				detail: "Unable to fetch user basic info",
-				life: 5000,
-			});
 			console.log(data);
 		},
 	}

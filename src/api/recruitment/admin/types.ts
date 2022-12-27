@@ -103,34 +103,18 @@ export interface RecruitmentAdminApplicantsListResponse {
 
 export interface RecruitmentAdminApplicantResponse {
 	id: number;
-	name: string;
-	national_id: string;
-	sex: string;
 	birth: Date;
-	day_phone: string;
-	night_phone: string;
-	mobile_phone: string;
-	household_address: string;
-	household_zipcode: string;
-	communicate_address: string;
-	communicate_zipcode: string;
-	graduated_school: string;
-	graduated_major: string;
-	isSameDept: boolean;
-	isDisabled: boolean;
-	r_applicants_r_program_id: number;
-	created_at: string;
-	updated_at: string;
-	isConfirm: boolean;
-	title: string;
-	suffix: string;
-	cn_surname: string;
-	en_surname: string;
-	en_midname: string;
-	en_givenname: string;
-	nationality: string;
-	birthcountry: string;
-	isForeigner: boolean;
+	college: string;
+	college_year: number;
+	current_job: string;
+	doctoral: string;
+	doctoral_paper: string;
+	doctoral_year: number;
+	email?: string;
+	master: string;
+	master_year: number;
+	name: string;
+	publication: string;
 }
 
 export interface RecruitmentAdminGetApplicantInfoHeader {
