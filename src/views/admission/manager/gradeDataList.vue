@@ -1215,7 +1215,8 @@ async function downloadPDFFile(
 	} catch (error: any) {
 		toast.add({
 			severity: "error",
-			summary: "Unable to download PDF: " + error.toString(),
+			summary: "操作失敗",
+			detail: "審查者尚未完成所有申請者的評分",
 			life: 3000,
 		});
 
