@@ -290,12 +290,12 @@ const routes: Array<RouteRecordRaw> = [
 		component: () => import("@/views/admission/manager/MainContainer.vue"),
 		children: [
 			// Admission - manager project settings
-			{
-				path: "uploadFileSetting",
-				name: "AdmissionAdminUploadFileSetting",
-				component: () =>
-					import("@/views/admission/manager/UploadFileSetting.vue"),
-			},
+			// {
+			// 	path: "uploadFileSetting",
+			// 	name: "AdmissionAdminUploadFileSetting",
+			// 	component: () =>
+			// 		import("@/views/admission/manager/UploadFileSetting.vue"),
+			// },
 			{
 				path: "projectSetting",
 				name: "AdmissionAdminProjectSetting",
@@ -453,14 +453,14 @@ const routes: Array<RouteRecordRaw> = [
 				component: () =>
 					import("@/views/recruitment/manager/reviewScoreField.vue"),
 			},
-			{
-				path: "reviewProgress",
-				name: "RecruitmentAdminReviewProgress",
-				component: () =>
-					import(
-						"@/views/recruitment/manager/pages/ReviewProgress.vue"
-					),
-			},
+			// {
+			// 	path: "reviewProgress",
+			// 	name: "RecruitmentAdminReviewProgress",
+			// 	component: () =>
+			// 		import(
+			// 			"@/views/recruitment/manager/pages/ReviewProgress.vue"
+			// 		),
+			// },
 			{
 				path: "mustviewSetting",
 				name: "RecruitmentAdminMustviewSetting",

@@ -1,124 +1,110 @@
 <template>
 	<div class="mt-24px">
-		<div v-if="requiredInputFields.includes('en_givename')">
-			<div class="text-24px font-bold">{{ $t("姓名資訊") }}</div>
-			<div class="admApplicantBasicInfoCard">
-				<div style="color: #333333">
-					<div>{{ $t("中文姓氏") + $t(":") }}</div>
-					<div>{{ $t("中文名字") + $t(":") }}</div>
-					<div>{{ $t("英文姓氏") + $t(":") }}</div>
-					<div>{{ $t("英文中間名字") + $t(":") }}</div>
-					<div>{{ $t("英文名字") + $t(":") }}</div>
+		<div class="text-24px font-bold">{{ $t("姓名資訊") }}</div>
+		<div class="admApplicantBasicInfoCard">
+			<div style="color: #333333">
+				<div>{{ $t("中文姓氏") + $t(":") }}</div>
+				<div>{{ $t("中文名字") + $t(":") }}</div>
+				<div>{{ $t("英文姓氏") + $t(":") }}</div>
+				<div>{{ $t("英文中間名字") + $t(":") }}</div>
+				<div>{{ $t("英文名字") + $t(":") }}</div>
+			</div>
+			<div class="font-bold ml-12px">
+				<div v-if="userInfo?.cn_surname">
+					{{ userInfo.cn_surname }}
 				</div>
-				<div class="font-bold ml-12px">
-					<div v-if="userInfo?.cn_surname">
-						{{ userInfo.cn_surname }}
-					</div>
-					<div v-else>-</div>
-					<div v-if="userInfo?.name">{{ userInfo?.name }}</div>
-					<div v-else>-</div>
-					<div v-if="userInfo?.en_surname">
-						{{ userInfo?.en_surname }}
-					</div>
-					<div v-else>-</div>
-					<div v-if="userInfo?.en_midname">
-						{{ userInfo?.en_midname }}
-					</div>
-					<div v-else>-</div>
-					<div v-if="userInfo?.en_givenname">
-						{{ userInfo?.en_givenname }}
-					</div>
-					<div v-else>-</div>
+				<div v-else>-</div>
+				<div v-if="userInfo?.name">{{ userInfo?.name }}</div>
+				<div v-else>-</div>
+				<div v-if="userInfo?.en_surname">
+					{{ userInfo?.en_surname }}
+				</div>
+				<div v-else>-</div>
+				<div v-if="userInfo?.en_midname">
+					{{ userInfo?.en_midname }}
+				</div>
+				<div v-else>-</div>
+				<div v-if="userInfo?.en_givenname">
+					{{ userInfo?.en_givenname }}
+				</div>
+				<div v-else>-</div>
+			</div>
+		</div>
+		<div class="mt-24px text-24px font-bold">
+			{{ $t("入學身分") }}
+		</div>
+		<div class="admApplicantBasicInfoCard">
+			<div style="color: #333333">
+				<div>{{ $t("入學身份") + $t(":") }}</div>
+				<div>{{ $t("國籍") + $t(":") }}</div>
+			</div>
+			<div class="font-bold ml-12px">
+				<div v-if="userInfo?.isForeigner">{{ $t("外籍生") }}</div>
+				<div v-else-if="userInfo?.isForeigner === false">
+					{{ $t("本地生") }}
+				</div>
+				<div v-else>-</div>
+				<div v-if="userInfo?.nationality">
+					{{ userInfo?.nationality }}
+				</div>
+				<div v-else>-</div>
+				<div
+					v-if="
+						userInfo?.national_id && userInfo?.isForeigner === false
+					"
+				>
+					{{ userInfo.national_id }}
+				</div>
+				<div v-if="userInfo?.national_id && userInfo?.isForeigner">
+					{{ userInfo.national_id }}
 				</div>
 			</div>
 		</div>
-		<div v-if="requiredInputFields.includes('nationality')">
-			<div class="mt-24px text-24px font-bold">
-				{{ $t("入學身分") }}
+		<div class="mt-24px text-24px font-bold">{{ $t("通訊地址") }}</div>
+		<div class="admApplicantBasicInfoCard">
+			<div style="color: #333333">
+				<div>{{ $t("地址") + $t(":") }}</div>
+				<div>{{ $t("區號") + $t(":") }}</div>
 			</div>
-			<div class="admApplicantBasicInfoCard">
-				<div style="color: #333333">
-					<div>{{ $t("入學身份") + $t(":") }}</div>
-					<div>{{ $t("國籍") + $t(":") }}</div>
+			<div class="font-bold ml-12px">
+				<div v-if="userInfo?.communicate_address">
+					{{ userInfo?.communicate_address }}
 				</div>
-				<div class="font-bold ml-12px">
-					<div v-if="userInfo?.isForeigner">{{ $t("外籍生") }}</div>
-					<div v-else-if="userInfo?.isForeigner === false">
-						{{ $t("本地生") }}
-					</div>
-					<div v-else>-</div>
-					<div v-if="userInfo?.nationality">
-						{{ userInfo?.nationality }}
-					</div>
-					<div v-else>-</div>
-					<div
-						v-if="
-							userInfo?.national_id &&
-							userInfo?.isForeigner === false
-						"
-					>
-						{{ userInfo.national_id }}
-					</div>
-					<div v-else>-</div>
-					<div v-if="userInfo?.national_id && userInfo?.isForeigner">
-						{{ userInfo.national_id }}
-					</div>
-					<div v-else>-</div>
+				<div v-else>-</div>
+				<div v-if="userInfo?.communicate_zipcode">
+					{{ userInfo?.communicate_zipcode }}
 				</div>
+				<div v-else>-</div>
 			</div>
 		</div>
-
-		<div v-if="requiredInputFields.includes('email')">
-			<div class="mt-24px text-24px font-bold">{{ $t("通訊地址") }}</div>
-			<div class="admApplicantBasicInfoCard">
-				<div style="color: #333333">
-					<div>{{ $t("地址") + $t(":") }}</div>
-					<div>{{ $t("區號") + $t(":") }}</div>
+		<div class="mt-24px text-24px font-bold">{{ $t("身份資料") }}</div>
+		<div class="admApplicantBasicInfoCard">
+			<div style="color: #333333">
+				<div>{{ $t("性別") + $t(":") }}</div>
+				<div>{{ $t("出生國家") + $t(":") }}</div>
+				<div>{{ $t("出生日期") + $t(":") }}</div>
+			</div>
+			<div class="font-bold ml-12px">
+				<div v-if="userInfo?.sex">{{ userInfo?.sex }}</div>
+				<div v-else>-</div>
+				<div v-if="userInfo?.birthcountry">
+					{{ userInfo?.birthcountry }}
 				</div>
-				<div class="font-bold ml-12px">
-					<div v-if="userInfo?.communicate_address">
-						{{ userInfo?.communicate_address }}
-					</div>
-					<div v-else>-</div>
-					<div v-if="userInfo?.communicate_zipcode">
-						{{ userInfo?.communicate_zipcode }}
-					</div>
-					<div v-else>-</div>
-				</div>
+				<div v-else>-</div>
+				<div v-if="userInfo?.birth">{{ userInfo.birth }}</div>
+				<div v-else>-</div>
 			</div>
 		</div>
-		<div v-if="requiredInputFields.includes('sex')">
-			<div class="mt-24px text-24px font-bold">{{ $t("身份資料") }}</div>
-			<div class="admApplicantBasicInfoCard">
-				<div style="color: #333333">
-					<div>{{ $t("性別") + $t(":") }}</div>
-					<div>{{ $t("出生國家") + $t(":") }}</div>
-					<div>{{ $t("出生日期") + $t(":") }}</div>
-				</div>
-				<div class="font-bold ml-12px">
-					<div v-if="userInfo?.sex">{{ userInfo?.sex }}</div>
-					<div v-else>-</div>
-					<div v-if="userInfo?.birthcountry">
-						{{ userInfo?.birthcountry }}
-					</div>
-					<div v-else>-</div>
-					<div v-if="userInfo?.birth">{{ userInfo.birth }}</div>
-					<div v-else>-</div>
-				</div>
+		<div class="mt-24px text-24px font-bold">{{ $t("聯絡方式") }}</div>
+		<div class="admApplicantBasicInfoCard">
+			<div style="color: #333333">
+				<div>{{ $t("聯絡號碼") + $t(":") }}</div>
 			</div>
-		</div>
-		<div v-if="requiredInputFields.includes('mobile_phone')">
-			<div class="mt-24px text-24px font-bold">{{ $t("聯絡方式") }}</div>
-			<div class="admApplicantBasicInfoCard">
-				<div style="color: #333333">
-					<div>{{ $t("聯絡號碼") + $t(":") }}</div>
+			<div class="font-bold ml-12px">
+				<div v-if="userInfo?.mobile_phone">
+					{{ userInfo?.mobile_phone }}
 				</div>
-				<div class="font-bold ml-12px">
-					<div v-if="userInfo?.mobile_phone">
-						{{ userInfo?.mobile_phone }}
-					</div>
-					<div v-else>-</div>
-				</div>
+				<div v-else>-</div>
 			</div>
 		</div>
 	</div>
@@ -171,12 +157,12 @@ useQuery(
 			console.log(data);
 		},
 		onError: (data) => {
-			toast.add({
-				severity: "error",
-				summary: "Error",
-				detail: "Unable to fetch user require input",
-				life: 5000,
-			});
+			// toast.add({
+			// 	severity: "error",
+			// 	summary: "Error",
+			// 	detail: "Unable to fetch user require input",
+			// 	life: 5000,
+			// });
 		},
 	}
 );

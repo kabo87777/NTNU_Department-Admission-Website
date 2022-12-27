@@ -2,18 +2,17 @@
 	<Layout Admin noMargin>
 		<template #Header> {{ trans.uploadField.value }} </template>
 		<template #Body>
-			<div class="p-fluid" pos="sticky top-0" z="50">
-				<SelectButton
-					v-model="activeTab"
-					:options="tabOptions"
-					optionLabel="name"
-					aria-labelledby="single"
-					:unselectable="false"
-				/>
-			</div>
+			<NSelect
+				Admin
+				class="sticky top-0 h-12 z-50"
+				@currentTab="switchTab"
+			>
+				<template #Select1>{{ $t("基本資料欄位") }}</template>
+				<template #Select2>{{ $t("檢附資料欄位") }}</template>
+			</NSelect>
 			<!-- 基本資料欄位 -->
 			<!-- 姓名資訊 -->
-			<div v-if="activeTab.value === 1">
+			<div v-if="activeTab === 1">
 				<div flex="~ gap-2" justify="items-center">
 					<Checkbox
 						inputId="nameInfo"
@@ -34,9 +33,9 @@
 					</div>
 				</div>
 			</div>
-			<PDivider Admin v-if="activeTab.value === 1" />
+			<PDivider Admin v-if="activeTab === 1" />
 			<!-- 入學身份 -->
-			<div v-if="activeTab.value === 1">
+			<div v-if="activeTab === 1">
 				<div flex="~ gap-2" justify="items-center">
 					<Checkbox
 						inputId="enrollment"
@@ -57,9 +56,9 @@
 					</div>
 				</div>
 			</div>
-			<PDivider Admin v-if="activeTab.value === 1" />
+			<PDivider Admin v-if="activeTab === 1" />
 			<!-- 通訊地址 -->
-			<div v-if="activeTab.value === 1">
+			<div v-if="activeTab === 1">
 				<div flex="~ gap-2" justify="items-center">
 					<Checkbox
 						inputId="mailingAd"
@@ -80,9 +79,9 @@
 					</div>
 				</div>
 			</div>
-			<PDivider Admin v-if="activeTab.value === 1" />
+			<PDivider Admin v-if="activeTab === 1" />
 			<!-- 身份資料 -->
-			<div v-if="activeTab.value === 1">
+			<div v-if="activeTab === 1">
 				<div flex="~ gap-2" justify="items-center">
 					<Checkbox
 						inputId="basicIdentityInfo"
@@ -109,9 +108,9 @@
 					</div>
 				</div>
 			</div>
-			<PDivider Admin v-if="activeTab.value === 1" />
+			<PDivider Admin v-if="activeTab === 1" />
 			<!-- 聯絡資料 -->
-			<div v-if="activeTab.value === 1">
+			<div v-if="activeTab === 1">
 				<div flex="~ gap-2" justify="items-center">
 					<Checkbox
 						inputId="contactInfo"
@@ -132,7 +131,7 @@
 
 			<!-- 檢附資料欄位 -->
 			<!-- 就學經歷 -->
-			<div v-if="activeTab.value === 2">
+			<div v-if="activeTab === 2">
 				<div flex="~ gap-2" justify="items-center">
 					<Checkbox
 						inputId="schoolExp"
@@ -153,9 +152,9 @@
 					</div>
 				</div>
 			</div>
-			<PDivider Admin v-if="activeTab.value === 2" />
+			<PDivider Admin v-if="activeTab === 2" />
 			<!-- 考試與檢定分數 -->
-			<div v-if="activeTab.value === 2">
+			<div v-if="activeTab === 2">
 				<div flex="~ gap-2" justify="items-center">
 					<Checkbox
 						inputId="score"
@@ -176,9 +175,9 @@
 					</div>
 				</div>
 			</div>
-			<PDivider Admin v-if="activeTab.value === 2" />
+			<PDivider Admin v-if="activeTab === 2" />
 			<!-- 其他有利於審查資料 -->
-			<div v-if="activeTab.value === 2">
+			<div v-if="activeTab === 2">
 				<div flex="~ gap-2" justify="items-center">
 					<Checkbox
 						inputId="other"
@@ -204,14 +203,14 @@
 			<div flex="~" justify="center" gap="4">
 				<NButton
 					Admin
-					class="p-2 w-32"
+					class="h-11 min-w-36"
 					icon="pi pi-check"
 					@click="saveChange"
 				>
 					{{ $t("儲存設定") }}
 				</NButton>
 				<NButton
-					class="p-2 w-32"
+					class="h-11 min-w-36"
 					icon="pi pi-times"
 					@click="refreshData"
 				>
@@ -225,6 +224,7 @@
 <script setup lang="ts">
 import Layout from "@/components/Layout.vue";
 import NButton from "@/styles/CustomButton.vue";
+import NSelect from "@/components/SelectButton.vue";
 import SelectButton from "primevue/selectbutton";
 import Checkbox from "primevue/checkbox";
 import PDivider from "@/styles/PrDivider.vue";
@@ -278,11 +278,10 @@ const trans = {
 };
 
 // SelectButton: Change Tab
-const activeTab = ref({ name: trans.basicCol, value: 1 });
-const tabOptions = ref([
-	{ name: trans.basicCol, value: 1 },
-	{ name: trans.attachmentCol, value: 2 },
-]);
+const activeTab = ref(1);
+const switchTab = (tabValue: number) => {
+	activeTab.value = tabValue;
+};
 
 // API Authorization
 const adminAuth = useAdmissionAdminAuthStore();

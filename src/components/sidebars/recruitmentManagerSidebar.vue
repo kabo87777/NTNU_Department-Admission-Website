@@ -147,7 +147,7 @@
 					</NButton>
 				</router-link>
 				<!-- 6.審查人員與進度 -->
-				<router-link
+				<!-- <router-link
 					:to="{ name: 'RecruitmentAdminReviewProgress' }"
 					custom
 					v-slot="{ navigate }"
@@ -165,7 +165,7 @@
 						"
 						>{{ $t("審查人員與進度") }}
 					</NButton>
-				</router-link>
+				</router-link> -->
 				<!-- 7.必看名單設置 -->
 				<router-link
 					:to="{ name: 'RecruitmentAdminMustviewSetting' }"
@@ -355,10 +355,17 @@ const programData = useMutation(async (newProgramData: any) => {
 	}
 });
 
-const { isLoading, data: programs } = useQuery(
+const programs = ref<RecruitmentAdminProgramListResponse[]>();
+
+const { isLoading } = useQuery(
 	["recruitmentAdminprogramList"],
 	async () => {
 		return await api.getProgramList();
+	},
+	{
+		onSuccess: (data) => {
+			programs.value = data;
+		},
 	}
 );
 
@@ -374,14 +381,28 @@ const letterSpace = computed(() => {
 	else return "";
 });
 
-watchEffect(() => {
-	if (!programs.value) return;
+watch(programs, (newValue, oldValue) => {
+	if (typeof newValue === "undefined")
+		throw new Error("Program list is undefined");
 
-	globalStore.$patch((state) => {
-		state.program = programs.value[0];
+	if (typeof globalStore.program === "undefined") {
+		globalStore.$patch({ program: newValue[0] });
+		selectedProgram.value = newValue[0];
+		return;
+	}
+
+	const oldProgram = newValue.find((program) => {
+		return globalStore.program?.id === program.id;
 	});
 
-	selectedProgram.value = programs.value[0];
+	// If current program is deleted, then select the first entry in response
+	const newProgram: RecruitmentAdminProgramListResponse =
+		typeof oldProgram === "undefined" ? newValue[0] : oldProgram;
+
+	globalStore.$patch({
+		program: newProgram,
+	});
+	selectedProgram.value = newProgram;
 });
 
 watch(selectedProgram, (selection) => {

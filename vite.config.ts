@@ -30,38 +30,59 @@ if (!process.env.VITE_ADMISSIONS_API_ENDPOINT) {
     if (process.env.VERCEL_ENV === "production") {
       process.env.VITE_ADMISSIONS_API_ENDPOINT =
         "https://admissions-backend-prd.birkhoff.me";
-
-      process.env.VITE_ADMISSION_APPLICANT_USERNAME = ""
-      process.env.VITE_ADMISSION_APPLICANT_PASSWORD = ""
-      process.env.VITE_ADMISSION_REVIEWER_USERNAME = ""
-      process.env.VITE_ADMISSION_REVIEWER_PASSWORD = ""
-      process.env.VITE_ADMISSION_MANAGER_USERNAME = ""
-      process.env.VITE_ADMISSION_MANAGER_PASSWORD = ""
-      process.env.VITE_RECRUITMENT_APPLICANT_USERNAME = ""
-      process.env.VITE_RECRUITMENT_APPLICANT_PASSWORD = ""
-      process.env.VITE_RECRUITMENT_REVIEWER_USERNAME = ""
-      process.env.VITE_RECRUITMENT_REVIEWER_PASSWORD = ""
-      process.env.VITE_RECRUITMENT_MANAGER_USERNAME = ""
-      process.env.VITE_RECRUITMENT_MANAGER_PASSWORD = ""
     }
-    else
+    else {
       process.env.VITE_ADMISSIONS_API_ENDPOINT =
         "https://admissions-backend-stg.birkhoff.me";
+    }
   } else {
     // project being built locally
     const gitBranch = branch.sync() || "";
 
     // use respective endpoints for prod & staging branch.
     // for other branches, use localhost.
-    if (gitBranch === "main")
+    if (gitBranch === "main") {
+      /*
+        Note that in here it's still going to be staging because production
+        has CORS limits. Override VITE_ADMISSIONS_API_ENDPOINT on your own
+        if you'd like to use the local copy of the backend.
+       */
       process.env.VITE_ADMISSIONS_API_ENDPOINT =
-        "https://admissions-backend-prd.birkhoff.me";
+        "https://admissions-backend-stg.birkhoff.me";
+    }
     else if (gitBranch === "develop")
       process.env.VITE_ADMISSIONS_API_ENDPOINT =
         "https://admissions-backend-stg.birkhoff.me";
     else process.env.VITE_ADMISSIONS_API_ENDPOINT = "http://127.0.0.1:3000";
   }
 }
+
+if (process.env.VERCEL_ENV) {
+  // project being built on Vercel
+  if (process.env.VERCEL_ENV === "production") {
+    process.env.VITE_BASEURL = "https://admissions.birkhoff.me"
+
+    process.env.VITE_ADMISSION_APPLICANT_USERNAME = ""
+    process.env.VITE_ADMISSION_APPLICANT_PASSWORD = ""
+    process.env.VITE_ADMISSION_REVIEWER_USERNAME = ""
+    process.env.VITE_ADMISSION_REVIEWER_PASSWORD = ""
+    process.env.VITE_ADMISSION_MANAGER_USERNAME = ""
+    process.env.VITE_ADMISSION_MANAGER_PASSWORD = ""
+    process.env.VITE_RECRUITMENT_APPLICANT_USERNAME = ""
+    process.env.VITE_RECRUITMENT_APPLICANT_PASSWORD = ""
+    process.env.VITE_RECRUITMENT_REVIEWER_USERNAME = ""
+    process.env.VITE_RECRUITMENT_REVIEWER_PASSWORD = ""
+    process.env.VITE_RECRUITMENT_MANAGER_USERNAME = ""
+    process.env.VITE_RECRUITMENT_MANAGER_PASSWORD = ""
+  }
+  else {
+    process.env.VITE_BASEURL = "https://admissions-frontend-staging.birkhoff.me"
+  }
+} else {
+  // project being built locally
+  process.env.VITE_BASEURL = "http://127.0.0.1:5173"
+}
+
 if (!process.env.VITE_IS_SKIP_CAPTCHA) {
   // by default, we only enable CAPTCHA for Vercel production environment
   process.env.VITE_IS_SKIP_CAPTCHA =

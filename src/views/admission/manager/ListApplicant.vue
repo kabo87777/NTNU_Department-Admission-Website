@@ -1,52 +1,62 @@
 <template>
-	<Layout Admin>
+	<Layout Admin noMargin>
 		<template #Header>
 			{{ $t("申請帳號設置") }}
 		</template>
 		<template #Body>
-			<TransitionGroup name="p-message" tag="div">
-				<Message :closable="false" severity="warn" v-if="isImporting">{{
-					$t("正在處理中，請勿離開此頁面")
-				}}</Message>
-			</TransitionGroup>
-			<DataTable :value="tableData" :loading="isTableLoading">
-				<template #empty>
-					<h2>{{ $t("尚無申請者帳號") }}</h2>
-				</template>
+			<div>
+				<TransitionGroup name="p-message" tag="div">
+					<Message
+						:closable="false"
+						severity="warn"
+						v-if="isImporting"
+						>{{ $t("正在處理中，請勿離開此頁面") }}</Message
+					>
+				</TransitionGroup>
+				<DataTable :value="tableData" :loading="isTableLoading">
+					<template #empty>
+						<h2>{{ $t("尚無申請者帳號") }}</h2>
+					</template>
 
-				<Column field="id">
-					<template #header>{{ $t("ID") }}</template>
-				</Column>
+					<Column field="id">
+						<template #header>{{ $t("ID") }}</template>
+					</Column>
 
-				<Column field="name">
-					<template #header>{{ $t("姓名") }}</template>
-				</Column>
+					<Column field="name">
+						<template #header>{{ $t("姓名") }}</template>
+					</Column>
 
-				<Column field="email">
-					<template #header>{{ $t("電子信箱") }}</template>
-				</Column>
+					<Column field="email">
+						<template #header>{{ $t("電子信箱") }}</template>
+					</Column>
 
-				<Column>
-					<template #header>{{ $t("操作") }}</template>
-					<template #body="slotProps">
-						<span class="flex gap-x-3">
+					<Column>
+						<template #header>{{ $t("操作") }}</template>
+						<template #body="slotProps">
 							<!-- Delete button -->
 							<NButton
 								Danger
+								class="h-11 w-11"
 								icon="pi pi-trash"
 								@click="confirmDeleteAccount(slotProps.data.id)"
 							/>
-						</span>
-					</template>
-				</Column>
+						</template>
+					</Column>
 
-				<template #footer>
-					<p>
-						{{ $t("applicant_table_items_count", getTableItemQty) }}
-					</p>
-				</template>
-			</DataTable>
-			<h3 class="block font-black text-xl">匯入申請者帳號</h3>
+					<template #footer>
+						<p>
+							{{
+								$t(
+									"applicant_table_items_count",
+									getTableItemQty
+								)
+							}}
+						</p>
+					</template>
+				</DataTable>
+			</div>
+			<PDivider Admin />
+			<div text="xl title">匯入申請者帳號</div>
 			<FileUpload
 				mode="advanced"
 				:choose-label="$t('選擇檔案')"
@@ -58,6 +68,7 @@
 					<div class="flex gap-x-2">
 						<NButton
 							Admin
+							class="h-11 min-w-32"
 							icon="pi pi-file"
 							:label="
 								files.length == 0
@@ -73,6 +84,7 @@
 						>
 						<NButton
 							Success
+							class="h-11 min-w-32"
 							icon="pi pi-cloud-upload"
 							:label="$t('上傳')"
 							@click="uploadCallback"
@@ -114,6 +126,7 @@
 <script setup lang="ts">
 import NButton from "@/styles/CustomButton.vue";
 import Layout from "@/components/Layout.vue";
+import PDivider from "@/styles/PrDivider.vue";
 import Column from "primevue/column";
 import DataTable from "primevue/datatable";
 
@@ -245,7 +258,7 @@ const importApplicantCallback = (event: FileUploadUploaderEvent) => {
 	formdata.append("file", file);
 	formdata.append(
 		"redirect_url",
-		"http://127.0.0.1:5173/admission/applicant/setupaccount"
+		`${import.meta.env.VITE_BASEURL}/admission/applicant/setupaccount`
 	);
 	uploadApplicantImport(formdata);
 };

@@ -7,7 +7,7 @@
 			</Message>
 			<div
 				class="px-12px py-12px"
-				v-if="requiredInputFields.includes('en_givename')"
+				v-if="requiredInputFields.includes('en_givenname')"
 			>
 				<div class="flex">
 					<div class="text-[24px] font-[50] font-bold">
@@ -171,7 +171,7 @@
 			<div>
 				<div
 					class="px-12px py-12px"
-					v-if="requiredInputFields.includes('email')"
+					v-if="requiredInputFields.includes('communicate_address')"
 				>
 					<div class="flex">
 						<div class="text-[24px] font-[50] font-bold">
@@ -180,7 +180,7 @@
 					</div>
 					<div class="flex py-16px">
 						<div class="w-2/3">
-							<div>{{ $t("地址") }}</div>
+							<div>{{ "*" + $t("地址") }}</div>
 							<div>
 								<InputText
 									class="w-[80%] h-36px !mt-4px"
