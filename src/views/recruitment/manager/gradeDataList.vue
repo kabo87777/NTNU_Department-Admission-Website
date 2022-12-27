@@ -137,7 +137,7 @@
 						:showIcon="true"
 						:showTime="true"
 						:baseZIndex="zIndex"
-						:disabled="disable"
+						:disabled="!disable"
 						dateFormat="yy/mm/dd"
 						:showOnFocus="false"
 						placeholder="YYYY/MM/DD hh:mm"
